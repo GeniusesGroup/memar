@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -24,8 +24,8 @@ Cross-document links created at migration (from the records' syn/links fields):
   - movement/last-mile-of-goods.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - economy/land-housing-tenure.md, living-and-culture/recreation-and-culture-venues.md: Done in this batch — inbound links rewritten to the new English anchors during the same pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: the Persian bodies were re-expressed as English argument, preserving every claim, number and attribution (4 to 6 intermediary layers removed; 30-to-50-percent final-price reduction; 80-percent fresh-produce waste cut; the 500-hectare Atna farm; zero-percent brokerage share; 100-percent technical-history transparency); Abstract and Motivation were re-derived from the document's own Explanation; a cross-approach collision section was added; nothing was removed. Source filenames were preserved verbatim. Section titles, in document order, with their legacy ids and new English headings:

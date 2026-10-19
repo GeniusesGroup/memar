@@ -2,10 +2,10 @@
 
 tp Array_Dynamic in "memar/modules/computer/adt/array/protocol/dynamic.kh"
 tp Capsule_LifeCycle in "memar/modules/computer/capsule/protocol/life_cycle_contract.kh"
-tp String in "memar/modules/codec/string/protocol/string.kh"
-tp DataType in "memar/modules/computer/datatype/protocol/data-type.kh"
-tp Datatype_ID in "memar/modules/computer/datatype/protocol/id.kh"
-tp Identifier_MediaType in "memar/modules/identifier/mediatype/protocol/media-type.kh"
+tp String in "memar/modules/computer/codec/string/protocol/string.kh"
+tp Type in "memar/modules/computer/type/protocol/type.kh"
+tp Type_ID in "memar/modules/computer/type/protocol/id.kh"
+tp Identifier_MediaType in "memar/modules/computer/mediatype/protocol/media-type.kh"
 tp Page in "memar/modules/gui/protocol/page.kh"
 tp Service in "memar/modules/process/service/protocol/service.kh"
 tp Error in "memar/modules/process/error/protocol/error.kh"
@@ -23,7 +23,7 @@ tp Array_Service ab {
 }
 
 tp Module ab {
-	DataType
+	Type
 	Identifier_MediaType
 	Capsule_LifeCycle
 }
@@ -42,7 +42,7 @@ tp RegisterModule mt (self Computer_Modules) (m Module) ()
 
 tp Modules mt (self Computer_Modules) () (m Array_Module)
 
-tp GetModuleByID mt (self Computer_Modules) (id Datatype_ID) (m Module, err Error)
+tp GetModuleByID mt (self Computer_Modules) (id Type_ID) (m Module, err Error)
 
 tp GetModuleByMediaType mt (self Computer_Modules) (mediaType Identifier_MediaType) (m Module, err Error)
 

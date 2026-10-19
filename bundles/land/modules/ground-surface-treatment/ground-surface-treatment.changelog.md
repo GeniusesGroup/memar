@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -23,8 +23,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -40,8 +40,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
 
 #### What changed
 - The collision section gained the default-surface ruling the first pass left hidden inside a harmony claim: the deck record binds every necessary pedestrian ground to dry-laid stone while MICP claims pedestrian paths as crusted soil — two defaults for one floor; the owner decision (universal paving clause vs crust supersedes where maintained) is named with the evidence each side argues from, and opened as handoff Q5 with a blocking flag.
@@ -61,11 +61,11 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Type: clarified
 - Cited:
   - [Ground Surface Treatment — Handoff](ground-surface-treatment.handoff.md) - Relation: Evidence: the underside pedestrian domain is this page's recovered prereq.
-  - [Safe pedestrian deck on the roofs of the PRT guideways (Elevated Guideway Pedestrian Deck)](which-plane-carries-which-flow.md#safe-pedestrian-deck-on-the-roofs-of-the-prt-guideways-elevated-guideway-pedestrian-deck) - Relation: Evidence: recovered Mechanism puts the walk on the roof.
+  - [Safe pedestrian deck on the roofs of the PRT guideways (Elevated Guideway Pedestrian Deck)](../which-plane-carries-which-flow/which-plane-carries-which-flow.md#safe-pedestrian-deck-on-the-roofs-of-the-prt-guideways-elevated-guideway-pedestrian-deck) - Relation: Evidence: recovered Mechanism puts the walk on the roof.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
 
 #### What changed
 - Handoff records the leftover plane/grain-pass collision: this page's soil-protection prereq puts pedestrians on the guideway underside; the which-plane deck record puts them on the roof. Neither recovered Mechanism was rewritten.

@@ -12,7 +12,7 @@ Companion of `bubble-drain-and-renewal.md`.
 - (none; no verdict recorded.)
 
 ## Extensions / anticipated work
-- If Q1 merges the two engine records, the site policy (orchard-domain supertalls vs periurban settlements) must be re-examined against [Settlement Grain and Scaling](../form-and-land/settlement-grain-and-scaling.md)'s cellular-planning record, since the compressed record's "fractal grain" synergy presumes the grain decision rather than deriving it.
+- If Q1 merges the two engine records, the site policy (orchard-domain supertalls vs periurban settlements) must be re-examined against [Settlement Grain and Scaling](../../../land/modules/settlement-grain-and-scaling/settlement-grain-and-scaling.md)'s cellular-planning record, since the compressed record's "fractal grain" synergy presumes the grain decision rather than deriving it.
 - Round-1 review (2026-09-20, plane/grain pass): a hard 50-thousand cell cap would have voided this engine's 500k–1M orchard magnet. Grain now treats 50 thousand as a commercial-plan number, not a structural cap, so that supposed conflict is gone. Q1 merge of the two engines still open.
 - A remediation-cost line (3-to-5-year productivity gap) could be added to the engines' metrics if Q2 lands on the soil-inclusive reading of "renewal."
 - The "reverse renewal / demand drainage" phase invoked by both Fit fields is still homeless in the document set (also flagged in `form-and-land/buildable-share-and-density-allocation.handoff.md`); this document is its strongest candidate host.

@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -25,8 +25,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -44,7 +44,7 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references predating the requirements migration stand as `legacy-ref (unresolved)` markers where they could not be matched to any approach; the marker texts were carried with their source labels above.
@@ -53,8 +53,8 @@ Old-numbering references predating the requirements migration stand as `legacy-r
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
 
 #### What changed
 - The collision section's closing knot was sharpened from "a contradiction the adjudication has to resolve" into an explicit scope decision on the 45-decibel zone cap: total ambient budget (masking counted, curtain effectively barred from occupied zones) versus nuisance budget (masking outside the policed ceiling, but monitoring then blind to its own loudest designed sound); the binary and its evidence are carried as handoff Question 7, and it is noted there that Questions 2 and 3 gate behind it.

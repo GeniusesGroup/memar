@@ -1,7 +1,7 @@
 # URI Handoff
 
 ## Topic & Purpose
-State of converting `modules/identity/uri/` from Go to Khayyam under the seven governing rules in `____Chats/2026-09-23-go-khayyam-migration-map.md`: what each of the five protocol files now declares, which of those were judgment calls, and what is still undecided or blocked on a domain this one does not own.
+State of converting `modules/identity/uri/` from Go to Khayyam under the seven governing rules in [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md): what each of the five protocol files now declares, which of those were judgment calls, and what is still undecided or blocked on a domain this one does not own.
 
 ## Status
 Active — the five `.kh` files are converted and return `accept` from the Khayyam frontend once the imports they name are supplied; three of the declarations they depend on do not exist in the tree yet.
@@ -41,7 +41,7 @@ Active — the five `.kh` files are converted and return `accept` from the Khayy
 
 ## Related Artifacts
 
-- `____Chats/2026-09-23-go-khayyam-migration-map.md` — the seven governing rules; where the UUID and accessor decisions above should graduate.
+- [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md) — the seven governing rules; where the UUID and accessor decisions above should graduate.
 - `modules/identity/thing/protocol/dt-uuid.kh` — must declare `ThingUUID` and `Field_ThingUUID`.
 - `modules/knowledge/text/protocol/model.kh` — must declare `TextModel`.
 - `modules/identity/time/protocol/dt-uuid.kh`, `modules/identity/organization/protocol/dt-uuid.kh` — the two conversions that answered the UUID question differently from this one; the `organization` file re-imports the pilot's `UserUUID`.

@@ -31,7 +31,7 @@ We trust them enough to leave our children with them.
 
 ## Model
 
-- Candidate (unconfirmed) social-graph label set from this folder's relation file: Follow, Blocked, Muted; ReferentUser or Introducer; DelegateTo / DelegateFrom (user delegation to this app in other apps); notification Reason labels keyed to friendship cycles (`Reason_1stFriendshipCycle` ... `Reason_UserFollow`).
+- Candidate (unconfirmed) social-graph label set from this folder's relation file: Follow (thing's [follow](../../../thing/edges/follow/follow.md), not a label of its own here), Blocked, Muted; ReferentUser or Introducer; DelegateTo / DelegateFrom (user delegation to this app in other apps); notification Reason labels keyed to friendship cycles (`Reason_1stFriendshipCycle` ... `Reason_UserFollow`).
 - Nothing ratified: endpoints, direction, and which of these are stored edges vs annotations are open (see below).
 
 ## Policies (rules)
@@ -43,6 +43,7 @@ We trust them enough to leave our children with them.
 ## Placement
 
 - **Correct here** — the social-graph relation labels belong to the social-connections family this folder owns: entry point is creating a user–user relation (Follow starts the same capability as [friendship](friendship/friendship.md)), and the derived connection-degree caches ([connection-1st](../../edges-shortcut/connection-1st/connection-1st.md) ...) recompute from these base relations — labels and that maintenance stay together (a module keeps its complete capability; prefer this existing home).
+- **Follow is defined once, on thing:** a person following a person is thing's [follow](../../../thing/edges/follow/follow.md) with a person as the followed thing, under the same authentication, authorization, and accounting. This family keeps only its rules on it — that a follow is "used to make or start making friendship", and what `Reason_UserFollow` notifies.
 - **DelegateTo / DelegateFrom are the exception under review**: "user delegation to this org(app) in other orgs(apps)" overlaps the existing [rights/delegate](../../../../rights/delegate/delegate.md) machinery — if delegation is real, its complete capability already has a home there; do not fork it here (prefer existing homes).
 - Cycle `Reason_*` labels: notification keys without recorded triggers must not become bare edges — either they are annotations on events (no edge) or they need who-emits/what-it-triggers semantics first (no bare edges).
 

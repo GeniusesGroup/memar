@@ -44,6 +44,7 @@ A transaction is an abstraction of a request by one or more users for a bookkeep
 
 - Which of `account__to` (core) vs `account__by` (matching_system) owns "the account the user wants to receive into"? `account__from` README still describes optional `takes` semantics with pre-matching_system naming; reconcile.
 - Canonical status list (draft, authorization, ...): which are kernel defaults, which are organizational?
+- A deferred transaction — an instalment, a post-dated cheque — settles an amount fixed at issue, and where money loses value the seller receives less than the goods cost to replace: are instalments indexed to a chosen price index, and do they live here, in credit, in settlement, or on the invoice's conditional? — [deferred-payment sales](../../../modules-plugable/economics/price-index/price-index.md#deferred-payment-sales).
 
 ### Future possibilities
 

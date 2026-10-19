@@ -43,6 +43,12 @@ human text are deliberately unconverted, and the reasons are recorded below.
   and names no type, so there is no behavior to carry. Rule 6 says an empty requirement is a
   design smell and its missing behavior belongs in the handoff, not in an invented abstraction.
 
+## Ambiguities Resolved
+
+- **The captcha domain has no home — its own domain, or wherever authentication lives?** — answered (2026-10-08): it stays under `computer/software`. By `modules.md` → Placement a capability is filed under the domain through which it is instantiated, and captcha's entry point is software's own `services/` (get-new-phrase, get-phrase-audio, solve-phrase); the domain's other authentication material (`edges-loop/authentication-deny_password/`, `edges-loop/authentication-force_use_2factor/`) is already here, and captcha has no edge of its own to another domain — no explicit relationship, so the pluggable test never fires. There is also no `rights/access` anywhere in this tree to receive it. Its `internal/` placement is the right one: implementation of software's authentication, complete and removable with it.
+
+- **Three edge folders have no domain document at all** — answered (2026-10-08): the documents exist now — [`accepted_protocols/accepted_protocols.md`](edges/accepted_protocols/accepted_protocols.md), [`language-human/language-human.md`](edges/language-human/language-human.md) and [`manifest/manifest.md`](edges/manifest/manifest.md), each with a one-line README, written from the protocol sources in the Edge folder shape (Model, Policies, Placement, Open questions). What the sources could not state went into those Open questions: accepted_protocols composes no identity and its Go called it the *user domain's* while the folder says software; manifest's far end and edge label are stated nowhere and its domain-name hash disagrees with `instance_of/edges/node-metric`'s; language-human sits next to `edges/language-human-ability/` and the two are not yet told apart.
+
 ## Open Questions
 
 - **What does `Status()` return on the software↔language-human edge?** The Go declared
@@ -54,23 +60,9 @@ human text are deliberately unconverted, and the reasons are recorded below.
   manifest data model with no result. They are the manifest's behaviour contract, not its identity,
   and it is not stated whether they are observers over stored preferences or commands that change
   them.
-- **Three edge folders have no domain document at all.** `edges/accepted_protocols/`,
-  `edges/language-human/` and `edges/manifest/` each hold a `protocol/` file (and, for manifest, a
-  `services/` capsule and a test) with no `README.md` and no `<name>.md`. The Phase 0 rule is one
-  folder per edge: a document plus a one-line README, with sections Model, Policies, Placement,
-  Open questions. `edges/language-human-ability/` next to `edges/language-human/` also suggests the
-  two are one relation seen twice; the Phase 0 review's "wrong kind-folder" pass has not been
-  applied yet.
+- **The Phase 0 "wrong kind-folder" pass has not been applied.** `edges/language-human-ability/` next to `edges/language-human/` still suggests the two are one relation seen twice; the question is recorded in [`edges/language-human/language-human.md`](edges/language-human/language-human.md)'s Open questions, and the new documents do not settle it.
 - **Should `SoftwareModel` carry `Field_SoftwareID`?** `RuleModel` and `ModuleModel` do;
   `UserModel`, `EstateModel` and now `SoftwareModel` do not.
-- **The captcha domain has no home.** `internal/captcha/` implements a captcha service pool
-  (`PhraseCaptchas`, `PhraseCaptcha`, image and audio rendering, expiry, solve/check), and
-  `services/` wires three services — get-new-phrase, get-phrase-audio, solve-phrase — but the
-  domain is filed under `computer/software` as an `internal/` package. It is an authentication
-  concern, and `edges-loop/authentication-deny_password/` and
-  `edges-loop/authentication-force_use_2factor/` are the software domain's other authentication
-  material. Whether captcha deserves its own domain, or belongs to `rights/access` or wherever
-  authentication lives, is a placement question this domain cannot settle.
 - **The captcha Go has three unimplemented things marked `TODO:::`** that a re-modelling would have
   to answer: `randomMath()` returns an empty string, `createAudio()` returns an empty byte slice
   (so `GetPhraseCaptchaAudio` always returns silence), and `lenAsString()` returns an empty string
@@ -81,7 +73,14 @@ human text are deliberately unconverted, and the reasons are recorded below.
   `appUUID`, `AppDetail`, and `RequestedPermission`, none of which the protocol data model
   declared. `identity/society` is another unconverted neighbour, so this could not be settled here.
 
+### From Request Research 001 (2026-10-19): the software end of the request chain
+Pointer only; the reasoning is in [Request Research 001](../request/request.research.001.md#1-what-the-domain-is-for) and nothing in this domain changed.
+- A request reaches the software through the connection, not through an edge of its own: "is it the official GUI app, an SDK or an API call" is answered from the app kind and run target of the client instance's software ([`edges/app`](edges/app/app.md), where kinds and run targets are still a candidate), so the request carries no software field. Whether the run-target half of `app` is a deployment projection (its open question) is what that answer depends on.
+- The two `authentication-*` loops are software-level rules about how a requester may be authenticated; the proposal is that they fire at the request's before-point through the generic `condition_is`, which fits their present Policies without change.
+- A software agent is a requester like a user (the node-details service authorizes `user_p.Type_App`); the node manifest's `AppID` (a hash of the domain name, in [instance_of node-metric](../instance_of/edges/node-metric/node-metric.md)) is what ties an instance's calls to its software; this domain's [`manifest`](edges/manifest/manifest.md) carries only the local OS application id. Asked in the request handoff as question 5 (the requester) and, for acting-for, X3 of the synthesis.
+
 ## Left unconverted
+
 
 | File | Why |
 | --- | --- |
@@ -99,6 +98,6 @@ human text are deliberately unconverted, and the reasons are recorded below.
 
 - [`README.md`](README.md)
 - [`software.md`](software.md)
-- `org/modules/identity/thing/protocol/dt-uuid.kh`, `model.kh`
-- `org/modules/knowledge/language-human/protocol/dt-uuid.kh`
+- `modules/identity/thing/protocol/dt-uuid.kh`, `model.kh`
+- `modules/knowledge/language-human/protocol/dt-uuid.kh`
 - `memar/modules/math/boolean/protocol/boolean.kh`, `memar/modules/math/integer/unsigned-16.kh`

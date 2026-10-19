@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -22,8 +22,8 @@ Cross-document links created at migration (from the records' syn/links fields):
   - buildings/multifunctional-surfaces.md, economy/monetary-standard-and-resource-wealth.md, energy/thermal-sources-and-storage.md, information-systems/data-storage-and-processing.md, living-and-culture/recreation-and-culture-venues.md, movement/human-travel-network.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - water-and-matter/water-supply-and-security.md: Done - the batch-internal prerequisite cross-reference was repointed to the new anchor during this pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 - The body was set to English as a conceptual rewrite; the shared boilerplate Abstract/Motivation were replaced with claims derived from this document's own Explanation — a two-sided title held by a one-sided record, the Fit verdict as the constraint any future distributed answer inherits, and the record's enlistment by other ledgers (supply, datacenter, pumps) as the reason the unrecorded branch is load-bearing; the changelog pointer was struck from the body.

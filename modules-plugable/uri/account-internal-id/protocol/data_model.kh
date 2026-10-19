@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp AccountInternalID in "org/modules-plugable/uri/account-internal-id/protocol/dt-id.kh"
-tp Field_AccountID in "org/modules/economics/account/protocol/dt-uuid.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp AccountInternalID in "modules-plugable/uri/account-internal-id/protocol/dt-id.kh"
+tp Field_AccountID in "modules/economics/account/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
 
 tp Field_InternalID ab
 

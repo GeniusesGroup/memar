@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -21,8 +21,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Propagates to:
   - No inbound links exist to this document's former Persian section anchor; nothing to repoint.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 - The body was set to English as a conceptual rewrite; the shared boilerplate Abstract/Motivation were replaced with claims derived from this document's own Explanation — the single record read as the ledger's whole answer to how the dead should remain among the living, and the observation that the page's most valuable content is its honest greenfield verdict and the unrecorded retrofit half it leaves open; the changelog pointer was struck from the body.
@@ -36,8 +36,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 The transfer audit found the business plan's Green Burial section, whose clauses extend the single record [Ecological burial and the necropolis…](the-dead-among-the-living.md#ecological-burial-green-burial-and-the-necropolis-of-notables-with-a-planted-tree-in-place-of-a-headstone) without adding a rival answer, and were therefore written into it (no new id claimed): the scope names household animals beside humans («دفن اجساد») — the same unsustainable burial of shroud, coffin and stone leaves biological pollution wherever it happens; the doctrine claims the international startup models by name (Transcend, Tree Burial Pods, Recompose); and the composting itself is specified in its two variants — the recyclable-package-and-sapling grave, or the accelerated process that cuts human composting from the months of natural decay to under a few days, bringing microbial and viral pollution to near zero and leaving compost ideal for the tree's growth. The Mechanism and Metrics of "Ecological burial (Green Burial) and the necropolis of notables with a planted tree in place of a headstone" now carry these clauses; the Source line gained Sabz-City_-_business_paln_-_v0.per.docx; the existing Persian source names stand unchanged; no existing text removed or softened. The record's own startup naming is a citation of external models, not an invented owner endorsement of any of them.

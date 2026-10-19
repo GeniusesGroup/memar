@@ -38,6 +38,7 @@ Add watcher to specific transactions to check min or max to make a deal (sell/bu
 - Does Auction need a matching-engine protocol rather than a label? Auction/Vickrey/GTC appear only in the domain backlog prose (and market prose in [matching_system.md](../../matching_system.md) intro — "auction where matching is done at fixed intervals"), NOT in the cited `protocol/*.kh` sources — no code source of record; record provenance before ratifying (StopLoss/StopLimit/IOC ARE in `protocol/dt-type.kh`).
 - `fill_or_kill`/`all_or_none` as types here vs their loop-edge siblings — type flag and loop edge: one meaning, two expressions? (Domain Unresolved also asks fill_or_kill vs all_or_none: genuine difference or duplicate labels?)
 - `Type` const blocks: StopLoss/StopLimit restart `iota` in a second block (values overlap `Type_Unset`=0) — naming/values quirk to resolve at implementation pass.
+- Is a party's currently stated offer to sell a currency — an ask in this order book — a priced thing that a [price-index component](../../../price-index/edges/component/component.md) or a [replacement-cost source](../../../replacement-cost/edges/source/source.md) may point at and follow, so a basket can hold the US dollar's price in rial? It must respect the [money](../../../money/money.md#unresolved-questions) model; open there and in [price index](../../../price-index/price-index.md#unresolved-questions).
 
 ## Source
 

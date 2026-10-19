@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -21,8 +21,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Propagates to:
   - movement/last-mile-of-goods.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: the Persian bodies were re-expressed as English argument, preserving every claim, number and attribution (95 percent and 80 percent purchase reductions; tool utilization above 80 percent; the minus-fifth floor; the 20-square-meter suite; less-than-20-minutes-per-year and 99-percent-idle use figures); Abstract and Motivation were re-derived from the document's own Explanation; a cross-approach collision section was added; nothing was removed. Section titles, in document order, with their legacy ids and new English headings:

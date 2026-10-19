@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,7 +19,7 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references predating the requirements migration stand as `legacy-ref (unresolved)` markers where they could not be matched to any approach; the marker texts were carried with their source labels above.
@@ -28,8 +28,8 @@ Old-numbering references predating the requirements migration stand as `legacy-r
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 - Propagates to:
   - energy/climate-signal-authority.md, food/food-production-and-assurance.md, form-and-land/space-for-differing-minds.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
 

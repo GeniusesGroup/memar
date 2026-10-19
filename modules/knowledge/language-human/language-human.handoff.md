@@ -2,7 +2,7 @@
 
 ## Topic & Purpose
 State of converting `modules/knowledge/language-human/` from Go to Khayyam under
-the seven governing rules in `____Chats/2026-09-23-go-khayyam-migration-map.md`:
+the seven governing rules in [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md):
 what each converted file declares, which of those declarations were judgment
 calls, and what is still undecided or owned by another domain.
 
@@ -139,7 +139,7 @@ to write it into yet and stay unconverted, as the text domain's do.
   `text/edges/language/labels/` be deleted.
 - [`../../identity/thing/protocol/dt-uuid.kh`](../../identity/thing/protocol/dt-uuid.kh)
   — the owner of `ThingUUID`.
-- `____Chats/2026-09-23-go-khayyam-migration-map.md` — the seven governing rules.
+- [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md) — the seven governing rules.
 
 ## Notes
 - Converted 2026-10-03 (Go → Khayyam, protocol and errors layer). Both converted

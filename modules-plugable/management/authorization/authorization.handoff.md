@@ -92,5 +92,5 @@ left undone in this domain.
   - `(rule)-[:access_control]->(___)`, the other half of this domain's edge and still an empty
   document
 - `memar/modules/process/operation/protocol/action.kh` - the `Set`/`Check` pair a flag space needs
-- `org/modules/management/group/protocol/dt-uuid.kh`, `org/modules/computer/rule/protocol/dt-uuid.kh`
+- `modules/management/group/protocol/dt-uuid.kh`, `modules/computer/rule/protocol/dt-uuid.kh`
   - the two `Field_*` this domain's data model imports

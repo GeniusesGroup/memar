@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,7 +19,7 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references that predate the requirements migration could not be matched to any — unresolved source labels: «خاک‌ریز و خندق سبز».
@@ -31,8 +31,8 @@ Old-numbering references that predate the requirements migration could not be ma
   - economy/custody-of-making-tools.md, energy/ambient-power-harvest.md, form-and-land/ground-surface-treatment.md, form-and-land/stewardship-of-ground-cover.md, form-and-land/wildlife-safe-surfaces.md (and its handoff), information-systems/data-storage-and-processing.md, movement/last-mile-of-goods.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - water-and-matter/water-bodies-as-common-infrastructure.md: Done - the batch-internal synergy cross-reference was repointed to the new anchor during this pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 - The body was set to English as a conceptual rewrite; the shared boilerplate Abstract/Motivation were replaced with claims derived from this document's own Explanation — the three records as detection/authorization/response over one perimeter, and the finding that the page's unasked question is what a machine may do to a body without a chosen person; the changelog pointer was struck from the body.
@@ -49,8 +49,8 @@ Old-numbering references that predate the requirements migration could not be ma
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 The transfer audit found the aerial wing of the cybernetic-security response family, lost from the Yalda and Complex-Building proposals (identical paragraphs in both), never recorded on the sheet: drones «با ابزارهای غیر کشنده مانند شوکرهای الکتریکی» preventing vandalous acts in the complex, with «نور لیزر برای ارتباط معنایی با فرد مورد نظر» as the preventive instrument and mandatory face recognition. Because the source presents these tools as components of the same response arm — mobile non-lethal counterparts to the fixed shock projectors and guard robots — the clauses were extended into the existing record "Automated cybernetic security with 20-meter electric-shock projectors and guard robots" ([Automated cybernetic security with 20-meter…](securing-sensitive-spaces.md#automated-cybernetic-security-with-20-meter-electric-shock-projectors-and-guard-robots), Mechanism, Metrics and Abstract wording) rather than added as a new approach; no new id claimed; no existing text removed or softened. [Automated cybernetic security with 20-meter…](securing-sensitive-spaces.md#automated-cybernetic-security-with-20-meter-electric-shock-projectors-and-guard-robots)'s Source line gained the two proposal files. The aerial wing re-raises, in the air, the page's open owner question about automatic force on bodies: a laser-signaling drone that also carries a shocker is a projector with legs and no door to guard — noted in the record's place in the collision section's existing argument (no new text needed).

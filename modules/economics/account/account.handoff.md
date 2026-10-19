@@ -34,6 +34,30 @@ The count unit is declared once per account via the general `(thing)-[:count_uni
 4. `Field_AccountID` and the account UUID type carry legacy "financial" framing; rename pending.
 5. **`Field_Balance`'s stated meaning contradicts the domain.** The Go comment in `edges/bookkeeping/protocol/dt-balance.kh` says Balance "is the total of all the transactions on the account including any pending transactions", while [bookkeeping.md](edges/bookkeeping/bookkeeping.md) §8 and the Policies above make Balance an immutable snapshot of *this record's* realized effect, on a record that only exists once the effect has actually been booked. The two readings differ on exactly the question open #2 is about: under the comment's reading a pending transaction would change a stored balance, which is what "snapshot, never recomputed" forbids. This is a finding about the domain's meaning, not about the conversion. *(open)*
 
+### From Account Research 001 (2026-10-18, agent proposals, nothing ratified)
+Each entry: the question, the recommended default, what it blocks. Ordered by what they change: those that change what the domain is first. Reasoning, ten scenarios and six rival models are in [Account Research 001](account.research.001.md#open-questions).
+1. **Is the account a domain whose responsibility is the ordered, append-only ledger of one quantity of one unit, or a classification on `thing` with the `bookkeeping` edge as its own module?** Default: a domain. Blocks: the rewrite of the opening paragraph of [account.md](account.md), model B versus C, `AccountModel` beyond `ThingModel` (Khayyam rule 6).
+2. **What is the other side of creation, destruction, correction and transformation: may a transaction have no source, or is there a counterpart account per unit?** Default: counterpart accounts. Blocks: transaction's optional source and invariant 3, issuance, opening balances, stocktake, spoilage, `pack` and production legs.
+3. **How does an account relate to its holder?** Default: no holder edge in the account domain; title on `rights/ownership` (with fractions if it becomes a node), instruction by delegation, reading by authorization; one edge name (`owner_of` or `own_by`). Blocks: the `own_by` contradiction, `salary`, joint accounts, heirs, the `Personal` label.
+4. **Are opening and closing acquired facts with declarer and time; may a closed account be written to; may an account close with a non-zero balance; what does an account with no record read?** Default: status events; no record on a closed account; close only at zero; an empty account reads zero. Blocks: the lifecycle, the status vocabulary, dormant and unclaimed accounts.
+5. **Is the count unit fixed once the first record exists?** Default: fixed; change is a new account and a conversion pair. Blocks: the lifecycle, redenomination, product question 8.
+6. **Which time orders the ledger?** Default: the index orders recording; the effective time is a field of the transaction; "as of a date" is discovered. Blocks: statements, back-dated entries, the bookkeeping data model.
+7. **Does the Balance ever include pending transactions?** Default: no (catalogue E6); a pending effect on availability is a restriction reservation. Blocks: open 2 and 5 above, the comment in `dt-balance.kh`.
+8. **Is `TransactionIndex` a domain contract, with the last-index pointer and `Lock`/`Unlock` as engine details?** Default: contract for the ordinal only. Blocks: open 3 above, `storage.kh` keys.
+9. **May an account hold identified units (serials, vehicles, credits)?** Default: fungible only; identified units are things in an account of one piece or a registry. Blocks: carbon and asset registries, product question 11.
+10. **Is a lot (tranche, serial, batch) an account of its own with the pool a grouping?** Default: yes; expiry is a rule creating transactions. Blocks: club-coin, loyalty, lot valuation, `batch/accounting`.
+11. **Is the credit module's per-account flag enough, or is credit a limit with a value that rules change?** Default: a limit. Blocks: [credit](../../../modules-plugable/economics/credit/credit.md), mutual credit, overdraft rules.
+12. **Do the words that say what an account is for (cash, credit, deposit, refund, tax deposit, Real, Personal, Asset/Liability/Equity/Revenue/Expense) live in one registered vocabulary?** Default: yes, a loop-edge only where processing needs one. Blocks: the account-labels open question, POS and VAT `financial-account`, `cash_account`, `credit_account`.
+13. **Across organizations, is each organization's ledger authoritative for its own accounts, a cross-organization payment being a transaction in each linked by settlement?** Default: yes. Blocks: invoice exchange, the settlement edge shape, product question 4, task question 16.
+14. **May a holder's identity be detached from an account's history, leaving the effects?** Default: yes, by an authority-gated event; the ledger is never erased. Blocks: retention policy, content question 7 and text question 15.
+15. **Who refuses a movement between accounts of different units: the account at booking, or the transaction at registration?** Default: the account at booking. Blocks: the duplicate rule in [transaction.md](../transaction/transaction.md#policies-rules).
+16. **Does the concept keep the name "account", with "bookkeeping" for its edge?** Default: keep both. Blocks: open 1 above, the `Field_AccountID` naming sweep.
+17. **Is a budget line an account or a constraint that observes accounts?** Default: a constraint of the budget module. Blocks: the budget module's six edges, the one copy of the budget relation with task.
+18. **Where does a cross-account invariant live (a trust account equals the sum of customers' electronic value)?** Default: a reconciliation capability in settlement; a mismatch is reported, never silently corrected. Blocks: settlement's internal structure, e-money and custody products.
+
+### Contradictions between this domain's documents and its neighbours (reported by Account Research 001, not resolved)
+See [Contradictions found](account.research.001.md#contradictions-found): the meaning of `Balance` (the Go comment against the snapshot rule); conservation against creation (no document says where the first unit of a thing comes from); four statements of how an account relates to its holder (`owner_of`, `owner_is`, `own_by`, the `Personal` label); two vocabularies for an account's role; a transaction quantity with no unit when both accounts are optional; the budget relation in two homes; the same shape of limit in two buckets; the kernel documents naming pluggables; the same-unit rule stated in two domains; the Status wording "kernel practiced in README".
+
 ## Assumptions
 - Holding/possession (bookkeeping balance) ≠ legal title (`rights/ownership`).
 - Negative balance is neither allowed nor forbidden by the kernel; pluggable rules govern credit/overdraft.
@@ -44,8 +68,16 @@ The count unit is declared once per account via the general `(thing)-[:count_uni
 ## Proposed Next Steps
 1. Close naming (open #1) with dictionary + rename guard.
 2. Define pending-transaction effect on availability jointly with restriction and bookkeeping (open #2).
+3. After the owner answers Account Research 001 questions 1 to 3 (what the domain is responsible for, the other side of creation and destruction, the holder relation): rewrite the opening paragraph of [account.md](account.md) and its Unresolved questions, and decide between the ledger-kernel model and the classification-only model ([rival models](account.research.001.md#3-rival-models)).
+4. Apply the folder mapping ([finding 5](account.research.001.md#5-how-the-existing-edge-folders-map)) one area at a time, adding to each account-touching pluggable the creator, remover and trigger it lacks; settle the budget relation with the task domain's `settlement-reference` in the same pass.
+5. Design the missing pieces the research sketches ([finding 6](account.research.001.md#6-missing-edges-and-modules)): the status loop-edge, `counterpart` (check against settlement and securities), `lot` and `expiry` (check against batch and club-coin), instruction authority (check against `rights/delegate`), and `reconciliation` in settlement.
+6. Start a transaction research and an invoice research from the contradictions reported here (optional source, unit-less quantity, the duplicate same-unit rule, invoice exchange); the pair is best read together with this research.
+7. Turn the test scenarios ([finding 7](account.research.001.md#7-test-scenarios)) into tests once questions 1 to 8 are answered; scenarios marked "kept" can be written now.
+8. Reconcile the contradictions the research reports (Contradictions section above) by the owner's answers, recording each through the changelog.
 
 ## Related Artifacts
+- [`account.research.001.md`](account.research.001.md) — what the domain is for, kernel and pluggable, rival models, folder mapping, missing modules, 26 test scenarios, 18 owner questions (Review; unratified)
+- [`account.changelog.md`](account.changelog.md) — entry for the research (Update, done)
 - [`README.md`](README.md)
 - [`edges/bookkeeping/README.md`](edges/bookkeeping/README.md)
 - [`../transaction/transaction.handoff.md`](../transaction/transaction.handoff.md)

@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp U64 in "memar/modules/math/integer/unsigned-64.kh"
-tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
-tp Discount_Type in "org/modules-plugable/economics/discount/protocol/dt-type.kh"
-tp Field_ProductID in "org/modules/economics/product/protocol/dt-uuid.kh"
+tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
+tp Discount_Type in "modules-plugable/economics/discount/protocol/dt-type.kh"
+tp Field_ProductID in "modules/economics/product/protocol/dt-uuid.kh"
 
 tp Discount_Product ab {
 	Field_ProductID

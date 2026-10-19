@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -27,8 +27,8 @@ Cross-document links created at migration (from the records' syn/links fields):
   - information-systems/platform-custody-and-records.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - economy/land-housing-tenure.md, economy/monetary-standard-and-resource-wealth.md, economy/permitted-intermediation.md, economy/reward-cooperation-thrift.md, economy/custody-of-making-tools.md: Done in this batch — inbound links rewritten to the new English anchors during the same pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: the Persian bodies were re-expressed as English argument, preserving every claim, number and attribution (settlement under 1 second; 100-percent queue elimination; zero-percent blind taxes; 100-percent statement transparency; revenue from marketplace invoice and dispute fees; billions of wasted hours in the conventional model); Abstract and Motivation were re-derived from the document's own Explanation; a cross-approach collision section was added; nothing was removed. Section titles, in document order, with their legacy ids and new English headings:
@@ -44,8 +44,8 @@ Terminology normalization applied per policy: «شهر» as the unit is rendered
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 No lost idea recovered into this page's body; the session's only change here is the ledger record below (the audit's transfer audit touched the page's contradiction file). The collision section already names the invoice-fee-versus-blind-tax seam, and the transfer audit deepened it: the same source family carries a flat-tax funding clause that the zero-percent record would outlaw (see "Considered and not done"), recorded here so the owner decision sees all three revenue answers at once.

@@ -21,6 +21,7 @@
 - Served "to buyer" — per buyer, per invoice, or per org? Source says buyer; confirm.
 - Who enforces the cap (validation rule at sale; core never knows Rule)?
 - Overlap with [number](../number/number.md) `Maximum()` — number caps total service volume, multiple-use caps per-buyer serve count: one edge with two fields, or two edges?
+- A multiple-use or subscription service has no lot or slot before it is sold: the plan is the product, priced per product per period and shown per month — the research's clearest case against moving price off the product ([Pricing Research 001 → subscriptions](../../../pricing/pricing.research.001.md#subscriptions-and-multiple-use-services)). Does `Maximum` bound uses within one paid period, or over the product's whole life?
 
 ## Source
 

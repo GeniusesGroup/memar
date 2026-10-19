@@ -11,7 +11,7 @@
 
 ## Placement
 
-- **Correct here — the form-to-form relation stays with the form capability** (module skeleton: `form/edges/` beside `form.go (no such file yet)`); placement by entry point — the relation is instantiated from a form; prefer existing homes over inventing new modules).
+- **Correct here — the form-to-form relation stays with the form capability** (module skeleton: `form/edges/`); placement by entry point — the relation is instantiated from a form; prefer existing homes over inventing new modules).
 - **Not a new module:** six kind labels are a *parameter* vocabulary on one relation (parameters vs semantics ⇒ one form capability plus per-organization kind configuration); an edge becomes a module only when it carries independent processing semantics — none recorded.
 - **Not the rule domain:** kinds like Alternative/Basic do not decide who may answer a form; where access or prerequisite decisions appear they stay generic rule attachments this capability reads (core never knows Rule; a pluggable likewise keeps policy out of its kernel while owning the complete edge + processing together).
 

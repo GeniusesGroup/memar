@@ -9,6 +9,7 @@
 
 - "Ship service can add as an item to invoice" — a ship service may be sold as a line of the invoice.
 - "Each item must check for reserve validity and make action in end of validity" — every item is checked against reserve validity, and an action is taken when validity ends.
+- A purchase invoice's item is history, never the basis of a later sale price: see the [pricing decision](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md#decisions-2026-10-10). Which product edge a sale item copies its price from, and how the item holds it, are in pricing's [Open questions](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md#open-questions).
 
 ## Placement
 
@@ -19,6 +20,9 @@
 ## Open questions
 
 - Is reserve-validity expiry a rule (expiry rules producing transactions, per [rule.handoff.md](../../../../computer/rule/rule.handoff.md) §9) or item state?
+- How does an item hold the price it was issued at? As its own fact: the amount, the count unit, and a reference to the stated [price](../../../product/edges/price/price.md) version it came from, never re-read afterwards ([pricing open questions](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md#open-questions); answered 2026-10-10, unratified).
+- An issued-but-unpaid item keeps its issue-date price while prices move: does reserve validity also bound how long that price holds, so that the item, or the invoice ([expired](../../status/expired/expired.md)), expires when a price-validity window passes?
+- When the invoice crosses organizations, which organization's product does an item reference, and does the item or the buyer's replacement-cost source record the mapping between the two identifiers? — [invoice exchange](../../invoice.handoff.md#open-questions).
 
 ## Source
 

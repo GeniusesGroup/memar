@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -25,8 +25,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode subagent) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode subagent) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -44,8 +44,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
 
 #### What changed
 - Abstract spec-fixed: pass-1's Abstract had embedded the document's two open questions ("the two questions this document cannot settle from inside itself are who verifies... and what the cascade... owes to cooling"), a handoff content by the Explanation facet's Relevance discipline; the Abstract now carries only the page's own claim plus a pointer that the two counterpart-clauses are decided at the owner's threshold.
@@ -61,12 +61,12 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
-The transfer audit found no lost answer for this page's six records, but it confirmed two source positions that press directly against [Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s doctrine and are recorded here (session-consolidated) rather than silently dropped, and the recovery of the per-device scheduling clause into [Energy stabilization by carrier separation…](energy-carriers-and-grid-posture.md#energy-stabilization-by-carrier-separation-and-time-shifting-of-consumption-energy-time-shifting) on the carriers page is noted in that document's changelog. No approach text on this page was changed and no id claimed.
+The transfer audit found no lost answer for this page's six records, but it confirmed two source positions that press directly against [Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s doctrine and are recorded here (session-consolidated) rather than silently dropped, and the recovery of the per-device scheduling clause into [Energy stabilization by carrier separation…](../energy-carriers-and-grid-posture/energy-carriers-and-grid-posture.md#energy-stabilization-by-carrier-separation-and-time-shifting-of-consumption-energy-time-shifting) on the carriers page is noted in that document's changelog. No approach text on this page was changed and no id claimed.
 
 #### Considered and not done
 - Absorption chillers as the thermal-lift machine for surplus recovered heat, the owner's clause in three sources — «در صورتی که گرمای بازیافتی مازاد تشخیص داده شد، استفاده از چیلرهای جذبی بررسی و استفاده شود» (Yalda-Life-Complex-Proposal.docx; the identical paragraph in Complex-Building-Proposal.docx) and «استفاده از سیستم های چیلر جذبی و استفاده از آبگرم نیروگاههای خورشیدی» (شهر سبز.docx), with the energy-competition proposal chilling by «چیلرهای جذبی و تراکمی» side by side — considered against this page and not entered: the corpus lifts recovered heat with electrically driven heat pumps bound to named sinks ([Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s chiller-to-heat-sink binding; [Preheating bakeries and processing industries…](directed-energy-transfer.md#preheating-bakeries-and-processing-industries-with-heat-pump-waste-heat)'s preheating; [Integrated exergy balancing across cold…](directed-energy-transfer.md#integrated-exergy-balancing-across-cold-stores-datacenters-and-heat-pumps)'s exergy balance), and the absorption route converts the bus's lifted stream into a second machine class that runs on the temperature difference the bus exists to distribute, re-importing the burner-grade supply the page's cascade rules meter out; recorded so the owner's chiller clause survives on the ledger until the cascade verdict (handoff Questions 2 and 7) can weigh it.
-- The energy proposal's refusal of water as an energy carrier — «در زیر سیستم ها از آب به عنوان حامل انرژی مانند کولرهای آبی استفاده نمی شود», on the stated ground that the system cannot produce the water it would consume, only reduce its use — considered against this page and not entered: it indicts evaporative point devices, not the closed-loop water medium of [Fifth-generation district heating/cooling loop (5GDHC / Thermal Bus) for binding chillers to heat sinks](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks), whose water circulates rather than evaporates; but the clause does collide with [Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s carrier choice and [Energy stabilization by carrier separation…](energy-carriers-and-grid-posture.md#energy-stabilization-by-carrier-separation-and-time-shifting-of-consumption-energy-time-shifting)'s four-carrier list (water ranked second), and with the water-harvesting arithmetic of water-and-matter/water-supply-and-security.md, so the position is recorded where the collision lives: if the owner ever extends «no water as carrier» beyond evaporative devices, [Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s medium and [Energy stabilization by carrier separation…](energy-carriers-and-grid-posture.md#energy-stabilization-by-carrier-separation-and-time-shifting-of-consumption-energy-time-shifting)'s carrier list are the two texts that must be re-argued together.
+- The energy proposal's refusal of water as an energy carrier — «در زیر سیستم ها از آب به عنوان حامل انرژی مانند کولرهای آبی استفاده نمی شود», on the stated ground that the system cannot produce the water it would consume, only reduce its use — considered against this page and not entered: it indicts evaporative point devices, not the closed-loop water medium of [Fifth-generation district heating/cooling loop (5GDHC / Thermal Bus) for binding chillers to heat sinks](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks), whose water circulates rather than evaporates; but the clause does collide with [Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s carrier choice and [Energy stabilization by carrier separation…](../energy-carriers-and-grid-posture/energy-carriers-and-grid-posture.md#energy-stabilization-by-carrier-separation-and-time-shifting-of-consumption-energy-time-shifting)'s four-carrier list (water ranked second), and with the water-harvesting arithmetic of water-and-matter/water-supply-and-security.md, so the position is recorded where the collision lives: if the owner ever extends «no water as carrier» beyond evaporative devices, [Fifth-generation district heating/cooling loop for…](directed-energy-transfer.md#fifth-generation-district-heatingcooling-loop-5gdhc--thermal-bus-for-binding-chillers-to-heat-sinks)'s medium and [Energy stabilization by carrier separation…](../energy-carriers-and-grid-posture/energy-carriers-and-grid-posture.md#energy-stabilization-by-carrier-separation-and-time-shifting-of-consumption-energy-time-shifting)'s carrier list are the two texts that must be re-argued together.

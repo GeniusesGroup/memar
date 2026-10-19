@@ -20,7 +20,7 @@ are unconverted, each for a stated reason.
   `Field_InstanceUUID`'s sibling `UserID` already has.
 - **The health ping's TTL is the time domain's, not a second one.** `BS_Ping_Request` required a
   `TTL()` method, and the time agent recorded the name collision as a finding. `BS_Ping_Request`
-  now composes `Field_TimeToLive` from `org/modules/identity/time/edges/ttl/protocol/ttl.kh`,
+  now composes `Field_TimeToLive` from `modules/identity/time/edges/ttl/protocol/ttl.kh`,
   which is already converted (`Field_TimeToLive ab` / `TimeToLive mt (self Field_TimeToLive) () (d Duration)`).
   **No `TTL` is declared in this domain.**
 - **The ping's RTT became `Observer_RoundTripTime`.** `RTT()` returned `duration.NanoSecond`, and
@@ -38,11 +38,15 @@ are unconverted, each for a stated reason.
   `memar/modules/process/log/protocol/log-event.kh`. The Go's own `TODO::: other condition` is
   carried as a question, not as an invented requirement.
 - **`Field_Type` on the label domain is `Field_LabelType`** as converted at
-  `org/modules/knowledge/label/protocol/dt-uuid.kh`.
+  `modules/knowledge/label/protocol/dt-uuid.kh`.
 - **The empty `BS_*` shapes were not declared.** `BS_RegisterNodeAddresses_Req` / `_Res` and
   `BS_GetNeighborAddresses_Req` are `interface{}` in the Go. Rule 6 forbids converting an empty Go
   interface into an empty `ab`, so only `BS_GetNeighborAddresses_Response` — which has a real
   requirement — is declared.
+
+## Ambiguities Resolved
+
+- **Four edge folders have no domain document** — answered (2026-10-08): the documents exist now — [`address/address.md`](edges/address/address.md), [`health/health.md`](edges/health/health.md), [`resource/resource.md`](edges/resource/resource.md), [`language-human/language-human.md`](edges/language-human/language-human.md), and also [`node-metric/node-metric.md`](edges/node-metric/node-metric.md) — each with a one-line README, extracted from the protocol sources and the domain document's settled sections in the Edge folder shape (Model, Policies, Placement, Open questions). The bucket doubts the sources surfaced are recorded in those documents' Open questions: address and resource do not prove their far end is a node at all, and node-metric holds no relation — it held two source files, not three — and is flagged for the wrong-kind-folder pass.
 
 ## Open Questions
 
@@ -51,7 +55,7 @@ are unconverted, each for a stated reason.
   domain's handoff; it is one question in two places.
 - **The node data model needs an application identity that this repository does not have.**
   `edges/node/protocol/data_model.kh` requires `app_p.Field_ApplicationID` from
-  `org/modules/computer/app/protocol`, and **`modules/computer/app/` does not exist in this
+  `modules/computer/app/protocol`, and **`modules/computer/app/` does not exist in this
   repository at all** — not as an unconverted module, not as a folder. The node record therefore
   cannot be converted until that domain exists or the requirement is dropped. This is the single
   biggest blocker in this domain.
@@ -70,10 +74,6 @@ are unconverted, each for a stated reason.
   [edges/node-resource](edges/node-resource/node-resource.md), which is a label on the edge, not a
   value of `ResourceType`. What resource kinds exist (CPU, RAM, GPU, storage, network?) is
   unrecorded.
-- **Four edge folders have no domain document.** `edges/address/`, `edges/health/`,
-  `edges/resource/` and `edges/language-human/` each hold a `protocol/` file with no `README.md`
-  and no `<name>.md`; `edges/node-metric/` has three source files and no document either. The
-  Phase 0 rule is one folder per edge.
 - **`edges/audit-log/protocol/config.kh` is a configuration constant, not an abstraction.** It
   declares `CNF_LogMode log_p.Level = log_p.Level_AllSet`, whose policy is now in the domain
   document. Rule 1 makes `protocol/` abstraction-only, so a module-level configuration *value*
@@ -91,7 +91,15 @@ are unconverted, each for a stated reason.
   and `OrderZones` (`orderZones`) is an empty `TODO:::`. Which node owns a record is a stated
   contract somewhere; it is not here.
 
+### From Request Research 001 (2026-10-19): the node end of the request chain
+Pointer only; the reasoning is in [Request Research 001](../request/request.research.001.md#1-what-the-domain-is-for) and nothing in this domain changed.
+- The node that served a request is the far end of the request's connection (`connection_to`, instance to instance); the proposal stores no node field on the request. On a client instance, [`user-active`](edges/user-active/user-active.md) is the default requester, derivable and not stored.
+- [`audit-log`](edges/audit-log/audit-log.md) is the node's operational log, selective by mode; the request record is the organization's provenance memory and must not be selectively dropped. The proposal keeps them two things that may share a listener (request handoff question 16); the audit-log Khayyam shape (`ProcessLog_Event` alone) should wait for that answer.
+- The peer services (ping, sync time) carry no requester and change no recorded state; the proposal says they are not requests in the request domain's sense (request handoff question 3).
+- [`node-metric`](edges/node-metric/node-metric.md)'s `NetworkInfo` rate limits by owner type are the policy the proposed `quota` pluggable of the request domain would evaluate.
+
 ## Left unconverted
+
 
 | File | Why |
 | --- | --- |
@@ -117,7 +125,7 @@ these is this domain's to declare.
 
 - [`README.md`](README.md)
 - [`instance_of.md`](instance_of.md)
-- `org/modules/identity/time/edges/ttl/protocol/ttl.kh` — the `Field_TimeToLive` this domain imports
+- `modules/identity/time/edges/ttl/protocol/ttl.kh` — the `Field_TimeToLive` this domain imports
 - `memar/modules/process/log/protocol/log-event.kh` — `ProcessLog_Event`
 - [edges/replication](edges/replication/replication.md),
   [edges/node-status](edges/node-status/node-status.md),

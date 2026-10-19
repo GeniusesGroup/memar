@@ -17,7 +17,7 @@ Kernel edge: [bookkeeping](account/edges/bookkeeping/README.md). Cross-domain UU
 
 ## Everything else is pluggable
 
-`modules-plugable/economics/` holds capabilities that add semantics on top of the core: settlement, restriction, matching_system, account_relationship, cash, card, payroll, tax, vat, insurance-social, credit, securities, analytics, and more. Core domains must not know about them; connections happen through generic edges (e.g. `condition_is` to a rule node). Analytics is always pluggable (discovered/derived data — never core).
+`modules-plugable/economics/` holds capabilities that add semantics on top of the core: settlement, restriction, matching_system, account_relationship, cash, card, payroll, vat, credit, securities, analytics, and more. Core domains must not know about them; connections happen through generic edges (e.g. `condition_is` to a rule node). Analytics is always pluggable (discovered/derived data — never core).
 
 ## Agreed next steps
 

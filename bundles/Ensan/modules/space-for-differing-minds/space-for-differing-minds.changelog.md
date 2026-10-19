@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -22,8 +22,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -38,7 +38,7 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references that predate the requirements migration could not be matched to any — unresolved source labels: `compact kitchenless suites`, `cognitive affinity-matching of neighbors`, «[ارگونومی فضا و روان‌شناسی مسکن نسل‌ها».
@@ -47,8 +47,8 @@ Old-numbering references that predate the requirements migration could not be ma
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
 
 #### What changed
 - The collision section was deepened: pass-1 stopped at the quota-vs-aggregate reading of the nudge's 3-to-5-collisions metric, and second pass surfaced the premise the aggregate reading hides — "consenting residents" presupposes a right to refuse the kettleless suite that the mechanism's own text ("deliberately removed," "must physically leave") denies. The body now states the binary (commons provide the conditions of contact, and the gradient serves the conscripted — or the refusal right is kept, and the nudge survives on attraction alone) with the evidence each side carries in the record texts, and it is opened as handoff Question 5, ahead of Question 1, whose answer it determines.
@@ -66,11 +66,11 @@ Old-numbering references that predate the requirements migration could not be ma
 - Type: Fixed, clarified
 - Cited:
   - [Space for Differing Minds and Conduct — Handoff](space-for-differing-minds.handoff.md) - Relation: Evidence: former Open Question 4 was the dead Dunbar-to-slab syn.
-  - [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation) - Relation: Evidence: the labelled owner of the 500-person cohort.
+  - [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../../../land/modules/settlement-grain-and-scaling/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation) - Relation: Evidence: the labelled owner of the 500-person cohort.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
 
 #### What changed
 - Behavior-centric syn labelled "Dunbar's number" no longer points at slab-clearing. It points at the grain page's fractal 500-person cohort. Related documents follow. Former Open Question 4 left the handoff (Ambiguities Resolved).

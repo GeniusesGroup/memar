@@ -23,4 +23,6 @@
 - Map onto the parent/child model in [product.md](../../product.md): is "different provider" just a parallel product node, or a real edge?
 - Overlap with [provider](../provider/provider.md): same edge with two readings (staff/role operator vs product-side supplier), or distinct?
 - Who maintains price-per-supplier — `price` edge per node, or a supplier-specific pricing rule ([pricing](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md))?
+- Candidate reading 2 now has its processing: [replacement cost → source](../../../../../modules-plugable/economics/replacement-cost/edges/source/source.md) re-evaluates a buyer's product when its supplier's price changes. Ratify `supplier` as that one edge, or keep two relations?
+- When the supplier is another organization, is its product the same node, with the same identifier, in both organizations, or the buyer's own product pointing at the supplier's? The owner has not decided — [invoice exchange](../../../invoice/invoice.handoff.md#open-questions). Pointing at it implies a [follow](../../../../identity/thing/edges/follow/follow.md) of the supplier's [price](../price/price.md), which the supplier may admit, limit, charge for, refuse, or revoke.
 

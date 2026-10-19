@@ -8,10 +8,10 @@ import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
 
-	software_p "org/modules/computer/software/protocol"
+	software_p "modules/computer/software/protocol"
 	widget_p "org/modules-plugable/computer/widget/protocol"
-	user_p "org/modules/identity/user/protocol"
-	label_p "org/modules/knowledge/label/protocol"
+	user_p "modules/identity/user/protocol"
+	label_p "modules/knowledge/label/protocol"
 )
 
 // GUICategories indicate the domain record data fields.

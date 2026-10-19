@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -21,8 +21,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -36,8 +36,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
 
 #### What changed
 - The collision analysis was the deepening target: pass-1's claim that the records leave "one seam unstitched" (the strobe timing at flyway mouths) was found to undercount by one. The body now names a second, larger seam — interior light emission through the 6-meter glass, which no clause of either record regulates, and which is the collision attractant the 99.9-percent mortality metric implicitly answers to — and states the code's pending choice as two answers: extend the code with an interior-luminance clause (the transparency promise is scheduled by the hours the ground floor lives), or scope it to external sources and restate the mortality claim as a daylight-reflection figure with its night remainder acknowledged. The Abstract and the handoff (new Question 6, blocking for the single spec sheet) carry it.

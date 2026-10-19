@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,7 +19,7 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references that predate the requirements migration could not be matched to any — unresolved source labels: `(no label)`, «راکتور هاضم بی‌هوازی طبقه منفی 10», «ریزش ثقلی پسماند غذایی», «تالاب‌های تصفیه‌کننده زنده».
@@ -31,8 +31,8 @@ Old-numbering references that predate the requirements migration could not be ma
   - buildings/deep-dryness.md, economy/bubble-drain-and-renewal.md, economy/payment-rails-and-service-charging.md, energy/directed-energy-transfer.md, energy/passive-cooling-paths.md, food/meals-and-shared-cooking.md, form-and-land/ground-surface-treatment.md (and its handoff), form-and-land/sound-environment.md, governance/extra-basin-relations.md, movement/last-mile-of-goods.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - water-and-matter/water-bodies-as-common-infrastructure.md, water-and-matter/water-supply-and-security.md, water-and-matter/fate-of-residues-and-nutrients.md, security-and-resilience/autonomy-in-crisis.md, information-systems/observability-of-flows.md: Done - inbound cross-references inside this batch were repointed to the new anchors during this pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 - The body was set to English as a conceptual rewrite; the shared boilerplate Abstract/Motivation were replaced with claims derived from this document's own Explanation — the seven records as one conduit read backward (which node may declare the water finished), and the finding that the page holds competing "guarantee" claims with no node ledger; the changelog pointer was struck from the body.
@@ -54,8 +54,8 @@ Old-numbering references that predate the requirements migration could not be ma
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 The transfer audit found a lost clause of the Yalda justification plan that belongs to this page's reactor record: the claim on the treated effluent was stated at migration as cistern flushes and irrigation, but the source enumerates four named duties — «فلش تانک های سرویس های بهداشتی، شست و شوی فضاها، سیستم اطفا حریق، برج های خنک کننده… …براحتی برای تمام طول سال», the toilet cisterns, the washing of spaces, the fire-extinguishing system and the cooling towers, comfortably all year round. Extended in place: "Decentralized effluent treatment by membrane bioreactor (Micro-MBR) at the 500-person building scale" — Mechanism and Metrics now carry the full duty list, including the two that change the water-safety arithmetic, fire-fighting supply and cooling towers; no new id claimed (the source ties the clause to the existing record); no existing text removed or softened. The record's existing Source line already lists Yalda-Life-Complex-Proposal.docx, so attribution stands unchanged. The addition widens the record's quality claim from "irrigation-clear" to duties with a life-safety and a machinery tolerance, and it touches the security ledger (the fire-system premise the complex proposals assume when they say no fire engine will come) — noted here, not adjudicated.

@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -23,8 +23,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -40,8 +40,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
 
 #### What changed
 - The Abstract now opens with the numbers and the disagreement themselves instead of announcing what the document does (the Abstract is a claim, not a preview).
@@ -61,14 +61,14 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Type: Fixed, clarified
 - Cited:
   - [Settlement Grain and Scaling — Handoff](settlement-grain-and-scaling.handoff.md) - Relation: Evidence: the mislinked syn was queued there; Q1 and Q2 are the owner rulings this session recorded.
-  - [Housing-bubble drain engine and reverse renewal of the decayed fabric (Urban Deflation Engine)](../economy/bubble-drain-and-renewal.md#housing-bubble-drain-engine-and-reverse-renewal-of-the-decayed-fabric-urban-deflation-engine) - Relation: Evidence: the labelled owner of "bubble-drain engine".
+  - [Housing-bubble drain engine and reverse renewal of the decayed fabric (Urban Deflation Engine)](../../../government/modules/bubble-drain-and-renewal/bubble-drain-and-renewal.md#housing-bubble-drain-engine-and-reverse-renewal-of-the-decayed-fabric-urban-deflation-engine) - Relation: Evidence: the labelled owner of "bubble-drain engine".
 - Propagates to:
   - economy/bubble-drain-and-renewal.md: Done — Q1 removes the supposed conflict with a 50-thousand cell cap that was never structural law; that note is now on the bubble-drain handoff.
   - movement/human-travel-network.md: Done — the 100 ha / 50-thousand figures this page's metrics used are now marked as commercial-plan sample sizes, not grain law.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
 
 #### What changed
 - Flexible record syn labelled "bubble-drain engine" no longer points at the skybridge record. It points at the Urban Deflation Engine. The same wrong link in the handoff Extensions list was corrected.

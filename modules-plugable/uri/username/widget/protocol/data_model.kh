@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_OrganizationUUID in "org/modules/identity/organization/protocol/dt-uuid.kh"
-tp Field_UserUUID in "org/modules/identity/user/protocol/dt-uuid.kh"
-tp Field_Username in "org/modules-plugable/uri/username/widget/protocol/dt-username.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp Field_OrganizationUUID in "modules/identity/organization/protocol/dt-uuid.kh"
+tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp Field_Username in "modules-plugable/uri/username/widget/protocol/dt-username.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
 
 tp UsernameDataModel ab {
 	Field_UserUUID

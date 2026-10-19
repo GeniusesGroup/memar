@@ -2,7 +2,7 @@
 
 Temporary home under `modules-plugable/knowledge/channel-comms` for the geniuses.group editorial / channel content program until a permanent org-comms domain is designated.
 
-## Migrated from Organization ideas backlog (2026-09-17 third pass)
+## Channel content program
 
 - **The geniuses.group channel content program is org comms material.** The retired chat produced a
   complete editorial framework: the ten recurring genres ("why is this word called this", "what

@@ -74,3 +74,12 @@ Owner asked for a full review of what landed in bundles too early, with `git mv`
 #### Considered and not done
 - `git mv` of `membership-and-identity` or `judiciary-and-dispute` — rejected this pass: medium-confidence *split*, needs owner confirmation, not a folder move.
 - Persisting the fifty-eight-row inventory as a table in `bundles.md` — rejected: a derivative cache of the filesystem.
+
+### Bundle-promotion trigger left open
+- Time: 2026-10-08T09:05:00Z
+- Type: added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+
+#### What changed
+`bundles.handoff.md` gained the open question of when a bundle composition acquires enough unique semantics that a piece must graduate into a real module. A bundle owns no kernel schema; a piece graduates only once it already owns identity, lifecycle, authorization, and processing that no existing module owns. The retired session slip `____Chats/2026-09-21-society-transfer.md` is no longer cited and its pointer was removed from `bundles.handoff.md`; the slip recorded that its content lives in `bundles.md` and this changelog.

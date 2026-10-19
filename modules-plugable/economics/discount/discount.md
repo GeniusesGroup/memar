@@ -10,5 +10,10 @@
 
 - Discount or product-auction, sales, ...
 - to reduce invoices price automatically by some rules
+- A discount adjusts an invoice's payable; it never changes the product's stated price — an invoice-level rule making the payable zero does not make the price zero ([pricing decision 2026-09-16](../pricing/edges/pricing/pricing.md#decisions-from-organization-ideas-backlog-2026-09-16)).
 
 Discovered discount usage and payable-after-discount live under [analytics](analytics/price-payable/README.md). Meal-deal / package logic lives under [packages](packages/README.md). Analytics is always pluggable; those records must not return to core Invoice or Product.
+
+## Open questions
+
+- An issued but unpaid invoice keeps its issue-date price; does a discount's time validity apply at issue or at payment, and does the discount lapse with the invoice if the invoice expires within the organization's price-validity window ([replacement cost → Unresolved questions](../replacement-cost/replacement-cost.md#unresolved-questions))?

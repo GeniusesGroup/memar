@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_InvoiceItemID in "org/modules/economics/invoice/edges/item/protocol/dt-uuid.kh"
-tp Field_SeatID in "org/modules-plugable/economics/service/edges/item-seat/protocol/dt-seat_id.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp Field_InvoiceItemID in "modules/economics/invoice/edges/item/protocol/dt-uuid.kh"
+tp Field_SeatID in "modules-plugable/economics/service/edges/item-seat/protocol/dt-seat_id.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
 
 tp ItemSeatDataModel ab {
 	Field_InvoiceItemID

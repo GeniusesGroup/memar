@@ -9,7 +9,7 @@ The point of sale is often referred to as the point of service because it is not
 
 ## Idea backlog (non-edge source)
 
-Raw proposal from a comment note in `card/_import/financial-account-card/service-announce-account-owner.go` (no such file yet) — a non-edge source, left in place (nothing below is ratified).
+Raw proposal from a comment note in a card service-announce file that no longer exists — a non-edge source, left in place (nothing below is ratified).
 
 ### Invoice-detail request
 - **Idea**: send a request from POS (by user physical card) or mobile app to the Org software to get invoice detail.

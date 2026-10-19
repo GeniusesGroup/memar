@@ -1,7 +1,7 @@
 # Calendar Handoff
 
 ## Topic & Purpose
-Converting the Khayyam protocol layer of `modules/management/calendar`: the identity surface the domain owns (`protocol/dt-uuid.kh`), under the governing rules in [`../../../____Chats/2026-09-23-go-khayyam-migration-map.md`](../../../____Chats/2026-09-23-go-khayyam-migration-map.md). `git ls-files modules/management/calendar` returns five files; `protocol/dt-uuid.kh` is the only source, and it was the only one converted.
+Converting the Khayyam protocol layer of `modules/management/calendar`: the identity surface the domain owns (`protocol/dt-uuid.kh`), under the governing rules in [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md). `git ls-files modules/management/calendar` returns five files; `protocol/dt-uuid.kh` is the only source, and it was the only one converted.
 
 ## Status
 Protocol layer converted (2026-10-03). `protocol/dt-uuid.kh` accepts against the Khayyam frontend as written, against a root where both `org/…` and `memar/…` resolve.
@@ -10,7 +10,7 @@ Protocol layer converted (2026-10-03). `protocol/dt-uuid.kh` accepts against the
 
 ## Decisions
 
-- **A calendar's identity is the thing domain's identity — the same concept, not a new one.** *(Decided.)* The Go source wrote `type UUID thing_p.UUID`, a Go named-type re-declaration of one concept; the thing domain's own comment calls its UUID the base identifier for every domain and says it "can be same with any other UUID domains e.g. user". Khayyam has no alias form, so carrying the same concept here under a second name would be two abstractions claiming one thing — the architecture error [`khayyam.md` → Import Mechanism (`in`)](https://github.com/GeniusesGroup/memar/blob/main/docs/khayyam/khayyam.md) names, which [`qualified-names`](https://github.com/GeniusesGroup/memar/blob/main/modules/khayyam/rules/qualified-names/qualified-names.md) answers with one declaration the other module includes. So the file includes `ThingUUID` from `org/modules/identity/thing/protocol/dt-uuid.kh` and declares no `CalendarUUID`.
+- **A calendar's identity is the thing domain's identity — the same concept, not a new one.** *(Decided.)* The Go source wrote `type UUID thing_p.UUID`, a Go named-type re-declaration of one concept; the thing domain's own comment calls its UUID the base identifier for every domain and says it "can be same with any other UUID domains e.g. user". Khayyam has no alias form, so carrying the same concept here under a second name would be two abstractions claiming one thing — the architecture error [`khayyam.md` → Import Mechanism (`in`)](https://github.com/GeniusesGroup/memar/blob/main/docs/khayyam/khayyam.md) names, which [`qualified-names`](https://github.com/GeniusesGroup/memar/blob/main/modules/khayyam/rules/qualified-names/qualified-names.md) answers with one declaration the other module includes. So the file includes `ThingUUID` from `modules/identity/thing/protocol/dt-uuid.kh` and declares no `CalendarUUID`.
   - This is the fourth domain to reach that conclusion (`user`, `time`, `uri`, and now `calendar`). The repository-wide fact it records: roughly ninety `dt-uuid.kh` files each re-declare one UUID concept, and `thing` is its owner.
   - **Rejected alternative:** declaring `CalendarUUID ab` and composing it. It would have been locally coherent and globally wrong; the collision would surface at the first import site that needed both a thing's and a calendar's identity.
 - **`Field_CalendarID` + accessor `CalendarID` matches the corpus and is left as the Go source had it.** *(Decided.)* Every converted `dt-uuid.kh` in this repository takes the shape `tp Field_X ab` / `tp XID mt (self Field_X) () (id ThingUUID)` — `user`, `time`, `uri`, `text` all do. `receiver-method-names` keeps a method bare when the receiver supplies the context, and `Field_CalendarID` already says which field is asked; `result-parameter-names` derives the parameter from the type, and `id` is what the three sibling `dt-uuid.kh` files write. Rule 2's generator produces the body from the field's name.
@@ -31,6 +31,11 @@ Protocol layer converted (2026-10-03). `protocol/dt-uuid.kh` accepts against the
 - **`Field_CalendarID` may not be wanted at all.** *(Minor, but it decides whether the file survives.)* Nothing composes or calls it. If a calendar record's identity is always the identity of the thing it timestamps, then the record needs no identity of its own and the correct conversion is to delete this file — the same conclusion `time.handoff.md` reached for `Field_TimeID`. It was converted rather than deleted because the Go source declared it and deleting a declared contract is the owner's call, not the converter's.
 - **Whether `CalendarID` collides under `qualified-names`.** A method whose plain name is also a declaration elsewhere must be qualified; nothing in the corpus declares `CalendarID`, so the bare name stands today. If a `CalendarUUID` ever appears, the method side must not move.
 
+## Role research pointer (2026-10-18)
+[`../role/role.research.001.md`](../role/role.research.001.md) analyses this domain with role, staff, department and shift. Proposals only (Tentative; nothing ratified) that reach this handoff:
+- What the staff, shift and role cluster needs from the calendar is a named calendar system for dates and terms, an organization's working calendar (week shape, holidays) and work periods as intervals; the stored value stays an instant with an optional civil expression (Open Question 18; blocked by the time domain's missing instant and span recorded here).
+- The attendance reasons of `calendar-reason` repeat the six staff attendance constants (contradiction 8 there).
+
 ## Related Artifacts
 
 | Artifact | Relation | Action |
@@ -45,11 +50,11 @@ Protocol layer converted (2026-10-03). `protocol/dt-uuid.kh` accepts against the
 | [`../timeline/timeline.md`](../timeline/timeline.md) | Named by `management.md` as a competing home for event lifecycle | Read |
 | `../../../modules-plugable/management/calendar-reason/calendar-reason.md` | Where the reason vocabulary was resolved to | None (read) |
 | `memar/modules/time/protocol/time.kh` | The epoch-based instant — the wrong concept, named for the report | None (read) |
-| [`../../../____Chats/2026-09-23-go-khayyam-migration-map.md`](../../../____Chats/2026-09-23-go-khayyam-migration-map.md) | Governing rules 1–7 | None (read) |
+| [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md) | Governing rules 1–7 | None (read) |
 
 ## Notes
 
-- **Frontend result.** `org/modules/management/calendar/protocol/dt-uuid.kh` — **accept**. Nothing was suppressed and nothing was refused.
+- **Frontend result.** `modules/management/calendar/protocol/dt-uuid.kh` — **accept**. Nothing was suppressed and nothing was refused.
 - **How it was verified.** The frontend resolves one root, and neither `org/…` nor `memar/…` exists in this repository, so a plain run from here would report `unresolved-import` for any importing file. Every `.kh` in the organization repository was copied to `…\khroot_copy\org\` and every `.kh` in the memar repository to `…\khroot_copy\memar\`, preserving relative paths, and the check ran against that root. (Files were copied physically: a Windows junction is not followed by Node.) The same run included the ten already-converted identity and model files this one composes or sits beside — `thing`, `user`, `uri`, `time`, `text` — and all eleven accepted, so the calendar file was checked in company, not alone.
 - **The tooling defect reported by the previous wave is confirmed and was avoided.** `memar-documentation.py write`/`edit` with `--newline` passes the literal string `"lf"`/`"crlf"` to the writer in place of `"\n"`/`"\r\n"`. All text here went through the file-write and edit tools.
 - **Line endings.** `protocol/dt-uuid.kh` is CRLF, matching every other `.kh` in the repository; `calendar.md` is LF, matching the Markdown. No BOM in either. Both verified by reading the bytes, not by trusting the editor.

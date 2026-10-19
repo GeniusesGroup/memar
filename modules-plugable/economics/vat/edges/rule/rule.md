@@ -6,7 +6,7 @@
 
 ## Policies (rules)
 
-- "When value of a tax want to be more complex logic than a `per.Myriad` calculation." — ordinary tax value is a `per.Myriad` percentage ([value.go (no such file yet)](../../protocol/protocol/value.kh): `Value per.Myriad`); this relation exists for the cases that exceed it.
+- "When value of a tax want to be more complex logic than a `per.Myriad` calculation." — ordinary tax value is a `per.Myriad` percentage ([value.kh](../../protocol/protocol/value.kh): `Value per.Myriad`); this relation exists for the cases that exceed it.
 - "e.g. Made some discount to specific user type like charities institution." — the worked example: a charity-institution tax discount keyed to user type.
 
 ## Placement

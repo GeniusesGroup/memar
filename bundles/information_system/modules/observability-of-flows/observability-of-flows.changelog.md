@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,7 +19,7 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references that predate the requirements migration could not be matched to any — unresolved source labels: `(no label)`, `(no label)`.
@@ -31,8 +31,8 @@ Old-numbering references that predate the requirements migration could not be ma
   - buildings/placement-and-routing-of-service-flows.md, economy/monetary-standard-and-resource-wealth.md, energy/ambient-power-harvest.md, energy/climate-signal-authority.md, energy/deep-machinery-manning.md, energy/in-fabric-thermal-buffer.md, form-and-land/which-plane-carries-which-flow.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - information-systems/platform-custody-and-records.md, water-and-matter/treatment-and-return-of-used-waters.md: Done - batch-internal synergy cross-references were repointed to the new anchors during this pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 - The body was set to English as a conceptual rewrite; the shared boilerplate Abstract/Motivation were replaced with claims derived from this document's own Explanation — the four records as one stack read at four clocks (second, 5 seconds, 30 seconds, fifty years) and acted on by four hands (valve, model, room, invoice), and the finding that the page designed the reading before the acting; the changelog pointer was struck from the body. This page is framed in-page as a network document: it states how flows are read and acted upon as an abstract rule, and consumer records must declare their quality bands and latency horizons to it (the naming of flows in the records is kept as measurement vocabulary, with the dependency-direction warning stated).

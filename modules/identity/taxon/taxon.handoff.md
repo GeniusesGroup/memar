@@ -50,13 +50,27 @@ Active - protocol layer converted 2026-10-03; the edge vocabulary and the two lo
 2. Decide whether the classification folders move to `edges-loop/`, then apply the Phase 0 review move.
 3. Delete `validator.kh` or replace it with a label-vocabulary check, once the vocabulary disagreement above is settled.
 
+## Research 001 pointer (2026-10-18)
+[estate.research.001.md](../estate/estate.research.001.md) analyses taxon with estate and person (scenarios T1 to T6; findings 1C, 2C, 3 and 5). Every item is Tentative, Explored or Deferred, none Decided; the Decided items above are untouched. Proposals: a taxon is a group asserted by an authority under a scheme, and an individual living thing is an organism related to it; a rank is a relation to a scheme with a label vocabulary (one relation, not ten loops); taxonomy is a pluggable rather than a kernel; gender and sexuality are not taxon attributes.
+
+Questions for the owner, each with a default and what it blocks in the research's [Open Questions](../estate/estate.research.001.md#8-open-questions), under Taxon:
+- **TN.1** - Is a taxon a kind (a group asserted by an authority) or an individual? Default: a kind; the individual is an organism. This also answers the open question above about where gender attaches.
+- **TN.2** - Is a rank a relation to a scheme rather than ten loops? Default: yes.
+- **TN.3** - Does a taxon revision use many-to-many `supersedes` with `same_as`/`distinct_from`, the name never being identity? Default: yes.
+- **TN.4** to **TN.5** - Functional kinds as an organization's classification; published schemes adopted by `follow`.
+- **TN.6** - Does taxon stay kernel (the survey's Q1) or become an identity pluggable? Default: a pluggable; `PersonModel` stops composing `TaxonModel`.
+
+Contradictions found, reported and not resolved: taxon.md's first sentence ("any living things") against its quoted definition (a group); `eukaryote/eukaryote.md` headed "Plant"; gender and sexuality attached to a group.
+
 ## Related Artifacts
+- [`estate.research.001.md`](../estate/estate.research.001.md) - the research behind the pointer above.
+
 
 - [`taxon.md`](taxon.md) - the domain document.
 - [`edges/gender/gender.md`](edges/gender/gender.md), [`edges/sexuality/sexuality.md`](edges/sexuality/sexuality.md) - the two classification edges.
 - [`../thing/protocol/dt-uuid.kh`](../thing/protocol/dt-uuid.kh), [`../thing/protocol/model.kh`](../thing/protocol/model.kh) - the owners of `ThingUUID` and `ThingModel`.
 - [`../../knowledge/label/protocol/model.kh`](../../knowledge/label/protocol/model.kh) - the owner of `LabelModel`.
-- The Go -> Khayyam migration map, `____Chats/2026-09-23-go-khayyam-migration-map.md` - the seven governing rules this conversion followed.
+- [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md) - the seven governing rules this conversion followed.
 
 ## Notes
 

@@ -10,6 +10,7 @@
 - "ProductMaterial store some key/value for a quiddity to describe it e.g. mobile-cpu, ..." — a descriptive binding of what a product is made of.
 - `Edge indicate material relation e.g 'internal tool', 'Pizza topping', ...` — the relation kind itself is labeled (edge-as-label vocabulary in source comment).
 - Open TODO in source: "is it good idea to add detail manually by users?? or quiddity-model is better??" — manual detail entry vs a quiddity-model alternative.
+- A made product's [replacement cost](../../../replacement-cost/replacement-cost.md) is the sum over its materials of `BaseQuantity` × each material's own replacement cost, so its sale price is derived from what its materials cost today, never from what the stock of them cost ([decision](../../../pricing/edges/pricing/pricing.md#decisions-2026-10-10)); creating, changing, or removing a material edge re-evaluates it.
 
 ## Placement
 
@@ -22,6 +23,7 @@
 
 - Source TODO: manual key/value detail entry by users, or a quiddity-model binding?
 - Substitute materials ("it can be substitute of this product") — a label on the material edge, or a separate substitution edge?
+- For replacement cost, are substitute materials alternatives for one input — one chosen, as within a replacement-cost [source](../../../replacement-cost/edges/source/source.md) group — rather than summed; and is `BaseQuantity`, not `MinQuantity` or `MaxQuantity`, the quantity valued?
 - Recipe vs choice: this product-level material model versus order-time [item-ingredient](../item-ingredient/item-ingredient.md) choice — one capability observed at two times, or two distinct edges? (Converge with [item-ingredient](../item-ingredient/item-ingredient.md) Open questions.)
 - Converge with [task production](../../../../../modules/management/task/edges/production/production.md) and the product-side [material](../../../../../modules/economics/product/edges/material/material.md): material dependency is task-side or product-side/good-side — one home.
 

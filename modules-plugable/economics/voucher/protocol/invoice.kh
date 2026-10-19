@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
-tp Field_Each in "org/modules-plugable/economics/voucher/protocol/dt-each.kh"
-tp Field_InvoiceID in "org/modules/economics/invoice/protocol/dt-uuid.kh"
-tp Field_InvoiceType in "org/modules-plugable/economics/voucher/protocol/dt-invoice-type.kh"
+tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
+tp Field_Each in "modules-plugable/economics/voucher/protocol/dt-each.kh"
+tp Field_InvoiceID in "modules/economics/invoice/protocol/dt-uuid.kh"
+tp Field_InvoiceType in "modules-plugable/economics/voucher/protocol/dt-invoice-type.kh"
 tp U64 in "memar/modules/math/integer/unsigned-64.kh"
 
 tp Voucher_Invoice_Condition ab {

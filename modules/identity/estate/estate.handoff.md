@@ -52,10 +52,50 @@ None — deliberately. The definition is expected to emerge from the boundary-ca
 3. Extract the Certificate concept (issuer/scope/trust/evidence/validity) as its own design.
 4. Prototype the territorial-policy module (article-12-style outcome rules) as the first optional estate policy.
 
+## Research 001 questions and next steps (2026-10-18)
+
+### Status
+Proposals only, from [estate.research.001.md](estate.research.001.md) (eleven place scenarios, seven for person and six for taxon, a five-element kernel, six rival-model choices, a mapping of every folder, 28 test scenarios and a replay of the ten-case boundary suite, a reconciliation with the thing, user, organization and group researches, and the identity-through-change scenarios). Nothing is ratified; every item is **Tentative**, **Explored** or **Deferred**, none Decided. The Decided positions in [estate.md](estate.md) are untouched. The definition sentence, the Model and Policies sections, every `.kh` and every folder are unchanged.
+
+### Open Questions raised by the research
+Each carries a recommended default and what it blocks; the full text is in the research's [Open Questions](estate.research.001.md#8-open-questions). Ordered by what they change.
+
+1. **ES.1 — Which facts of an estate are identity-bearing, so that "any change produces a new estate" has a range?** Default: declared extent and composition; use, occupancy, ownership, name, address, status and condition are not. Blocks: the definition, the wall-moving case, `supersedes` policy text, every `Field_EstateID` consumer.
+2. **ES.2 — Does each reference to an estate carry a mode (pinned or following) set by its owning domain and recorded as a successor rule in the succession event?** Default: yes; pointers follow, obligations are recorded with the event, evidence of a past state is pinned. Blocks: voucher, inventory, discount, address, task site, department office, staff attendance; thing's `supersedes`; content's quoting.
+3. **ES.3 — What makes a thing take the estate identity?** Default: the declaration of an organization (admission), no hard exclusion; `movable` becomes one organization's default. Blocks: the definition, the waterfall case, the `movable` document.
+4. **ES.4 — Are spatial relations stored or derived?** Default: by source; an authority's `within` assertion wins over geometry and a discrepancy is recorded; adjacency and neighborhood are discovered. Blocks: `edges/estate`, `part`, `neighborhood`.
+5. **ES.5 — May a succession be many-to-many with shares?** Default: yes. Blocks: parcel division and merger, mortgages.
+6. **ES.6 — Where do the person-to-place relations live?** Default: one `situated_at` record on the estate side with role vocabulary, each consumer keeping its rules; `born_in`, `live_in`, `work_in` retired as filed. Blocks: the three edges, the survey's Q2, six consumers' place pointers.
+7. **ES.7 — Are the 26 `type-*` loops a property of estate or classifications declared by an organization in five families?** Default: the latter; a folder only where processing exists (warehouse). Blocks: 26 folders, `WarehouseID`, `type-warehouse/edges/product`.
+8. **ES.8 — Is the definition sentence (a housing estate) replaced by one drawn from the positions, and is the name kept?** Default: replace, keep the name provisionally. Blocks: estate.md wording only.
+9. **ES.9 — Are Occupied and Vacant discovered, and Reserved and Closed acquired?** Default: yes. Blocks: the `estate-status` move.
+10. **ES.10 — When two organizations declare different extents, who governs?** Default: each is authoritative for what it states; one global identity; a discrepancy is recorded. Blocks: cross-organization follow, territorial policy.
+11. **ES.11 — Is a virtual or unbuilt place an estate, physical Earth being one frame among others?** Default: yes, admitted by the declarer of the frame. Blocks: the definition criterion.
+12. **ES.12 — What does `EstateModel` require beyond `ThingModel`?** Default: the declared extent as a reference, held until ES.1. Blocks: `protocol/model.kh`.
+13. **ES.13 — Is a persistent place concept a separate layer?** Default: no, an ordinary thing with a seat role. Blocks: heritage and pilgrimage cases only.
+
+Questions for the two neighbours (PS.1 to PS.7 for person, TN.1 to TN.6 for taxon) are in the research and pointed to from their handoffs.
+
+### Contradictions found (reported, not resolved)
+The definition sentence against the positions (ES-C1); three edges that point from a place to a group of organisms (ES-C2); the README that is said to hold the positions and holds only `estate.md` (ES-C3); 28 `type-*` folders named, 26 on disk (ES-C4); and the known contradiction of a new estate per change against persistent identity in text, content, group and organization, read in the research as a question of which facts are identity-bearing and which references follow a succession.
+
+### Proposed Next Steps (research)
+1. Owner rules on ES.1, ES.2 and ES.3; they decide most of the other answers and the definition.
+2. Run the boundary suite as a graph per case; the research replays it as a table (finding 7) and answers the `type-room` remark: no new folder.
+3. Draft the estate definition from the positions and ES.1, then replace the housing-estate sentence (ES.8).
+4. Prototype `territorial-policy` as the first optional estate pluggable (the earlier Next Step 4), after the rule domain defines `condition_is`.
+5. Define `situated_at` and retire the three person-like edges, after ES.6 and the survey's Q2 are reconciled.
+6. Extract the certificate concept as its own cross-domain design (the earlier Next Step 3).
+7. Apply the survey's estate tasks (links, the stale 28, `type-*` Placement) once ES.7 is answered.
+
 ## Related Artifacts
+- [`estate.research.001.md`](estate.research.001.md) — the research behind the section above (Update when the owner answers)
+
+
+
 - [`README.md`](README.md) — graduated positions (Update when decisions change)
-- [`edges/estate`](edges/estate/README.md), [`edges/neighborhood`](edges/neighborhood/README.md), [`edges/type-building`](edges/type-building/README.md) — edge-level questions (Review during suite)
-- [`../../identity/object/edges/movable`](../object/edges/movable/README.md) — movable-vs-estate rule conflict (Update during suite)
+- [`edges/estate`](edges/estate/README.md), [`edges/neighborhood`](edges/neighborhood/README.md), [`edges-loop/type-building`](edges-loop/type-building/README.md) — edge-level questions (Review during suite)
+- [`../../identity/object/edges-loop/movable`](../object/edges-loop/movable/README.md) — movable-vs-estate rule conflict (Update during suite)
 - [`../../economics/product/product.handoff.md`](../../economics/product/product.handoff.md) — co-developed Product boundary
 - [`../../rights/law/README.md`](../../rights/law/README.md) — territorial rules / founding law side
 

@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,8 +19,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 - Propagates to:
   - buildings/placement-and-routing-of-service-flows.md, economy/bubble-drain-and-renewal.md, energy/deep-machinery-manning.md, energy/passive-cooling-paths.md, energy/thermal-sources-and-storage.md, food/food-production-and-assurance.md, food/meals-and-shared-cooking.md, form-and-land/airflow-through-fabric.md, form-and-land/buildable-share-and-density-allocation.md, form-and-land/ground-surface-treatment.md, form-and-land/settlement-grain-and-scaling.md, form-and-land/sound-environment.md, form-and-land/stewardship-of-ground-cover.md, form-and-land/wildlife-safe-surfaces.md, information-systems/data-storage-and-processing.md, living-and-culture/narrating-the-system.md, movement/human-travel-network.md, security-and-resilience/securing-sensitive-spaces.md, water-and-matter/fate-of-residues-and-nutrients.md, water-and-matter/treatment-and-return-of-used-waters.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
 
@@ -49,9 +49,9 @@ No legacy-unresolved references occur in this document; its "Suspended network..
   - movement/human-travel-network.md: Done — boarding height is not a statute; each settlement chooses its movement mix and re-times capacity figures; no protocol sample height.
   - water-and-matter/water-bodies-as-common-infrastructure.md: Done — deck syn labelled "navigation corridors" now declares the channel need toward the waterways record.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
 
 #### What changed
 - Handoff Q1 graduated into the Abstract and the collision's ground-plane paragraph: ground at 0 m is recreational and wildlife habitat (dry-laid stone, no mortar, severely limited); origin-destination travel between buildings runs aloft. The deck's "routine on the ground, deck in crisis" composition is rejected. Q1 left the handoff.

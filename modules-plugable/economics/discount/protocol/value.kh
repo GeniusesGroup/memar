@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Amount in "org/modules-plugable/economics/money/protocol/dt-money-amout.kh"
+tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
 tp Myriad in "memar/modules/math/per/myriad.kh"
 
 tp Discount_Value ab

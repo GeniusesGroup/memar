@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_AuthorizedBy in "org/modules/computer/rule/edges/authorization/protocol/dt-authorized-by.kh"
+tp Field_AuthorizedBy in "modules/computer/rule/edges/authorization/protocol/dt-authorized-by.kh"
 
 // TODO(go-migrate):
 /*

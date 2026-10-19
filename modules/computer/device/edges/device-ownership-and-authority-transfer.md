@@ -19,7 +19,7 @@ A device (e.g., an IoT sensor or appliance) needs a well-defined process for est
 **This RFC intentionally captures only what has been decided or proposed so far. Full design work is deferred to a dedicated future chat, at Omid's request, so it is not developed further inside the Chapar discussion.**
 
 ## Motivation
-This question surfaced while working out Chapar's Discovery mechanism ([related RFC](./chapar-discovery-and-path-establishment.md)): before a device can be trusted to receive commands, something needs to establish who is currently authorized to command it, and how that authorization moves when the device changes hands. That is a bigger question than Discovery itself, so it is being split out here rather than folded into the Chapar RFC series.
+This question surfaced while working out Chapar's Discovery mechanism (related RFC (unwritten)): before a device can be trusted to receive commands, something needs to establish who is currently authorized to command it, and how that authorization moves when the device changes hands. That is a bigger question than Discovery itself, so it is being split out here rather than folded into the Chapar RFC series.
 
 ## Guide-level explanation
 
@@ -63,7 +63,7 @@ Not yet developed.
 - Exact format and cryptographic scheme for the digital-invoice-embedded transfer token (step 5 of the fallback chain).
 - Defined policy/duration for plug-and-play baseline functionality before a full transfer occurs.
 - Exact mechanism for re-disclosing manufacturer data-collection consent to each subsequent owner.
-- How this connects back to [this RFC](./chapar-discovery-and-path-establishment.md)'s open question about provisioning a device's initial trust anchor before its first Discovery.
+- How this connects back to this RFC (unwritten)'s open question about provisioning a device's initial trust anchor before its first Discovery.
 
 ## Future possibilities
 - This RFC is expected to grow into one or more modules/services in the `organization` repository once the design is further along.

@@ -1,0 +1,25 @@
+//go:build cmd
+
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package main
+
+import (
+	"os"
+
+	"org/modules"
+)
+
+func init() {
+	modules.RootCommand.Init()
+
+	// remove app binary path from os args
+	var args = os.Args[1:]
+	var err = modules.RootCommand.ServeCLA(args)
+	if err != nil {
+		os.Exit(1)
+	}
+}
+*/

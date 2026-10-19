@@ -28,10 +28,12 @@ Cross-domain analytical modules over the economics core: knowledge produced from
 
 - `pair_amount` vs `pair_amount-utc-minute`: are these two modules or one module with a time-resolution parameter? Naming currently encodes mechanics, not knowledge.
 - Should derived values (e.g. `total_blocked`) carry an explicit "cache, not truth" marker in their protocol files?
+- Price volatility for the deferred-payment warning: is a product's price movement over recent months, read by the warning rule at an invoice's approval, an analytics module here, or the rule's own computation over the product's price versions ([price index → Deferred-payment sales](../price-index/price-index.md#deferred-payment-sales))?
 
 ### Future possibilities
 
 - A shared calendar-interpretation module above all time-bucketed analytics.
+- Holding-gain analytics: sale price − replacement cost is the operating margin, and replacement cost − historical cost (FIFO, weighted-average, or batch recorded cost, kept for accounting) is the holding gain inflation produced; shown apart they reveal the real profit ([replacement cost → Future possibilities](../replacement-cost/replacement-cost.md#future-possibilities)).
 
 ## Idea backlog
 

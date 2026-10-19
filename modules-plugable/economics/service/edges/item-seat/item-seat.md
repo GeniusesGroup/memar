@@ -24,4 +24,5 @@
 - Relation to the `Type_Seat` product flag — flag-plus-edge duplication (same review as Provider/SellLimit in [product.md](../../../../../modules/economics/product/product.md))?
 - `Status` used by these queries: protocol-local status or the general status domain?
 - [transaction.md](../../../../../modules/economics/transaction/transaction.md) filed these listings as "data-model pass material" — keep or drop at the pass?
+- The seat or person-slot on an invoice line is the nearest existing record of a service slot (staff × place × time). If a slot becomes what carries a service's price, as a batch may for goods ([service → Unresolved questions](../../service.md#unresolved-questions)), is it this seat made a node, and may one seat or showing carry a price of its own?
 

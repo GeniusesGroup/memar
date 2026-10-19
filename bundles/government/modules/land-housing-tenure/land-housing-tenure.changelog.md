@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -26,8 +26,8 @@ Cross-document links created at migration (from the records' syn/links fields):
   - living-and-culture/continuous-health-watch.md: Done — repointed in the 2026-09-15 conformance pass.
   - economy/bubble-drain-and-renewal.md, economy/permitted-intermediation.md, economy/custody-of-making-tools.md, living-and-culture/narrating-the-system.md: Done in this batch — inbound links were rewritten to the new English anchors during the same pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: the Persian bodies were re-expressed as English argument, preserving every claim, number and attribution (six-dang deed; 20-year depreciation horizon of the flaw; 20-to-30 to above-100-year structural life; 50-percent operating-cost cut; four endowment pillars; zero-percent homelessness target; 100-percent balance-sheet publication; zero-percent micro-plot subdivision and raw-land speculation; 100-fold liquidity; 10-year furnishing life and about-1-percent monthly amortization; 100-percent removal of goodwill money; the 10-year ruin of the conventional model; Yalda justification plan pp. 17 and 25); Abstract and Motivation were re-derived from the document's own Explanation; a cross-approach collision section was added; nothing was removed. Section titles, in document order, with their legacy ids and new English headings:
@@ -46,8 +46,8 @@ Reviewer critique (preserved, not corrected, per the zero-removal rule): [Shelte
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 The transfer audit found two lost tenure doctrines that never reached the sheet, recovered from 980203-farakhan-shora.docx and National_Constitution.odt. Added as new approaches: "Inalienable public land trust for garden lands: the municipality keeps undivided title forever, sells it in no circumstance, and dedicates every revenue to more land (Public Garden-Land Trust)" — id (new; lowest free owner id, claimed this session), carrying the farakhan letter's preservation-by-economics clause; and "Reversion of the deceased's financial assets to public ownership — the concept of inheritance does not exist (Public Reversion at Death)" — id (new), carrying the National Constitution's death-reversion clause and its lifetime-disposition alternative (generosity, or a registered attorney/smart contract triggered by system events). The Abstract's answer count and enumeration, and the shared-problem holder list, were extended to name both; no existing text was removed or softened. In both records the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, with the key clauses quoted in the original); Fit & substrate, Cognitive anchor and Narrative hook are reviewer-authored and unconfirmed.

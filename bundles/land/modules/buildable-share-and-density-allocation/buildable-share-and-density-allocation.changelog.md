@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -23,8 +23,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -40,8 +40,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
 
 #### What changed
 - The Abstract's closing sentence no longer points at the changelog (a provenance pointer in a body); it now states the unresolved claim itself — which guarantee survives the relaxation of the others is not settled by the four records' arithmetic.
@@ -57,8 +57,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 The transfer audit found one lost owner idea touching this requirement, recovered from «یک قانون برای توسعه زمین‌ها» and National_Constitution.odt: the enforcement doctrine for the 20% cap that never reached the sheet — «نظارت پسینی نه پیشینی» (ex-post supervision, not ex-ante), with the sanction «تعلیق یا عدم پذیرش سازمانی که در قلمروی جغرافیایی مورد ادعای خود، حداکثر سطح اشغال را رعایت نکرده باشد» and the monthly satellite re-check of claimed territory. Added as a new approach, "Ex-post recognition enforcement: suspension or non-recognition of any organization that fails the coverage cap inside its own claimed territory (Ex-Post Recognition Enforcement)" — id (new; lowest free owner id, claimed this session). The Abstract's answer count and enumeration were extended to name it; no existing text was removed or softened. In the new record the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, with the Persian sanctions clause and the slogan quoted in the original); Fit & substrate, Cognitive anchor, Narrative hook and the wording of the collision-neutral placement are reviewer-authored and unconfirmed.
@@ -71,9 +71,9 @@ The transfer audit found one lost owner idea touching this requirement, recovere
 - Cited:
   - [Buildable Share and Density Allocation — Handoff](buildable-share-and-density-allocation.handoff.md) - Relation: Evidence: Q5 is the owner ruling this session recorded.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
-  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — critiqued (round 1)
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [ChatGPT](../../../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — critiqued (round 1)
 
 #### What changed
 - Handoff Q5 graduated into the cap's Mechanism and Fit: the 20% cap binds organisations that join the society's governing organisation, and joining requires the intended built structure already in place. Existing micro-plot fabric is not annexed as-is. Fit's Dual—transitional tag names that joining condition.

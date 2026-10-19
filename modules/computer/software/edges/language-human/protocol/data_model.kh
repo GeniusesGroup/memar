@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_LanguageUUID in "org/modules/knowledge/language-human/protocol/dt-uuid.kh"
-tp Field_SoftwareID in "org/modules/computer/software/protocol/dt-uuid.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp Field_LanguageUUID in "modules/knowledge/language-human/protocol/dt-uuid.kh"
+tp Field_SoftwareID in "modules/computer/software/protocol/dt-uuid.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
 
 tp SoftwareLanguageDataModel ab {
 	Field_SoftwareID

@@ -25,4 +25,5 @@
 - Is `CommonIngredient` a flag on the product or the name of this edge's label set?
 - Converge with [good material](../../../../../modules-plugable/economics/good/edges/material/material.md) and [item-ingredient](../../../../../modules-plugable/economics/good/edges/item-ingredient/item-ingredient.md): one capability observed at product level and order time, or two edges?
 - Converge with [task production](../../../../management/task/edges/production/production.md): material dependency task-side or product-side — one home.
+- A made product's price basis is its materials' current stated prices, never the historical cost of the stock held ([pricing decision](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md#decisions-2026-10-10)); [replacement cost](../../../../../modules-plugable/economics/replacement-cost/replacement-cost.md) sums the good-side material's quantities. Does it read this product-identity edge too, or only the good-side one?
 

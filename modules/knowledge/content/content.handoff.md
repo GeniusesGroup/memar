@@ -62,12 +62,54 @@ From Content & Timeline and Versioning passages above (status tags preserved on 
 
 Also: Offline/multi-actor concurrency semantics (store-inventory class problem) — decided direction 2026-10-05, owner: serialize through per-entity lock (unique changer, consistent-hash routing), not timestamp reconciliation; mechanism detail open. *(prefer this handoff for the merge-conflict/semantic-unit home)*
 
+## Research 001 questions and next steps (2026-10-15)
+
+### Status
+Proposals only, from [content.research.001.md](content.research.001.md) (thirteen scenarios, a four-element kernel, five rival models, a mapping of every edge, loop and widget folder, thirty test scenarios, eighteen contradictions). Nothing is ratified; every item is **Tentative**, **Explored** or **Deferred**, none Decided. Settled facts above are not re-argued.
+
+### Open Questions raised by the research
+Each carries a recommended default and what it blocks; the full text is in the research's [Open Questions](content.research.001.md#open-questions). Ordered by what they change.
+
+1. **Is the content the work-level identity with immutable revisions below it, and how do the persistent id and the content-derived identity of the text handoff meet?** Default: persistent identity for the thing discussed; each revision an immutable value with a content-derived address. Blocks: the definition in [content.md](content.md), the Task proposal's `changes` target, any `ContentModel`.
+2. **Does a content share the text's UUID (the Idea backlog) or hold the text by a relation?** Default: a relation. Blocks: the backlog item, the text-ownership convergence in [text.handoff.md](../text/text.handoff.md).
+3. **Is placing a content in a group's ordered list the timeline's `event_is`, and is forward a placement with provenance?** Default: yes to both. Blocks: Timeline primitivity (open question 1 above), the forward and pin folders, the group index lock question.
+4. **Who orders a group's contents: a single changer per group, or time?** Default: a single changer (the Decided concurrency direction); time is a presentation. Blocks: the group data model's TODO, offline creation.
+5. **Who is the author: requester, speaking identity, credited parties, or the home timeline's owner?** Default: the kernel keeps the request chain; the speaking identity is the home placement's owner; credits are attribution. Blocks: `ChangeSenderUser`, ownership's participant file.
+6. **Is one body in two languages one content with two texts, or two contents related by translation?** Default: one content, one text per language. Blocks: translation handling.
+7. **What does delete mean, and what survives?** Default: the `deleted` status plus a rule closing the body, with a tombstone; erasure of the body a separate authority-gated event; "delete for me" a viewer preference. Blocks: the `deleted` loop's methods, retention duty.
+8. **Do read, seen and delivered merge into one ladder, and what separates seen from read?** Default: one capability, `delivered < seen < read`; delivered stays client-held. Blocks: three edge folders, `user_status`.
+9. **Do the genre loops stay, and which?** Default: none promoted now; medium derived from objects; album, serial and episode to collection; editorial forms wait for rules; `game`, `sport_game`, `concert` leave as not-content; `confidential` becomes visibility. Blocks: the 18 folders and their Placement sections.
+10. **Does collection live in label's `list` with a position, or as a content module?** Default: extend `list`. Blocks: album, serial, serial-episode, course.
+11. **Is a derived view (redaction) a revision or a separate content with a derived-from link?** Default: a separate view with a link. Blocks: sealed and redacted filings.
+12. **Does a reply or credit target a part of a content, and is the part an entity or a field?** Default: Explored; addressed by revision and locator. Blocks: the commentary use case.
+13. **Is an imported email a raw acquired object with discovered fields?** Default: yes. Blocks: the email data model, Bcc.
+14. **Does `bio` leave the content domain for thing?** Default: yes if it survives the placing test. Blocks: the bio folder.
+15. **Should interaction-limits attach to any relation and be set by the owner first, the group as default?** Default: yes. Blocks: the merge of seven folders, timeline's two limit edges, the backlog's group-level forms.
+16. **Is a machine-written text or a system notice content?** Default: a notice is a timeline event; a summary is discovered data. Blocks: `log-activity`, derived summaries.
+17. **Who owns reporting and appeal of a content?** Default: the justice side. Blocks: the `Report()` service, the `hidden` vocabulary.
+18. **Should the review phase be a pluggable module, and how does it relate to the documentation Status?** Default: yes later; decide the relation first. Blocks: RFC automatic behaviours.
+19. **Does a paid-partnership disclosure live in attribution with a rule?** Default: yes. Blocks: the `group-user` note.
+20. **Where does the misfiled `NotificationTemplate` in `protocol/data_model.kh` go?** Default: the notification domain. Blocks: nothing; hygiene.
+
+### Next Steps
+1. Owner reviews research findings 1 and 2 and answers questions 1 to 3 first; they change what the domain is.
+2. If question 1 is accepted, a session writes the definition paragraph and the four-element kernel into [content.md](content.md) (not done: the research added no Model or Policies).
+3. A session fills Placement and Open questions on the 18 edge folders that have none, using the research's mapping as a reading list; no folder moves before the owner answers questions 3, 8, 9 and 15 and catalogue R2.
+4. Draft the candidate documents for `revision`, `interaction-limits`, `receipts` and `attribution` once questions 1, 7, 8 and 15 are answered; do not write a `ContentModel` before question 1.
+5. Resolve with the timeline domain whether the group's ordered list is its `event` edge (question 3), and with the text domain whether mention and hashtag tokens stay text's while content owns the resolved relation.
+6. Reconcile the contradictions listed in the research in the documents that own each side, notably the reply group rule, the three edit models, the forward model, and the `to_label` edges that point at a user.
+7. Ask the Task research's owner session to align K5 (`changes`) with this research's revision, and its question 15 with question 1 here.
+8. Read what the research did not: the text domain's `mention`, `hashtag` and `anchor_text`, the notification, uri and object domains, the detection and justice pluggables, and the literature on collaborative editing; record anything that changes a Tentative item.
+
+
 ## Related Artifacts
+- [`content.research.001.md`](content.research.001.md) — the conceptual research: scenarios, kernel, models, mapping, tests, owner questions
+- [`content.changelog.md`](content.changelog.md)
 - [`README.md`](README.md)
 - [`../text/text.handoff.md`](../text/text.handoff.md)
 - [`../../management/timeline/timeline.handoff.md`](../../management/timeline/timeline.handoff.md)
 - [`../../management/task/task.handoff.md`](../../management/task/task.handoff.md)
-- [`../../gui/gui.handoff.md`](../../gui/gui.handoff.md)
+- [`../../../modules-plugable/gui/gui.handoff.md`](../../../modules-plugable/gui/gui.handoff.md)
 - [`../../../modules-plugable/knowledge/channel-comms/README.md`](../../../modules-plugable/knowledge/channel-comms/README.md) — temporary editorial/channel framework
 
 ## Notes

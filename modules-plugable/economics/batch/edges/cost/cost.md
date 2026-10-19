@@ -9,6 +9,7 @@
 - Cost structure per source: `Materials()`/`MaterialsCost()`, `Labor()`/`LaborCost()`, `Investments()` (comment: Equipment)/`InvestmentsCost()` — each a `per.Myriad` percentage paired with a money amount, rolled into `TotalCost()`.
 - Pricing chain: `Markup() per.Myriad // the % added to the cost to determine the wholesale price` → `WholesaleProfit()` → `Margin() per.Myriad // the % of product price to determine the retail price` → `RetailProfit()` → `Cost()`.
 - Source records no who-may-set / approval rules for the chain (no bare edges).
+- When the chain sets a price, the cost it starts from is [replacement cost](../../../replacement-cost/replacement-cost.md), not this batch's recorded cost; the recorded cost stays for accounting ([pricing decision](../../../pricing/edges/pricing/pricing.md#decisions-2026-10-10)).
 
 ## Placement
 
@@ -20,9 +21,11 @@
 ## Open questions
 
 - Receiving [batch.md](../../batch.md) backlog question: is the cost/pricing chain batch-owned or shared with production and budget? (Batch side asserted above; production/budget must not grow a second copy — one home.)
-- Who may set Markup/Margin — configuration, or rule reaction on cost change (core never knows Rule)?
+- Who may set Markup/Margin — configuration, or rule reaction on cost change (core never knows Rule)? The cost-change event now exists: `replacement_cost_changed` in [replacement cost](../../../replacement-cost/replacement-cost.md).
 - `Cost()` vs `TotalCost()` — retail cost after chain, or raw total? Naming unconfirmed.
 - "Mirrors the budget-label list in the transaction shortcut comments" — locate that list and converge (one vocabulary home).
+- Is this batch's recorded cost the historical cost that holding-gain analytics subtracts from replacement cost (replacement cost − historical cost = holding gain; sale price − replacement cost = operating margin), beside FIFO and weighted-average cost kept for accounting? Which reports read which is open in [replacement cost → Unresolved questions](../../../replacement-cost/replacement-cost.md#unresolved-questions).
+- If a sale price moves to the batch (the owner's leaning, open in [pricing](../../../pricing/edges/pricing/pricing.md#open-questions)), is the chain's output that batch's stated price, computed from replacement cost and stated as a new price version?
 
 ## Source
 

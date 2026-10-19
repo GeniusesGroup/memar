@@ -50,6 +50,7 @@ Bank, warehouse, and securities scenarios must all pass through the same three-s
 - `endorsement` and `guarantor` live here only because "settlement_system" was a placeholder name for "the processing machine behind conditional fulfilment"; their final home is undecided.
 - Internal structure (clearing vs settlement, netting rules) not yet modeled.
 - Can one account have parallel settlement paths? (Module-mediated shape answers trivially; direct-edge shape needs an explicit cardinality decision.)
+- Deferred payment: post-dated cheques (a commitment-bearing document whose transfer [endorsement](edges/endorsement/endorsement.md) records) and instalments discharge an invoice's obligation over time. Is an instalment schedule, including one indexed to a price index, clearing material of this module, or does it live with the invoice or in a capability of its own ([price index → Deferred-payment sales](../price-index/price-index.md#deferred-payment-sales))?
 
 ### Future possibilities
 

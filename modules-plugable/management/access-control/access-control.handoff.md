@@ -62,7 +62,7 @@ hold for this domain, and the check was made directly:
   `// ApplicationID() ID`), `computer/instance_of/edges/node/protocol/data_model.kh`, and three lines
   of `computer/instance_of/instance_of.handoff.md`.
 - The actual blocker lives in **`computer/instance_of`**, not here: `edges/node/protocol/data_model.kh`
-  requires `app_p.Field_ApplicationID` from `org/modules/computer/app/protocol`, and
+  requires `app_p.Field_ApplicationID` from `modules/computer/app/protocol`, and
   `modules/computer/app/` does not exist in this repository at all. That domain's handoff already
   records it. It is not this domain's to solve, and it does not touch the files converted here.
 

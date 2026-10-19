@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp ThingModel in "org/modules/identity/thing/protocol/model.kh"
-tp Field_ModuleID in "org/modules/computer/module/protocol/dt-uuid.kh"
+tp ThingModel in "modules/identity/thing/protocol/model.kh"
+tp Field_ModuleID in "modules/computer/module/protocol/dt-uuid.kh"
 
 tp ModuleModel ab {
 	ThingModel

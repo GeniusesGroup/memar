@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,7 +19,7 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references predating the requirements migration stand as `legacy-ref (unresolved)` markers where they could not be matched to any approach; the marker texts were carried with their source labels above.
@@ -28,8 +28,8 @@ Old-numbering references predating the requirements migration stand as `legacy-r
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 - Propagates to:
   - buildings/structural-material.md, buildings/placement-and-routing-of-service-flows.md, economy/custody-of-making-tools.md, energy/climate-signal-authority.md, food/meals-and-shared-cooking.md, form-and-land/service-placement-scale.md, form-and-land/sound-environment.md, form-and-land/wildlife-safe-surfaces.md, governance/membership-and-identity.md, governance/resident-matching-and-mobility.md, living-and-culture/continuous-health-watch.md, living-and-culture/education-path.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
 
@@ -50,11 +50,11 @@ Itemized legacy refs: one `legacy-ref (unresolved)` stands in the ergonomic reco
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
-The transfer audit found two lost owner ideas for this requirement in the Yalda and Complex-Building proposals (identical paragraphs in both) that never reached the sheet. Added as new approaches: "At least one capsule-residence floor per complex for tourists and shift-working service staff (Capsule-Residence Floor)"  — new —  carrying the capsule-style residence clause with its smallest-cabin dimension 2×1×1 meters or larger, its shared sanitary services, and its named first users, tourists and the complex's service staff resting short-term between shifts; and "Stair-first design: no escalators anywhere, low-rise wide generous stairs that tempt walking (Stair-First Movement)"  — new —  carrying the proposal's two stair clauses: escalators not proposed as a building element in favor of low-riser, large, mobility-making stairs, and stairs with a designed feeling that tempts residents to take the stair instead of the elevator. The Abstract's answer count and closing were extended to name both; no existing text was removed or softened. In both records the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, key clauses quoted in the original); Fit & substrate, Cognitive anchor and Narrative hook are reviewer-authored and unconfirmed. The stair record's synergy line pre-links [Regenerative-braking elevators with per-user identity-metered energy accounting](placement-and-routing-of-service-flows.md#regenerative-braking-elevators-with-per-user-identity-metered-energy-accounting-regenerative-elevator-metering), recovered the same session into buildings/placement-and-routing-of-service-flows.md.
+The transfer audit found two lost owner ideas for this requirement in the Yalda and Complex-Building proposals (identical paragraphs in both) that never reached the sheet. Added as new approaches: "At least one capsule-residence floor per complex for tourists and shift-working service staff (Capsule-Residence Floor)"  — new —  carrying the capsule-style residence clause with its smallest-cabin dimension 2×1×1 meters or larger, its shared sanitary services, and its named first users, tourists and the complex's service staff resting short-term between shifts; and "Stair-first design: no escalators anywhere, low-rise wide generous stairs that tempt walking (Stair-First Movement)"  — new —  carrying the proposal's two stair clauses: escalators not proposed as a building element in favor of low-riser, large, mobility-making stairs, and stairs with a designed feeling that tempts residents to take the stair instead of the elevator. The Abstract's answer count and closing were extended to name both; no existing text was removed or softened. In both records the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, key clauses quoted in the original); Fit & substrate, Cognitive anchor and Narrative hook are reviewer-authored and unconfirmed. The stair record's synergy line pre-links [Regenerative-braking elevators with per-user identity-metered energy accounting](../placement-and-routing-of-service-flows/placement-and-routing-of-service-flows.md#regenerative-braking-elevators-with-per-user-identity-metered-energy-accounting-regenerative-elevator-metering), recovered the same session into buildings/placement-and-routing-of-service-flows.md.
 
 #### Considered and not done
 - The unicycle and the infra-first phasing (شهر سبز.docx: «استفاده از دوچرخه و تک چرخه های برقی بجای اتومبیل در سطح شهر»; the phasing note that the warehouse/logistics zone is built in the first phases because the settlement's own needs demand it) — considered for this page as the transition sequence for motor-free living and not added as corpus text: the electric unicycle is a vehicle preference named once inside a larger movement doctrine already held by movement/human-travel-network.md, and the phasing statement is a project sequence for the Sabz business plan, not an answer to the dwelling question; both recorded in that movement document's changelog instead.

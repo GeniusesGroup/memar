@@ -22,4 +22,5 @@
 
 - If decimal placement and the settlement reference both live elsewhere, what does the currency label itself still carry beyond "this count-unit is a money unit" — strip the fields (parameter recipe to strip)?
 - Direction and naming unconfirmed — nothing ratified.
+- Evaluating a price against a currency or a basket is not a rate stored on this label: it is a [price index](../../../../../../../modules-plugable/economics/price-index/price-index.md), and the owner does not want a price tied automatically to one currency or to gold. In the owner's reading (2026-10-10), [money](../../../../../../../modules-plugable/economics/money/money.md)'s "Exchange rates rejected as stored facts" concerns the design of the project's own currency, not such evaluation — recorded as a note beside that bullet in [money](../../../../../../../modules-plugable/economics/money/money.md#rationale-and-alternatives).
 

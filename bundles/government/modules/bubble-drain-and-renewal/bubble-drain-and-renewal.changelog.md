@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -21,8 +21,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Propagates to:
   - (none known): no file outside this batch links into this document's old section anchors (checked by sweep of `docs/society` on 2026-09-14).
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: the Persian bodies were re-expressed as English argument, preserving every claim, number and attribution (1,000 complexes; 500-to-1,000-resident modules; 500,000-to-1,000,000 movers; 50-to-70 percent and 70 percent demand falls; 100-percent budget removal; 20/80; 3-to-5-year soil clock); Abstract and Motivation were re-derived from the document's own Explanation; a cross-approach collision section was added; nothing was removed. Section titles, in document order, with their legacy ids and new English headings:
@@ -42,11 +42,11 @@ The deflation engine and the 20/80 rule are rendered as linked ideas of this and
 - Type: clarified
 - Cited:
   - [Bubble Drain and Fabric Renewal — Handoff](bubble-drain-and-renewal.handoff.md) - Relation: Evidence: the 50-thousand cell cap was never structural grain law.
-  - [Settlement Grain and Scaling Changelog](../form-and-land/settlement-grain-and-scaling.changelog.md) - Relation: Evidence: that page's 2026-09-20 propagate named this conflict.
+  - [Settlement Grain and Scaling Changelog](../../../land/modules/settlement-grain-and-scaling/settlement-grain-and-scaling.changelog.md) - Relation: Evidence: that page's 2026-09-20 propagate named this conflict.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided (grain: no structural 50-thousand cap)
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided (grain: no structural 50-thousand cap)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
 
 #### What changed
 - Handoff records that a hard 50-thousand cell cap would have voided this engine's 500k–1M orchard magnet; grain now treats 50 thousand as a commercial-plan number, so that supposed conflict is gone. Q1 merge of the two engines stays open.

@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -22,8 +22,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -38,8 +38,8 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — deepened, corrected
 
 #### What changed
 - The collision section's tier-harmony claim was conditioned: "one graduated rule, not a dispute" holds only once the basic/specialized line is priced per service, since the two records' example lists overlap at the margin (per-tower "public health" vs four-tower "comprehensive clinic"; gym cost at tower scale); the pricing is named as what the viability-table extension must actually deliver.
@@ -60,9 +60,9 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Cited:
   - [Service Placement Scale — Handoff](service-placement-scale.handoff.md) - Relation: Evidence: Q1–Q5 stay owner/evidence questions; the 2026-09-20 density pass classified them.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
-  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — critiqued (round 1)
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [ChatGPT](../../../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via Cursor) — critiqued (round 1)
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
 
 #### What changed
 - Handoff Q1–Q5 now carry the density-pass classifications: Q1 recorded candidate is hybrid (basic per-building, specialized per-cluster) with 100% utilization as peak-capacity matching not uptime — not a ruling. Q2 cluster charter remains owner (vote, shortfall, exit). Q3 class INSUFFICIENT-EVIDENCE (no record hosts job-pool evidence). Q4 class PROVENANCE-DEFECT in the owner's legacy source; upstream DOCX is not in this repository. Q5 notes that co-living's communal 20 m² is not proven the same ledger as the mandated 20 m². No owner question closed.

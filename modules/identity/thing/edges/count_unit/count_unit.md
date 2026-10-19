@@ -22,3 +22,7 @@ MetricUnit
 - Almost all `thing` MUST have just one `count_unit` such as
 - a `money` unit like `us-dollar` for economic `account`
 - a `metric unit` like `litre` for any `good` as a `product`
+
+## Open questions
+
+- Is a compound unit — kg·km, t·km, passenger-km, per hour, per month — a count unit node of its own, or a composition of two count units? A product may declare its price's display basis in one — [Pricing Research 001](../../../../../modules-plugable/economics/pricing/pricing.research.001.md#must-every-product-show-a-price).

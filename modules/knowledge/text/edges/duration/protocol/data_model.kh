@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_TextID in "org/modules/knowledge/text/protocol/dt-uuid.kh"
+tp Field_TextID in "modules/knowledge/text/protocol/dt-uuid.kh"
 tp Observer_Duration_Second in "memar/modules/time/duration/protocol/second.observers.kh"
-tp Observer_RequestID in "memar/modules/process/request/protocol/dt-uuid.observers.kh"
-tp Observer_Time_Request in "memar/modules/process/time/protocol/dt-request.observers.kh"
+tp Observer_RequestID in "memar/modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "memar/modules/process/time/protocol/request.observers.kh"
 
 tp TextDurationDataModel ab {
 	Field_TextID

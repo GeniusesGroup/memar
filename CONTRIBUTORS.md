@@ -18,3 +18,18 @@
 - Models:
   - [Grok 4.6](https://docs.x.ai/developers/grok-4-6)
   - [Grok 4.7](https://docs.x.ai/developers/grok-4-7)
+
+## Qwen
+- [Website](https://chat.qwen.ai/)
+- Models:
+  - qwen3.8-flash
+
+## ChatGPT
+- [Website](https://chatgpt.com/)
+- Models:
+  - GPT-5.6-terra
+
+## Claude
+- [Website](https://claude.ai/)
+- Models:
+  - Opus-5

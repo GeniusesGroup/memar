@@ -54,10 +54,10 @@ kept on the record so that a later reader can prove the request was not invented
 
 ## Retired sources
 
-`_import/` holds four copies of the retired `org/modules/user-request*` domains
+`_import/` holds four copies of the retired `modules/user-request*` domains
 (`user-request`, `user-request-chain`, `user-request-data`, `user-request-metric`). They are
 excluded from every build by the leading underscore and their Go import paths
-(`org/modules/user-request/protocol`) name a tree this repository no longer has. This domain
+(`modules/user-request/protocol`) name a tree this repository no longer has. This domain
 supersedes them. Their content is not converted here; what they held that still reads as current
 intent is recorded in the handoff.
 

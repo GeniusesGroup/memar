@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -19,11 +19,11 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 - Propagates to:
-  - energy/energy-carriers-and-grid-posture.md: Pending - if the owner rules [Direct mechanical coupling of refrigeration…](deep-machinery-manning.md#direct-mechanical-coupling-of-refrigeration-compressor-shafts-to-the-gas-turbine-direct-drive-shaft-coupling-for-screw-compressors)'s "gas" to include purchased gas (this document's handoff Question 2), the [Banning retail gas distribution in…](energy-carriers-and-grid-posture.md#banning-retail-gas-distribution-in-the-society-and-preventing-exergy-destruction-exergy-destruction) ban record must log the exception; if ruled digester-only, [Direct mechanical coupling of refrigeration…](deep-machinery-manning.md#direct-mechanical-coupling-of-refrigeration-compressor-shafts-to-the-gas-turbine-direct-drive-shaft-coupling-for-screw-compressors)'s prerequisite parenthetical should be narrowed to biogas. Awaiting the owner's verdict, recorded in [Banning retail gas distribution in…](energy-carriers-and-grid-posture.md#banning-retail-gas-distribution-in-the-society-and-preventing-exergy-destruction-exergy-destruction)'s changelog.
-  - thermal-sources-and-storage.md: Pending - two documents now install gas-hazard monitoring at level minus 10 (methane here, hydrogen in [Reversible solid-oxide fuel cells and…](thermal-sources-and-storage.md#reversible-solid-oxide-fuel-cells-and-seasonal-hydrogen-storage-deep-subsurface-rsoc)); flagged for a shared basement-gas-zoning instrument, no edit made there in this pass.
+  - energy/energy-carriers-and-grid-posture.md: Pending - if the owner rules [Direct mechanical coupling of refrigeration…](deep-machinery-manning.md#direct-mechanical-coupling-of-refrigeration-compressor-shafts-to-the-gas-turbine-direct-drive-shaft-coupling-for-screw-compressors)'s "gas" to include purchased gas (this document's handoff Question 2), the [Banning retail gas distribution in…](../energy-carriers-and-grid-posture/energy-carriers-and-grid-posture.md#banning-retail-gas-distribution-in-the-society-and-preventing-exergy-destruction-exergy-destruction) ban record must log the exception; if ruled digester-only, [Direct mechanical coupling of refrigeration…](deep-machinery-manning.md#direct-mechanical-coupling-of-refrigeration-compressor-shafts-to-the-gas-turbine-direct-drive-shaft-coupling-for-screw-compressors)'s prerequisite parenthetical should be narrowed to biogas. Awaiting the owner's verdict, recorded in [Banning retail gas distribution in…](../energy-carriers-and-grid-posture/energy-carriers-and-grid-posture.md#banning-retail-gas-distribution-in-the-society-and-preventing-exergy-destruction-exergy-destruction)'s changelog.
+  - thermal-sources-and-storage.md: Pending - two documents now install gas-hazard monitoring at level minus 10 (methane here, hydrogen in [Reversible solid-oxide fuel cells and…](../thermal-sources-and-storage/thermal-sources-and-storage.md#reversible-solid-oxide-fuel-cells-and-seasonal-hydrogen-storage-deep-subsurface-rsoc)); flagged for a shared basement-gas-zoning instrument, no edit made there in this pass.
   - energy-carriers-and-grid-posture.md: Done - [Direct mechanical coupling of refrigeration…](deep-machinery-manning.md#direct-mechanical-coupling-of-refrigeration-compressor-shafts-to-the-gas-turbine-direct-drive-shaft-coupling-for-screw-compressors)'s prerequisite link to the gas-ban record was re-pointed to its new English heading in this same session (that document was upgraded alongside this one).
 
 #### What changed

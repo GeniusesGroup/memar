@@ -197,10 +197,49 @@ would preserve a second index engine in Khayyam for the sake of a record format
 nothing reads any more. Deleting it — not converting it — is the recommendation;
 the decision belongs to whoever owns the migration, and the files are untouched.
 
+## Research 001 questions and next steps (2026-10-15)
+
+### Status
+Proposals only, from [text.research.001.md](text.research.001.md) (fourteen scenarios, a five-element kernel, five rival models of what a text node is plus language and value-content choices, a mapping of every edge, loop, protocol and widget folder, thirty-two test scenarios, fifteen contradictions). Nothing is ratified; every item is **Tentative**, **Explored** or **Deferred**, none Decided. Settled facts above are not re-argued. The research reads this domain's open questions above as inputs; where it finds an answer in another document it says so (sensitivity, question 17).
+
+### Open Questions raised by the research
+Each carries a recommended default and what it blocks; the full text is in the research's [Open Questions](text.research.001.md#8-open-questions). Ordered by what they change.
+
+1. **What is a text node: a slot with persistent identity and immutable content-addressed values, an in-place versioned slot, or an immutable interned value?** Default: the layered slot (`ThingUUID` for the slot, a value address derived from the normalized characters and the language). Blocks: the definition in [text.md](text.md), any requirement on `TextModel` beyond a string, the storage service's shape, the content research's open question 1.
+2. **One language per text with languages linked by a pluggable, several languages under one identity, or a neutral anchor?** Default: one language per text, link in a `localization` pluggable. Blocks: the translation folders, `storage.kh`, the content research's open question 6 (answer together).
+3. **Is style, structure or reference part of a text's value, or an annotation on a plain value?** Default: a declared format now, plain value plus annotations as the direction. Blocks: Text with style, the character validation, font-weighted tokens.
+4. **Who may change a text, and is a text with two referrers read-only?** Default: the referrer's authority; shared means read-only; copy on write. Blocks: template instantiation, username change.
+5. **Do `tokens`, `match-*`, `query`, `lowercase`, `typo`, the citation count and `duration` leave for `search-analytic`?** Default: yes; the analyzer choice per language is the pluggable's configuration. Blocks: seven folders, survey task T4's token conversions, the idea backlog's index authorization.
+6. **Are `mention`, `hashtag`, `command`, `anchor_text` and citation one capability on text?** Default: yes (`reference-resolution`); content's `mentions` and `topic` become discovered unions. Blocks: the duplicated hashtag and mention folders, survey Q3.
+7. **Where do length, character and format requirements come from, and who declares the three validation errors?** Default: the role, format and channel state the requirement; Memar's validators declare all three; this domain declares none. Blocks: `errors/errors.kh`, the `=` rule in `widgets/text-editor/validator.kh`, the memar-side decision this handoff names.
+8. **What is the unit of a length?** Default: declared per requirement; user-perceived characters for human limits, bytes for storage and channels. Blocks: Memar's `ValidateTextLength` (counts bytes), SMS limits.
+9. **What canonical form is used for equality and the value address, and where does language-specific folding begin?** Default: one canonical form at identity, stored characters untouched, folding in search. Blocks: username uniqueness, Persian matching.
+10. **Is "one read-only text per value and classification" (URI, hashtag, token, command) a rule family or a kernel kind?** Default: a rule family. Blocks: the loop docs, `Token`'s `Field_TextID`.
+11. **Where is the span address defined once?** Default: in this domain, for text. Blocks: the content research's anchor, token offsets, citations.
+12. **Is "Each text MUST have a specific type" a rule, and are the loop folders values of one vocabulary?** Default: type optional until a vocabulary exists; promote `uri`, `hashtag`, `mention`. Blocks: `text_type`, fifteen loop folders.
+13. **Are `lowercase` and `typo` relations between two texts, held as discovered data?** Default: yes. Blocks: the two folders.
+14. **Is a text derived from an object or a model (transcript, OCR, alt text, AI answer) a text, and how is it kept from reading as authored?** Default: a text with a derived-from relation, a method and a confidence. Blocks: the `ai/text` mapping, the content research's open question 16.
+15. **What does erasure do to a stored value, and may a shared word be erased for one requester?** Default: an authority-gated event that keeps the fact; never for one requester on a shared word. Blocks: the change mechanism, the status vocabulary.
+16. **Is dynamic data in a text a capability (`template`), and when?** Default: yes, after `localization`. Blocks: the open idea recorded above (dynamic data in a title).
+17. **Is sensitivity only the registered label plus a rule, with hide and show one reader's state?** Default: yes; the registered word [Sensitivity](../../../modules-plugable/knowledge/thing-labels/sensitivity/sensitivity.md) already exists in Draft, which answers the question recorded above. Blocks: the widget's three services.
+18. **Does this domain hold design-time strings (a Type's localized names and failure descriptions), or only run-time text of the organization's data?** Default: the Type keeps its own, as Memar's Type document says. Blocks: the unconverted `errors/locale.*.kh` here and in `language-human`.
+19. **Is a formal notation (code, mathematics, music) a language of a text or a format of its value; is sign language a language of a text?** Default: notations are formats; sign language is a human language. Blocks: deleting `edges/language/labels/`, the `language-human` vocabulary.
+
+### Next Steps
+1. Owner reviews research findings 1 to 3 and answers questions 1 to 3 first; they change what the domain is, and 1 and 2 are to be answered together with the content research's questions 1 and 6.
+2. If question 1 is accepted, a session writes the definition paragraph and the five-element kernel into [text.md](text.md) (not done: the research did not edit the Model or Policies).
+3. A session fills Placement and Open questions on the 27 edge folders that have none, using the research's mapping as a reading list; no folder moves before the owner answers questions 5, 6, 12 and 13 and survey Q3 and Q6.
+4. Hold survey task T4 (converting the unblocked text `.kh`) until questions 1, 2 and 5 are answered; the conversions would fix the shape of `tokens`, the storage service and the language data model.
+5. Settle the three validation errors together with the memar side (question 7) and record the decision in both repositories' handoffs.
+6. Reconcile the contradictions listed in the research in the documents that own each side, notably the language count of a text (contradiction 1), the identity statements (2), the hashtag and mention duplicates (6), and this handoff's waiting list (10, of which only `Field_LanguageUUID` was verified stale).
+7. Read what the research did not: the `user`, `object`, `notification` and `group` domains, the label domain beyond its Text paragraph, `internal/matn_____/` file by file, and the localization and information-retrieval literature; record anything that changes a Tentative item.
+
 ## Related Artifacts
+- [`text.research.001.md`](text.research.001.md) — the conceptual research: scenarios, kernel, models, mapping, tests, owner questions
+- [`text.changelog.md`](text.changelog.md)
 - [`README.md`](README.md)
 - [`../content/content.handoff.md`](../content/content.handoff.md)
-- [`../../language-human/language-human.md`](../../language-human/language-human.md)
+- [`../language-human/language-human.md`](../language-human/language-human.md)
 - [`../../../bundles/knowledge-management/knowledge-management.handoff.md`](../../../bundles/knowledge-management/knowledge-management.handoff.md)
 
 ## Notes

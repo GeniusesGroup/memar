@@ -2,7 +2,7 @@
 
 tp Container_ElementIndex in "memar/modules/computer/adt/container/protocol/index.kh"
 tp Error in "memar/modules/process/error/protocol/error.kh"
-tp VoucherIssuedUtcHourDataModel in "org/modules-plugable/economics/voucher/analytics/voucher_issued-utc_hour/protocol/data_model.kh"
+tp VoucherIssuedUtcHourDataModel in "modules-plugable/economics/voucher/analytics/voucher_issued-utc_hour/protocol/data_model.kh"
 
 tp VoucherIssuedUtcHourStorage ab
 

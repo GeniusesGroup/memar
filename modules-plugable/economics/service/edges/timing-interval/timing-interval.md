@@ -24,6 +24,7 @@
 - [good.md](../../../good/good.md)/[service.md](../../service.md) Unresolved: are `timing-interval` service-specific or a general schedulable-resource capability that other domains (estate, device) also want — and does a future `schedulable` module absorb it?
 - `Expected` vs `Minimum`/`Maximum` — scheduling estimate (analytics input) or contractual bound enforced by a rule?
 - Who reads the band (booking engine? invoice?) and what does exceeding it trigger — no-bare-edges test open.
+- Where a service is shown per hour, is `Expected` the duration the hourly rate is multiplied by to show an estimate, discovered rather than stated ([Pricing Research 001 → barber scenario](../../../pricing/pricing.research.001.md#a-barber-charging-by-time-and-place))? And if a slot (staff × place × time) becomes what carries a service's price, is this band the time dimension of that slot ([service → Unresolved questions](../../service.md#unresolved-questions))?
 
 ## Source
 

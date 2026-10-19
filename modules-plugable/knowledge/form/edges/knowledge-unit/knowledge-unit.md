@@ -16,7 +16,7 @@
 
 ## Open questions
 
-- Does this link duplicate the `Type_Quiz` kind flag in `form.go (no such file yet)`) — is this the unit-side anchor of that flag (one capability, two attachment points)?
+- Does this link duplicate the `Type_Quiz` kind flag recorded in [types](../types/types.md) — is this the unit-side anchor of that flag (one capability, two attachment points)?
 - What does attaching trigger — attempts counted against the sibling [max-attempt](../max-attempt/) edge, results written back to the unit?
 - Edge type or label name? The source sits in `package label`.
 - Direction/naming unconfirmed — nothing ratified.

@@ -33,7 +33,7 @@ struct had `moduleID module_p.UUID`. Its handoff already says what the fix is �
 the field accessor becomes a composition:
 
 ```
-tp Field_ModuleID in "org/modules/computer/module/protocol/dt-uuid.kh"
+tp Field_ModuleID in "modules/computer/module/protocol/dt-uuid.kh"
 ```
 
 Two other files name this domain and are not converted, so nothing else is
@@ -81,8 +81,8 @@ the owner decides they are one concept, this file's `Module` goes away and
 
 ## Decisions
 
-1. **`Field_ModuleID` returns `ThingUUID` and no `ModuleUUID` abstraction was declared.** The Go wrote `type UUID record_p.UUID`; the repository's identifier ownership decision makes that one concept owned by [identity/thing](../../../identity/thing/protocol/dt-uuid.kh). The Go's own comment — "Applications module identifier e.g. product, content, ... domain" — is extracted into [module.md](./module.md).
-2. **`ModuleModel` composes `Field_ModuleID`, which the Go's `Model` did not.** The Go's `Model` was `thing_p.Model` alone. This follows [knowledge/edge/protocol/model.kh](../../../knowledge/edge/protocol/model.kh), where `EdgeModel` carries `Field_EdgeID` although the Go did not, and it fits this domain: a module node whose identifier is its domain name should be able to answer what that name is. A reviewer who disagrees loses one line.
+1. **`Field_ModuleID` returns `ThingUUID` and no `ModuleUUID` abstraction was declared.** The Go wrote `type UUID record_p.UUID`; the repository's identifier ownership decision makes that one concept owned by [identity/thing](../../identity/thing/protocol/dt-uuid.kh). The Go's own comment — "Applications module identifier e.g. product, content, ... domain" — is extracted into [module.md](./module.md).
+2. **`ModuleModel` composes `Field_ModuleID`, which the Go's `Model` did not.** The Go's `Model` was `thing_p.Model` alone. This follows [knowledge/edge/protocol/model.kh](../../knowledge/edge/protocol/model.kh), where `EdgeModel` carries `Field_EdgeID` although the Go did not, and it fits this domain: a module node whose identifier is its domain name should be able to answer what that name is. A reviewer who disagrees loses one line.
 3. **The Go's `[STR string_p.String]` type parameter is gone; `Source` returns `String`.** Khayyam has no generic syntax, and an abstraction-owned signature may name abstractions only. `String` is memar's abstraction at `memar/modules/codec/string/protocol/string.kh`. Nothing is lost: the parameter appeared in exactly one position, a return, and covariant return types already let a module return a narrower string than the abstraction.
 4. **The registry abstraction is `Computer_Modules`, not `Modules`.** The Go had an interface `Modules[STR]` with a method `Modules()`, legal because Go keeps interface names and method names in different namespaces; Khayyam has one flat namespace per file, so the two met. The receiver-method-names rule settles which side yields — the method keeps the bare name, the declaration is qualified — so the method is `Modules` and the abstraction is `Computer_Modules`. `Array_Module`, `Array_Page` and `Array_Service` follow the same qualification because `Module` is the element they hold.
 5. **`GetModuleByMediaType`'s parameter is `mediaType`, not `mt`.** The Go's `mt` is one of Khayyam's seven declaration keywords and the frontend refuses it as an identifier (`keyword-as-identifier`). `mediaType` says the same thing.

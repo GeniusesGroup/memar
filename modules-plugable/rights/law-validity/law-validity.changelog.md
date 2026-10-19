@@ -50,7 +50,7 @@ SC sweep: every approach heading carries its strippable section-title handles su
 - Time: 2026-09-20T10:37:24Z
 - Type: Fixed, clarified
 - Cited:
-  - [Law Form and Validity — Handoff](law-form-and-validity.handoff.md) - Relation: Evidence: Q3 and Q4 were the queued defects; Q1 was the owner ruling this session recorded.
+  - [Law Form and Validity — Handoff](law-validity.handoff.md) - Relation: Evidence: Q3 and Q4 were the queued defects; Q1 was the owner ruling this session recorded.
 - Propagates to:
   - governance/government-organs.md: Done — empty code field cannot leave draft; constitution is a category label; new law must not contradict existing law.
 - Contributors:

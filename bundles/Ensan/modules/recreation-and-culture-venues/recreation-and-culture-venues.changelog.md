@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -23,8 +23,8 @@ Cross-document links created at migration (from the records' syn/links fields):
   - water-and-matter/water-bodies-as-common-infrastructure.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
   - economy/permitted-intermediation.md: Done in this batch — the inbound complement line was rewritten to that document's new English anchor during the same pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: the Persian bodies were re-expressed as English argument, preserving every claim, number and attribution (the 500-hectare Atna farm; hundreds of thousands of visitors; 15-to-25-percent farm gross income; the under-7-minute PRT access; "several times the country's urban standards"; NC-20 acoustics; the 365-day calendar; the 50,000-person economic scale; thousands-per-day capacity; 100-percent weekend coverage; 16K visual; the more-than-40-percent travel cut; under-300-watts-per-hour against hundreds of liters of jet fuel); Abstract and Motivation were re-derived from the document's own Explanation; a cross-approach collision section was added; nothing was removed. The source file name «شهر سبز.docx» is preserved verbatim. Section titles, in document order, with their legacy ids and new English headings:

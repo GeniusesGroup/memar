@@ -2,7 +2,7 @@
 
 ## Topic & Purpose
 
-Converting the Khayyam protocol layer of `modules/identity/time`: the identity surface the domain owns (`protocol/dt-uuid.kh`) and the `ttl` edge's protocol (`edges/ttl/protocol/ttl.kh`), under the governing rules in `____Chats/2026-09-23-go-khayyam-migration-map.md`.
+Converting the Khayyam protocol layer of `modules/identity/time`: the identity surface the domain owns (`protocol/dt-uuid.kh`) and the `ttl` edge's protocol (`edges/ttl/protocol/ttl.kh`), under the governing rules in [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md).
 
 ## Status
 
@@ -19,10 +19,14 @@ The substance this domain was expected to carry is not here: see Open Questions,
 - **The getter surface is a `Field_*` abstraction and its accessor keeps the field's name.** `Field_TimeToLive` + `TimeToLive` matches every `Field_X` accessor in the corpus (`Field_CountUnitID` → `CountUnitID()`, `Field_ThingUUID` → `ThingUUID()`) and leaves rule 2's generator able to produce the body from the field's name. `method-verb-phrases` discourages a noun-only method name and leaves field-accessor naming open, so the corpus convention was followed and the tension is recorded rather than resolved here.
 - **No explanatory comments above the Khayyam** (rule 5). The one Go comment in the domain — the TTL definition — became content in [`edges/ttl/ttl.md`](edges/ttl/ttl.md).
 
+## Ambiguities Resolved
+
+- **The time domain declares no `Time` at all — did that source live in another repository, or was it never written?** — answered (2026-10-08): it lived in memar. `memar/modules/time/protocol/time.kh` declares `tp Time ab` (with `Observer_Epoch`); `utc_epoch.DayInWeek` is `memar/modules/time/utc/epoch/day-in-week.kh` (`var DayInWeek = day_in_week{}`); `duration.Second` is `memar/modules/time/duration/protocol/second.observers.kh` (`Observer_Duration_Second`, `GetDuration`). A conversion imports them the way [`edges/ttl/protocol/ttl.kh`](edges/ttl/protocol/ttl.kh) already imports `Duration` from `memar/modules/time/duration/protocol/duration.kh`. What is genuinely absent stays open below: the `Field_*` accessors.
+
 ## Open Questions
 
 - **`dt-signal_data` is not in this domain.** `git ls-files modules/identity/time` returns six files, none of them a signal file. `dt-signal_data.kh` and the three `service-signal-*.kh` files live in `modules/computer/device/protocol/`, and what they declare is not a vocabulary of signal states either: `SignalData() []byte` — the payload a device sends from an output or receives at an input, with a note that large formats belong to the content and object modules. That is the device domain's work and it was not touched here.
-- **The time domain declares no `Time` at all.** [`time.md`](time.md) describes `time_p.Time`, `time_p.Field_Time`, `utc_epoch.DayInWeek`, `duration.Second`, `duration.Field_Second`, and roughly forty consumer files name `time_p.Time`, `time_p.Field_Epoch` or `time_p.Field_Time` — and no file in the tree declares any of them. Either that source lived in another repository or it was never written. This blocks finishing the domain: the substance is missing, not merely unconverted.
+- **`Field_Epoch` and `Field_Time` are declared in neither repository.** The `Time` surface resolves to memar (see Ambiguities Resolved), but these two accessors — named by consumer requirements across the tree — appear in no converted protocol here and in no memar declaration (the only memar hit is a changelog example). Requirements are re-modelled at conversion, so the open question is what replaces them, not where to import them from.
 - **`Field_TimeID` has no consumer.** Nothing in the tree composes it or calls it, and `time_p.UUID` is referenced nowhere. If the surface is not wanted, deleting it is cheaper than converting it; if it is wanted, the domain needs to say which records carry it and why a time's identity is not simply `Field_ThingUUID`.
 - **Span or instant?** [`edges/ttl/ttl.md`](edges/ttl/ttl.md) models the edge as `(time)-[:TTL]->(thing)` — an absolute instant — while the Go surface is a span held by a record. Both cannot be the edge. Settling it needs the `Time` above.
 - **`TTL` is claimed by two different concepts.** `modules/computer/instance_of/edges/health/protocol/business-services.kh` declares `BS_Ping_Request.TTL() duration.NanoSecond` — a network ping timeout, not a record's expiry. Different receivers, so no method collision today, but under `qualified-names` one of the two wants its module's path in the name. Not this domain's file to change.
@@ -40,7 +44,7 @@ The substance this domain was expected to carry is not here: see Open Questions,
 | `modules/identity/thing/protocol/dt-uuid.kh` | The declaration this domain includes | Convert it, naming the abstraction `ThingUUID` (Review) |
 | `modules/identity/user/protocol/dt-uuid.kh` | The pilot whose shape this domain follows | Fix its accessor (Review) |
 | `modules/computer/device/protocol/dt-signal_data.kh` | Where the signal vocabulary actually lives | None (read) |
-| `____Chats/2026-09-23-go-khayyam-migration-map.md` | Governing rules 1–7 for this conversion | None (read) |
+| [`../../../Khayyam.practice.md`](../../../Khayyam.practice.md) | Governing rules 1–7 for this conversion | None (read) |
 
 ## Notes
 

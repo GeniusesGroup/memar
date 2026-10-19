@@ -52,8 +52,8 @@ The types `Weekdays` and `DayHours` are included from memar and the Go's accesso
 
 ### The `estate` and money import paths were repointed, not copied
 
-- `area.kh` and `location.kh` imported `org/modules/rights/estate/protocol`, a path that does not exist. The owner is `org/modules/identity/estate/protocol`, already converted.
-- Every money import said `org/modules/economics/money/protocol`. The module is at `org/modules-plugable/economics/money/protocol/`, deliberately outside core; [money.handoff.md](../money/money.handoff.md) records the reasoning and the fact that a core file importing it is a core-to-pluggable dependency.
+- `area.kh` and `location.kh` imported `modules/rights/estate/protocol`, a path that does not exist. The owner is `modules/identity/estate/protocol`, already converted.
+- Every money import said `modules/economics/money/protocol`. The module is at `org/modules-plugable/economics/money/protocol/`, deliberately outside core; [money.handoff.md](../money/money.handoff.md) records the reasoning and the fact that a core file importing it is a core-to-pluggable dependency.
 - `timing-utc.kh` imported `memar/time/earth` for `Weekdays` and `DayHours`. Those two types moved to `memar/modules/time/utc/weekday.kh` and `dayhour.kh`; `modules/time/earth` has no such declarations at all. Third class of stale path in economics after money and estate, and this one crosses repositories.
 
 ### `currency uint64` became `Field_CountUnitID`

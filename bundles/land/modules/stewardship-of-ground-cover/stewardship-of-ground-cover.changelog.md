@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -21,8 +21,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Time: 2026-09-14T00:00:00Z
 - Type: rewrote, clarified, reviewed
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade: body language set to English; Abstract/Motivation re-derived from the document's own content; a cross-approach collision section added; nothing removed from the preserved texts.
@@ -36,7 +36,7 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-14T00:00:00Z
 - Type: clarified
 - Contributors:
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed
 
 #### What changed
 Old-numbering references that predate the requirements migration could not be matched to any — unresolved source labels: `retaining earth berm and moat`.
@@ -45,8 +45,8 @@ Old-numbering references that predate the requirements migration could not be ma
 - Time: 2026-09-14T00:00:00Z
 - Type: reviewed, clarified
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — reviewed, clarified
 
 #### What changed
 - The collision section gained the conflict pass-1's staging left unnamed: beneath the gardening-versus-succession philosophy dispute lies an undeclared **water ledger** — the succession record's own conventional-model flaw condemns "water-thirsty lawns," yet the forest record's forest-tree-density cover cannot establish without exactly that regime; the body now says the four readings are each buildable or unbuilt depending on which side of that ledger they stand on, and asks the records' numbers (not just their stances) to meet.
@@ -64,10 +64,10 @@ Old-numbering references that predate the requirements migration could not be ma
 - Time: 2026-09-20T11:02:42Z
 - Type: Fixed
 - Cited:
-  - [Which Plane Carries Which Flow](which-plane-carries-which-flow.md) - Relation: Depends_on: the ground-plane ruling (origin-destination aloft; 0 m recreation and wildlife) is what this hook now obeys.
+  - [Which Plane Carries Which Flow](../which-plane-carries-which-flow/which-plane-carries-which-flow.md) - Relation: Depends_on: the ground-plane ruling (origin-destination aloft; 0 m recreation and wildlife) is what this hook now obeys.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
 
 #### What changed
 - The tame-animal forest record's narrative hook no longer treats the walk to school as a ground-plane path. The 100-hectare courtyard remains play and wildlife; origin-destination travel between buildings does not travel on soil.

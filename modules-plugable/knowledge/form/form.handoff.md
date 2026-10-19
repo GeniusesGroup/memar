@@ -34,12 +34,10 @@ substance of this handoff.
 
 The brief for this domain asked for exactly this, and the answer is larger than `form.go`:
 
-- **`form.go` does not exist anywhere in this repository.** Three documents point at it:
-  `edges/form/form.md` ("module skeleton: `form/edges/` beside `form.go (no such file yet)`"),
-  `edges/knowledge-unit/knowledge-unit.md` ("the `Type_Quiz` kind flag in `form.go (no such file
-  yet)`") and `edges/types/types.md` ("source `form/edges/form.go` (no such file yet), in code").
-  Phase 1.5 already marked these, so the marker is doing its job; the claim underneath is what has
-  no source.
+- **`form.go` does not exist anywhere in this repository.** Three documents (`edges/form/form.md`,
+  `edges/knowledge-unit/knowledge-unit.md`, `edges/types/types.md`) pointed at it with a "(no such
+  file yet)" marker; the pointer is removed from each, and the claim underneath - that a `form.go`
+  holds the type flags and the form skeleton - has no source.
 - **The whole form type-flag space has no source left.** `edges/types/types.md` records ten flags -
   `Type_Anonymous`, `Type_Duration`, `Type_StartPoint`, `Type_AllowToEdit`, `Type_MaxAttempt` and
   the kinds `Type_Criterion`, `Type_Quiz`, `Type_Survey`, `Type_Questionnaire`, `Type_Poll` - as "one
@@ -58,12 +56,9 @@ The brief for this domain asked for exactly this, and the answer is larger than 
   source. It also appears in
   [`modules/knowledge/question/edges/question-status/question-status.md`](../../../modules/knowledge/question/edges/question-status/question-status.md)
   as a *question* status, so the same word is claimed by two domains for two records.
-- **One document pointer is now stale rather than absent.**
-  `edges/respondent-task/respondent-task.md` says "Respondent identity already has a home in this
-  module: `respondent/protocol/data_model.go (no such file yet)`". That file is not missing - it is
-  `respondent/protocol/data_model.kh`, and it has just been converted. The pointer should be repointed
-  at the `.kh`; that edit was left alone here because it is a document fix the main session can make
-  with the rest of the Phase 1.5 pointer sweep.
+- **One document pointer was stale rather than absent, and is repointed.**
+  `edges/respondent-task/respondent-task.md` named `respondent/protocol/data_model.go (no such file
+  yet)`; that file is `respondent/protocol/data_model.kh`, and the document now links it.
 
 ## Open Questions
 

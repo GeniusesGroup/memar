@@ -21,6 +21,8 @@ A service is a non-inventory economic offering (seat, timing-interval, number, m
 
 - Shared parent abstraction with `good` (a not-yet-named "tradable thing" concept?) — deliberately not invented until requirements force it.
 - Are `seat`/`timing-interval`/`number` service-specific or general schedulable-resource capabilities that other domains (estate, device) also want?
+- What plays the batch's part for a service, if a price belongs to the batch (the owner's leaning, open in [pricing](../pricing/edges/pricing/pricing.md#open-questions))? A barber charging by time and place sells a slot — staff × place × time — which no node holds before it is sold. Is the slot made a node now, as a candidate instance for the `schedulable` module, or do service prices stay on the product with pricing rules until that module exists ([Pricing Research 001 → Open Questions](../pricing/pricing.research.001.md#open-questions))?
+- Display basis: a service may be shown per hour, per month, per trip, or as "on request" rather than as one price; is the basis declared per product, and where ([Pricing Research 001 → Open Questions](../pricing/pricing.research.001.md#open-questions))?
 
 ### Future possibilities
 

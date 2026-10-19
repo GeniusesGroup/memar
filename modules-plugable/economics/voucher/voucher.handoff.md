@@ -52,8 +52,8 @@ This is a substitution, not a faithful binding, and it is the weakest conversion
 
 ### Stale import paths, three of them
 
-- `value.kh` imported `fc_p "org/modules/economics/currency/protocol"`. There is no such module. The owner is `org/modules/identity/thing/edges/count_unit/labels/currency/protocol`, already converted, which declares `Field_FinancialCurrencyID` valued as `ThingUUID`. [currency.md](../../../identity/thing/edges/count_unit/labels/currency/currency.md) is explicit that the currency label lives on a count unit, so the binding is right and not merely the nearest available name.
-- `invoice.kh` imported `money_p "org/modules/economics/money/protocol"`; the module is at `modules-plugable/economics/money/`.
+- `value.kh` imported `fc_p "modules/economics/currency/protocol"`. There is no such module. The owner is `modules/identity/thing/edges/count_unit/labels/currency/protocol`, already converted, which declares `Field_FinancialCurrencyID` valued as `ThingUUID`. [currency.md](../../../modules/identity/thing/edges/count_unit/labels/currency/currency.md) is explicit that the currency label lives on a count unit, so the binding is right and not merely the nearest available name.
+- `invoice.kh` imported `money_p "modules/economics/money/protocol"`; the module is at `modules-plugable/economics/money/`.
 - `voucher_issued-utc_minute`'s storage imported `memar/time/earth` for `Minute`; nothing is declared there.
 
 ## Unconverted, and what blocks it
@@ -77,4 +77,4 @@ This is a substitution, not a faithful binding, and it is the weakest conversion
 - [voucher.md](voucher.md) — model and the definition of a voucher as a bond.
 - [discount.handoff.md](../discount/discount.handoff.md) — the same facet architecture in the sibling module, including the two shared blockers (`Field_PosID`, `Field_UserType`).
 - [money.handoff.md](../money/money.handoff.md) — the `Amount` and `Field_FinancialCurrencyID` declarations this module includes.
-- [currency.md](../../../identity/thing/edges/count_unit/labels/currency/currency.md) — why the currency is a count-unit label rather than a field of the amount.
+- [currency.md](../../../modules/identity/thing/edges/count_unit/labels/currency/currency.md) — why the currency is a count-unit label rather than a field of the amount.

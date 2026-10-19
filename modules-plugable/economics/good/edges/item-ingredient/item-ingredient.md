@@ -23,4 +23,5 @@
 - Recipe vs choice: product-level [material](../material/) (the base/ingredient model) versus this order-time choice — one capability observed at two times, or two distinct edges?
 - Status lifecycle (`Field_Status`, [dt-status.kh](protocol/dt-status.kh)) — who moves it and what triggers the move (no-bare-edges test)?
 - [transaction.md](../../../../../modules/economics/transaction/transaction.md) filed these listings as "data-model pass material" — do they survive the pass as this edge's protocol API?
+- Where a chosen ingredient changes the line's price: is the ingredient's price, at the version in force at issue, part of the price the invoice item holds as its own fact ([pricing → Open questions](../../../pricing/edges/pricing/pricing.md#open-questions)); and does a made-to-order item's basis read the chosen ingredients' [replacement cost](../../../replacement-cost/replacement-cost.md) as a [material](../material/material.md) does?
 

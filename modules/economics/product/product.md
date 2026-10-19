@@ -43,6 +43,7 @@ For example, when specifying a screw, it is easier to refer to "HSC0424PP" than 
 ### Unresolved questions
 
 - Are `price`/`pricing` kernel edges of product or rule-driven capabilities?
+- Does a price belong to the product or to the batch? The owner leans to the batch (2026-10-10); if it does, what does "priceable" mean in the capability test above, and what plays the batch's part for a service? — [Pricing Research 001](../../../modules-plugable/economics/pricing/pricing.research.001.md#open-questions), [price](edges/price/price.md#open-questions).
 - Relation of product to `count_unit`: is pricing always expressed in the account's unit?
 - Core-ness must survive contact with non-retail priceables: tax lines, rent, penalties, pure services (an invoice billing only a fee/penalty). If these can be billed without a `product` node, the capability test ("anything priceable") needs tightening or the node becomes a catch-all.
 - **Capability test vs asset-management reading** (from [product.handoff.md](product.handoff.md)): the confirmed position says products may never be sold nor priced (museum pieces, an organization's furniture — the industry's separate "asset management" modules) while remaining products for warehousing/transfer/history. If pricing is the core test, what carries the asset-management half — product itself, or the inventory/asset pluggable? Converge with the product handoff's open #6.

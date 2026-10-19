@@ -21,4 +21,5 @@
 - One task-invoice edge with a Negotiation label, or a negotiation capability with its own nodes (parameters-vs-semantics)?
 - Intersect the task-assignment/fee text in [task.md](../../task.md) ("specific fee") — is fee negotiation decided here or in pricing ([pricing](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md))?
 - Direction/naming unconfirmed — nothing ratified.
+- Is a negotiation the path after a seller rejects an exchanged invoice on a price mismatch ([invoice exchange](../../../../economics/invoice/invoice.handoff.md#open-questions)), and does an accepted negotiated price become a new version of the seller's stated [price](../../../../economics/product/edges/price/price.md), or only the price the invoice item holds as its own fact, leaving the price and the [pricing](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md) rules untouched?
 

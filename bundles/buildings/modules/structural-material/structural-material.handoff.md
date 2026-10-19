@@ -17,7 +17,7 @@ Companion of `structural-material.md`.
 - Fire-code reading for exposed timber faces in escape routes and party walls (feeds Q1's second answer and the skin record's Fit critique).
 
 ## Assumptions (stability)
-- The ten-basement vertical zoning both records presuppose holds as recorded in [Vertical zoning of 10 basement levels (Deep Subsurface Clustering) and 35-meter penetration](../form-and-land/which-plane-carries-which-flow.md#vertical-zoning-of-10-basement-levels-deep-subsurface-clustering-and-35-meter-penetration) (stable per that record; Strong).
+- The ten-basement vertical zoning both records presuppose holds as recorded in [Vertical zoning of 10 basement levels (Deep Subsurface Clustering) and 35-meter penetration](../../../land/modules/which-plane-carries-which-flow/which-plane-carries-which-flow.md#vertical-zoning-of-10-basement-levels-deep-subsurface-clustering-and-35-meter-penetration) (stable per that record; Strong).
 - Concrete remains the material of everything below grade in both answers — no basement-in-timber alternative is on file (Weak: nothing forbids a future record proposing one).
 
 ## Proposed Next Steps

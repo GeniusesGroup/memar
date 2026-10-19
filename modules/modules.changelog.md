@@ -1,0 +1,66 @@
+# Modules Changelog
+
+## Changelog
+
+### Placement text reduced to a reference to Memar's Classification
+- Time: 2026-10-17T12:00:00Z
+- Type: changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+
+#### What changed
+- `modules.md` → Placement no longer states the Kernel, Pluggable and Bundle tests or the operational rules of Memar's Pluggable; it cites Memar's [Classification](https://github.com/GeniusesGroup/memar/blob/main/modules/knowledge/classification/classification.md) (with its Placement and Category Depth rules, the Label module and the `guest` label) as the authority. The heading and anchor `#placement` are kept because many documents link to it.
+- Kept as this repository's own: an edge becomes a module only with independent semantics; no bare edges; kernel does not reference the rule domain; the category-level `analytics` namespace for cross-domain analytics; behavior binds to UUID. Edge buckets, Edge folder and Module skeleton are unchanged.
+- `modules.handoff.md` gained "Re-reading this repository's categories": a proposal for `storage` under `computer` and for `management/organization` against `identity/organization`, and the categories not yet read.
+
+#### Considered and not done
+- Moving `modules/storage/` or `modules/management/organization/` — not taken: the owner has ruled the direction for `storage` only, not its shape, and has not ruled on the organization pair; both are asked in the handoff.
+- Restating Memar's tests here — not taken, as in the 2026-10-08 entry: a second copy of what Memar owns.
+- Rewriting the documents that link `modules.md#placement` — not needed: the anchor stays, and "no bare edges" still lives under it.
+
+#### Notes
+- The links to Memar point at its `main` branch on GitHub; Classification and Label are uncommitted in Memar at this writing, so they resolve only after Memar commits them.
+
+### Placement rules and edge buckets recorded; audit open state made durable
+- Time: 2026-10-08T09:05:00Z
+- Type: added
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+
+#### What changed
+- `modules.md` gained a `Placement` section, an `Edge buckets` section, and a `Module skeleton` section; its empty H1 became `# Modules`.
+- `modules.handoff.md` was created, carrying the audit's open state and owner-gated leftovers.
+- The three-layer model, the core-by-necessity test, the capability-completeness rule, and the `edges/` / `edges-loop/` / `edges-shortcut/` buckets are the durable outcome of the 2026-08 to 2026-09 core-vs-pluggable sessions, previously held only in gitignored briefs under `____Chats/`.
+
+#### Considered and not done
+- A new category-level doctrine file for the audit — not taken: the criteria land in the existing `modules.md`, and the working state in `modules.handoff.md`. The framework tests stay in Memar's own documents and are linked, not restated.
+- Porting the per-domain rationale of the applied moves back out of their destinations — not taken: that rationale already lives in each destination document.
+- Copying the framework tests themselves into `modules.md` — not taken: [Content Rule](https://github.com/GeniusesGroup/memar/blob/main/docs/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids a second copy of what Memar already owns.
+
+### Go → Khayyam migration map graduated out of `____Chats`
+- Time: 2026-10-08T09:56:07Z
+- Type: created, moved
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+
+#### What changed
+- The Go → Khayyam migration map, held only as a gitignored brief under `____Chats/`, graduated by facet: its governing rules, disposition triage, and review criteria are now [`Khayyam.practice.md`](../Khayyam.practice.md), and its phase record, corpus conventions, pilot findings, and open questions are [`Khayyam.handoff.md`](../Khayyam.handoff.md).
+- `modules.md` gained the edge-folder shape the Phase 0 pass produced: one folder per edge with Model, Policies, Placement, and Open questions; no aggregate `edges.md`; no archived deleted path; and the folder named for the relation rather than for the owning domain.
+- The twelve module handoffs that cited the brief by its scratch path now link the practice document, and `thing` and `comment` also link the handoff for the pilot findings and the Phase 0 review. `AGENTS.md` declares the practice before source work.
+- The brief itself went to the platform trash through `host/fs.py`.
+
+#### Considered and not done
+- Keeping the brief in `____Chats/` as the rules' standing home — not taken: a gitignored workspace is not a durable home, and its citations were the only record of rules the rest of the tree follows.
+- Restating the rules inside `Contribution.md` — not taken: ways of working belong in a Practice document, and `Contribution.md` stays a contributor's entry point.
+- Moving `____Chats/____main/` with it — not taken: Phase 4 reads it, and its entry-point text exists in no commit of this repository, so it stays scratch until that phase converts it.
+
+### Scope of the modules records stated
+- Time: 2026-10-10T13:45:00Z
+- Type: changed
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+
+#### What changed
+- `modules.md` now states that it and its companions hold only how a module is placed and added; a change inside a module is recorded in that module's own changelog and handoff.
+- An entry recording the `replacement-cost` module and the pricing decision, written here the same day, moved to [replacement-cost.changelog.md](../modules-plugable/economics/replacement-cost/replacement-cost.changelog.md) and [pricing.changelog.md](../modules-plugable/economics/pricing/pricing.changelog.md).
+- The entry recording the eight edge documents written for `computer/software` and `computer/instance_of` (2026-10-09) moved to [software.changelog.md](computer/software/software.changelog.md) and [instance_of.changelog.md](computer/instance_of/instance_of.changelog.md), each carrying the part about its own edges.

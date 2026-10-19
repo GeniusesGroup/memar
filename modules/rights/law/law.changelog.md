@@ -6,10 +6,10 @@
 - Time: 2026-09-21T11:04:01Z
 - Type: Added, clarified
 - Cited:
-  - [____Chats/law.md](../../../____Chats/law.md) - Relation: Evidence: owner model of law as text-plus-companions, labels instead of titles, rival versions as new nodes, and domain separation; Gemini's first reply as the specimen of importing article-and-note structure
+  - `____Chats/law.md` (not in the repository) - Relation: Evidence: owner model of law as text-plus-companions, labels instead of titles, rival versions as new nodes, and domain separation; Gemini's first reply as the specimen of importing article-and-note structure
   - [Law Form and Validity](https://github.com/GeniusesGroup/memar/blob/main/docs/society/governance/law-form-and-validity.md) - Relation: Evidence: later owner rulings on the computer-code gate, constitution-as-label, and non-contradiction; conventional-model flaw of vague articles without an execution mechanism
 - Propagates to:
-  - Memar `docs/society/governance/law-form-and-validity.md`: Done — corpus left Memar; leftover form prose on [law-validity.md](../../../bundles/government/modules/law-validity/law-validity.md) stripped 2026-09-21 (see later entry)
+  - Memar `docs/society/governance/law-form-and-validity.md`: Done — corpus left Memar; leftover form prose on [law-validity.md](../../../modules-plugable/rights/law-validity/law-validity.md) stripped 2026-09-21 (see later entry)
   - `modules/computer/rule/rule.md`: Done — Rule-vs-Law bullet now points at this definition
   - Instance catalog: Done — instances are bundle modules ([Bundles](../../../bundles/bundles.md)), not this type
 - Contributors:
@@ -51,7 +51,7 @@ Traditional statute books (a title, numbered articles, rider notes, a later offi
 - Type: clarified, Fixed
 - Cited:
   - [Law](law.md) - Relation: Depends_on: the type this session restates
-  - [Law Validity](../../../bundles/government/modules/law-validity/law-validity.md) - Relation: Evidence: leftover four-facet body was still restating the type after the society corpus landed as a bundle module
+  - [Law Validity](../../../modules-plugable/rights/law-validity/law-validity.md) - Relation: Evidence: leftover four-facet body was still restating the type after the society corpus landed as a bundle module
   - [Bundles](../../../bundles/bundles.md) - Relation: Depends_on: instance statutes are bundle modules, not a libraries catalog
 - Propagates to:
   - `bundles/government/modules/law-validity/law-validity.md`: Done — four-facet approach is a stub pointing here; page is duration-only
@@ -69,7 +69,7 @@ Traditional statute books (a title, numbered articles, rider notes, a later offi
   - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
 
 #### What changed
-The type document now states its claim in an Abstract and names the article-and-note failure as Motivation, without moving the session critique out of this changelog. Instance home is [Bundles](../../../bundles/bundles.md), not Memar `docs/society` and not a libraries folder. [Law Validity](../../../bundles/government/modules/law-validity/law-validity.md) no longer restates goal/explanation/guarantee/computer-code; inbound four-facet syn lines point at this type.
+The type document now states its claim in an Abstract and names the article-and-note failure as Motivation, without moving the session critique out of this changelog. Instance home is [Bundles](../../../bundles/bundles.md), not Memar `docs/society` and not a libraries folder. [Law Validity](../../../modules-plugable/rights/law-validity/law-validity.md) no longer restates goal/explanation/guarantee/computer-code; inbound four-facet syn lines point at this type.
 
 #### Deliberation
 The earlier entry left a Pending propagation to Memar. That corpus is gone from Memar; what remained was the imported bundle module still carrying the type as an "approach". Completing the original split — type here, duration there — is this session's work, not a new model.
@@ -125,7 +125,7 @@ Owner: review everything transferred to bundles; move general capabilities with 
 - Type: Fixed, clarified, Added
 - Cited:
   - [Law Research 001](law.research.001.md) - Relation: Evidence: owner review of the type critique; several first-pass findings were inferences the owner never granted
-  - [Politics](../../management/politics/politics.md) - Relation: Depends_on: politics is not a field of law
+  - [Politics](../../../modules-plugable/management/politics/politics.md) - Relation: Depends_on: politics is not a field of law
 - Propagates to:
   - `modules/rights/law/edges/`: Done — code, explanation, goal, executive guarantee, computer_code, vote-agree
   - `modules/computer/rule/rule.md`: Done — Law realized as Rules, layers not islands
@@ -136,7 +136,7 @@ Owner: review everything transferred to bundles; move general capabilities with 
   - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — misread, then rewrote, argued
 
 #### What changed
-[law.md](law.md) no longer says later precision appends to explanation after a vote. Once status is voting, the payload is frozen; a vote is a signature over a digest of the whole content. Any empty required companion keeps the record in draft. Executive guarantee is how the law takes effect, not a sanction-for-disobedience. Computer code is a machine-checkable realization, typically as Rule nodes, and that Rule set is inside the digest. Folk labels attach to comments. [Politics](../../management/politics/politics.md) is defined as a general skill, not government-theater.
+[law.md](law.md) no longer says later precision appends to explanation after a vote. Once status is voting, the payload is frozen; a vote is a signature over a digest of the whole content. Any empty required companion keeps the record in draft. Executive guarantee is how the law takes effect, not a sanction-for-disobedience. Computer code is a machine-checkable realization, typically as Rule nodes, and that Rule set is inside the digest. Folk labels attach to comments. [Politics](../../../modules-plugable/management/politics/politics.md) is defined as a general skill, not government-theater.
 
 #### Deliberation
 Owner: who wrote that a law may change after voting starts? That claim is refused. Status may move (draft, get-critique). Once voting starts, nothing in the record may change. Voting is digital signature plus hash of the whole content; the smallest change means the votes were for a different law. A law must be written clearly because change has a large cognitive cost. 20 percent to 30 percent is not a small edit.
@@ -180,7 +180,7 @@ Grok: politics without a "shared binding outcome among people who disagree" qual
 - Type: clarified, Added, moved
 - Cited:
   - [Contract](../contract/contract.md) - Relation: Evidence: marriage is already a contract, not a law-type per relationship
-  - [Politics](../../../modules-plugable/politics/politics.md) - Relation: Evidence: not kernel; critiques of the definition live on its handoff
+  - [Politics](../../../modules-plugable/management/politics/politics.md) - Relation: Evidence: not kernel; critiques of the definition live on its handoff
   - [Status](../../knowledge/status/status.md) - Relation: Depends_on: draft is the shared label; a transition is an event a rule may block
 - Propagates to:
   - `modules/rights/law/status/`: Done — get-critique and voting; draft not copied
@@ -221,7 +221,7 @@ Grok: politics is not kernel. No type. The critiques of the owner's sentence are
 - Type: clarified, moved
 - Cited:
   - [Status](../../knowledge/status/status.md) - Relation: Depends_on: a status is a loop-edge; the catalog lives there
-  - [Founding Arrangements](../../../modules-plugable/rights/founding-arrangements/founding-arrangements.md) - Relation: Evidence: marriage, family, and the small law set
+  - Founding Arrangements (module removed; family and marriage are separate plugable modules) - Relation: Evidence: marriage, family, and the small law set
   - [Election](widgets/election/election.md) - Relation: Evidence: critique and signature are separate acts; delegation is stated there
   - [Politics](../../../modules-plugable/management/politics/politics.md) - Relation: Evidence: nearest parent, interest-weighing definition
 - Contributors:

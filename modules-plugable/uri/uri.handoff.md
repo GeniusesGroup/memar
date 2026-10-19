@@ -23,7 +23,7 @@ six files were left unconverted for stated reasons.
   `Field_CardNumber` / `CardNumber` beside `Card`, `Field_InternalID` / `InternalID` beside
   `AccountInternalID`.
 - **`[]T` is never re-declared.** Every id array imports `Array_ThingUUID` from
-  `org/modules/identity/thing/protocol/dt-uuid.kh`. `internet-domain-name` is the one place a
+  `modules/identity/thing/protocol/dt-uuid.kh`. `internet-domain-name` is the one place a
   domain array was genuinely needed, so `Array_DomainName ab { Array_Dynamic }` is declared there
   beside `DomainName` - the shape `rights/delegate` uses for its own arrays.
 - **Flag spaces compose memar's width abstraction.** `DomainStatus ab { U8 }` and
@@ -60,13 +60,13 @@ six files were left unconverted for stated reasons.
   declaration the other module includes. Which module owns it is not this domain's to decide, so
   `dt-ap.kh` was left unconverted.
 - **`Field_InventoryID` has no owner, and there are two claimants with different import paths.**
-  `number-serial/protocol/data_model.kh` imports `org/modules/economics/inventory/protocol`, but the
+  `number-serial/protocol/data_model.kh` imports `modules/economics/inventory/protocol`, but the
   only `Field_InventoryID` in the whole tree is the commented-out Go interface in
   `modules-plugable/gui/page-inventory/protocol/dt-uuid.kh`. The import path and the claimant
   disagree about which inventory is meant, and neither is converted. This is the single blocker for
   that file.
 - **`shaparak-hex` is blocked on a domain that does not exist.** Its data model and storage contract
-  need `card_p.Field_CardID` and `fcp.UUID` from `org/modules/vertices/card/protocol`;
+  need `card_p.Field_CardID` and `fcp.UUID` from `modules/vertices/card/protocol`;
   **`modules/vertices/` is empty in this repository** - not unconverted, absent. Shaparak's own card
   hex has no other home: `shaparak-hex/protocol/data_model.kh` carries a bank card, and the card
   identity it points at is the missing one.
@@ -123,7 +123,7 @@ six files were left unconverted for stated reasons.
 | `iso-7812/bank/card.kh` | A concrete `Card string` capsule with four slicing accessors, an `IsValid()` that calls `memar/validators`, and `// TODO::: how to return 8 number length IIN??`. Implementation layer; the *contract* is `protocol/card.kh`. |
 | `iso-7812/bank/iran.kh` | A 40-case `switch` from BIN prefix to Persian issuer name. The Persian text is mojibake in the file as it stands. A reference table with no home, and its data is already damaged. |
 | `number-serial/protocol/data_model.kh` | Needs `Field_InventoryID`, whose owner is unconverted and whose two claimants disagree on the import path. |
-| `shaparak-hex/protocol/data_model.kh`, `dt-card-hex.kh`, `storage.kh` | Need `Field_CardID` and `UUID` from `org/modules/vertices/card/protocol`; `modules/vertices/` does not exist in this repository. |
+| `shaparak-hex/protocol/data_model.kh`, `dt-card-hex.kh`, `storage.kh` | Need `Field_CardID` and `UUID` from `modules/vertices/card/protocol`; `modules/vertices/` does not exist in this repository. |
 | `username/errors/errors.kh` | A `const` block whose only member is a commented-out string prefix. Comment-only, and the edge-vocabulary-is-data ground the repository has already taken twice. |
 | `username/internal/validator.kh` | A compiled regexp and a `ValidateUsername` function. Implementation; the regex belongs in the domain document as the validation rule, not in source. |
 | `uri-shortener/protocol/data_model.kh` (partly) | Converted. Its `const shortenerPath = "/s"` stayed in the Go block: a configuration value under `protocol/` has no Khayyam form under rule 1. |
@@ -137,10 +137,10 @@ six files were left unconverted for stated reasons.
   - why the flag constants have no Khayyam form
 - [`../management/access-control/access-control.handoff.md`](../management/access-control/access-control.handoff.md)
   - the sibling domain whose name collides with this bundle's `Field_AccountID` consumers
-- `org/modules/computer/software/edges/accepted_protocols/protocol/dt-ap.kh` - the duplicate of
+- `modules/computer/software/edges/accepted_protocols/protocol/dt-ap.kh` - the duplicate of
   `UserDomain_AP`
-- `org/modules/identity/organization/protocol/dt-uuid.kh` - declares `Field_OrganizationUUID` but no
+- `modules/identity/organization/protocol/dt-uuid.kh` - declares `Field_OrganizationUUID` but no
   `OrganizationUUID` type; its accessor returns `UserUUID`
-- `org/modules/identity/user/protocol/dt-uuid.kh` - declares `Field_UserUUID` but no `Array_UserUUID`
+- `modules/identity/user/protocol/dt-uuid.kh` - declares `Field_UserUUID` but no `Array_UserUUID`
 - `memar/modules/computer/adt/container/protocol/pagination.kh` - `Pagination_Offset_Request` and
   `Pagination_Response`, which two of the service files here compose

@@ -2,7 +2,7 @@
 
 ## Topic & Purpose
 
-State of converting the comment edge — `modules/knowledge/content/edges-loop/comment/protocol/` — from Go to Khayyam under the seven governing rules in `____Chats/2026-09-23-go-khayyam-migration-map.md`. The domain is one file and one requirement; what is recorded here is the identity decision, the placement question the migration map left open, and what the edge does not yet say.
+State of converting the comment edge — `modules/knowledge/content/edges-loop/comment/protocol/` — from Go to Khayyam under the seven governing rules in [`../../../../../Khayyam.practice.md`](../../../../../Khayyam.practice.md). The domain is one file and one requirement; what is recorded here is the identity decision, the placement question the Phase 0 review left open, and what the edge does not yet say.
 
 ## Status
 
@@ -40,7 +40,7 @@ Active — `protocol/dt-uuid.kh` is converted and returns `accept` from the Khay
 
 ## Related Artifacts
 
-- `____Chats/2026-09-23-go-khayyam-migration-map.md` — the seven governing rules; its Phase 0 review carries the placement question this handoff settles.
+- [`../../../../../Khayyam.practice.md`](../../../../../Khayyam.practice.md) — the seven governing rules. The Phase 0 review that carries the placement question this handoff settles is in [`../../../../../Khayyam.handoff.md`](../../../../../Khayyam.handoff.md).
 - [`comment.md`](comment.md) — the domain document; two lines, and the reason the behavior above is missing rather than merely unconverted.
 - `modules/knowledge/content/content.handoff.md` — records "Comment is not an independent entity — Content + a `reply_to` relation".
 - `modules/identity/thing/protocol/dt-uuid.kh` — the owner of the identifier this edge includes.

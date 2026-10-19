@@ -62,7 +62,7 @@ Protocol layer converted. [`protocol/dt-uuid.kh`](protocol/dt-uuid.kh) is the on
 
 ### Decisions
 
-- **A task's identity is the thing domain's identity.** *(Decided.)* The Go source wrote `type UUID group_p.UUID`, a named-type re-declaration two links from the owner. Khayyam has no alias form, so the file includes `ThingUUID` and `Array_ThingUUID` from `org/modules/identity/thing/protocol/dt-uuid.kh` and declares no `TaskUUID`. Sixth domain to reach this conclusion (`user`, `time`, `uri`, `calendar`, `group`, now `task`); `department`, `staff` and `shift` reach it in the same wave. The Go comment — "It is base on group to support some group rules e.g. invite, …" — is the reason this domain must *not* mint its own identity, and it now reads as an argument for the opposite of what it was attached to.
+- **A task's identity is the thing domain's identity.** *(Decided.)* The Go source wrote `type UUID group_p.UUID`, a named-type re-declaration two links from the owner. Khayyam has no alias form, so the file includes `ThingUUID` and `Array_ThingUUID` from `modules/identity/thing/protocol/dt-uuid.kh` and declares no `TaskUUID`. Sixth domain to reach this conclusion (`user`, `time`, `uri`, `calendar`, `group`, now `task`); `department`, `staff` and `shift` reach it in the same wave. The Go comment — "It is base on group to support some group rules e.g. invite, …" — is the reason this domain must *not* mint its own identity, and it now reads as an argument for the opposite of what it was attached to.
 - **`Field_TaskID` + `TaskID`, `Field_TasksID` + `TasksIDs`.** *(Decided.)* The Go already used the `_ID` spelling, so the sweep's `Field_X`+`X` rename does not apply here; the plural accessor's `TasksIDs` is the corpus spelling (`EdgesIDs`, `EstateIDs`, `LabelsIDs`). Result parameters `t` and `a` follow `Field_EdgeID` / `Field_EstateID`.
 - **`edges-loop/status/task-status.kh` was left unconverted.** *(Decided.)* It holds four `iota` label constants and no type, function, or interface — vocabulary, which is data. Same disposition as the other label-only edge files in this tree.
 - **`_import/task/{init-gui,init-server,module}.kh` were left unconverted.** *(Decided.)* `_import/` is the legacy `package org` / `libgo/protocol` shim tree; its declarations re-state identities `protocol/dt-uuid.kh` owns, and no `_import` file has been converted in any wave.
@@ -80,7 +80,105 @@ Protocol layer converted. [`protocol/dt-uuid.kh`](protocol/dt-uuid.kh) is the on
 - [`protocol/dt-uuid.kh`](protocol/dt-uuid.kh) — the identity surface; includes the thing domain's declaration.
 - [`../group/group.handoff.md`](../group/group.handoff.md) — the same identity conclusion reached one domain up, and the record of why `rights/contract` and `rights/case` no longer reach the group through an alias.
 
+## Research 001 questions and next steps (2026-10-15)
+
+### Status
+Proposals only, from [task.research.001.md](task.research.001.md) (eleven scenarios, a five-element kernel, four rival models, a mapping of every edge folder, twenty test scenarios, twelve contradictions). Nothing is ratified; every item is **Tentative**, **Explored** or **Deferred**, none Decided. Settled facts above are not re-argued.
+
+### Open Questions raised by the research
+Each carries a recommended default and what it blocks; the full text is in the research's [Open Questions](task.research.001.md#open-questions). Ordered by what they change.
+
+1. **What is the node: the declared intent of a unit of work, or a unit of work required of someone?** Default: the declared intent; duty and assignment are relations. Blocks: the definition in [task.md](task.md), M4, any `TaskModel`.
+2. **Does a task have a team from birth, or acquire one when people join?** Default: acquired. Blocks: [group.md unresolved 1](../group/group.md#unresolved-questions), `TaskModel` over `GroupModel`, the case premise.
+3. **Is completion propagation kernel or pluggable; may a parent end with open children?** Default: pluggable; only with an explicit outcome per open child. Blocks: the completion module, the seed's automatic-close example.
+4. **Several parents allowed, and is `blocks` separate from containment?** Default: several parents, acyclic, two relations. Blocks: the edges/task split, `Move`, the cycle guard.
+5. **Is a reopen a state change or a new task that supersedes the first?** Default: a new task that supersedes. Blocks: the lifecycle, the ticket model.
+6. **Must an assignee accept; does silence mean accept?** Default: accept required; silence is not acceptance; delegate owns it. Blocks: the assignment model.
+7. **Do participant labels dissolve into Group, Role and delegation, with the assigner as the creator of the membership edge?** Default: yes. Blocks: retiring the four ownership task-relation files.
+8. **What is the outcome vocabulary?** Default: completed, partial, rejected, cancelled, abandoned, separate from lifecycle position. Blocks: `Success`/`Close`, partial completion.
+9. **Where do task statuses live (catalogue R4)?** Default: `status/<name>/` for lifecycle, `edges-loop/` for classification. Blocks: the folder of task-status.kh and the Scrum/XP vocabulary.
+10. **Is a delegate that is a thing (software agent, machine) first-class, with accountability staying with the principal?** Default: yes. Blocks: skill-matching for non-humans.
+11. **Who may see which task?** Default: participants see their tasks; outsiders see relayed outcomes. Blocks: the ticket model, the authorization versus access-control overlap.
+12. **Where does the merged campaign capability live; does `settlement-reference` yield to budget?** Default: `modules-plugable/management/campaign`; budget keeps the one relation. Blocks: moves and deletions of four edge folders.
+13. **Does `Progress` leave criterion?** Default: yes, as discovered data. Blocks: criterion conversion.
+14. **Do `project`, `shift` and the stage vocabularies become classifications or pluggable vocabularies of a task?** Default: yes. Blocks: the project and shift folders.
+15. **Is the decision a label on the task or a node the task produces?** Default: a label, with `changes` read directly; a node only if a decision needs its own lifecycle. Blocks: the shape of the Change Set edge.
+16. **May a task be created in another organization's space?** Default: no; cross-organization work is participation. Blocks: ticket and exchange models.
+
+### Next Steps
+1. Owner reviews research findings 1 and 2 and answers questions 1 to 3 first; they change what the domain is.
+2. Done on the defaults, still Tentative (2026-10-18): [task.md](task.md) now defines the node as the declared intent, states what Task owns against content, text, timeline, group, delegate, rule, label and status, and maps every Memar session term to its Task term. If the owner answers questions 1 to 3 otherwise, the definition and the Assign task rules are revised.
+   - New open item: where the queue and claim capability lives (no pluggable holds it yet).
+   - New open item: whether Blocked is stored or derived.
+3. A session fills [Placement](../../modules.md#edge-folder) and Open questions on the six edge folders that have none (advertisement, campaign, marketing, settlement-reference, and the loop stubs), using the research's mapping as a reading list; no folder moves before the owner answers questions 12, 14 and catalogue R2/R4.
+4. Draft the three kernel edge documents (`part_of`, `blocks`, `changes`) as candidates once questions 4 and 15 are answered; do not write a `TaskModel` before question 2.
+5. Resolve with the group domain whether roles-in-a-task are Group membership with a Role (questions 2 and 7), and with the delegate domain who owns acceptance (question 6).
+6. Reconcile the contradictions listed in the research (notably the `Blocking`/`block` collision, the marketing edge directions, and the duplicate budget relation) in the documents that own each side.
+7. Review the project-management and workflow-modeling literature the seed RFC names as possibly worth reviewing; the research did not consult it.
+
+## Research 002 questions (2026-10-18)
+
+### Status
+Proposals only, from [task.research.002.md](task.research.002.md): what outside work on source control, context engineering and multi-agent coordination says, set against this domain. Every item is **Tentative**; nothing is Decided and [task.md](task.md) is unchanged. The source-control article does not discuss tasks or bounded context; it supports only the properties (online, immutable addressed changes, derived views).
+
+### Open Questions raised by the research
+Numbering continues Research 001's; the full text and defaults are in the research's [Open Questions](task.research.002.md#open-questions).
+
+17. Is a reader's context a derived view of the Task graph, assembled by a pluggable capability? Default: yes, home undecided.
+18. Is a summary a content that `summarizes` a kept span, never the record? Default: yes.
+19. What does a child inherit from its ancestors by walk? Default: decisions, checks, constraints, references; not text.
+20. Does a content have one write holder at a time? Default: yes.
+21. Do events and revisions have a canonical addressed append-only order? Default: yes.
+22. Does `changes` point at content revisions or paths? Default: revisions.
+23. Concurrent change to one content: lock or optimistic with a conflict child Task? Default: optimistic.
+24. Is review attached to the intent, and are approval rules conditioned on the kind of change? Default: yes.
+25. Does a parent read a child's trace or only its hand-back? Default: hand-back.
+26. Where does how-agents-run live, and what does the Task give it? Default: its own concept; the Task gives the view.
+
+### Revised after an independent review (2026-10-18)
+The addendum in [task.research.002.md](task.research.002.md#addendum--independent-review-by-a-stronger-model-2026-10-18) changes the defaults of 17, 18, 19, 20, 21, 23 and 24 and adds 27 to 34. The two corrections that matter: 23's default (optimistic) contradicted the owner's decided single-changer direction and is replaced by it; 18 (a summary) belongs to content and conflicts with content's question 16. New: 27 a `#123` in text is content's mention, backlinks derived; 28 following a reference gives a card; 29 a Task whose binding set exceeds a reader's bound is decomposed, never ranked down; 30 a hand-back lists the decisions taken; 31 an optional WIP limit on the claim; 32 subscription is the notification domain's and the inbox is derived; 33 an agent's chat is a run on a Task; 34 a view cites items at a revision within a run. Suggested order for the owner: 33, 17, 27, 20, 23, 29, 22, 21, 19, 30, 28, 25, 24, 31, 32, 34, 18, 26.
+
+### Owner's answers to the review (2026-10-18)
+Recorded as the owner stated them; the owner said several remain unclear to him, and those stay open.
+
+- **Q33 (a chat is a run on a Task): not accepted as framed.** The chat is a timeline that holds contents; its relation to a Task is not the concept of a run. *(owner)* The relation between a chat's timeline and a Task is therefore open again.
+- **Q27 (a reference in text is content's mention): agreed.** *(owner)* Beyond a mention, two Tasks may be related by an edge, and the reason can be other than a dependency: for example, the two Tasks ask for the same thing.
+- **Q18 (is a summary acquired content): no.** A summary is discovered by nature, from related content. *(owner)* This matches content's question 16 and withdraws the addendum's "acquired when someone made it".
+- **Q29 (decompose, never rank out): agreed in part**, not yet clear to the owner.
+- **Q17, Q23, Q30 and Q19, Q26: no position yet**; unclear to the owner. Q23 stays under the decided single-changer direction of 2026-10-05 until he says otherwise.
+- **Thinking text of a participant: stored, on a different edge from the discussion, and no other participant is obliged to read it.** *(owner's direction, to be confirmed against the independent opinions)*
+
+New open question raised by the owner: **when a user is added to a Task to ask their opinion, is that a new Task, or may several participants, human or AI, work on one Task, each mention changing that participant's own cognitive path?** The owner's leaning is the second, with thinking kept on its own edge.
+
+### Second opinion (2026-10-18)
+See [task.research.002.md](task.research.002.md#second-opinion--a-fresh-agent-positions-formed-before-reading-the-addendum-2026-10-18). Proposals, all Tentative: a new person on a Task is a participant unless the ask has its own check, its own holder by delegation, its own view, or its own writes (then a child Task); a mention changes the mentioned participant's path and never the Task's; thinking text goes in the thinker's own timeline, related to the reply it produced, with the rule that nothing binds unless it is recorded as a decision, question, change or reply; a chat is a timeline and a Task relates to contents, not to a timeline (question 33 replaced by: is the relation of a Task to a timeline derived from the contents related to it?); a summary is discovered and cached with its inputs; `same_ask` is a candidate fifth Task relation; siblings' decisions reach a child through the parent; the claim rule warns and does not refuse; a decision must be an addressable item (Research 001 question 15). Open for the owner: those six, and the plain-language Q17, 19, 23, 29, 30.
+
+### Owner's rulings, the second round (2026-10-18)
+Recorded as the owner stated them. They supersede the parts of the research named after each.
+
+- **One timeline per Task, used by every participant.** A participant may add any number of texts to a content in that timeline, related by edges of different kinds and for different reasons, some of which only the author knows and uses on its way to the Task's output. Thinking text is such a text; no other participant is obliged to read it. *(owner)* Supersedes the second opinion's section C (thinking text in the thinker's own timeline) and D (one timeline serving several Tasks, a Task having parts in several chats), and the addendum's Finding 12 and Proposal 18. The owner added that he does not want the Task concept fitted to today's AI chat tools, whose per-agent chat shape he criticises.
+- **Nothing binds unless recorded as a decision, question, change or reply.** Agreed. *(owner; it is also what Memar's Cognition already says: externalize session state into shared artifacts.)*
+- **`same_ask` is accepted as a Task relation.** *(owner)*
+- **Question 19 (what a child inherits): no structured inheritance.** Each Task is independent and no field or structure is added that forces decisions and checks to be written for children. One important process of doing a Task is to search for leads with retrieval methods such as BM25 across all content the worker can reach, not only the Tasks related by an edge. *(owner)* Supersedes the addendum's rings and Proposals 11, 12 and 14, and the second opinion's answer to Q19.
+- **A Task that will change a content is first related to it by an edge**, so everyone knows which Tasks intend to change or have changed it; at its end the edge is removed or becomes another edge. The owner calls this like a commit but more complete, and better than the source-control article's idea, which the article only hints at without describing. *(owner; the name, and whether it also serializes writers, are open. This is a candidate answer to question 23, not yet that answer.)*
+- **Question 17 and the context: the only thing always in a worker's context is the first content of the Task's timeline, or a chosen list, which is something like a plan and says the path of the work. The worker loads anything else by searching, through a service like `memar content`.** *(owner)* So the derived view is a plan plus search, not a walked graph.
+- **Cache: do not lock the model to today's AI models.** The way of caching is to be changed in whole. *(owner)* Findings 4 and 13 of Research 002 and Proposal 5 describe prefix reuse for today's models and are not requirements of the Task model.
+- **Task is wide.** A user's complaint against the organization and an inner partition wall on the second floor are Tasks as much as a code change, and the model must cover all such needs without being limited to AI workers. *(owner)* [task.md](task.md) now says so.
+- **Question 23, answered: no write ordering is forced by the edge.** When more than one Task intends to change one thing, their changes may be coordinated by a service like a database transaction, but nothing requires the writes to be coordinated at the same moment; the coordination may be conceptual, the two Tasks being related and done together. So the intent-to-change edge announces, and a separate edge relates two Tasks conceptually. *(owner)* This replaces the single-changer default for Task-level coordination in Research 002; content's own decision of 2026-10-05 on one changer per entity stays content's. The conceptual relation between two Tasks is `same_ask` when they ask the same thing; whether a wider "done together" relation is a second edge or the same one is open.
+- No position on the remaining questions; he will do whatever is needed.
+
+### Owner's answers to the six questions (2026-10-18)
+- **Search belongs to text.** Task and content understand nothing of text, so finding a word or phrase is text's. The service that loads what was found into a worker's context has no domain yet; the domain is created first, and the question is left until then. *(owner)*
+- **New Task or participant:** agreed for now, with the three questions (own done-or-not-done state, own acceptor, own check). Rules must stay easy to create, amend and remove; this one may be amended. The Task rules from this work are kept under [modules-plugable/management/task/rules](../../../modules-plugable/management/task/rules/README.md). *(owner)*
+- **Duplicates and more relations:** two or more further Task-to-Task edges are certain: a Task that does more than the Task it closes, and a Task closed because a new decision conflicts with an earlier one. Names open. *(owner)*
+- **A decision is recorded either way:** a documentation requirement is used as a text template, and a content may also be joined to its text by an edge directly. *(owner)* The question whether a decision is a marked text or an item of its own is therefore answered as "both ways are right".
+- **A Task too big for a worker is split.** Certain. Tasks may last as long as the organization (the vision of the organization may have hundreds of Tasks over its life). *(owner)*
+- **Name of the intent-to-change edge:** no idea; the owner will leave a todo in the code if one comes. *(owner)*
+
 ## Related Artifacts
+- [`task.research.002.md`](task.research.002.md) — outside work on source control, context and many participants set against the domain
+- [`task.research.001.md`](task.research.001.md) — the conceptual research: scenarios, kernel, models, mapping, tests, owner questions
+- [`task.changelog.md`](task.changelog.md)
 - [`README.md`](README.md)
 - [`edges/task-concept.md`](edges/task-concept.md)
 - [`../group/README.md`](../group/README.md) — Task-is-additive-over-Group also recorded there

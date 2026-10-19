@@ -19,8 +19,8 @@ Active - the three `.kh` files under this domain accept under the Khayyam fronte
 ## Decisions
 
 1. **Ownership is treated as a node.** [ownership.md](./ownership.md) still asks "Bare edge or node?", but every edge document in this folder is already written against an `ownership` node - `owner.md` `(ownership)-[:owner_is]->(user)`, `issuer.md` `(ownership)-[:issuer_is]->(organization)`, `heir.md`, `creator.md`, `reserved.md`. The edge documents are the newer intent on this point, so `Field_OwnershipID` is declared. **If the review answers "bare edge", this declaration has nowhere to live and `protocol/dt-uuid.kh` is the file to delete.**
-2. **`ownership/protocol/dt-uuid.kh` takes `ThingUUID`** from [identity/thing](../../../identity/thing/protocol/dt-uuid.kh), the single owner of the identifier concept. The Go said `thing_p.UUID` directly.
-3. **Nothing was added to the `UserUUID` fork.** `owner` returns `UserUUID` because the owner *is* a user, and [identity/user/protocol/dt-uuid.kh](../../../identity/user/protocol/dt-uuid.kh) declares that name itself. `issuer` also returns `UserUUID`, because [identity/organization/protocol/dt-uuid.kh](../../../identity/organization/protocol/dt-uuid.kh) already states an organization's identity as `OrganizationID () (u UserUUID)` - the Go's `org_p.UUID` was itself `user_p.UUID`. Two fields, one value type, no competing abstraction.
+2. **`ownership/protocol/dt-uuid.kh` takes `ThingUUID`** from [identity/thing](../../identity/thing/protocol/dt-uuid.kh), the single owner of the identifier concept. The Go said `thing_p.UUID` directly.
+3. **Nothing was added to the `UserUUID` fork.** `owner` returns `UserUUID` because the owner *is* a user, and [identity/user/protocol/dt-uuid.kh](../../identity/user/protocol/dt-uuid.kh) declares that name itself. `issuer` also returns `UserUUID`, because [identity/organization/protocol/dt-uuid.kh](../../identity/organization/protocol/dt-uuid.kh) already states an organization's identity as `OrganizationID () (u UserUUID)` - the Go's `org_p.UUID` was itself `user_p.UUID`. Two fields, one value type, no competing abstraction.
 
 ## Findings
 
@@ -34,3 +34,9 @@ Active - the three `.kh` files under this domain accept under the Khayyam fronte
 2. **Where the general "issuer of a record" field belongs** - not under an ownership edge; not yet claimed by any domain.
 3. **Should `assigner` join the strip verdict** its four folder-mates already carry.
 4. **Whether an ownership node needs more than an identity** - `owner.md` and `heir.md` and `creator.md` all hang off it, and `ownership.md` lists fraction, scope, start/end, restrictions, origin and transferability as candidate content. None of that is modelled; the node currently has an identity and nothing else.
+
+## Pointer: Contract Research 001
+[Contract Research 001](../contract/contract.research.001.md) (unratified, session `20261018-T195816Z-15768`) analyses this domain with contract and delegate. Its proposals, none decided:
+- Ownership is a node: a title declared by an authority (the existing `issuer`), with a scope (the bundle of rights, reading "rights first"), holders with kind and fraction, an origin, and status events (finding 2). Answers open 1 and 4 above by default.
+- "Owner" names two things: title, and record stewardship ("just the owner MUST edit the related record", [owner.md](./edges/owner/owner.md)). Stewardship is a rule over standings, not an edge (contradiction 1; its question 4).
+- Mapping (finding 5): `heir` to succession of title, `creator` to attribution, `belongs_to-org` and `belongs_to-module` to the thing's declarer and registering domain, `reserved` to a reservation capability, `assigner` joins the strip verdict (answers open 3 above), the other loop folders stay stripped.

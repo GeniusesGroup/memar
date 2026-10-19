@@ -2,8 +2,8 @@
 
 ## Model
 
-- `(contract)-[:side_fifth _is]->(user)`
-- `(user)-[:is_fifth _side_for]->(contract)`
+- `(contract)-[:side_fifth_is]->(user)`
+- `(user)-[:is_fifth_side_for]->(contract)`
 
 ## Policies (rules)
 

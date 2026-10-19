@@ -10,7 +10,7 @@
 
 ## Placement
 
-- **Correct here — the tax-account link is instantiated from the tax capability** (placement by entry point; source `vat/edges/tax-relation-financial_account.go` (no such file yet), deleted at `334d6e2c` 2026-09-09; pluggable owns complete capability — edge + tax posting rules that read it live together).
+- **Correct here — the tax-account link is instantiated from the tax capability** (placement by entry point; pluggable owns complete capability — edge + tax posting rules that read it live together).
 - **Not core `account`:** the account kernel holds ledgers without knowing taxes (core-by-necessity fails; an org without this module deposits tax to a plain account); the tax side names *which* account serves the role — reference-not-embed.
 - **Parallel to POS's account roles:** the POS module owns its own account-role labels ([financial-account](../../../pos/edges/financial-account/financial-account.md) — CashAccount/DepositAccount/RefundAccount) — same shape (capability names its accounts), two vocabularies; converge only if a shared account-role vocabulary emerges (prefer existing homes; see Open questions).
 - **Not a new module:** one labeled relation is parameters, not independent processing (parameters vs semantics).

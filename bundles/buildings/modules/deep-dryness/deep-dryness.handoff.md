@@ -11,7 +11,7 @@ Companion of `deep-dryness.md`.
 - (none; no verdict recorded.)
 
 ## Extensions / anticipated work
-- If Q2 lands on "interlocked fuse", the flood-direction closure becomes a control requirement that the water-and-matter river-interconnect record ([Hydraulic overflow loop and the balancing connection of the river with the plain's arteries (Hydraulic Overflow Bypass and Natural River Interconnect)](../water-and-matter/water-bodies-as-common-infrastructure.md#hydraulic-overflow-loop-and-the-balancing-connection-of-the-river-with-the-plains-arteries-hydraulic-overflow-bypass-and-natural-river-interconnect)) is the natural network host for — this document should declare its need, not state the rule.
+- If Q2 lands on "interlocked fuse", the flood-direction closure becomes a control requirement that the water-and-matter river-interconnect record ([Hydraulic overflow loop and the balancing connection of the river with the plain's arteries (Hydraulic Overflow Bypass and Natural River Interconnect)](../../../water/modules/water-bodies-as-common-infrastructure/water-bodies-as-common-infrastructure.md#hydraulic-overflow-loop-and-the-balancing-connection-of-the-river-with-the-plains-arteries-hydraulic-overflow-bypass-and-natural-river-interconnect)) is the natural network host for — this document should declare its need, not state the rule.
 - A worked piezometric profile for the plain (head at minus 35 meters across the dry and wet years) would convert Q1's disputed steady state into a measured flow and let the pool be sized by data instead of doctrine.
 - The piezometry prerequisite is shared with the ASR record's telemetry monitoring; a single sensor campaign could serve both — worth a cross-reference verdict.
 

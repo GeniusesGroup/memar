@@ -30,7 +30,7 @@ Converted, all returning `accept`:
 
 ### `protocol/dt-uuid.kh` is left unconverted, and it should probably be deleted
 
-The Go declares `Field_ProductID`, `Field_ProductsID` and `UUID record_p.UUID` in package `product_service_p`. The first two are already declared — and already valued as `ThingUUID` and `Array_ThingUUID` — in `org/modules/economics/product/protocol/dt-uuid.kh`, which this repository's ownership rule makes the single owner of the product identity. Declaring them again here would be exactly the "one concept declared twice" case the qualified-names rule answers with one declaration and an inclusion.
+The Go declares `Field_ProductID`, `Field_ProductsID` and `UUID record_p.UUID` in package `product_service_p`. The first two are already declared — and already valued as `ThingUUID` and `Array_ThingUUID` — in `modules/economics/product/protocol/dt-uuid.kh`, which this repository's ownership rule makes the single owner of the product identity. Declaring them again here would be exactly the "one concept declared twice" case the qualified-names rule answers with one declaration and an inclusion.
 
 The third, `UUID record_p.UUID`, is a service identity that nothing in the module or the tree references: every storage in this module keys on the product's or the invoice's UUID, never on its own. So there is nothing left to declare, and the file stays as it is with its clue block. The main session may delete it; if the module ever needs an identity of its own, that is a new declaration with a real referent.
 
@@ -59,7 +59,7 @@ The five data models each carry one to three numeric conditions. Following `mana
 
 ### `MapID` was two different types in the same module
 
-`seat/protocol/data_model.kh` declares `MapID() record_p.UUID` while `seat/protocol/storage.kh` declares `FIND_ProductIDs_BY_MapID(mapID op.UUID)`. Neither path exists — `memar/storage/record/protocol` and `org/modules/storage/object/protocol` are both absent — so the Go did not resolve on this point even before conversion. The domain meaning, from the Go's own comment, is a stored map file: "to show background and rows and seats. suggest use SVG format".
+`seat/protocol/data_model.kh` declares `MapID() record_p.UUID` while `seat/protocol/storage.kh` declares `FIND_ProductIDs_BY_MapID(mapID op.UUID)`. Neither path exists — `memar/storage/record/protocol` and `modules/storage/object/protocol` are both absent — so the Go did not resolve on this point even before conversion. The domain meaning, from the Go's own comment, is a stored map file: "to show background and rows and seats. suggest use SVG format".
 
 Both are valued as `Storage_UUID` (`memar/modules/memory/record/protocol/dt-uuid.kh`), the only declared record identity in reach. That is a compromise and it is the wrong kind of type: a seating map is a blob, not a row. What the field needs is an object-or-content identity, and the module that would own it — a storage object domain — does not exist in the tree.
 

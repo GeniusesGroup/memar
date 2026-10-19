@@ -10,7 +10,7 @@
 
 ## Placement
 
-- **Correct here — the tax-product link is instantiated from the tax capability** (placement by entry point; source `vat/edges/tax-relation-product.go` (no such file yet), deleted at `334d6e2c` 2026-09-09; pluggable owns complete capability — edge + rate/exemption logic that reads it live together).
+- **Correct here — the tax-product link is instantiated from the tax capability** (placement by entry point; pluggable owns complete capability — edge + rate/exemption logic that reads it live together).
 - **Not core `product`:** the product kernel stays priceability; taxability is jurisdiction semantics an org removes with this module (removable ⇒ pluggable; core never knows Rule — who-may-exempt is rule material).
 - **Not a new module:** the relation reuses the existing catalog (parameters vs semantics ⇒ one tax capability plus configuration; prefer existing homes over inventing new modules).
 
@@ -19,5 +19,6 @@
 - Blank tax label = VAT-exempt ([tax](../tax/tax.md)) — exemption rides on this product link? Confirm the exempt path (product link vs invoice-line check).
 - "up to two tax labels" scope — per product here? (Pairs with the scope question on [tax](../tax/tax.md).)
 - Rate application over time (retroactive rate changes?) — rule/event material to record before ratifying (no bare edges).
+- Under replacement-cost pricing, is the tax on a product's sale computed on the invoiced sale price, with the price version in force at issue, like any sale ([tax → Unresolved questions](../../vat.md#unresolved-questions))?
 - Naming unconfirmed — nothing ratified.
 

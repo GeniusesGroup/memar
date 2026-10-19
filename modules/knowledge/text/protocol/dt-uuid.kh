@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp ThingUUID in "org/modules/identity/thing/protocol/dt-uuid.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 
 tp Field_TextID ab
 

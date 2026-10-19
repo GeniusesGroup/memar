@@ -4,6 +4,12 @@
 
 - `(batch)-[:product_inventory]->(invoice)`
 
+## Discussion
+
+### Unresolved questions
+
+- Inventory valuation basis: FIFO, weighted-average, and batch recorded cost stay for accounting, while [replacement cost](../replacement-cost/replacement-cost.md) is the pricing basis ([decision](../pricing/edges/pricing/pricing.md#decisions-2026-10-10)). Does a valuation of stock held read one of them, or show both with the holding gain between them, and is the basis a field of the valuation so neither is shown as the other ([replacement cost → Unresolved questions](../replacement-cost/replacement-cost.md#unresolved-questions))?
+
 ## Idea backlog
 
 Nothing below is ratified.

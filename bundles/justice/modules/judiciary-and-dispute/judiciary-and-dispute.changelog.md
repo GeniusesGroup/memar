@@ -6,8 +6,8 @@
 - Time: 2026-09-13T14:26:00Z
 - Type: created
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (all source ideas and materials)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — migrated
 
 #### What changed
 The document was created by migrating the requirement's approaches out of the per-idea record store, texts preserved verbatim. Approaches migrated in document order (the id ledger was retired 2026-09-15; sections speak for themselves):
@@ -21,8 +21,8 @@ Cross-document links created at migration (from the records' syn/links fields):
 - Propagates to:
   - economy/permitted-intermediation.md, economy/payment-rails-and-service-charging.md: Done — inbound links repointed in the 2026-09-15 conformance pass.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — rewrote, critiqued
 
 #### What changed
 The document was rewritten as a conceptual English upgrade; nothing was removed. Abstract and Motivation were re-derived from the document's own Explanation, replacing the shared template sentences; the neutral requirement question survives verbatim in the problem section and is sharpened there into its three axes (venue, qualification of deciders, enforcement instrument). Every claim, number and unit survives — 3 hearing stages with 3 ranked judges, the 50-senior-judge constitutional quorum (also its concurrence-of-3 trigger), zero paper summonses and multi-year trials, under-24-hour commercial resolution and the arbitration fee as platform revenue, under-48-hour neighbourhood resolution, the 5-person elected council, above-90% satisfaction, the 500-person block and its Dunbar reference, and all three source attributions (Constitution.docx; the business plan, with its original misspelling preserved; the neighbourhood protocol record). A collision-and-composition section was added: the three venues attack one enemy (the court of attrition) but disagree about whether they are limbs or successors of it; the ladder evidence is two synergy phrases, not any mechanism text; each venue ships a self-executing machine of force with nothing ranking them; and the platform record carries its own internal contradiction (Mechanism's total repeal against Fit's legal-crisis caution). The owner decision is framed as one question with two answers (staircase vs. rival jurisdictions) and mirrored in the handoff with the precedence/restitution, scope-governing-text, and fee-earning-arbiter questions.
@@ -38,8 +38,8 @@ SC sweep: every approach heading carries its strippable section-title handles su
 - Time: 2026-09-14T00:00:00Z
 - Type: recovered
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
-  - [Qwen](../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed (source author)
+  - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
 The transfer audit found constitutional clauses of this requirement that never reached the sheet. Extended in place (sources tie these clauses to the existing records, so they are recorded with them, not beside them): "3-stage platform adjudication with no physical judiciary, judged by a bench of 50 senior judges" — the Mechanism and Metrics now carry the three-lawyer pre-screening of every newly created claim with the claimant's option to proceed after the initial opinion (Constitution.docx), the public hearing at the top stage with the entire record at everyone's disposal (Constitution.docx), the forced-settlement rule where no law and no clear contract term exists, with judges forbidden any personal opinion or reading (National_Constitution.odt), and the 24-hour cap on detention or service denial by any organization without a dispute-resolution verdict (National_Constitution.odt); the record's Source line gained the second constitution. Added as a new approach: "Proportional fault: every harm to a natural person is apportioned by fault shares, and claimant organizations carry 10-to-40 percent with their named members (Proportional Fault)" — id (new; lowest free owner id at time of writing for this page) — carrying the National Constitution's criminal-law fault arithmetic verbatim in translation (fault shares for any harm to natural persons; the 10–40 percent claimant-organization share; mandatory introduction of the organization's responsible members, each carrying their own share). The Abstract was extended to name the fourth record and the [3-stage platform adjudication with no…](judiciary-and-dispute.md#3-stage-platform-adjudication-with-no-physical-judiciary-judged-by-a-bench-of-50-senior-judges) clauses; no existing text was removed or softened. In [Proportional fault: every harm to…](judiciary-and-dispute.md#proportional-fault-every-harm-to-a-natural-person-is-apportioned-by-fault-shares-and-claimant-organizations-carry-10-to-40-percent-with-their-named-members-proportional-fault) the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims; Fit & substrate, Cognitive anchor and Narrative hook are reviewer-authored and unconfirmed.
@@ -58,11 +58,11 @@ The transfer audit found constitutional clauses of this requirement that never r
 - Type: Fixed, clarified
 - Cited:
   - [Judiciary and Dispute Resolution — Handoff](judiciary-and-dispute.handoff.md) - Relation: Evidence: the dead Dunbar-to-slab syn was queued as a leftover of the 2026-09-20 plane/grain pass.
-  - [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../form-and-land/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation) - Relation: Evidence: the labelled owner of the 500-person cohort.
+  - [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../../../land/modules/settlement-grain-and-scaling/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation) - Relation: Evidence: the labelled owner of the 500-person cohort.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested (persist round-1 critiques)
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5 via Cursor) — critiqued (round 1)
+  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded
 
 #### What changed
 - Neighbourhood-council syn labelled "the 500-person Dunbar number" no longer points at slab-clearing. It points at the grain page's fractal 500-person cohort. Fit no longer says Placement and Routing of Service Flows carries that idea. Related documents follow.

@@ -18,6 +18,7 @@ Paused — transfer session closed 2026-09-21. Resume from Open Questions, not f
 - Is `security/` a lasting bundle, or does `autonomy-in-crisis` belong under government?
 - Is Dideban the right home for `securing-sensitive-spaces`, or does that page need a narrower watch/surveillance module name inside Dideban?
 - When each imported requirement-notebook is rewritten as a module Explanation document plus computer code, which rival approaches survive as code and which drop? Until then, the skipped README rules still apply: requirement as a question that favors no answer; rejected approaches stay visible; network pages name no consumer; consumer pages declare needs toward the network; approach headings keep their section-id suffix.
+- **When does a bundle piece graduate into a module?** A bundle owns no kernel schema of its own. A piece graduates only once it already owns identity, lifecycle, authorization, and processing that no existing module owns — otherwise promoting it reifies the word. Record the trigger at the moment it holds.
 
 ## Assumptions
 - New bundle names opened for this landing (`energy`, `water`, `food`, `buildings`, `land`, `travel`, `security`) are honest enough to receive files now and cheap enough to rename later. Stability: Weak.
@@ -33,5 +34,4 @@ Paused — transfer session closed 2026-09-21. Resume from Open Questions, not f
 ## Related artifacts
 - Governing: [`bundles.md`](bundles.md)
 - Record: [`bundles.changelog.md`](bundles.changelog.md)
-- Session close slip: `____Chats/2026-09-21-society-transfer.md` (gitignored)
 - Local Memar backup (not on GitHub): `C:\Sync\Persons\Geniuses.Group\github.com\memar-backup-before-society-purge.git`

@@ -1,7 +1,7 @@
 # Role Handoff
 
 ## Topic & Purpose
-Agency-based staffing model for human/AI roles; role ≠ tool knowledge; Telegram-derived hiring and role-design bullets (architect hiring, design vs engineering, cross-disciplinary literacy, service segmentation, tool ≠ architecture, mentor/coach/consultant). Migrated from the Organization ideas backlog second/third/fourth passes (2026-09-16/17).
+Agency-based staffing model for human/AI roles; role ≠ tool knowledge; Telegram-derived hiring and role-design bullets (architect hiring, design vs engineering, cross-disciplinary literacy, service segmentation, tool ≠ architecture, mentor/coach/consultant).
 
 ## Status
 Active — directions decided; several items remain candidate org rules pending ratification.
@@ -69,7 +69,50 @@ Active — directions decided; several items remain candidate org rules pending 
 ## Open Questions
 - Agency open questions the org inherits: accountability split? intrinsic vs delegated agency boundary? *(direction; the org is the first real consumer that can settle several of them)*
 
+## Research 001 questions and next steps (2026-10-18)
+
+### Status
+[role.research.001.md](role.research.001.md) is added (Active; nothing in it is Decided). It proposes that the domain's concept is the position and its occupancy, separate from the capacity in one relation, the authority bundle, the job description and the title, and it analyses staff, department, shift and calendar as one cluster. The Model and Policies of [role.md](role.md) are not edited; the Decided directions above are not re-argued.
+
+### Open Questions raised by the research
+Each has a default; what each blocks is in the research's Open Questions. The numbers here are this list's own (the research numbers its twenty-four differently, and merges none of these); the three that change the most are first.
+
+1. **Is the concept the position and its occupancy, with capacities, authority bundles, job descriptions and titles separate?** Default: yes, with the test "can be full or vacant". Blocks: the domain statement, `edges-loop/role`, GR.8, TA.7, every `RoleID`.
+2. **Are employment (staff) and occupancy (role) two relations, and does the Decided staff identity cover each employment?** Default: two relations; the user's identity stays the person's, and each employment gets its own identity. Blocks: staff-status per employment, person-position, hiring pipeline, attendance.
+3. **Does authority and assignment bind to the position (late-bound, occupant resolved at a stated instant) or to the person?** Default: to the position, through delegate; acts carry "occupant acting as position". Explored: delegate has no research. Blocks: the delegate record (role, rule or bundle), `GetRoleAccess`, `PrivateInRole`, task assign rules, X3.
+4. Folder and accessor name `role` or `position`? Default: keep `role`, call the concept "position", avoid `seat`.
+5. Is a position its own thing that can take members, or a group classified as one? Default: its own identity that also takes members (group Q2).
+6. Is an occupancy the group's membership record or its own? Default: the membership, kind `occupant`, `acting` or `exerciser for`.
+7. One context at a time, any thing as context? Default: yes, changed by an event with history.
+8. Are reporting and unit containment two relations? Default: yes; reporting has many parents and no effective occupancy upward.
+9. May an occupant be an organization, a group or a software agent, with an exerciser separate? Default: yes.
+10. Are count, eligibility, term, incompatibility and succession order rules at named points? Default: yes; identity invariants stay Code.
+11. Are the organization's required hours and a person's preference two records? Default: yes, different asserters.
+12. Is `shift` demoted to the pattern of a coverage pluggable, instances as tasks, assignments as occupancies? Default: yes (survey default P12).
+13. Does a leave suspend an occupancy? Default: a leave is a task kind; suspension is a rule of the organization.
+14. Is the design/engineering distinction a rule over a position's focus and never a barrier to reasoning? Default: yes (the false-taxonomy guard).
+15. Are mentor, coach and consultant relations between persons, not positions? Default: yes.
+16. Is the hiring pipeline an annotation on a hiring task whose subject is a vacant position? Default: yes.
+17. Is a job description a template (thing's `template`, `derived_from`) with changes offered? Default: yes.
+18. Does the calendar supply a named calendar system, a working calendar and work periods as a reading? Default: yes; depends on the time domain.
+19. Does a public-office history survive an occupant's erasure request? Default: the fact stays, the identity link detaches only on an authority's order (X1).
+20. Standing judge post and per-case seat as two positions in two contexts? Default: yes; whether a standing office exists with no case stays the judicial-office Q1.
+21. Does a capacity (plaintiff, assigner, buyer) stay a relation unless it passes the graduation test? Default: yes.
+22. Is compensation a rule on the position (pay band) or the person? Default: ask; no cost.
+
+### Contradictions reported, not resolved
+Role as group versus position; the Decided staff identity versus per-employment lifecycle; what delegate delegates (role, rule or bundle); the decided design/engineering separation versus the false-taxonomy caution; the legacy contract losing context and interval; other domains crediting this one with processing it lacks; "shift" as pattern, instance and assignment; attendance vocabulary stated three times; `recruit` naming two facts; the synthesis's omission of the organization research. Full list: the research's Contradictions found.
+
+### Next Steps
+1. The owner answers questions 1 to 3 in sitting 3 of the synthesis's decision graph, after GR.1 to GR.3, before GR.8 and TA.7.
+2. After the answers, write the domain statement into [role.md](role.md) (Model, Policies) and replace the two stale Open questions of [edges/group](edges/group/group.md) with the position's context.
+3. Convert [protocol/dt-uuid.kh](protocol/dt-uuid.kh) to the thing's identity once the accessor name (question 4) is ruled; harvest `ParentID` and `departmentID` from the legacy records, then retire the `internal/` and `services/` residue.
+4. Ask for a delegate research session: three domains' defaults (X3) lean on it and the role's authority row is Explored until it exists.
+5. Ask for case and judicial-office owners to read question 20 before judicial-office is copied as a standing office.
+
 ## Related Artifacts
+- [`role.research.001.md`](role.research.001.md) — Research 001: what the domain is for, kernel and pluggable, rival models, edge mapping, tests and owner questions.
+- [`role.changelog.md`](role.changelog.md)
 - [`README.md`](README.md)
 - [`../staff/staff.handoff.md`](../staff/staff.handoff.md)
 - Per-edge doc: [`edges/group/group.md`](edges/group/group.md) — role↔group label edge; overlap with the group parent edge flagged there.

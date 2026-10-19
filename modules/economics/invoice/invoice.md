@@ -26,6 +26,7 @@ An invoice is a statement of what is claimable between parties: a seller's asser
 - Invoice lifecycle (issued/partially-paid/voided/expired) is documented per state in `status/<state>/` - reconcile with the general status domain.
 - Can an invoice exist with zero products (a pure claim)?
 - Partial payment: multiple settling transactions against one invoice - is the "partially paid" state invoice-side or analytics-side?
+- Invoice exchange between organizations: a purchase must reach every organization it involves, with the price agreed at issue and the seller free to reject a mismatch - one invoice or a counterpart in each, and the same product identifier or different ones, are open in [invoice exchange](invoice.handoff.md#open-questions).
 
 ### Future possibilities
 

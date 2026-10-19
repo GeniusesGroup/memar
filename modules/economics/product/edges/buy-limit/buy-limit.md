@@ -25,4 +25,5 @@
 - Boundary semantics: calendar year, product release year, or arbitrary timestamp?
 - Does the same mechanism cover `Type_PreSale` (flag marked `??` in [product.kh](../product.kh))? If yes, flag + edge must converge — one capability, not two.
 - Decide rule-attachment vs own module *before* any Khayyam migration (empty abstraction must not convert).
+- A pre-sale paid years later carries the risk the owner lived with pre-sold apartments: payment worth a fraction of the real cost. If this edge covers `Type_PreSale`, does it carry the warning to the approver and the offer of index-linked instalments, or only the window? — [deferred-payment sales](../../../../../modules-plugable/economics/price-index/price-index.md#deferred-payment-sales).
 

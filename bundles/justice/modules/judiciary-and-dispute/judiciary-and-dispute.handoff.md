@@ -12,7 +12,7 @@ Companion of `judiciary-and-dispute.md`.
 - (none; no verdict recorded.)
 
 ## Ambiguities Resolved
-- Neighbourhood-council syn labelled "the 500-person Dunbar number" pointed at slab-clearing. Re-pointed to [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../form-and-land/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation). Fit parenthetical that said the idea was "carried by Placement and Routing of Service Flows" now names Settlement Grain and Scaling. Related documents follow that syn.
+- Neighbourhood-council syn labelled "the 500-person Dunbar number" pointed at slab-clearing. Re-pointed to [Fractal scalability from a single 500-person block to a 1-million megapolis (Fractal Scalability & Elastic Aggregation)](../../../land/modules/settlement-grain-and-scaling/settlement-grain-and-scaling.md#fractal-scalability-from-a-single-500-person-block-to-a-1-million-megapolis-fractal-scalability--elastic-aggregation). Fit parenthetical that said the idea was "carried by Placement and Routing of Service Flows" now names Settlement Grain and Scaling. Related documents follow that syn.
 
 ## Extensions / anticipated work
 - A mixed-case rule (commercial + commons + constitutional overlay on one quarrel) — if the owner lands Q1 on the ladder, this rule is its first clause; draftable as a shared section with economy/payment-rails-and-service-charging.md, since the escrow mechanics live there.

@@ -12,7 +12,7 @@ Companion of `daylight-to-interiors.md`.
 
 ## Extensions / anticipated work
 - The serotonin/circadian premise of the basement record is a health claim belonging, per the dependency direction, to the living-and-culture health-watch ledger; this document declares the need (full-spectrum light at minus ten) and should cross-link once that verdict is recorded.
-- A rooftop survey (collector area vs the 2,000-square-meter roof and the [Wall-free transparent ground floor on pilotis with at least 6 meters of clear height (continuous 100-hectare substrate)](../form-and-land/which-plane-carries-which-flow.md#wall-free-transparent-ground-floor-on-pilotis-with-at-least-6-meters-of-clear-height-continuous-100-hectare-substrate)'s unshadowed band) would decide whether Q2 is a conflict at all.
+- A rooftop survey (collector area vs the 2,000-square-meter roof and the [Wall-free transparent ground floor on pilotis with at least 6 meters of clear height (continuous 100-hectare substrate)](../../../land/modules/which-plane-carries-which-flow/which-plane-carries-which-flow.md#wall-free-transparent-ground-floor-on-pilotis-with-at-least-6-meters-of-clear-height-continuous-100-hectare-substrate)'s unshadowed band) would decide whether Q2 is a conflict at all.
 - The two active records both descend from the "System-architect supplemental idea" source; if the owner confirms they were meant as one system (humans below, plants at grade), the merge practice of this ledger applies and their shafts should be co-designed.
 
 ## Assumptions (stability)

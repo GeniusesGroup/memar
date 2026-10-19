@@ -21,6 +21,7 @@
 - Receiving [good.md](../../good.md) Unresolved: do `batch` and `good` overlap on lot/expiry tracking, or is `batch` the right home for `best_before`?
 - "from production time" — production timestamp of which realization: the product's batch (batch identity), a generic production event, or the record's own audit time? Converge with [batch](../../../batch/batch.md) identity questions (batch as realization vs grouping).
 - Who enforces expiry — a rule reacting at sale time (core never knows Rule), or a status/label move?
+- Lots of one product that differ in remaining shelf life are what the owner's leaning that a price belongs to the batch rests on (open in [pricing](../../../pricing/edges/pricing/pricing.md#open-questions)): if a nearer best-before lot is sold at its own price, is the best-before date then a fact of each batch, not only a window on the product?
 
 ## Source
 
