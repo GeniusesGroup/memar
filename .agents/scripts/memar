@@ -86,20 +86,22 @@ for folder in (TOP, SCRIPTS):
         sys.path.insert(0, str(folder))
 
 from machine.console import use_utf8_stdio
+from machine.fs_memar import role_folders
 
 SERVICES = "services"
 DESCRIBE = "describe"
 # Where modules are looked for, each with the folder its modules' import addresses start from: the checkout's top,
 # under which the kernel modules stand in `modules/`, the pluggable ones in `modules-plugable/`, and the bundles in
 # `bundles/`; or this folder, which is on the search path too and holds provisional modules (the scripts README says
-# which); and the folders inside a module that are not modules.
+# which); and the folders inside a module that are not modules: the role folders the module-skeleton profile
+# declares, asked of it and never copied here, and the folders the toolchains keep, which are the router's own.
 SEARCHED_ROOTS = (
     ("modules", "."),
     ("modules-plugable", "."),
     ("bundles", "."),
     (".agents/scripts", ".agents/scripts"),
 )
-ROLE_FOLDERS = {"services", "tests", "errors", "docs", "temp", "rules", "protocol", "primitive", "node_modules", "__pycache__"}
+NOT_MODULES = frozenset({SERVICES, *role_folders(), "node_modules", "__pycache__"})
 # A module that has a command-line face keeps it in a file named by its folder (`session/session.py`);
 # each capability is a file in its `services/` folder. The name the router works with is the folder's
 # alone for the module's own file, and the folder, this separator and the file's name for a capability
@@ -166,29 +168,37 @@ def catalog(top: Path = TOP) -> dict[str, str]:
     """Each name the router works with, and the dotted address its file is imported by.
 
     A folder that holds a file of its own name has a command line: that file is the domain, and each file in
-    its `services/` folder is one of the domain's capabilities, unless another domain's name begins it.
+    its `services/` folder is one of the domain's capabilities, unless another domain's name begins it. A
+    folder without a file of its own name, an optional capability added to a domain kept elsewhere,
+    offers only the files in its `services/` folder that a domain's name begins.
     """
     found: dict[str, str] = {}
-    shelved: list[tuple[str, str, str]] = []
+    shelved: list[tuple[str | None, str, str]] = []
     domains: set[str] = set()
     for root, base in SEARCHED_ROOTS:
         for folder, dirs, files in os.walk(top / root):
-            dirs[:] = sorted(name for name in dirs if name not in ROLE_FOLDERS)
+            dirs[:] = sorted(name for name in dirs if name not in NOT_MODULES)
             leaf = Path(folder).name
-            if f"{leaf}.py" not in files:
+            shelf = Path(folder) / SERVICES
+            own = f"{leaf}.py" in files
+            if not own and not shelf.is_dir():
                 continue
-            if leaf in found:
-                raise SystemExit(f"memar: more than one folder is named {leaf}: {found[leaf]} and {folder}")
             package = ".".join(Path(folder).relative_to(top / base).parts)
-            found[leaf] = f"{package}.{leaf}"
-            domains.add(leaf)
-            for path in sorted((Path(folder) / SERVICES).glob("*.py")):
+            if own:
+                if leaf in found:
+                    raise SystemExit(f"memar: more than one folder is named {leaf}: {found[leaf]} and {folder}")
+                found[leaf] = f"{package}.{leaf}"
+                domains.add(leaf)
+            for path in sorted(shelf.glob("*.py")):
                 if not path.stem.startswith("_"):
-                    shelved.append((leaf, path.stem, f"{package}.{SERVICES}.{path.stem}"))
+                    shelved.append((leaf if own else None, path.stem, f"{package}.{SERVICES}.{path.stem}"))
     # A capability file named by another domain first is that domain's, wherever it is kept.
     for leaf, stem, address in shelved:
         owner = next((each for each in domains if each != leaf and stem.startswith(each + DOMAIN_SEPARATOR)), None)
-        found[stem if owner else f"{leaf}{DOMAIN_SEPARATOR}{stem}"] = address
+        if owner:
+            found[stem] = address
+        elif leaf is not None:
+            found[f"{leaf}{DOMAIN_SEPARATOR}{stem}"] = address
     return found
 
 
@@ -199,7 +209,8 @@ def services(top: Path = TOP) -> list[str]:
 
 def import_path(name: str, names: dict[str, str] | None = None) -> str:
     """What a name from `services` is imported by."""
-    return (catalog() if names is None else names)[name]
+    # With the same argument `services` gives, so the two calls share one cache entry and the checkout is walked once.
+    return (catalog(TOP) if names is None else names)[name]
 
 
 def assemble(
@@ -279,5 +290,13 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
+def command() -> int:
+    """The call as typed: answered by the process that stays when it is switched on and answers, else done in this process."""
+    from machine.resident import served
+
+    status = served(sys.argv[1:], TOP)
+    return main() if status is None else status
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(command())

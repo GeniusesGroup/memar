@@ -27,6 +27,7 @@ import argparse
 import importlib.machinery
 import importlib.util
 import re
+import sys
 from pathlib import Path
 from typing import Callable
 
@@ -41,7 +42,15 @@ CLOSING = "Take one command's reasons, words and every option from `memar WORDS 
 
 
 def _router():
-    """The router module, loaded from its file, which has no `.py` name to import."""
+    """The router module that is running, or loaded from its file, which has no `.py` name to import.
+
+    A router that is running has found the services already; loading another would walk the checkout again.
+    """
+    for name in ("memar_router", "__main__"):
+        running = sys.modules.get(name)
+        file = getattr(running, "__file__", None)
+        if file and hasattr(running, "assemble") and Path(file).resolve() == Path(ROUTER).resolve():
+            return running
     loader = importlib.machinery.SourceFileLoader("memar_router", str(ROUTER))
     spec = importlib.util.spec_from_loader(loader.name, loader)
     module = importlib.util.module_from_spec(spec)

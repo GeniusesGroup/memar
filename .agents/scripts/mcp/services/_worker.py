@@ -25,6 +25,8 @@ SERVER = {"name": "memar", "title": "Memar", "version": "provisional"}
 PROTOCOL_VERSIONS = ("2025-06-18", "2025-03-26", "2024-11-05")
 METHOD_NOT_FOUND = -32601
 INVALID_PARAMS = -32602
+# The method the resident process asks, which is not MCP's: one argv as the CLI is typed, in the caller's folder and environment.
+RUN = "memar/run"
 # A call's answer is the verb's stdout, then its stderr when it wrote any; its exit status is under this key of `_meta`.
 STATUS = "memar/status"
 
@@ -102,7 +104,31 @@ class Worker:
             if output.stderr:
                 content.append({"type": "text", "text": output.stderr})
             return {"content": content, "isError": output.status != 0, "_meta": {STATUS: output.status}}
+        if method == RUN:
+            return self._run(params)
         raise LookupError(f"this server has no method {method!r}")
+
+    def _run(self, params: dict) -> dict:
+        """The CLI's run of `argv` in the folder and environment the caller had, its stdout and stderr whole and its status."""
+        argv, stdin = params.get("argv"), params.get("stdin") or ""
+        folder, environment = params.get("cwd"), params.get("env")
+        if not isinstance(argv, list) or not all(isinstance(word, str) for word in argv):
+            raise self.tools_module.Refused("argv is a list of strings")
+        if not isinstance(environment, dict) or not isinstance(folder, str):
+            raise self.tools_module.Refused("cwd is a folder and env a mapping")
+        # The runner puts back what the call leaves; what it finds on entering is what it puts back, so the caller's
+        # folder and environment are set here and this worker's own are put back after.
+        kept_environment, kept_folder = dict(os.environ), os.getcwd()
+        try:
+            os.chdir(folder)
+            os.environ.clear()
+            os.environ.update({str(key): str(value) for key, value in environment.items()})
+            output = self.runner.run(argv, stdin)
+        finally:
+            os.environ.clear()
+            os.environ.update(kept_environment)
+            os.chdir(kept_folder)
+        return {"stdout": output.stdout, "stderr": output.stderr, "status": output.status}
 
 
 def main(scripts: str, top: str) -> None:

@@ -17,6 +17,8 @@ for (`session_records.py`).
 """
 from __future__ import annotations
 
+import functools
+import os
 import re
 import sys
 from pathlib import Path
@@ -81,15 +83,17 @@ def is_generated(parts: tuple[str, ...]) -> bool:
     weighed: `node_modules` as a *file* would be a different thing, and the
     patterns are folder patterns where that matters.
     """
+    return any(_not_owned(part) for part in parts)
+
+
+@functools.lru_cache(maxsize=None)
+def _not_owned(part: str) -> bool:
+    """Whether the folder name PART is one this project does not own; the same few hundred names recur across every path of a walk."""
     import fnmatch
 
     from machine.fs_copy_excluded import NEVER_COPIED_PATTERNS
 
-    return any(
-        fnmatch.fnmatch(part, pattern)
-        for part in parts
-        for pattern in NEVER_COPIED_PATTERNS
-    )
+    return any(fnmatch.fnmatch(part, pattern) for pattern in NEVER_COPIED_PATTERNS)
 
 
 def content_files(root: Path, sources=None) -> list[Path]:
@@ -125,15 +129,15 @@ def content_files(root: Path, sources=None) -> list[Path]:
     for directory in present:
         if not directory.is_dir():
             continue
-        for path in directory.rglob("*"):
-            if not path.is_file() or path.suffix.lower() not in suffixes:
-                continue
-            if _excluded_from_search(path):
-                continue
-            folders = path.relative_to(root).parts[:-1]
-            if _left_out(folders):
-                continue
-            found.append(path)
+        # A walk that does not enter a folder the corpus leaves out: a listing of everything under the folder, filtered
+        # after, reads every file of `node_modules` to drop it, and costs a `stat` for each entry to tell a file from a folder.
+        for folder, dirs, files in os.walk(directory):
+            dirs[:] = [name for name in dirs if name != _SCRATCH_DIRNAME and not _not_owned(name)]
+            for name in files:
+                path = Path(folder, name)
+                if path.suffix.lower() not in suffixes or _excluded_from_search(path):
+                    continue
+                found.append(path)
     for name in _CORPUS_FILES:
         candidate = root / name
         if candidate.is_file() and candidate.suffix.lower() in suffixes:
