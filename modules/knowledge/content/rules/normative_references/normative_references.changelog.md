@@ -80,3 +80,19 @@
 
 #### What changed
 - The `reviewed` marks of [Scripts → Deleting, moving, restoring, and committing](../../../../../.agents/scripts/README.md#deleting-moving-restoring-and-committing) in the implement and mechanical lists were renewed. The section gained one rule, that every commit names the sessions it carries out through `host/git.py commit --session-id` or says `--no-session`; it was re-read at its new text, and each list's reason for reading it still holds.
+
+---
+
+### Scripts → committing re-reviewed after it took the skill's commit rule
+- Time: 2026-10-20T09:00:00Z
+- Type: Changed
+- Cited:
+  - Proposal of session 20261019-T193605Z-16144 (`docs/proposal.md`, cut C3) - Depends_on: approved by the owner on 2026-10-20, with the ruling that the skill's commit rule (by area, the whole work) stands and is written into the scripts README.
+- Tasks:
+  - 20261019-T193605Z-16144: Closed - the session that moved the rule and renewed the marks.
+- Contributors:
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- The `reviewed` marks of [Scripts → Deleting, moving, restoring, and committing](../../../../../.agents/scripts/README.md#deleting-moving-restoring-and-committing) in the implement and mechanical lists were renewed. The section now holds the commit rule the skill carried (commits follow the whole piece of work, by area, staged in place) in place of "One session task gets one commit", and why `memar content check` runs before the commit. It was re-read at its new text, and each list's reason for reading it still holds.

@@ -104,7 +104,8 @@ from modules.knowledge.content.services.normative_references import EVERY_ACT, L
 from modules.process.project.services.preferences import preferences_path
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
 from modules.knowledge.content.services.task_context import (
-    Printed, Ref, compose, context, context_places, context_text, read_record, record_path, write_record,
+    CHANGED_DO, GONE_DO, Printed, Ref, compose, context, context_places, context_text, read_record, record_path,
+    write_record,
 )
 from modules.knowledge.documentation.primitive.label import Label, Labels
 from modules.knowledge.documentation.plan.primitive.task_kind import TaskKind
@@ -238,7 +239,7 @@ class Marked(Fixture):
         self.document("plain.md", DOCS["plain.md"].replace("ONE-TEXT", "ONE-EDITED"))
         text = self.text([DESIGN])
         where = f"{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.word)}:4"
-        self.assertIn(f"--- docs/plain.md#one (changed since reviewed: {where}) ---", text)
+        self.assertIn(f"--- docs/plain.md#one (changed since reviewed: {where}) ---\n{CHANGED_DO.format(located=where)}\n", text)
         self.assertIn("ONE-EDITED", text)
         self.assertIn("; 1 changed since reviewed", text.splitlines()[0])
 
@@ -250,6 +251,7 @@ class Marked(Fixture):
         self.assertIn("[plain.md → gone](../../../../../docs/plain.md#gone) — GONE-WHY", text)
         self.assertIn(f"--- docs/missing.md#x (anchor gone: {where}:5) ---", text)
         self.assertIn("MISSING-WHY", text)
+        self.assertEqual(text.count(GONE_DO), 2)
         self.assertIn("; 2 anchor gone", text.splitlines()[0])
 
 

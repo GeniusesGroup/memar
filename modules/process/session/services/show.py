@@ -133,7 +133,14 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "id a changelog, a handoff or a report cites: it needs no knowledge of which\n"
             "place holds the session today. A file is named by its path from the\n"
             "session's folder, like docs/note.md; --list prints the files the session has\n"
-            "instead. The project's branch is read, never the folder this runs in."
+            "instead. The project's branch is read, never the folder this runs in.\n"
+            "\n"
+            "A coordinating session resumes when the owner says a session it waits for is done, or when\n"
+            "every session its Depends_on cites is Complete. It reads the hand-back alone (--hand-back),\n"
+            "and no more of the report unless a step names a part; a session not Complete, or one holding\n"
+            "decisions, goes to the owner before the plan goes on. The decisions made are consumed, not\n"
+            "argued again. A report is a claim: read the passages it cites, at the cited lines, before\n"
+            "building on it, and keep it in the session folder for the debrief."
         ),
     )
     shower.add_argument("--session-id", required=True, help="the session whose records to print")

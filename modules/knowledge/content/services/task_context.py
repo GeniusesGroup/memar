@@ -81,6 +81,15 @@ RECORD_SEPARATOR = "\t"
 CHANGED_MARK = "changed since reviewed"
 GONE_MARK = "anchor gone"
 DROPPED_MARK = "dropped"
+# What an agent does on each mark, printed under it, so it is read when the mark occurs and never only remembered.
+CHANGED_DO = (
+    "Read it as it reads now, and say under the report's Left open: `{located} changed since reviewed; read as it "
+    "reads now`."
+)
+GONE_DO = (
+    "Search for its label (`memar content find`, or `memar content search` for where a term occurs), read the section "
+    "judged to be the one meant, and say under the report's Left open which was read, or that none was."
+)
 WHY_LABEL = "Why: "
 
 
@@ -235,7 +244,7 @@ def compose(wanted: Sequence[Ref], earlier: Sequence[Ref] = ()) -> Composed:
                     blocks.append(f"{read.header}\n{read.absent}")
             else:
                 gone += 1
-                blocks.append(f"{_header(ref, f'{GONE_MARK}: {entry.located}')}\n{entry.written}\n{read.absent}")
+                blocks.append(f"{_header(ref, f'{GONE_MARK}: {entry.located}')}\n{entry.written}\n{read.absent}\n{GONE_DO}")
             continue
         section = _section(read, texts)
         now = section_hash(section)
@@ -248,10 +257,12 @@ def compose(wanted: Sequence[Ref], earlier: Sequence[Ref] = ()) -> Composed:
         else:
             listed_project += 1
         mark = None
+        todo = ""
         if entry.reviewed != now:
             changed += 1
             mark = f"{CHANGED_MARK}: {entry.located}"
-        blocks.append(f"{_header(ref, mark)}\n{WHY_LABEL}{entry.why}\n{section}")
+            todo = CHANGED_DO.format(located=entry.located) + "\n"
+        blocks.append(f"{_header(ref, mark)}\n{todo}{WHY_LABEL}{entry.why}\n{section}")
     return Composed(blocks, printed, listed, changed, gone, dropped, listed_project, dropped_project)
 
 

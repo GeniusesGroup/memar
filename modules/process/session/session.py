@@ -79,10 +79,12 @@ A task is one thing the person asked for, done and checked. A session is the
 record of one task: a folder holding its plan, its report, and whatever else the
 work makes, kept so that another session can continue it. One session is one
 task: another request in the same conversation, or a task handed to a
-sub-agent, gets a session of its own. Agent, sub-agent, and conversation are
-defined in `memar --help`. Work inside the session's folder, not in the
-checkout: the files you write while working belong to your session, not to the
-repository.
+sub-agent, gets a session of its own. Work inside the session's folder, not in
+the checkout: the files you write while working belong to your session, not to
+the repository. To hand work to another agent — a sub-agent, a new chat, a
+queued session — read what `new` says first. Memar's session is not developed
+further, since organization's Task replaces it: add nothing to it unless it is
+indispensable, and say in one line why.
 
 The folder's top holds only {PLAN_NAME} and {REPORT_NAME}, besides its role
 folders and the `{Claim.NAME}` file Memar writes there while an agent holds the

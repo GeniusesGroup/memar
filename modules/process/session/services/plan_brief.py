@@ -71,7 +71,13 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             f"its other lines. It tells the sub-agent to run `memar {SESSION_COMMAND} {START_COMMAND} --session-id ID`\n"
             f"first. The task itself is not in it; it is in the session's {PLAN_NAME},\n"
             "which the delegating session writes before handing the text over, adding\n"
-            "nothing to it."
+            "nothing to it.\n"
+            "\n"
+            "Start a new sub-agent rather than resume a long one. Sub-agents run one at a time unless\n"
+            "the owner asks otherwise, and any that run at once write disjoint files, or a shared one only\n"
+            "through `memar content write`. A delegated step is done only when its report.md exists: a\n"
+            "sub-agent that could only return text hands back its report, and you write it as its\n"
+            "report.md, marking what you could not."
         ),
     )
     briefer.add_argument("session_id", metavar="ID", help="the session whose plan is handed over")

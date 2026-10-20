@@ -190,8 +190,8 @@ class HelpSaysWhatToRun(unittest.TestCase):
             "A session is the record of one task",
             "One session is one task",
             "gets a session of its own",
-            "Agent, sub-agent, and conversation are defined in `memar --help`",
             "Work inside the session's folder, not in the checkout",
+            "read what `new` says first",
         ):
             self.assertIn(phrase, text)
 
@@ -288,8 +288,11 @@ class HelpSaysWhatToRun(unittest.TestCase):
             "never overwriting one that is there",
             "Request (what was asked",
             "Why (the reason",
-            "Steps (each local or delegated)",
+            "Steps (each local or delegated, each naming the governing documents it reads",
             "Next (what the next session does first)",
+            "decide where it runs by two questions",
+            "The owner's words never pick",
+            "A new chat never reaches a stronger model",
             "at most 10 lines under `## Decisions needed`",
             "use it as printed",
             "`memar content write`",

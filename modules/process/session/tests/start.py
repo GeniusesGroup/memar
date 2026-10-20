@@ -446,7 +446,6 @@ class Ending(Fixture):
     def test_what_a_sub_agent_does_last_is_printed(self) -> None:
         part = self.parts(plan_with())["ending"]
         for phrase in (
-            "plan.md and report.md",
             "without rewriting",
             "`memar session --help`",
             "return the report as your final text",
@@ -454,6 +453,20 @@ class Ending(Fixture):
             session_temp.TEMP_SENTENCE,
         ):
             self.assertIn(phrase, part)
+
+    def test_the_folder_rule_is_said_once_in_the_session_help(self) -> None:
+        parts = self.parts(plan_with())
+        self.assertIn("holds only plan.md and report.md", parts["help"])
+        self.assertNotIn("plan.md and report.md", parts["ending"])
+
+
+class SessionHelp(Fixture):
+    def test_its_verbs_are_left_to_the_card(self) -> None:
+        parts = self.parts(plan_with())
+        session_help = parts["help"].split("--- `memar content write --help` ---")[0]
+        self.assertIn(session_start.CARD_POINTER, session_help)
+        self.assertNotIn("\nverbs:", session_help)
+        self.assertIn("memar session new", parts["commands"])
 
 
 # A bound well under the text an implement plan starts with, so it prints in several parts.

@@ -104,6 +104,7 @@ from modules.knowledge.documentation.report.services.report import REPORT_NAME
 from modules.process.session.services.temp import TEMP_SENTENCE
 from modules.process.session.services.label import LABEL_COMMAND
 from modules.process.session.services.labels import LABELS_COMMAND
+from modules.process.session.services.new_chats import NEW_CHATS_COMMAND
 
 
 DEPENDS_FLAG = f"--{DEPENDS_COMMAND}"
@@ -141,7 +142,17 @@ def open_session(
 
 
 DESCRIPTION = f"""Ensure one session folder, for one task, and print its id, path, plan, and
-report. A folder with no {PLAN_NAME} needs --title, one line saying what the task
+report. Open one for work to be done, whose check is a change applied or a
+decision recorded, before any other work of that task. A task whose outcome is
+just that it was done — committing, a rename, one edit, a lookup, a handful of
+tool calls — opens none and starts no sub-agent. A request to investigate and
+apply nothing opens none either: the investigation is a step of the session of
+the work it improves, a question in the handoff of the document it concerns, or
+a Research file where it meets that facet's criterion. A problem found later in
+a finished session's work goes back to that session's chat; a new session is
+for work new in itself. Name the project with the flag for what you have, never
+one in the other's place, and never turn a name you were told into a guessed
+path. A folder with no {PLAN_NAME} needs --title, one line saying what the task
 is; a folder that has one is continued as it is. Pass the printed id back as
 --session-id to continue the same session later. The path is absolute: use it
 as printed, and never make a folder of the same name elsewhere instead. If your
@@ -150,17 +161,32 @@ file tool cannot reach it, write there through `memar content write`.
 It writes the role folders the folder lacks, {PLAN_NAME} and {REPORT_NAME}, never
 overwriting one that is there. The plan's sections are Request (what was asked,
 and what checks it is done), Why (the reason, in your own words), Steps (each
-local or delegated) and Next (what the next session does first); keep its Status
-line current as the task moves. Before you end, write the report: what ran, the
+local or delegated, each naming the governing documents it reads and the tests
+it adds or runs: a step that names none cannot start) and Next (what the next
+session does first); keep its Status line current as the task moves. Before you end, write the report: what ran, the
 check, the result, its Status. An agent that ends a session someone else will
 read hands back short: the report's Status and path, and, only when it needs a
 decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`.
+
+Before handing work to another agent, decide where it runs by two questions, and
+write both answers in your plan for each session: does your conversation need
+its result, and does it need the owner during the work (questions, critique,
+back-and-forth)? Its result needed and the owner not: a sub-agent, which returns
+only its hand-back. The owner needed, whether or not you wait for it: a new chat
+(`{NEW_CHATS_COMMAND}`). Its result not needed: queued and left (below). The owner's
+words never pick: "open a session", "create a chat", "ask an agent" name the
+work, not where it runs, and an agent app's own default does not pick either. A
+new chat never reaches a stronger model: an app's tool that starts a chat gives
+it at most your own model, so work that needs a stronger one — research the
+owner wants brought back included — is a sub-agent with the model named.
 
 To hand a task to a sub-agent: open its session with --parent (the session you
 work in) and --label {TASK_KIND}=KIND, write the whole task into its {PLAN_NAME} — Request, the
 check that says it is done, the shape of its report, and Why — and hand the
 sub-agent only the brief `new` prints, which `memar {SESSION_COMMAND} {PLAN_BRIEF_COMMAND} ID` prints
-again. Nothing else goes in the hand-over.
+again. Nothing else goes in the hand-over. Name the model when you start it: an
+app's default may be weaker than the kind needs. A session your work cannot go
+on without goes in your plan's Depends_on (`{DEPENDS_COMMAND}`).
 
 To only add work, open each task with --queued and a --priority and a --label {TOPIC}=T
 (`memar session {LABELS_COMMAND}` lists them; `{LABEL_COMMAND}` adds or removes one

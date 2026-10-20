@@ -75,7 +75,8 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "project that does not resolve, and a cycle of any length; --drop is how a dependency that no\n"
             "longer exists is removed. A queued session with an unmet dependency becomes Blocked; one whose\n"
             "dependencies are all met after Memar blocked it becomes queued again; an Active session is\n"
-            f"not changed. Why a session waits goes in its plan's Next. Anyone may change it. ({key} means\n"
+            f"not changed. Why a session waits goes in its plan's Next, and whoever makes its own session\n"
+            f"wait tells the owner at once that the work waits. Anyone may change it. ({key} means\n"
             "what the documents' Depends_on means, stronger in time: it cannot start until the cited session is Complete.)"
         ),
     )

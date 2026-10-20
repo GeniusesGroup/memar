@@ -103,6 +103,9 @@ MEMAR = SCRIPTS / "memar"
 MARK = "==="
 # The commands every session needs the help of, as the words after `memar`.
 ALWAYS_HELP = (("session",), ("content", "write"))
+# The commands whose help prints here without its options and verbs, which the card printed above lists with their call shapes.
+CARD_LISTS_VERBS = (("session",),)
+CARD_POINTER = "Its verbs, each with its call shape, are on the card above (`=== commands ===`)."
 # The card's one home. Its address is under `modules-plugable`, which a literal `from ... import` cannot name, so it is
 # imported through `importlib`. The reverse dependency this makes is the owner's ruling of 2026-10-19: kept because a
 # second round trip costs more and the command module is temporary.
@@ -121,8 +124,9 @@ COMMAND_WORD = re.compile(r"[a-z][a-z-]*$")
 MOST_COMMAND_WORDS = 3
 
 ENDING = (
-    f"Put nothing at the session folder's top but {PLAN_NAME} and {REPORT_NAME}: anything else you make goes in the role "
-    "folder of its kind, as `memar session --help` (above) says. Do what the plan's Request says, without rewriting that Request.\n"
+    "Do what the plan's Request says, without rewriting that Request. A read-only step takes no development or "
+    "modeling act, so beyond what this prints it reads only what its step needs. A chat started for this session, "
+    "rather than a sub-agent, is its coordinator.\n"
     f"End with its {REPORT_NAME} and Status as `memar session --help` says. Where you may write files, write the report "
     "through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the session's temp/ folder, which is never archived, so the report is not kept twice. "
     f"Where you may only return text, return the report as your final text, and the delegating session writes it as "
@@ -238,6 +242,8 @@ def _help_part(plan: str) -> list[str]:
     for words in (*ALWAYS_HELP, *shown):
         command = "memar " + " ".join(words)
         found = _help_of(words)
+        if found is not None and words in CARD_LISTS_VERBS:
+            found = found.split("\noptions:", 1)[0].rstrip() + "\n\n" + CARD_POINTER
         blocks.append(f"--- `{command} --help` ---\n" + (found if found is not None else f"no such command: `{command}`"))
     if left:
         blocks.append("--- not printed ---\n" + "\n".join(f"`memar {' '.join(words)}`: ask `--help` of it" for words in left))

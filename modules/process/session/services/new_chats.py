@@ -100,7 +100,20 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
             "its Why, and the text that hands it over (the one `hand-session-plan-to-carry-out`\n"
             "prints). A session the asking chat cannot go on without is marked blocks, the others\n"
             "independent, to run in parallel. The chat's own session, given with --coordinator, says\n"
-            f"which: those in its {PlanKey.DEPENDS_ON.written}. --blocking marks more by hand. Writes nothing."
+            f"which: those in its {PlanKey.DEPENDS_ON.written}. --blocking marks more by hand. Writes nothing.\n"
+            "\n"
+            "Where your agent app has a tool that starts a chat, start one per session and hand it only\n"
+            "the text `hand-session-plan-to-carry-out` prints; where it has none, show this message and\n"
+            "say in one line that you cannot start a chat. You cannot learn that another chat ended: ask\n"
+            "the owner to say when each blocking one is done, meanwhile do only the work no waiting\n"
+            "session touches, and end your turn when none is left. An independent session is written\n"
+            "whole, opened or listed, and then left: its exchanges with the owner and its end are not\n"
+            "yours to follow; two that change the same files are listed one after the other.\n"
+            "\n"
+            "Work your chat needs that cannot be specified exactly to an agent, because it needs\n"
+            "back-and-forth with the owner, is neither done nor delegated by your chat: set your plan\n"
+            "Blocked on its session, open its chat for the owner, say in one message which chat to go\n"
+            "to and what it must produce, and stop until the owner says it is done."
         ),
     )
     asker.add_argument("session_ids", nargs="+", metavar="ID", help="the sessions to run, one chat each")
