@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/primitive/topic.py — the kind of label `Topic`, declared once: the subjects `claims` batches by.
+"""modules/knowledge/documentation/plan/labels/topic.py — the kind of label `Topic`, declared once: the subjects `claims` batches by.
 
 A topic is a label whose definition takes the label `Topic`
 (`modules/knowledge/documentation/primitive/label.py`): a plan takes as many as
@@ -19,13 +19,10 @@ are written here and nowhere else
 ([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
-
 from machine.console import fail
 from modules.knowledge.documentation.primitive.label import Label, LabelKind, LabelProblem
-
-LABEL_KIND_NAME = "Topic"
-TOPIC_LABEL = Label(LABEL_KIND_NAME, "01a14a04-6536-7c2e-8cc6-276de9a45ba5")
-
+LABEL_KIND_NAME = 'Topic'
+TOPIC_LABEL = Label(LABEL_KIND_NAME, '01a14a04-6536-7c2e-8cc6-276de9a45ba5')
 
 class Topic(str):
     """A topic's word: lower case, each run of white space one hyphen; empty when there is none."""
@@ -33,28 +30,20 @@ class Topic(str):
     @classmethod
     def normalized(cls, text: str) -> Topic:
         """TEXT as a topic: stripped, lower case, each run of white space one hyphen; empty when nothing is left."""
-        return cls("-".join(text.lower().split()))
+        return cls('-'.join(text.lower().split()))
 
     @classmethod
     def checked(cls, text: str) -> Topic:
         """TEXT as a topic, normalized; refused when it holds a line break, since a topic is a one-line front-matter value."""
-        if "\n" in text or "\r" in text:
-            fail("a topic is one line; this one holds a line break")
+        if '\n' in text or '\r' in text:
+            fail('a topic is one line; this one holds a line break')
         return cls.normalized(text)
 
-
 def _word(text: str) -> str:
-    if "\n" in text or "\r" in text:
-        raise LabelProblem("a topic is one line; this one holds a line break")
+    if '\n' in text or '\r' in text:
+        raise LabelProblem('a topic is one line; this one holds a line break')
     word = Topic.normalized(text)
     if not word:
-        raise LabelProblem("a topic is not empty; to remove one, remove its label")
+        raise LabelProblem('a topic is not empty; to remove one, remove its label')
     return str(word)
-
-
-LABEL_KIND = LabelKind(
-    TOPIC_LABEL,
-    "the subject a task is about, free text in lower case with spaces as hyphens",
-    "`claims`, which batches the queued tasks that carry one, and `labels`, which lists those in use",
-    _word,
-)
+LABEL_KIND = LabelKind(TOPIC_LABEL, 'the subject a task is about, free text in lower case with spaces as hyphens', '`claims`, which batches the queued tasks that carry one, and `labels`, which lists those in use', _word)

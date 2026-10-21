@@ -17,7 +17,7 @@ A task that is handed from one session to the next arrives as nothing but a fold
 The same need makes a plan distinct from the records that already exist. A [changelog](../changelog/changelog.md#reader-relationship) is consulted to audit what changed; a [handoff](../handoff/handoff.md#reader-relationship) is read to resume a paused discussion; an [Explanation-facet specification](../explanation/explanation.md#reader-relationship) is studied to understand a subject. A plan is read to *begin* work that has been agreed but not started, and its reader is about to act on it rather than interpret it.
 
 ### Methodology
-This specification was not designed in the abstract. The artifact it governs has been in daily use in this project long before it was named a facet, written by the services under `modules/process/session/services/` and read by every agent that takes a session up. The proposal that named it — what a plan is, whether it is a facet of its own, and what each specification must then carry — is `temp/sessions/20261016-T003724Z-23508/report.md`, and the owner's answers of 2026-10-16 are what this document applies. Where a decision was the owner's it is cited as such; where the answers left a detail open, the decision and its reason are in this document's own changelog entry.
+This specification was not designed in the abstract. The artifact it governs has been in daily use in this project long before it was named a facet, written by the services under `modules/management/task/services/` and read by every agent that takes a session up. The proposal that named it — what a plan is, whether it is a facet of its own, and what each specification must then carry — is `.agents/tasks/20261016-T003724Z-23508/report.md`, and the owner's answers of 2026-10-16 are what this document applies. Where a decision was the owner's it is cited as such; where the answers left a detail open, the decision and its reason are in this document's own changelog entry.
 
 ## Explanation
 ### What a Plan Is
@@ -43,9 +43,9 @@ A plan is written:
 
 A plan is read:
 
-- by the agent taking the session up, before anything else, which `memar session start` prints;
+- by the agent taking the session up, before anything else, which `memar ai get-task-init-context` prints;
 - by the person or agent who comes next, which is the reason the record exists;
-- by a sub-agent, through the brief `memar session start` prints;
+- by a sub-agent, through the brief `memar ai get-task-init-context` prints;
 - by the services that list, rank and gather sessions, and by the sweep that decides which folders go — each of which reads the plan to answer its own question and none of which reads the body for any other reason.
 
 ### What each part is for
@@ -65,7 +65,7 @@ Each requirement below is decidable from a stated input by a party that did not 
 7. **The plan's check is that something was done**: a change applied, or a decision recorded where it governs. A task whose outcome would be a finding or a proposal is a step of the plan of the work it improves ([A session is for work](../handoff/handoff.practice.md#a-session-is-for-work)), and a plan whose only check is a proposal is not ready.
 
 ### Where the code is, and what a reader does when it disagrees
-The code that enforces the requirements above lives today under `modules/process/session/services/`, not in this module's `services/` folder: session `20261015-T123046Z-17544` moved the services out of `.agents/scripts/services/` into the module of their domain, and the session module holds a session's plan and report together. Whether the code that enforces this facet moves on into this module's `services/` folder is not decided, and no second move of the same code is made here.
+The code that enforces the requirements above lives today under `modules/management/task/services/`, not in this module's `services/` folder: session `20261015-T123046Z-17544` moved the services out of `.agents/scripts/services/` into the module of their domain, and the session module holds a session's plan and report together. Whether the code that enforces this facet moves on into this module's `services/` folder is not decided, and no second move of the same code is made here.
 
 Which service holds each requirement today, so that a reader looking for the enforcement does not have to search for it:
 
@@ -73,8 +73,8 @@ Which service holds each requirement today, so that a reader looking for the enf
 | --- | --- |
 | what was asked and what checks it done | no code; a reader's judgement, and the practice a session follows at intake |
 | the Status values a plan may take | `modules/knowledge/documentation/primitive/status.py`, read through the record declaration |
-| an earlier shape not read | `modules/process/session/services/plan.py` |
-| the Status line rewritten alone | `modules/process/session/services/plan_status.py` and `modules/process/session/services/plan_write.py` |
+| an earlier shape not read | `modules/management/task/services/plan.py` |
+| the Status line rewritten alone | `modules/knowledge/documentation/plan/services/status.py` and `modules/knowledge/documentation/plan/services/write.py` |
 | no companion of either kind | no code; the exemption below |
 | the session's identifier in the front matter | `modules/knowledge/documentation/primitive/record_key.py`, written by the plan and report writers |
 

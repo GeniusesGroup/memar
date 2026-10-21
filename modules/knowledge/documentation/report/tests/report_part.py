@@ -12,23 +12,19 @@ The subject is the parts under a session report's front matter, in order, and th
 What is pinned: the headings are those the specification names, in its order, each with a meaning; each is read back from its text in any case; any other text is no member.
 """
 from __future__ import annotations
-
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
 TOP = TESTS.parents[4]
-sys.path.insert(0, str(TOP / ".agents" / "scripts"))
+sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-
 from modules.knowledge.documentation.report.primitive.report_part import ReportPart
-
 WORDS = ('What ran', 'Check', 'Result', 'Left open', 'Decisions needed')
 
-
 class ReportPartPins(unittest.TestCase):
+
     def test_the_headings_are_the_specifications_in_its_order(self) -> None:
         self.assertEqual(ReportPart.headings(), WORDS)
 
@@ -39,17 +35,13 @@ class ReportPartPins(unittest.TestCase):
 
     def test_each_is_read_back_in_any_case(self) -> None:
         for member in ReportPart:
-            self.assertIs(ReportPart.read(" " + member.heading.upper() + " "), member)
+            self.assertIs(ReportPart.read(' ' + member.heading.upper() + ' '), member)
 
     def test_any_other_text_is_no_member(self) -> None:
-        self.assertIsNone(ReportPart.read("no such heading"))
-
+        self.assertIsNone(ReportPart.read('no such heading'))
 
     def test_the_hand_back_part_is_not_one_every_report_has(self) -> None:
-        self.assertEqual(ReportPart.every_report(), ("What ran", "Check", "Result", "Left open"))
+        self.assertEqual(ReportPart.every_report(), ('What ran', 'Check', 'Result', 'Left open'))
         self.assertTrue(ReportPart.DECISIONS_NEEDED.hand_back)
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -14,22 +14,9 @@ own to what an agent can do, and the `memar` command is unchanged beside it. Its
 route to.
 """
 from __future__ import annotations
-
 import argparse
-
-# The verb this domain registers; its own verbs are not served as tools.
-COMMAND = "mcp"
-
+COMMAND = 'mcp'
 
 def describe(verbs):
-    verbs.add_parser(
-        COMMAND,
-        help="reach Memar's verbs as MCP tools, from an agent app that starts the server",
-        description=(
-            "Memar's verbs as the tools of a Model Context Protocol server, one tool per verb,\n"
-            "each answering exactly what the verb prints. An agent app starts the server and\n"
-            "talks to it; `memar install` registers it in the agent apps it knows."
-        ),
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
+    verbs.add_parser(COMMAND, help="reach Memar's verbs as MCP tools, from an agent app that starts the server", description="Memar's verbs as the tools of a Model Context Protocol server, one tool per verb,\neach answering exactly what the verb prints. An agent app starts the server and\ntalks to it; `memar install` registers it in the agent apps it knows.", formatter_class=argparse.RawDescriptionHelpFormatter)
     return None

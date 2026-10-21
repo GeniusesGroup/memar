@@ -11,21 +11,10 @@ the lookup other verbs call. Why there is a registry at all is said in
 this registry resolves, and never reads the folder it was started in.
 """
 from __future__ import annotations
-
 from typing import Callable
-
-PROJECT_COMMAND = "project"
-
-SUMMARY = "the projects Memar knows by name: add, list, remove, and find one by a name that need not be exact"
-
-DESCRIPTION = """memar project — which folder a project's name is
-
-A task always names its project: by its folder, or by a name. Memar keeps the
-names in temp/projects.log at the root of its own temp: one project a line,
-its folder and an array of names (the first is its own, the rest aliases in
-any language). Memar's own checkout is an entry named memar. Names are unique
-without regard to case."""
-
+PROJECT_COMMAND = 'project'
+SUMMARY = 'the projects Memar knows by name: add, list, remove, and find one by a name that need not be exact'
+DESCRIPTION = "memar project — which folder a project's name is\n\nA task always names its project: by its folder, or by a name. Memar keeps the\nnames in temp/projects.log at the root of its own temp: one project a line,\nits folder and an array of names (the first is its own, the rest aliases in\nany language). Memar's own checkout is an entry named memar. Names are unique\nwithout regard to case."
 
 def describe(verbs) -> Callable[[object], None]:
     """`memar project`, whose sub-verbs its capabilities declare."""

@@ -36,29 +36,16 @@ A report is scratch, like the plan, and goes with its folder: what lasts of it
 is routed by closing by type.
 """
 from __future__ import annotations
-
 from pathlib import Path
-
-from modules.knowledge.documentation.plan.services.plan import (
-    EARLIER_SHAPE_REMEDY,
-    EARLIER_STATUS_WORDS,
-    front_key,
-    front_matter,
-    status_word,
-)
+from modules.knowledge.documentation.plan.services.plan import EARLIER_SHAPE_REMEDY, EARLIER_STATUS_WORDS, front_key, front_matter, status_word
 from modules.knowledge.documentation.record import PLAN, REPORT
 from modules.knowledge.documentation.report.primitive.report_key import ReportKey
 from modules.knowledge.documentation.primitive.status import Status
-
-# The report's shape and the Statuses it may state are declared once, in
-# `record` and `status`; the name is derived from them, not repeated.
 REPORT_NAME = REPORT.file_name
-# What marks a report of an earlier shape, so it can be named.
-EARLIER_OUTCOME_KEY = "Outcome"
-EARLIER_STOP_PREFIX = "Stop:"
+EARLIER_OUTCOME_KEY = 'Outcome'
+EARLIER_STOP_PREFIX = 'Stop:'
 
-
-def report_skeleton(session: str, title: str | None = None) -> str:
+def report_skeleton(session: str, title: str | None=None) -> str:
     """A new report.md: front matter naming its session with an empty Status (and the TITLE, when known), its heading, and the four parts.
 
     SESSION is the id of the session the report belongs to, written into the
@@ -68,38 +55,28 @@ def report_skeleton(session: str, title: str | None = None) -> str:
     An empty Status is left for the session to fill when it ends; until it
     does, the report says nothing and is not checked.
     """
-    front = [
-        "---",
-        f"{ReportKey.ID.written}: {session}",
-        *([f"{ReportKey.TITLE.written}: {title}"] if title else []),
-        f"{ReportKey.STATUS.written}:",
-        "---",
-    ]
-    return "\n".join([*front, f"# {REPORT.heading}", "", *(f"## {part}" for part in REPORT.parts)]) + "\n"
+    front = ['---', f'{ReportKey.ID.written}: {session}', *([f'{ReportKey.TITLE.written}: {title}'] if title else []), f'{ReportKey.STATUS.written}:', '---']
+    return '\n'.join([*front, f'# {REPORT.heading}', '', *(f'## {part}' for part in REPORT.parts)]) + '\n'
 
-
-def write_report(folder: Path, session: str, title: str | None = None) -> None:
+def write_report(folder: Path, session: str, title: str | None=None) -> None:
     """Create FOLDER's report.md unless one is there; an existing report is never touched."""
     try:
-        with (folder / REPORT_NAME).open("x", encoding="utf-8", newline="\n") as report:
+        with (folder / REPORT_NAME).open('x', encoding='utf-8', newline='\n') as report:
             report.write(report_skeleton(session, title))
     except FileExistsError:
         pass
 
-
 def _lines(folder: Path) -> list[str]:
     """FOLDER's report.md as lines; none when there is no readable report."""
     try:
-        return (folder / REPORT_NAME).read_text(encoding="utf-8-sig").splitlines()
+        return (folder / REPORT_NAME).read_text(encoding='utf-8-sig').splitlines()
     except (OSError, UnicodeDecodeError):
         return []
-
 
 def _front(lines: list[str]) -> dict[str, str]:
     """The report's front matter, the keys written in PascalCase lowercased so callers ask for `status`; empty without one."""
     front, _ = front_matter(lines)
     return REPORT.current({key.lower(): value for key, value in (front or {}).items() if key == front_key(key)})
-
 
 def read_report_status(folder: Path) -> str:
     """The Status FOLDER's report.md states, as `session_plan` reads a status; empty when it states none or there is no report.
@@ -108,29 +85,27 @@ def read_report_status(folder: Path) -> str:
     earlier shape states none (`report_shape_problem`), and none is not a
     disagreement.
     """
-    return status_word(_front(_lines(folder)).get(ReportKey.STATUS.key, ""))
-
+    return status_word(_front(_lines(folder)).get(ReportKey.STATUS.key, ''))
 
 def report_shape_problem(folder: Path) -> str | None:
     """Why FOLDER's report is in an earlier shape, with where today's is shown; None when it is not, or there is none."""
     lines = _lines(folder)
     front, start = front_matter(lines)
     found = []
-    if any(line.startswith(EARLIER_STOP_PREFIX) for line in lines[start:]):
-        found.append("a `Stop:` line")
+    if any((line.startswith(EARLIER_STOP_PREFIX) for line in lines[start:])):
+        found.append('a `Stop:` line')
     if front is not None:
         if EARLIER_OUTCOME_KEY in front or EARLIER_OUTCOME_KEY.lower() in front:
-            found.append("an `Outcome` key")
-        if any(key != front_key(key) and key.lower() in {report_key.key for report_key in REPORT.keys} for key in front):
-            found.append("keys in lower case")
-        if status_word(front.get(ReportKey.STATUS.written, "")) in EARLIER_STATUS_WORDS:
-            found.append(f"the status word {status_word(front[ReportKey.STATUS.written])}")
+            found.append('an `Outcome` key')
+        if any((key != front_key(key) and key.lower() in {report_key.key for report_key in REPORT.keys} for key in front)):
+            found.append('keys in lower case')
+        if status_word(front.get(ReportKey.STATUS.written, '')) in EARLIER_STATUS_WORDS:
+            found.append(f'the status word {status_word(front[ReportKey.STATUS.written])}')
     if not found:
         return None
     return f"{REPORT_NAME} is in an earlier shape ({'; '.join(found)}); {EARLIER_SHAPE_REMEDY}"
 
-
-def disagreement(status: str, report_status: str = "") -> str | None:
+def disagreement(status: str, report_status: str='') -> str | None:
     """Why STATUS, a plan's, and REPORT_STATUS, its report's, disagree; None when they agree or nothing can be checked.
 
     A status outside the plan's vocabulary is named first, because no report
@@ -148,25 +123,22 @@ def disagreement(status: str, report_status: str = "") -> str | None:
             return f"{REPORT_NAME} Status {report_status} is not the plan's {status}"
     return None
 
-
 def report_part(folder: Path, heading: str) -> list[str]:
     """The non-blank lines under FOLDER's report's `## HEADING` heading, as written; none without one."""
     found: list[str] | None = None
     for line in _lines(folder):
-        if line.startswith("#"):
+        if line.startswith('#'):
             if found is not None:
                 break
-            if line.lstrip("#").strip().lower() == heading.lower():
+            if line.lstrip('#').strip().lower() == heading.lower():
                 found = []
         elif found is not None and line.strip():
             found.append(line.rstrip())
     return found or []
 
-
 def decisions_needed(folder: Path) -> list[str]:
     """The non-blank lines under FOLDER's report's `## Decisions needed` heading, as written; none without one."""
     return report_part(folder, REPORT.hand_back_part)
-
 
 def handback_problem(folder: Path, status: str) -> str | None:
     """Why FOLDER's report is not a hand-back, given its plan's STATUS; None when it is one.
@@ -181,11 +153,11 @@ def handback_problem(folder: Path, status: str) -> str | None:
         return shape
     report_status = read_report_status(folder)
     if not report_status:
-        return f"{REPORT_NAME} has no Status"
+        return f'{REPORT_NAME} has no Status'
     why = disagreement(status, report_status)
     if why:
         return why
     count = len(decisions_needed(folder))
     if count > REPORT.hand_back_max_lines:
-        return f"{count} lines under {REPORT.hand_back_part}, more than {REPORT.hand_back_max_lines}"
+        return f'{count} lines under {REPORT.hand_back_part}, more than {REPORT.hand_back_max_lines}'
     return None

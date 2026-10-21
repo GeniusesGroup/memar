@@ -32,63 +32,53 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import sys
 import tempfile
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# The scripts folder is two levels up from this suite's folder; running a file
-# puts its own folder on the module search path, not its parent's.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
 from modules.knowledge.content.services.normative_references import PREFERENCE, Place, normative_reference_places
-from modules.process.project.services.preferences import PREFERENCES_TEXT, preferences_path
-
+from modules.process.project.services.preferences import BLOCK_KEY, preferences_path, preferences_text, read_preferences
 
 class Fixture(unittest.TestCase):
+
     def setUp(self) -> None:
         scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(scratch.cleanup)
-        self.memar = Path(scratch.name).resolve() / "memar"
+        self.memar = Path(scratch.name).resolve() / 'memar'
         self.memar.mkdir()
-        self.project = Path(scratch.name).resolve() / "orchard"
-        for folder in ("rules/refs", "docs/refs"):
+        self.project = Path(scratch.name).resolve() / 'orchard'
+        for folder in ('rules/refs', 'docs/refs'):
             (self.project / folder).mkdir(parents=True)
 
     def prefer(self, value: str | None) -> None:
         path = preferences_path(self.project)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        key = "" if value is None else f"{PREFERENCE}: {value}\n"
-        path.write_text(f"---\nsessions:\n{key}---\n# Preferences\n", encoding="utf-8", newline="\n")
+        key = '' if value is None else f'  {PREFERENCE}: {value}\n'
+        path.write_text(f'name: orchard\n{BLOCK_KEY}:\n  sessions:\n{key}', encoding='utf-8', newline='\n')
 
     def places(self):
         return normative_reference_places(self.project, self.memar)
 
-
 class Places(Fixture):
+
     def test_each_folder_named_is_a_place_in_the_order_named(self) -> None:
-        self.prefer("rules/refs, docs/refs")
+        self.prefer('rules/refs, docs/refs')
         places, problems = self.places()
         self.assertEqual(problems, [])
-        self.assertEqual(
-            places,
-            [
-                Place("orchard", self.project, self.project / "rules" / "refs", self.memar),
-                Place("orchard", self.project, self.project / "docs" / "refs", self.memar),
-            ],
-        )
-
+        self.assertEqual(places, [Place('orchard', self.project, self.project / 'rules' / 'refs', self.memar), Place('orchard', self.project, self.project / 'docs' / 'refs', self.memar)])
 
 class Unset(Fixture):
+
     def test_an_empty_or_absent_key_and_no_file_give_nothing(self) -> None:
         self.assertEqual(self.places(), ([], []))
-        for value in (None, ""):
+        for value in (None, ''):
             with self.subTest(value=value):
                 self.prefer(value)
                 self.assertEqual(self.places(), ([], []))
@@ -96,19 +86,19 @@ class Unset(Fixture):
     def test_no_project_gives_nothing(self) -> None:
         self.assertEqual(normative_reference_places(None, self.memar), ([], []))
 
-
 class Refused(Fixture):
+
     def test_a_folder_that_does_not_exist_is_a_problem_and_the_rest_are_read(self) -> None:
-        self.prefer("rules/gone, rules/refs")
+        self.prefer('rules/gone, rules/refs')
         places, problems = self.places()
-        self.assertEqual([place.folder for place in places], [self.project / "rules" / "refs"])
-        (problem,) = problems
-        self.assertIn("rules/gone", problem)
-        self.assertIn("not a folder", problem)
+        self.assertEqual([place.folder for place in places], [self.project / 'rules' / 'refs'])
+        problem, = problems
+        self.assertIn('rules/gone', problem)
+        self.assertIn('not a folder', problem)
         self.assertIn(preferences_path(self.project).as_posix(), problem)
 
     def test_the_top_folder_an_absolute_path_and_one_leaving_the_project_are_problems(self) -> None:
-        for value in (".", "./", str(self.project / "rules" / "refs"), "../memar", "rules/../.."):
+        for value in ('.', './', str(self.project / 'rules' / 'refs'), '../memar', 'rules/../..'):
             with self.subTest(value=value):
                 self.prefer(value)
                 places, problems = self.places()
@@ -116,13 +106,24 @@ class Refused(Fixture):
                 self.assertEqual(len(problems), 1, problems)
                 self.assertIn(PREFERENCE, problems[0])
 
+class Manifest(Fixture):
+    """The `memar:` block is read out of the project's manifest; the manifest's other keys are not Memar's."""
 
-class Template(unittest.TestCase):
-    def test_the_installed_file_holds_the_key_empty_and_says_what_it_is(self) -> None:
-        front = PREFERENCES_TEXT.split("---\n")[1]
-        self.assertIn(f"\n{PREFERENCE}:\n", "\n" + front)
-        self.assertIn(f"`{PREFERENCE}` names the folders", PREFERENCES_TEXT)
+    def write(self, text: str) -> None:
+        preferences_path(self.project).write_text(text, encoding='utf-8', newline='\n')
 
+    def test_only_the_block_is_read(self) -> None:
+        self.write('"@type": SoftwareSourceCode\nsessions: not-memars\nmemar:\n  # a note\n  sessions: work\n  records: off\nkeywords:\n  - records: x\n')
+        self.assertEqual(read_preferences(self.project), {'sessions': 'work', 'records': 'off'})
 
-if __name__ == "__main__":
+    def test_a_manifest_without_the_block_or_no_manifest_sets_nothing(self) -> None:
+        self.assertEqual(read_preferences(self.project), {})
+        self.write('name: orchard\n')
+        self.assertEqual(read_preferences(self.project), {})
+
+    def test_the_text_written_for_values_reads_back_as_them(self) -> None:
+        values = {'sessions': 'work/sessions', PREFERENCE: 'rules/refs, docs/refs'}
+        self.write(preferences_text(values))
+        self.assertEqual(read_preferences(self.project), values)
+if __name__ == '__main__':
     unittest.main(verbosity=2)

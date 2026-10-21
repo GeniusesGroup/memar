@@ -366,26 +366,26 @@ The tension was not the category but the exemption. Read against a document decl
 - Time: 2026-10-19T18:30:00Z
 - Type: Added
 - Cited:
-  - [Handoff → Where a finished session's records are kept](../documentation/handoff/handoff.handoff.md#where-a-finished-sessions-records-are-kept) - Evidence: said the corpus "no longer leaves `.agents/sessions/` out", which reached only a checkout holding that folder and never the records branch, where the records are.
+  - [Handoff → Where a finished session's records are kept](../documentation/handoff/handoff.handoff.md#where-a-finished-sessions-records-are-kept) - Evidence: said the corpus "no longer leaves `.agents/tasks/` out", which reached only a checkout holding that folder and never the records branch, where the records are.
   - `docs/comparisons/context-mode.001.md`, sections 1, 6 and 7 - Motivation: Memar keeps its session records and no verb could find anything in them.
 - Propagates to:
   - modules/knowledge/documentation/handoff/handoff.handoff.md: Done - the entry "Where a finished session's records are kept" says what the corpus reaches now and since which session.
   - bundles/memar/memar.handoff.md: Done - the bullet on the kept index says how the sessions' files are kept in the MCP worker.
   - docs/comparisons/context-mode.001.md: Done - its finding was checked again against the fixed verbs on 2026-10-19 by two reviewers that had not drafted it, and the essay now states the state before the fix as history and the state after it as fact.
 - Tasks:
-  - dev-knowledge:.agents/sessions/20261019-T170853Z-4740/: Closed - the session that made the change.
+  - dev-knowledge:.agents/tasks/20261019-T170853Z-4740/: Closed - the session that made the change.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided (2026-10-19)
   - [Claude](../../../CONTRIBUTORS.md#claude) (claude-opus-5-5 via Claude Code) — implemented, tested
 
 #### What changed
 - `memar content find` and `memar content search` take `--from SOURCE`, repeated for several, whose values are declared once in `primitive/corpus_source.py` with what each reads: `documents` (the Markdown files the corpus walked before), `code` (its `.kh` files) and `sessions`. Without the flag they read the documents and the code, as before; nothing else changed in what the default reads or prints.
-- `sessions` reads every text file of every session of the project (`services/session_records.py`): the archived records on the records branch, through git's read-only commands in one `ls-tree` and one `cat-file --batch`, so HEAD, index and working tree do not move; and the live session folders, those in the project's sessions folder and those in Memar's own whose plan names the project by its folder, less a session's own `temp/`. A session with a live folder is read from it alone, as `memar session show` reads it first. On this checkout, 1,537 archived files and the live folders are read and ranked in about three seconds.
-- A hit names its origin: `dev-knowledge:.agents/sessions/<id>/<file>` for an archived file, the folder's path for a live one. `find` ranks a session's Markdown by section as it ranks a document, and any other text file as one unit named by its file. Each verb's help says that such a hit is a session's record, never a ruling.
+- `sessions` reads every text file of every session of the project (`services/session_records.py`): the archived records on the records branch, through git's read-only commands in one `ls-tree` and one `cat-file --batch`, so HEAD, index and working tree do not move; and the live session folders, those in the project's sessions folder and those in Memar's own whose plan names the project by its folder, less a session's own `temp/`. A session with a live folder is read from it alone, as `memar git show-task-records` reads it first. On this checkout, 1,537 archived files and the live folders are read and ranked in about three seconds.
+- A hit names its origin: `dev-knowledge:.agents/tasks/<id>/<file>` for an archived file, the folder's path for a live one. `find` ranks a session's Markdown by section as it ranks a document, and any other text file as one unit named by its file. Each verb's help says that such a hit is a session's record, never a ruling.
 - When a project has no archived records to read — its preferences say `records: off`, it is not a repository's top folder, or its repository has no records branch — the verb says so on standard error rather than answering with silence.
 - `search` now takes `--project` / `--project-path`, as `find` already did, since a project's records are on its own branch.
-- The form of a session's reference and the read-only git calls on the records branch moved to the shelf below both modules, `.agents/scripts/machine/git_records.py`: the content module may not import the session module, which imports it. `modules/process/session/services/branch.py` asks it for the reference and the folder's path; the session verbs behave as before.
-- `memar session archive`'s summary and help say the records are also read by content.
+- The form of a session's reference and the read-only git calls on the records branch moved to the shelf below both modules, `.agents/scripts/modules-plugable/computer/git/services/_git_records.py`: the content module may not import the session module, which imports it. `modules-plugable/computer/git/services/branch.py` asks it for the reference and the folder's path; the session verbs behave as before.
+- `memar git archive-task-records`'s summary and help say the records are also read by content.
 - The MCP tools need no code of their own: `--from` is generated as a list of the three values for `content_find` and `content_search`.
 - Tests: `tests/session_records.py`, a scratch repository with a records branch: a term only an archived record holds is found, and not without the filter nor with `documents`; a live folder is read and its `temp/` is not; `records: off`, a repository with no branch and a folder inside another repository are said; the default corpus is unchanged; the help and the MCP schema carry the flag.
 
@@ -393,5 +393,5 @@ The tension was not the category but the exemption. Read against a document decl
 - A verb of its own over the records: the owner ruled a filter on `memar content`.
 - Reading the records only by their Markdown, as the documents are read: the archive keeps scripts, logs and text notes as well, and four of the 25 archived files that mention "compaction" are `.txt`.
 - Making `sessions` part of the default: a hit from a session is a claim, and a reader who did not ask for claims would read them beside the rulings.
-- A source for each of the two places, archived and live: one session has one record, read from the place `memar session show` reads it.
+- A source for each of the two places, archived and live: one session has one record, read from the place `memar git show-task-records` reads it.
 - Reading the sessions in `backlinks`, `obligations` and the other verbs that read the corpus: they answer about the documents' links and ledgers, which a session's records are not.

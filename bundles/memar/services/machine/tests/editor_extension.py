@@ -3,7 +3,7 @@
 
 """Tests for where an editor's extensions land, in `machine/editor_extension.py`.
 
-    python .agents/scripts/machine/tests/editor_extension.py
+    python bundles/memar/services/machine/tests/editor_extension.py
 
 The subject is the placement of an extension, per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -30,6 +30,9 @@ What is pinned, and what each pin is for:
                           change that is not installed. The folder already
                           there is moved to the trash first, so a local edit
                           can be taken back.
+  DryRunTouchesNothing    A dry run prints what it would install or refresh and
+                          neither moves the installed folder to the trash nor
+                          writes the checkout's copy.
   NoEditorIsSkipped       An editor folder that is not there is reported and
                           left alone, rather than created: writing into a folder
                           no editor reads leaves litter, not an extension.
@@ -48,7 +51,9 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import contextlib
 import io
 import json
@@ -59,21 +64,12 @@ import tempfile
 import unittest
 import unittest.mock
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up and the checkout it resolves against is two
-# above that. Running a file puts its OWN folder on the module search path and not
-# its parent's, which is the one line this needs and the reason it carries one.
 SCRIPTS = TESTS.parent.parent
 CHECKOUT = SCRIPTS.parent.parent
 sys.path.insert(0, str(SCRIPTS))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
 import machine.editor_extension as extension
-
 
 class Fixture(unittest.TestCase):
     """A checkout that ships one extension, and an editor folder to copy it into."""
@@ -86,21 +82,18 @@ class Fixture(unittest.TestCase):
         self.editor = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.editor.cleanup)
         self.editor_root = Path(self.editor.name)
-
         self.sources = self.checkout_root / extension.EXTENSIONS_RELATIVE
         self.sources.mkdir(parents=True)
-        patch = unittest.mock.patch.object(extension, "editor_extensions_dir", lambda: self.editor_root)
+        patch = unittest.mock.patch.object(extension, 'editor_extensions_dir', lambda: self.editor_root)
         self.addCleanup(patch.stop)
         patch.start()
-        printer = unittest.mock.patch("builtins.print", self.notes.write)
+        printer = unittest.mock.patch('builtins.print', self.notes.write)
         self.addCleanup(printer.stop)
         printer.start()
-        # The platform trash is not this test's to call. The stand-in only
-        # removes the path, inside this scratch, so the new copy can land.
+
         def _aside(path: Path) -> None:
             shutil.rmtree(path)
-
-        trash = unittest.mock.patch.object(extension, "soft_delete", side_effect=_aside)
+        trash = unittest.mock.patch.object(extension, 'soft_delete', side_effect=_aside)
         self.addCleanup(trash.stop)
         trash.start()
 
@@ -108,22 +101,14 @@ class Fixture(unittest.TestCase):
         """Write one extension manifest into the checkout and return its folder."""
         source = self.sources / folder
         source.mkdir(parents=True, exist_ok=True)
-        manifest = {
-            "publisher": fields.get("publisher", "Memar"),
-            "name": fields.get("name", folder),
-            "version": fields.get("version", "1.0.0"),
-            "main": "./extension.js",
-        }
+        manifest = {'publisher': fields.get('publisher', 'Memar'), 'name': fields.get('name', folder), 'version': fields.get('version', '1.0.0'), 'main': './extension.js'}
         for absent in (key for key, value in fields.items() if value is None):
             del manifest[absent]
-        (source / extension.MANIFEST_NAME).write_text(
-            json.dumps(manifest), encoding="utf-8"
-        )
+        (source / extension.MANIFEST_NAME).write_text(json.dumps(manifest), encoding='utf-8')
         return source
 
     def said(self, fragment: str) -> bool:
         return fragment in self.notes.getvalue()
-
 
 class FolderNameFromManifest(unittest.TestCase):
     """The editor's own name for the folder, read rather than written here."""
@@ -131,23 +116,14 @@ class FolderNameFromManifest(unittest.TestCase):
     def test_the_publisher_name_and_version_make_the_folder_name(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             manifest = Path(scratch) / extension.MANIFEST_NAME
-            manifest.write_text(
-                json.dumps({"publisher": "Memar", "name": "khayyam", "version": "2.1.0"}),
-                encoding="utf-8",
-            )
-            self.assertEqual(extension.extension_folder_name(manifest), "memar.khayyam-2.1.0")
+            manifest.write_text(json.dumps({'publisher': 'Memar', 'name': 'khayyam', 'version': '2.1.0'}), encoding='utf-8')
+            self.assertEqual(extension.extension_folder_name(manifest), 'memar.khayyam-2.1.0')
 
     def test_a_publisher_with_dots_loses_them(self) -> None:
-        # The editor compares folder names literally, so a publisher that keeps a
-        # dot would never match what the marketplace installed under.
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             manifest = Path(scratch) / extension.MANIFEST_NAME
-            manifest.write_text(
-                json.dumps({"publisher": "Memar.Foundation", "name": "khayyam", "version": "1.0.0"}),
-                encoding="utf-8",
-            )
-            self.assertEqual(extension.extension_folder_name(manifest), "memarfoundation.khayyam-1.0.0")
-
+            manifest.write_text(json.dumps({'publisher': 'Memar.Foundation', 'name': 'khayyam', 'version': '1.0.0'}), encoding='utf-8')
+            self.assertEqual(extension.extension_folder_name(manifest), 'memarfoundation.khayyam-1.0.0')
 
 class RefusesAnUnnamedOne(Fixture):
     """A manifest that names no installable extension is said so, by field."""
@@ -155,10 +131,10 @@ class RefusesAnUnnamedOne(Fixture):
     def test_each_missing_field_is_refused_by_its_own_name(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             manifest = Path(scratch) / extension.MANIFEST_NAME
-            for absent in ("publisher", "name", "version"):
-                fields = {"publisher": "Memar", "name": "khayyam", "version": "1.0.0"}
+            for absent in ('publisher', 'name', 'version'):
+                fields = {'publisher': 'Memar', 'name': 'khayyam', 'version': '1.0.0'}
                 del fields[absent]
-                manifest.write_text(json.dumps(fields), encoding="utf-8")
+                manifest.write_text(json.dumps(fields), encoding='utf-8')
                 with self.subTest(absent=absent):
                     with self.assertRaises(SystemExit) as raised:
                         extension.extension_folder_name(manifest)
@@ -167,148 +143,143 @@ class RefusesAnUnnamedOne(Fixture):
     def test_a_manifest_that_is_not_json_is_refused_with_the_reason(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             manifest = Path(scratch) / extension.MANIFEST_NAME
-            manifest.write_text("{not json", encoding="utf-8")
+            manifest.write_text('{not json', encoding='utf-8')
             with self.assertRaises(SystemExit) as raised:
                 extension.extension_folder_name(manifest)
             self.assertIn(str(manifest), str(raised.exception))
-
 
 class SecondRunWritesOver(Fixture):
     """The installed folder is the installer's own copy, so it is refreshed."""
 
     def test_the_installed_file_becomes_the_checkouts(self) -> None:
-        # The folder name carries the version, so a version bump lands beside the
-        # old folder and the editor keeps both, as it does for any other install.
-        # What this pin is about is the same version: the file inside it changed.
-        self.add_extension("khayyam")
-        (self.sources / "khayyam" / "rules.txt").write_text("first", encoding="utf-8")
+        self.add_extension('khayyam')
+        (self.sources / 'khayyam' / 'rules.txt').write_text('first', encoding='utf-8')
         extension.install_extensions(self.checkout_root)
-        installed = self.editor_root / "memar.khayyam-1.0.0"
-        self.assertEqual((installed / "rules.txt").read_text(encoding="utf-8"), "first")
-
-        (self.sources / "khayyam" / "rules.txt").write_text("second", encoding="utf-8")
+        installed = self.editor_root / 'memar.khayyam-1.0.0'
+        self.assertEqual((installed / 'rules.txt').read_text(encoding='utf-8'), 'first')
+        (self.sources / 'khayyam' / 'rules.txt').write_text('second', encoding='utf-8')
         extension.install_extensions(self.checkout_root)
-
-        self.assertEqual((installed / "rules.txt").read_text(encoding="utf-8"), "second")
-        self.assertTrue(self.said("memar.khayyam-1.0.0 refreshed"))
+        self.assertEqual((installed / 'rules.txt').read_text(encoding='utf-8'), 'second')
+        self.assertTrue(self.said('memar.khayyam-1.0.0 refreshed'))
 
     def test_the_first_run_says_installed_and_the_second_says_refreshed(self) -> None:
-        # One word each, because an operator reading the output cannot tell from
-        # "installed" alone whether anything changed on this run.
-        self.add_extension("khayyam")
+        self.add_extension('khayyam')
         extension.install_extensions(self.checkout_root)
-        self.assertTrue(self.said("memar.khayyam-1.0.0 installed"))
-        self.assertFalse(self.said("refreshed"))
+        self.assertTrue(self.said('memar.khayyam-1.0.0 installed'))
+        self.assertFalse(self.said('refreshed'))
         extension.install_extensions(self.checkout_root)
-        self.assertTrue(self.said("refreshed"))
+        self.assertTrue(self.said('refreshed'))
 
     def test_a_second_run_moves_the_installed_folder_to_the_trash(self) -> None:
-        # The folder is the installer's own earlier copy, and it may hold a
-        # local edit. Replacing it deletes that edit unless the old folder is
-        # moved to the trash first. The stand-in removes the path so the copy
-        # can land; the platform's trash is not this test's to call.
-        self.add_extension("khayyam")
+        self.add_extension('khayyam')
         extension.install_extensions(self.checkout_root)
-        installed = self.editor_root / "memar.khayyam-1.0.0"
-        with unittest.mock.patch.object(extension, "soft_delete", side_effect=shutil.rmtree) as trash:
+        installed = self.editor_root / 'memar.khayyam-1.0.0'
+        with unittest.mock.patch.object(extension, 'soft_delete', side_effect=shutil.rmtree) as trash:
             extension.install_extensions(self.checkout_root)
         trash.assert_called_once_with(installed)
-        source = Path(extension.__file__).read_text(encoding="utf-8")
-        self.assertNotIn("rmtree", source)
-        self.assertNotIn("unlink(", source)
-        self.assertIn("soft_delete", source)
+        source = Path(extension.__file__).read_text(encoding='utf-8')
+        self.assertNotIn('rmtree', source)
+        self.assertNotIn('unlink(', source)
+        self.assertIn('soft_delete', source)
 
+class DryRunTouchesNothing(Fixture):
+    """A dry run says what it would do to the editor and does neither the trash nor the copy."""
+
+    def test_a_dry_run_over_an_installed_folder_trashes_and_writes_nothing(self) -> None:
+        self.add_extension('khayyam')
+        extension.install_extensions(self.checkout_root)
+        installed = self.editor_root / 'memar.khayyam-1.0.0'
+        (self.sources / 'khayyam' / 'rules.txt').write_text('new', encoding='utf-8')
+        with unittest.mock.patch.object(extension, 'soft_delete') as trash:
+            extension.install_extensions(self.checkout_root, dry_run=True)
+        trash.assert_not_called()
+        self.assertFalse((installed / 'rules.txt').exists())
+        self.assertTrue(self.said('dry-run: refresh'))
+        self.assertFalse(self.said('refreshed'))
+
+    def test_a_dry_run_with_nothing_installed_creates_nothing(self) -> None:
+        self.add_extension('khayyam')
+        extension.install_extensions(self.checkout_root, dry_run=True)
+        self.assertEqual(list(self.editor_root.iterdir()), [])
+        self.assertTrue(self.said('dry-run: install'))
 
 class NoEditorIsSkipped(Fixture):
     """An editor that is not installed leaves no folder behind."""
 
     def test_the_editor_folder_is_not_created(self) -> None:
-        self.add_extension("khayyam")
-        missing = self.editor_root / "no-editor-here"
-        with unittest.mock.patch.object(extension, "editor_extensions_dir", lambda: missing):
+        self.add_extension('khayyam')
+        missing = self.editor_root / 'no-editor-here'
+        with unittest.mock.patch.object(extension, 'editor_extensions_dir', lambda: missing):
             extension.install_extensions(self.checkout_root)
         self.assertFalse(missing.exists())
-        self.assertTrue(self.said("no editor on this machine"))
-
+        self.assertTrue(self.said('no editor on this machine'))
 
 class NoExtensionIsNotAFault(Fixture):
     """Installing Memar does not require shipping an editor extension."""
 
     def test_a_checkout_without_the_folder_is_reported_not_raised(self) -> None:
-        without = self.checkout_root / "elsewhere"
+        without = self.checkout_root / 'elsewhere'
         without.mkdir()
         extension.install_extensions(without)
-        self.assertTrue(self.said("no editor extension to install"))
+        self.assertTrue(self.said('no editor extension to install'))
 
     def test_an_empty_extensions_folder_installs_nothing(self) -> None:
         extension.install_extensions(self.checkout_root)
         self.assertEqual(list(self.editor_root.iterdir()), [])
 
-
 class OnlyManifestsAreTaken(Fixture):
     """Not every folder under the extensions folder is an extension."""
 
     def test_a_folder_with_no_manifest_is_passed_over(self) -> None:
-        self.add_extension("khayyam")
-        (self.sources / "notes").mkdir()
+        self.add_extension('khayyam')
+        (self.sources / 'notes').mkdir()
         extension.install_extensions(self.checkout_root)
-        self.assertEqual(
-            sorted(path.name for path in self.editor_root.iterdir()),
-            ["memar.khayyam-1.0.0"],
-        )
-
+        self.assertEqual(sorted((path.name for path in self.editor_root.iterdir())), ['memar.khayyam-1.0.0'])
 
 class StaleExtensionsNamed(Fixture):
     """An installed extension that is missing or no longer what copying would write is named; nothing is written."""
 
     def test_a_fresh_install_is_current(self) -> None:
-        self.add_extension("khayyam")
+        self.add_extension('khayyam')
         extension.install_extensions(self.checkout_root)
         self.assertEqual(extension.stale_extensions(self.checkout_root), [])
 
     def test_a_change_in_the_checkout_makes_the_installed_folder_stale(self) -> None:
-        source = self.add_extension("khayyam")
+        source = self.add_extension('khayyam')
         extension.install_extensions(self.checkout_root)
-        (source / "extension.js").write_text("moved on\n", encoding="utf-8")
-        installed = self.editor_root / "memar.khayyam-1.0.0"
+        (source / 'extension.js').write_text('moved on\n', encoding='utf-8')
+        installed = self.editor_root / 'memar.khayyam-1.0.0'
         self.assertEqual(extension.stale_extensions(self.checkout_root), [installed])
-        self.assertFalse((installed / "extension.js").exists())
+        self.assertFalse((installed / 'extension.js').exists())
 
     def test_a_version_not_installed_yet_is_stale(self) -> None:
-        self.add_extension("khayyam")
+        self.add_extension('khayyam')
         extension.install_extensions(self.checkout_root)
-        self.add_extension("khayyam", version="1.0.1")
-        self.assertEqual(
-            extension.stale_extensions(self.checkout_root),
-            [self.editor_root / "memar.khayyam-1.0.1"],
-        )
+        self.add_extension('khayyam', version='1.0.1')
+        self.assertEqual(extension.stale_extensions(self.checkout_root), [self.editor_root / 'memar.khayyam-1.0.1'])
 
     def test_what_a_copy_never_carries_is_left_out(self) -> None:
-        source = self.add_extension("khayyam")
+        source = self.add_extension('khayyam')
         extension.install_extensions(self.checkout_root)
-        (source / "node_modules").mkdir()
-        (source / "node_modules" / "dep.js").write_text("dev only\n", encoding="utf-8")
+        (source / 'node_modules').mkdir()
+        (source / 'node_modules' / 'dep.js').write_text('dev only\n', encoding='utf-8')
         self.assertEqual(extension.stale_extensions(self.checkout_root), [])
 
     def test_no_editor_means_nothing_is_stale(self) -> None:
-        self.add_extension("khayyam")
-        with unittest.mock.patch.object(
-            extension, "editor_extensions_dir", lambda: self.editor_root / "absent"
-        ):
+        self.add_extension('khayyam')
+        with unittest.mock.patch.object(extension, 'editor_extensions_dir', lambda: self.editor_root / 'absent'):
             self.assertEqual(extension.stale_extensions(self.checkout_root), [])
 
     def test_a_refresh_of_what_is_stale_moves_nothing_that_is_current(self) -> None:
-        self.add_extension("khayyam")
-        changed = self.add_extension("display")
+        self.add_extension('khayyam')
+        changed = self.add_extension('display')
         extension.install_extensions(self.checkout_root)
-        (changed / "extension.js").write_text("moved on\n", encoding="utf-8")
+        (changed / 'extension.js').write_text('moved on\n', encoding='utf-8')
         stale = extension.stale_extensions(self.checkout_root)
-        self.assertEqual(stale, [self.editor_root / "memar.display-1.0.0"])
-        with unittest.mock.patch.object(extension, "soft_delete", side_effect=shutil.rmtree) as trash:
+        self.assertEqual(stale, [self.editor_root / 'memar.display-1.0.0'])
+        with unittest.mock.patch.object(extension, 'soft_delete', side_effect=shutil.rmtree) as trash:
             extension.install_extensions(self.checkout_root, only=stale)
         trash.assert_called_once_with(stale[0])
         self.assertEqual(extension.stale_extensions(self.checkout_root), [])
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main(verbosity=2)

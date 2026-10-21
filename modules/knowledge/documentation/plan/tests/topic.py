@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the topic type in `modules/knowledge/documentation/plan/primitive/topic.py`.
+"""Tests for the topic type in `modules/knowledge/documentation/plan/labels/topic.py`.
 
     python modules/knowledge/documentation/plan/tests/topic.py
 
@@ -26,60 +26,49 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[4] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[4] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
 from modules.knowledge.documentation.primitive.label import LabelProblem
-from modules.knowledge.documentation.plan.primitive.topic import LABEL_KIND, TOPIC_LABEL, Topic
-
+from modules.knowledge.documentation.plan.labels.topic import LABEL_KIND, TOPIC_LABEL, Topic
 
 class Normalizing(unittest.TestCase):
+
     def test_lower_case_and_each_run_of_white_space_one_hyphen(self) -> None:
-        for text, expected in (
-            ("Khayyam LSP", "khayyam-lsp"),
-            ("  docs   cleanup ", "docs-cleanup"),
-            ("docs", "docs"),
-            ("", ""),
-            ("   ", ""),
-        ):
+        for text, expected in (('Khayyam LSP', 'khayyam-lsp'), ('  docs   cleanup ', 'docs-cleanup'), ('docs', 'docs'), ('', ''), ('   ', '')):
             with self.subTest(text=text):
                 self.assertEqual(Topic.normalized(text), expected)
                 self.assertIsInstance(Topic.normalized(text), Topic)
 
-
 class Checking(unittest.TestCase):
+
     def test_a_topic_is_returned_normalized(self) -> None:
-        self.assertEqual(Topic.checked("Docs Cleanup"), "docs-cleanup")
+        self.assertEqual(Topic.checked('Docs Cleanup'), 'docs-cleanup')
 
     def test_an_empty_topic_is_allowed_since_it_removes_the_key(self) -> None:
-        self.assertEqual(Topic.checked(""), "")
+        self.assertEqual(Topic.checked(''), '')
 
     def test_a_line_break_is_refused(self) -> None:
-        for text in ("a\nb", "a\rb"):
+        for text in ('a\nb', 'a\rb'):
             with self.subTest(text=text):
                 with self.assertRaises(SystemExit):
                     Topic.checked(text)
 
-
 class Reading(unittest.TestCase):
+
     def test_a_topic_is_a_free_label_kind_whose_rule_is_the_types(self) -> None:
-        self.assertEqual(LABEL_KIND.name, "Topic")
-        self.assertEqual(LABEL_KIND.define(" Docs  Cleanup ").label.word, "docs-cleanup")
-        self.assertTrue(LABEL_KIND.define("docs").is_a(TOPIC_LABEL))
+        self.assertEqual(LABEL_KIND.name, 'Topic')
+        self.assertEqual(LABEL_KIND.define(' Docs  Cleanup ').label.word, 'docs-cleanup')
+        self.assertTrue(LABEL_KIND.define('docs').is_a(TOPIC_LABEL))
         self.assertEqual(LABEL_KIND.closed, ())
         with self.assertRaises(LabelProblem):
-            LABEL_KIND.define("   ")
+            LABEL_KIND.define('   ')
         with self.assertRaises(LabelProblem):
-            LABEL_KIND.define("a\nb")
-
-
-if __name__ == "__main__":
+            LABEL_KIND.define('a\nb')
+if __name__ == '__main__':
     unittest.main(verbosity=2)

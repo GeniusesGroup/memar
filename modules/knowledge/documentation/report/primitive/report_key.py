@@ -13,11 +13,9 @@ record; the services that name them, so that a reader is told why such a file is
 not read, keep them.
 """
 from __future__ import annotations
-
 from modules.knowledge.documentation.primitive.record_key import ID_FIELD, RecordKey
-
 
 class ReportKey(RecordKey):
     ID = ID_FIELD
-    TITLE = ("title", "TITLE, when known")
-    STATUS = ("status", "empty until the session ends, then one of the Statuses a report may state")
+    TITLE = ('title', 'TITLE, when known')
+    STATUS = ('status', 'empty until the session ends, then one of the Statuses a report may state')

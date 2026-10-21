@@ -6,24 +6,15 @@
 Memar's own checkout is always among them (`project_registry.ensure_memar_entry`).
 """
 from __future__ import annotations
-
 import argparse
 from typing import Callable
-
 from modules.process.project.services.registry import ensure_memar_entry, read_entries
-
-LIST_COMMAND = "list"
-
+LIST_COMMAND = 'list'
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar project list`."""
-    verbs.add_parser(
-        LIST_COMMAND,
-        help="show every registered project, its names and its folder",
-        description="Show every registered project, one a line: its names, the first its own, then its folder.",
-    )
+    verbs.add_parser(LIST_COMMAND, help='show every registered project, its names and its folder', description='Show every registered project, one a line: its names, the first its own, then its folder.')
     return run
-
 
 def run(args: argparse.Namespace) -> None:
     ensure_memar_entry()

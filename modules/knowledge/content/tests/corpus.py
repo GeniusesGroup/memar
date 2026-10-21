@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: every checkout is laid out in
-one, made under the folder `machine/fs_test_scratch.py` names, and removed
+one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
 again, and no test walks the repository's own tree.
 
 What is pinned, and what each pin is for:
@@ -30,26 +30,19 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import sys
 import tempfile
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
 import modules.knowledge.content.services.corpus as content_corpus
-
 
 class CorpusIsTheCheckout(unittest.TestCase):
     """The corpus is the whole checkout, so the tool's name is not narrower than its reach.
@@ -70,77 +63,60 @@ class CorpusIsTheCheckout(unittest.TestCase):
     def write(self, relative: str, text: str) -> Path:
         path = self.root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8", newline="\n")
+        path.write_text(text, encoding='utf-8', newline='\n')
         return path
 
     def a_checkout(self) -> Path:
-        for folder in ("docs", "modules", "modules-plugable", "bundles", ".agents"):
+        for folder in ('docs', 'modules', 'modules-plugable', 'bundles', '.agents'):
             (self.root / folder).mkdir(parents=True, exist_ok=True)
-        (self.root / "README.md").write_text("# R\n", encoding="utf-8", newline="\n")
+        (self.root / 'README.md').write_text('# R\n', encoding='utf-8', newline='\n')
         return self.root
 
     def test_the_corpus_reaches_each_folder_the_content_lives_in(self) -> None:
         root = self.a_checkout()
-        for folder in ("docs", "modules", "modules-plugable", "bundles", ".agents"):
-            self.write(f"{folder}/note.md", "# Note\n")
-        self.write("README.md", "# R\n")
+        for folder in ('docs', 'modules', 'modules-plugable', 'bundles', '.agents'):
+            self.write(f'{folder}/note.md', '# Note\n')
+        self.write('README.md', '# R\n')
         found = {path.relative_to(root).parts[0] for path in content_corpus.content_files(root)}
-        self.assertEqual(found, {"docs", "modules", "modules-plugable", "bundles", ".agents", "README.md"})
+        self.assertEqual(found, {'docs', 'modules', 'modules-plugable', 'bundles', '.agents', 'README.md'})
 
     def test_a_folder_that_is_not_content_stays_out(self) -> None:
-        # A dependency tree or a session's scratch is not this repository's
-        # content even when it holds Markdown, and the decision is asked of the
-        # module that already makes it for the two things that copy a checkout.
-        # Named by path rather than by file name, because the vendored file is
-        # also called README.md and the root one is also called README.md.
         root = self.a_checkout()
-        self.write("docs/kept.md", "# Kept\n")
-        self.write("node_modules/vendored/vendored.md", "# Vendored\n")
-        self.write("temp/s-1/scratch.md", "# Scratch\n")
-        self.write("temp/sessions/s-2/plan.md", "# Plan\n")
-        found = {
-            path.relative_to(root).as_posix() for path in content_corpus.content_files(root)
-        }
-        self.assertIn("docs/kept.md", found)
-        self.assertNotIn("node_modules/vendored/vendored.md", found)
-        self.assertNotIn("temp/s-1/scratch.md", found)
-        self.assertNotIn("temp/sessions/s-2/plan.md", found)
+        self.write('docs/kept.md', '# Kept\n')
+        self.write('node_modules/vendored/vendored.md', '# Vendored\n')
+        self.write('temp/s-1/scratch.md', '# Scratch\n')
+        self.write('.agents/tasks/s-2/plan.md', '# Plan\n')
+        found = {path.relative_to(root).as_posix() for path in content_corpus.content_files(root)}
+        self.assertIn('docs/kept.md', found)
+        self.assertNotIn('node_modules/vendored/vendored.md', found)
+        self.assertNotIn('temp/s-1/scratch.md', found)
+        self.assertNotIn('.agents/tasks/s-2/plan.md', found)
 
     def test_a_sessions_folder_under_agents_is_no_longer_left_out(self) -> None:
-        # The records of finished sessions are kept on a branch, not in the
-        # tree of the work (owner, 2026-10-15), so the corpus names no folder
-        # for them: a folder that happens to be called .agents/sessions is
-        # content like the rest of .agents/.
         root = self.a_checkout()
-        self.write(".agents/sessions/s-3/report.md", "# Report\n")
-        self.write(".agents/sessions/s-3/docs/entry.changelog.md", "# Changelog\n")
-        self.write(".agents/skills/memar/SKILL.md", "# Skill\n")
+        self.write('.agents/tasks/s-3/report.md', '# Report\n')
+        self.write('.agents/tasks/s-3/docs/entry.changelog.md', '# Changelog\n')
+        self.write('.agents/skills/memar/SKILL.md', '# Skill\n')
         found = {path.relative_to(root).as_posix() for path in content_corpus.content_files(root)}
         ledgers = {path.relative_to(root).as_posix() for path in content_corpus.ledger_files(root)}
-        self.assertIn(".agents/sessions/s-3/report.md", found)
-        self.assertIn(".agents/sessions/s-3/docs/entry.changelog.md", ledgers)
-        self.assertIn(".agents/skills/memar/SKILL.md", found)
+        self.assertIn('.agents/tasks/s-3/report.md', found)
+        self.assertIn('.agents/tasks/s-3/docs/entry.changelog.md', ledgers)
+        self.assertIn('.agents/skills/memar/SKILL.md', found)
 
     def test_a_folder_holding_none_of_the_content_folders_is_refused(self) -> None:
-        empty = self.root / "not-a-checkout"
+        empty = self.root / 'not-a-checkout'
         empty.mkdir()
         with self.assertRaises(SystemExit) as raised:
             content_corpus.content_files(empty)
-        self.assertIn("not a Memar checkout", str(raised.exception))
+        self.assertIn('not a Memar checkout', str(raised.exception))
 
     def test_the_search_corpus_excludes_ledgers_and_ledgers_are_still_reachable(self) -> None:
-        # `search` excludes changelogs by design so a reader is not sent into
-        # history instead of into explanation — and the work-list still reads
-        # every one of them, or a propagation owed under `modules/` would be
-        # invisible.
         root = self.a_checkout()
-        self.write("docs/one.changelog.md", "# One\n")
-        self.write("modules/two.changelog.md", "# Two\n")
+        self.write('docs/one.changelog.md', '# One\n')
+        self.write('modules/two.changelog.md', '# Two\n')
         searched = {path.name for path in content_corpus.content_files(root)}
         ledgers = {path.name for path in content_corpus.ledger_files(root)}
-        self.assertNotIn("one.changelog.md", searched)
-        self.assertEqual(ledgers, {"one.changelog.md", "two.changelog.md"})
-
-
-if __name__ == "__main__":
+        self.assertNotIn('one.changelog.md', searched)
+        self.assertEqual(ledgers, {'one.changelog.md', 'two.changelog.md'})
+if __name__ == '__main__':
     unittest.main(verbosity=2)

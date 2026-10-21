@@ -10,7 +10,7 @@
   - [Documentation — Handoff](../handoff/handoff.md) - Reference: the reader-relationship discipline, the open-catalog section pattern, and the recursion stop that a Changelog-facet file applies to itself, which this specification extends to the plan artifact.
   - [Documentation — Changelog](../changelog/changelog.md) - Reference: the companion-file pairing and naming rules this specification follows for its own folder.
 - Propagates to:
-  - modules/process/session/services/new.py: Pending - its help says what each part of a plan is for, in words that now have their home in this specification; the two copies should be reconciled in the session that reviews this specification.
+  - modules/management/task/services/ensure.py: Pending - its help says what each part of a plan is for, in words that now have their home in this specification; the two copies should be reconciled in the session that reviews this specification.
   - .agents/scripts/services/session_record.py and the services beside it: Done (session `20261016-T141543Z-22844`) - the shape they enforce now carries the session's identifier, as the sixth requirement of this specification states.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - ruled (2026-10-16)

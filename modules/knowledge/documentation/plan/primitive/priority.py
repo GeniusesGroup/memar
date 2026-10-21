@@ -17,16 +17,12 @@ and one typo must not stop the line (`of`). A value a person types to a command
 is another matter and is refused (`checked`).
 """
 from __future__ import annotations
-
 from typing import ClassVar
-
 from machine.console import fail
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 
-
 class Priority(int):
     """A plan's priority: a whole number from `LOWEST` to `HIGHEST`, the higher sooner."""
-
     LOWEST: ClassVar[Priority]
     HIGHEST: ClassVar[Priority]
     DEFAULT: ClassVar[Priority]
@@ -43,7 +39,7 @@ class Priority(int):
     @classmethod
     def of(cls, front: dict[str, str] | None) -> Priority:
         """The priority FRONT matter gives its plan: its `priority`, or `DEFAULT` when absent or not in range."""
-        found = cls.read((front or {}).get(PlanKey.PRIORITY.key, ""))
+        found = cls.read((front or {}).get(PlanKey.PRIORITY.key, ''))
         return cls.DEFAULT if found is None else found
 
     @classmethod
@@ -51,20 +47,18 @@ class Priority(int):
         """VALUE as a priority; refused when it is not a whole number within the bounds."""
         found = cls.read(str(value))
         if found is None:
-            fail(f"a priority is a whole number from {cls.range_words()}, the higher sooner; {value!r} is not one")
+            fail(f'a priority is a whole number from {cls.range_words()}, the higher sooner; {value!r} is not one')
         return found
 
     @classmethod
     def range_words(cls) -> str:
         """The range as a help says it: `1 to 10`."""
-        return f"{cls.LOWEST} to {cls.HIGHEST}"
+        return f'{cls.LOWEST} to {cls.HIGHEST}'
 
     @classmethod
     def default_words(cls) -> str:
         """What a plan without one counts as, as a help says it."""
-        return f"a plan without one counts as {cls.DEFAULT}"
-
-
+        return f'a plan without one counts as {cls.DEFAULT}'
 Priority.LOWEST = Priority(1)
 Priority.HIGHEST = Priority(10)
 Priority.DEFAULT = Priority(5)

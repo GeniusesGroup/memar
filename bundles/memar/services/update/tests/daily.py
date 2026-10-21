@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the daily background update in `bundles/memar/update/services/daily.py`.
+"""Tests for the daily background update in `bundles/memar/services/update/services/daily.py`.
 
-    python bundles/memar/update/tests/daily.py
+    python bundles/memar/services/update/tests/daily.py
 
 The subject is what the router runs before every verb, named for the file
 that holds it per
@@ -13,7 +13,7 @@ in the `tests/` folder of the shelf that owns it per
 
 Nothing here starts a real update or writes outside its scratch folder: the
 Memar root is patched onto one, made under the folder
-`machine/fs_test_scratch.py` names, and the start of the background run is
+`modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and the start of the background run is
 patched to record its command, except in the one test that starts a harmless
 child to prove it outlives no caller's output.
 
@@ -46,7 +46,6 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
 import contextlib
 import io
 import os
@@ -55,26 +54,21 @@ import sys
 import tempfile
 import unittest
 import unittest.mock
+from importlib import import_module
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
-sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+SCRIPTS = TESTS.parents[2]
+sys.path.insert(0, str(SCRIPTS / 'services'))
+sys.path.insert(1, str(SCRIPTS))
+sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-import machine.fs_test_scratch as test_scratch
-from machine.fs_test_scratch import suite_scratch
-
-import machine.fs_memar as memar_fs
-import bundles.memar.update.services.daily as daily
-
+_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+test_scratch = _m_fs_test_scratch
+suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+memar_fs = _m_fs_memar
+import bundles.memar.services.update.services.daily as daily
 AWAKE: dict[str, str] = {}
-
 
 class Fixture(unittest.TestCase):
     """A scratch Memar root and a start that only records what it was asked."""
@@ -82,23 +76,24 @@ class Fixture(unittest.TestCase):
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
-        patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=Path(self.scratch.name))
+        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=Path(self.scratch.name))
         patched.start()
         self.addCleanup(patched.stop)
         self.started: list[list[str]] = []
-        starting = unittest.mock.patch.object(daily, "detach", lambda command, log: self.started.append(command))
+        starting = unittest.mock.patch.object(daily, 'detach', lambda command, log: self.started.append(command))
         starting.start()
         self.addCleanup(starting.stop)
 
-    def ask(self, verb: str | None, environ: dict[str, str] | None = None, testing: bool = False) -> tuple[str, str]:
-        out, err = io.StringIO(), io.StringIO()
+    def ask(self, verb: str | None, environ: dict[str, str] | None=None, testing: bool=False) -> tuple[str, str]:
+        out, err = (io.StringIO(), io.StringIO())
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
             daily.before_verb(verb, environ=AWAKE if environ is None else environ, testing=testing)
-        return out.getvalue(), err.getvalue()
-
+        return (out.getvalue(), err.getvalue())
 
 class DeclaredAsAHook(unittest.TestCase):
+
     class Verbs:
+
         def __init__(self) -> None:
             self.added: list[str] = []
 
@@ -112,57 +107,54 @@ class DeclaredAsAHook(unittest.TestCase):
 
     def test_before_asks_with_the_first_word_typed(self) -> None:
         asked: list[str | None] = []
-        with unittest.mock.patch.object(daily, "before_verb", asked.append):
-            for argv in (["content", "search", "x"], ["--help"], [], [daily.UPDATE_VERB, "--apply"]):
+        with unittest.mock.patch.object(daily, 'before_verb', asked.append):
+            for argv in (['content', 'search', 'x'], ['--help'], [], [daily.UPDATE_VERB, '--apply']):
                 daily.before(argv)
-        self.assertEqual(asked, ["content", "--help", None, daily.UPDATE_VERB])
+        self.assertEqual(asked, ['content', '--help', None, daily.UPDATE_VERB])
 
     def test_the_background_run_itself_is_asked_nothing(self) -> None:
         asked: list[str | None] = []
-        with unittest.mock.patch.object(daily, "before_verb", asked.append):
+        with unittest.mock.patch.object(daily, 'before_verb', asked.append):
             daily.before([daily.UPDATE_VERB, daily.BACKGROUND_FLAG])
-            daily.before([daily.UPDATE_VERB, "--offline", daily.BACKGROUND_FLAG])
+            daily.before([daily.UPDATE_VERB, '--offline', daily.BACKGROUND_FLAG])
         self.assertEqual(asked, [])
 
     def test_before_fails_no_verb_when_its_imports_fail(self) -> None:
-        out, err = io.StringIO(), io.StringIO()
-        with unittest.mock.patch.dict(sys.modules, {"machine.fs_memar": None}):
+        out, err = (io.StringIO(), io.StringIO())
+        with unittest.mock.patch.object(daily, "scratch_root", side_effect=ImportError("broken")):
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-                daily.before(["content"])
-        self.assertEqual((out.getvalue(), err.getvalue()), ("", ""))
-
+                daily.before(['content'])
+        self.assertEqual((out.getvalue(), err.getvalue()), ('', ''))
 
 class OnceADay(Fixture):
+
     def test_the_first_verb_of_the_day_starts_the_run_and_no_later_one_does(self) -> None:
-        for verb in ("content", "session", None, "install"):
-            self.assertEqual(self.ask(verb), ("", ""))
-        self.assertEqual(
-            self.started,
-            [[sys.executable, str(daily.LAUNCHER), daily.UPDATE_VERB, daily.BACKGROUND_FLAG]],
-        )
+        for verb in ('content', 'session', None, 'install'):
+            self.assertEqual(self.ask(verb), ('', ''))
+        self.assertEqual(self.started, [[sys.executable, str(daily.LAUNCHER), daily.UPDATE_VERB, daily.BACKGROUND_FLAG]])
         self.assertTrue(daily.LAUNCHER.is_file())
         self.assertEqual(daily.LAUNCHER.parent, SCRIPTS)
 
     def test_a_marker_from_yesterday_starts_it_again(self) -> None:
-        self.ask("content")
-        (daily.state_dir() / daily.DAILY_MARKER_NAME).write_text("2000-01-01\n", encoding="utf-8")
-        self.ask("content")
+        self.ask('content')
+        (daily.state_dir() / daily.DAILY_MARKER_NAME).write_text('2000-01-01\n', encoding='utf-8')
+        self.ask('content')
         self.assertEqual(len(self.started), 2)
 
     def test_memar_update_itself_does_not_start_it_or_spend_the_day(self) -> None:
-        self.ask("update")
+        self.ask('update')
         self.assertEqual(self.started, [])
-        self.ask("content")
+        self.ask('content')
         self.assertEqual(len(self.started), 1)
 
     def test_the_state_lives_under_temp_update(self) -> None:
-        self.ask("content")
+        self.ask('content')
         directory = daily.state_dir()
         self.assertEqual(directory, Path(self.scratch.name) / memar_fs.TEMP_DIRNAME / daily.UPDATE_DIRNAME)
         self.assertTrue((directory / daily.DAILY_MARKER_NAME).is_file())
 
-
 class OneRunAtATime(Fixture):
+
     def test_a_second_run_while_one_holds_the_lock_is_told_no(self) -> None:
         directory = daily.state_dir()
         with daily.daily_run(directory) as first:
@@ -173,100 +165,92 @@ class OneRunAtATime(Fixture):
             self.assertTrue(again)
         self.assertFalse((directory / daily.LOCK_NAME).exists())
 
-
 class OptOut(Fixture):
+
     def test_the_opt_out_starts_nothing_and_makes_nothing(self) -> None:
-        for value in ("1", "yes", "true"):
+        for value in ('1', 'yes', 'true'):
             with self.subTest(value=value):
-                self.assertEqual(self.ask("content", {daily.OPT_OUT_VARIABLE: value}), ("", ""))
+                self.assertEqual(self.ask('content', {daily.OPT_OUT_VARIABLE: value}), ('', ''))
         self.assertEqual(self.started, [])
         self.assertFalse((memar_fs.scratch_root() / daily.UPDATE_DIRNAME).exists())
 
     def test_a_notice_left_is_still_printed_once_under_the_opt_out(self) -> None:
         daily.leave_notice(daily.state_dir(), "another service's line")
-        stopped = {daily.OPT_OUT_VARIABLE: "1"}
-        self.assertEqual(self.ask("content", stopped), ("", "memar: another service's line\n"))
-        self.assertEqual(self.ask("content", stopped), ("", ""))
+        stopped = {daily.OPT_OUT_VARIABLE: '1'}
+        self.assertEqual(self.ask('content', stopped), ('', "memar: another service's line\n"))
+        self.assertEqual(self.ask('content', stopped), ('', ''))
         self.assertEqual(self.started, [])
         self.assertFalse((daily.state_dir() / daily.DAILY_MARKER_NAME).exists())
 
     def test_empty_or_zero_is_not_an_opt_out(self) -> None:
-        for value in ("", "0"):
+        for value in ('', '0'):
             with self.subTest(value=value):
                 self.assertIsNone(daily.suppressed({daily.OPT_OUT_VARIABLE: value}, testing=False))
-        self.ask("content", {daily.OPT_OUT_VARIABLE: "0"})
+        self.ask('content', {daily.OPT_OUT_VARIABLE: '0'})
         self.assertEqual(len(self.started), 1)
 
-
 class TestRunsAreSuppressed(Fixture):
+
     def test_a_suite_and_its_children_are_test_runs(self) -> None:
         self.assertTrue(test_scratch.in_test_run())
-        self.assertEqual(os.environ.get(test_scratch.TEST_RUN_VARIABLE), "1")
-        child = subprocess.run(
-            [sys.executable, "-c", f"import os; print(os.environ.get({test_scratch.TEST_RUN_VARIABLE!r}))"],
-            capture_output=True, text=True, check=True,
-        )
-        self.assertEqual(child.stdout.strip(), "1")
+        self.assertEqual(os.environ.get(test_scratch.TEST_RUN_VARIABLE), '1')
+        child = subprocess.run([sys.executable, '-c', f'import os; print(os.environ.get({test_scratch.TEST_RUN_VARIABLE!r}))'], capture_output=True, text=True, check=True)
+        self.assertEqual(child.stdout.strip(), '1')
 
     def test_a_test_run_starts_nothing_on_the_days_first_verb(self) -> None:
-        daily.leave_notice(daily.state_dir(), "Memar was updated")
-        self.assertEqual(self.ask("content", testing=True), ("", ""))
+        daily.leave_notice(daily.state_dir(), 'Memar was updated')
+        self.assertEqual(self.ask('content', testing=True), ('', ''))
         self.assertEqual(self.started, [])
         self.assertTrue((daily.state_dir() / daily.NOTICE_NAME).exists())
 
     def test_the_launchers_default_asks_whether_this_is_a_test_run(self) -> None:
-        out, err = io.StringIO(), io.StringIO()
+        out, err = (io.StringIO(), io.StringIO())
         with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-            daily.before_verb("content", environ=AWAKE)
-        self.assertEqual((out.getvalue(), err.getvalue(), self.started), ("", "", []))
-
+            daily.before_verb('content', environ=AWAKE)
+        self.assertEqual((out.getvalue(), err.getvalue(), self.started), ('', '', []))
 
 class NoticeIsPrintedOnce(Fixture):
+
     def test_the_next_verb_prints_the_line_on_stderr_and_no_later_one_does(self) -> None:
-        daily.leave_notice(daily.state_dir(), "Memar was updated: moved 2 commit(s)")
-        out, err = self.ask("content")
-        self.assertEqual(out, "")
-        self.assertEqual(err, "memar: Memar was updated: moved 2 commit(s)\n")
-        self.assertEqual(self.ask("content"), ("", ""))
-        self.assertEqual(list(daily.state_dir().glob(f"{daily.NOTICE_NAME}*")), [])
+        daily.leave_notice(daily.state_dir(), 'Memar was updated: moved 2 commit(s)')
+        out, err = self.ask('content')
+        self.assertEqual(out, '')
+        self.assertEqual(err, 'memar: Memar was updated: moved 2 commit(s)\n')
+        self.assertEqual(self.ask('content'), ('', ''))
+        self.assertEqual(list(daily.state_dir().glob(f'{daily.NOTICE_NAME}*')), [])
 
     def test_a_newer_line_replaces_one_not_yet_printed(self) -> None:
-        daily.leave_notice(daily.state_dir(), "first")
-        daily.leave_notice(daily.state_dir(), "second")
-        self.assertEqual(self.ask("update"), ("", "memar: second\n"))
+        daily.leave_notice(daily.state_dir(), 'first')
+        daily.leave_notice(daily.state_dir(), 'second')
+        self.assertEqual(self.ask('update'), ('', 'memar: second\n'))
 
     def test_the_line_takes_no_subject_and_no_add(self) -> None:
         with self.assertRaises(TypeError):
-            daily.leave_notice(daily.state_dir(), "an event", subject="other")
+            daily.leave_notice(daily.state_dir(), 'an event', subject='other')
         with self.assertRaises(TypeError):
-            daily.leave_notice(daily.state_dir(), "an event", add=True)
-
+            daily.leave_notice(daily.state_dir(), 'an event', add=True)
 
 class NeverFailsTheVerb(Fixture):
+
     def test_a_state_folder_that_cannot_be_made_is_silent(self) -> None:
-        with unittest.mock.patch.object(daily, "state_dir", side_effect=SystemExit("error: no root")):
-            self.assertEqual(self.ask("content"), ("", ""))
-        with unittest.mock.patch.object(daily, "state_dir", side_effect=OSError("denied")):
-            self.assertEqual(self.ask("content"), ("", ""))
+        with unittest.mock.patch.object(daily, 'state_dir', side_effect=SystemExit('error: no root')):
+            self.assertEqual(self.ask('content'), ('', ''))
+        with unittest.mock.patch.object(daily, 'state_dir', side_effect=OSError('denied')):
+            self.assertEqual(self.ask('content'), ('', ''))
 
     def test_a_start_that_fails_is_silent(self) -> None:
-        with unittest.mock.patch.object(daily, "detach", side_effect=OSError("no python")):
-            self.assertEqual(self.ask("content"), ("", ""))
-
+        with unittest.mock.patch.object(daily, 'detach', side_effect=OSError('no python')):
+            self.assertEqual(self.ask('content'), ('', ''))
 
 class DetachedChildRuns(unittest.TestCase):
+
     def test_the_detached_command_runs_with_its_output_in_the_log(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
             log = Path(folder) / daily.LOG_NAME
-            done = Path(folder) / "done"
-            child = daily.detach(
-                [sys.executable, "-c", f"import pathlib; print('ran'); pathlib.Path({str(done)!r}).write_text('x')"],
-                log,
-            )
+            done = Path(folder) / 'done'
+            child = daily.detach([sys.executable, '-c', f"import pathlib; print('ran'); pathlib.Path({str(done)!r}).write_text('x')"], log)
             self.assertEqual(child.wait(timeout=30), 0)
             self.assertTrue(done.exists())
-            self.assertIn("ran", log.read_text(encoding="utf-8"))
-
-
-if __name__ == "__main__":
+            self.assertIn('ran', log.read_text(encoding='utf-8'))
+if __name__ == '__main__':
     unittest.main(verbosity=2)

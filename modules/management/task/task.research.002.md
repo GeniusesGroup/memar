@@ -308,7 +308,7 @@ This meets the earlier finding (decisions reach siblings whole; traces need not)
 
 - The owner's chat is one timeline (conversation 17560). Its contents relate to three Tasks: 17560 (define Task), 11200 (first review), 16088 (this opinion). One timeline, three Tasks.
 - Task 16088 relates to contents in two timelines: the coordinator's chat (the brief, and later the hand-back) and this sub-agent's own transcript (its commands, its reading, its thinking). One Task, two spans.
-- 16088's "run" is the sub-agent's claim from `memar session start` to its hand-back, plus the runtime's record that it ran on Opus 5.5 with a bounded window. Neither belongs to the chat or to the Task.
+- 16088's "run" is the sub-agent's claim from `memar ai get-task-init-context` to its hand-back, plus the runtime's record that it ran on Opus 5.5 with a bounded window. Neither belongs to the chat or to the Task.
 - Memar's mapping row "Conversation: a timeline of discussion; the Task refers to it and does not hold it" (`task.md`) should read: "the Task does not refer to a timeline; it relates to contents, which are placed in timelines".
 
 **What it changes.** One row of the Memar term map in `task.md`; question 33 is withdrawn and replaced by "Is the relation between a Task and a timeline derived from the contents related to the Task?" (default: yes). How agents run gains the execution record; Task gains nothing.

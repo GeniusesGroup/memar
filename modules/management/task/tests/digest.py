@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the one digest of decisions sessions hand back, in `modules/process/session/services/digest.py`.
+"""Tests for the one digest of decisions sessions hand back, in `modules/management/task/services/get_decisions_digest.py`.
 
-    python modules/process/session/tests/digest.py
+    python modules/management/task/tests/digest.py
 
 The subject is the digest — every `Decisions needed` entry across the
 sessions' reports gathered into one text the owner reads — named for the file
@@ -12,11 +12,11 @@ that holds it per
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 The design it holds is the parent plan's, session 20261012T134849Z-25068-0,
-"Design": `memar session digest` gathers every `Decisions needed` entry across
+"Design": `memar task get-decisions-digest` gathers every `Decisions needed` entry across
 reports into one digest.
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one, made under the folder `machine/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py`
 names.
 
 What is pinned, and what each pin is for:
@@ -56,7 +56,11 @@ What is pinned, and what each pin is for:
                      location, as `list --project` does; the default does not.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+memar_fs = _m_fs_memar
 import argparse
 import contextlib
 import io
@@ -69,135 +73,123 @@ import unittest
 import unittest.mock
 from datetime import datetime, timedelta
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import machine.fs_memar as memar_fs
 import modules.process.project.services.preferences as project_preferences
 import modules.process.project.services.registry as registry
-import modules.process.session.services.digest as session_digest
-import modules.process.session.services.location as session_location
+import modules.management.task.services.get_decisions_digest as session_digest
+import modules.process.project.services.task_location as session_location
 import modules.knowledge.documentation.plan.services.plan as session_plan
-import modules.process.session.services.plan_priority as session_plan_priority
+import modules.knowledge.documentation.plan.services.priority as session_plan_priority
 import modules.knowledge.documentation.report.services.report as session_report
 
-
 class Fixture(unittest.TestCase):
-    # What a report's ending word leaves as the Status of the plan and the report.
-    ENDS = {"success": "complete", "blocked": "blocked", "approval-required": "blocked", "exhausted": "active"}
+    ENDS = {'success': 'complete', 'blocked': 'blocked', 'approval-required': 'blocked', 'exhausted': 'active'}
 
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
-        patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=Path(self.scratch.name))
+        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=Path(self.scratch.name))
         patched.start()
         self.addCleanup(patched.stop)
 
-    def session(
-        self, sid: str, title: str, outcome: str, decisions: list[str], conversation: str = "", status: str = ""
-    ) -> Path:
+    def session(self, sid: str, title: str, outcome: str, decisions: list[str], conversation: str='', status: str='') -> Path:
         """A session whose report ends as the word OUTCOME says and holds DECISIONS; its plan's STATUS agrees with it unless given."""
-        status = status or self.ENDS.get(outcome, "active")
-        folder = memar_fs.session_dir(sid)
+        status = status or self.ENDS.get(outcome, 'active')
+        folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        heading = "\n## Decisions needed\n" + "\n".join(decisions) + "\n" if decisions else ""
-        linked = f"Parent: {conversation}\nConversation: {conversation}\n" if conversation else ""
-        plan = f"---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n{linked}---\n# {title}\n\n## Request\nx\n"
-        report_status = self.ENDS.get(outcome, "").capitalize()
-        report = f"---\nStatus: {report_status}\n---\n# Report\n{heading}\n## What ran\nx\n"
-        (folder / session_plan.PLAN_NAME).write_text(plan, encoding="utf-8")
-        (folder / session_report.REPORT_NAME).write_text(report, encoding="utf-8")
+        heading = '\n## Decisions needed\n' + '\n'.join(decisions) + '\n' if decisions else ''
+        linked = f'Parent: {conversation}\nConversation: {conversation}\n' if conversation else ''
+        plan = f'---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n{linked}---\n# {title}\n\n## Request\nx\n'
+        report_status = self.ENDS.get(outcome, '').capitalize()
+        report = f'---\nStatus: {report_status}\n---\n# Report\n{heading}\n## What ran\nx\n'
+        (folder / session_plan.PLAN_NAME).write_text(plan, encoding='utf-8')
+        (folder / session_report.REPORT_NAME).write_text(report, encoding='utf-8')
         return folder
 
-    def digest(self, conversation: str | None = None) -> str:
+    def digest(self, conversation: str | None=None) -> str:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_digest.print_digest(conversation)
+            session_digest.get_decisions_digest(conversation)
         return out.getvalue()
 
-
 class OneDigest(Fixture):
+
     def test_every_sessions_decisions_are_in_one_digest(self) -> None:
-        first = self.session("20261012T050000Z-1-0", "First task", "approval-required",
-                             ["- Rename X? Options: keep, rename. Recommend rename."])
-        second = self.session("20261012T050001Z-1-0", "Second task", "blocked",
-                              ["- Which module owns Y? Options: a, b. Recommend a.", "- Delete Z? Recommend no."])
-        quiet = self.session("20261012T050002Z-1-0", "Quiet task", "success", [])
+        first = self.session('20261012T050000Z-1-0', 'First task', 'approval-required', ['- Rename X? Options: keep, rename. Recommend rename.'])
+        second = self.session('20261012T050001Z-1-0', 'Second task', 'blocked', ['- Which module owns Y? Options: a, b. Recommend a.', '- Delete Z? Recommend no.'])
+        quiet = self.session('20261012T050002Z-1-0', 'Quiet task', 'success', [])
         text = self.digest()
-        self.assertEqual(text.count("Decisions needed"), 1)
-        self.assertIn("2 sessions, 3 entries", text)
-        for folder, title, stop in ((first, "First task", "approval-required"), (second, "Second task", "blocked")):
-            self.assertIn(f"{folder.name}  {title}", text)
-            self.assertIn("report: blocked", text)
+        self.assertEqual(text.count('Decisions needed'), 1)
+        self.assertIn('2 sessions, 3 entries', text)
+        for folder, title, stop in ((first, 'First task', 'approval-required'), (second, 'Second task', 'blocked')):
+            self.assertIn(f'{folder.name}  {title}', text)
+            self.assertIn('report: blocked', text)
             self.assertIn(str(folder / session_report.REPORT_NAME), text)
-        self.assertIn("- Which module owns Y? Options: a, b. Recommend a.", text)
-        self.assertIn("- Delete Z? Recommend no.", text)
+        self.assertIn('- Which module owns Y? Options: a, b. Recommend a.', text)
+        self.assertIn('- Delete Z? Recommend no.', text)
         self.assertNotIn(quiet.name, text)
 
     def test_each_session_shows_its_priority(self) -> None:
-        folder = self.session("20261012T050007Z-1-0", "Ranked", "blocked", ["- Q?"])
+        folder = self.session('20261012T050007Z-1-0', 'Ranked', 'blocked', ['- Q?'])
         plan = folder / session_plan.PLAN_NAME
         session_plan_priority.set_priority(plan, 8)
-        self.assertIn("priority: 8", self.digest())
+        self.assertIn('priority: 8', self.digest())
 
     def test_a_report_that_is_not_a_hand_back_is_marked(self) -> None:
-        self.session("20261012T050008Z-1-0", "Long", "blocked", [f"- Q{index}?" for index in range(11)])
-        self.session("20261012T050009Z-1-0", "Disagrees", "success", ["- Q?"], status="blocked")
+        self.session('20261012T050008Z-1-0', 'Long', 'blocked', [f'- Q{index}?' for index in range(11)])
+        self.session('20261012T050009Z-1-0', 'Disagrees', 'success', ['- Q?'], status='blocked')
         text = self.digest()
-        self.assertIn("failed hand-back: 11 lines under Decisions needed, more than 10", text)
+        self.assertIn('failed hand-back: 11 lines under Decisions needed, more than 10', text)
         self.assertIn("failed hand-back: report.md Status complete is not the plan's blocked", text)
 
     def test_a_failed_hand_back_with_no_decisions_is_in_it(self) -> None:
-        silent = self.session("20261012T050010Z-1-0", "No stop", "", [], status="blocked")
-        wrong = self.session("20261012T050011Z-1-0", "Disagrees quietly", "success", [], status="blocked")
+        silent = self.session('20261012T050010Z-1-0', 'No stop', '', [], status='blocked')
+        wrong = self.session('20261012T050011Z-1-0', 'Disagrees quietly', 'success', [], status='blocked')
         text = self.digest()
-        self.assertIn(f"{silent.name}  No stop", text)
-        self.assertIn("failed hand-back: report.md has no Status", text)
-        self.assertIn(f"{wrong.name}  Disagrees quietly", text)
+        self.assertIn(f'{silent.name}  No stop', text)
+        self.assertIn('failed hand-back: report.md has no Status', text)
+        self.assertIn(f'{wrong.name}  Disagrees quietly', text)
         self.assertIn("failed hand-back: report.md Status complete is not the plan's blocked", text)
 
     def test_a_done_session_with_decisions_is_in_it_and_a_quiet_done_or_queued_one_is_not(self) -> None:
-        done = self.session("20261012T050012Z-1-0", "Done", "success", ["- Settled?"])
-        quiet = self.session("20261012T050014Z-1-0", "Quiet done", "success", [])
-        queued = self.session("20261012T050013Z-1-0", "Waiting", "", [], status="queued")
+        done = self.session('20261012T050012Z-1-0', 'Done', 'success', ['- Settled?'])
+        quiet = self.session('20261012T050014Z-1-0', 'Quiet done', 'success', [])
+        queued = self.session('20261012T050013Z-1-0', 'Waiting', '', [], status='queued')
         text = self.digest()
         self.assertIn(done.name, text)
-        self.assertIn("- Settled?", text)
+        self.assertIn('- Settled?', text)
         self.assertNotIn(quiet.name, text)
         self.assertNotIn(queued.name, text)
 
     def test_a_not_done_session_that_looks_finished_is_flagged_beside_its_decisions(self) -> None:
-        folder = self.session("20261012T050015Z-1-0", "Forgot", "blocked", ["- Q?"], status="active")
+        folder = self.session('20261012T050015Z-1-0', 'Forgot', 'blocked', ['- Q?'], status='active')
         plan = folder / session_plan.PLAN_NAME
-        steps = "## Request\nx\n\n## Steps\n- [x] 1. a"
-        plan.write_text(plan.read_text(encoding="utf-8").replace("## Request\nx", steps), encoding="utf-8")
-        self.assertIn("concerns: every step is checked, yet the status is active", self.digest())
+        steps = '## Request\nx\n\n## Steps\n- [x] 1. a'
+        plan.write_text(plan.read_text(encoding='utf-8').replace('## Request\nx', steps), encoding='utf-8')
+        self.assertIn('concerns: every step is checked, yet the status is active', self.digest())
 
     def test_with_no_decisions_anywhere_it_says_so(self) -> None:
-        self.session("20261012T050003Z-1-0", "Quiet", "success", [])
-        self.assertIn("no decisions needed", self.digest())
+        self.session('20261012T050003Z-1-0', 'Quiet', 'success', [])
+        self.assertIn('no decisions needed', self.digest())
 
     def test_conversation_narrows_it(self) -> None:
-        root = self.session("20261012T050004Z-1-0", "Root", "success", [])
-        inside = self.session("20261012T050005Z-1-0", "Inside", "blocked", ["- In?"], conversation=root.name)
-        self.session("20261012T050006Z-1-0", "Outside", "blocked", ["- Out?"])
+        root = self.session('20261012T050004Z-1-0', 'Root', 'success', [])
+        inside = self.session('20261012T050005Z-1-0', 'Inside', 'blocked', ['- In?'], conversation=root.name)
+        self.session('20261012T050006Z-1-0', 'Outside', 'blocked', ['- Out?'])
         text = self.digest(root.name)
         self.assertIn(inside.name, text)
-        self.assertNotIn("- Out?", text)
-
+        self.assertNotIn('- Out?', text)
 
 class DayReview(Fixture):
     """`digest --day`: every session of one day, summarized one by one, each with the word that closes it."""
 
     def settle(self, folder: Path, days_ago: float) -> Path:
         when = time.time() - days_ago * 24 * 60 * 60
-        for entry in sorted(folder.rglob("*"), key=lambda path: len(path.parts), reverse=True):
+        for entry in sorted(folder.rglob('*'), key=lambda path: len(path.parts), reverse=True):
             os.utime(entry, (when, when))
         os.utime(folder, (when, when))
         return folder
@@ -205,210 +197,182 @@ class DayReview(Fixture):
     def review(self, day: str) -> str:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_digest.print_digest(day=day)
+            session_digest.get_decisions_digest(day=day)
         return out.getvalue()
 
     def test_only_the_sessions_changed_on_that_day_are_reviewed(self) -> None:
-        today = self.session("20261012T060000Z-1-0", "Today task", "success", [])
-        old = self.settle(self.session("20261011T060000Z-1-0", "Old task", "success", []), 3)
-        text = self.review("today")
-        self.assertIn(f"{today.name}  Today task", text)
+        today = self.session('20261012T060000Z-1-0', 'Today task', 'success', [])
+        old = self.settle(self.session('20261011T060000Z-1-0', 'Old task', 'success', []), 3)
+        text = self.review('today')
+        self.assertIn(f'{today.name}  Today task', text)
         self.assertNotIn(old.name, text)
         self.assertIn(old.name, self.review((datetime.now() - timedelta(days=3)).date().isoformat()))
 
     def test_each_session_is_summarized_with_its_result_and_how_to_close_it(self) -> None:
-        folder = self.session("20261012T060001Z-1-0", "Summarised", "success", ["- Keep it?"])
+        folder = self.session('20261012T060001Z-1-0', 'Summarised', 'success', ['- Keep it?'])
         report = folder / session_report.REPORT_NAME
-        report.write_text(
-            "---\nStatus: Complete\n---\n# Report\n\n## What ran\nlong text\n\n## Result\nFirst result line.\nSecond line.\n\n"
-            "## Decisions needed\n- Keep it?\n",
-            encoding="utf-8",
-        )
-        text = self.review("today")
-        self.assertIn("status: complete", text)
-        self.assertIn("report: complete", text)
-        self.assertIn("result: First result line.", text)
-        self.assertIn("- Keep it?", text)
-        self.assertIn(f"close, once the owner confirms it is finished: memar session close --session-id {folder.name}", text)
+        report.write_text('---\nStatus: Complete\n---\n# Report\n\n## What ran\nlong text\n\n## Result\nFirst result line.\nSecond line.\n\n## Decisions needed\n- Keep it?\n', encoding='utf-8')
+        text = self.review('today')
+        self.assertIn('status: complete', text)
+        self.assertIn('report: complete', text)
+        self.assertIn('result: First result line.', text)
+        self.assertIn('- Keep it?', text)
+        self.assertIn(f'close, once the owner confirms it is finished: memar git trash-task-folder --task-id {folder.name}', text)
         self.assertTrue(folder.is_dir())
 
     def test_a_sound_session_without_decisions_is_reviewed_too_but_a_queued_one_is_not(self) -> None:
-        quiet = self.session("20261012T060002Z-1-0", "Quiet", "success", [])
-        queued = self.session("20261012T060003Z-1-0", "Waiting", "", [], status="queued")
-        text = self.review("today")
+        quiet = self.session('20261012T060002Z-1-0', 'Quiet', 'success', [])
+        queued = self.session('20261012T060003Z-1-0', 'Waiting', '', [], status='queued')
+        text = self.review('today')
         self.assertIn(quiet.name, text)
         self.assertNotIn(queued.name, text)
 
     def test_a_review_of_a_day_with_no_session_says_so(self) -> None:
-        self.assertIn("no session changed on", self.review("2020-01-01"))
+        self.assertIn('no session changed on', self.review('2020-01-01'))
 
     def test_the_review_does_not_close_anything(self) -> None:
-        folder = self.session("20261012T060004Z-1-0", "Stays", "success", [])
-        self.review("today")
+        folder = self.session('20261012T060004Z-1-0', 'Stays', 'success', [])
+        self.review('today')
         self.assertTrue(folder.is_dir())
 
     def test_a_bad_day_is_refused(self) -> None:
         with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
-            self.review("lately")
-
+            self.review('lately')
 
 class ProjectScope(Fixture):
     """`digest --project`: a project keeps its sessions in its own location, which the default digest does not read."""
 
     def test_the_default_reads_memars_sessions_and_project_reads_the_projects_own_location(self) -> None:
-        project = Path(self.scratch.name) / "project"
+        project = Path(self.scratch.name) / 'project'
         project.mkdir()
-        subprocess.run(["git", "init", "-q", str(project)], check=True, capture_output=True)
+        subprocess.run(['git', 'init', '-q', str(project)], check=True, capture_output=True)
         preferences = project_preferences.preferences_path(project)
-        preferences.parent.mkdir(parents=True)
-        preferences.write_text(
-            project_preferences.PREFERENCES_TEXT.replace("sessions:\n", "sessions: sessions\n", 1),
-            encoding="utf-8",
-            newline="\n",
-        )
-        location = project / "sessions"
-        folder = location / "20261012T070000Z-1-0"
+        preferences.write_text(project_preferences.preferences_text({project_preferences.SESSIONS_KEY: 'sessions'}), encoding='utf-8', newline='\n')
+        location = project / 'sessions'
+        folder = location / '20261012T070000Z-1-0'
         folder.mkdir(parents=True)
-        (folder / session_plan.PLAN_NAME).write_text(
-            f"---\nTitle: Project task\nStatus: Blocked\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n"
-            "# Project task\n\n## Request\nx\n",
-            encoding="utf-8",
-        )
-        (folder / session_report.REPORT_NAME).write_text(
-            "---\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n- In the project?\n", encoding="utf-8"
-        )
+        (folder / session_plan.PLAN_NAME).write_text(f'---\nTitle: Project task\nStatus: Blocked\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n# Project task\n\n## Request\nx\n', encoding='utf-8')
+        (folder / session_report.REPORT_NAME).write_text('---\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n- In the project?\n', encoding='utf-8')
         session_location.register(location)
-        own = self.session("20261012T070001Z-1-0", "Memar task", "blocked", ["- In memar?"])
+        own = self.session('20261012T070001Z-1-0', 'Memar task', 'blocked', ['- In memar?'])
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_digest.print_digest()
+            session_digest.get_decisions_digest()
         self.assertIn(own.name, out.getvalue())
-        self.assertNotIn("In the project?", out.getvalue())
+        self.assertNotIn('In the project?', out.getvalue())
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_digest.print_digest(project=str(project))
-        self.assertIn("- In the project?", out.getvalue())
-        registry.add_project("theproject", project)
+            session_digest.get_decisions_digest(project=str(project))
+        self.assertIn('- In the project?', out.getvalue())
+        registry.add_project('theproject', project)
         with self.assertRaises(SystemExit) as raised:
-            session_digest.print_digest(project="")
-        self.assertIn("--project-path", str(raised.exception.code))
+            session_digest.get_decisions_digest(project='')
+        self.assertIn('--project-path', str(raised.exception.code))
         parser = argparse.ArgumentParser()
         command = session_digest.describe(parser.add_subparsers())
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            command(parser.parse_args(["digest", "--project", "theproject"]))
-        self.assertIn("- In the project?", out.getvalue())
-
+            command(parser.parse_args(['get-decisions-digest', '--project', 'theproject']))
+        self.assertIn('- In the project?', out.getvalue())
 
 class OpenHandoffQuestions(Fixture):
     """The digest's `Open handoff questions` section: the entries `content questions` lists, beside the decisions."""
 
-    def handoff(self, relative: str, entries: list[tuple[str, str, str]], root: Path | None = None) -> Path:
+    def handoff(self, relative: str, entries: list[tuple[str, str, str]], root: Path | None=None) -> Path:
         """A handoff at RELATIVE holding ENTRIES, each (heading, Blocks text, Asked date)."""
         path = (root or Path(self.scratch.name)) / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        body = "".join(f"### {heading}\n- Blocks: {blocks}\n- Asked: {asked}, Claude\n\n" for heading, blocks, asked in entries)
-        path.write_text(f"# X handoff\n\n## Open Questions\n{body}", encoding="utf-8", newline="\n")
+        body = ''.join((f'### {heading}\n- Blocks: {blocks}\n- Asked: {asked}, Claude\n\n' for heading, blocks, asked in entries))
+        path.write_text(f'# X handoff\n\n## Open Questions\n{body}', encoding='utf-8', newline='\n')
         return path
 
     def test_open_entries_are_listed_blocking_first_oldest_first(self) -> None:
-        self.handoff("docs/x.handoff.md", [
-            ("Later free?", "no", "2026-10-02"),
-            ("Early free?", "nothing", "2026-10-01"),
-            ("Late blocker?", "the lint", "2026-10-05"),
-            ("Early blocker?", "the gate", "2026-10-03"),
-        ])
+        self.handoff('docs/x.handoff.md', [('Later free?', 'no', '2026-10-02'), ('Early free?', 'nothing', '2026-10-01'), ('Late blocker?', 'the lint', '2026-10-05'), ('Early blocker?', 'the gate', '2026-10-03')])
         text = self.digest()
-        self.assertIn("Open handoff questions", text)
-        self.assertIn("4 entries", text)
-        order = [text.index(name) for name in ("Early blocker?", "Late blocker?", "Early free?", "Later free?")]
+        self.assertIn('Open handoff questions', text)
+        self.assertIn('4 entries', text)
+        order = [text.index(name) for name in ('Early blocker?', 'Late blocker?', 'Early free?', 'Later free?')]
         self.assertEqual(order, sorted(order))
-        self.assertIn("docs/x.handoff.md:16: Early blocker? [blocks]", text.replace("\\", "/"))
-        self.assertNotIn("Early free? [blocks]", text)
+        self.assertIn('docs/x.handoff.md:16: Early blocker? [blocks]', text.replace('\\', '/'))
+        self.assertNotIn('Early free? [blocks]', text)
 
     def test_no_entries_no_section(self) -> None:
-        self.session("20261012T080000Z-1-0", "Asks", "blocked", ["- Q?"])
-        self.assertNotIn("Open handoff questions", self.digest())
+        self.session('20261012T080000Z-1-0', 'Asks', 'blocked', ['- Q?'])
+        self.assertNotIn('Open handoff questions', self.digest())
 
     def test_entries_show_even_when_no_session_asks(self) -> None:
-        self.handoff("docs/x.handoff.md", [("Lone?", "no", "2026-10-02")])
+        self.handoff('docs/x.handoff.md', [('Lone?', 'no', '2026-10-02')])
         text = self.digest()
-        self.assertIn("Lone?", text)
-        self.assertNotIn("no decisions needed", text)
+        self.assertIn('Lone?', text)
+        self.assertNotIn('no decisions needed', text)
 
     def test_an_entry_a_decision_points_to_is_listed_once_in_the_decision(self) -> None:
-        self.handoff("docs/x.handoff.md", [("Pointed to?", "the gate", "2026-10-03"), ("Not pointed to?", "no", "2026-10-04")])
-        self.session("20261012T080001Z-1-0", "Asks", "blocked",
-                     ["- Pointed to? Recommend yes. See docs/x.handoff.md"])
+        self.handoff('docs/x.handoff.md', [('Pointed to?', 'the gate', '2026-10-03'), ('Not pointed to?', 'no', '2026-10-04')])
+        self.session('20261012T080001Z-1-0', 'Asks', 'blocked', ['- Pointed to? Recommend yes. See docs/x.handoff.md'])
         text = self.digest()
-        self.assertEqual(text.count("Pointed to?"), 1)
-        self.assertIn("Not pointed to?", text)
-        self.assertNotIn("failed hand-back", text)
+        self.assertEqual(text.count('Pointed to?'), 1)
+        self.assertIn('Not pointed to?', text)
+        self.assertNotIn('failed hand-back', text)
 
     def test_a_pointer_by_line_hides_the_entry_at_that_line(self) -> None:
-        path = self.handoff("docs/x.handoff.md", [("Worded otherwise?", "no", "2026-10-04")])
-        self.session("20261012T080002Z-1-0", "Asks", "blocked", ["- Q? Recommend yes. docs/x.handoff.md:4"])
-        self.assertEqual(self.digest().count("Worded otherwise?"), 0, path)
+        path = self.handoff('docs/x.handoff.md', [('Worded otherwise?', 'no', '2026-10-04')])
+        self.session('20261012T080002Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. docs/x.handoff.md:4'])
+        self.assertEqual(self.digest().count('Worded otherwise?'), 0, path)
 
     def test_a_pointer_to_a_file_that_is_not_there_is_a_failed_hand_back(self) -> None:
-        self.session("20261012T080003Z-1-0", "Asks", "blocked", ["- Q? Recommend yes. docs/gone.handoff.md"])
+        self.session('20261012T080003Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. docs/gone.handoff.md'])
         text = self.digest()
-        self.assertIn("failed hand-back: Decisions needed points to docs/gone.handoff.md, which does not exist", text)
+        self.assertIn('failed hand-back: Decisions needed points to docs/gone.handoff.md, which does not exist', text)
 
     def test_a_pointer_to_a_line_with_no_entry_is_a_failed_hand_back(self) -> None:
-        self.handoff("docs/x.handoff.md", [("Real?", "no", "2026-10-04")])
-        self.session("20261012T080004Z-1-0", "Asks", "blocked", ["- Q? Recommend yes. docs/x.handoff.md:99"])
-        self.assertIn("failed hand-back: Decisions needed points to docs/x.handoff.md:99, which holds no open question there", self.digest())
+        self.handoff('docs/x.handoff.md', [('Real?', 'no', '2026-10-04')])
+        self.session('20261012T080004Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. docs/x.handoff.md:99'])
+        self.assertIn('failed hand-back: Decisions needed points to docs/x.handoff.md:99, which holds no open question there', self.digest())
 
     def test_a_pointer_to_a_file_with_no_open_question_is_a_failed_hand_back(self) -> None:
-        path = Path(self.scratch.name) / "docs" / "empty.handoff.md"
+        path = Path(self.scratch.name) / 'docs' / 'empty.handoff.md'
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text("# E\n\n## Open Questions\nNone.\n", encoding="utf-8")
-        self.session("20261012T080005Z-1-0", "Asks", "blocked", ["- Q? docs/empty.handoff.md"])
-        self.assertIn("docs/empty.handoff.md, which holds no open question", self.digest())
+        path.write_text('# E\n\n## Open Questions\nNone.\n', encoding='utf-8')
+        self.session('20261012T080005Z-1-0', 'Asks', 'blocked', ['- Q? docs/empty.handoff.md'])
+        self.assertIn('docs/empty.handoff.md, which holds no open question', self.digest())
 
     def test_day_review_lists_only_entries_asked_that_day(self) -> None:
         today = datetime.now().date().isoformat()
-        self.handoff("docs/x.handoff.md", [("Asked today?", "no", today), ("Asked long ago?", "no", "2020-01-01")])
+        self.handoff('docs/x.handoff.md', [('Asked today?', 'no', today), ('Asked long ago?', 'no', '2020-01-01')])
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_digest.print_digest(day="today")
-        self.assertIn("Asked today?", out.getvalue())
-        self.assertNotIn("Asked long ago?", out.getvalue())
+            session_digest.get_decisions_digest(day='today')
+        self.assertIn('Asked today?', out.getvalue())
+        self.assertNotIn('Asked long ago?', out.getvalue())
 
     def test_project_reads_that_projects_handoffs_and_not_memars(self) -> None:
-        project = Path(self.scratch.name) / "project"
+        project = Path(self.scratch.name) / 'project'
         project.mkdir()
-        subprocess.run(["git", "init", "-q", str(project)], check=True, capture_output=True)
-        self.handoff("docs/x.handoff.md", [("In memar?", "no", "2026-10-02")])
-        self.handoff("docs/y.handoff.md", [("In project?", "no", "2026-10-02")], root=project)
+        subprocess.run(['git', 'init', '-q', str(project)], check=True, capture_output=True)
+        self.handoff('docs/x.handoff.md', [('In memar?', 'no', '2026-10-02')])
+        self.handoff('docs/y.handoff.md', [('In project?', 'no', '2026-10-02')], root=project)
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_digest.print_digest(project=str(project))
-        self.assertIn("In project?", out.getvalue())
-        self.assertNotIn("In memar?", out.getvalue())
+            session_digest.get_decisions_digest(project=str(project))
+        self.assertIn('In project?', out.getvalue())
+        self.assertNotIn('In memar?', out.getvalue())
 
     def test_a_conversation_digest_leaves_them_out(self) -> None:
-        root = self.session("20261012T080006Z-1-0", "Root", "success", [])
-        self.session("20261012T080007Z-1-0", "Inside", "blocked", ["- In?"], conversation=root.name)
-        self.handoff("docs/x.handoff.md", [("Unrelated?", "no", "2026-10-02")])
-        self.assertNotIn("Unrelated?", self.digest(root.name))
-
+        root = self.session('20261012T080006Z-1-0', 'Root', 'success', [])
+        self.session('20261012T080007Z-1-0', 'Inside', 'blocked', ['- In?'], conversation=root.name)
+        self.handoff('docs/x.handoff.md', [('Unrelated?', 'no', '2026-10-02')])
+        self.assertNotIn('Unrelated?', self.digest(root.name))
 
 class EarlierShapes(Fixture):
+
     def test_a_session_in_an_earlier_shape_is_shown_with_where_todays_shape_is_shown(self) -> None:
-        folder = memar_fs.session_dir("20261012-T090000Z-1")
+        folder = memar_fs.task_dir('20261012-T090000Z-1')
         folder.mkdir(parents=True)
-        (folder / session_plan.PLAN_NAME).write_text(
-            "---\ntitle: Old\nopened: 2026-10-12T00:00:00Z\nproject: P\n---\n# Old\nStatus: done\n\n## Request\nx\n",
-            encoding="utf-8",
-        )
-        (folder / session_report.REPORT_NAME).write_text("# Report\nStop: success\n\n## Decisions needed\n- Q?\n", encoding="utf-8")
+        (folder / session_plan.PLAN_NAME).write_text('---\ntitle: Old\nopened: 2026-10-12T00:00:00Z\nproject: P\n---\n# Old\nStatus: done\n\n## Request\nx\n', encoding='utf-8')
+        (folder / session_report.REPORT_NAME).write_text('# Report\nStop: success\n\n## Decisions needed\n- Q?\n', encoding='utf-8')
         text = self.digest()
         self.assertIn(session_plan.EARLIER_SHAPE_REMEDY, text)
-        self.assertIn("failed hand-back", text)
-        self.assertIn("concerns: its plan is in an earlier shape", text)
-
-
-if __name__ == "__main__":
+        self.assertIn('failed hand-back', text)
+        self.assertIn('concerns: its plan is in an earlier shape', text)
+if __name__ == '__main__':
     unittest.main()

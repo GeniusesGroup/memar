@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""bundles/memar/update/services/daily.py — `memar update` once a day in the background, and the one line it leaves.
+"""bundles/memar/services/update/services/daily.py — `memar update` once a day in the background, and the one line it leaves.
 
 Most people with Memar never develop it, and nothing reminds them to update it:
 `memar update` answers when asked, and nobody asks. So this file asks the
@@ -34,7 +34,7 @@ question; a test run, which must never reach the machine it runs on; and
 MEMAR_NO_AUTO_UPDATE set to anything but empty or 0. A notice left is still
 printed under that opt-out, because the opt-out stops the update and a notice
 may be about something else; a test run prints none. The once-a-day guard is
-`machine/fs_lock.claim_today`, the one the session sweep asks too, and two runs
+`s_lock.claim_today`, the one the session sweep asks too, and two runs
 at once are kept apart by a lock from the same module: a run that finds it held
 goes away rather than waiting, because the run holding it is doing the same
 work.
@@ -48,7 +48,16 @@ lock, the Memar root, the test-run check, a child process — is imported
 where it is used.
 """
 from __future__ import annotations
-
+from importlib import import_module
+_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+scratch_root = _m_fs_memar.scratch_root
+_m_fs_lock = import_module('modules-plugable.computer.filesystem.services.fs_lock')
+claim_today = _m_fs_lock.claim_today
+release_lock = _m_fs_lock.release_lock
+try_lock = _m_fs_lock.try_lock
+scratch_root = _m_fs_memar.scratch_root
+_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+in_test_run = _m_fs_test_scratch.in_test_run
 import contextlib
 import io
 import os
@@ -56,43 +65,34 @@ import sys
 from collections.abc import Iterator, Mapping
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable
-
 if TYPE_CHECKING:
     import subprocess
-
-OPT_OUT_VARIABLE = "MEMAR_NO_AUTO_UPDATE"
-UPDATE_VERB = "update"
-BACKGROUND_FLAG = "--background"
-LAUNCHER = Path(__file__).resolve().parents[4] / ".agents" / "scripts" / "memar"
-UPDATE_DIRNAME = "update"
-DAILY_MARKER_NAME = "update.daily"
-LOCK_NAME = "update.lock"
-NOTICE_SUFFIX = ".notice"
-UPDATE_SUBJECT = "update"
-NOTICE_NAME = f"{UPDATE_SUBJECT}{NOTICE_SUFFIX}"
-LOG_NAME = "update.log"
-# A run fetches under a timeout and copies a few small folders; a lock older
-# than this is a run that died.
+OPT_OUT_VARIABLE = 'MEMAR_NO_AUTO_UPDATE'
+UPDATE_VERB = 'update'
+BACKGROUND_FLAG = '--background'
+LAUNCHER = Path(__file__).resolve().parents[3] / 'memar'
+UPDATE_DIRNAME = 'update'
+DAILY_MARKER_NAME = 'update.daily'
+LOCK_NAME = 'update.lock'
+NOTICE_SUFFIX = '.notice'
+UPDATE_SUBJECT = 'update'
+NOTICE_NAME = f'{UPDATE_SUBJECT}{NOTICE_SUFFIX}'
+LOG_NAME = 'update.log'
 LOCK_STALE_SECONDS = 15 * 60
-
 
 def state_dir() -> Path:
     """Where the day's marker, the lock, the notice, and the log live: temp/update/."""
-    from machine.fs_memar import scratch_root
-
     directory = scratch_root() / UPDATE_DIRNAME
     directory.mkdir(exist_ok=True)
     return directory
 
-
 def suppressed(environ: Mapping[str, str], *, testing: bool) -> str | None:
     """Why no daily run may start here, or None."""
     if testing:
-        return "this is a test run"
-    if environ.get(OPT_OUT_VARIABLE, "").strip() not in ("", "0"):
-        return f"{OPT_OUT_VARIABLE} is set"
+        return 'this is a test run'
+    if environ.get(OPT_OUT_VARIABLE, '').strip() not in ('', '0'):
+        return f'{OPT_OUT_VARIABLE} is set'
     return None
-
 
 def detach(command: list[str], log: Path) -> subprocess.Popen:
     """Start COMMAND as a process that outlives this one, its output into LOG.
@@ -102,10 +102,9 @@ def detach(command: list[str], log: Path) -> subprocess.Popen:
     job where the job allows it; elsewhere it gets a session of its own.
     """
     import subprocess
-
-    options: dict = {"stdin": subprocess.DEVNULL, "stderr": subprocess.STDOUT, "close_fds": True}
-    with log.open("w", encoding="utf-8") as output:
-        if os.name != "nt":
+    options: dict = {'stdin': subprocess.DEVNULL, 'stderr': subprocess.STDOUT, 'close_fds': True}
+    with log.open('w', encoding='utf-8') as output:
+        if os.name != 'nt':
             return subprocess.Popen(command, stdout=output, start_new_session=True, **options)
         flags = subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP
         try:
@@ -113,53 +112,44 @@ def detach(command: list[str], log: Path) -> subprocess.Popen:
         except OSError:
             return subprocess.Popen(command, stdout=output, creationflags=flags, **options)
 
-
 def start_daily(directory: Path) -> bool:
     """Start today's background run if this is the first ask today; whether it was started."""
-    from machine.fs_lock import claim_today
-
     if not claim_today(directory / DAILY_MARKER_NAME):
         return False
     detach([sys.executable, str(LAUNCHER), UPDATE_VERB, BACKGROUND_FLAG], directory / LOG_NAME)
     return True
 
-
 def take_notice(directory: Path) -> str | None:
     """The lines left for the next command, each subject's removed as it is read, so each is printed once."""
     said = []
     try:
-        notices = sorted(directory.glob(f"*{NOTICE_SUFFIX}"))
+        notices = sorted(directory.glob(f'*{NOTICE_SUFFIX}'))
     except OSError:
         return None
     for notice in notices:
-        taken = notice.with_name(f"{notice.name}.{os.getpid()}")
+        taken = notice.with_name(f'{notice.name}.{os.getpid()}')
         try:
-            # A rename is the take: of two commands at once, one gets the file.
             os.replace(notice, taken)
         except OSError:
             continue
         try:
-            said.append(taken.read_text(encoding="utf-8").strip())
+            said.append(taken.read_text(encoding='utf-8').strip())
         except OSError:
             pass
         finally:
             taken.unlink(missing_ok=True)
-    return "\n".join(line for line in said if line) or None
-
+    return '\n'.join((line for line in said if line)) or None
 
 def leave_notice(directory: Path, line: str) -> None:
     """Leave LINE for the next `memar` command to print, replacing the one not yet printed."""
-    notice = directory / f"{UPDATE_SUBJECT}{NOTICE_SUFFIX}"
-    written = notice.with_name(f"{notice.name}.new.{os.getpid()}")
-    written.write_text(line.strip() + "\n", encoding="utf-8", newline="\n")
+    notice = directory / f'{UPDATE_SUBJECT}{NOTICE_SUFFIX}'
+    written = notice.with_name(f'{notice.name}.new.{os.getpid()}')
+    written.write_text(line.strip() + '\n', encoding='utf-8', newline='\n')
     os.replace(written, notice)
-
 
 @contextlib.contextmanager
 def daily_run(directory: Path) -> Iterator[bool]:
     """Hold the run's lock for its length; yields False when another run holds it."""
-    from machine.fs_lock import release_lock, try_lock
-
     lock = directory / LOCK_NAME
     held = try_lock(lock, LOCK_STALE_SECONDS)
     try:
@@ -168,8 +158,7 @@ def daily_run(directory: Path) -> Iterator[bool]:
         if held:
             release_lock(lock)
 
-
-def before_verb(verb: str | None, *, environ: Mapping[str, str] = os.environ, testing: bool | None = None) -> None:
+def before_verb(verb: str | None, *, environ: Mapping[str, str]=os.environ, testing: bool | None=None) -> None:
     """What runs before VERB: print the notices left for it, then start today's run.
 
     Never raises and never writes to stdout: whatever fails here is the daily
@@ -178,9 +167,6 @@ def before_verb(verb: str | None, *, environ: Mapping[str, str] = os.environ, te
     notice = None
     try:
         with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
-            from machine.fs_memar import scratch_root
-            from machine.fs_test_scratch import in_test_run
-
             if in_test_run() if testing is None else testing:
                 return
             if suppressed(environ, testing=False):
@@ -193,8 +179,7 @@ def before_verb(verb: str | None, *, environ: Mapping[str, str] = os.environ, te
     except (Exception, SystemExit):
         pass
     if notice:
-        sys.stderr.write("".join(f"memar: {line}\n" for line in notice.splitlines()))
-
+        sys.stderr.write(''.join((f'memar: {line}\n' for line in notice.splitlines())))
 
 def before(argv: list[str]) -> None:
     """What the router runs before every verb, given ARGV as typed: `before_verb` on its first word.
@@ -205,7 +190,6 @@ def before(argv: list[str]) -> None:
     if argv[:1] == [UPDATE_VERB] and BACKGROUND_FLAG in argv:
         return
     before_verb(argv[0] if argv else None)
-
 
 def describe(verbs) -> Callable[[list[str]], None]:
     return before

@@ -30,7 +30,6 @@ process started, and its id; it is the whole of the way to find the process, and
 person can reach the process as the person does, which is the protection a local socket has.
 """
 from __future__ import annotations
-
 import json
 import os
 import stat
@@ -38,62 +37,45 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-
-ENABLE = "MEMAR_SERVER"
-# The value of ENABLE that keeps a call in its own process.
-OFF = "0"
-STATE_ENV = "MEMAR_SERVER_STATE"
-NOT_HANDED_OVER = frozenset({"mcp", "resident", "install", "update"})
-FOLDER = ("temp", "resident")
-STATE = "state.json"
-STARTING = "starting"
-# A new resident process is started at most this often by the calls that find none.
+ENABLE = 'MEMAR_SERVER'
+OFF = '0'
+STATE_ENV = 'MEMAR_SERVER_STATE'
+NOT_HANDED_OVER = frozenset({'mcp', 'resident', 'install', 'update'})
+FOLDER = ('temp', 'resident')
+STATE = 'state.json'
+STARTING = 'starting'
 START_BACKOFF = 15
 CONNECT_SECONDS = 0.5
-# How long a call waits for the process to take it up, which it does at once unless it is busy with another call or
-# stuck; past this the call is done in place, and the process, finding the connection closed, does not run it.
 TAKEN_SECONDS = 5.0
-# The longest line either side reads: the environment of a call is a few kilobytes.
 MOST_BYTES = 64 * 1024 * 1024
-# How the process is started: without the router, which would load every service the process only needs in its workers.
-# The comment is what a process list shows of it.
-BOOT = (
-    "# memar resident process\n"
-    "import sys; sys.path[0:1] = sys.argv[1:3]; from resident.services.serve import serve_forever; raise SystemExit(serve_forever())"
-)
-ROUTER = Path(__file__).resolve().parents[1] / "memar"
-# Its own process group and a console with no window. Not DETACHED_PROCESS: a process with no console gives each console
-# program it starts (the worker, git) a window of its own, which is what a person would see and close.
-CREATION_FLAGS = 0x00000200 | 0x08000000
-
+BOOT = '# memar resident process\nimport sys; from pathlib import Path; s, t = Path(sys.argv[1]), Path(sys.argv[2]); sys.path[0:0] = [str(t), str(s), str(s / "services")]; from resident.services.serve import serve_forever; raise SystemExit(serve_forever())'
+ROUTER = Path(__file__).resolve().parents[2] / 'memar'
+CREATION_FLAGS = 512 | 134217728
 
 def folder(top: Path) -> Path:
     """Where the state file is: the checkout's scratch, or the folder MEMAR_SERVER_STATE names (a test's own, so it never meets the owner's process)."""
     named = os.environ.get(STATE_ENV)
     return Path(named) if named else top.joinpath(*FOLDER)
 
-
 def read_line(connection) -> bytes:
     """One line from CONNECTION, without its end; b"" when the other side closed before sending one."""
-    chunks, size = [], 0
+    chunks, size = ([], 0)
     while True:
         chunk = connection.recv(65536)
         if not chunk:
             break
         chunks.append(chunk)
         size += len(chunk)
-        if chunk.endswith(b"\n") or size > MOST_BYTES:
+        if chunk.endswith(b'\n') or size > MOST_BYTES:
             break
-    return b"".join(chunks).rstrip(b"\r\n")
-
+    return b''.join(chunks).rstrip(b'\r\n')
 
 def state_of(top: Path) -> dict | None:
     try:
-        state = json.loads((folder(top) / STATE).read_text(encoding="utf-8"))
+        state = json.loads((folder(top) / STATE).read_text(encoding='utf-8'))
     except (OSError, ValueError):
         return None
-    return state if isinstance(state, dict) and {"port", "token"} <= state.keys() else None
-
+    return state if isinstance(state, dict) and {'port', 'token'} <= state.keys() else None
 
 def stdin_allows() -> bool:
     """Whether the answer cannot depend on what is on stdin: it is a console or the null device."""
@@ -102,38 +84,34 @@ def stdin_allows() -> bool:
     except OSError:
         return False
 
-
-def ask(top: Path, request: dict, timeout: float | None = None) -> dict | None:
+def ask(top: Path, request: dict, timeout: float | None=None) -> dict | None:
     """The resident process's answer to REQUEST; None when nothing was handed over (no state, no connection, a refusal)."""
     import socket
-
     state = state_of(top)
     if state is None:
         return None
     try:
-        connection = socket.create_connection(("127.0.0.1", int(state["port"])), timeout=CONNECT_SECONDS)
+        connection = socket.create_connection(('127.0.0.1', int(state['port'])), timeout=CONNECT_SECONDS)
     except (OSError, ValueError):
         return None
     with connection:
         connection.settimeout(TAKEN_SECONDS)
         try:
-            connection.sendall(json.dumps({"token": state["token"], **request}, ensure_ascii=False).encode("utf-8") + b"\n")
-            reader = connection.makefile("rb")
+            connection.sendall(json.dumps({'token': state['token'], **request}, ensure_ascii=False).encode('utf-8') + b'\n')
+            reader = connection.makefile('rb')
             first = reader.readline()
         except OSError:
             return None
         answer = _decoded(first)
-        if answer is None or "refused" in answer:
+        if answer is None or 'refused' in answer:
             return None
-        if "taken" in answer:
-            # Taken up: from here the call is the process's and is never run again in place.
+        if 'taken' in answer:
             connection.settimeout(timeout)
             try:
                 answer = _decoded(reader.readline())
             except OSError:
-                return {"lost": True}
-    return answer if answer is not None else {"lost": True}
-
+                return {'lost': True}
+    return answer if answer is not None else {'lost': True}
 
 def _decoded(line: bytes) -> dict | None:
     try:
@@ -141,7 +119,6 @@ def _decoded(line: bytes) -> dict | None:
     except ValueError:
         return None
     return answer if isinstance(answer, dict) else None
-
 
 def start(top: Path) -> None:
     """Start the resident process, detached, unless a call started one a moment ago."""
@@ -153,34 +130,26 @@ def start(top: Path) -> None:
         pass
     try:
         marker.parent.mkdir(parents=True, exist_ok=True)
-        marker.write_text(str(os.getpid()), encoding="utf-8")
-        options = {"creationflags": CREATION_FLAGS} if os.name == "nt" else {"start_new_session": True}
-        subprocess.Popen(
-            [sys.executable, "-c", BOOT, str(ROUTER.parent), str(ROUTER.parents[2])],
-            stdin=subprocess.DEVNULL,
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            close_fds=True,
-            **options,
-        )
+        marker.write_text(str(os.getpid()), encoding='utf-8')
+        options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_session': True}
+        subprocess.Popen([sys.executable, '-c', BOOT, str(ROUTER.parent), str(ROUTER.parents[2])], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
     except OSError:
         pass
 
-
 def served(argv: list[str], top: Path) -> int | None:
     """The status of ARGV when the resident process answered it, writing its output; None when the router is to do it."""
-    if os.environ.get(ENABLE) == OFF or not argv or argv[0] in NOT_HANDED_OVER or not stdin_allows():
+    if os.environ.get(ENABLE) == OFF or not argv or argv[0] in NOT_HANDED_OVER or (not stdin_allows()):
         return None
-    answer = ask(top, {"argv": argv, "cwd": os.getcwd(), "env": dict(os.environ)})
+    answer = ask(top, {'argv': argv, 'cwd': os.getcwd(), 'env': dict(os.environ)})
     if answer is None:
         start(top)
         return None
-    if "stdout" not in answer:
-        sys.stderr.write("memar: the resident process stopped before it answered; the call may or may not have run.\n")
+    if 'stdout' not in answer:
+        sys.stderr.write('memar: the resident process stopped before it answered; the call may or may not have run.\n')
         return 1
-    for stream, text in ((sys.stdout, answer["stdout"]), (sys.stderr, answer.get("stderr", ""))):
+    for stream, text in ((sys.stdout, answer['stdout']), (sys.stderr, answer.get('stderr', ''))):
         if text:
             stream.flush()
-            stream.buffer.write(text.encode("utf-8"))
+            stream.buffer.write(text.encode('utf-8'))
             stream.buffer.flush()
-    return int(answer.get("status", 0))
+    return int(answer.get('status', 0))

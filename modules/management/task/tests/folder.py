@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for how a session folder is read in `modules/process/session/services/folder.py`.
+"""Tests for how a session folder is read in `modules/management/task/services/folder.py`.
 
-    python modules/process/session/tests/folder.py
+    python modules/management/task/tests/folder.py
 
 The subject is the reading every session service shares, named for the file
 that holds it per
@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder. The Memar root is patched onto
-one, made under the folder `machine/fs_test_scratch.py` names, and removed
+one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
 again.
 
 What is pinned, and what each pin is for:
@@ -32,7 +32,11 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+memar_fs = _m_fs_memar
 import os
 import sys
 import tempfile
@@ -40,111 +44,92 @@ import time
 import unittest
 import unittest.mock
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import machine.fs_memar as memar_fs
-import modules.process.session.services.folder as session_folder
+import modules.management.task.services.folder as session_folder
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
-
-OLDEST = "20261001-T000000Z-1"
-NEWEST = "20261003-T000000Z-1"
-# Names in forms minted before; a folder so named is a session only by its plan.
-EARLIER_FORM = "1111-18dc000000000001-0"
-EARLIER_DATED = "20261002T000000Z-1-0"
+OLDEST = '20261001-T000000Z-1'
+NEWEST = '20261003-T000000Z-1'
+EARLIER_FORM = '1111-18dc000000000001-0'
+EARLIER_DATED = '20261002T000000Z-1-0'
 DAY = 24 * 60 * 60
 
-
 class Fixture(unittest.TestCase):
+
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.fake_root = Path(self.scratch.name)
-        patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.fake_root)
+        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=self.fake_root)
         patched.start()
         self.addCleanup(patched.stop)
 
-    def session(self, sid: str, plan: str | bytes | None = None) -> Path:
-        path = memar_fs.session_dir(sid, create=True)
+    def session(self, sid: str, plan: str | bytes | None=None) -> Path:
+        path = memar_fs.task_dir(sid, create=True)
         if isinstance(plan, bytes):
             (path / PLAN_NAME).write_bytes(plan)
         elif plan is not None:
-            (path / PLAN_NAME).write_text(plan, encoding="utf-8", newline="\n")
+            (path / PLAN_NAME).write_text(plan, encoding='utf-8', newline='\n')
         return path
 
-
 class SessionRead(Fixture):
+
     def test_no_plan_unreadable_and_planned_are_told_apart(self) -> None:
         bare = session_folder.read_session(self.session(OLDEST))
-        self.assertEqual((bare.has_plan, bare.readable, bare.status), (False, True, ""))
-        broken = session_folder.read_session(self.session(NEWEST, b"\xff\xfe"))
+        self.assertEqual((bare.has_plan, bare.readable, bare.status), (False, True, ''))
+        broken = session_folder.read_session(self.session(NEWEST, b'\xff\xfe'))
         self.assertEqual((broken.has_plan, broken.readable), (True, False))
-        planned = session_folder.read_session(
-            self.session(EARLIER_FORM, plan_skeleton("20261001T000000Z-1-0", "T", "2026-10-01T00:00:00Z", Path("/work")))
-        )
-        self.assertEqual((planned.has_plan, planned.readable, planned.status), (True, True, "active"))
-        self.assertEqual(planned.front["title"], "T")
+        planned = session_folder.read_session(self.session(EARLIER_FORM, plan_skeleton('20261001T000000Z-1-0', 'T', '2026-10-01T00:00:00Z', Path('/work'))))
+        self.assertEqual((planned.has_plan, planned.readable, planned.status), (True, True, 'active'))
+        self.assertEqual(planned.front['title'], 'T')
 
     def test_the_conversation_is_recorded_else_the_session_itself(self) -> None:
-        first = session_folder.read_session(self.session(OLDEST, plan_skeleton("20261001T000000Z-1-0", "T", "x", Path("/w"))))
-        self.assertEqual((first.parent, first.conversation), ("", OLDEST))
-        linked = session_folder.read_session(
-            self.session(NEWEST, plan_skeleton("20261001T000000Z-1-0", "T", "x", Path("/w"), parent=OLDEST, conversation=OLDEST))
-        )
+        first = session_folder.read_session(self.session(OLDEST, plan_skeleton('20261001T000000Z-1-0', 'T', 'x', Path('/w'))))
+        self.assertEqual((first.parent, first.conversation), ('', OLDEST))
+        linked = session_folder.read_session(self.session(NEWEST, plan_skeleton('20261001T000000Z-1-0', 'T', 'x', Path('/w'), parent=OLDEST, conversation=OLDEST)))
         self.assertEqual((linked.parent, linked.conversation), (OLDEST, OLDEST))
 
-
 class FoldersFound(Fixture):
+
     def test_only_sessions_newest_first(self) -> None:
         for sid in (OLDEST, NEWEST):
             self.session(sid)
-        # A name minted before is a session by the plan `new` wrote, and is
-        # listed after every minted name; without such a plan it is not one.
-        self.session(EARLIER_DATED, plan_skeleton("20261001T000000Z-1-0", "T", "x", Path("/w")))
+        self.session(EARLIER_DATED, plan_skeleton('20261001T000000Z-1-0', 'T', 'x', Path('/w')))
         self.session(EARLIER_FORM)
-        for name in ("images", "memar-edit-locks", "s-old"):
+        for name in ('images', 'memar-edit-locks', 's-old'):
             (memar_fs.sessions_root() / name).mkdir()
-        (memar_fs.sessions_root() / "sessions.log").write_text("", encoding="utf-8")
+        (memar_fs.sessions_root() / 'sessions.log').write_text('', encoding='utf-8')
         self.assertEqual([path.name for path in session_folder.session_folders()], [NEWEST, OLDEST, EARLIER_DATED])
 
     def test_a_session_left_in_temp_is_not_read(self) -> None:
         self.session(OLDEST)
         left = memar_fs.scratch_root() / NEWEST
         left.mkdir()
-        self.assertEqual(session_folder.session_folders(), [memar_fs.session_dir(OLDEST)])
-        self.assertEqual(session_folder.folder_of(NEWEST), memar_fs.session_dir(NEWEST))
-        self.assertFalse(hasattr(session_folder, "is_left_session"))
-        self.assertFalse(hasattr(session_folder, "left_folder_of"))
+        self.assertEqual(session_folder.session_folders(), [memar_fs.task_dir(OLDEST)])
+        self.assertEqual(session_folder.folder_of(NEWEST), memar_fs.task_dir(NEWEST))
+        self.assertFalse(hasattr(session_folder, 'is_left_session'))
+        self.assertFalse(hasattr(session_folder, 'left_folder_of'))
         with self.assertRaises(SystemExit):
-            session_folder.folder_of("../elsewhere")
-
+            session_folder.folder_of('../elsewhere')
 
 class IdleMeasured(Fixture):
+
     def test_a_file_changed_deep_inside_is_the_latest_change(self) -> None:
         path = self.session(OLDEST)
-        (path / "work").mkdir()
-        notes = path / "work" / "notes.md"
-        notes.write_text("# Notes\n", encoding="utf-8", newline="\n")
+        (path / 'work').mkdir()
+        notes = path / 'work' / 'notes.md'
+        notes.write_text('# Notes\n', encoding='utf-8', newline='\n')
         old = time.time() - 9 * DAY
-        for entry in (notes, path / "work", path):
+        for entry in (notes, path / 'work', path):
             os.utime(entry, (old, old))
         self.assertGreater(session_folder.measured_idle(path), 8.9)
         os.utime(notes, None)
         self.assertLess(session_folder.measured_idle(path), 0.1)
 
     def test_an_age_that_cannot_be_read_is_none(self) -> None:
-        self.assertIsNone(session_folder.measured_idle(self.fake_root / "gone"))
-
-
-if __name__ == "__main__":
+        self.assertIsNone(session_folder.measured_idle(self.fake_root / 'gone'))
+if __name__ == '__main__':
     unittest.main(verbosity=2)

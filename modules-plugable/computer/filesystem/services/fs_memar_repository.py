@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""machine/fs_memar_repository.py — what a Memar repository is, on disk.
+"""modules-plugable/computer/filesystem/services/fs_memar_repository.py — what a Memar repository is, on disk.
 
 The one definition of the question, and the one place the words of a refusal
 about it are written. Every other file in this folder — and every shell that
@@ -10,33 +10,21 @@ is the only way two of them cannot come to disagree.
 
 The answer is a question about files and folders and nothing else, so it sits on
 the machine shelf, below everything that asks it: where Memar lives
-(`machine/env_location.py`, `machine/fs_memar.py`) as well as the installer, the
+(`machine/env_location.py`, `modules-plugable/computer/filesystem/services/fs_memar.py`) as well as the installer, the
 content check, and the update. How far a checkout of one is behind its upstream
-is the update's, in `bundles/memar/update/services/checkout.py`.
+is the update's, in `bundles/memar/services/update/services/checkout.py`.
 """
 from __future__ import annotations
-
 from pathlib import Path
-
-SKILL_MARKER = Path(".agents") / "skills" / "memar" / "SKILL.md"
-
+SKILL_MARKER = Path('.agents') / 'skills' / 'memar' / 'SKILL.md'
 
 def is_memar_repository(path: Path) -> bool:
     """A Memar repository: the entry document, the docs tree, and the skill."""
-    return (
-        (path / "README.md").is_file()
-        and (path / "docs").is_dir()
-        and (path / SKILL_MARKER).is_file()
-    )
-
+    return (path / 'README.md').is_file() and (path / 'docs').is_dir() and (path / SKILL_MARKER).is_file()
 
 def not_a_repository(path: Path) -> str:
     """Why PATH is not a Memar repository, in the words every refusal uses."""
-    return (
-        f"{path} is not a Memar repository (no README.md, docs/, and "
-        f"{SKILL_MARKER.as_posix()})"
-    )
-
+    return f'{path} is not a Memar repository (no README.md, docs/, and {SKILL_MARKER.as_posix()})'
 
 def enclosing_repository(start: Path) -> Path | None:
     """The Memar repository a path sits inside, or None.
@@ -50,9 +38,6 @@ def enclosing_repository(start: Path) -> Path | None:
     are written under.
     """
     current = start if start.is_dir() else start.parent
-    # Fail-closed: the ancestor walk is allowed only to find the repository a
-    # path already sits inside (nearest qualifying ancestor wins); when none
-    # qualifies it must return None and the caller must error, never guess.
     for candidate in (current, *current.parents):
         if is_memar_repository(candidate):
             return candidate

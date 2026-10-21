@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/digest.py — every decision the sessions hand back, gathered into one digest.
+"""modules/management/task/services/get_decisions_digest.py — every decision the sessions hand back, gathered into one digest.
 
 Why one digest. The owner's attention is one of the two bottlenecks of the
 work, and a question asked in each of a hundred sessions is a hundred
@@ -23,7 +23,7 @@ decisions answers the most pressing first.
 
 Which sessions. Memar's own, newest first as `list` shows them, a project's
 with `--project` — its own location included, which is where a project's
-sessions lie by default (`temp/sessions/` inside it) — or one conversation's
+sessions lie by default (`.agents/tasks/` inside it) — or one conversation's
 with `--conversation`, wherever its sessions lie; the coordinator that handed
 a conversation's sessions out asks for that one. Of those, a session is in the
 digest when its report has entries, is a failed hand-back (even with no
@@ -59,36 +59,32 @@ where it said. With `--day` only the entries asked that day are listed;
 `--conversation` is about sessions, and leaves the entries out.
 """
 from __future__ import annotations
-
 import argparse
 import re
 from datetime import date
 from pathlib import Path
 from typing import Callable
-
 from machine.console import note
 from modules.knowledge.documentation.record import REPORT
 from modules.knowledge.documentation.primitive.status import Status
 from modules.knowledge.content.services.questions import BLOCKING_MARK, handoff_files, open_questions
 from modules.knowledge.content.services.reference import content_root
-from modules.process.session.services.dependency import Reader
-from modules.process.session.services.concerns import concerns
-from modules.process.session.services.depends import concerns_for, reconcile_all
-from modules.process.session.services.day import DAY_NAMES, day_of, parse_day
+from modules.management.task.services.dependency import Reader
+from modules.management.task.services.concerns import concerns
+from modules.management.task.services.depends import concerns_for, reconcile_all
+from modules.management.task.services.day import DAY_NAMES, day_of, parse_day
 from modules.process.project.services.find import add_project_flags, project_from_args
-from modules.process.session.services.find import find_sessions, project_of
-from modules.process.session.services.folder import Session
+from modules.management.task.services.list import find_sessions, project_of
+from modules.management.task.services.folder import Session
 from modules.knowledge.documentation.plan.primitive.priority import Priority
 from modules.knowledge.documentation.report.services.report import REPORT_NAME, decisions_needed, handback_problem, read_report_status
-from modules.process.session.services.summary import summary_lines
+from modules.knowledge.documentation.report.services.summary import summary_lines
 from modules.process.project.primitive.project_name import ProjectName
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-
-OPEN_HEADING = "Open handoff questions"
-DIGEST_COMMAND = "digest"
-_POINTER = re.compile(r"([\w./\\~:-]*?[\w.-]+\.handoff\.md)(?::(\d+))?")
-CLOSE_LINE = "close, once the owner confirms it is finished: memar session close --session-id"
-
+OPEN_HEADING = 'Open handoff questions'
+DIGEST_COMMAND = 'get-decisions-digest'
+_POINTER = re.compile('([\\w./\\\\~:-]*?[\\w.-]+\\.handoff\\.md)(?::(\\d+))?')
+CLOSE_LINE = 'close, once the owner confirms it is finished: memar git trash-task-folder --task-id'
 
 def open_entries(base: Path) -> list[tuple[bool, str, str, int, str, bool, Path]]:
     """The open entries under BASE, in `content questions` order: (not blocking, asked, shown path, line, heading, blocking, path)."""
@@ -103,7 +99,6 @@ def open_entries(base: Path) -> list[tuple[bool, str, str, int, str, bool, Path]
     found.sort(key=lambda hit: hit[:4])
     return found
 
-
 def pointer_problem(lines: list[str], bases: list[Path]) -> str | None:
     """Why a `Decisions needed` line points to an entry that is not there; None when none does.
 
@@ -113,67 +108,60 @@ def pointer_problem(lines: list[str], bases: list[Path]) -> str | None:
     """
     for line in lines:
         for match in _POINTER.finditer(line):
-            name, at = match.group(1), match.group(2)
-            relative = Path(name.replace("\\", "/"))
+            name, at = (match.group(1), match.group(2))
+            relative = Path(name.replace('\\', '/'))
             file = next((base / relative for base in bases if (base / relative).is_file()), None)
             if relative.is_absolute() and relative.is_file():
                 file = relative
             if file is None:
-                return f"{REPORT.hand_back_part} points to {name}, which does not exist"
+                return f'{REPORT.hand_back_part} points to {name}, which does not exist'
             lines_found = [entry[0] for entry in open_questions(file)]
             if at is not None and int(at) not in lines_found:
-                return f"{REPORT.hand_back_part} points to {name}:{at}, which holds no open question there"
+                return f'{REPORT.hand_back_part} points to {name}:{at}, which holds no open question there'
             if not lines_found:
-                return f"{REPORT.hand_back_part} points to {name}, which holds no open question"
+                return f'{REPORT.hand_back_part} points to {name}, which holds no open question'
     return None
-
 
 def points_to(lines: list[str], shown: str, line: int, heading: str) -> bool:
     """Whether a `Decisions needed` line names the entry: its handoff's path, and its heading or its line."""
     for text in lines:
-        flat = text.replace("\\", "/")
-        if shown in flat and (heading.lower() in text.lower() or f"{shown}:{line}" in flat):
+        flat = text.replace('\\', '/')
+        if shown in flat and (heading.lower() in text.lower() or f'{shown}:{line}' in flat):
             return True
     return False
 
-
 def print_open_questions(base: Path, decisions: list[str], wanted: date | None) -> int:
     """The `Open handoff questions` section for BASE; the entries listed, 0 and nothing printed when none are."""
-    shown_entries = [
-        entry for entry in open_entries(base)
-        if (wanted is None or entry[1] == wanted.isoformat()) and not points_to(decisions, entry[2], entry[3], entry[4])
-    ]
+    shown_entries = [entry for entry in open_entries(base) if (wanted is None or entry[1] == wanted.isoformat()) and (not points_to(decisions, entry[2], entry[3], entry[4]))]
     if not shown_entries:
         return 0
     print()
-    print(f"{OPEN_HEADING} — {len(shown_entries)} {'entry' if len(shown_entries) == 1 else 'entries'}")
+    print(f"{OPEN_HEADING} — {len(shown_entries)} {('entry' if len(shown_entries) == 1 else 'entries')}")
     for _, _, shown, line, heading, blocking, _ in shown_entries:
-        note(f"{shown}:{line}: {heading}" + (f" {BLOCKING_MARK}" if blocking else ""))
+        note(f'{shown}:{line}: {heading}' + (f' {BLOCKING_MARK}' if blocking else ''))
     return len(shown_entries)
-
 
 def print_session(session: Session, entries: list[str], problem: str | None, flags: list[str], *, review: bool) -> None:
     """One session of the digest: its title, where it stands, what it came to when REVIEW, and what it asks."""
     print()
     print(f"{session.id}  {(session.front or {}).get('title', '')}")
     note(f"status: {session.status or 'none'}")
-    note(f"priority: {Priority.of(session.front)}")
+    note(f'priority: {Priority.of(session.front)}')
     note(f"report: {read_report_status(session.path) or 'none'}")
     if problem:
-        note(f"failed hand-back: {problem}")
+        note(f'failed hand-back: {problem}')
     for flag in flags:
-        note(f"concerns: {flag}")
-    note(f"report: {session.path / REPORT_NAME}")
+        note(f'concerns: {flag}')
+    note(f'report: {session.path / REPORT_NAME}')
     if review:
         for line in summary_lines(session.path):
             note(line)
     for entry in entries:
         note(entry)
     if review:
-        note(f"{CLOSE_LINE} {session.id}")
+        note(f'{CLOSE_LINE} {session.id}')
 
-
-def print_digest(conversation: str | None = None, project: str | None = None, day: str | None = None) -> None:
+def get_decisions_digest(conversation: str | None=None, project: str | None=None, day: str | None=None) -> None:
     """`digest`: print the decisions and failed hand-backs, or with DAY every session of that day, in one text.
 
     PROJECT, as `list --project` takes it, reads that project's sessions
@@ -185,7 +173,6 @@ def print_digest(conversation: str | None = None, project: str | None = None, da
     bases = [base]
     gathered = []
     decisions: list[str] = []
-    # A session's Status is first brought up to date with its dependencies (`session_depends`).
     reconcile_all(find_sessions(conversation=conversation, project=project_of(project)))
     reader = Reader(None)
     for session in find_sessions(conversation=conversation, project=project_of(project)):
@@ -196,10 +183,10 @@ def print_digest(conversation: str | None = None, project: str | None = None, da
         entries = decisions_needed(session.path)
         problem = handback_problem(session.path, session.status)
         decisions.extend(entries)
-        owned = (session.front or {}).get(PlanKey.PROJECT.key, "")
+        owned = (session.front or {}).get(PlanKey.PROJECT.key, '')
         lying = pointer_problem(entries, [Path(owned), *bases] if owned and Path(owned).is_dir() else bases)
         if lying:
-            problem = f"{problem}; {lying}" if problem else lying
+            problem = f'{problem}; {lying}' if problem else lying
         flags = [*concerns(session), *concerns_for(session, reader)]
         if wanted is not None or entries or problem or flags:
             gathered.append((session, entries, problem, flags))
@@ -208,66 +195,25 @@ def print_digest(conversation: str | None = None, project: str | None = None, da
         if listed is None:
             listed = print_open_questions(base, decisions, wanted)
         if not listed:
-            note(f"no session changed on {wanted.isoformat()}" if wanted else "no decisions needed, and no failed hand-back")
+            note(f'no session changed on {wanted.isoformat()}' if wanted else 'no decisions needed, and no failed hand-back')
         return
-    count = sum(len(entries) for _, entries, _, _ in gathered)
+    count = sum((len(entries) for _, entries, _, _ in gathered))
     if wanted is not None:
-        print(f"Review of {wanted.isoformat()} — {len(gathered)} sessions, {count} {REPORT.hand_back_part} entries")
+        print(f'Review of {wanted.isoformat()} — {len(gathered)} sessions, {count} {REPORT.hand_back_part} entries')
     else:
-        print(f"{REPORT.hand_back_part} — {len(gathered)} sessions, {count} entries")
+        print(f'{REPORT.hand_back_part} — {len(gathered)} sessions, {count} entries')
     for session, entries, problem, flags in gathered:
         print_session(session, entries, problem, flags, review=wanted is not None)
     if listed is None:
         print_open_questions(base, decisions, wanted)
 
-
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar session digest`."""
-    digester = verbs.add_parser(
-        DIGEST_COMMAND,
-        help="gather every session's decisions needed into one digest, or review a day's sessions",
-        description=(
-            f"Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the sessions'\n"
-            f"{REPORT_NAME}s: each session with entries, its title, status, priority, report status, and\n"
-            "entries as written. A report that is not a short hand-back is in it too, marked `failed\n"
-            "hand-back` with why, and so is a session not complete that looks finished or abandoned,\n"
-            f"marked `concerns`; so is a session Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\n"
-            "dependency that cannot be found or makes a cycle. Queued sessions are left out; a complete session is in only when it has\n"
-            f"entries or a failed hand-back. A short hand-back is a {REPORT_NAME} whose Status equals its\n"
-            f"plan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\n"
-            "each the question, its options, and the one it recommends.\n"
-            "\n"
-            "With --day: the review, for when the owner asks to \"review today's sessions with me and\n"
-            "close the ones I confirm\". Every session not queued that changed on that day, one by one,\n"
-            "with the command that closes it. Read each with the owner; run that\n"
-            "`memar session close --session-id ID` only for those the owner confirms finished, and for\n"
-            "none of a project that keeps its sessions (its preferences set `sessions`). The review closes\n"
-            "nothing itself.\n"
-            "\n"
-            "After the sessions it lists the open handoff entries, as `memar content questions` does:\n"
-            "blocking first, then oldest Asked; with --day only those asked that day; none with\n"
-            "--conversation. A pointer to a handoff or line that holds no open question is a failed\n"
-            "hand-back.\n"
-            "\n"
-            f"Without a project flag it reads Memar's own sessions; {ProjectName.FLAG} reads a project's wherever\n"
-            "they lie; --conversation one conversation's, by the id of a session in it."
-        ),
-    )
-    add_project_flags(digester, "read the sessions of the project")
-    digester.add_argument(
-        "--day",
-        default=None,
-        metavar="DAY",
-        help=f"review the sessions that changed on DAY: {DAY_NAMES}",
-    )
-    digester.add_argument(
-        "--conversation",
-        default=None,
-        metavar="ID",
-        help="gather only the sessions of the conversation the session ID belongs to",
-    )
+    """`memar task get-decisions-digest`."""
+    digester = verbs.add_parser(DIGEST_COMMAND, help="gather every session's decisions needed into one digest, or review a day's sessions", description=f"""Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the sessions'\n{REPORT_NAME}s: each session with entries, its title, status, priority, report status, and\nentries as written. A report that is not a short hand-back is in it too, marked `failed\nhand-back` with why, and so is a session not complete that looks finished or abandoned,\nmarked `concerns`; so is a session Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\ndependency that cannot be found or makes a cycle. Queued sessions are left out; a complete session is in only when it has\nentries or a failed hand-back. A short hand-back is a {REPORT_NAME} whose Status equals its\nplan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\neach the question, its options, and the one it recommends.\n\nWith --day: the review, for when the owner asks to "review today's sessions with me and\nclose the ones I confirm". Every session not queued that changed on that day, one by one,\nwith the command that closes it. Read each with the owner; run that\n`memar git trash-task-folder --task-id ID` only for those the owner confirms finished, and for\nnone of a project that keeps its sessions (its preferences set `sessions`). The review closes\nnothing itself.\n\nAfter the sessions it lists the open handoff entries, as `memar content questions` does:\nblocking first, then oldest Asked; with --day only those asked that day; none with\n--conversation. A pointer to a handoff or line that holds no open question is a failed\nhand-back.\n\nWithout a project flag it reads Memar's own sessions; {ProjectName.FLAG} reads a project's wherever\nthey lie; --conversation one conversation's, by the id of a session in it.""")
+    add_project_flags(digester, 'read the sessions of the project')
+    digester.add_argument('--day', default=None, metavar='DAY', help=f'review the sessions that changed on DAY: {DAY_NAMES}')
+    digester.add_argument('--conversation', default=None, metavar='ID', help='gather only the sessions of the conversation the session ID belongs to')
     return run
 
-
 def run(args: argparse.Namespace) -> None:
-    print_digest(args.conversation, project_from_args(args), args.day)
+    get_decisions_digest(args.conversation, project_from_args(args), args.day)

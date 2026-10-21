@@ -3,8 +3,8 @@
 
 """machine/console_parts.py — print a text too long for one tool output whole, in ordered parts.
 
-A command whose text an agent must hold in its context — `memar session start`,
-`memar content context` — can print more than an agent runtime's shell tool
+A command whose text an agent must hold in its context — `memar ai get-task-init-context`,
+`memar content get-act-context` — can print more than an agent runtime's shell tool
 returns: past its cut the runtime saves the output to a file and shows a short
 preview, and a file the agent may never read is the failure those commands
 exist to remove. So such a text is printed in parts, each under the cut, and the
@@ -38,58 +38,37 @@ else the project's preference, which the calling service reads and hands in
 the next run reads the same preference.
 """
 from __future__ import annotations
-
 import argparse
 import hashlib
 import re
 import sys
 from typing import Callable, Sequence
-
 from machine.console import fail
-
-# The most characters one printed part holds, its closing line included, when
-# neither the flag nor the project's preference sets it. It is the smallest cut
-# known among the runtimes in use, less room for a runtime's own framing; the one
-# cut known so far is Claude Code's, whose shell tools cut an output past 30,000
-# characters (it saved a 66.9 KB `start` output to a file and showed a 2 KB
-# preview). A project whose runtimes cut lower says so in its preferences
-# (`modules/process/project/services/preferences.py`), and a lower cut found in a runtime in use
-# lowers this.
-MOST_CHARACTERS = 24_000
-# How many hex digits of the whole text's SHA-256 a part names: enough that two
-# versions of one text do not name the same, short enough to compare by eye.
+MOST_CHARACTERS = 24000
 TEXT_ID_LENGTH = 12
-# The line that closes a part; nothing a passage holds begins with it.
-CLOSING_MARK = ">>>"
-PART_FLAG = "--part"
-MOST_FLAG = "--most-characters"
-HEADING = re.compile(r"#{1,6} ")
-FENCE = re.compile(r"(```|~~~)")
-PASSAGE, SECTION, PARAGRAPH = 0, 1, 2
-
+CLOSING_MARK = '>>>'
+PART_FLAG = '--part'
+MOST_FLAG = '--most-characters'
+HEADING = re.compile('#{1,6} ')
+FENCE = re.compile('(```|~~~)')
+PASSAGE, SECTION, PARAGRAPH = (0, 1, 2)
 
 def text_id(text: str) -> str:
     """The short hash of TEXT every part of it names."""
-    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:TEXT_ID_LENGTH]
-
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()[:TEXT_ID_LENGTH]
 
 def bound(given: int | None, preferred: int | None) -> int:
     """The most characters a part holds: GIVEN by the flag, else PREFERRED by the project, else `MOST_CHARACTERS`."""
     most = given if given is not None else preferred if preferred is not None else MOST_CHARACTERS
     if most <= 0:
-        fail(f"{MOST_FLAG} must be a positive number of characters, not {most}")
+        fail(f'{MOST_FLAG} must be a positive number of characters, not {most}')
     return most
 
-
 def _closing(number: int, count: int, identity: str, command: str | None) -> str:
-    named = f"{CLOSING_MARK} part {number} of {count} of text {identity}"
+    named = f'{CLOSING_MARK} part {number} of {count} of text {identity}'
     if command is None:
-        return f"{named}, the last: every part has been printed; a part naming another text is of another version.\n"
-    return (
-        f"{named} ends here. Run `{command}` now for part {number + 1}, "
-        "and read every part before acting on any of them.\n"
-    )
-
+        return f'{named}, the last: every part has been printed; a part naming another text is of another version.\n'
+    return f'{named} ends here. Run `{command}` now for part {number + 1}, and read every part before acting on any of them.\n'
 
 def _cut_points(passages: Sequence[str]) -> dict[int, int]:
     """Where a part may begin, each with how coarse a cut it is: a passage's start, a heading's, a paragraph's."""
@@ -98,11 +77,11 @@ def _cut_points(passages: Sequence[str]) -> dict[int, int]:
     for passage in passages:
         if position:
             points[position] = PASSAGE
-        fenced, blank_before, offset = False, False, position
+        fenced, blank_before, offset = (False, False, position)
         for line in passage.splitlines(keepends=True):
             stripped = line.strip()
             if FENCE.match(stripped):
-                if not fenced and blank_before and offset != position:
+                if not fenced and blank_before and (offset != position):
                     points.setdefault(offset, PARAGRAPH)
                 fenced = not fenced
             elif not fenced and offset != position and stripped:
@@ -110,14 +89,13 @@ def _cut_points(passages: Sequence[str]) -> dict[int, int]:
                     points.setdefault(offset, SECTION)
                 elif blank_before:
                     points.setdefault(offset, PARAGRAPH)
-            blank_before = not stripped and not fenced
+            blank_before = not stripped and (not fenced)
             offset += len(line)
         position += len(passage)
     return points
 
-
 def _cut(passages: Sequence[str], room: int) -> list[str]:
-    text = "".join(passages)
+    text = ''.join(passages)
     points = _cut_points(passages)
     ordered = sorted(points)
     bodies: list[str] = []
@@ -130,62 +108,49 @@ def _cut(passages: Sequence[str], room: int) -> list[str]:
             within = [point for point in ordered if start < point <= limit]
             coarsest = min((points[point] for point in within), default=None)
             if coarsest is not None:
-                end = max(point for point in within if points[point] == coarsest)
+                end = max((point for point in within if points[point] == coarsest))
             else:
                 end = next((point for point in ordered if point > limit), len(text))
         bodies.append(text[start:end])
         start = end
     return bodies
 
-
 def _room(passages: Sequence[str], most: int, command: Callable[[int], str]) -> int:
     """What a part's body may hold under MOST, leaving room for the longest closing line it could carry."""
-    widest = 10 ** len(str(max(1, sum(len(passage) for passage in passages)))) - 1
-    room = most - len(_closing(widest, widest, "0" * TEXT_ID_LENGTH, command(widest)))
+    widest = 10 ** len(str(max(1, sum((len(passage) for passage in passages))))) - 1
+    room = most - len(_closing(widest, widest, '0' * TEXT_ID_LENGTH, command(widest)))
     if room <= 0:
         fail(f"{MOST_FLAG} {most} cannot hold a part's closing line; give more characters")
     return room
 
-
-def cut(passages: Sequence[str], most: int, command: Callable[[int], str] = lambda number: f"{PART_FLAG} {number}") -> list[str]:
+def cut(passages: Sequence[str], most: int, command: Callable[[int], str]=lambda number: f'{PART_FLAG} {number}') -> list[str]:
     """The bodies of PASSAGES' parts under MOST, in order, without their closing lines; one body when the text fits."""
-    text = "".join(passages)
+    text = ''.join(passages)
     if len(text) <= most:
         return [text]
     return _cut(passages, _room(passages, most, command))
-
 
 def part_text(passages: Sequence[str], number: int, most: int, command: Callable[[int], str]) -> str:
     """Part NUMBER of PASSAGES under MOST, with its closing line, COMMAND(N) being the command that prints part N."""
     bodies = cut(passages, most, command)
     if not 1 <= number <= len(bodies):
-        fail(f"there is no part {number}: the text is {len(bodies)} parts long under {most} characters")
+        fail(f'there is no part {number}: the text is {len(bodies)} parts long under {most} characters')
     if len(bodies) == 1:
         return bodies[0]
     body = bodies[number - 1]
-    body += "" if body.endswith("\n") else "\n"
-    identity = text_id("".join(passages))
+    body += '' if body.endswith('\n') else '\n'
+    identity = text_id(''.join(passages))
     return body + _closing(number, len(bodies), identity, command(number + 1) if number < len(bodies) else None)
-
 
 def next_command(words: Sequence[str], given: int | None) -> Callable[[int], str]:
     """The command that prints part N: WORDS, the bound when the flag GIVEN it, and the part."""
     flag = [MOST_FLAG, str(given)] if given is not None else []
-    return lambda number: " ".join([*words, *flag, PART_FLAG, str(number)])
-
+    return lambda number: ' '.join([*words, *flag, PART_FLAG, str(number)])
 
 def add_part_arguments(parser: argparse.ArgumentParser, preference: str) -> None:
     """The flags of a command that prints in parts; PREFERENCE says where the bound is read when the flag is not given."""
-    parser.add_argument(
-        PART_FLAG, type=int, default=1, metavar="N",
-        help="print part N of a text too long for one output; each part names the command for the next",
-    )
-    parser.add_argument(
-        MOST_FLAG, type=int, default=None, metavar="N",
-        help=f"the most characters one part holds; when not given, {preference}, else {MOST_CHARACTERS:,}, "
-        "below the smallest output cut known among the runtimes in use",
-    )
-
+    parser.add_argument(PART_FLAG, type=int, default=1, metavar='N', help='print part N of a text too long for one output; each part names the command for the next')
+    parser.add_argument(MOST_FLAG, type=int, default=None, metavar='N', help=f'the most characters one part holds; when not given, {preference}, else {MOST_CHARACTERS:,}, below the smallest output cut known among the runtimes in use')
 
 def print_part(passages: Sequence[str], args: argparse.Namespace, words: Sequence[str], preferred: int | None) -> None:
     """Print the part ARGS asks for of PASSAGES, WORDS being the command that printed it, without its part flags,

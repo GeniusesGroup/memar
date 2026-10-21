@@ -93,7 +93,7 @@ BOOTSTRAP_URL="https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agent
 # Where the launcher the installer is reached through lives inside a checkout,
 # and where this bootstrap lives inside one. The pair is what makes "the
 # architecture is here" one question.
-ARCHITECTURE_ENTRY=".agents/scripts/memar"
+ARCHITECTURE_ENTRY="bundles/memar/memar"
 BOOTSTRAP_ENTRY="install.sh"
 # The folder a run with no arguments obtains the architecture into. The installer's
 # own target module holds the same name, and the two are pinned to each other.
@@ -399,7 +399,7 @@ MEMAR_NO_AUTO_UPDATE=1 "$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" install "$@" ||
 if [ "$code" -eq 0 ] && [ "$mode" != "check" ]; then
 cat <<END
 This program can go on without a restart. Load the skill by running the next line on its own:
-"$PYTHON" "$checkout/.agents/scripts/memar" content path .agents/skills/memar/SKILL.md
+"$PYTHON" "$checkout/$ARCHITECTURE_ENTRY" content path .agents/skills/memar/SKILL.md
 END
 fi
 exit "$code"

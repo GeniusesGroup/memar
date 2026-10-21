@@ -23,7 +23,6 @@ the environment and the working folder are put back. What a service keeps on pur
 container it asked for (the content index's `keep`), which is none of these.
 """
 from __future__ import annotations
-
 import io
 import os
 import sys
@@ -31,17 +30,13 @@ import traceback
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 from typing import NamedTuple
-
 SCALARS = (bool, int, float, str, bytes, type(None))
-# Where the worker's captures are written: its own folder in the checkout's scratch root, never the OS temporary folder.
-CAPTURE_FOLDER = "mcp"
-
+CAPTURE_FOLDER = 'mcp'
 
 class Output(NamedTuple):
     stdout: str
     stderr: str
     status: int
-
 
 class Globals:
     """The scalar globals of the checkout's modules, as each one's import left them."""
@@ -58,16 +53,13 @@ class Globals:
         def exec_module(loader, module):
             loaded(loader, module)
             record(module)
-
         SourceFileLoader.exec_module = exec_module
 
     def record(self, module) -> None:
-        file = getattr(module, "__file__", None)
+        file = getattr(module, '__file__', None)
         if not file or not os.path.normcase(os.path.abspath(file)).startswith(self.top):
             return
-        self.values[module.__name__] = {
-            key: value for key, value in vars(module).items() if not key.startswith("__") and isinstance(value, SCALARS)
-        }
+        self.values[module.__name__] = {key: value for key, value in vars(module).items() if not key.startswith('__') and isinstance(value, SCALARS)}
 
     def restore(self) -> None:
         for name, values in self.values.items():
@@ -83,14 +75,12 @@ class Globals:
         for name in self.values:
             module = sys.modules.get(name)
             for value in list(vars(module).values()) if module is not None else ():
-                if callable(getattr(value, "cache_clear", None)) and hasattr(value, "cache_info"):
+                if callable(getattr(value, 'cache_clear', None)) and hasattr(value, 'cache_info'):
                     value.cache_clear()
-
 
 def _stream(descriptor: int, errors: str) -> io.TextIOWrapper:
     """A text stream over DESCRIPTOR as the interpreter opens stdout and stderr: the locale's encoding, the platform's line ending."""
-    return open(descriptor, "w", encoding=None, errors=errors, closefd=False)
-
+    return open(descriptor, 'w', encoding=None, errors=errors, closefd=False)
 
 class Runner:
     """Runs verbs through the router's `main`, one at a time, each captured whole."""
@@ -101,12 +91,11 @@ class Runner:
         folder = scratch / CAPTURE_FOLDER
         folder.mkdir(parents=True, exist_ok=True)
         import tempfile
-
         self.captures = (tempfile.TemporaryFile(dir=folder), tempfile.TemporaryFile(dir=folder))
 
-    def run(self, argv: list[str], stdin: str = "") -> Output:
+    def run(self, argv: list[str], stdin: str='') -> Output:
         self.globals.restore()
-        environment, folder = dict(os.environ), os.getcwd()
+        environment, folder = (dict(os.environ), os.getcwd())
         saved = (sys.stdin, sys.stdout, sys.stderr, sys.argv)
         kept = (os.dup(1), os.dup(2))
         for capture in self.captures:
@@ -114,8 +103,8 @@ class Runner:
             capture.truncate()
         os.dup2(self.captures[0].fileno(), 1)
         os.dup2(self.captures[1].fileno(), 2)
-        sys.stdout, sys.stderr = _stream(1, "strict"), _stream(2, "backslashreplace")
-        sys.stdin = io.TextIOWrapper(io.BytesIO(stdin.encode("utf-8")), encoding="utf-8")
+        sys.stdout, sys.stderr = (_stream(1, 'strict'), _stream(2, 'backslashreplace'))
+        sys.stdin = io.TextIOWrapper(io.BytesIO(stdin.encode('utf-8')), encoding='utf-8')
         sys.argv = [str(self.router.__file__), *argv]
         try:
             status = self._main(argv)
@@ -149,7 +138,7 @@ class Runner:
             else:
                 print(stop.code, file=sys.stderr)
                 status = 1
-        except Exception:  # noqa: BLE001 - the CLI's process would print it and end with 1, and so does this
+        except Exception:
             traceback.print_exc()
             status = 1
         return status or 0
@@ -157,4 +146,4 @@ class Runner:
     def _read(self, number: int) -> str:
         capture = self.captures[number]
         capture.seek(0)
-        return capture.read().decode("utf-8", errors="replace")
+        return capture.read().decode('utf-8', errors='replace')

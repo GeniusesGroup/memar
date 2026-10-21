@@ -7,7 +7,7 @@ One format, imported by every service that touches a plan: `session_new` writes
 one, `session_find` reads one to list a session, `session_gc` reads one to
 decide a sweep. A format known to several files but written in none would be
 several parsers for one shape, and a plan listed one way and swept another is
-the drift the shared `session_id` exists to avoid for ids.
+the drift the shared `task_id` exists to avoid for ids.
 
 Why plan.md. A session that stops mid-work leaves a folder, and whoever comes
 next — another agent, or the same person tomorrow — needs what was asked and
@@ -45,7 +45,7 @@ could disagree with the plans.
 
 What a waiting task is about, and what act it is, are the plan's `labels`
 (`modules/knowledge/documentation/primitive/label.py` declares what a label is;
-`modules/knowledge/documentation/plan/primitive/topic.py` and `modules/knowledge/documentation/plan/primitive/task_kind.py` declare the kinds the plan
+`modules/knowledge/documentation/plan/labels/topic.py` and `modules/knowledge/documentation/plan/labels/task_kind.py` declare the kinds the plan
 carries): as many as the task needs, one `- Kind: word` line each in a block
 under the key, so that `claims` can give one agent the tasks of one topic and
 keep its context on it. A label is added or removed by one line
@@ -60,7 +60,7 @@ line in the body, the words `open` and `done`, the sectioned form) is not read
 as a plan, and is not rewritten by any writer here: `plan_shape_problem`
 names it, and says that only today's shape is read and where it is shown.
 It names no conversion: a one-time migration lives in the session that does
-the change, never here (.agents/scripts/README.md), so the core does not point
+the change, never here (the session that does the change, in its `services/` folder), so the core does not point
 at one that is gone once its work is done, and a plan left in an earlier shape
 is rewritten by whoever keeps it.
 
@@ -76,41 +76,26 @@ replaced. This file holds what they and every reader share: the shape, the front
 reading.
 """
 from __future__ import annotations
-
 import time
 from pathlib import Path
 from typing import NamedTuple
-
 from machine.console import fail
 from modules.knowledge.documentation.record import PLAN, REPORT
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 from modules.knowledge.documentation.primitive.label import Labels
 from modules.knowledge.documentation.primitive.status import Status
-
-# The plan's shape and the Status vocabulary it draws on are declared once, in
-# `record` and `status`; the name is derived from them, not repeated.
 PLAN_NAME = PLAN.file_name
-# What the message for a plan or a report in an earlier shape says to do: the
-# shape is not converted here, and `memar session new --help` shows today's.
-EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar session new --help` shows; rewrite it in that shape"
-# What marks an earlier shape, so it can be named: the words a status was
-# written in, and the body line that held it.
-EARLIER_STATUS_WORDS = ("open", "done")
-# The two keys that became labels: a plan still holding one is in an earlier shape.
-EARLIER_LABEL_KEYS = ("topic", "kind")
-STATUS_PREFIX = f"{PlanKey.STATUS.written}:"
-# A read that finds the plan refused for the moment tries again this many times, pausing this
-# long (`session_plan_rewrite` uses the same for its replace).
+EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar task ensure --help` shows; rewrite it in that shape"
+EARLIER_STATUS_WORDS = ('open', 'done')
+EARLIER_LABEL_KEYS = ('topic', 'kind')
+STATUS_PREFIX = f'{PlanKey.STATUS.written}:'
 REWRITE_ATTEMPTS = 5
 REWRITE_PAUSE_SECONDS = 0.05
 
-
 class Plan(NamedTuple):
     """What a plan says: its front matter and its status."""
-
     front: dict[str, str] | None
     status: str
-
 
 def checked_title(title: str | None, *, required: bool) -> str | None:
     """TITLE stripped, or None when it is blank; refused when REQUIRED and absent.
@@ -118,40 +103,23 @@ def checked_title(title: str | None, *, required: bool) -> str | None:
     A title is one line, because it is a front-matter value and a heading.
     """
     if title is not None:
-        if "\n" in title or "\r" in title:
-            fail("a title is one line; this one holds a line break")
+        if '\n' in title or '\r' in title:
+            fail('a title is one line; this one holds a line break')
         title = title.strip() or None
     if title is None and required:
         fail(f"--title is required: say in one line what the task is, for the folder's {PLAN_NAME}")
     return title
 
-
 def status_word(word: str) -> str:
     """WORD as a status is compared: stripped and lower case; any word, the old ones too, as written."""
     return word.strip().lower()
-
-
 WRITTEN = {key.key: key.written for key in (*PLAN.keys, *REPORT.keys)}
-
 
 def front_key(key: str) -> str:
     """KEY as the front matter writes it: the written form a record's key declares (`ID`, `Start Date`), else PascalCase, a capital for a one-word key."""
     return WRITTEN.get(key.lower(), key.capitalize())
 
-
-def plan_skeleton(
-    session: str,
-    title: str,
-    opened: str,
-    project: Path,
-    *,
-    parent: str | None = None,
-    conversation: str | None = None,
-    status: str = Status.ACTIVE.key,
-    priority: int | None = None,
-    labels: Labels | None = None,
-    depends_on: str | None = None,
-) -> str:
+def plan_skeleton(session: str, title: str, opened: str, project: Path, *, parent: str | None=None, conversation: str | None=None, status: str=Status.ACTIVE.key, priority: int | None=None, labels: Labels | None=None, depends_on: str | None=None) -> str:
     """A new plan.md: front matter naming its session and carrying its status (active unless queued), the title as its heading, and the parts.
 
     SESSION is the id of the session the plan belongs to, written into the
@@ -163,33 +131,20 @@ def plan_skeleton(
     is written only when given; absent, the plan reads as `Priority.DEFAULT`.
     LABELS is written as a block only when it holds a label: the caller has
     checked each against its kind (`session_plan_labels`). DEPENDS_ON is written only when given, as the text of
-    the type that checked it (`modules/process/session/services/dependency.py`).
+    the type that checked it (`modules/management/task/services/dependency.py`).
     """
-    given = {
-        PlanKey.ID: session,
-        PlanKey.TITLE: title,
-        PlanKey.STATUS: status_word(status).capitalize(),
-        PlanKey.START_DATE: opened,
-        PlanKey.PROJECT: project,
-        PlanKey.PARENT: parent,
-        PlanKey.CONVERSATION: conversation,
-        PlanKey.PRIORITY: priority,
-        PlanKey.LABELS: labels,
-        PlanKey.DEPENDS_ON: depends_on,
-    }
-    # Keys in the record's order; an optional key with no value is not written.
-    front = ["---"]
+    given = {PlanKey.ID: session, PlanKey.TITLE: title, PlanKey.STATUS: status_word(status).capitalize(), PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.PRIORITY: priority, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
+    front = ['---']
     for key in PLAN.keys:
         if key is PlanKey.LABELS:
             if given[key]:
-                front += [f"{key.written}:", *given[key].lines()]
-        elif given[key] not in (None, ""):
-            front.append(f"{key.written}: {given[key]}")
-    body = [f"# {title}"]
+                front += [f'{key.written}:', *given[key].lines()]
+        elif given[key] not in (None, ''):
+            front.append(f'{key.written}: {given[key]}')
+    body = [f'# {title}']
     for part in PLAN.parts:
-        body += ["", f"## {part}"]
-    return "\n".join([*front, "---", *body]) + "\n"
-
+        body += ['', f'## {part}']
+    return '\n'.join([*front, '---', *body]) + '\n'
 
 def front_matter(lines: list[str]) -> tuple[dict[str, str] | None, int]:
     """The `key: value` lines between two leading `---` lines, and where the body starts.
@@ -199,42 +154,37 @@ def front_matter(lines: list[str]) -> tuple[dict[str, str] | None, int]:
     unless indented lines follow it: those are its block (`Labels:`, then one
     `  - Kind: word` line a label), and its value is their text, one per line,
     each without its `- `.
-    A project's preferences file is read by this too (`project_preferences`),
-    so the two front matters cannot be read two ways.
     """
-    if lines and lines[0].strip() == "---":
+    if lines and lines[0].strip() == '---':
         for end in range(1, len(lines)):
-            if lines[end].strip() == "---":
-                return _front_pairs(lines[1:end]) or None, end + 1
-    return None, 0
-
+            if lines[end].strip() == '---':
+                return (_front_pairs(lines[1:end]) or None, end + 1)
+    return (None, 0)
 
 def _front_pairs(lines: list[str]) -> dict[str, str]:
     """The `key: value` pairs of the front matter LINES, an indented line joining the block of the key above it."""
     found: dict[str, str] = {}
     current: str | None = None
     for line in lines:
-        if line[:1] in (" ", "\t") and current is not None:
+        if line[:1] in (' ', '\t') and current is not None:
             child = line.strip()
-            child = child[2:] if child.startswith("- ") else child
+            child = child[2:] if child.startswith('- ') else child
             if child:
-                found[current] = f"{found[current]}\n{child}" if found[current] else child
-        elif ": " in line:
-            key, value = line.split(": ", 1)
+                found[current] = f'{found[current]}\n{child}' if found[current] else child
+        elif ': ' in line:
+            key, value = line.split(': ', 1)
             current = key.strip()
             found[current] = value.strip()
-        elif line.rstrip().endswith(":") and line.strip() != ":":
+        elif line.rstrip().endswith(':') and line.strip() != ':':
             current = line.rstrip()[:-1].strip()
-            found[current] = ""
+            found[current] = ''
         else:
             current = None
     return {key: value for key, value in found.items() if value}
 
-
 def is_complete(status: str) -> bool:
     """Whether STATUS says the task is finished: the word complete, in any case, and no other."""
     return Status.read(status) is Status.COMPLETE
-
 
 def read_bytes(path: Path) -> bytes:
     """PATH's bytes, trying again when Windows refuses the read for the moment another process replaces the plan."""
@@ -244,7 +194,6 @@ def read_bytes(path: Path) -> bytes:
         except PermissionError:
             time.sleep(REWRITE_PAUSE_SECONDS)
     return path.read_bytes()
-
 
 def read_plan(path: Path) -> Plan:
     """PATH's front matter, None when absent, and its status; an empty status means the plan has none.
@@ -257,12 +206,11 @@ def read_plan(path: Path) -> Plan:
     written; nothing else gives a plan a status. A plan in an earlier shape
     reads as one with no status, and `plan_shape_problem` says why.
     """
-    lines = read_bytes(path).decode("utf-8-sig").splitlines()
+    lines = read_bytes(path).decode('utf-8-sig').splitlines()
     front, _ = front_matter(lines)
     if front is not None:
         front = PLAN.current({key.lower(): value for key, value in front.items() if key == front_key(key)})
-    return Plan(front, status_word((front or {}).get(PlanKey.STATUS.key, "")))
-
+    return Plan(front, status_word((front or {}).get(PlanKey.STATUS.key, '')))
 
 def plan_shape_problem(lines: list[str]) -> str | None:
     """Why the plan LINES are in an earlier shape, with where today's is shown; None when they are not, or have no front matter.
@@ -276,43 +224,41 @@ def plan_shape_problem(lines: list[str]) -> str | None:
     if front is None:
         return None
     found = []
-    if any(key != front_key(key) and key.lower() in {plan_key.key for plan_key in PLAN.keys} for key in front):
-        found.append("keys in lower case")
-    if any(key.lower() in EARLIER_LABEL_KEYS for key in front):
-        found.append(f"the keys {' and '.join(key.capitalize() for key in EARLIER_LABEL_KEYS)}, which are labels now")
-    status = front.get(PlanKey.STATUS.written, "")
+    if any((key != front_key(key) and key.lower() in {plan_key.key for plan_key in PLAN.keys} for key in front)):
+        found.append('keys in lower case')
+    if any((key.lower() in EARLIER_LABEL_KEYS for key in front)):
+        found.append(f"the keys {' and '.join((key.capitalize() for key in EARLIER_LABEL_KEYS))}, which are labels now")
+    status = front.get(PlanKey.STATUS.written, '')
     if status_word(status) in EARLIER_STATUS_WORDS:
-        found.append(f"the status word {status_word(status)}")
+        found.append(f'the status word {status_word(status)}')
     if not status:
         for line in lines[start:]:
-            if line.startswith("## "):
+            if line.startswith('## '):
                 break
             if line.startswith(STATUS_PREFIX):
-                found.append("its status in a body `Status:` line")
+                found.append('its status in a body `Status:` line')
                 break
     if not found:
         return None
     return f"its plan is in an earlier shape ({'; '.join(found)}); {EARLIER_SHAPE_REMEDY}"
 
-
 def plan_file_problem(path: Path) -> str | None:
     """`plan_shape_problem` of the plan at PATH; None when it is not in an earlier shape or cannot be read."""
     try:
-        return plan_shape_problem(read_bytes(path).decode("utf-8-sig").splitlines())
+        return plan_shape_problem(read_bytes(path).decode('utf-8-sig').splitlines())
     except (OSError, UnicodeDecodeError):
         return None
 
-
 def part_text(path: Path, part: str) -> str:
     """What PATH says under its `## PART` heading, up to the next `##`, stripped; empty when it has none."""
-    lines = read_bytes(path).decode("utf-8-sig").splitlines()
+    lines = read_bytes(path).decode('utf-8-sig').splitlines()
     found: list[str] | None = None
     for line in lines:
-        if line.startswith("## "):
+        if line.startswith('## '):
             if found is not None:
                 break
             if line[3:].strip() == part:
                 found = []
         elif found is not None:
             found.append(line)
-    return "\n".join(found or []).strip()
+    return '\n'.join(found or []).strip()

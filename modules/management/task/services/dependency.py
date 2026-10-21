@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/dependency.py — a plan's dependencies, declared once: the sessions that must be Complete before it can start.
+"""modules/management/task/services/dependency.py — a plan's dependencies, declared once: the sessions that must be Complete before it can start.
 
 A plan's `Depends_on` is the sessions it cannot start without, as
 [Documentation → Citations](../../../modules/knowledge/documentation/documentation.md#citations)
@@ -35,61 +35,55 @@ This file only reads and checks. Writing the key is `session_plan_depends`,
 the Status a dependency gives a session is `session_depends`.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
 import re
 from pathlib import Path
 from typing import ClassVar, Iterable, NamedTuple
-
 from machine.console import fail
 from modules.process.project.services.find import project_by_name
 from modules.process.project.primitive.project_path import ProjectPath
-from modules.process.session.services.branch import read as read_from_branch
-from modules.process.session.services.folder import folder_of
+_m_branch = plugable_load('computer.git.services.branch')
+read_from_branch = _m_branch.read
+from modules.management.task.services.folder import folder_of
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, front_key, front_matter, read_plan, status_word
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 from modules.knowledge.documentation.report.primitive.report_key import ReportKey
 from modules.knowledge.documentation.report.services.report import REPORT_NAME, read_report_status
 from modules.knowledge.documentation.primitive.status import Status
-
-# The inverse of the key: the sessions that cite a session. Derived, never written.
-DEPENDS_FOR = "Depends_for"
-SEPARATOR = ","
-PROJECT_SEPARATOR = "/"
-ARROW = " → "
-_ID = re.compile(r"^[\w.-]+$")
-
+DEPENDS_FOR = 'Depends_for'
+SEPARATOR = ','
+PROJECT_SEPARATOR = '/'
+ARROW = ' → '
+_ID = re.compile('^[\\w.-]+$')
 
 class Ref(NamedTuple):
     """One cited session: its id, and the name of its project when it is not the citing plan's own."""
-
     id: str
-    project: str = ""
+    project: str = ''
 
     def __str__(self) -> str:
-        return f"{self.project}{PROJECT_SEPARATOR}{self.id}" if self.project else self.id
+        return f'{self.project}{PROJECT_SEPARATOR}{self.id}' if self.project else self.id
 
     @classmethod
     def read(cls, text: str) -> Ref | None:
         """TEXT as a reference, `ID` or `project/ID`; None when it is neither (a project is a name, never written as a path)."""
         word = text.strip()
-        project, slash, session_id = word.rpartition(PROJECT_SEPARATOR)
+        project, slash, task_id = word.rpartition(PROJECT_SEPARATOR)
         project = project.strip()
-        if not _ID.match(session_id) or (slash and (not project or ProjectPath.written_like(project))):
+        if not _ID.match(task_id) or (slash and (not project or ProjectPath.written_like(project))):
             return None
-        return cls(session_id, project)
+        return cls(task_id, project)
 
     @classmethod
     def parse(cls, text: str) -> Ref:
         """TEXT as a reference; refused when it is none."""
         found = cls.read(text)
         if found is None:
-            fail(f"{text!r} is not a session to depend on: write an id, or project{PROJECT_SEPARATOR}id for a session of another project")
+            fail(f'{text!r} is not a session to depend on: write an id, or project{PROJECT_SEPARATOR}id for a session of another project')
         return found
-
 
 class DependsOn(tuple):
     """A plan's dependencies: its `Depends_on` read as references, in the order written, none twice; empty when it has none."""
-
     KEY: ClassVar[PlanKey] = PlanKey.DEPENDS_ON
 
     @classmethod
@@ -100,33 +94,30 @@ class DependsOn(tuple):
     @classmethod
     def checked(cls, text: str) -> DependsOn:
         """TEXT as dependencies; refused when it holds a line break or a word that is not a reference. Empty is none."""
-        if "\n" in text or "\r" in text:
-            fail(f"{cls.KEY.written} is one line; this one holds a line break")
+        if '\n' in text or '\r' in text:
+            fail(f'{cls.KEY.written} is one line; this one holds a line break')
         words = [word for word in text.split(SEPARATOR) if word.strip()]
-        return cls.normalized(Ref.parse(word) for word in words)
+        return cls.normalized((Ref.parse(word) for word in words))
 
     @classmethod
     def of(cls, front: dict[str, str] | None) -> DependsOn:
         """The dependencies FRONT matter gives its plan; a word that is no reference is left out, since reading never refuses."""
-        refs = [ref for word in (front or {}).get(cls.KEY.key, "").split(SEPARATOR) if (ref := Ref.read(word))]
+        refs = [ref for word in (front or {}).get(cls.KEY.key, '').split(SEPARATOR) if (ref := Ref.read(word))]
         return cls.normalized(refs)
 
     def text(self) -> str:
         """The dependencies as the plan writes them: the references joined, one line."""
-        return f"{SEPARATOR} ".join(str(ref) for ref in self)
+        return f'{SEPARATOR} '.join((str(ref) for ref in self))
 
     def ids(self) -> list[str]:
         return [ref.id for ref in self]
 
-
 class Found(NamedTuple):
     """A cited session that resolved: what its plan and report say."""
-
     id: str
     front: dict[str, str] | None
     plan_status: str
     report_status: str
-    # The project its plan names, None when it names none.
     project: Path | None
 
     @property
@@ -139,17 +130,15 @@ class Found(NamedTuple):
         """How it stands, for the reason an unmet dependency prints."""
         if self.plan_status == Status.COMPLETE.key:
             return f"plan complete, report {self.report_status or 'without a status'}"
-        return self.plan_status or "without a status"
-
+        return self.plan_status or 'without a status'
 
 def _front_status(data: bytes, key: PlanKey | ReportKey) -> tuple[dict[str, str] | None, str]:
     """The front matter of the record DATA, keys lowercased as `read_plan` does, and its status."""
-    lines = data.decode("utf-8-sig", "replace").splitlines()
+    lines = data.decode('utf-8-sig', 'replace').splitlines()
     front, _ = front_matter(lines)
     if front is not None:
         front = {name.lower(): value for name, value in front.items() if name == front_key(name)}
-    return front, status_word((front or {}).get(key.STATUS.key, ""))
-
+    return (front, status_word((front or {}).get(key.STATUS.key, '')))
 
 class Reader:
     """Resolves references and reads what the cited sessions say; remembers what it read, so one run reads each only once.
@@ -169,10 +158,10 @@ class Reader:
             try:
                 self._projects[name] = project_by_name(name)
             except SystemExit as refused:
-                self._projects[name] = str(refused.code).removeprefix("error: ")
+                self._projects[name] = str(refused.code).removeprefix('error: ')
         return self._projects[name]
 
-    def find(self, ref: Ref, home: Path | None = None) -> Found | str:
+    def find(self, ref: Ref, home: Path | None=None) -> Found | str:
         """The session REF cites, else why it cannot be found; a local reference is looked for from HOME, else from the reader's."""
         home = home or self.home
         where: Path | str | None = self.project(ref.project) if ref.project else home
@@ -183,36 +172,36 @@ class Reader:
 
     def _resolve(self, ref: Ref, where: Path | str | None) -> Found | str:
         if isinstance(where, str):
-            return f"project {ref.project} does not resolve: {where}"
+            return f'project {ref.project} does not resolve: {where}'
         try:
             folder = folder_of(ref.id)
         except SystemExit as refused:
-            return str(refused.code).removeprefix("error: ")
+            return str(refused.code).removeprefix('error: ')
         if folder.is_dir() and (folder / PLAN_NAME).is_file():
             plan = read_plan(folder / PLAN_NAME)
-            named = (plan.front or {}).get(PlanKey.PROJECT.key, "").strip()
+            named = (plan.front or {}).get(PlanKey.PROJECT.key, '').strip()
             return Found(ref.id, plan.front, plan.status, read_report_status(folder), Path(named) if named else where)
         if where is not None:
             kept = read_from_branch(where, ref.id, PLAN_NAME)
             if kept is not None:
                 front, status = _front_status(kept, PlanKey)
                 report = read_from_branch(where, ref.id, REPORT_NAME)
-                report_status = _front_status(report, ReportKey)[1] if report is not None else ""
+                report_status = _front_status(report, ReportKey)[1] if report is not None else ''
                 return Found(ref.id, front, status, report_status, where)
         return "cannot be found: it has no session folder, and the project's records branch holds nothing for it"
 
-    def unmet(self, refs: Iterable[Ref], home: Path | None = None) -> list[str]:
+    def unmet(self, refs: Iterable[Ref], home: Path | None=None) -> list[str]:
         """Each of REFS that is not met, as `ref (how it stands)`; none when every one is."""
         reasons = []
         for ref in refs:
             found = self.find(ref, home)
             if isinstance(found, str):
-                reasons.append(f"{ref} ({found})")
+                reasons.append(f'{ref} ({found})')
             elif not found.met:
-                reasons.append(f"{ref} ({found.state})")
+                reasons.append(f'{ref} ({found.state})')
         return reasons
 
-    def cycle(self, start: str, refs: Iterable[Ref], home: Path | None = None) -> list[str] | None:
+    def cycle(self, start: str, refs: Iterable[Ref], home: Path | None=None) -> list[str] | None:
         """The path from START back to START through REFS and what they depend on, e.g. [A, B, A]; None when there is none."""
         seen: set[str] = set()
 
@@ -230,12 +219,10 @@ class Reader:
                 if inner:
                     return inner
             return None
-
         return walk([start], refs, home)
 
-
-def refused_for_writing(session_id: str, refs: DependsOn, reader: Reader, added: DependsOn | None = None) -> None:
-    """Refuse REFS as the dependencies of SESSION_ID unless each of ADDED (all of REFS when not given) resolves and none makes a cycle.
+def refused_for_writing(task_id: str, refs: DependsOn, reader: Reader, added: DependsOn | None=None) -> None:
+    """Refuse REFS as the dependencies of TASK_ID unless each of ADDED (all of REFS when not given) resolves and none makes a cycle.
 
     Written once, when the key is written: a session that depends on itself,
     one that cannot be found, a project that does not resolve, and a cycle of
@@ -243,16 +230,15 @@ def refused_for_writing(session_id: str, refs: DependsOn, reader: Reader, added:
     longer resolves is not refused again when another is added: it is dropped.
     """
     for ref in refs if added is None else added:
-        if ref.id == session_id:
-            fail(f"session {session_id} cannot depend on itself")
+        if ref.id == task_id:
+            fail(f'session {task_id} cannot depend on itself')
         found = reader.find(ref)
         if isinstance(found, str):
-            fail(f"{DependsOn.KEY.written} {ref}: {found}; a dependency is written only for a session that is there")
-    path = reader.cycle(session_id, refs)
+            fail(f'{DependsOn.KEY.written} {ref}: {found}; a dependency is written only for a session that is there')
+    path = reader.cycle(task_id, refs)
     if path:
-        fail(f"{DependsOn.KEY.written} would make a cycle: {ARROW.join(path)}")
+        fail(f'{DependsOn.KEY.written} would make a cycle: {ARROW.join(path)}')
 
-
-def dependents(session_id: str, sessions: Iterable) -> list[str]:
-    """The ids of SESSIONS whose plan cites SESSION_ID: the `Depends_for` of that session, derived and never written."""
-    return [session.id for session in sessions if session_id in DependsOn.of(session.front).ids()]
+def dependents(task_id: str, sessions: Iterable) -> list[str]:
+    """The ids of SESSIONS whose plan cites TASK_ID: the `Depends_for` of that session, derived and never written."""
+    return [session.id for session in sessions if task_id in DependsOn.of(session.front).ids()]

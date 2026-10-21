@@ -1,0 +1,187 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package generator
+
+import (
+	"unsafe"
+
+	cmd "libgo/command"
+	"libgo/file"
+	"libgo/protocol"
+	"libgo/www"
+)
+
+func (s *serv) path() []string {
+	return []string{
+		"/app.service",
+		"/init.go",
+		"/main.go",
+		"/main-server.go",
+		"/main-gui.go",
+		"/modules/init-server.go",
+		"/modules/init-cmd.go",
+		"/modules/init-gui.go",
+	}
+}
+
+func (s *serv) Process(sk protocol.Socket, req *Request) (res Response, err protocol.Error) {
+
+	var reqLoc = cmd.Cwd()
+	// location Request_Location
+	// Repo *file.Directory
+
+	/* Folders * /
+	var servicesF = file.NewFolder(FolderNameServices)
+	req.Repo.SetDependency(servicesF)
+	var datastoreF = file.NewFolder(FolderNameDataStore)
+	req.Repo.SetDependency(datastoreF)
+	var guiF = file.NewFolder(FolderNameGUI)
+	req.Repo.SetDependency(guiF)
+	var secretF = file.NewFolder(FolderNameSecret)
+	req.Repo.SetDependency(secretF)
+
+	/* Services * /
+	// /services/init.go
+	var servicesInitGO = &file.File{}
+	err = ag.MakeServicesInitFile(servicesInitGO)
+	if err != nil {
+		return nil, err
+	}
+	servicesF.SetFile(servicesInitGO)
+
+	/* Datastore * /
+	// /datastore/init.go
+	var datastoreInitGO = &file.File{}
+	err = gg.MakeDataStoreInitFile(datastoreInitGO)
+	if err != nil {
+		return nil, err
+	}
+	datastoreF.SetFile(datastoreInitGO)
+
+	/* GUI * /
+	// Folders
+	var pages = file.NewFolder(FolderNameGUIPages)
+	guiF.SetDependency(pages)
+	var landings = file.NewFolder(FolderNameGUILandings)
+	guiF.SetDependency(landings)
+	var widgets = file.NewFolder(FolderNameGUIWidgets)
+	guiF.SetDependency(widgets)
+
+	// /gui/main.js
+	// /gui/main.json
+
+	// /gui/landings/splash.html
+	// /gui/landings/splash.css
+	// /gui/landings/splash.json
+	var splashHTML = &file.File{}
+	var splashCSS = &file.File{}
+	var splashJSON = &file.File{}
+	err = www.MakeSplashFiles(splashHTML, splashCSS, splashJSON)
+	if err != nil {
+		return nil, err
+	}
+	req.Repo.SetFile(splashHTML)
+	req.Repo.SetFile(splashCSS)
+	req.Repo.SetFile(splashJSON)
+
+	/* SDK * /
+	var goSDKRepo = file.NewFolder("sdk-go")
+	req.Repo.SetDependency(goSDKRepo)
+	var jsSDKRepo = file.NewFolder("sdk-js")
+	req.Repo.SetDependency(jsSDKRepo)
+
+	/* Common files * /
+	// main.go
+	var MainGo = &file.File{}
+	err = ag.MakeMainFile(MainGo)
+	if err != nil {
+		return nil, err
+	}
+	req.Repo.SetFile(MainGo)
+	// connections.go
+	var connectionsGo = &file.File{}
+	err = ag.MakeConnectionsFile(connectionsGo)
+	if err != nil {
+		return nil, err
+	}
+	req.Repo.SetFile(connectionsGo)
+
+	return res, nil
+
+	/* Services * /
+	// /services/init.go
+	var servicesInitGO = &file.File{}
+	err = ag.MakeServicesInitFile(servicesInitGO)
+	if err != nil {
+		return nil, err
+	}
+	servicesF.SetFile(servicesInitGO)
+
+	/* Datastore * /
+	// /datastore/init.go
+	var datastoreInitGO = &file.File{}
+	err = gg.MakeDataStoreInitFile(datastoreInitGO)
+	if err != nil {
+		return nil, err
+	}
+	datastoreF.SetFile(datastoreInitGO)
+
+	/* GUI * /
+	// Folders
+	var pages = file.NewFolder(FolderNameGUIPages)
+	guiF.SetDependency(pages)
+	var landings = file.NewFolder(FolderNameGUILandings)
+	guiF.SetDependency(landings)
+	var widgets = file.NewFolder(FolderNameGUIWidgets)
+	guiF.SetDependency(widgets)
+
+	// /gui/main.js
+	// /gui/main.json
+
+	// /gui/landings/splash.html
+	// /gui/landings/splash.css
+	// /gui/landings/splash.json
+	var splashHTML = &file.File{}
+	var splashCSS = &file.File{}
+	var splashJSON = &file.File{}
+	err = www.MakeSplashFiles(splashHTML, splashCSS, splashJSON)
+	if err != nil {
+		return nil, err
+	}
+	req.Repo.SetFile(splashHTML)
+	req.Repo.SetFile(splashCSS)
+	req.Repo.SetFile(splashJSON)
+
+	/* SDK * /
+	var goSDKRepo = file.NewFolder("sdk-go")
+	req.Repo.SetDependency(goSDKRepo)
+	var jsSDKRepo = file.NewFolder("sdk-js")
+	req.Repo.SetDependency(jsSDKRepo)
+
+	/* Common files * /
+	// main.go
+	var MainGo = &file.File{}
+	err = ag.MakeMainFile(MainGo)
+	if err != nil {
+		return nil, err
+	}
+	req.Repo.SetFile(MainGo)
+	// connections.go
+	var connectionsGo = &file.File{}
+	err = ag.MakeConnectionsFile(connectionsGo)
+	if err != nil {
+		return nil, err
+	}
+	req.Repo.SetFile(connectionsGo)
+
+	// .gitignore
+	var ob3 file.File
+	ob3.Rename(".gitignore")
+	ob3.Data = *(*[]byte)(unsafe.Pointer(&gitignore))
+	req.Repo.SetFile(&ob3)
+
+	return res, nil
+}
+*/

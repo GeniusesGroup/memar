@@ -76,6 +76,13 @@ Migrated from the organization's ephemeral KM seed, where it was parked.
 
 ## Open Questions
 
+### Primary media versus a text transcription of the same content
+- State: a content may carry audio (or other media) while an agent or a human also types that utterance into text stored under text. On a Task timeline it must be clear which content is the *primary* capture and which edge is the textual rendering. Owner named this on 2026-10-20; design session `20261020-T131911Z-22300` (depends on sitting 4).
+- Options: (1) one content node with a medium object plus a `transcript_of` (or similar) edge to a text-bearing content; (2) one content with two attachments, primacy a label or edge attribute; (3) other — session proposes.
+- Anchor: this handoff; session `20261020-T131911Z-22300`.
+- Blocks: timeline display of multimodal Task discussion; any rule that collapses transcript into a second unrelated content.
+- Asked: 2026-10-20, by session `20261020-T131818Z-22300`.
+
 ### Do the interface-semantics Content and the organization's content domain share one document?
 - State: since the merge of 2026-10-19 both live in this module. [content.md](content.md) is the interface-semantics model (Semantic, Addressability, Composition, Layout, Theme, Event) and names no Timeline, identity or revision concern; the organization's content domain (Decisions above, [content.research.001.md](content.research.001.md)) is a different thing, as the research's [first finding](content.research.001.md) already says. The domain's canonical definition is owed and has no home: writing it into `content.md` would put two models in one document, and a second document needs a name that does not collide.
 - Options: (1) keep `content.md` as the interface-semantics model and give the domain its own document beside it under a name the owner picks (recommended: the two concepts answer different questions, and neither document's text has to bend); (2) one document with two parts; (3) rename one of the two terms. Whichever is chosen, the definition the research's questions 1 to 3 wait on is written there.

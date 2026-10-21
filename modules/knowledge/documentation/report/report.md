@@ -17,7 +17,7 @@ Work that ends silently cannot be accounted for. A session that stops — becaus
 The account is short by design. The party that reads a hand-back — a delegating session waiting on a sub-agent, the owner reviewing a day's sessions — needs a verdict, a place to look, and at most a few lines of what it must decide. A report that carries the session's context back into that reader's has undone the separation it exists to make, so the length of a hand-back is a limit the record's shape carries rather than a matter of the writer's restraint.
 
 ### Methodology
-This specification was not designed in the abstract. The artifact it governs has been in daily use in this project long before it was named a facet, written by the services under `modules/process/session/services/` and read by every agent that ends a session or waits for one. The proposal that named it — what a report is, whether it is a facet of its own, and what each specification must then carry — is `temp/sessions/20261016-T003724Z-23508/report.md`, and the owner's answers of 2026-10-16 are what this document applies. Where a decision was the owner's it is cited as such; where the answers left a detail open, the decision and its reason are in this document's own changelog entry.
+This specification was not designed in the abstract. The artifact it governs has been in daily use in this project long before it was named a facet, written by the services under `modules/management/task/services/` and read by every agent that ends a session or waits for one. The proposal that named it — what a report is, whether it is a facet of its own, and what each specification must then carry — is `.agents/tasks/20261016-T003724Z-23508/report.md`, and the owner's answers of 2026-10-16 are what this document applies. Where a decision was the owner's it is cited as such; where the answers left a detail open, the decision and its reason are in this document's own changelog entry.
 
 ## Explanation
 ### What a Report Is
@@ -31,7 +31,7 @@ Two boundaries keep the definition from widening:
 ### Reader relationship
 A report is **read to account for a pass of work**: the reader did not do the work and asks one question — did it do what it said it would, and what is left. What that reader needs is the verdict, in the Status, and the check's own finding behind it; the work that ran, so that the verdict can be weighed against the effort; and what is still open, so that nothing is taken as settled that was not. What the reader does *not* need is the reasoning the writer used to reach the verdict — that is a handoff's material, and the short hand-back exists precisely so the report does not carry it.
 
-Two readers get less than that, and the difference is deliberate. A hand-back is read by one party acting for another, and gets only the Status, the path, and the lines under the hand-back part. The owner reviewing a day gets the same account through `memar session digest`.
+Two readers get less than that, and the difference is deliberate. A hand-back is read by one party acting for another, and gets only the Status, the path, and the lines under the hand-back part. The owner reviewing a day gets the same account through `memar task get-decisions-digest`.
 
 This is not [Practice's reader relationship](../practice/practice.md#reader-relationship), which that specification states: a report is read once, after the fact, to settle whether one pass met its own condition, and is examined for the account of a single pass.
 
@@ -45,9 +45,9 @@ A report is written:
 A report is read:
 
 - by the delegating side, which reads the Status, the path, and the hand-back lines and nothing more;
-- by a later session, through `memar session show`, which prints the plan and the report together;
+- by a later session, through `memar git show-task-records`, which prints the plan and the report together;
 - by the services that list sessions, which read its Status to mark a session whose report and plan disagree;
-- by the owner, through `memar session digest`, which gathers the hand-backs of a day or a conversation;
+- by the owner, through `memar task get-decisions-digest`, which gathers the hand-backs of a day or a conversation;
 - by the debrief, which reads the reports of the sessions a task produced.
 
 ### What each part is for
@@ -66,7 +66,7 @@ Each requirement below is decidable from a stated input by a party that did not 
 6. **The report states the identifier of the session it belongs to**, in its front matter, so that a reader finds it in the document rather than by reading a folder name.
 
 ### Where the code is, and what a reader does when it disagrees
-The code that enforces the requirements above lives today under `modules/process/session/services/`, not in this module's `services/` folder: session `20261015-T123046Z-17544` moved the services out of `.agents/scripts/services/` into the module of their domain, and the session module holds a session's plan and report together. Whether the code that enforces this facet moves on into this module's `services/` folder is not decided, and no second move of the same code is made here.
+The code that enforces the requirements above lives today under `modules/management/task/services/`, not in this module's `services/` folder: session `20261015-T123046Z-17544` moved the services out of `.agents/scripts/services/` into the module of their domain, and the session module holds a session's plan and report together. Whether the code that enforces this facet moves on into this module's `services/` folder is not decided, and no second move of the same code is made here.
 
 Which service holds each requirement today, so that a reader looking for the enforcement does not have to search for it:
 
@@ -74,8 +74,8 @@ Which service holds each requirement today, so that a reader looking for the enf
 | --- | --- |
 | what the check found | no code; a reader's judgement, reading the report against the plan's check |
 | the Status values a report may take | `modules/knowledge/documentation/primitive/status.py`, read through the record declaration |
-| a report that is there is never overwritten | `modules/process/session/services/report.py` |
-| what makes a hand-back | `modules/process/session/services/report.py`, read by the services that digest a day's decisions |
+| a report that is there is never overwritten | `modules/management/task/services/report.py` |
+| what makes a hand-back | `modules/management/task/services/report.py`, read by the services that digest a day's decisions |
 | no companion of either kind | no code; the exemption below |
 | the session's identifier in the front matter | `modules/knowledge/documentation/primitive/record_key.py`, written by the report writer |
 

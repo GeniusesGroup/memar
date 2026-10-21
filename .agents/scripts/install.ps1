@@ -120,7 +120,7 @@ $BootstrapUrl = "https://raw.githubusercontent.com/GeniusesGroup/memar/main/.age
 # Where the launcher the installer is reached through lives inside a checkout,
 # and where this bootstrap lives inside one. The pair is what makes "the
 # architecture is here" one question.
-$ArchitectureEntry = ".agents/scripts/memar"
+$ArchitectureEntry = "bundles/memar/memar"
 $BootstrapEntry = "install.ps1"
 # The folder a run that named none obtains the architecture into. The installer's
 # own target module holds the same name, and the two are pinned to each other.
@@ -381,7 +381,7 @@ try {
 if ($code -eq 0 -and $Mode -ne "check") {
     Write-Output @"
 This program can go on without a restart. Load the skill by running the next line on its own:
-& "$python" "$Checkout\.agents\scripts\memar" content path .agents/skills/memar/SKILL.md
+& "$python" (Join-Path $Checkout $ArchitectureEntry) content path .agents/skills/memar/SKILL.md
 "@
 }
 exit $code

@@ -30,27 +30,24 @@ has to be asked for; copying a folder the installer already put on the machine
 is a different kind of act, and that is the whole of the difference.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_copy_excluded = plugable_load('computer.filesystem.services.fs_copy_excluded')
+NEVER_COPIED = _m_fs_copy_excluded.NEVER_COPIED
+_m_fs_copy = plugable_load('computer.filesystem.services.fs_copy')
+differs = _m_fs_copy.differs
+_m_fs_trash = plugable_load('computer.filesystem.services.fs_trash')
+soft_delete = _m_fs_trash.soft_delete
 import json
 import shutil
 from collections.abc import Collection
 from pathlib import Path
-
 from machine.console import fail, note
-from machine.fs_copy_excluded import NEVER_COPIED
-from machine.fs_copy import differs
-from machine.fs_trash import soft_delete
-
-# Editor extensions this repository ships, found by listing this folder rather
-# than by name: a new extension is a new folder here and nothing else to change.
-EXTENSIONS_RELATIVE = Path(".agents") / "vscode" / "extensions"
-MANIFEST_NAME = "package.json"
-
+EXTENSIONS_RELATIVE = Path('.agents') / 'vscode' / 'extensions'
+MANIFEST_NAME = 'package.json'
 
 def editor_extensions_dir() -> Path:
     """Where this platform's editor keeps the extensions it has installed."""
-    return Path.home() / ".vscode" / "extensions"
-
+    return Path.home() / '.vscode' / 'extensions'
 
 def extension_folder_name(manifest: Path) -> str:
     """The name the editor expects a folder to have, read from the manifest.
@@ -60,17 +57,16 @@ def extension_folder_name(manifest: Path) -> str:
     rather than guessed around.
     """
     try:
-        fields = json.loads(manifest.read_text(encoding="utf-8"))
+        fields = json.loads(manifest.read_text(encoding='utf-8'))
     except (OSError, ValueError) as error:
-        fail(f"{manifest} cannot be read as an extension manifest ({error})")
+        fail(f'{manifest} cannot be read as an extension manifest ({error})')
     try:
-        publisher = str(fields["publisher"]).lower().replace(".", "")
-        name = str(fields["name"]).lower()
-        version = str(fields["version"])
+        publisher = str(fields['publisher']).lower().replace('.', '')
+        name = str(fields['name']).lower()
+        version = str(fields['version'])
     except KeyError as missing:
-        fail(f"{manifest} declares no {missing}, so it names no installable extension")
-    return f"{publisher}.{name}-{version}"
-
+        fail(f'{manifest} declares no {missing}, so it names no installable extension')
+    return f'{publisher}.{name}-{version}'
 
 def shipped_extensions(source_root: Path) -> list[tuple[Path, str]]:
     """Each extension folder under SOURCE_ROOT that has a manifest, with the folder name it installs under."""
@@ -80,7 +76,6 @@ def shipped_extensions(source_root: Path) -> list[tuple[Path, str]]:
         if manifest.is_file():
             shipped.append((source, extension_folder_name(manifest)))
     return shipped
-
 
 def stale_extensions(checkout: Path) -> list[Path]:
     """Where an extension CHECKOUT ships is missing from the editor or differs from the checkout's.
@@ -103,9 +98,10 @@ def stale_extensions(checkout: Path) -> list[Path]:
             stale.append(target)
     return stale
 
-
-def install_extensions(checkout: Path, only: Collection[Path] | None = None) -> None:
+def install_extensions(checkout: Path, only: Collection[Path] | None=None, *, dry_run: bool=False) -> None:
     """Put the editor extensions this checkout ships into the editor; with ONLY, those landing there.
+
+    With DRY_RUN it says what it would install or refresh and moves and writes nothing.
 
     The copy already there is the installer's own, so it is moved to the trash
     and the checkout's copy is written in its place: a change in the checkout
@@ -117,22 +113,25 @@ def install_extensions(checkout: Path, only: Collection[Path] | None = None) -> 
     """
     source_root = checkout / EXTENSIONS_RELATIVE
     if not source_root.is_dir():
-        note(f"no editor extension to install: {source_root} is not there")
+        note(f'no editor extension to install: {source_root} is not there')
         return
     installed = editor_extensions_dir()
     if not installed.is_dir():
-        # Writing into a folder no editor reads leaves litter, not an extension.
-        note(f"no editor on this machine: {installed} is not there, so skipped")
+        note(f'no editor on this machine: {installed} is not there, so skipped')
         return
     for source, name in shipped_extensions(source_root):
         target = installed / name
         if only is not None and target not in only:
             continue
         first_time = not target.is_dir()
+        if dry_run:
+            would = 'install' if first_time else 'refresh (the old folder to the trash)'
+            note(f'dry-run: {would} {name} at {target}')
+            continue
         if not first_time:
             soft_delete(target)
         shutil.copytree(source, target, ignore=NEVER_COPIED)
-        verb = "installed" if first_time else "refreshed"
-        note(f"{name} {verb} at {target}")
-        note(f"from {source}")
-        note("reload the editor window to apply it")
+        verb = 'installed' if first_time else 'refreshed'
+        note(f'{name} {verb} at {target}')
+        note(f'from {source}')
+        note('reload the editor window to apply it')

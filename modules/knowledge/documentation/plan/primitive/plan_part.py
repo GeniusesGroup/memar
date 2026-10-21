@@ -8,15 +8,13 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-
 from modules.knowledge.documentation.primitive.section import Section
 
-
 class PlanPart(Section):
-    REQUEST = ("Request", "what was asked, and what checks it is done")
-    WHY = ("Why", "the reason, in the writer's own words")
-    STEPS = ("Steps", "each step, local or delegated")
-    NEXT = ("Next", "what the next session does first")
+    REQUEST = ('Request', 'what was asked, and what checks it is done')
+    WHY = ('Why', "the reason, in the writer's own words")
+    STEPS = ('Steps', 'each step, local or delegated')
+    NEXT = ('Next', 'what the next session does first')
 
     @classmethod
     def every_plan(cls) -> tuple[str, ...]:

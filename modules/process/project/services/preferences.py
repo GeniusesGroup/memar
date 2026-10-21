@@ -3,86 +3,94 @@
 
 """modules/process/project/services/preferences.py — a project's Memar preferences: where they are, what they hold, and reading them.
 
-A project Memar is installed into has a `.agents/memar/README.md` that
-`install_project` writes again on every install, so nothing the project says
-there survives the next one. What the project wants of Memar goes in the file
-beside it, `preferences.md`, which an install creates when it is absent and
-never touches again — in the Memar repository too, whose README is written by
-hand and skipped.
+What a project wants of Memar's tools is a `memar:` block in the project's own
+manifest, `manifest.yaml` at its top folder: one indented `key: value` line per
+key, each key named here. It is read by Memar's tools alone, never by an agent,
+so it is data and not a document: no agent loads it, and nothing in it is
+written for one. A preference agents should follow is a Memar rule or a line of
+the project's AGENTS.md, not a key here.
 
-The file has two readers. Its front matter holds the keys Memar's tools read,
-each named here; its body is free prose for the agents that work on the
-project, which no tool reads. Both the path and the keys are this file's, so
-the installer that writes the file and the session service that reads it
-cannot disagree about either.
+    memar:
+      sessions: work/sessions
+      records: off
 
-The front matter is read the way a session's plan is (`session_plan`), one
-`key: value` per line, so a key left empty, `sessions:` alone, reads as unset.
-A file that is absent or cannot be read sets nothing: what a project has not
-said is Memar's default.
+`sessions` is the folder new task folders are made in: a path relative to
+the project's top folder, or an absolute one, but neither that top folder
+itself nor a drive or filesystem root; unset, they are made in `.agents/tasks/`
+inside the project, which git can stage so a branch switch does not drop them
+silently. Memar's daily sweep never touches a task folder made in a project's
+own location: keeping, committing, or deleting it is the project's. `records`
+says whether a task's records — its whole folder except the claim, caches,
+binary files, files over 256 KB that are not documents, and its own temp folder
+— are kept on the records branch of the project's own repository by
+`memar git archive-task-records` (and added by the sweep before it moves a
+folder): `on` or `off`; unset, they are. Nothing is pushed. `most-characters` is
+the most characters one printed part of a long text holds, the text `memar ai get-task-init-context` and `memar content get-act-context` print in ordered parts: a whole
+number below the smallest output cut of the agent runtimes the project uses;
+unset, Memar's default, `MOST_CHARACTERS` in machine/console_parts.py.
+`normative_references` names the folders where the project's own lists of the
+sections an act reads before it starts are kept, as Memar's rule Normative
+References says: paths relative to the project's top folder, separated by
+commas, each a folder inside the project and none the top folder itself.
+
+The manifest is the project's own: `memar install` neither creates nor writes
+it. The block is read without a YAML library, the way a plan's front matter is
+(`session_plan`): the line `memar:` at the left margin, then the indented
+`key: value` lines below it, up to the next line at the margin; a key left
+empty, `sessions:` alone, reads as unset, and the rest of the manifest is not
+read. A file that is absent, has no block, or cannot be read sets nothing: what
+a project has not said is Memar's default.
 """
 from __future__ import annotations
-
 from enum import Enum
 from pathlib import Path
-
 from machine.console import fail
 from machine.console_parts import MOST_FLAG
-from machine.fs_memar import CONSUMER_README_RELATIVE, RECORDS_BRANCH, RECORDS_RELATIVE
-from modules.knowledge.documentation.plan.services.plan import front_matter
-
-PREFERENCES_RELATIVE = CONSUMER_README_RELATIVE.with_name("preferences.md")
-# The folder new session folders are made in, relative to the project's top
-# folder or absolute; unset, they are made in temp/sessions/ inside the project (Memar's own, for the Memar checkout).
-NORMATIVE_REFERENCES_KEY = "normative_references"
-SESSIONS_KEY = "sessions"
-# Whether a session's records are kept on the project's records branch
-# (`session_archive`); unset, they are.
-RECORDS_KEY = "records"
-# The most characters one printed part of a long text holds (`machine/console_parts.py`),
-# for the runtimes this project uses; unset, Memar's default. The key is the flag's name.
-MOST_CHARACTERS_KEY = MOST_FLAG.removeprefix("--")
-# The folders, comma-separated and relative to the project's top folder, where its own
-# normative-references lists are read (`modules/knowledge/content/services/normative_references.py`); its key is `NORMATIVE_REFERENCES_KEY`.
-FOLDER_SEPARATOR = ","
-
+PREFERENCES_RELATIVE = Path('manifest.yaml')
+BLOCK_KEY = 'memar'
+NORMATIVE_REFERENCES_KEY = 'normative_references'
+SESSIONS_KEY = 'sessions'
+RECORDS_KEY = 'records'
+MOST_CHARACTERS_KEY = MOST_FLAG.removeprefix('--')
+FOLDER_SEPARATOR = ','
 
 class Records(Enum):
     """What the `records` key may say: keep a session's records in the project, or not."""
-
-    ON = "on"
-    OFF = "off"
+    ON = 'on'
+    OFF = 'off'
 
     @classmethod
     def listing(cls) -> str:
-        return ", ".join(f"`{each.value}`" for each in cls)
+        return ', '.join((f'`{each.value}`' for each in cls))
 
-
-PREFERENCES_TEXT = f"""---
-{SESSIONS_KEY}:
-{RECORDS_KEY}:
-{MOST_CHARACTERS_KEY}:
-{NORMATIVE_REFERENCES_KEY}:
----
-# Memar preferences
-This file is this project's own: `memar install` creates it when it is absent and never rewrites it, unlike the README beside it, which an install rewrites. The front matter holds what Memar's tools read. `{SESSIONS_KEY}` is the folder new session folders are made in: a path relative to the project's top folder, or an absolute one, but neither that top folder itself nor a drive or filesystem root; left empty, they are made in temp/sessions/ inside the project, which its VCS should ignore. Memar's daily sweep never touches a session folder made in the `{SESSIONS_KEY}` folder: keeping, committing, or deleting it is the project's. `{RECORDS_KEY}` says whether a session's records — its whole folder except the claim, caches, binary files, files over 256 KB that are not documents, and its own temp folder — are kept on the branch {RECORDS_BRANCH} of the project's own repository, at {RECORDS_RELATIVE.as_posix()}/<id>/ there, by `memar session archive` (and added by the sweep before it moves a folder): {Records.listing()}; left empty, they are. Nothing is pushed. `{MOST_CHARACTERS_KEY}` is the most characters one printed part of a long text holds, the text `memar session start` and `memar content context` print in ordered parts: a whole number below the smallest output cut of the agent runtimes this project uses; left empty, Memar's default, `MOST_CHARACTERS` in Memar's .agents/scripts/machine/console_parts.py. `{NORMATIVE_REFERENCES_KEY}` names the folders where this project's own lists of the sections an act reads before it starts are kept, as Memar's rule Normative References says: paths relative to the project's top folder, separated by commas, each a folder inside the project and none the top folder itself; a list is read only directly in a folder named here, and a file named like a list anywhere else is not read; left empty, the project has no lists of its own and its sessions read Memar's alone. Below this paragraph, write any preference agents should follow on this project.
-"""
-
+def preferences_text(values: dict[str, str]) -> str:
+    """The `memar:` block of a manifest setting VALUES, keyed as this file names the keys."""
+    return ''.join([f'{BLOCK_KEY}:\n', *(f'  {key}: {value}\n' for key, value in values.items())])
 
 def preferences_path(project: Path) -> Path:
     """PROJECT's preferences file, whether or not it is there."""
     return project / PREFERENCES_RELATIVE
 
-
 def read_preferences(project: Path) -> dict[str, str]:
     """The keys PROJECT's preferences file sets; none when it is absent or cannot be read."""
     try:
-        lines = preferences_path(project).read_text(encoding="utf-8-sig").splitlines()
+        lines = preferences_path(project).read_text(encoding='utf-8-sig').splitlines()
     except (OSError, UnicodeDecodeError):
         return {}
-    front, _ = front_matter(lines)
-    return front or {}
-
+    found: dict[str, str] = {}
+    inside = False
+    for line in lines:
+        if not line.strip() or line.lstrip().startswith('#'):
+            continue
+        if line[:1] not in (' ', '\t'):
+            inside = line.split('#', 1)[0].strip() == f'{BLOCK_KEY}:'
+            continue
+        if inside and ':' in line:
+            key, value = line.split(':', 1)
+            value = value.strip()
+            if value:
+                found[key.strip()] = value
+    return found
 
 def sessions_location(project: Path) -> Path | None:
     """The folder PROJECT's session folders are made in, or None for Memar's own.
@@ -90,11 +98,10 @@ def sessions_location(project: Path) -> Path | None:
     A relative value is under PROJECT's top folder; an absolute one is used as
     it is.
     """
-    value = read_preferences(project).get(SESSIONS_KEY, "").strip().strip("\"'").strip()
+    value = read_preferences(project).get(SESSIONS_KEY, '').strip().strip('"\'').strip()
     if not value:
         return None
     return project / value
-
 
 def most_characters_preference(project: Path | None) -> int | None:
     """The most characters a printed part holds that PROJECT's preferences set; None when PROJECT is None or sets none.
@@ -104,17 +111,16 @@ def most_characters_preference(project: Path | None) -> int | None:
     """
     if project is None:
         return None
-    value = read_preferences(project).get(MOST_CHARACTERS_KEY, "").strip().strip("\"'").strip()
+    value = read_preferences(project).get(MOST_CHARACTERS_KEY, '').strip().strip('"\'').strip()
     if not value:
         return None
     if not value.isdigit() or int(value) <= 0:
-        fail(f"{preferences_path(project)}: {MOST_CHARACTERS_KEY} must be a positive whole number of characters, not {value!r}")
+        fail(f'{preferences_path(project)}: {MOST_CHARACTERS_KEY} must be a positive whole number of characters, not {value!r}')
     return int(value)
-
 
 def records_preference(project: Path) -> Records | None:
     """Whether PROJECT keeps its sessions' records: ON when its preferences say nothing, None for a value `records` may not take."""
-    value = read_preferences(project).get(RECORDS_KEY, "").strip().strip("\"'").strip().lower()
+    value = read_preferences(project).get(RECORDS_KEY, '').strip().strip('"\'').strip().lower()
     if not value:
         return Records.ON
     return next((each for each in Records if each.value == value), None)

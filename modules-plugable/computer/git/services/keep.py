@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/keep.py — which files of a session folder its records keep, and which they leave out.
+"""modules-plugable/computer/git/services/keep.py — which files of a session folder its records keep, and which they leave out.
 
 A session's record is its folder: the plan, the report, and every file the work
 made, filed by kind in the role folders (`session_layout`). A report links the
@@ -18,7 +18,7 @@ place in a record is left out:
     a binary file        a NUL in its first BINARY_PROBE_BYTES bytes: an archive, a cache, an index
     a large file         over KEEP_LIMIT_BYTES and not a document; a document, written text, is
                          kept at any size, since text is the record
-    a name a manifest    holding a tab or a line break, which the file `host/git.py record`
+    a name a manifest    holding a tab or a line break, which the file `_host_git_cli.py record`
     cannot carry         reads cannot hold
 
 Each leave-out is reported with its reason and its size, a folder once with
@@ -26,68 +26,55 @@ the files it held, so the commit that records the session says what it did not
 keep and why (`session_archive`).
 """
 from __future__ import annotations
-
 import os
 from enum import Enum
 from pathlib import Path
 from typing import NamedTuple
-
-from modules.process.session.services.temp import TEMP_FOLDER
-from modules.process.session.primitive.claim import Claim
-
+from modules.management.task.services.temp import TEMP_FOLDER
+from modules.management.task.primitive.claim import Claim
 KEEP_LIMIT_BYTES = 256 * 1024
-"""The size above which a file that is not a document is left out."""
-
+'The size above which a file that is not a document is left out.'
 BINARY_PROBE_BYTES = 8000
-"""How much of a file is read to tell whether it is binary."""
-
-DOCUMENT_SUFFIXES = (".md",)
-"""The suffixes of a document: written text, which the size limit does not reach."""
-
-CACHE_FOLDER = "__pycache__"
-GIT_PART = ".git"
-
+'How much of a file is read to tell whether it is binary.'
+DOCUMENT_SUFFIXES = ('.md',)
+'The suffixes of a document: written text, which the size limit does not reach.'
+CACHE_FOLDER = '__pycache__'
+GIT_PART = '.git'
 
 class Reason(Enum):
     """Why a path is left out of a session's records."""
-
     CLAIM = "Memar's claim, not part of the record"
-    CACHE = "a Python cache, rebuilt on demand"
-    GIT = "a .git part: a repository inside the session"
+    CACHE = 'a Python cache, rebuilt on demand'
+    GIT = 'a .git part: a repository inside the session'
     TEMP = f"the session's {TEMP_FOLDER}/ folder, never archived"
-    LINK = "a link, not a file"
-    BINARY = f"binary: a NUL in its first {BINARY_PROBE_BYTES} bytes"
-    LARGE = f"over {KEEP_LIMIT_BYTES // 1024} KB and not a document"
-    NAME = "a name holding a tab or a line break"
+    LINK = 'a link, not a file'
+    BINARY = f'binary: a NUL in its first {BINARY_PROBE_BYTES} bytes'
+    LARGE = f'over {KEEP_LIMIT_BYTES // 1024} KB and not a document'
+    NAME = 'a name holding a tab or a line break'
 
     @property
     def sentence(self) -> str:
         return self.value
 
-
 class Left(NamedTuple):
     """One path left out: where (a folder once, for the files it held), why, how many files, how many bytes."""
-
     path: str
     reason: Reason
     files: int
     size: int
 
-
 class Selection(NamedTuple):
     """What a session folder's records keep, as posix paths from the folder, sorted; and what they leave out."""
-
     kept: tuple[str, ...]
     left: tuple[Left, ...]
-
 
 def _measured(path: Path) -> tuple[int, int]:
     """How many files PATH holds, and their bytes: PATH itself when a file."""
     if not path.is_dir() or path.is_symlink():
         try:
-            return 1, path.lstat().st_size
+            return (1, path.lstat().st_size)
         except OSError:
-            return 1, 0
+            return (1, 0)
     files = size = 0
     for root, _, names in os.walk(path):
         for name in names:
@@ -96,16 +83,14 @@ def _measured(path: Path) -> tuple[int, int]:
             except OSError:
                 pass
             files += 1
-    return files, size
-
+    return (files, size)
 
 def _is_binary(path: Path) -> bool:
     try:
-        with path.open("rb") as stream:
-            return b"\0" in stream.read(BINARY_PROBE_BYTES)
+        with path.open('rb') as stream:
+            return b'\x00' in stream.read(BINARY_PROBE_BYTES)
     except OSError:
         return True
-
 
 def _folder_reason(name: str, at_top: bool) -> Reason | None:
     if name == CACHE_FOLDER:
@@ -116,7 +101,6 @@ def _folder_reason(name: str, at_top: bool) -> Reason | None:
         return Reason.TEMP
     return None
 
-
 def select(folder: Path) -> Selection:
     """The files of FOLDER its records keep, and the paths they leave out."""
     kept: list[str] = []
@@ -125,7 +109,6 @@ def select(folder: Path) -> Selection:
     def leave(path: Path, reason: Reason) -> None:
         files, size = _measured(path)
         left.append(Left(path.relative_to(folder).as_posix(), reason, files, size))
-
     for root, folders, names in os.walk(folder):
         here = Path(root)
         at_top = here == folder
@@ -134,9 +117,7 @@ def select(folder: Path) -> Selection:
             reason = Reason.LINK if path.is_symlink() else _folder_reason(name, at_top)
             if reason is not None:
                 leave(path, reason)
-        folders[:] = [
-            name for name in folders if not (here / name).is_symlink() and _folder_reason(name, at_top) is None
-        ]
+        folders[:] = [name for name in folders if not (here / name).is_symlink() and _folder_reason(name, at_top) is None]
         for name in sorted(names):
             path = here / name
             if at_top and name in Claim.NAMES:
@@ -145,11 +126,11 @@ def select(folder: Path) -> Selection:
                 leave(path, Reason.GIT)
             elif path.is_symlink() or not path.is_file():
                 leave(path, Reason.LINK)
-            elif "\t" in name or "\n" in name:
+            elif '\t' in name or '\n' in name:
                 leave(path, Reason.NAME)
             elif _is_binary(path):
                 leave(path, Reason.BINARY)
-            elif path.stat().st_size > KEEP_LIMIT_BYTES and not name.lower().endswith(DOCUMENT_SUFFIXES):
+            elif path.stat().st_size > KEEP_LIMIT_BYTES and (not name.lower().endswith(DOCUMENT_SUFFIXES)):
                 leave(path, Reason.LARGE)
             else:
                 kept.append(path.relative_to(folder).as_posix())

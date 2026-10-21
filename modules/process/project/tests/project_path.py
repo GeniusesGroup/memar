@@ -26,47 +26,45 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import sys
 import tempfile
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
 from modules.process.project.primitive.project_path import ProjectPath
 
-
 class Flag(unittest.TestCase):
+
     def test_the_flag_the_metavar_and_the_attribute(self) -> None:
-        self.assertEqual((ProjectPath.FLAG, ProjectPath.METAVAR, ProjectPath.DEST), ("--project-path", "PATH", "project_path"))
+        self.assertEqual((ProjectPath.FLAG, ProjectPath.METAVAR, ProjectPath.DEST), ('--project-path', 'PATH', 'project_path'))
 
     def test_the_attribute_is_what_a_parser_gives_the_flag(self) -> None:
         import argparse
-
         parser = argparse.ArgumentParser()
         parser.add_argument(ProjectPath.FLAG, metavar=ProjectPath.METAVAR, default=None)
         self.assertTrue(hasattr(parser.parse_args([]), ProjectPath.DEST))
 
-
 class Written(unittest.TestCase):
+
     def test_a_text_written_as_a_path(self) -> None:
-        for text in ("/work/app", "C:\\work\\app","work/app", "work\\app", "./app", "../app", "~/app", ".app"):
+        for text in ('/work/app', 'C:\\work\\app', 'work/app', 'work\\app', './app', '../app', '~/app', '.app'):
             with self.subTest(text=text):
                 self.assertTrue(ProjectPath.written_like(text))
 
     def test_a_plain_word_is_not(self) -> None:
-        for text in ("memar", "organization", "app-2"):
+        for text in ('memar', 'organization', 'app-2'):
             with self.subTest(text=text):
                 self.assertFalse(ProjectPath.written_like(text))
 
-
 class Checking(unittest.TestCase):
+
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
@@ -78,21 +76,19 @@ class Checking(unittest.TestCase):
         return str(refusal.exception.code)
 
     def test_an_existing_folder_is_taken_as_given(self) -> None:
-        folder = self.base / "app"
+        folder = self.base / 'app'
         folder.mkdir()
         self.assertEqual(ProjectPath.checked(str(folder)).folder, folder.resolve())
         self.assertEqual(ProjectPath.checked(folder).folder, folder.resolve())
 
     def test_an_empty_value_is_refused_naming_the_flag(self) -> None:
-        for value in ("", "   "):
+        for value in ('', '   '):
             with self.subTest(value=value):
                 self.assertIn(ProjectPath.FLAG, self.refused(value))
 
     def test_a_value_that_is_not_a_folder_is_refused_and_a_hint_is_added(self) -> None:
-        missing = str(self.base / "nope")
-        self.assertIn("is not a folder", self.refused(missing))
-        self.assertTrue(self.refused("nope", hint="; try the other flag").endswith("; try the other flag"))
-
-
-if __name__ == "__main__":
+        missing = str(self.base / 'nope')
+        self.assertIn('is not a folder', self.refused(missing))
+        self.assertTrue(self.refused('nope', hint='; try the other flag').endswith('; try the other flag'))
+if __name__ == '__main__':
     unittest.main(verbosity=2)

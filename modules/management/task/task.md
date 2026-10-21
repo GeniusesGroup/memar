@@ -3,7 +3,7 @@ A Task is the declared intent of a unit of work, together with the one thing tha
 
 A project, a production run, an issue, a support ticket, a leave request, a reminder, a retroactive record of a change, a user's complaint against the organization and the building of an inner partition wall on the second floor are each a Task. Size is not part of the concept, and neither is the kind of worker or of work: the concept holds with no AI model and with no code anywhere. Memar leaves Task undefined on purpose ([Terminology → A Term Deliberately Left Open](../../../docs/terminology.md#a-term-deliberately-left-open)), so this document is its definition. Organization's own concepts are Task, User, AI model and how agents run; Memar defines none of them.
 
-Status of this document: **Tentative**. The reading of the node as intent is the default of [Research 001](task.research.001.md#open-questions) question 1, which the owner has not yet answered; the owner's rulings of 2026-10-17 are applied where they reach it.
+Status of this document: **Tentative** (shape still settling). The reading of the node as intent is **Decided** (sitting 8 / Research 001 question 1, owner batch yes 2026-10-20). Other kernel edges and capabilities still follow open questions in the [handoff](task.handoff.md).
 
 ## What Task owns, and what it does not
 Each domain does its own work. Task answers four questions about a piece of work — what is to be achieved, how it relates to other work, where it stands, and what came of it — and refers to the owner of everything else.
@@ -77,7 +77,7 @@ Its home is not yet decided; see Open questions.
 `blocks` and `part_of` are the only relations the kernel knows between Tasks. A Task that cannot start until another ends is `blocks`-ed; the status of the blocked Task follows. A Task that is a step of another is `part_of`. Several Tasks may name one Task as a step: one inspection can serve two phases.
 
 ## Memar session terms to Task terms
-Memar's session is kept as it is and nothing more is built on it; the Task replaces it. A session id in a commit message stays as it is.
+Memar's session tooling is kept as it is and nothing more is built on it; the Task replaces that tooling's work item. A session id in a commit message stays as it is. This table maps Memar session-tool terms to Task terms; it does not define what a session is as a concept — that meaning is still open (see the handoff section Owner intake — Session versus Task span).
 
 | Memar session term | Task term |
 |---|---|

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/start.py — `memar session start`: everything an agent taking up a session needs in its context, in one output.
+"""modules-plugable/ai/services/get_task_init_context.py — `memar ai get-task-init-context`: everything an agent taking up a session needs in its context, in one output.
 
 An agent that takes up a session — a sub-agent handed one, or the coordinator
 after `new` opened its own — starts with none of what the session needs, and
@@ -18,7 +18,7 @@ plan, and this reads the plan to know what to print.
 
 The parts, in order, each opened by a mark line `=== NAME ===`:
 
-    session    the id and the paths; starting a session is `new --session-id`, so the report and the role folders are there
+    session    the id and the paths; starting a session is `new --task-id`, so the report and the role folders are there
     model      the strongest model for a plan whose Kind is judgment, a cheaper one for a mechanical Kind; what to do on a weaker one
     plan.md    the plan, whole
     folder     the session folder's listing
@@ -31,10 +31,10 @@ The parts, in order, each opened by a mark line `=== NAME ===`:
 **Nothing here is a second copy of a rule.** Which sections a Kind requires is
 the lists of [Normative References](../rules/normative_references/normative_references.md),
 read from Memar's declared place, and how they print is
-`modules/knowledge/content/services/task_context.py`'s, the composition `memar content context` prints
+`modules/knowledge/content/services/task_context.py`'s, the composition `memar content get-act-context` prints
 too; a plan with no Kind, or one no kind answers to, gets the every-act
 sections alone. What the documents part printed is recorded in the session's
-`temp/context_read.txt`, so a later `memar content context --session-id ID
+`temp/context_read.txt`, so a later `memar content get-act-context --task-id ID
 --after K0` leaves out only what was printed as it reads now. The plan's Steps decide
 the rest, by the paths of the documents they name — at any of the checkout's top
 folders — read at the section a link names, or at the Abstract when it names
@@ -67,121 +67,77 @@ located and read it. An agent whose runtime did load it asks for none, so it is
 not paid for twice.
 """
 from __future__ import annotations
-
+from importlib import import_module
+_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+SKILL_RELATIVE = _m_fs_memar.SKILL_RELATIVE
 import argparse
 import re
 import subprocess
 import sys
-from importlib import import_module
 from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
 from pathlib import Path
 from typing import Callable
-
 from machine.console import fail
 from machine.console_parts import add_part_arguments, bound, next_command
 from machine.console_parts import part_text as parted
-from machine.fs_memar import SKILL_RELATIVE
 from modules.knowledge.content.services.reference import content_root, read_text
-from modules.process.session.services.depends import refusal as dependency_refusal
-from modules.process.session.services.folder import folder_of, is_session_folder
-from modules.process.session.services.temp import TEMP_SENTENCE
-from modules.process.session.services.ensure import ensure_session
+from modules.management.task.services.depends import refusal as dependency_refusal
+from modules.management.task.services.folder import folder_of, is_task_folder
+from modules.management.task.services.temp import TEMP_SENTENCE
+from modules.management.task.services.ensure import ensure_task
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, part_text, read_plan
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.process.session.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KINDS, task_kind_of
+from modules.knowledge.label.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KINDS, task_kind_of
 from modules.knowledge.documentation.report.services.report import REPORT_NAME
 from modules.knowledge.content.services.task_context import Composed, Ref, context, context_places, write_record
-from modules.knowledge.documentation.plan.primitive.task_kind import TaskKind
+from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
-
-START_COMMAND = "start"
-SKILL_FILE = (SKILL_RELATIVE / "SKILL.md").as_posix()
-SCRIPTS = Path(__file__).resolve().parents[4] / ".agents" / "scripts"
-MEMAR = SCRIPTS / "memar"
-MARK = "==="
-# The commands every session needs the help of, as the words after `memar`.
-ALWAYS_HELP = (("session",), ("content", "write"))
-# The commands whose help prints here without its options and verbs, which the card printed above lists with their call shapes.
-CARD_LISTS_VERBS = (("session",),)
-CARD_POINTER = "Its verbs, each with its call shape, are on the card above (`=== commands ===`)."
-# The card's one home. Its address is under `modules-plugable`, which a literal `from ... import` cannot name, so it is
-# imported through `importlib`. The reverse dependency this makes is the owner's ruling of 2026-10-19: kept because a
-# second round trip costs more and the command module is temporary.
-commands = import_module("modules-plugable.process.command.command")
-# At most this many commands the plan names get their help printed, so one long plan does not print the whole interface.
+START_COMMAND = 'get-task-init-context'
+SKILL_FILE = (SKILL_RELATIVE / 'SKILL.md').as_posix()
+SCRIPTS = Path(__file__).resolve().parents[3] / 'bundles' / 'memar'
+MEMAR = SCRIPTS / 'memar'
+MARK = '==='
+ALWAYS_HELP = (('task',), ('content', 'write'))
+CARD_LISTS_VERBS = (('task',),)
+CARD_POINTER = 'Its verbs, each with its call shape, are on the card above (`=== commands ===`).'
+commands = import_module('modules-plugable.process.command.command')
 MOST_NAMED_COMMANDS = 8
 HELP_TIMEOUT_SECONDS = 60
-# A document a plan's Steps name — at any of the checkout's top folders — with the section it may name. Not a bare
-# file name and not a URL: a path in a URL follows its host's `/`, which the lookbehind refuses.
-STEP_DOCUMENT = re.compile(
-    r"(?<![\w./-])/?((?:docs|modules|modules-plugable|bundles|\.agents)/[\w./-]+?\.md)(?:#([\w-]+))?"
-)
-# A command a plan names: what is between backticks after `memar `.
-NAMED_COMMAND = re.compile(r"`memar ([^`]+)`")
-COMMAND_WORD = re.compile(r"[a-z][a-z-]*$")
+STEP_DOCUMENT = re.compile('(?<![\\w./-])/?((?:docs|modules|modules-plugable|bundles|\\.agents)/[\\w./-]+?\\.md)(?:#([\\w-]+))?')
+NAMED_COMMAND = re.compile('`memar ([^`]+)`')
+COMMAND_WORD = re.compile('[a-z][a-z-]*$')
 MOST_COMMAND_WORDS = 3
-
-ENDING = (
-    "Do what the plan's Request says, without rewriting that Request. A read-only step takes no development or "
-    "modeling act, so beyond what this prints it reads only what its step needs. A chat started for this session, "
-    "rather than a sub-agent, is its coordinator.\n"
-    f"End with its {REPORT_NAME} and Status as `memar session --help` says. Where you may write files, write the report "
-    "through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the session's temp/ folder, which is never archived, so the report is not kept twice. "
-    f"Where you may only return text, return the report as your final text, and the delegating session writes it as "
-    f"{REPORT_NAME} before its next step.\n"
-    f"{TEMP_SENTENCE}"
-)
-
+ENDING = f"Do what the plan's Request says, without rewriting that Request. A read-only step takes no development or modeling act, so beyond what this prints it reads only what its step needs. A chat started for this session, rather than a sub-agent, is its coordinator.\nEnd with its {REPORT_NAME} and Status as `memar task --help` says. Where you may write files, write the report through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the session's temp/ folder, which is never archived, so the report is not kept twice. Where you may only return text, return the report as your final text, and the delegating session writes it as {REPORT_NAME} before its next step.\n{TEMP_SENTENCE}"
 
 def marked_part(name: str, body: str) -> str:
     return marked_passages(name, [body])[0]
 
-
 def marked_passages(name: str, blocks: list[str]) -> list[str]:
     """The passages of the part NAME: its BLOCKS, the first opened by the part's mark line; each ends its line."""
-    kept = [block.strip() for block in blocks if block.strip()] or [""]
-    kept[0] = f"{MARK} {name} {MARK}\n{kept[0]}"
-    return [block + "\n" for block in kept]
+    kept = [block.strip() for block in blocks if block.strip()] or ['']
+    kept[0] = f'{MARK} {name} {MARK}\n{kept[0]}'
+    return [block + '\n' for block in kept]
 
-
-def _session_part(session_id: str, folder: Path) -> str:
-    return marked_part(
-        "session",
-        f"session_id: {session_id}\npath: {folder}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}",
-    )
-
+def _task_part(task_id: str, folder: Path) -> str:
+    return marked_part('task', f'task_id: {task_id}\npath: {folder}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}')
 
 def model_part(kind: str) -> str:
     if kind in STRONG_KINDS:
-        body = (
-            f"kind: {kind}\nThis task is judgment and needs the strongest model available: the strongest the runtime "
-            "offers that can be used now. A stronger model that is refused (no credits, a limit) is not available, so "
-            "the strongest usable one is the right one and the task goes on; say in the report which model ran. "
-            "Only if you are plainly a small tier, or cannot tell your own model, end Blocked saying which model you "
-            "run on, and do nothing else."
-        )
+        body = f'kind: {kind}\nThis task is judgment and needs the strongest model available: the strongest the runtime offers that can be used now. A stronger model that is refused (no credits, a limit) is not available, so the strongest usable one is the right one and the task goes on; say in the report which model ran. Only if you are plainly a small tier, or cannot tell your own model, end Blocked saying which model you run on, and do nothing else.'
     elif kind in CHEAPER_KINDS:
         body = f"kind: {kind}\nThis task is mechanical: a cheaper model than the session's own suffices."
     elif kind:
-        body = (
-            f"kind: {kind}\n{kind!r} is not a kind; the kinds are {', '.join(TASK_KINDS)}. End Blocked saying so, "
-            "for the session that handed you the task to correct it."
-        )
+        body = f"kind: {kind}\n{kind!r} is not a kind; the kinds are {', '.join(TASK_KINDS)}. End Blocked saying so, for the session that handed you the task to correct it."
     else:
-        body = (
-            "kind: the plan states no kind.\nIf its Request ideates, designs, or critiques, end Blocked saying the plan "
-            "states no kind: the strongest model is needed and the delegator states it. Otherwise a cheaper model suffices."
-        )
-    return marked_part("model", body)
-
+        body = 'kind: the plan states no kind.\nIf its Request ideates, designs, or critiques, end Blocked saying the plan states no kind: the strongest model is needed and the delegator states it. Otherwise a cheaper model suffices.'
+    return marked_part('model', body)
 
 def _folder_part(folder: Path) -> str:
-    entries = sorted(folder.rglob("*"), key=lambda path: path.relative_to(folder).as_posix().lower())
-    lines = [path.relative_to(folder).as_posix() + ("/" if path.is_dir() else "") for path in entries]
-    return marked_part("folder", "\n".join(lines))
-
+    entries = sorted(folder.rglob('*'), key=lambda path: path.relative_to(folder).as_posix().lower())
+    lines = [path.relative_to(folder).as_posix() + ('/' if path.is_dir() else '') for path in entries]
+    return marked_part('folder', '\n'.join(lines))
 
 def step_documents(root: Path, steps: str) -> list[Ref]:
     """The documents of the checkout ROOT the plan's STEPS text names, each at the section it names or none, once, in the order named."""
@@ -192,17 +148,14 @@ def step_documents(root: Path, steps: str) -> list[Ref]:
             found.append(ref)
     return found
 
-
 def documents(root: Path, kinds: list[TaskKind], named: list[Ref], project: Path | None) -> Composed:
     """The sections KINDS' normative references name in Memar's lists and in the lists PROJECT declares, the every-act ones alone for no kind, then the NAMED documents."""
     places, problems = context_places(root, project)
     return context(places, kinds, extra=named, project_named=project is not None, place_problems=problems)
 
-
 def _kinds(kind: str) -> list[TaskKind]:
     found = TaskKind.read(kind)
     return [found] if found else []
-
 
 def named_commands(plan: str) -> list[tuple[str, ...]]:
     """The commands the PLAN's text names in backticks, as the words after `memar`, once each, and none that every session reads."""
@@ -214,134 +167,74 @@ def named_commands(plan: str) -> list[tuple[str, ...]]:
                 break
             words.append(word)
         command = tuple(words)
-        if command and command not in found and command not in ALWAYS_HELP:
+        if command and command not in found and (command not in ALWAYS_HELP):
             found.append(command)
     return found
-
 
 def _help_of(words: tuple[str, ...]) -> str | None:
     """`memar WORDS --help`'s output, or None when WORDS name no command."""
     try:
-        done = subprocess.run(
-            [sys.executable, str(MEMAR), *words, "--help"],
-            capture_output=True,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            timeout=HELP_TIMEOUT_SECONDS,
-        )
+        done = subprocess.run([sys.executable, str(MEMAR), *words, '--help'], capture_output=True, text=True, encoding='utf-8', errors='replace', timeout=HELP_TIMEOUT_SECONDS)
     except (OSError, subprocess.TimeoutExpired):
         return None
     return done.stdout.strip() if done.returncode == 0 and done.stdout.strip() else None
 
-
 def _help_part(plan: str) -> list[str]:
     named = named_commands(plan)
-    shown, left = named[:MOST_NAMED_COMMANDS], named[MOST_NAMED_COMMANDS:]
+    shown, left = (named[:MOST_NAMED_COMMANDS], named[MOST_NAMED_COMMANDS:])
     blocks = []
     for words in (*ALWAYS_HELP, *shown):
-        command = "memar " + " ".join(words)
+        command = 'memar ' + ' '.join(words)
         found = _help_of(words)
         if found is not None and words in CARD_LISTS_VERBS:
-            found = found.split("\noptions:", 1)[0].rstrip() + "\n\n" + CARD_POINTER
-        blocks.append(f"--- `{command} --help` ---\n" + (found if found is not None else f"no such command: `{command}`"))
+            found = found.split('\noptions:', 1)[0].rstrip() + '\n\n' + CARD_POINTER
+        blocks.append(f'--- `{command} --help` ---\n' + (found if found is not None else f'no such command: `{command}`'))
     if left:
-        blocks.append("--- not printed ---\n" + "\n".join(f"`memar {' '.join(words)}`: ask `--help` of it" for words in left))
-    return marked_passages("help", blocks)
+        blocks.append('--- not printed ---\n' + '\n'.join((f"`memar {' '.join(words)}`: ask `--help` of it" for words in left)))
+    return marked_passages('help', blocks)
 
-
-def start_passages(session_id: str, with_skill: bool = True) -> list[str]:
-    """The text that starts the session SESSION_ID, as the passages a part is cut between, once its folder and its plan are there; the skill only WITH_SKILL."""
-    folder = folder_of(session_id)
-    if not is_session_folder(folder) or not (folder / PLAN_NAME).is_file():
-        fail(
-            f"no task to start in {session_id}: it has no session folder with a {PLAN_NAME}. "
-            f"Open it with `memar session new --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the session handing it over, "
-            f"and write the task into its {PLAN_NAME} first"
-        )
+def start_passages(task_id: str, with_skill: bool=True) -> list[str]:
+    """The text that starts the session TASK_ID, as the passages a part is cut between, once its folder and its plan are there; the skill only WITH_SKILL."""
+    folder = folder_of(task_id)
+    if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
+        fail(f'no task to start in {task_id}: it has no session folder with a {PLAN_NAME}. Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and write the task into its {PLAN_NAME} first')
     unmet = dependency_refusal(folder, START_COMMAND)
     if unmet:
         fail(unmet)
-    _, folder = ensure_session(session_id)
+    _, folder = ensure_task(task_id)
     plan_file = folder / PLAN_NAME
-    plan = plan_file.read_text(encoding="utf-8-sig")
+    plan = plan_file.read_text(encoding='utf-8-sig')
     kind = task_kind_of(read_plan(plan_file).front)
     root = content_root()
-    composed = documents(root, _kinds(kind), step_documents(root, part_text(plan_file, PlanPart.STEPS.heading)), plan_project(session_id))
+    composed = documents(root, _kinds(kind), step_documents(root, part_text(plan_file, PlanPart.STEPS.heading)), plan_project(task_id))
     write_record(folder, composed.printed)
-    passages = [
-        _session_part(session_id, folder),
-        model_part(kind),
-        marked_part(PLAN_NAME, plan),
-        _folder_part(folder),
-        *([marked_part("skill", read_text(root / SKILL_FILE))] if with_skill else []),
-        *marked_passages("documents", composed.blocks),
-        marked_part("commands", commands.card_text()),
-        *_help_part(plan),
-        marked_part("ending", ENDING),
-    ]
-    # A blank line closes every passage but the last, between parts and between a part's blocks alike.
-    return [passage + "\n" for passage in passages[:-1]] + passages[-1:]
+    passages = [_task_part(task_id, folder), model_part(kind), marked_part(PLAN_NAME, plan), _folder_part(folder), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *marked_passages('documents', composed.blocks), marked_part('commands', commands.card_text()), *_help_part(plan), marked_part('ending', ENDING)]
+    return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
+def start_text(task_id: str, with_skill: bool=True) -> str:
+    """The whole text that starts the session TASK_ID, unparted."""
+    return ''.join(start_passages(task_id, with_skill))
 
-def start_text(session_id: str, with_skill: bool = True) -> str:
-    """The whole text that starts the session SESSION_ID, unparted."""
-    return "".join(start_passages(session_id, with_skill))
-
-
-def plan_project(session_id: str) -> Path | None:
-    """The project SESSION_ID's plan names, None when it names none."""
-    named = (read_plan(folder_of(session_id) / PLAN_NAME).front or {}).get(PlanKey.PROJECT.key, "").strip()
+def plan_project(task_id: str) -> Path | None:
+    """The project TASK_ID's plan names, None when it names none."""
+    named = (read_plan(folder_of(task_id) / PLAN_NAME).front or {}).get(PlanKey.PROJECT.key, '').strip()
     return Path(named) if named else None
 
-
-def print_start(session_id: str, with_skill: bool = True, part: int = 1, most: int | None = None) -> None:
-    """`start`: print part PART of SESSION_ID's start text under MOST characters, else under its project's
+def get_task_init_context(task_id: str, with_skill: bool=True, part: int=1, most: int | None=None) -> None:
+    """`start`: print part PART of TASK_ID's start text under MOST characters, else under its project's
     preference, else the default; the whole text when it fits."""
-    words = ["memar", "session", START_COMMAND, "--session-id", session_id, *([] if with_skill else ["--without-skill"])]
-    passages = start_passages(session_id, with_skill)
-    limit = bound(most, most_characters_preference(plan_project(session_id)))
+    words = ['memar', 'ai', START_COMMAND, '--task-id', task_id, *([] if with_skill else ['--without-skill'])]
+    passages = start_passages(task_id, with_skill)
+    limit = bound(most, most_characters_preference(plan_project(task_id)))
     sys.stdout.write(parted(passages, part, limit, next_command(words, most)))
 
-
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar session start`."""
-    starter = verbs.add_parser(
-        START_COMMAND,
-        help="print, in one output, everything an agent taking up a session needs in its context",
-        description=(
-            "For every agent that takes up a session: a sub-agent handed one, and the coordinator after\n"
-            "`new` opened its own. Print, in parts each opened by a line `=== NAME ===`, and in this\n"
-            f"order: the session's id and paths, the model its Kind needs, its {PLAN_NAME}, the folder's\n"
-            "listing, the Memar skill, the passages of Memar's documents the plan's Kind requires (as\n"
-            "`memar content context --kind K` prints them; the core alone for a plan with no Kind) and\n"
-            "then the documents the plan's Steps name that those do not hold, the help of the commands\n"
-            "every session uses and those the plan names, and how to end. Run it first, once, and read\n"
-            "nothing else before acting on the plan.\n"
-            "\n"
-            "A text too long for one tool output prints in ordered parts, each at most --most-characters\n"
-            "long: each part but the last ends with the exact command for the next (--part N), to run\n"
-            "at once; read every part before acting. The same session prints the same parts, and each\n"
-            "part says \"part N of M of text H\", H a hash of the whole text: a part naming another H\n"
-            "is of another version of it.\n"
-            "\n"
-            f"The kinds a plan carries: {', '.join(TASK_KINDS)}.\n"
-            "\n"
-            "It is `new --session-id ID` as well, so the report and the role folders are there after it;\n"
-            "it opens no new session, and refuses an ID that has no folder with a plan."
-        ),
-    )
-    starter.add_argument("--session-id", required=True, metavar="ID", help="the session handed to you")
-    # TODO name: --without-skill | --skill-loaded
-    starter.add_argument(
-        "--without-skill", action="store_true",
-        help="leave the Memar skill out, for an agent whose runtime already loaded it",
-    )
-    add_part_arguments(
-        starter, f"the `{MOST_CHARACTERS_KEY}` in the {PREFERENCES_RELATIVE.as_posix()} of the project the plan names"
-    )
+    """`memar ai get-task-init-context`."""
+    starter = verbs.add_parser(START_COMMAND, help='print, in one output, everything an agent taking up a session needs in its context', description=f"""For every agent that takes up a session: a sub-agent handed one, and the coordinator after\n`new` opened its own. Print, in parts each opened by a line `=== NAME ===`, and in this\norder: the session's id and paths, the model its Kind needs, its {PLAN_NAME}, the folder's\nlisting, the Memar skill, the passages of Memar's documents the plan's Kind requires (as\n`memar content get-act-context --kind K` prints them; the core alone for a plan with no Kind) and\nthen the documents the plan's Steps name that those do not hold, the help of the commands\nevery session uses and those the plan names, and how to end. Run it first, once, and read\nnothing else before acting on the plan.\n\nA text too long for one tool output prints in ordered parts, each at most --most-characters\nlong: each part but the last ends with the exact command for the next (--part N), to run\nat once; read every part before acting. The same session prints the same parts, and each\npart says "part N of M of text H", H a hash of the whole text: a part naming another H\nis of another version of it.\n\nThe kinds a plan carries: {', '.join(TASK_KINDS)}.\n\nIt is `ensure --task-id ID` as well, so the report and the role folders are there after it;\nit opens no new session, and refuses an ID that has no folder with a plan.""")
+    starter.add_argument('--task-id', required=True, metavar='ID', help='the session handed to you')
+    starter.add_argument('--without-skill', action='store_true', help='leave the Memar skill out, for an agent whose runtime already loaded it')
+    add_part_arguments(starter, f'the `{MOST_CHARACTERS_KEY}` in the {PREFERENCES_RELATIVE.as_posix()} of the project the plan names')
     return run
 
-
 def run(args: argparse.Namespace) -> None:
-    print_start(args.session_id, not args.without_skill, args.part, args.most_characters)
+    get_task_init_context(args.task_id, not args.without_skill, args.part, args.most_characters)

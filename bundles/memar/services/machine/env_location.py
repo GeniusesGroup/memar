@@ -17,46 +17,31 @@ it. Which is why the reading and the writing here name the same place, and why
 this is the only read of the variable in this folder.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_memar_repository = plugable_load('computer.filesystem.services.fs_memar_repository')
+is_memar_repository = _m_fs_memar_repository.is_memar_repository
+not_a_repository = _m_fs_memar_repository.not_a_repository
 import os
 import re
 import sys
 from pathlib import Path
-
-
 from machine.console import fail, note
-from machine.fs_memar_repository import is_memar_repository, not_a_repository
-
-VARIABLE = "MEMAR_ROOT"
-# On Windows the user's environment is this one registry key, and both the read
-# and the write name it here, so the two cannot drift apart.
-WINDOWS_ENVIRONMENT_KEY = "Environment"
-# The markers the earlier shell installers wrote, kept verbatim so this script
-# replaces that block instead of appending a second export of the same name.
-PROFILE_BEGIN = f"# >>> {VARIABLE} (written by Memar .agents/scripts/install.sh) >>>"
-PROFILE_END = f"# <<< {VARIABLE} <<<"
-# The last assignment in the profile is the one a new shell ends up with, whether
-# this script wrote it in its managed block or a person wrote it by hand.
-PROFILE_ASSIGNMENT = re.compile(rf"^\s*(?:export\s+)?{VARIABLE}\s*=\s*(.*?)\s*$")
-INSTALL_HINT = (
-    "run install.sh (POSIX) or install.ps1 (Windows) — the bootstrap in this "
-    "folder, which a consuming project's AGENTS.md also names — or set "
-    f"{VARIABLE} yourself for this session"
-)
-# Whether a disagreement has already been reported, so a value read several
-# times in one run is reported once rather than once per read.
+VARIABLE = 'MEMAR_ROOT'
+WINDOWS_ENVIRONMENT_KEY = 'Environment'
+PROFILE_BEGIN = f'# >>> {VARIABLE} (written by Memar .agents/scripts/install.sh) >>>'
+PROFILE_END = f'# <<< {VARIABLE} <<<'
+PROFILE_ASSIGNMENT = re.compile(f'^\\s*(?:export\\s+)?{VARIABLE}\\s*=\\s*(.*?)\\s*$')
+INSTALL_HINT = f"run install.sh (POSIX) or install.ps1 (Windows) — the bootstrap in this folder, which a consuming project's AGENTS.md also names — or set {VARIABLE} yourself for this session"
 NOTICE_REPORTED = False
 
-
 def shell_profile() -> Path:
-    shell = Path(os.environ.get("SHELL", ""))
+    shell = Path(os.environ.get('SHELL', ''))
     name = shell.name
-    if name == "bash":
-        return Path.home() / ".bashrc"
-    if name == "zsh":
-        return Path.home() / ".zshrc"
-    return Path.home() / ".profile"
-
+    if name == 'bash':
+        return Path.home() / '.bashrc'
+    if name == 'zsh':
+        return Path.home() / '.zshrc'
+    return Path.home() / '.profile'
 
 def expand_recorded(value: str) -> str:
     """A recorded value with the variables Windows expands in it expanded.
@@ -67,22 +52,20 @@ def expand_recorded(value: str) -> str:
     """
     return os.path.expandvars(value).strip()
 
-
 def profile_value() -> str:
     """What the user's shell profile records, or nothing."""
     try:
-        text = shell_profile().read_text(encoding="utf-8")
+        text = shell_profile().read_text(encoding='utf-8')
     except OSError:
-        return ""
-    value = ""
+        return ''
+    value = ''
     for line in text.splitlines():
         found = PROFILE_ASSIGNMENT.match(line)
         if found:
             value = found.group(1)
-    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+    if len(value) >= 2 and value[0] == value[-1] and (value[0] in '"\''):
         value = value[1:-1]
     return value
-
 
 def user_environment_value() -> str:
     """What the registry-backed user environment records, or nothing.
@@ -92,17 +75,13 @@ def user_environment_value() -> str:
     backslash is not the same thing, and reports no value rather than a wrong one.
     """
     import winreg
-
     try:
-        with winreg.OpenKey(
-            winreg.HKEY_CURRENT_USER, WINDOWS_ENVIRONMENT_KEY, 0, winreg.KEY_QUERY_VALUE
-        ) as key:
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, WINDOWS_ENVIRONMENT_KEY, 0, winreg.KEY_QUERY_VALUE) as key:
             value, kind = winreg.QueryValueEx(key, VARIABLE)
     except OSError:
-        return ""
+        return ''
     text = str(value)
     return expand_recorded(text) if kind == winreg.REG_EXPAND_SZ else text.strip()
-
 
 def persisted_value() -> str:
     """What the platform's own record of the variable holds, or nothing.
@@ -110,10 +89,9 @@ def persisted_value() -> str:
     This is the record: what a program started *now* would be given, whether or
     not this one was started before it was written.
     """
-    if os.name == "nt":
+    if os.name == 'nt':
         return user_environment_value()
     return profile_value()
-
 
 def write_profile_variable(value: str) -> Path:
     """Write the managed block, replacing it as a unit so re-running rewrites
@@ -121,9 +99,9 @@ def write_profile_variable(value: str) -> Path:
     profile = shell_profile()
     line = f'export {VARIABLE}="{value}"'
     try:
-        original = profile.read_text(encoding="utf-8")
+        original = profile.read_text(encoding='utf-8')
     except OSError:
-        original = ""
+        original = ''
     kept: list[str] = []
     inside = False
     for existing in original.splitlines():
@@ -135,30 +113,22 @@ def write_profile_variable(value: str) -> Path:
                 inside = False
             continue
         kept.append(existing)
-    while kept and not kept[-1].strip():
+    while kept and (not kept[-1].strip()):
         kept.pop()
     block = [PROFILE_BEGIN, line, PROFILE_END]
     profile.parent.mkdir(parents=True, exist_ok=True)
-    profile.write_text("\n".join([*kept, "", *block, ""]), encoding="utf-8")
+    profile.write_text('\n'.join([*kept, '', *block, '']), encoding='utf-8')
     return profile
 
-
 def write_user_variable(value: str) -> str:
-    if os.name == "nt":
+    if os.name == 'nt':
         import winreg
-
-        # [Environment]::SetEnvironmentVariable(..., "User") from PowerShell is
-        # this registry key; write it directly rather than through setx, whose
-        # 1024-character value limit silently truncates long paths.
         access = winreg.KEY_SET_VALUE | winreg.KEY_QUERY_VALUE
-        with winreg.CreateKeyEx(
-            winreg.HKEY_CURRENT_USER, WINDOWS_ENVIRONMENT_KEY, 0, access
-        ) as key:
+        with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, WINDOWS_ENVIRONMENT_KEY, 0, access) as key:
             winreg.SetValueEx(key, VARIABLE, 0, winreg.REG_EXPAND_SZ, value)
         return "the current user's environment (HKCU\\Environment)"
     profile = write_profile_variable(value)
     return str(profile)
-
 
 def report_stale_session(record: str, session: str) -> None:
     """Say that this session's copy disagrees with the record, and that the
@@ -168,12 +138,7 @@ def report_stale_session(record: str, session: str) -> None:
     if NOTICE_REPORTED:
         return
     NOTICE_REPORTED = True
-    note(
-        f"warning: {VARIABLE} in this session's environment disagrees with the "
-        f"record, so the record is used: recorded {record}, this session "
-        f"{session or 'unset'}"
-    )
-
+    note(f"warning: {VARIABLE} in this session's environment disagrees with the record, so the record is used: recorded {record}, this session {session or 'unset'}")
 
 def recorded_value() -> str:
     """What the variable says, or nothing. The only read of it in this folder.
@@ -185,11 +150,10 @@ def recorded_value() -> str:
     it. The two are never merged, and never averaged.
     """
     record = persisted_value()
-    session = os.environ.get(VARIABLE, "").strip()
+    session = os.environ.get(VARIABLE, '').strip()
     if record and record != session:
         report_stale_session(record, session)
     return record or session
-
 
 def recorded_root() -> Path | None:
     """The checkout the variable names, or None.
@@ -204,7 +168,6 @@ def recorded_root() -> Path | None:
     path = Path(value).expanduser()
     return path if is_memar_repository(path) else None
 
-
 def resolve_root() -> Path:
     """The checkout the variable names, or stop saying what to do about it.
 
@@ -214,19 +177,11 @@ def resolve_root() -> Path:
     """
     value = recorded_value()
     if not value:
-        fail(
-            f"{VARIABLE} is not set, so where Memar lives on this machine is not "
-            f"recorded anywhere; {INSTALL_HINT}."
-        )
+        fail(f'{VARIABLE} is not set, so where Memar lives on this machine is not recorded anywhere; {INSTALL_HINT}.')
     path = Path(value).expanduser()
     if not is_memar_repository(path):
-        fail(
-            f"{VARIABLE} points at {value}, and {not_a_repository(path)}. Nothing "
-            f"else is tried: {INSTALL_HINT}; to keep it, point {VARIABLE} at a "
-            f"Memar repository you already have."
-        )
+        fail(f'{VARIABLE} points at {value}, and {not_a_repository(path)}. Nothing else is tried: {INSTALL_HINT}; to keep it, point {VARIABLE} at a Memar repository you already have.')
     return path.resolve()
-
 
 def refuse_bogus_value() -> None:
     """A value that is set but names no Memar repository is reported, never
@@ -235,11 +190,4 @@ def refuse_bogus_value() -> None:
     value = recorded_value()
     if not value or recorded_root() is not None:
         return
-    fail(
-        f"{VARIABLE} is set to {value}, and "
-        f"{not_a_repository(Path(value).expanduser())}. It was left as it is. "
-        f"Clear it and run this again — on POSIX `unset {VARIABLE}` in your shell "
-        f"profile, on Windows "
-        f"[Environment]::SetEnvironmentVariable('{VARIABLE}', $null, 'User') — or "
-        f"point it at a Memar repository."
-    )
+    fail(f"{VARIABLE} is set to {value}, and {not_a_repository(Path(value).expanduser())}. It was left as it is. Clear it and run this again — on POSIX `unset {VARIABLE}` in your shell profile, on Windows [Environment]::SetEnvironmentVariable('{VARIABLE}', $null, 'User') — or point it at a Memar repository.")

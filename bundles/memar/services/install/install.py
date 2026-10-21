@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""bundles/memar/install/install.py — `memar install`: record where Memar lives, then settle the machine and everything around it.
+"""bundles/memar/services/install/install.py — `memar install`: record where Memar lives, then settle the machine and everything around it.
 
 **Two audiences, two texts, and this file is where each lives.** `description`
 below is what `memar install --help` prints: it is addressed to whoever is
@@ -60,58 +60,21 @@ the variable nor the editor.
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from importlib import import_module
+_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+checkout_root = _m_fs_memar.checkout_root
 import argparse
 import sys
 import traceback
 from typing import Callable
-
-VERB = "install"
-SUMMARY = "put Memar on this machine, and into the project you name"
+VERB = 'install'
+SUMMARY = 'put Memar on this machine, and into the project you name'
 
 def description() -> str:
     """What `memar install --help` prints; built when the verb runs, so the two project flags come from their types without a top-level import."""
     from modules.process.project.primitive.project_name import ProjectName
     from modules.process.project.primitive.project_path import ProjectPath
-
-    return f"""memar install — put Memar on this machine, and into the project you name
-
-One run installs three layers, in the only order that works:
-
-  - onto this machine: where Memar lives, the `memar` command on your PATH, and
-    the editor extensions this checkout ships;
-  - into the project you name with {ProjectName.either_words()}, if it is one,
-    and the project is registered with Memar under its folder's name (a project
-    already registered is left as it is; a name another project holds is
-    reported, and nothing is renamed);
-    the folder you run it from is never read, so with none named this layer says so;
-  - into the AI agent apps this machine has.
-
-Each layer prints what it did. Running it again is safe and costs nothing: a
-layer with nothing to do says so.
-
-If Memar is already installed, a bare run says where it is and stops.
-
-What you must do afterwards: **restart your shell and your editor.** Where Memar
-lives is written as an environment variable, and a program that was already
-running when it was written does not read it.
-
-This needs Python 3 and a Memar checkout. If you do not have one, run
-`install.sh` (POSIX) or `install.ps1` (Windows) first — those fetch the
-checkout, and this runs from inside it.
-
-Getting Memar somewhere else, or asking whether a folder would be accepted:
-
-    memar install --register ~/src/memar   point Memar at a checkout you already have
-    memar install --check /tmp/Memar       would an install there be refused? writes nothing
-    memar install --root                  print where Memar is, one line
-    memar install {ProjectName.FLAG} {ProjectName.METAVAR}           also put Memar into that project: a name `memar project`
-                                          knows
-    memar install {ProjectPath.FLAG} {ProjectPath.METAVAR}     also put Memar into the project whose folder is {ProjectPath.METAVAR}
-    memar install --machine-only          settle this machine and skip the project and the apps
-    memar install --developer             you develop Memar in this checkout: no update moves it
-"""
-
+    return f"memar install — put Memar on this machine, and into the project you name\n\nOne run installs three layers, in the only order that works:\n\n  - onto this machine: where Memar lives, the `memar` command on your PATH, and\n    the editor extensions this checkout ships;\n  - into the project you name with {ProjectName.either_words()}, if it is one,\n    and the project is registered with Memar under its folder's name (a project\n    already registered is left as it is; a name another project holds is\n    reported, and nothing is renamed);\n    the folder you run it from is never read, so with none named this layer says so;\n  - into the AI agent apps this machine has.\n\nEach layer prints what it did. Running it again is safe and costs nothing: a\nlayer with nothing to do says so.\n\nIf Memar is already installed, a bare run says where it is and stops.\n\nWhat you must do afterwards: **restart your shell and your editor.** Where Memar\nlives is written as an environment variable, and a program that was already\nrunning when it was written does not read it.\n\nThis needs Python 3 and a Memar checkout. If you do not have one, run\n`install.sh` (POSIX) or `install.ps1` (Windows) first — those fetch the\ncheckout, and this runs from inside it.\n\nGetting Memar somewhere else, or asking whether a folder would be accepted:\n\n    memar install --register ~/src/memar   point Memar at a checkout you already have\n    memar install --check /tmp/Memar       would an install there be refused? writes nothing\n    memar install --root                  print where Memar is, one line\n    memar install {ProjectName.FLAG} {ProjectName.METAVAR}           also put Memar into that project: a name `memar project`\n                                          knows\n    memar install {ProjectPath.FLAG} {ProjectPath.METAVAR}     also put Memar into the project whose folder is {ProjectPath.METAVAR}\n    memar install --machine-only          settle this machine and skip the project and the apps\n    memar install --developer             you develop Memar in this checkout: no update moves it\n"
 
 def ask_layer(answer: Callable[[], object]) -> int:
     """Run one layer in this process; the exit status it would have ended a process with.
@@ -129,13 +92,12 @@ def ask_layer(answer: Callable[[], object]) -> int:
             return stopped.code
         print(stopped.code, file=sys.stderr)
         return 1
-    except Exception:  # noqa: BLE001 - a broken layer must not cost the run the layers after it
+    except Exception:
         traceback.print_exc()
         return 1
     return 0
 
-
-def into_project_and_apps(project=None, *, dry_run: bool = False) -> None:
+def into_project_and_apps(project=None, *, dry_run: bool=False) -> None:
     """Put Memar into PROJECT, when one is named, and into the agent apps, in that order.
 
     The order is the dependency, not a preference: copying the skill into the
@@ -145,24 +107,19 @@ def into_project_and_apps(project=None, *, dry_run: bool = False) -> None:
     project, and `install_project` already refuses the home directory.
     """
     from machine.console import step
-    from bundles.memar.install.services import apps as install_apps
-    from bundles.memar.install.services import apps_mcp as install_apps_mcp
-    from bundles.memar.install.services import project as install_project
-
-    step("Into this project")
+    from bundles.memar.services.install.services import apps as install_apps
+    from bundles.memar.services.install.services import apps_mcp as install_apps_mcp
+    from bundles.memar.services.install.services import project as install_project
+    step('Into this project')
     ask_layer(lambda: install_project.into_project(project, dry_run=dry_run))
-    step("Into the agent apps")
+    step('Into the agent apps')
     ask_layer(lambda: install_apps.into_apps(dry_run=dry_run))
     ask_layer(lambda: install_apps_mcp.into_apps(dry_run=dry_run))
 
-
 def run(args: argparse.Namespace) -> int:
     from machine.env_location import recorded_root
-    from machine.fs_memar import checkout_root
-    from bundles.memar.install.services import machine
-
+    from bundles.memar.services.install.services import machine
     from modules.process.project.services.find import project_from_args
-
     project = project_from_args(args)
     if args.check:
         machine.check(args.check)
@@ -177,69 +134,25 @@ def run(args: argparse.Namespace) -> int:
         machine.register(args.register)
         into_project_and_apps(project, dry_run=args.dry_run)
         return 0
-    # A named folder is a deliberate act and is carried out. With none named, the
-    # only question left is whether Memar is already on this machine, and it is
-    # answered against the record rather than by a caller that may hold a stale
-    # copy of the variable.
     installed = recorded_root()
     if installed is not None:
-        machine.report_installed(installed)
-        # An existing install is exactly the case where the project and app
-        # layers are wanted: re-running is how a project picks up a change made
-        # in the checkout it was installed from.
+        machine.report_installed(installed, dry_run=args.dry_run)
         if not args.machine_only:
             into_project_and_apps(project, dry_run=args.dry_run)
         return 0
-    # Nothing is recorded, or nothing recorded is a Memar repository, and
-    # refuse_bogus_value has said so about the second case. What is left to
-    # record is the checkout this file is in.
     machine.register(str(checkout_root()))
     into_project_and_apps(project, dry_run=args.dry_run)
     return 0
 
-
 def describe(verbs) -> Callable[[argparse.Namespace], int]:
     parser = verbs.add_parser(VERB, help=SUMMARY, description=description())
     group = parser.add_mutually_exclusive_group()
-    group.add_argument(
-        "--register",
-        metavar="PATH",
-        help="record PATH as where Memar lives; it must be a Memar repository",
-    )
-    group.add_argument(
-        "--check",
-        metavar="PATH",
-        help="say whether PATH would be refused as temporary, and stop",
-    )
-    group.add_argument(
-        "--root",
-        action="store_true",
-        help="print where Memar is, one line, and stop; for a program that "
-             "needs to find it",
-    )
-    group.add_argument(
-        "--developer",
-        action="store_true",
-        help="mark the checkout Memar is recorded at as one you develop, so the "
-             "daily update never moves it, and stop",
-    )
+    group.add_argument('--register', metavar='PATH', help='record PATH as where Memar lives; it must be a Memar repository')
+    group.add_argument('--check', metavar='PATH', help='say whether PATH would be refused as temporary, and stop')
+    group.add_argument('--root', action='store_true', help='print where Memar is, one line, and stop; for a program that needs to find it')
+    group.add_argument('--developer', action='store_true', help='mark the checkout Memar is recorded at as one you develop, so the daily update never moves it, and stop')
     from modules.process.project.services.find import add_project_flags
-
-    add_project_flags(
-        parser,
-        "the project to put Memar into; without either no project is written, and the folder the "
-        "command runs in is not read",
-    )
-    parser.add_argument(
-        "--machine-only",
-        action="store_true",
-        help="settle the machine and stop; skip this project and the agent apps",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="passed to the project and app layers, which print what they would "
-             "write instead of writing it; the machine layer is never dry, "
-             "because refusing to record a location is not a dry run of one",
-    )
+    add_project_flags(parser, 'the project to put Memar into; without either no project is written, and the folder the command runs in is not read')
+    parser.add_argument('--machine-only', action='store_true', help='settle the machine and stop; skip this project and the agent apps')
+    parser.add_argument('--dry-run', action='store_true', help='passed to the project and app layers, which print what they would write instead of writing it; the machine layer is never dry, because refusing to record a location is not a dry run of one')
     return run

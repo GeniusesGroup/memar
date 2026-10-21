@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the day a review is asked for, in `modules/process/session/services/day.py`.
+"""Tests for the day a review is asked for, in `modules/management/task/services/day.py`.
 
-    python modules/process/session/tests/day.py
+    python modules/management/task/tests/day.py
 
 The subject is how a day is named on the command line and which day a session
 belongs to, named for the file that holds it per
@@ -24,7 +24,9 @@ What is pinned, and what each pin is for:
                  belongs to no day.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import os
 import sys
 import tempfile
@@ -32,37 +34,33 @@ import time
 import unittest
 from datetime import date, timedelta
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import modules.process.session.services.day as session_day
-
+import modules.management.task.services.day as session_day
 
 class DayNamed(unittest.TestCase):
+
     def test_today_yesterday_and_a_date_name_a_day(self) -> None:
         today = date(2026, 10, 13)
-        self.assertEqual(session_day.parse_day("today", today), today)
-        self.assertEqual(session_day.parse_day("Yesterday", today), today - timedelta(days=1))
-        self.assertEqual(session_day.parse_day("2026-10-01", today), date(2026, 10, 1))
+        self.assertEqual(session_day.parse_day('today', today), today)
+        self.assertEqual(session_day.parse_day('Yesterday', today), today - timedelta(days=1))
+        self.assertEqual(session_day.parse_day('2026-10-01', today), date(2026, 10, 1))
 
     def test_anything_else_is_refused_saying_what_is_accepted(self) -> None:
-        for text in ("lately", "2026-13-01", "13/10/2026", ""):
+        for text in ('lately', '2026-13-01', '13/10/2026', ''):
             with self.subTest(text=text), self.assertRaises(SystemExit):
                 session_day.parse_day(text, date(2026, 10, 13))
 
-
 class DayOfSession(unittest.TestCase):
+
     def test_a_session_belongs_to_the_day_of_its_latest_change(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             folder = Path(scratch)
-            note = folder / "note.md"
-            note.write_text("x", encoding="utf-8")
+            note = folder / 'note.md'
+            note.write_text('x', encoding='utf-8')
             earlier = time.time() - 5 * 24 * 60 * 60
             os.utime(folder, (earlier, earlier))
             self.assertEqual(session_day.day_of(folder), date.today())
@@ -70,8 +68,6 @@ class DayOfSession(unittest.TestCase):
             self.assertEqual(session_day.day_of(folder), date.fromtimestamp(earlier))
 
     def test_a_folder_that_cannot_be_read_belongs_to_no_day(self) -> None:
-        self.assertIsNone(session_day.day_of(Path("this") / "does" / "not" / "exist"))
-
-
-if __name__ == "__main__":
+        self.assertIsNone(session_day.day_of(Path('this') / 'does' / 'not' / 'exist'))
+if __name__ == '__main__':
     unittest.main()

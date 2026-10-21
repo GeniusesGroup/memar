@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""host/git.py — a git operation with the constraint a session keeps violating.
+"""modules-plugable/computer/git/services/_host_git_cli.py — a git operation with the constraint a session keeps violating.
 
 **Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
 below is what `--help` prints, and each verb's `description=` and the `help=`
@@ -10,7 +10,7 @@ states its own work, never another verb's. Both are addressed to whoever is
 about to run one of these — usually an agent holding uncommitted work. Everything
 from here down is addressed to whoever opens this file.
 
-**Frozen (the owner, 2026-10-17).** Git is a sink the project means to leave, so no new idea is added to this file or to `host/git_*.py`
+**Frozen (the owner, 2026-10-17).** Git is a sink the project means to leave, so no new idea is added to this file or to `computer/git/services/_*.py`
 unless it is indispensable; a session-id rule in a commit message is accepted as it stands and is not refined. A change here
 states in one line why it is indispensable.
 
@@ -30,7 +30,7 @@ capability:
 
   remove   Stop tracking a path without `git rm`. `git rm` deletes in a way
            that is hard to recover from. This command sends the working-tree
-           path to the OS Recycle Bin / Trash via `fs.py trash`, then stages
+           path to the OS Recycle Bin / Trash via `filesystem/services/trash.py`, then stages
            the disappearance with `git add -u` so the index matches.
 
   stash    Park uncommitted work (tracked + untracked, not ignored) so a
@@ -67,7 +67,7 @@ capability:
            a path, which is how one session's hunk is committed out of a file
            another session is also editing. Hooks do not run. Every commit
            names the sessions it carries out (`git_sessions.py`): the caller
-           gives each with `--session-id`, `memar session show` must find it,
+           gives each with `--task-id`, `memar git show-task-records` must find it,
            and the verb writes a `Session:` trailer for it; one that cites none
            is refused unless it says `--no-session`.
 
@@ -111,7 +111,7 @@ capability:
   record   Commit files onto a branch other than the one checked out, without
            touching HEAD, the shared index or the working tree: a branch that
            keeps a record out of the history of the work (the session records
-           `memar session archive` keeps). It is the plumbing of `commit`
+           `memar git archive-task-records` keeps). It is the plumbing of `commit`
            pointed at another branch — a private index read from that
            branch's tip, blobs written byte for byte, a commit object, and
            `update-ref` against the tip it read, so a writer that got there
@@ -139,62 +139,57 @@ away.
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path
-
-SCRIPTS = Path(__file__).resolve().parent.parent
-if str(SCRIPTS) not in sys.path:
-    sys.path.insert(0, str(SCRIPTS))
-
-from host import (
-    git_commit,
-    git_record,
-    git_reindex,
-    git_remove,
-    git_rename,
-    git_restore,
-    git_stash,
-    git_uncommit,
-    git_undelete,
-)
+_REPO = Path(__file__).resolve().parents[4]
+if __package__ in (None, ''):
+    for _folder in (_REPO, _REPO / 'bundles' / 'memar'):
+        if str(_folder) not in sys.path:
+            sys.path.insert(0, str(_folder))
+    __package__ = 'modules-plugable.computer.git.services'
+from . import _commit as git_commit, _record as git_record, _reindex as git_reindex, _remove as git_remove, _rename as git_rename, _restore as git_restore, _stash as git_stash, _uncommit as git_uncommit, _undelete as git_undelete
 from machine.console import use_utf8_stdio
-
-DESCRIPTION = """host/git.py — git operations that do not lose work
+DESCRIPTION = '''modules-plugable/computer/git/services/_host_git_cli.py — git operations that do not lose work
 
 Git already does all of this. Each command here does it with the constraint a
 session keeps wanting to skip, and says which in its own --help.
 
-One thing git does that looks like a bug: a file that matches `.gitignore` but
+Deleting, moving, discarding, stashing, restoring, and committing go through
+this file and the path-invoked services under
+modules-plugable/computer/filesystem/services/ (tree, trash, link,
+history_move_glob, and the fs_*.py libraries beside them). Never the host's
+own command for those acts — rm, Remove-Item, git rm, git restore, git checkout
+of paths, git clean, a plain git commit — and never a command a runtime rewrites.
+Run each with Python by path inside the checkout; none is a memar verb.
+
+In a working tree other sessions share, commit only this session's paths. The
+records of the task's sessions are not among them: memar git archive-task-records
+keeps them on the records branch. Every commit names the sessions it carries
+out with --task-id for each, or says --no-session; the message itself names
+none. Commits follow the whole piece of work, by area (usually the top folder
+a change lies in), staged in place from git status and git diff --stat; a
+sub-agent never commits. A move rides with the commit while git still sees a
+rename; otherwise commit the move alone first. Run memar content check on the
+files the work changed before the commit, and commit only when it reports no
+problems. When a commit stops partway, do what its message says; never delete
+a lock file to get past one. Every verb that acts on a repository takes
+--repository PATH and never reads the folder it is run from. If these files
+are not at hand or do not cover the act, stop and say so.
+
+One thing git does that looks like a bug: a file that matches .gitignore but
 is already tracked still shows up as modified. Ignoring does not untrack, and
 restoring it away is not the fix.
-"""
-
+'''
 
 def main() -> int:
     use_utf8_stdio()
-    parser = argparse.ArgumentParser(
-        description=DESCRIPTION,
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
-    sub = parser.add_subparsers(dest="command", required=True)
-    for verb in (
-        git_rename,
-        git_remove,
-        git_stash,
-        git_restore,
-        git_undelete,
-        git_commit,
-        git_uncommit,
-        git_reindex,
-        git_record,
-    ):
+    parser = argparse.ArgumentParser(description=DESCRIPTION, formatter_class=argparse.RawDescriptionHelpFormatter)
+    sub = parser.add_subparsers(dest='command', required=True)
+    for verb in (git_rename, git_remove, git_stash, git_restore, git_undelete, git_commit, git_uncommit, git_reindex, git_record):
         verb.add_parser(sub)
     args = parser.parse_args()
     args.run(args)
     return 0
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     raise SystemExit(main())

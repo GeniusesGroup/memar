@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/claim.py — a queued session made one agent's, by its id.
+"""modules/management/task/services/claim.py — a queued session made one agent's, by its id.
 
 Why a claim. A conversation queues sessions instead of working them in its own
 context (`queued`: planned, owned by no one), and an agent later takes some of
@@ -18,7 +18,7 @@ tried on several sessions in turn, so it takes each through `try_claim` here,
 which says why a session was not taken instead of failing; one place takes a
 session, not two that could take it two ways.
 
-What a claim is, and why it lapses, is the type's (`modules/process/session/primitive/claim.py`). A claim
+What a claim is, and why it lapses, is the type's (`modules/management/task/primitive/claim.py`). A claim
 still unfinished past its life is taken as a dead agent's: a later claim takes it
 over. A takeover is itself taken by exclusive create, and held from before the
 stale claim is dropped until the new claim exists, so two takers racing over one
@@ -29,10 +29,9 @@ session and when. It stays when the session ends; once the plan is complete or
 blocked the claim decides nothing, since only a queued session is claimed, and
 a session left active by a sub-agent that ran out is either handed again by the
 agent holding it or, once the claim has lapsed, queued again
-(`new --session-id ID --queued`).
+(`new --task-id ID --queued`).
 """
 from __future__ import annotations
-
 import argparse
 import os
 import socket
@@ -40,39 +39,33 @@ import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
-
 from machine.console import fail, note
-from modules.process.session.primitive.claim import Claim
+from modules.management.task.primitive.claim import Claim
 from modules.knowledge.documentation.primitive.status import Status
-from modules.process.session.services.folder import folder_of, is_session_folder
-from modules.process.session.services.temp import TEMP_SENTENCE
+from modules.management.task.services.folder import folder_of, is_task_folder
+from modules.management.task.services.temp import TEMP_SENTENCE
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_file_problem, read_plan
-from modules.process.session.services.plan_status import set_status
-from modules.process.session.services.depends import refusal as dependency_refusal
-
-CLAIM_COMMAND = "claim"
-
+from modules.knowledge.documentation.plan.services.status import set_status
+from modules.management.task.services.depends import refusal as dependency_refusal
+CLAIM_COMMAND = 'claim'
 
 def claim_path(folder: Path) -> Path:
     return Claim(folder).path
-
 
 def is_claimed(folder: Path) -> bool:
     """Whether FOLDER holds a claim that has not gone stale."""
     return Claim(folder).is_fresh()
 
-
 def _create_claim(folder: Path) -> str | None:
     """Create FOLDER's claim by exclusive create; None when this caller made it, else why not."""
     claim = claim_path(folder)
-    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    stamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     try:
-        with claim.open("x", encoding="utf-8", newline="\n") as written:
+        with claim.open('x', encoding='utf-8', newline='\n') as written:
             written.write(Claim.body(stamp, socket.gethostname(), os.getpid()))
     except FileExistsError:
-        return f"session {folder.name} is claimed by another agent; its claim is in {claim}"
+        return f'session {folder.name} is claimed by another agent; its claim is in {claim}'
     return None
-
 
 def _take_over(folder: Path) -> str | None:
     """Replace FOLDER's stale claim with this caller's, holding the takeover until it exists; None when done, else why not.
@@ -94,12 +87,12 @@ def _take_over(folder: Path) -> str | None:
     except OSError:
         pass
     try:
-        takeover.open("x").close()
+        takeover.open('x').close()
     except FileExistsError:
-        return f"session {folder.name} is being taken over by another agent"
+        return f'session {folder.name} is being taken over by another agent'
     try:
         if is_claimed(folder):
-            return f"session {folder.name} is claimed by another agent; its claim is in {claim_path(folder)}"
+            return f'session {folder.name} is claimed by another agent; its claim is in {claim_path(folder)}'
         try:
             claim_path(folder).unlink()
         except FileNotFoundError:
@@ -107,7 +100,6 @@ def _take_over(folder: Path) -> str | None:
         return _create_claim(folder)
     finally:
         takeover.unlink()
-
 
 def try_claim(folder: Path) -> str | None:
     """Make FOLDER's session this caller's: queued (or active under a stale claim) becomes active, claimed; None when it did, else why not.
@@ -125,10 +117,10 @@ def try_claim(folder: Path) -> str | None:
     """
     plan = folder / PLAN_NAME
     if not plan.is_file():
-        return f"{folder} has no {PLAN_NAME}, so there is no task to claim"
+        return f'{folder} has no {PLAN_NAME}, so there is no task to claim'
     shape = plan_file_problem(plan)
     if shape:
-        return f"session {folder.name}: {shape}"
+        return f'session {folder.name}: {shape}'
     unmet = dependency_refusal(folder, CLAIM_COMMAND)
     if unmet:
         return unmet
@@ -136,22 +128,18 @@ def try_claim(folder: Path) -> str | None:
     claim = claim_path(folder)
     held = claim.exists()
     if held and is_claimed(folder):
-        return f"session {folder.name} is claimed by another agent; its claim is in {claim}"
-    if status != Status.QUEUED.key and not (status == Status.ACTIVE.key and held):
+        return f'session {folder.name} is claimed by another agent; its claim is in {claim}'
+    if status != Status.QUEUED.key and (not (status == Status.ACTIVE.key and held)):
         return f"session {folder.name} is not queued (its status is {status or 'none'}), so it is not free to claim"
     why = _take_over(folder) if held else _create_claim(folder)
     if why:
         return why
-    # The claim is this caller's alone, so the status is moved only from what
-    # made it free; a plan someone changed meanwhile is left as they made it,
-    # and the claim taken back.
     try:
         set_status(plan, Status.ACTIVE.key, expected=(Status.QUEUED.key, Status.ACTIVE.key))
     except SystemExit as refused:
         claim.unlink(missing_ok=True)
-        return str(refused.code).removeprefix("error: ")
+        return str(refused.code).removeprefix('error: ')
     return None
-
 
 def claim_folder(folder: Path) -> None:
     """Make FOLDER's session this caller's, as `try_claim` does; refused, with why, when it is not taken."""
@@ -159,35 +147,21 @@ def claim_folder(folder: Path) -> None:
     if why:
         fail(why)
 
-
-def claim(session_id: str) -> None:
-    """`claim`: claim SESSION_ID's session and say so."""
-    folder = folder_of(session_id)
-    if not is_session_folder(folder):
-        fail(f"no session folder {session_id}")
+def claim(task_id: str) -> None:
+    """`claim`: claim TASK_ID's session and say so."""
+    folder = folder_of(task_id)
+    if not is_task_folder(folder):
+        fail(f'no session folder {task_id}')
     claim_folder(folder)
-    print(f"claimed {session_id}")
-    note(f"claim: {claim_path(folder)}")
+    print(f'claimed {task_id}')
+    note(f'claim: {claim_path(folder)}')
     note(TEMP_SENTENCE)
 
-
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar session claim`."""
-    claimer = verbs.add_parser(
-        CLAIM_COMMAND,
-        help="take one queued session by its id, so no other agent takes it",
-        description=(
-            "Take the queued session ID for yourself: its status becomes active and a\n"
-            "claim is left in its folder, saying who took the task. A session that is\n"
-            "not queued, or that another agent holds, is refused. Nothing keeps a\n"
-            f"claim fresh, so a claim older than {Claim.stale_hours()} hours is a dead agent's, and is\n"
-            "taken over: the task can then be taken again or queued again. Use it\n"
-            "to take one named task; `claims N` takes the N first in line instead."
-        ),
-    )
-    claimer.add_argument("session_id", metavar="ID", help="the queued session to claim")
+    """`memar task claim`."""
+    claimer = verbs.add_parser(CLAIM_COMMAND, help='take one queued session by its id, so no other agent takes it', description=f"Take the queued session ID for yourself: its status becomes active and a\nclaim is left in its folder, saying who took the task. A session that is\nnot queued, or that another agent holds, is refused. Nothing keeps a\nclaim fresh, so a claim older than {Claim.stale_hours()} hours is a dead agent's, and is\ntaken over: the task can then be taken again or queued again. Use it\nto take one named task; `claims N` takes the N first in line instead.")
+    claimer.add_argument('task_id', metavar='ID', help='the queued session to claim')
     return run
 
-
 def run(args: argparse.Namespace) -> None:
-    claim(args.session_id)
+    claim(args.task_id)

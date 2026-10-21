@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/concerns.py — what a plan gives away about work that looks finished or abandoned yet is not complete.
+"""modules/management/task/services/concerns.py — what a plan gives away about work that looks finished or abandoned yet is not complete.
 
 Why this exists. The sweep moves only `complete` sessions, because idle is not
 finished and a folder is what carries an unfinished task to the next session.
@@ -22,26 +22,19 @@ not named twice. A complete session raises nothing, however it looks, and a plan
 the earlier sectioned form is not judged by a Request or by steps it never had.
 """
 from __future__ import annotations
-
 import re
-
 from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
 from modules.knowledge.documentation.primitive.status import Status
-from modules.process.session.services.folder import Session, measured_idle
+from modules.management.task.services.folder import Session, measured_idle
 from modules.knowledge.documentation.plan.services.plan import is_complete, part_text
 from modules.knowledge.documentation.report.services.report import report_shape_problem
-
-# How long an empty Request may sit before it is read as abandoned rather than
-# not yet written.
 EMPTY_REQUEST_IDLE_DAYS = 1
-_CHECKBOX = re.compile(r"^\s*[-*]\s+\[([ xX])\]")
-
+_CHECKBOX = re.compile('^\\s*[-*]\\s+\\[([ xX])\\]')
 
 def all_steps_checked(steps: str) -> bool:
     """Whether STEPS, a plan's Steps text, holds at least one checkbox and every one is checked."""
     boxes = [match.group(1) for line in steps.splitlines() if (match := _CHECKBOX.match(line))]
-    return bool(boxes) and all(box != " " for box in boxes)
-
+    return bool(boxes) and all((box != ' ' for box in boxes))
 
 def concerns(session: Session) -> list[str]:
     """The reasons SESSION looks finished or abandoned though it is not done; none for a sound or unreadable one."""
@@ -53,16 +46,16 @@ def concerns(session: Session) -> list[str]:
             found.append(problem)
     if session.shape or session.front is None or is_complete(session.status):
         return found
-    plan = session.path / "plan.md"
+    plan = session.path / 'plan.md'
     if not session.status:
-        found.append("it has no status")
+        found.append('it has no status')
     try:
         if session.status == Status.ACTIVE.key and all_steps_checked(part_text(plan, PlanPart.STEPS.heading)):
-            found.append("every step is checked, yet the status is active")
+            found.append('every step is checked, yet the status is active')
         if not part_text(plan, PlanPart.REQUEST.heading):
             idle = measured_idle(session.path)
             if idle is not None and idle >= EMPTY_REQUEST_IDLE_DAYS:
-                found.append(f"its Request is empty and nothing has changed for {idle:.1f} days")
+                found.append(f'its Request is empty and nothing has changed for {idle:.1f} days')
     except OSError:
         pass
     return found

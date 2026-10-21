@@ -57,8 +57,7 @@ type.
 
 **What it routes to is what Memar itself does**, and nothing else. A tool that
 constrains a host tool the framework has no claim to does not belong on the
-shelf — see [`host/README.md`](./host/README.md) for why the path carries that
-claim instead.
+shelf — see `modules-plugable/computer/git/services/_host_git_cli.py` root `--help` for why path-invoked constraint scripts stay off the router.
 
 Two launchers carry this file: this one, executable where a file may be, and
 `memar.cmd` beside it for a Windows shell that will not run a file without a
@@ -81,25 +80,27 @@ SCRIPTS = Path(__file__).resolve().parent
 # The checkout's top too: a module under `modules/` that holds code (its `primitive/` types) is imported by its
 # path from there, `modules.content.documentation...`, so the top is on the search path as this folder is.
 TOP = SCRIPTS.parent.parent
-for folder in (TOP, SCRIPTS):
+for folder in (TOP, SCRIPTS, SCRIPTS / "services"):
     if str(folder) not in sys.path:
         sys.path.insert(0, str(folder))
 
 from machine.console import use_utf8_stdio
-from machine.fs_memar import role_folders
+from machine.plugable_import import load as plugable_load
+
+role_folders = plugable_load("computer.filesystem.services.fs_memar").role_folders
 
 SERVICES = "services"
 DESCRIBE = "describe"
 # Where modules are looked for, each with the folder its modules' import addresses start from: the checkout's top,
 # under which the kernel modules stand in `modules/`, the pluggable ones in `modules-plugable/`, and the bundles in
-# `bundles/`; or this folder, which is on the search path too and holds provisional modules (the scripts README says
-# which); and the folders inside a module that are not modules: the role folders the module-skeleton profile
+# `bundles/`; or this folder (`bundles/memar`), which is on the search path too and holds provisional
+# modules the router shelves here; and the folders inside a module that are not modules: the role folders the module-skeleton profile
 # declares, asked of it and never copied here, and the folders the toolchains keep, which are the router's own.
 SEARCHED_ROOTS = (
     ("modules", "."),
     ("modules-plugable", "."),
     ("bundles", "."),
-    (".agents/scripts", ".agents/scripts"),
+    ("bundles/memar/services", "."),
 )
 NOT_MODULES = frozenset({SERVICES, *role_folders(), "node_modules", "__pycache__"})
 # A module that has a command-line face keeps it in a file named by its folder (`session/session.py`);
@@ -120,9 +121,11 @@ Each verb's own help defines the words that are its own."""
 
 EPILOG = """Ask any verb with `--help` and it says what it accepts.
 
-Before deleting, moving, restoring, or committing files, or putting text into a
-file, read the scripts README — .agents/scripts/README.md in the Memar
-checkout — and act as it says."""
+Before deleting, moving, restoring, or committing files, use
+`modules-plugable/computer/git/services/_host_git_cli.py` and the services under
+`modules-plugable/computer/filesystem/services/` for delete, move, restore, and
+commit. For putting text into a file, use `memar content write` and
+`memar content edit`."""
 
 
 class Verbs:

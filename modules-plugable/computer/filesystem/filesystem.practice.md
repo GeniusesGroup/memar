@@ -1,6 +1,6 @@
 ---
 name: filesystem
-description: replaces the default assumption that a system needs a filesystem with an explicit, per-concern need-check and recorded decision
+description: replaces the default assumption that a system needs a filesystem with an explicit, per-concern need-check and recorded decision; use when files, paths, or folders appear in a draft model, a substrate dependency is chosen for a component, a domain model mirrors a directory layout, a tool's requirement is about to become an architectural premise, or a storage decision is inherited unexamined. Not the argument against the default, which filesystem.md holds, and not the design of the storage chosen
 ---
 
 # Filesystem Practice
@@ -50,7 +50,7 @@ Answer each question about **one concern at a time** — the answer may differ p
 ---
 
 ## Recording the Decision
-The outcome — full dependency, projection-only, or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../../framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
+The outcome — full dependency, projection-only, or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../../docs/framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
 
 ---
 

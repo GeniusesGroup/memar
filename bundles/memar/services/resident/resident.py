@@ -7,22 +7,9 @@ The command's side is `machine/resident.py` (it asks, starts and falls back); th
 itself and what a person does to it. Its sub-verbs are in `services/`.
 """
 from __future__ import annotations
-
 import argparse
-
-COMMAND = "resident"
-
+COMMAND = 'resident'
 
 def describe(verbs):
-    verbs.add_parser(
-        COMMAND,
-        help="the resident process that answers `memar` calls without starting Memar again",
-        description=(
-            "The resident process: Memar loaded once, answering the `memar` command from a local socket.\n"
-            "A call hands itself over to it, starting it if none runs and doing that one call in\n"
-            "place; MEMAR_SERVER=0 keeps a call in its own process. It ends after\n"
-            "a while without a call, and the next call starts it again."
-        ),
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-    )
+    verbs.add_parser(COMMAND, help='the resident process that answers `memar` calls without starting Memar again', description='The resident process: Memar loaded once, answering the `memar` command from a local socket.\nA call hands itself over to it, starting it if none runs and doing that one call in\nplace; MEMAR_SERVER=0 keeps a call in its own process. It ends after\na while without a call, and the next call starts it again.', formatter_class=argparse.RawDescriptionHelpFormatter)
     return None

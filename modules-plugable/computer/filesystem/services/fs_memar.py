@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""machine/fs_memar.py — where Memar lives on disk: the one home for location answers.
+"""modules-plugable/computer/filesystem/services/fs_memar.py — where Memar lives on disk: the one home for location answers.
 
 Every script that needs a Memar path — the checkout, the recorded root, the
 scratch root, a session folder — asks here instead of recomputing it. One need,
@@ -9,61 +9,59 @@ one method: a second copy of any of these answers is a second truth about where
 things are, and the two drift.
 
 It also owns the names of the folders Memar keeps inside a checkout. Those were
-spelled out in three files that each had a copy — the scripts folder the command
-goes on PATH from, the skill folder the app layer copies, the extensions folder
-the editor layer writes — and a rename in one would have left the other two
-pointing at a folder that no longer exists.
+spelled out in three files that each had a copy — the shelf the `memar` router
+lives on (which install puts on PATH), the bootstrap folder under `.agents/scripts`,
+the skill folder the app layer copies, the extensions folder the editor layer
+writes — and a rename in one would have left the others pointing at a folder
+that no longer exists.
 """
 from __future__ import annotations
 
+from importlib import import_module
 from pathlib import Path
-
 from machine.console import fail
 from machine.env_location import recorded_root
-from machine.fs_memar_repository import is_memar_repository
+
+_m_fs_memar_repository = import_module("modules-plugable.computer.filesystem.services.fs_memar_repository")
+is_memar_repository = _m_fs_memar_repository.is_memar_repository
 
 # The folder Memar's own configuration lives in, relative to a checkout root.
 AGENTS_DIRNAME = ".agents"
-# The one agent-scratch root every session's folder lives under. Named here
-# because this is the module that joins a root to a scratch path, not because
-# the string belongs to the idea of scratch on its own.
-TEMP_DIRNAME = "temp"
-# The sessions' own folder inside it, so a session folder is never a sibling of
-# the locks, the test scratch, or whatever else scratch holds.
-SESSIONS_DIRNAME = "sessions"
-# Memar's earlier record of the folders outside it that projects have had
-# session folders made in, one path a line. Locations now live on the project's
-# entry in projects.log; this file is not read, only noticed.
-PROJECT_SESSIONS_NAME = "sessions.projects"
-# Memar's registry of the projects it is told about, one a line, at the root of
-# its temp and not inside the sessions folder: it names projects, not sessions.
-PROJECTS_LOG_NAME = "projects.log"
+# TEMP_FOLDER: spelled once here. Module and lock scratch; never part of a record;
+# install gitignores a folder of this name at any depth; a task folder's own temp/ is never archived.
+TEMP_FOLDER = 'temp'
+TEMP_DIRNAME = TEMP_FOLDER
+# Live and archived task folders share this name under `.agents/` (owner, 2026-10-20):
+# not under temp/, so a branch switch or clean cannot drop the work without git noticing.
+TASKS_DIRNAME = 'tasks'
+SESSIONS_DIRNAME = TASKS_DIRNAME  # older import name; same folder
+PROJECT_SESSIONS_NAME = 'tasks.projects'
+PROJECTS_LOG_NAME = 'projects.log'
+SCRIPTS_RELATIVE = Path(AGENTS_DIRNAME) / 'scripts'
+LAUNCHER_RELATIVE = Path('bundles') / 'memar'
+SKILL_RELATIVE = Path(AGENTS_DIRNAME) / 'skills' / 'memar'
+EXTENSIONS_RELATIVE = Path(AGENTS_DIRNAME) / 'vscode' / 'extensions'
+CONSUMER_README_RELATIVE = Path(AGENTS_DIRNAME) / 'memar' / 'README.md'
+AGENTS_INDEX_RELATIVE = Path(AGENTS_DIRNAME) / 'README.md'
+RECORDS_RELATIVE = Path(AGENTS_DIRNAME) / TASKS_DIRNAME
+RECORDS_BRANCH = 'dev-knowledge'
+PUBLISHED_REPOSITORY = 'GeniusesGroup/memar'
+PUBLISH_BRANCH = 'main'
+PUBLISHED_PAGES = f'https://github.com/{PUBLISHED_REPOSITORY}/blob/{PUBLISH_BRANCH}/'
+MODULE_SKELETON = 'modules-plugable.knowledge.module-skeleton.services.ensure_folders'
 
-# The layout inside a checkout. Each is a path relative to the root, so a caller
-# joins it to a checkout rather than spelling the join again.
-SCRIPTS_RELATIVE = Path(AGENTS_DIRNAME) / "scripts"
-SKILL_RELATIVE = Path(AGENTS_DIRNAME) / "skills" / "memar"
-EXTENSIONS_RELATIVE = Path(AGENTS_DIRNAME) / "vscode" / "extensions"
-CONSUMER_README_RELATIVE = Path(AGENTS_DIRNAME) / "memar" / "README.md"
-AGENTS_INDEX_RELATIVE = Path(AGENTS_DIRNAME) / "README.md"
-# Where a project keeps the records of its sessions (`modules/process/session/services/archive.py`):
-# one folder per session id, in the tree of the branch below, not in the tree
-# of the work. The path is what it was when the folders were committed with the
-# work, so the records read the same wherever they are kept.
-RECORDS_RELATIVE = Path(AGENTS_DIRNAME) / SESSIONS_DIRNAME
-# The branch of a project's own repository that holds its sessions' records.
-# The one place the name is spelled: no agent sees it, only
-# `memar` commands do, so it can change later by changing this line.
-RECORDS_BRANCH = "dev-knowledge"
-# Where Memar is published: its repository on GitHub, and the branch it ships on.
-# The address of a published page and the address a project downloads Memar from
-# are both built from these two, so a project's link to a passage of Memar and the
-# install command cannot name two repositories.
-PUBLISHED_REPOSITORY = "GeniusesGroup/memar"
-PUBLISH_BRANCH = "main"
-# A page of the published checkout is this, then its path from the checkout's top.
-PUBLISHED_PAGES = f"https://github.com/{PUBLISHED_REPOSITORY}/blob/{PUBLISH_BRANCH}/"
+def role_folders() -> tuple[str, ...]:
+    """The role folders' names the module-skeleton profile declares; none when that pluggable module is absent.
 
+    For the tools that walk a checkout and must not take a module's role folder
+    for a module of its own (the router, the module-graph test). Imported only
+    when asked, and the checkout's top must be on the search path.
+    """
+    import importlib
+    try:
+        return tuple(importlib.import_module(MODULE_SKELETON).ROLE_FOLDERS)
+    except ModuleNotFoundError:
+        return ()
 
 def checkout_root() -> Path:
     """The checkout this file is in: the parent of `.agents`.
@@ -74,7 +72,6 @@ def checkout_root() -> Path:
     checkout's own, so the checkout is its parent.
     """
     return Path(__file__).resolve().parents[3]
-
 
 def memar_root() -> Path:
     """The Memar root scratch lives under: recorded MEMAR_ROOT else this checkout.
@@ -89,36 +86,35 @@ def memar_root() -> Path:
     checkout = checkout_root()
     if is_memar_repository(checkout):
         return checkout
-    fail(
-        "cannot resolve a Memar root for scratch: MEMAR_ROOT names no Memar "
-        "repository and this file runs inside no checkout either. Record one "
-        "(memar install) or run from inside a checkout; nothing was guessed."
-    )
-
+    fail('cannot resolve a Memar root for scratch: MEMAR_ROOT names no Memar repository and this file runs inside no checkout either. Record one (memar install) or run from inside a checkout; nothing was guessed.')
 
 def scratch_root() -> Path:
-    """The ONE agent-scratch root all session scratch lives under: <root>/temp/."""
+    """The ONE scratch root for locks and short-lived work: <root>/temp/."""
     root = memar_root() / TEMP_DIRNAME
     root.mkdir(parents=True, exist_ok=True)
     return root
 
-
 def sessions_root() -> Path:
-    """The folder every session's folder lives in: <root>/temp/sessions/."""
-    root = scratch_root() / SESSIONS_DIRNAME
-    root.mkdir(exist_ok=True)
+    """The folder every live task folder lives in: <root>/.agents/tasks/.
+
+    Same relative path as archived records on `RECORDS_BRANCH` (`RECORDS_RELATIVE`).
+    Not under temp/: the folder is visible to git so a mistaken clean or branch
+    switch cannot drop the work without a chance to stage or recover it.
+    """
+    root = memar_root() / RECORDS_RELATIVE
+    root.mkdir(parents=True, exist_ok=True)
     return root
 
+tasks_root = sessions_root
 
 def project_sessions_registry() -> Path:
-    """The earlier file listing the project folders session folders were made in: <root>/temp/sessions/sessions.projects.
+    """The earlier file listing the project folders task folders were made in: <root>/.agents/tasks/tasks.projects.
 
-    The core only notices it (`session_location`) and never reads it: a
+    The core only notices it (`task_location`) and never reads it: a
     location it lists is recorded on its project's entry in `projects_log()`
-    again when a session is next made or continued there.
+    again when a task is next made or continued there.
     """
     return sessions_root() / PROJECT_SESSIONS_NAME
-
 
 def projects_log() -> Path:
     """The registry of projects and their names: <root>/temp/projects.log.
@@ -129,17 +125,16 @@ def projects_log() -> Path:
     """
     return scratch_root() / PROJECTS_LOG_NAME
 
-
-def session_dir(session_id: str, *, create: bool = False) -> Path:
-    """The folder of one session, under the sessions root. No guessing, no creation.
+def task_dir(task_id: str, *, create: bool=False) -> Path:
+    """The folder of one task, under the tasks root. No guessing, no creation.
 
     The id names one folder segment, never a path: anything else is refused
     rather than resolved. Pass create=True only where the caller owns the
-    session lifecycle; readers of another session's folder never create.
+    task lifecycle; readers of another task's folder never create.
     """
-    if not session_id or session_id in (".", "..") or "/" in session_id or "\\" in session_id:
-        fail(f"refusing session id {session_id!r}: name one folder segment, not a path.")
-    path = sessions_root() / session_id
+    if not task_id or task_id in ('.', '..') or '/' in task_id or ('\\' in task_id):
+        fail(f'refusing task id {task_id!r}: name one folder segment, not a path.')
+    path = sessions_root() / task_id
     if create:
         path.mkdir(parents=True, exist_ok=True)
     return path

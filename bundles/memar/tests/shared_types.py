@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests that each shared service fact has one home, across `.agents/scripts`.
+"""Tests that each shared service fact has one home, across `bundles/memar`.
 
-    python .agents/scripts/tests/shared_types.py
+    python bundles/memar/tests/shared_types.py
 
 The subject is the rule [A Fact in Code Is Written Once](../../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)
 applied to the facts the services share: a session id, a project's name and its
@@ -29,77 +29,49 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
 import re
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
 SCRIPTS = TESTS.parent
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-# The scripts' own source: machine and the router, never a test and
-# never host (host/ wraps tools the machine has and imports nothing from services); and the Python
-# a module under `modules/`, `modules-plugable/`, or `bundles/memar/` holds, which is where a documentation
-# type's home is.
-SHELVES = ("machine",)
+SHELVES = ('machine',)
 TOP = SCRIPTS.parent.parent
-
+SERVICES = SCRIPTS / 'services'
 
 def sources() -> dict[str, str]:
     found: dict[str, str] = {}
     for shelf in SHELVES:
-        for path in sorted((SCRIPTS / shelf).glob("*.py")):
-            found[f"{shelf}/{path.name}"] = path.read_bytes().decode("utf-8")
-    for top in ("modules", "modules-plugable", "bundles/memar"):
-        for path in sorted((TOP / top).rglob("*.py")):
+        for path in sorted((SERVICES / shelf).glob('*.py')):
+            found[f'services/{shelf}/{path.name}'] = path.read_bytes().decode('utf-8')
+    for top in ('modules', 'modules-plugable', 'bundles/memar'):
+        for path in sorted((TOP / top).rglob('*.py')):
             relative = path.relative_to(TOP)
-            if "tests" not in relative.parts and "__pycache__" not in relative.parts:
-                found[relative.as_posix()] = path.read_bytes().decode("utf-8")
-    found["memar"] = (SCRIPTS / "memar").read_bytes().decode("utf-8")
+            if 'tests' not in relative.parts and '__pycache__' not in relative.parts:
+                found[relative.as_posix()] = path.read_bytes().decode('utf-8')
+    found['memar'] = (SCRIPTS / 'memar').read_bytes().decode('utf-8')
     return found
-
-
-# (what the fact is, a pattern that spells it, the one file that may)
-SPELLINGS = (
-    ("a priority's bounds and default as names", r"\b(?:LOWEST|HIGHEST|DEFAULT)_PRIORITY\b", "modules/knowledge/documentation/plan/primitive/priority.py"),
-    ("a priority's range as words", r"\b1 to 10\b", "modules/knowledge/documentation/plan/primitive/priority.py"),
-    ("the form of a session id", r"\\d\{8\}-T", "modules/process/session/primitive/session_id.py"),
-    ("the clock format of a session id", r"%Y%m%d-T", "modules/process/session/primitive/session_id.py"),
-    ("a claim's file name as a name", r"\bCLAIM_(?:NAME|TAKEOVER_NAME|STALE_SECONDS)\b", "modules/process/session/primitive/claim.py"),
-    ("a claim's takeover guard", r"claim\.takeover", "modules/process/session/primitive/claim.py"),
-    ("the flag that carries a project's name", r"[\"']--project[\"']", "modules/process/project/primitive/project_name.py"),
-    ("the flag that carries a project's path", r"[\"']--project-path[\"']", "modules/process/project/primitive/project_path.py"),
-    ("the old flag names", r"\b(?:NAME|PATH)_FLAG\b", "services/none.py"),
-    ("the attribute a parser gives the path flag", r"getattr\(args, [\"']project_path[\"']", "services/none.py"),
-    ("a plan's key read as a string", r"\.get\(\"(?:title|project|parent|conversation|opened|priority|topic|kind|session)\"", "services/none.py"),
-    ("the key of a plan's dependencies, as a string literal", r"[\"']depends_on[\"']", "modules/knowledge/documentation/plan/primitive/plan_key.py"),
-    ("the written key of a plan's dependencies", r"[\"']Depends_on[\"']", "services/none.py"),
-    ("the inverse of a plan's dependencies", r"[\"']Depends_for[\"']", "modules/process/session/services/dependency.py"),
-    ("a plan's priority or topic helper by its old name", r"\b(?:priority_of|checked_priority|normalized_topic|checked_topic|topic_of|new_session_id|is_session_id)\b", "services/none.py"),
-)
-
+SPELLINGS = (("a priority's bounds and default as names", '\\b(?:LOWEST|HIGHEST|DEFAULT)_PRIORITY\\b', 'modules/knowledge/documentation/plan/primitive/priority.py'), ("a priority's range as words", '\\b1 to 10\\b', 'modules/knowledge/documentation/plan/primitive/priority.py'), ('the form of a session id', '\\\\d\\{8\\}-T', 'modules/management/task/primitive/task_id.py'), ('the clock format of a session id', '%Y%m%d-T', 'modules/management/task/primitive/task_id.py'), ("a claim's file name as a name", '\\bCLAIM_(?:NAME|TAKEOVER_NAME|STALE_SECONDS)\\b', 'modules/management/task/primitive/claim.py'), ("a claim's takeover guard", 'claim\\.takeover', 'modules/management/task/primitive/claim.py'), ("the flag that carries a project's name", '[\\"\']--project[\\"\']', 'modules/process/project/primitive/project_name.py'), ("the flag that carries a project's path", '[\\"\']--project-path[\\"\']', 'modules/process/project/primitive/project_path.py'), ('the old flag names', '\\b(?:NAME|PATH)_FLAG\\b', 'services/none.py'), ('the attribute a parser gives the path flag', 'getattr\\(args, [\\"\']project_path[\\"\']', 'services/none.py'), ("a plan's key read as a string", '\\.get\\(\\"(?:title|project|parent|conversation|opened|priority|topic|kind|session)\\"', 'services/none.py'), ("the key of a plan's dependencies, as a string literal", '[\\"\']depends_on[\\"\']', 'modules/knowledge/documentation/plan/primitive/plan_key.py'), ("the written key of a plan's dependencies", '[\\"\']Depends_on[\\"\']', 'services/none.py'), ("the inverse of a plan's dependencies", '[\\"\']Depends_for[\\"\']', 'modules/management/task/services/dependency.py'), ("a plan's priority or topic helper by its old name", '\\b(?:priority_of|checked_priority|normalized_topic|checked_topic|topic_of|new_task_id|is_task_id)\\b', 'services/none.py'))
 
 class OneHome(unittest.TestCase):
+
     def test_each_fact_is_spelled_only_in_its_home(self) -> None:
         files = sources()
         for fact, pattern, home in SPELLINGS:
             with self.subTest(fact=fact):
                 regex = re.compile(pattern)
-                outside = sorted(name for name, text in files.items() if name != home and regex.search(text))
-                self.assertEqual(outside, [], f"{fact} is spelled outside {home}")
+                outside = sorted((name for name, text in files.items() if name != home and regex.search(text)))
+                self.assertEqual(outside, [], f'{fact} is spelled outside {home}')
 
     def test_the_homes_exist_and_spell_what_they_own(self) -> None:
         files = sources()
         for fact, pattern, home in SPELLINGS:
-            if home.endswith("none.py"):
+            if home.endswith('none.py'):
                 continue
             with self.subTest(fact=fact):
                 self.assertIn(home, files)
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main(verbosity=2)

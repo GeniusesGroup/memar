@@ -19,18 +19,15 @@ differs, the generation number goes up: idle workers end, busy ones end when the
 a worker made of the code as it is.
 """
 from __future__ import annotations
-
 import threading
 import time
 from pathlib import Path
-
 from mcp.services.serve import Worker, fingerprint
-
 WORKER_IDLE_SECONDS = 300.0
 
-
 class Pool:
-    def __init__(self, top: Path, scripts: Path, most: int, check_every: float = 1.0, wait: float = 4.0) -> None:
+
+    def __init__(self, top: Path, scripts: Path, most: int, check_every: float=1.0, wait: float=4.0) -> None:
         self.top = top
         self.scripts = scripts
         self.most = max(1, most)
@@ -55,7 +52,7 @@ class Pool:
                 if self.code is not None and code != self.code:
                     with self.condition:
                         self.generation += 1
-                        stale, self.idle = self.idle, []
+                        stale, self.idle = (self.idle, [])
                     for worker, _ in stale:
                         self._end(worker)
                 self.code = code
@@ -70,7 +67,7 @@ class Pool:
                 if self.closed:
                     return None
                 if self.idle:
-                    return self.idle.pop()[0], generation
+                    return (self.idle.pop()[0], generation)
                 if self.live < self.most:
                     self.live += 1
                     break
@@ -79,7 +76,7 @@ class Pool:
                     return None
                 self.condition.wait(left)
         try:
-            return Worker(self.top, self.scripts), generation
+            return (Worker(self.top, self.scripts), generation)
         except OSError:
             with self.condition:
                 self.live -= 1
@@ -89,7 +86,7 @@ class Pool:
     def release(self, worker: Worker, generation: int, healthy: bool) -> None:
         """Give WORKER back after its call: kept idle if it is sound and of the code as it is now, else ended."""
         with self.condition:
-            if healthy and not self.closed and generation == self.generation:
+            if healthy and (not self.closed) and (generation == self.generation):
                 self.idle.append((worker, time.monotonic()))
                 self.condition.notify()
                 return
@@ -128,7 +125,7 @@ class Pool:
     def close(self) -> None:
         with self.condition:
             self.closed = True
-            stale, self.idle = self.idle, []
+            stale, self.idle = (self.idle, [])
             self.condition.notify_all()
         for worker, _ in stale:
             self._end(worker)

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for changing a session's priority, in `modules/process/session/services/priority.py`.
+"""Tests for changing a session's priority, in `modules/management/task/services/priority.py`.
 
-    python modules/process/session/tests/priority.py
+    python modules/management/task/tests/priority.py
 
-The subject is `memar session priority ID N` — anyone, a person or an agent,
+The subject is `memar task priority ID N` — anyone, a person or an agent,
 moving a session up or down the line `claims` takes from — named for the file
 that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -16,7 +16,7 @@ The ruling it holds is the owner's of 2026-10-12, recorded in session
 and anyone may change it.
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one, made under the folder `machine/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py`
 names.
 
 What is pinned, and what each pin is for:
@@ -27,7 +27,11 @@ What is pinned, and what each pin is for:
                   session that is not there, is refused and nothing changes.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+memar_fs = _m_fs_memar
 import contextlib
 import io
 import sys
@@ -35,67 +39,56 @@ import tempfile
 import unittest
 import unittest.mock
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import machine.fs_memar as memar_fs
 import modules.knowledge.documentation.plan.services.plan as session_plan
-import modules.process.session.services.plan_priority as session_plan_priority
-import modules.process.session.services.priority as session_priority
+import modules.knowledge.documentation.plan.services.priority as session_plan_priority
+import modules.management.task.services.priority as session_priority
 from modules.knowledge.documentation.plan.primitive.priority import Priority
 
-
 class SetPriority(unittest.TestCase):
+
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
-        patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=Path(self.scratch.name))
+        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=Path(self.scratch.name))
         patched.start()
         self.addCleanup(patched.stop)
 
     def session(self, sid: str, status: str) -> Path:
-        folder = memar_fs.session_dir(sid)
+        folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        (folder / session_plan.PLAN_NAME).write_text(
-            f"---\nTitle: T\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n---\n# T\n\n## Request\nx\n",
-            encoding="utf-8",
-            newline="\n",
-        )
+        (folder / session_plan.PLAN_NAME).write_text(f'---\nTitle: T\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n---\n# T\n\n## Request\nx\n', encoding='utf-8', newline='\n')
         return folder
 
     def plan(self, folder: Path) -> session_plan.Plan:
         return session_plan.read_plan(folder / session_plan.PLAN_NAME)
 
     def test_the_verb_writes_the_priority_and_says_what_it_was(self) -> None:
-        for index, status in enumerate(("queued", "active", "blocked")):
+        for index, status in enumerate(('queued', 'active', 'blocked')):
             with self.subTest(status=status):
-                folder = self.session(f"20261012T06000{index}Z-1-0", status)
+                folder = self.session(f'20261012T06000{index}Z-1-0', status)
                 out = io.StringIO()
                 with contextlib.redirect_stdout(out):
-                    session_priority.set_session_priority(folder.name, "8")
-                self.assertIn(f"{folder.name}  priority 8, was 5", out.getvalue())
+                    session_priority.set_session_priority(folder.name, '8')
+                self.assertIn(f'{folder.name}  priority 8, was 5', out.getvalue())
                 plan = self.plan(folder)
                 self.assertEqual(Priority.of(plan.front), 8)
                 self.assertEqual(plan.status, status)
-                self.assertEqual(plan.front["title"], "T")
+                self.assertEqual(plan.front['title'], 'T')
 
     def test_a_priority_outside_1_to_10_or_a_missing_session_is_refused(self) -> None:
-        folder = self.session("20261012T060010Z-1-0", "queued")
+        folder = self.session('20261012T060010Z-1-0', 'queued')
         before = (folder / session_plan.PLAN_NAME).read_bytes()
-        for value in ("0", "11", "soon"):
+        for value in ('0', '11', 'soon'):
             with self.subTest(value=value):
                 with self.assertRaises(SystemExit):
                     session_priority.set_session_priority(folder.name, value)
         self.assertEqual((folder / session_plan.PLAN_NAME).read_bytes(), before)
         with self.assertRaises(SystemExit):
-            session_priority.set_session_priority("20261012T060011Z-1-0", "3")
-
-
-if __name__ == "__main__":
+            session_priority.set_session_priority('20261012T060011Z-1-0', '3')
+if __name__ == '__main__':
     unittest.main()

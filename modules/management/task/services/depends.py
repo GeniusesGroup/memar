@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/services/depends.py — the verb `memar session depends-on`, and the Status a session's dependencies give it.
+"""modules/management/task/services/depends.py — the verb `memar task depends-on`, and the Status a session's dependencies give it.
 
 What a dependency is, when it is met, and how it is checked is the type's
-(`modules/process/session/services/dependency.py`); writing the key is `session_plan_depends`. This file
+(`modules/management/task/services/dependency.py`); writing the key is `session_plan_depends`. This file
 decides what the key does to a session, and says it.
 
 The Status of a session with dependencies. An unmet `Depends_on` makes the
@@ -37,29 +37,26 @@ each stands; one that no longer resolves keeps it unclaimable until the key is
 dropped, and the refusal says so.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
 from pathlib import Path
 from typing import Iterable
-
-from modules.process.session.services.dependency import ARROW, DEPENDS_FOR, DependsOn, Reader, dependents
-from modules.process.session.services.folder import Session, read_session
-from modules.process.session.services.log import log_path, record
+from modules.management.task.services.dependency import ARROW, DEPENDS_FOR, DependsOn, Reader, dependents
+from modules.management.task.services.folder import Session, read_session
+_m_log = plugable_load('computer.git.services.log')
+log_path = _m_log.log_path
+record = _m_log.record
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.process.session.services.plan_status import set_status
+from modules.knowledge.documentation.plan.services.status import set_status
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 from modules.knowledge.documentation.primitive.status import Status
-
-DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace("_", "-")
-# What the session log records when a session is blocked for its dependencies, and when it is released.
-BLOCKED_EVENT = "blocked-by-dependency"
-RELEASED_EVENT = "released-by-dependency"
-
+DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace('_', '-')
+BLOCKED_EVENT = 'blocked-by-dependency'
+RELEASED_EVENT = 'released-by-dependency'
 
 def home_of(session: Session) -> Path | None:
     """The project SESSION's plan names, when it is a folder that is there; where its local references are looked for."""
-    named = (session.front or {}).get(PlanKey.PROJECT.key, "").strip()
+    named = (session.front or {}).get(PlanKey.PROJECT.key, '').strip()
     return Path(named) if named and Path(named).is_dir() else None
-
 
 def problems(session: Session, reader: Reader) -> list[str]:
     """Why SESSION's dependencies are not met, one reason each, a cycle among them; none when it has none or all are met."""
@@ -70,22 +67,20 @@ def problems(session: Session, reader: Reader) -> list[str]:
     reasons = reader.unmet(refs, home)
     path = reader.cycle(session.id, refs, home)
     if path:
-        reasons.append(f"a dependency cycle {ARROW.join(path)}")
+        reasons.append(f'a dependency cycle {ARROW.join(path)}')
     return reasons
-
 
 def blocked_by_memar(folder: Path) -> bool:
     """Whether the session log's last word on FOLDER's session about its dependencies is that Memar blocked it."""
     try:
-        lines = log_path(folder).read_text(encoding="utf-8").splitlines()
+        lines = log_path(folder).read_text(encoding='utf-8').splitlines()
     except (OSError, UnicodeDecodeError):
         return False
     for line in reversed(lines):
-        fields = line.split("\t")
-        if len(fields) >= 3 and fields[2] == folder.name and fields[1] in (BLOCKED_EVENT, RELEASED_EVENT):
+        fields = line.split('\t')
+        if len(fields) >= 3 and fields[2] == folder.name and (fields[1] in (BLOCKED_EVENT, RELEASED_EVENT)):
             return fields[1] == BLOCKED_EVENT
     return False
-
 
 def reconcile(session: Session, reader: Reader) -> str:
     """Bring SESSION's Status up to date with its dependencies, as the module says; the Status it has now."""
@@ -93,31 +88,28 @@ def reconcile(session: Session, reader: Reader) -> str:
         return session.status
     if session.status not in (Status.QUEUED.key, Status.BLOCKED.key):
         return session.status
-    if not DependsOn.of(session.front) and not (session.status == Status.BLOCKED.key and blocked_by_memar(session.path)):
+    if not DependsOn.of(session.front) and (not (session.status == Status.BLOCKED.key and blocked_by_memar(session.path))):
         return session.status
     unmet = problems(session, reader)
     plan = session.path / PLAN_NAME
     try:
         if unmet and session.status == Status.QUEUED.key:
             set_status(plan, Status.BLOCKED.key, expected=(Status.QUEUED.key,))
-            record(BLOCKED_EVENT, session.id, "; ".join(unmet), folder=session.path)
+            record(BLOCKED_EVENT, session.id, '; '.join(unmet), folder=session.path)
             return Status.BLOCKED.key
         if not unmet and session.status == Status.BLOCKED.key and blocked_by_memar(session.path):
             set_status(plan, Status.QUEUED.key, expected=(Status.BLOCKED.key,))
-            record(RELEASED_EVENT, session.id, "", folder=session.path)
+            record(RELEASED_EVENT, session.id, '', folder=session.path)
             return Status.QUEUED.key
     except SystemExit:
-        # Another writer changed the plan meanwhile; what is there now is theirs.
         return read_session(session.path).status
     return session.status
-
 
 def reconcile_all(sessions: Iterable[Session]) -> None:
     """`reconcile` each of SESSIONS that has dependencies, with one reader so each cited session is read once."""
     reader = Reader(None)
     for session in sessions:
         reconcile(session, reader)
-
 
 def refusal(folder: Path, act: str) -> str | None:
     """Why the session at FOLDER cannot be ACT'ed (`claim`, `start`) for its dependencies, naming each; None when it can.
@@ -132,33 +124,27 @@ def refusal(folder: Path, act: str) -> str | None:
     reconcile(session, reader)
     if not unmet:
         return None
-    return (
-        f"session {session.id} depends on {', '.join(unmet)}, so it cannot be {act}ed until each is Complete; "
-        f"a dependency that cannot be found stays until it is dropped with `memar session {DEPENDS_COMMAND} {session.id} --drop REF`"
-    )
-
+    return f"session {session.id} depends on {', '.join(unmet)}, so it cannot be {act}ed until each is Complete; a dependency that cannot be found stays until it is dropped with `memar task {DEPENDS_COMMAND} {session.id} --drop REF`"
 
 def labelled(refs: DependsOn, reader: Reader, home: Path | None) -> str:
     """REFS each with where it stands, `ref (state)`, as the plan's key is shown."""
     parts = []
     for ref in refs:
         found = reader.find(ref, home)
-        state = found.split(":")[0] if isinstance(found, str) else ("complete" if found.met else found.state)
-        parts.append(f"{ref} ({state})")
-    return ", ".join(parts)
-
+        state = found.split(':')[0] if isinstance(found, str) else 'complete' if found.met else found.state
+        parts.append(f'{ref} ({state})')
+    return ', '.join(parts)
 
 def notes_for(session: Session, reader: Reader, everyone: Iterable[Session]) -> list[str]:
     """The lines `list` shows under SESSION for its dependencies and for the sessions that depend on it; none when it has neither."""
     refs = DependsOn.of(session.front)
     lines = []
     if refs:
-        lines.append(f"{PlanKey.DEPENDS_ON.written}: {labelled(refs, reader, home_of(session))}")
+        lines.append(f'{PlanKey.DEPENDS_ON.written}: {labelled(refs, reader, home_of(session))}')
     cited_by = dependents(session.id, everyone)
     if cited_by:
         lines.append(f"{DEPENDS_FOR}: {', '.join(cited_by)}")
     return lines
-
 
 def concerns_for(session: Session, reader: Reader) -> list[str]:
     """What SESSION's dependencies say that its reader should know: a cycle, a dependency that cannot be found, and a blocked session that can resume."""
@@ -170,12 +156,12 @@ def concerns_for(session: Session, reader: Reader) -> list[str]:
     for ref in refs:
         why = reader.find(ref, home)
         if isinstance(why, str):
-            found.append(f"{PlanKey.DEPENDS_ON.written} {ref}: {why}; it stays unclaimable until the key is dropped")
+            found.append(f'{PlanKey.DEPENDS_ON.written} {ref}: {why}; it stays unclaimable until the key is dropped')
     path = reader.cycle(session.id, refs, home)
     if path:
-        found.append(f"{PlanKey.DEPENDS_ON.written} makes a cycle: {ARROW.join(path)}")
-    if session.status == Status.BLOCKED.key and not problems(session, reader):
-        found.append(f"blocked, and every {PlanKey.DEPENDS_ON.written} is Complete: it can resume")
+        found.append(f'{PlanKey.DEPENDS_ON.written} makes a cycle: {ARROW.join(path)}')
+    if session.status == Status.BLOCKED.key and (not problems(session, reader)):
+        found.append(f'blocked, and every {PlanKey.DEPENDS_ON.written} is Complete: it can resume')
     elif session.status == Status.BLOCKED.key:
-        found.append(f"blocked by {PlanKey.DEPENDS_ON.written}: " + "; ".join(problems(session, reader)))
+        found.append(f'blocked by {PlanKey.DEPENDS_ON.written}: ' + '; '.join(problems(session, reader)))
     return found

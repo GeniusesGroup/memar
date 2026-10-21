@@ -55,6 +55,13 @@ From the Task section *(open)* bullet above, plus consolidated list items about 
 2. Full Task edge/label taxonomy including Decision-as-label semantics.
 4. Logical-snapshot tooling, and whether any real need for global-state entities survives.
 
+### The twelve Task rules, and what of `process/session` belongs here
+- State: the twelve rule folders stand under `modules-plugable/management/task/rules/` — a second placement for this module's name, with no main document and no manifest — while this handoff and `task.changelog.md` record them as Task's rules. Owner 2026-10-20: after full migration of services, `modules/process/session` is **deleted**; the word *session* in modules is only the OSI Session layer (`modules/net/protocol/osi_5-session.kh`); `memar task` verbs go too. Migration session `20261020-T131909Z-22300` carries the inventory and destination table (opened when Decision 4 of `20261019-T133400Z-4624` had assumed a session that did not exist).
+- Options: (1) move the twelve rule folders into `modules/management/task/rules/`, the role folder of this module — the reading the owner's words favour, since the rules state what a Task is; (2) make them a pluggable capability with its own name, main document and manifest.
+- Anchor: `modules-plugable/management/task/rules/`; deletion of `modules/process/session` after migration.
+- Blocks: implement `20261020-T163035Z-14292` (table + task-id); then naming/git-shelf `20261020-T180133Z-19180`; then scripts `20261020-T163034Z-14292`.
+- Asked: 2026-10-19, by session 20261019-T133400Z-4624; deletion end-state ruled 2026-10-20 in coordinator `20261020-T131818Z-22300`.
+
 ## Khayyam conversion (2026-10-03)
 
 ### Status
@@ -174,6 +181,34 @@ Recorded as the owner stated them. They supersede the parts of the research name
 - **A decision is recorded either way:** a documentation requirement is used as a text template, and a content may also be joined to its text by an edge directly. *(owner)* The question whether a decision is a marked text or an item of its own is therefore answered as "both ways are right".
 - **A Task too big for a worker is split.** Certain. Tasks may last as long as the organization (the vision of the organization may have hundreds of Tasks over its life). *(owner)*
 - **Name of the intent-to-change edge:** no idea; the owner will leave a todo in the code if one comes. *(owner)*
+
+### Owner intake — Session versus Task span (2026-10-20)
+Recorded from the coordinating chat of session `20261020-T131818Z-22300`. Sitting 8 (`20261018-T203922Z-11220`) took a thin batch yes on 2026-10-20; see the next section for what became Decided and what stayed open.
+
+- **No work-item *session* outside OSI.** Owner 2026-10-20: Memar's process "session" was Task misnamed; the word *session* in modules remains only for the network Session layer (`modules/net/protocol/osi_5-session.kh`). `modules/process/session` is deleted after service migration; `memar task` verbs go too. Until that migration finishes, the tooling is a temporary adapter — not a second concept.
+- **One Task holds its whole process.** Designing the plan, evaluating it, and changing the plan are steps of the same Task — not separate Tasks/sessions. Mixing the status of a document the Task changes with the Task's own status produced many sessions for one ask; that is a defect to correct in practice and in the conversion of session records after terms settle.
+- **Independent asks stay separate and linked.** Work that must stand alone is its own Task, and those Tasks must be connected (`part_of`, `blocks`, or further relations the owner accepts). Several independent asks must not be stuffed into one Task.
+- **Session records not yet pushed.** Live and archived session folders may be rewritten by a script once terms settle (new commit or history rewrite — owner chooses later).
+- Follow-ups queued from that chat: migration `20261020-T131909Z-22300`; filesystem/edge storage `20261020-T131910Z-22300`; content primary vs transcription `20261020-T131911Z-22300`.
+### Owner accepted sitting-8 defaults (2026-10-20)
+*(coordinator chat; thin consent first, then four clarifying answers the same day after a conflict check.)*
+
+**Decided** (batch yes, no conflict with prior owner text): TA.1, TA.2, TA.3, TA.4, TA.5, TA.6, TA.7, TA.8, TA.9, TA.10, TA.11, TA.12, TA.13, TA.14, TA.16; TA2.21, TA2.22, TA2.24, TA2.25, TA2.26, TA2.27, TA2.28, TA2.31, TA2.32. Defaults as in the sitting-8 brief.
+
+**Clarified and decided (owner answers after conflict check, same day):**
+
+1. **"Both ways" for text (2026-10-18 clarified) plus TA.15 (same day).** Text may be plain or templated. **Decision is a label on Content**, reachable by a shortcut edge from a Task; text accompanies the decision. Not a label on the Task node itself.
+   - **Decision (TA.15):** label on **Content**, shortcut edge from a Task; text (plain or templated) accompanies it. Bare event_is of an invoice on a timeline is not the decision path (	imeline/edges/event/event.md Reason classifies appearance, not Task intent).
+2. **TA2.17 — out of Task.** What sits in a worker's model context is the AI / how-agents-run domain's, not Task's. A limited window or cheap cache may vanish someday; then the question changes again. Irrelevant detail must move to its owning domain so Task's path stays uncluttered. *(owner)* Sitting-8 graph-view default is dropped for Task.
+3. **Concurrent work on one content — Task should not own it.** Knowing that two Tasks aim at similar work (GitHub-style `#12345` references) matters, but whether that is Task–Task or a content record on a timeline with an edge is undecided. Owner leaning: Task must not be entangled with the content domain, so Task preferably knows nothing of concurrent content writers; content/timeline own that. *(owner; Tentative on the edge shape)* TA2.20/23 as Task kernel questions are withdrawn from Task.
+4. **No *session* concept outside the network Session layer.** Topics hung on Memar's process session are misplaced and must move. The owner agrees the `memar task` command surface should go too. The only rightful use of the word session in modules is the OSI Session layer (`modules/net/protocol/osi_5-session.kh`). After its services are fully migrated, `modules/process/session` is deleted. Two independent concepts sharing the word "session" is rejected. *(owner)*
+
+**Already standing (unchanged):** TA2.18 summary discovered; TA2.19 no structured inheritance; TA2.33 chat is not a run on a Task.
+
+**Still Tentative:** TA2.29, TA2.30, TA2.34. TA.15 Decided (Decision label on Content + Task shortcut + text).
+
+## Questions Found During a Task
+- **2026-10-20 — migration `20261020-T163035Z-14292` shelf-only (answered same day).** Owner: (1) identity terminology must finish in that session — flags/types/helpers now `--task-id` / `TaskId`; remaining help prose “session” → follow-up; (2) deep critique+rename of all Memar CLI verbs/services → `20261020-T180133Z-19180` (new chat); (3) `computer/records`→`git` and (4) `task_kind`→label → same `180133`. Scripts session `20261020-T163034Z-14292` Depends_on `163035` and `180133`.
 
 ## Related Artifacts
 - [`task.research.002.md`](task.research.002.md) — outside work on source control, context and many participants set against the domain

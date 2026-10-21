@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/session/primitive/session_id.py — one session's identity: the id its folder and notes carry.
+"""modules/management/task/primitive/task_id.py — one session's identity: the id its folder and notes carry.
 
 An id, and nothing else. It is minted here rather than beside the scratch folder
 because a session is a session whichever tool asks for one: the session services
@@ -21,14 +21,12 @@ session by its plan (`session_folder`), and renaming such folders is a
 one-time migration, which lives in the session that does it, not here.
 """
 from __future__ import annotations
-
 import os
 import re
 import time
 from typing import ClassVar
 
-
-class SessionId(str):
+class TaskId(str):
     """One session's id, the name of its folder and the key of its notes.
 
     The form is the UTC date, a dash, the time, a `Z`, a dash and the process
@@ -36,14 +34,12 @@ class SessionId(str):
     clock's format and the rule that one process never mints the same second
     twice are written here and nowhere else.
     """
-
-    FORM: ClassVar[re.Pattern[str]] = re.compile(r"^\d{8}-T\d{6}Z-\d+$")
-    STAMP_FORMAT: ClassVar[str] = "%Y%m%d-T%H%M%SZ"
-    # The second this process last minted in, so a second mint in it waits rather than repeats.
+    FORM: ClassVar[re.Pattern[str]] = re.compile('^\\d{8}-T\\d{6}Z-\\d+$')
+    STAMP_FORMAT: ClassVar[str] = '%Y%m%d-T%H%M%SZ'
     _last: ClassVar[str | None] = None
 
     @classmethod
-    def new(cls) -> SessionId:
+    def new(cls) -> TaskId:
         """A unique id for the calling session, for its folder and its intent notes.
 
         The UTC second comes first, in ISO 8601 basic form with a dash before the
@@ -57,7 +53,7 @@ class SessionId(str):
             time.sleep(1.0 - time.time() % 1.0)
             stamp = time.strftime(cls.STAMP_FORMAT, time.gmtime())
         cls._last = stamp
-        return cls(f"{stamp}-{os.getpid()}")
+        return cls(f'{stamp}-{os.getpid()}')
 
     @classmethod
     def is_form(cls, name: str) -> bool:

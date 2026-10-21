@@ -2,7 +2,7 @@
 
 tp Domain in "bundles/memar/app/protocol/domain.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp BS_Init_Request ab
 tp App_BS_Init_Request_Domain mt (self BS_Init_Request) () (d Domain)
