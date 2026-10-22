@@ -71,7 +71,7 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK
 answering = import_module('modules-plugable.ai.services.get_task_answer_context')
-commands = import_module('modules-plugable.process.command.command')
+commands = import_module('modules-plugable.computer.ui.cli.command.command')
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
 from modules.knowledge.documentation.report.services.report import REPORT_NAME
 from modules.knowledge.content.services.normative_references import EVERY_ACT, lists, memar_place

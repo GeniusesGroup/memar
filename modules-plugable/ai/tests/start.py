@@ -94,7 +94,7 @@ from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
 import modules.management.task.services.temp as session_temp
 session_start = import_module('modules-plugable.ai.services.get_task_init_context')
 import modules.knowledge.label.services.plan_labels as session_plan_labels
-commands = import_module('modules-plugable.process.command.command')
+commands = import_module('modules-plugable.computer.ui.cli.command.command')
 from modules.knowledge.documentation.primitive.label import Label, Labels, new_id
 from modules.knowledge.documentation.plan.labels import task_kind
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton

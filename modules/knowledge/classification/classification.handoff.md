@@ -88,4 +88,4 @@ Open work for `classification.md`. Entries are mutable current state — revised
 | [`primitive/guest.md`](./primitive/guest.md) | Reference — the label whose scope several entries question | Edit it when an entry is ruled on |
 | [`../../README.md`](../../README.md) | Depends_on — the layer's own account of its kinds of place | Updated with this change |
 | [`../../../docs/modularity.handoff.md`](../../../docs/modularity.handoff.md) | Reference — the category-layout questions this handoff took over | Its settled entries moved here |
-| [`command.handoff.md`](../../../modules-plugable/process/command/command.handoff.md) | Reference — the question about a command's help, carried out of the old shelf's handoff | None |
+| [`command.handoff.md`](../../../modules-plugable/computer/ui/cli/command/command.handoff.md) | Reference — the question about a command's help, carried out of the old shelf's handoff | None |
