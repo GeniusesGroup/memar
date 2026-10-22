@@ -400,12 +400,18 @@ class ProjectLocation(Fixture):
         _, child, _ = self.open(None, 'Delegated step', sid)
         self.assertEqual(read_session(child).parent, sid)
 
-    def test_a_project_whose_temp_git_does_not_ignore_is_told_so_and_nothing_is_written_to_it(self) -> None:
+    def test_a_custom_location_git_does_not_ignore_is_told_so_and_nothing_is_written_to_it(self) -> None:
         subprocess.run(['git', 'init', '-q', str(self.project)], check=True, capture_output=True)
+        self.prefer(self.project, 'work/sessions')
         _, _, printed = self.open(None, TITLE, None)
         self.assertRegex(printed, 'not ignored by git')
         self.assertFalse((self.project / '.gitignore').exists())
-        (self.project / '.gitignore').write_text('temp\n', encoding='utf-8', newline='\n')
+        (self.project / '.gitignore').write_text('work/sessions\n', encoding='utf-8', newline='\n')
+        _, _, printed = self.open(None, TITLE, None)
+        self.assertNotIn('not ignored by git', printed)
+
+    def test_the_default_location_is_left_for_git_to_see(self) -> None:
+        subprocess.run(['git', 'init', '-q', str(self.project)], check=True, capture_output=True)
         _, _, printed = self.open(None, TITLE, None)
         self.assertNotIn('not ignored by git', printed)
 
@@ -432,8 +438,8 @@ class ProjectLocation(Fixture):
         self.prefer(self.project, str(memar_fs.sessions_root()))
         sid, path, printed = self.open(None, TITLE, None)
         self.assertEqual(path, memar_fs.task_dir(sid))
-        self.assertNotIn('location:', printed)
-        said = [line for line in printed.splitlines() if "inside Memar's own temp/" in line]
+        self.assertNotRegex(printed, re.compile('^\\s*location:', re.M))
+        said = [line for line in printed.splitlines() if "is Memar's own tasks folder" in line]
         self.assertEqual(len(said), 1, printed)
         self.assertIn(str(project_preferences.preferences_path(self.project)), said[0])
         self.assertEqual(registered_locations(), [])
@@ -457,7 +463,7 @@ class ProjectLocation(Fixture):
         (own / 'main.kh').write_text('x\n', encoding='utf-8', newline='\n')
         with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
             self.call_open('src', TITLE, None)
-        self.assertIn('is not a session folder', str(raised.exception.code))
+        self.assertIn('is not a task folder', str(raised.exception.code))
         self.assertEqual([entry.name for entry in own.iterdir()], ['main.kh'])
         self.assertFalse(memar_fs.task_dir('src').exists())
         self.assertEqual(registered_locations(), [])
@@ -536,7 +542,7 @@ class ProjectNamed(Fixture):
         command = session_new.describe(parser.add_subparsers())
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            command(parser.parse_args(['new', *argv]))
+            command(parser.parse_args(['ensure', *argv]))
         return out.getvalue()
 
     def test_a_new_session_without_a_project_is_refused_with_the_reason_and_nothing_is_made(self) -> None:

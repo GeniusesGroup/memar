@@ -213,7 +213,7 @@ class Ending(Fixture):
     def test_what_the_answering_agent_does_is_printed(self) -> None:
         self.session()
         part = ' '.join(self.parts()['ending'].split())
-        for phrase in ('Decisions needed', 'with its reasons', 'unsure', 'opens no session', 'writes nothing', 'final text', '`memar ai get-task-init-context`'):
+        for phrase in ('Decisions needed', 'with its reasons', 'unsure', 'opens no task', 'writes nothing', 'final text', '`memar ai get-task-init-context`'):
             self.assertIn(phrase, part)
 SMALL = 6000
 
