@@ -79,7 +79,7 @@
   - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
 
 #### What changed
-- The `reviewed` marks of [Scripts → Deleting, moving, restoring, and committing](../../../../../.agents/scripts/README.md#deleting-moving-restoring-and-committing) in the implement and mechanical lists were renewed. The section gained one rule, that every commit names the sessions it carries out through `host/git.py commit --session-id` or says `--no-session`; it was re-read at its new text, and each list's reason for reading it still holds.
+- The `reviewed` marks of [Scripts → Deleting, moving, restoring, and committing](../../../../../modules/knowledge/content/content.md#deleting-moving-restoring-and-committing) in the implement and mechanical lists were renewed. The section gained one rule, that every commit names the sessions it carries out through `host/git.py commit --session-id` or says `--no-session`; it was re-read at its new text, and each list's reason for reading it still holds.
 
 ---
 
@@ -95,4 +95,21 @@
   - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
 
 #### What changed
-- The `reviewed` marks of [Scripts → Deleting, moving, restoring, and committing](../../../../../.agents/scripts/README.md#deleting-moving-restoring-and-committing) in the implement and mechanical lists were renewed. The section now holds the commit rule the skill carried (commits follow the whole piece of work, by area, staged in place) in place of "One session task gets one commit", and why `memar content check` runs before the commit. It was re-read at its new text, and each list's reason for reading it still holds.
+- The `reviewed` marks of [Scripts → Deleting, moving, restoring, and committing](../../../../../modules/knowledge/content/content.md#deleting-moving-restoring-and-committing) in the implement and mechanical lists were renewed. The section now holds the commit rule the skill carried (commits follow the whole piece of work, by area, staged in place) in place of "One session task gets one commit", and why `memar content check` runs before the commit. It was re-read at its new text, and each list's reason for reading it still holds.
+
+---
+
+### Queued Work re-reviewed after the task verbs took the skill's delegation rules
+- Time: 2026-10-22T12:00:00Z
+- Type: Changed
+- Cited:
+  - Review of task 20261020-T090906Z-5096 (its report.md, Restore 2 and 3) - Evidence: the section's pointer to the skill was stale, and its rule on consuming decisions had lost its exception.
+- Tasks:
+  - 20261019-T193605Z-16144: Closed - the task that applied the restorations and renewed the marks.
+- Contributors:
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- The plan list's `reviewed` marks of [Handoff Practice → Queued Work and Its Hand-Back](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back) and [Questions Found During a Task](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) were renewed. Queued Work now sends a runtime that cannot open a chat to `memar ai get-new-chats-ask --help`, where that text moved from the skill, and keeps "unless its own work meets a problem with one" on consuming decisions. Both sections otherwise changed only by the renames of the session verbs to task verbs. Each was re-read at its new text, and the list's reasons for reading them still hold.
+- Two links to Scripts → Deleting, moving, restoring, and committing, whose README is gone, now point to [Content → Deleting, moving, restoring, and committing](../../../../../modules/knowledge/content/content.md#deleting-moving-restoring-and-committing), which took its place in the lists.

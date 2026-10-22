@@ -163,7 +163,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_the_domain_help_says_what_a_task_and_a_session_are(self) -> None:
         text = flat(run_help())
-        for phrase in ('A task is one thing the person asked for', 'A session is the record of one task', 'One session is one task', 'gets a session of its own', "Work inside the session's folder, not in the checkout", 'read what `new` says first'):
+        for phrase in ('A task is one thing the person asked for', 'A session is the record of one task', 'One session is one task', 'gets a session of its own', "Work inside the session's folder, not in the checkout", 'read what `ensure` says first'):
             self.assertIn(phrase, text)
 
     def test_the_domain_help_says_the_top_holds_only_the_plan_and_the_report_and_where_the_rest_goes(self) -> None:
@@ -217,7 +217,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_new_says_how_a_task_is_handed_over_queued_and_continued(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('open its session with --parent', 'write the whole task into its plan.md — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `new` prints, which `memar ai get-task-plan-carry-out-brief ID` prints again', '--label KIND=WORD', 'To only add work', '--queued', "never do a queued session's work in your own context", 'To continue a task another session left', '`memar task list`', 'start from its Next'):
+        for phrase in ('open its session with --parent', 'write the whole task into its plan.md — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar ai get-task-plan-carry-out-brief ID` prints again', '--label KIND=WORD', 'To only add work', '--queued', "never do a queued session's work in your own context", 'To continue a task another session left', '`memar task list`', 'start from its Next'):
             self.assertIn(phrase, text)
 
     def test_new_does_not_repeat_what_the_domain_states(self) -> None:

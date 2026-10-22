@@ -144,7 +144,7 @@ import sys
 from pathlib import Path
 _REPO = Path(__file__).resolve().parents[4]
 if __package__ in (None, ''):
-    for _folder in (_REPO, _REPO / 'bundles' / 'memar'):
+    for _folder in (_REPO, _REPO / 'bundles' / 'memar', _REPO / 'bundles' / 'memar' / 'services'):
         if str(_folder) not in sys.path:
             sys.path.insert(0, str(_folder))
     __package__ = 'modules-plugable.computer.git.services'
