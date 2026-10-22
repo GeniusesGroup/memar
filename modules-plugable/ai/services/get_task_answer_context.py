@@ -3,7 +3,7 @@
 
 """modules-plugable/ai/services/get_task_answer_context.py — `memar ai get-task-answer-context`: the prompt an agent answering a session's questions reads first, in one output, writing nothing.
 
-A coordinating session does not bring the owner a question another agent can
+An agent does not bring the owner a question another agent can
 answer, because the owner's answer is the slower one (owner, 2026-10-15). It
 hands the questions to an agent with the questions' brief
 (`questions_brief`), and that agent's first command is this one. It is the

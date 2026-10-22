@@ -113,3 +113,19 @@
 #### What changed
 - The plan list's `reviewed` marks of [Handoff Practice → Queued Work and Its Hand-Back](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back) and [Questions Found During a Task](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) were renewed. Queued Work now sends a runtime that cannot open a chat to `memar ai get-new-chats-ask --help`, where that text moved from the skill, and keeps "unless its own work meets a problem with one" on consuming decisions. Both sections otherwise changed only by the renames of the session verbs to task verbs. Each was re-read at its new text, and the list's reasons for reading them still hold.
 - Two links to Scripts → Deleting, moving, restoring, and committing, whose README is gone, now point to [Content → Deleting, moving, restoring, and committing](../../../../../modules/knowledge/content/content.md#deleting-moving-restoring-and-committing), which took its place in the lists.
+
+---
+
+### Sizing a Task re-reviewed after the owner told an inquiry from a research
+- Time: 2026-10-22T16:00:00Z
+- Type: Changed
+- Cited:
+  - The owner's answers of 2026-10-22 in task 20261019-T193605Z-16144 - Depends_on: an inquiry is a step of its task, its findings a note in that task's `docs/`; a research others build on is a task of its own; a new task only for truly independent work.
+- Tasks:
+  - 20261019-T193605Z-16144: Closed - the task that wrote the ruling and renewed the mark.
+- Contributors:
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- The plan list's `reviewed` mark of [Handoff Practice → Sizing a Task and Recording Follow-Ups](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#sizing-a-task-and-recording-follow-ups) was renewed. Its subsection "A session is for work" now tells an inquiry, which is a step of the task it serves with its findings in that task's `docs/`, from a research that gathers and concludes what many other tasks build on, which is a task of its own recorded as a Research document. It was re-read at its new text, and the list's reason for reading it still holds.

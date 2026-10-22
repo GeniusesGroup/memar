@@ -3,7 +3,7 @@
 
 """modules-plugable/ai/services/questions_brief.py — the prompt that hands a session's questions to an agent to answer.
 
-A coordinating session does not bring the owner a question another agent can
+An agent does not bring the owner a question another agent can
 answer: the owner's answer is the slower one (owner, 2026-10-15). So this
 prints a second fixed text, from the id alone as the plan's brief is
 (`plan_brief`), which hands over not the session's task but its
@@ -50,7 +50,7 @@ def get_task_questions_answer_brief(task_id: str) -> None:
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar ai get-task-questions-answer-brief`."""
-    briefer = verbs.add_parser(QUESTIONS_BRIEF_COMMAND, help="print the text that hands a session's open questions to an agent to answer", description=f'Print the text that hands the questions of the session ID, not its task, to an\nagent that answers them, with ID filled in, ready to paste. A coordinating\nsession hands it over, adding nothing, before it brings a question to the owner.\nThe questions are the lines under `{REPORT.hand_back_part}` in its {REPORT_NAME}; a session\nwith none is refused.\n\nThe agent runs `memar {SESSION_COMMAND} {ANSWERING_COMMAND} --task-id ID`, which writes nothing\nand opens no task, and returns its answers as text: which it is sure of, with\nits reasons, and which it is unsure of, which go to the owner.')
+    briefer = verbs.add_parser(QUESTIONS_BRIEF_COMMAND, help="print the text that hands a session's open questions to an agent to answer", description=f'Print the text that hands the questions of the session ID, not its task, to an\nagent that answers them, with ID filled in, ready to paste. An agent hands\nit over, adding nothing, before it brings a question to the owner. A task stops\nto ask as any task may stop, for an hour or for years, as an issue may: its\nreport is written then, Blocked, with the questions under its Decisions needed.\nThe questions are the lines under `{REPORT.hand_back_part}` in its {REPORT_NAME}; a session\nwith none is refused.\n\nThe agent runs `memar {SESSION_COMMAND} {ANSWERING_COMMAND} --task-id ID`, which writes nothing\nand opens no task, and returns its answers as text: which it is sure of, with\nits reasons, and which it is unsure of, which go to the owner.')
     briefer.add_argument('task_id', metavar='ID', help='the session whose questions are handed over')
     return run
 
