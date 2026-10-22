@@ -49,7 +49,7 @@ A GUI is a consumer of domain contracts, not a core-by-necessity domain: removin
 ## Open Questions
 - Whether a *new* upper document is warranted at all versus the domain being a plain instance of memar's `modeling.md` — decide per domain by what it genuinely adds. *(open; owner leaned "a document that only restates modeling.md must not exist")*
 - **The org product's own place relative to Memar is undecided** — recorded above. *(open for the org; the UI one specifically stays with its own repo)*
-- **Process automation: need a domain or a bot?** *(open; TODO from the `page-automating-processes` note — see [Idea backlog](#idea-backlog-from-code-comments) below)*
+- **Process automation: need a domain or a bot?** *(open; TODO from the `page-automating-processes` note — see [Idea backlog](#idea-backlog) below)*
 
 ## Idea backlog
 

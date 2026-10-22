@@ -23,4 +23,4 @@
 
 ## Source
 
-> Source: `modules-plugable/computer/ui/page/edges/code/protocol/data_model.kh` (in code).
+> Source: `modules/computer/ui/page/edges/code/protocol/data_model.kh` (in code).

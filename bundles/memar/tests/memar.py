@@ -311,7 +311,7 @@ class PluggableRoot(unittest.TestCase):
             self.assertIn('mcp', memar.services(top))
 
     def test_the_real_shelf_reads_the_pluggable_root_the_same_way(self) -> None:
-        self.assertEqual(memar.catalog()['command'], 'modules-plugable.computer.ui.cli.command.command')
+        self.assertEqual(memar.catalog()['command'], 'modules-plugable.computer.ui.command.command')
         self.assertIn('command', memar.services())
 
 class RouterNamesNoVerb(unittest.TestCase):

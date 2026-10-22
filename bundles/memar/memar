@@ -46,7 +46,7 @@ summary it declared, and each sub-verb's command lines, what it writes, and
 when to use it are in that sub-verb's own `--help`. An overview that repeated
 them grew with every sub-verb and drifted from each, and the reader who needs
 one sub-verb paid for all of them. How a help is shaped beyond that waits for
-the command module (`modules-plugable/computer/ui/cli/command/`), which is not built on
+the command module (`modules-plugable/computer/ui/command/`), which is not built on
 until it is complete.
 
 The name is the whole of the design. A framework whose entry point is a path

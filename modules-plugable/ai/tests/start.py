@@ -94,7 +94,7 @@ from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
 import modules.management.task.services.temp as session_temp
 session_start = import_module('modules-plugable.ai.services.get_task_init_context')
 import modules.knowledge.label.services.plan_labels as session_plan_labels
-commands = import_module('modules-plugable.computer.ui.cli.command.command')
+commands = import_module('modules-plugable.computer.ui.command.command')
 from modules.knowledge.documentation.primitive.label import Label, Labels, new_id
 from modules.knowledge.documentation.plan.labels import task_kind
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
@@ -548,7 +548,7 @@ class StartHelp(unittest.TestCase):
 
     def test_the_help_says_what_it_prints_names_the_kinds_and_offers_without_skill(self) -> None:
         environment = dict(os.environ, COLUMNS='100', PYTHONIOENCODING='utf-8', MEMAR_NO_AUTO_UPDATE='1')
-        done = subprocess.run([sys.executable, str(SCRIPTS / 'memar'), 'ai', 'start', '--help'], capture_output=True, env=environment)
+        done = subprocess.run([sys.executable, str(SCRIPTS / 'memar'), 'ai', 'get-task-init-context', '--help'], capture_output=True, env=environment)
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
         for phrase in ('--without-skill', '--part', '--most-characters', 'memar content get-act-context', 'every agent', ', '.join(session_plan_labels.TASK_KINDS)):

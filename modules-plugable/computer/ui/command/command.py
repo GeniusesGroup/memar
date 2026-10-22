@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/ui/cli/command/command.py — `memar commands`: every command and what it takes, as one short card.
+"""modules-plugable/computer/ui/command/command.py — `memar commands`: every command and what it takes, as one short card.
 
 An agent that does not know which commands exist, or how to call them, learns
 it by asking `--help` of the router, then of a domain, then of each verb: a
@@ -28,7 +28,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Callable
-SCRIPTS = Path(__file__).resolve().parents[3] / 'bundles' / 'memar'
+SCRIPTS = Path(__file__).resolve().parents[4] / 'bundles' / 'memar'
 ROUTER = SCRIPTS / 'memar'
 COMMANDS_COMMAND = 'commands'
 USAGE_PREFIX = re.compile('^usage:\\s*')

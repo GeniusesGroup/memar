@@ -9,7 +9,7 @@ import (
 	audit_time_p "memar/process/time/protocol"
 
 	software_p "modules/computer/software/protocol"
-	widget_p "org/modules-plugable/computer/ui/widget/protocol"
+	widget_p "org/modules/computer/ui/widget/protocol"
 	user_p "modules/identity/user/protocol"
 	label_p "modules/knowledge/label/protocol"
 )

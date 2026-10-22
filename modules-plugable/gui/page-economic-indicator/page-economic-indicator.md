@@ -4,9 +4,7 @@ An [economic indicator](https://en.wikipedia.org/wiki/Economic_indicator) is a s
 Economic indicators can be classified into three categories according to their usual timing in relation to the business cycle: leading indicators, lagging indicators, and coincident indicators.
 
 ## Business Indicator | BI
-
 Integrate your company's data with our dashboards and access in an agile and intuitive way all relevant information for your business management.
 
 ## Other applications
-
 - [PowerBI](https://learn.microsoft.com/en-us/power-bi/create-reports/service-dashboards)
