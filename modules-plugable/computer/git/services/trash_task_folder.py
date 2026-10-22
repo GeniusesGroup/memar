@@ -28,7 +28,6 @@ _m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_me
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
 _m_fs_trash = import_module('modules-plugable.computer.filesystem.services.fs_trash')
-soft_delete = _m_fs_trash.soft_delete
 import argparse
 from pathlib import Path
 from typing import Callable, NamedTuple
@@ -79,7 +78,7 @@ def close_session(task_id: str, *, discard_records: bool=False) -> Closed:
         kept = Kept(Outcome.KEPT, reference(task_id))
     else:
         kept = Kept(Outcome.NOT_OWED if held.state is State.NOT_OWED else Outcome.REFUSED, None, held.why)
-    soft_delete(path)
+    _m_fs_trash.soft_delete(path)  # looked up at the call, so a test that patches fs_trash reaches it
     record('closed', task_id, folder=path)
     return Closed(task_id, path, True, kept)
 

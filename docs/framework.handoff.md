@@ -1,5 +1,5 @@
 # Framework Handoff
-Open work for `framework.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `framework.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -10,7 +10,7 @@ Open work for `framework.md`. Entries are mutable current state — revised as e
 ### Should GET / FIND / FILTER / LIST / SAVE / BY / CURRENT become Memar's operation-naming vocabulary?
 - State: raised 2026-09-28 by the lifecycle/process/storage pass of the memar-go port, from `memar-go`'s `BEST-PRACTICE.md` → "Methods name in relation to SQL". No document in `docs/` defines these words as operation names, and the ADT protocols do not use them. The note's reason for `SAVE` — storage need not know the data model's structure — is the schema position in the entry above, which is itself stated nowhere yet. The protocols use the words without following the note's definitions: `Record_Model_Get` returns the whole record by primary key and `Record_Model_Save` stores it, which matches the note; `Process_Services_GetByMediaType` and `Codec_CompressTypes_GetByFileExtension` return the object by a non-primary key, which the note calls `FIND`, and the note's `FIND` returns the primary key, not the object; `Method_Directory_Helpers_FindFile` returns the file, not a key.
 - Question for the owner: should these words become Memar's operation-naming protocol? If yes, does it govern storage operations only, or every operation — and then which of the uses above is renamed, or which definition changes?
-- Blocks: no module depends on the vocabulary, and none is renamed until this is answered. The "every operation" reading also waits on what an Operation is: [Process Handoff → Relationship to Other Concepts, item 5](./process.handoff.md#relationship-to-other-concepts).
+- Blocks: no module depends on the vocabulary, and none is renamed until this is answered. The "every operation" reading also waits on what an Operation is: [Process Handoff → Relationship to Other Concepts, item 5](../modules/process/process.handoff.md#relationship-to-other-concepts).
 
 ### Formal extension mechanism for inappropriate constraints
 Should Memar define a formal extension mechanism for cases where the framework's constraints are genuinely inappropriate for a specific system?
@@ -47,6 +47,12 @@ Should the goal statement be reflected in the README's System Categories for Mem
 
 ### Stable citation form for a document's current identity
 The [Protocol document](./protocol.md) reference under *Document Authority and Terminology Governance* ([framework.md](./framework.md#document-authority-and-terminology-governance)) previously carried an explicit identifier ("RFC 495465") in that document's prose. That identifier is not repeated in the body, since a document's identifier is assigned at creation and is not a stable citation form on its own — but if a stable way to cite a specific document's current identity is needed (beyond a relative link, which can go stale if a file is renamed), that is an open question for the documentation system generally, not specific to Framework.
+
+### The framework and the product it builds, in one repository
+- State: the owner ruled on 2026-10-18/19 (session 20261018-T133019Z-4704) that the `organization` repository merges into memar, with its whole history, at the same paths (merge commit ceba0177, 2026-10-19); memar stays public, and organization's repository on GitHub is kept as an archived snapshot. Reason: the wall between the two repositories cost more than it protected. Memar could not link to private code, so every concept that grew on both sides needed a copy or a contract (label, content, Task, the adapter executable of session 20261017-T162459Z-23400), and one piece of work needed two commits. The ruling of 2026-10-14 still stands: Memar must be ready to build a building without being an existing building. Its form changes: it is now a rule about what a framework document may require (no definition in `docs/` may need a concept that only a product module defines), not a repository boundary.
+- Question for the owner: how is the line between framework and product marked inside the one tree, so that a reader and a check can tell them apart: a label on each module, a stated list, or folders? Until it is answered, organization's modules are told apart only by the merge commit.
+- Still written for two repositories: README.md → Where Memar Stops (links "the Organization repository"); the queued sessions 20261017-T162444Z-24124 and 20261017-T162427Z-26752, and the Blocked 20261017-T162459Z-23400, whose asks presuppose the wall. The content session 20261019-T103318Z-22516 reports which of 24124's and 26752's asks still stand.
+- Next: answer the question; then one session rewrites the passages above to describe one repository, and closes or rewrites the four sessions.
 
 ## Anticipated Work
 - A dedicated document or section that formalizes the relationship between a framework's stated goals and the design space it produces — potentially including a notation for expressing framework goals and a method for evaluating whether a given design space is consistent with its stated goals. (From the Goal-Oriented Frameworks and Purpose Space topic in framework.md.)

@@ -238,12 +238,12 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
 
 #### What changed
-- A new section, [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), documents the work engine `memar session` now provides: a conversation queues further tasks as sessions and never works them in its own context; a priority from 1 to 10 (5 when absent, the higher sooner) that anyone may change, saying why; `claims N` hands the N first in line to a coordinator, which gives each brief to one fresh sub-agent; a hand-back of the Stop line, the report's path, and at most ten lines of `Decisions needed`; and `digest`, the one list of decisive questions the owner reads instead of every report.
+- A new section, [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), documents the work engine `memar task` now provides: a conversation queues further tasks as sessions and never works them in its own context; a priority from 1 to 10 (5 when absent, the higher sooner) that anyone may change, saying why; `claims N` hands the N first in line to a coordinator, which gives each brief to one fresh sub-agent; a hand-back of the Stop line, the report's path, and at most ten lines of `Decisions needed`; and `digest`, the one list of decisive questions the owner reads instead of every report.
 - Observed: one conversation carrying six tasks, with full reports handed back into it, reached about 500K tokens; the coordinator's context and the owner's attention were the two bottlenecks the engine answers.
 - The [handoff](./handoff.handoff.md) gained the open question of where a project's sessions live (owner observation, for queued session `20261012-T155915Z-12312`) and the anticipated work of running queued sessions unattended, which belongs to the `organization` project.
 
 #### Considered and not done
-- **A runner that launches each queued session itself (`memar session run` with a launch template)**: Memar starts no agent; the coordinator starts each sub-agent the way its runtime does, and scheduled execution is left to the `organization` project.
+- **A runner that launches each queued session itself (`memar task run` with a launch template)**: Memar starts no agent; the coordinator starts each sub-agent the way its runtime does, and scheduled execution is left to the `organization` project.
 
 ---
 
@@ -255,7 +255,7 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
 
 #### What changed
-- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now points to `memar session --help` for the commands and the limits they enforce — the priority's range and default, the lines a hand-back may hold, how long a claim holds — and keeps what is its own: why the work runs so, and that whoever changes a priority says why in the plan.
+- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now points to `memar task --help` for the commands and the limits they enforce — the priority's range and default, the lines a hand-back may hold, how long a claim holds — and keeps what is its own: why the work runs so, and that whoever changes a priority says why in the plan.
 - The digest is run for the coordinator's own conversation, holds every failed hand-back whether or not it carries decisions, and leaves out done sessions; the practice and the help say the same.
 - Prompted by a review that had not seen the work (session `20261012-T160457Z-8656`), which found the practice restating the help's numbers and the two disagreeing about the digest.
 
@@ -269,7 +269,7 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
 
 #### What changed
-- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now says `memar session claims` takes only from the one project the coordinator names, with no default and no way to take from all, and that a coordinator that does not know the project asks the owner; `claims` refuses without `--project`, and its help and `memar session --help` say the same.
+- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now says `memar task claims` takes only from the one project the coordinator names, with no default and no way to take from all, and that a coordinator that does not know the project asks the owner; `claims` refuses without `--project`, and its help and `memar task --help` say the same.
 - Why: one run serves one project, and a guessed or spanning scope hides which project the work lands in.
 - The owner's ruling, applied in session `20261012-T163251Z-25244`.
 
@@ -300,8 +300,8 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
 
 #### What changed
-- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), under Taking queued work, now says that `memar session claims` takes the first task's topic batch next, in line order, and says what it passed over; and that the coordinator hands a batch of one topic to one fresh sub-agent, each session keeping its own plan and report, never sessions of different topics to one sub-agent. It replaces the rule of one sub-agent per session, never two sessions to one sub-agent.
-- `memar session --help` now lists `topic`, `topics`, `new --topic` and `claims --topic --fill`, shows the `topic:` front-matter line, tells the queuer to give each queued task a topic and to run `topics` first, and carries the same batch rule in the coordinator steps.
+- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), under Taking queued work, now says that `memar task claims` takes the first task's topic batch next, in line order, and says what it passed over; and that the coordinator hands a batch of one topic to one fresh sub-agent, each session keeping its own plan and report, never sessions of different topics to one sub-agent. It replaces the rule of one sub-agent per session, never two sessions to one sub-agent.
+- `memar task --help` now lists `topic`, `topics`, `new --topic` and `claims --topic --fill`, shows the `topic:` front-matter line, tells the queuer to give each queued task a topic and to run `topics` first, and carries the same batch rule in the coordinator steps.
 - Why: the owner ruled that related tasks on the same files and reading cost less in one context; the behaviour was implemented in session `20261013-T060530Z-28452` and the text applied in session `20261013-T060530Z-19088`.
 
 ---
@@ -314,8 +314,8 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
 
 #### What changed
-- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), under The digest, now says that `memar session digest --day` is the owner's review of a day's sessions, closed one by one with `memar session close` on the owner's word, that a done session with decisions is in the digest, and that the digest, `list`, and `gc` flag a session not done that looks finished or abandoned. `memar session --help` carries the same recipe.
-- `memar session list`, `gc`, and `digest` now raise a `concerns:` line for a session whose steps are all checked while it is open, whose Request is empty and quiet for a day, or that has no status. They only flag: nothing is moved or closed by it.
+- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), under The digest, now says that `memar task get-decisions-digest --day` is the owner's review of a day's sessions, closed one by one with `memar git trash-task-folder` on the owner's word, that a done session with decisions is in the digest, and that the digest, `list`, and `gc` flag a session not done that looks finished or abandoned. `memar task --help` carries the same recipe.
+- `memar task list`, `gc`, and `digest` now raise a `concerns:` line for a session whose steps are all checked while it is open, whose Request is empty and quiet for a day, or that has no status. They only flag: nothing is moved or closed by it.
 - Why: the owner audited about thirty finished-but-never-closed folders by hand and ruled that digest should be a review run with an agent; done in sessions `20261013-T041036Z-24948` and `20261012-T163252Z-11472`.
 
 ---
@@ -378,7 +378,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Propagates to:
   - [documentation-handoff.handoff.md](./handoff.handoff.md): Done - one Open Question with Blocks set
   - `bundles/khayyam/khayyam.handoff.md`: Done - the twin entry and a Tentative decision
-  - [.agents/scripts/README.md](../../../../.agents/scripts/README.md): Done - the constraint stated beside "A script is told its project"
+  - `.agents/scripts/README.md`: Done - the constraint stated beside "A script is told its project"
 - Contributors:
   - [Claude Code](../../../../CONTRIBUTORS.md#claude) - drafted, applied
 
@@ -391,18 +391,18 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-14T18:20:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/session.py` and the session verbs' services: Done (session `20261014-T175052Z-9344`) - `memar session --help` states only the domain's own work; each verb's own help states its part.
+  - `.agents/scripts/services/session.py` and the session verbs' services: Done (session `20261014-T175052Z-9344`) - `memar task --help` states only the domain's own work; each verb's own help states its part.
   - `modules/lib/lib.handoff.md`: Done - the entry *What protocol a command's help follows once `process/command/` is complete*
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
 #### What changed
-- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now says the commands and their limits are declared by the `--help` of `memar session` and of each of its verbs, each stating its own, and names the verb whose help gives each limit: the priority's range and default (`memar session priority --help`), how long a claim holds (`memar session claim --help`), the lines a hand-back may hold (`memar session new --help`).
-- Why: the owner ruled (2026-10-14) that each command's help states only its own work, not its sub-commands'; `memar session --help` had grown to about 19 KB by repeating every verb's command lines and recipes, and the pointers here named it for limits it no longer states.
+- [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now says the commands and their limits are declared by the `--help` of `memar task` and of each of its verbs, each stating its own, and names the verb whose help gives each limit: the priority's range and default (`memar task priority --help`), how long a claim holds (`memar task claim --help`), the lines a hand-back may hold (`memar task ensure --help`).
+- Why: the owner ruled (2026-10-14) that each command's help states only its own work, not its sub-commands'; `memar task --help` had grown to about 19 KB by repeating every verb's command lines and recipes, and the pointers here named it for limits it no longer states.
 - The owner's question of which protocol command help follows once the command module (`modules/lib/process/command/`) is complete is written as an open entry in `modules/lib/lib.handoff.md`, with options; nothing is built on that module.
 
 #### Considered and not done
-- **Rewriting the earlier entries that say `memar session --help` carries the recipe**: they are history.
+- **Rewriting the earlier entries that say `memar task --help` carries the recipe**: they are history.
 
 ---
 
@@ -443,7 +443,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-15T16:32:57Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/task_kind.py`, `session_plan_kind.py`, `session_new.py`: Done (session `20261015-T105953Z-20196`) - the kind words, when each applies, whether a plan may carry it and the passages each requires read are declared once in `task_kind.py`; `session_plan_kind.py` and the help of `memar session new` read them from there; `services/tests/task_kind.py` fails when a passage stops answering to its heading or a kind word is spelt elsewhere in the scripts.
+  - `.agents/scripts/services/task_kind.py`, `session_plan_kind.py`, `session_new.py`: Done (session `20261015-T105953Z-20196`) - the kind words, when each applies, whether a plan may carry it and the passages each requires read are declared once in `task_kind.py`; `session_plan_kind.py` and the help of `memar task ensure` read them from there; `services/tests/task_kind.py` fails when a passage stops answering to its heading or a kind word is spelt elsewhere in the scripts.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
@@ -476,12 +476,12 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-16T09:00:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/session_brief.py`, `session_answer.py`: Done (session `20261015-T112820Z-7124`) - `memar session brief ID --answer` and `memar session answer` are the mechanism.
+  - `.agents/scripts/services/session_brief.py`, `session_answer.py`: Done (session `20261015-T112820Z-7124`) - `memar task brief ID --answer` and `memar task answer` are the mechanism.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
-- In [handoff.practice.md](./handoff.practice.md), the bullet *How it is answered* now says that before a question reaches the owner the coordinator hands it to an agent with `memar session brief ID --answer`, and that an answer the agent is sure of, outside the four kinds the Norm Application Points always send to the owner, is written as a Tentative decision with its reasons and the entry removed.
+- In [handoff.practice.md](./handoff.practice.md), the bullet *How it is answered* now says that before a question reaches the owner the coordinator hands it to an agent with `memar task brief ID --answer`, and that an answer the agent is sure of, outside the four kinds the Norm Application Points always send to the owner, is written as a Tentative decision with its reasons and the entry removed.
 - Why: the owner agreed (2026-10-16) to session 20261015-T112820Z-7124's Decision D2; the bullet allowed only the owner, or an agent on the owner's word, to remove an entry, and the owner's word of 2026-10-15 is that a question another agent can answer is not brought to him.
 - Rests on the report of session 20261015-T112820Z-7124 and Cognition Practice → Norm Application Points.
 
@@ -508,13 +508,13 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-16T08:37:55Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/prompts_questions_brief.py`, `prompts_answering.py`: Done (session `20261016-T082349Z-12028`) - `memar prompts hand-session-questions-to-answer ID` and `memar prompts answer-session-questions` replace `memar session brief ID --answer` and `memar session answer`.
+  - `.agents/scripts/services/prompts_questions_brief.py`, `prompts_answering.py`: Done (session `20261016-T082349Z-12028`) - `memar ai get-task-questions-answer-brief ID` and `memar ai get-task-answer-context` replace `memar task brief ID --answer` and `memar task answer`.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
 #### What changed
-- In [handoff.practice.md](./handoff.practice.md), the bullet *How it is answered* names `memar prompts hand-session-questions-to-answer ID` where it named `memar session brief ID --answer`. What the bullet permits is unchanged.
-- Why: the owner ruled on 2026-10-16 that a prompt for an agent is its own kind of output, grouped under `memar prompts` with long names that say what each prompt makes happen, and that no old verb name stays.
+- In [handoff.practice.md](./handoff.practice.md), the bullet *How it is answered* names `memar ai get-task-questions-answer-brief ID` where it named `memar task brief ID --answer`. What the bullet permits is unchanged.
+- Why: the owner ruled on 2026-10-16 that a prompt for an agent is its own kind of output, grouped under `memar ai` with long names that say what each prompt makes happen, and that no old verb name stays.
 
 ---
 
@@ -545,7 +545,7 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
 
 #### What changed
-- In [handoff.practice.md](./handoff.practice.md), the bullet *Blocking sessions* says the conversation records what it waits for in its plan's `Depends_on`, that a queued session with a `Depends_on` not yet met is itself Blocked and cannot be claimed or started, and that the owner is shown `memar prompts ask-for-new-chats --coordinator ID ID...`, which reads what blocks from that key. It said only "in its own plan", the interim form `Waits for:` having been the skill's.
+- In [handoff.practice.md](./handoff.practice.md), the bullet *Blocking sessions* says the conversation records what it waits for in its plan's `Depends_on`, that a queued session with a `Depends_on` not yet met is itself Blocked and cannot be claimed or started, and that the owner is shown `memar ai get-new-chats-ask --coordinator ID ID...`, which reads what blocks from that key. It said only "in its own plan", the interim form `Waits for:` having been the skill's.
 - Why: the owner ruled on 2026-10-16 that the interim form is replaced by `Depends_on`, the key documents already use for what cannot be understood without the cited work, here stronger in time.
 
 ---
@@ -605,3 +605,19 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - Recording follow-ups no longer says "err toward one too many"; a follow-up is a queued session only when it is work (its check is a change applied or a decision recorded), and a finding that must first be studied is that work's first step. A new section, A session is for work, states that a session whose check is a finding or a proposal is a step of the session of the work it improves, and is not Complete while it only proposed. The skill-and-scripts question is still a session at once, but its task is the change, not a decision about it.
 - Why: the owner's ruling of 2026-10-17 after session 22960 (contradictions in front matter) was queued as an investigation that applied nothing and ended Complete: the old text told a session to queue every follow-up and gave a decision-only task as the model of a session, so such sessions were the rule's own product.
+
+---
+
+### Only a session that needs the owner gets a new chat
+- Time: 2026-10-22T12:00:00Z
+- Type: Changed
+- Cited:
+  - Owner (2026-10-22, in chat) - Relation: Evidence: of two sessions a chat opened on 2026-10-19, the one trimming what a session reads before work rightly ran as a new chat, since it needed the owner's answers; the one fixing `memar install --dry-run` did not, since it had no back-and-forth with the owner, and a new chat for it was the wrong choice.
+- Propagates to:
+  - `modules/management/task/services/new.py` (the help of `memar task ensure`, which the skill sends an agent to before handing work over): Done — says the same
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) — carried, recorded
+
+#### What changed
+[Handoff Practice → Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), the Blocking sessions item: an independent session, one whose result the conversation does not need, was always opened in a new chat. Now whether the session needs the owner alone decides a new chat. An independent session that needs no owner goes to a sub-agent once the conversation's own work leaves room, or stays queued. A chat with nothing to ask the owner only gives the owner one more chat to watch.

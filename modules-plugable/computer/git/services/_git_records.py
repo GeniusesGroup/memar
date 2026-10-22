@@ -60,7 +60,7 @@ def exists(project: Path) -> bool:
 def every_file(project: Path) -> list[tuple[str, str, str]]:
     """Each file the branch holds under its sessions' folder, as (session id, path from the session's folder, blob id), in the branch's order; none without the branch."""
     prefix = RECORDS_RELATIVE.as_posix() + '/'
-    listed = git(project, ['ls-tree', '-r', '-z', RECORDS_BRANCH, '--', prefix])
+    listed = git(project, ['ls-tree', '-r', '-z', f'refs/heads/{RECORDS_BRANCH}', '--', prefix])
     if listed.returncode != 0:
         return []
     found = []

@@ -84,7 +84,6 @@ sessions_root = _m_fs_memar.sessions_root
 _m_fs_lock = import_module('modules-plugable.computer.filesystem.services.fs_lock')
 claim_today = _m_fs_lock.claim_today
 _m_fs_trash = import_module('modules-plugable.computer.filesystem.services.fs_trash')
-soft_delete = _m_fs_trash.soft_delete
 import argparse
 import contextlib
 import io
@@ -167,7 +166,7 @@ def trim_log() -> None:
         return
     try:
         with contextlib.redirect_stderr(io.StringIO()):
-            soft_delete(aside)
+            _m_fs_trash.soft_delete(aside)
     except (OSError, SystemExit):
         pass
 
@@ -202,7 +201,7 @@ def reap_idle_sessions(keep: str | None, limit: float | None=None, by: str='') -
             continue
         try:
             with contextlib.redirect_stderr(io.StringIO()):
-                soft_delete(entry)
+                _m_fs_trash.soft_delete(entry)
         except (OSError, SystemExit):
             swept.stuck.append((entry.name, idle_days))
             continue

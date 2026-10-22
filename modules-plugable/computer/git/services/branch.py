@@ -75,7 +75,7 @@ def held(project: Path, task_id: str) -> dict[str, str]:
     prefix = folder_on_branch(task_id) + '/'
     if not exists(project):
         return {}
-    listed = _git(project, ['ls-tree', '-r', '-z', RECORDS_BRANCH, '--', prefix])
+    listed = _git(project, ['ls-tree', '-r', '-z', f'refs/heads/{RECORDS_BRANCH}', '--', prefix])
     if listed.returncode != 0:
         return {}
     found: dict[str, str] = {}
@@ -88,7 +88,7 @@ def read(project: Path, task_id: str, relative: str) -> bytes | None:
     """The bytes of RELATIVE in TASK_ID's folder on the branch, or None when the branch does not hold it."""
     if not exists(project):
         return None
-    done = _git(project, ['cat-file', 'blob', f'{RECORDS_BRANCH}:{folder_on_branch(task_id)}/{relative}'])
+    done = _git(project, ['cat-file', 'blob', f'refs/heads/{RECORDS_BRANCH}:{folder_on_branch(task_id)}/{relative}'])
     return done.stdout if done.returncode == 0 else None
 
 def blob_ids(project: Path, files: list[Path]) -> list[str]:

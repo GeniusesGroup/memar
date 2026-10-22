@@ -6,7 +6,7 @@ ID: "497823"
 ---
 
 # Content Rule — Normative References
-This is the rule for what an act reads before it starts: for each kind of act, the sections of Memar's documents it cannot be carried out without having read, listed in this folder one list per kind beside one list every act reads. It is a rule of Memar's scripts, whose `task` concern declares the kinds of act ([`task_kind.py`](../../../documentation/plan/primitive/task_kind.py); `memar content context --help` names them), and it lives in the scripts' `rules/` folder as [Where Rules Live](../../../../../modules/process/rule/rule.md#where-rules-live-rules-beside-protocol) says; it moves to the `rules/` folder of the scripts' `task` module when the scripts become modules (session 20261015-T123046Z-17544), since its subject is the kinds that module declares ([Which Module a Rule Belongs To](../../../../../modules/process/rule/rule.md#which-module-a-rule-belongs-to)).
+This is the rule for what an act reads before it starts: for each kind of act, the sections of Memar's documents it cannot be carried out without having read, listed in this folder one list per kind beside one list every act reads. It is a rule of Memar's scripts, whose `task` concern declares the kinds of act ([`task_kind.py`](../../../documentation/plan/labels/task_kind.py); `memar content get-act-context --help` names them), and it lives in the scripts' `rules/` folder as [Where Rules Live](../../../../../modules/process/rule/rule.md#where-rules-live-rules-beside-protocol) says; it moves to the `rules/` folder of the scripts' `task` module when the scripts become modules (session 20261015-T123046Z-17544), since its subject is the kinds that module declares ([Which Module a Rule Belongs To](../../../../../modules/process/rule/rule.md#which-module-a-rule-belongs-to)).
 
 ## The rule
 Before an act starts, the agent doing it reads, in its own context, every section named by the entries of `normative_references-every_act.md` and of the list of each kind its act is.
@@ -22,7 +22,7 @@ What an act reads is one owner's selection across many documents, and a selectio
 ## A list and its entries
 A list is a file `normative_references-<word>.md` in a declared place, `<word>` being a kind's word or `every_act`. It holds a level-1 title, one sentence on why its act reads these sections, and its entries; it has no front matter a program reads.
 
-An entry is one line at column 0, outside a fenced block: a list item whose text begins with a link to the section, then ` — ` and one sentence saying why the act reads it, then, last on the line, the review mark — a code span holding `reviewed` and the hash `memar content section FILE '#anchor' --hash` prints for that section. For illustration:
+An entry is one line at column 0, outside a fenced block: a list item whose text begins with a link to the section, then ` — ` and one sentence saying why the act reads it, then, last on the line, the review mark — a code span holding `reviewed` and the hash `memar content get-section FILE '#anchor' --hash` prints for that section. For illustration:
 
 ```
 - [Modeling Practice → The Modeling Workflow](../../../../../docs/modeling.practice.md#the-modeling-workflow) — a design ends in a module's contract, and its eighth step is the gate. `reviewed c8900bbbb4cb`
@@ -40,11 +40,11 @@ The entries are the one statement of what an act reads, and no document restates
 A list is read only where lists are declared to live, so that a fixture or an illustrative example saved under a list's name binds nobody.
 
 - **In Memar**, this folder, a constant in the code that reads it. It is not a preference, because Memar's lists bind every project and are found the same way from every one.
-- **In a project**, the folders the `normative_references` key of the project's `.agents/memar/preferences.md` front matter names: one or more paths relative to the project's top folder, separated by commas, each a folder inside the project and none the top folder itself. Only the lists directly in each folder are read, not below it; a named folder that does not exist is reported, not read as an empty list. Empty or absent, the project has no lists of its own and its sessions read Memar's alone.
+- **In a project**, the folders the `normative_references` key of the `memar:` block in the project's `manifest.yaml` names: one or more paths relative to the project's top folder, separated by commas, each a folder inside the project and none the top folder itself. Only the lists directly in each folder are read, not below it; a named folder that does not exist is reported, not read as an empty list. Empty or absent, the project has no lists of its own and its sessions read Memar's alone.
 - **Anywhere else**, a file named like a list is never read, and `memar content check` warns of it.
 
 ## Enforcement
-- **Resolver behaviour**: the composer behind `memar session start` and `memar content context` prints, for an act's kinds, the every-act sections and then each kind's, each section once, reading the lists and the sections from the live files on every call; a section changed since its mark is printed as it reads now, marked so.
+- **Resolver behaviour**: the composer behind `memar ai get-task-init-context` and `memar content get-act-context` prints, for an act's kinds, the every-act sections and then each kind's, each section once, reading the lists and the sections from the live files on every call; a section changed since its mark is printed as it reads now, marked so.
 - **Governance report**: `memar content check` reports an entry whose link or anchor resolves to nothing, whose mark is missing or differs from its section's current hash, a list whose word names no kind, and a drop that drops nothing, has no reason, or names an every-act section.
 
 The composer reads this folder and a project's declared places, and `task_kind.py` names no section (sessions 20261016-T135247Z-13740 and 20261016-T135247Z-15984). A project's drop is printed in the context where the passage stood and counted on its first line and in `memar content check`'s summary line; a declared folder that does not exist is said on the first line.

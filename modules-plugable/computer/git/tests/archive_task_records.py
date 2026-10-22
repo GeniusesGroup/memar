@@ -359,7 +359,10 @@ class WhenRefused(Fixture):
 class BranchNameIsOneConstant(unittest.TestCase):
 
     def test_no_script_spells_the_branch_name_but_the_one_line_that_defines_it(self) -> None:
-        spelled = [path.relative_to(SCRIPTS).as_posix() for path in SCRIPTS.rglob('*.py') if 'tests' not in path.relative_to(SCRIPTS).parts and BRANCH in path.read_text(encoding='utf-8')]
+        # The services moved out of bundles/memar into the module shelves, so the whole tree of code is read.
+        top = TESTS.parents[3]
+        shelves = [top / name for name in ('bundles', 'modules', 'modules-plugable')]
+        spelled = sorted(path.relative_to(top).as_posix() for shelf in shelves for path in shelf.rglob('*.py') if not {'tests', 'temp'} & set(path.relative_to(top).parts) and BRANCH in path.read_text(encoding='utf-8', errors='replace'))
         self.assertEqual(spelled, ['modules-plugable/computer/filesystem/services/fs_memar.py'])
         self.assertEqual(memar_fs.RECORDS_BRANCH, BRANCH)
 

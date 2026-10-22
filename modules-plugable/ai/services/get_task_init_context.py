@@ -198,7 +198,8 @@ def start_passages(task_id: str, with_skill: bool=True) -> list[str]:
     folder = folder_of(task_id)
     if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
         fail(f'no task to start in {task_id}: it has no session folder with a {PLAN_NAME}. Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and write the task into its {PLAN_NAME} first')
-    unmet = dependency_refusal(folder, START_COMMAND)
+    # The act, not the verb's name: the refusal reads "cannot be started".
+    unmet = dependency_refusal(folder, 'start')
     if unmet:
         fail(unmet)
     _, folder = ensure_task(task_id)

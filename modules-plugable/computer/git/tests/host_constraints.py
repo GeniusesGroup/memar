@@ -175,8 +175,8 @@ class RestoreRefusesFirst(unittest.TestCase):
 
     def test_the_token_is_declared_once_and_used_once(self) -> None:
         source = read('git.py')
-        self.assertIn(f'DISCARD_CONFIRM = "{self.TOKEN}"', source)
-        self.assertEqual(source.count(f'"{self.TOKEN}"'), 1)
+        self.assertIn(f"DISCARD_CONFIRM = '{self.TOKEN}'", source)
+        self.assertEqual(source.count(f"'{self.TOKEN}'"), 1)
 
     def test_discarding_without_the_token_refuses_and_says_what_to_do(self) -> None:
         from importlib.machinery import SourceFileLoader
@@ -198,7 +198,7 @@ class RenameIsHistoryKeeping(unittest.TestCase):
 
     def test_a_move_goes_through_git_mv_not_a_plain_move(self) -> None:
         source = read('git.py')
-        self.assertIn('run_git(["mv",', source)
+        self.assertIn("run_git(['mv',", source)
         for plain in ('shutil.move(', 'os.rename(', 'os.replace('):
             self.assertNotIn(plain, source)
 
@@ -254,7 +254,9 @@ class ShelfIsNotRouted(unittest.TestCase):
 
     def test_the_router_routes_no_file_of_this_shelf(self) -> None:
         launcher = (SCRIPTS / 'memar').read_text(encoding='utf-8')
-        for name in ('_host_git_cli.py', 'trash.py', '"host"', "'host'"):
+        # The launcher's help names these files on purpose, as where to commit and delete; that they are not
+        # routed is what the services and catalog check below pins, so only the old shelf's name is read as text.
+        for name in ('"host"', "'host'"):
             with self.subTest(name=name):
                 self.assertNotIn(name, launcher)
         spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(SCRIPTS / 'memar')))
