@@ -6,7 +6,9 @@ Org product GUI / projection requirements and second-pass Semantic UI bullets: G
 ## Status
 Active — multi-GUI / logical-snapshot decided; org GUI projections live in `modules-plugable/gui` (not kernel). Semantic UI catalog ownership and org-vs-Memar UI modeling remain open/direction.
 
-## Placement
+## Placement (superseded in part, Tentative)
+The ui design of 2026-10-22 moved the `page-*` folders to the domain whose subject each page is; see [UI Handoff → Decisions](../../modules/computer/ui/ui.handoff.md#the-ui-design-and-the-correction-of-this-modules-placement-tentative-owner-rulings-of-2026-10-20-to-2026-10-22-session-20261020-t060223z-17988). What stays here is the pages with no settled domain (cart, discussion, economic-indicator, friendship_cycle, market, payment, process, shipping, store, summary, work_flow), each a sign to resolve: a domain to model, an existing domain, or the application bundle. This folder is not a category and disappears when they are placed.
+
 A GUI is a consumer of domain contracts, not a core-by-necessity domain: removing these pages does not force fabricating Account, User, Content, or Task. `bundles/gui` stays the runtime/composition host; this folder holds projection pages (`page-*`) only.
 
 ## Decisions

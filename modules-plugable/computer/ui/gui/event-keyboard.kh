@@ -37,7 +37,7 @@ tp KeyboardEventKey ab
 
 tp KeyboardEventCode ab
 
-// TODO(go-migrate): [in tp KeyboardEvent] Go left the embedded Event commented out, meaning KeyboardEvent was meant to compose an Event; which one (GUI_Event_2 in modules/gui/protocol/event.kh, or Event in modules/process/event/protocol/event.kh) is undecided.
+// TODO(go-migrate): [in tp KeyboardEvent] Go left the embedded Event commented out, meaning KeyboardEvent was meant to compose an Event; which one (GUI_Event_2 in modules-plugable/computer/ui/gui/protocol/event.kh, or Event in modules/process/event/protocol/event.kh) is undecided.
 // TODO(go-migrate):
 /*
 package gui

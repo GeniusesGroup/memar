@@ -4,7 +4,7 @@
 tp GUI_Pages_2 cp {
 }
 
-// TODO(go-migrate): [tp GUI_Pages_2] impl struct gui.Pages and protocol gui_p.Pages (Pages in modules/gui/protocol/pages.kh) both qualify to Pages; the capsule carries the bridge's counter fallback until a naming decision.
+// TODO(go-migrate): [tp GUI_Pages_2] impl struct gui.Pages and protocol gui_p.Pages (Pages in modules-plugable/computer/ui/gui/protocol/pages.kh) both qualify to Pages; the capsule carries the bridge's counter fallback until a naming decision.
 // TODO(go-migrate):
 /*
 package gui

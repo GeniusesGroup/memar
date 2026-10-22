@@ -1,8 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp ScreenMode in "modules/gui/protocol/screen-mode.kh"
-tp ScreenOrientation in "modules/gui/protocol/screen-orientation.kh"
-tp ScreenType in "modules/gui/protocol/screen-type.kh"
+tp ScreenMode in "modules-plugable/computer/ui/gui/protocol/screen-mode.kh"
+tp ScreenOrientation in "modules-plugable/computer/ui/gui/protocol/screen-orientation.kh"
+tp ScreenType in "modules-plugable/computer/ui/gui/protocol/screen-type.kh"
 tp Signed in "modules/math/integer/protocol/signed.kh"
 
 // Screen indicate some information about screen that a page-state(window) can render to it.

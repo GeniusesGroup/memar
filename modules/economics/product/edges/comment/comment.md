@@ -11,7 +11,7 @@
 ## Placement
 
 - **Not core `product`** — a product remains priceable and invoice-able without a comment group; core-by-necessity fails.
-- **Proposed: `modules-plugable/knowledge/` beside the `reaction` capability** — reactions already model the attach-to-anything pattern (`reactionable` targets content and more); discussion attaches the same way, and GUI already separates it as [page-comments](../../../../../modules-plugable/gui/page-comments/). Alternative reading: comments anchor to the [content](../../../../knowledge/content/README.md) identity that a product may take simultaneously ([product.md](../../product.md) multi-typing) — then the edge is content-side, not product-side.
+- **Proposed: `modules-plugable/knowledge/` beside the `reaction` capability** — reactions already model the attach-to-anything pattern (`reactionable` targets content and more); discussion attaches the same way, and GUI already separates it as [page-comments](../../../../../modules-plugable/knowledge/content/ui/page-comments/). Alternative reading: comments anchor to the [content](../../../../knowledge/content/README.md) identity that a product may take simultaneously ([product.md](../../product.md) multi-typing) — then the edge is content-side, not product-side.
 - Entry point: whatever page hosts discussion, never the product kernel.
 
 ## Open questions

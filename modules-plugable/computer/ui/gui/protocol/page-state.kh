@@ -6,23 +6,23 @@ tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 
 tp Error in "modules/process/error/protocol/error.kh"
 
-tp DOM in "modules/gui/protocol/dom.kh"
+tp DOM in "modules-plugable/computer/ui/gui/protocol/dom.kh"
 
-tp Page in "modules/gui/protocol/page.kh"
+tp Page in "modules-plugable/computer/ui/gui/protocol/page.kh"
 
-tp Screen in "modules/gui/protocol/screen.kh"
+tp Screen in "modules-plugable/computer/ui/gui/protocol/screen.kh"
 
-tp ScreenMode in "modules/gui/protocol/screen-mode.kh"
+tp ScreenMode in "modules-plugable/computer/ui/gui/protocol/screen-mode.kh"
 
-tp ScreenOrientation in "modules/gui/protocol/screen-orientation.kh"
+tp ScreenOrientation in "modules-plugable/computer/ui/gui/protocol/screen-orientation.kh"
 
-tp SOM in "modules/gui/protocol/som.kh"
+tp SOM in "modules-plugable/computer/ui/gui/protocol/som.kh"
 
-tp Picture_Image in "modules/codec/picture/protocol/image.kh"
+tp Picture_Image in "modules/computer/codec/picture/protocol/image.kh"
 
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
-tp WindowType in "modules/gui/protocol/window-type.kh"
+tp WindowType in "modules-plugable/computer/ui/gui/protocol/window-type.kh"
 
 
 

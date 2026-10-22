@@ -303,7 +303,7 @@ Ordered; each begins with a goal and a test, in the order [How work in this tool
 7. **Owner reviews [khayyam.research.001.md](./khayyam.research.001.md) and this handoff** — the review outcome there is still *Not yet reviewed*, and goal 1 is not done until it is.
 
 ## Anticipated Work
-- **Generate a service from its name and path** — owner position (2026-09-29): extend the Memar server (diagnostics-without-target path in the rule model above) with a capability that scaffolds or registers a service given only its name and module path. Generation, scaffolding, and tidy rewrites are service behavior (code), not Rule text — see [rule.md → Rules, Code, and Services](../../modules/process/rule/rule.md#rules-code-and-services). Also tracked in [SDK handoff → Anticipated Work](../../modules/process/service/sdk/sdk.handoff.md#anticipated-work). No `docs/` protocol document defines the Memar server yet.
+- **Generate a service from its name and path** — owner position (2026-09-29): extend the Memar server (diagnostics-without-target path in the rule model above) with a capability that scaffolds or registers a service given only its name and module path. Generation, scaffolding, and tidy rewrites are service behavior (code), not Rule text — see [rule.md → Rules, Code, and Services](../../modules/process/rule/rule.md#rules-code-and-services). Also tracked in [SDK handoff → Anticipated Work](../../modules/process/service/rules/sdk/sdk.handoff.md#anticipated-work). No `docs/` protocol document defines the Memar server yet.
 
 ## Related Artifacts
 | Artifact | Relation | Action |

@@ -35,7 +35,7 @@
 #### What changed
 - Added *Independent identities*: routing, service, operation, and request as distinct representations — the missing design rationale, stated as this protocol's positive contract rather than as a critique of HTTP.
 - The http-uri multiplexer form is framed as a guest adapter, not as addressing.
-- A consumed-contract link points at [http](../lib/net/http.md) for Memar's position on depending on HTTP.
+- A consumed-contract link points at [http](../../../modules-plugable/net/http/http.md) for Memar's position on depending on HTTP.
 
 #### Considered and not done
 - **Write the URL critique into this protocol document's rationale layer** (rejected): that was the previous handoff's next step; it would keep sRPC narrating HTTP. The critique belongs in http.md. (Omid Hekayati)
@@ -46,8 +46,8 @@
 - Time: 2026-09-21T16:15:56Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: the Explanation-facet skeleton, Relevance discipline, and Progressive migration this rewrite follows.
-  - [Documentation](../../documentation.md) — Reference: written surface, content rule (no derivative inventories), and citation direction used to drop the languages list and keep implementations out of the protocol body.
+  - [Documentation — Explanation](../../knowledge/documentation/explanation/explanation.md) — Reference: the Explanation-facet skeleton, Relevance discipline, and Progressive migration this rewrite follows.
+  - [Documentation](../../knowledge/documentation/documentation.md) — Reference: written surface, content rule (no derivative inventories), and citation direction used to drop the languages list and keep implementations out of the protocol body.
 - Propagates to:
   - http.md: Done — inbound links `./sRPC.md#service-id` and `./sRPC.md` still resolve; heading texts that produce `#service-id`, `#service-frame`, and the Service Frame `Time` mention were kept; no edit required.
   - networking.handoff.md: Done — inbound link `./sRPC.md#independent-identities` still resolves; no edit required.
@@ -90,11 +90,11 @@
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
-- *Goals and non-goals* gains goal 4: the wire serves every participant of an exchange and the network it crosses, not one consumer — its binary form saves bandwidth and the serialization and parse work at both ends of every exchange — and a consumer's need for text, a person's or an AI agent's, is met on its own side by the service's delivered [SDK](../process/service-sdk.md), not by the wire.
+- *Goals and non-goals* gains goal 4: the wire serves every participant of an exchange and the network it crosses, not one consumer — its binary form saves bandwidth and the serialization and parse work at both ends of every exchange — and a consumer's need for text, a person's or an AI agent's, is met on its own side by the service's delivered [SDK](../../process/service/rules/sdk/sdk.md), not by the wire.
 - Goals 1–3 are unchanged, so references to them by line or number still hold.
 
 #### Decision
-- The goal graduates by owner ruling (Omid Hekayati, 2026-10-10) from [SDK Handoff → The agent as an SDK consumer](../process/service-sdk.handoff.md#the-agent-as-an-sdk-consumer), where it had stood as his position: a protocol is designed for all its participants, not one; binary on the wire saves the whole network's resources, which at scale is not small, and the industry's move from REST to gRPC is the precedent that wire cost matters. The precedent stays in this record; the body states only the goal.
+- The goal graduates by owner ruling (Omid Hekayati, 2026-10-10) from [SDK Handoff → The agent as an SDK consumer](../../process/service/rules/sdk/sdk.handoff.md#the-agent-as-an-sdk-consumer), where it had stood as his position: a protocol is designed for all its participants, not one; binary on the wire saves the whole network's resources, which at scale is not small, and the industry's move from REST to gRPC is the precedent that wire cost matters. The precedent stays in this record; the body states only the goal.
 
 ---
 

@@ -1,11 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp Element_Status in "modules/gui/protocol/element-status.kh"
-tp Element_Type in "modules/gui/protocol/element-type.kh"
-tp Scroll in "modules/gui/protocol/scroll.kh"
+tp Element_Status in "modules-plugable/computer/ui/gui/protocol/element-status.kh"
+tp Element_Type in "modules-plugable/computer/ui/gui/protocol/element-type.kh"
+tp Scroll in "modules-plugable/computer/ui/gui/protocol/scroll.kh"
 tp Signed in "modules/math/integer/protocol/signed.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // Element
 tp GUI_Element ab {

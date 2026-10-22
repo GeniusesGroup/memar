@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Page in "modules/gui/protocol/page.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp Page in "modules-plugable/computer/ui/gui/protocol/page.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Pages ab
 tp GUI_Pages_RegisterPage mt (self Pages) (page Page) ()

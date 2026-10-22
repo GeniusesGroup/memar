@@ -2,7 +2,7 @@
 
 tp Field_OrganizationUUID in "modules/identity/organization/protocol/dt-uuid.kh"
 tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
-tp Field_Username in "modules-plugable/uri/username/widget/protocol/dt-username.kh"
+tp Field_Username in "modules-plugable/uri/username/ui/protocol/dt-username.kh"
 tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 

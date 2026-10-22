@@ -3,7 +3,7 @@
 tp GUI_History_2 cp {
 }
 
-// TODO(go-migrate): [tp GUI_History_2] impl struct gui.History and protocol gui_p.History (History in modules/gui/protocol/history.kh) both qualify to History; the capsule carries the bridge's counter fallback until a naming decision.
+// TODO(go-migrate): [tp GUI_History_2] impl struct gui.History and protocol gui_p.History (History in modules-plugable/computer/ui/gui/protocol/history.kh) both qualify to History; the capsule carries the bridge's counter fallback until a naming decision.
 // TODO(go-migrate):
 /*
 package gui

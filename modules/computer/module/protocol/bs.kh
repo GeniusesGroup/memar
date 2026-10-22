@@ -6,7 +6,7 @@ tp String in "modules/computer/codec/string/protocol/string.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Type_ID in "modules/computer/type/protocol/id.kh"
 tp Identifier_MediaType in "modules/computer/mediatype/protocol/media-type.kh"
-tp Page in "modules/gui/protocol/page.kh"
+tp Page in "modules-plugable/computer/ui/gui/protocol/page.kh"
 tp Service in "modules/process/service/protocol/service.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 

@@ -62,7 +62,7 @@ six files were left unconverted for stated reasons.
 - **`Field_InventoryID` has no owner, and there are two claimants with different import paths.**
   `number-serial/protocol/data_model.kh` imports `modules/economics/inventory/protocol`, but the
   only `Field_InventoryID` in the whole tree is the commented-out Go interface in
-  `modules-plugable/gui/page-inventory/protocol/dt-uuid.kh`. The import path and the claimant
+  `modules-plugable/economics/inventory/ui/page-inventory/protocol/dt-uuid.kh`. The import path and the claimant
   disagree about which inventory is meant, and neither is converted. This is the single blocker for
   that file.
 - **`shaparak-hex` is blocked on a domain that does not exist.** Its data model and storage contract

@@ -43,7 +43,7 @@ tp Event_Methods ab
 // signals to the operation that caused event to be dispatched that it needs to be canceled.
 tp PreventDefault mt (self Event_Methods) () (err Error)
 
-// TODO(go-migrate): GUI_Event_2 is the bridge's counter fallback, not a chosen name: Go gui_p.Event (memar/gui/protocol) and the impl struct gui.Event (modules/gui/event.go, ported as GUI_Event in modules/gui/event.kh) both qualify to GUI_Event; pick the protocol's real name.
+// TODO(go-migrate): GUI_Event_2 is the bridge's counter fallback, not a chosen name: Go gui_p.Event (memar/gui/protocol) and the impl struct gui.Event (modules-plugable/computer/ui/gui/event.go, ported as GUI_Event in modules-plugable/computer/ui/gui/event.kh) both qualify to GUI_Event; pick the protocol's real name.
 // TODO(go-migrate):
 /*
 package gui_p

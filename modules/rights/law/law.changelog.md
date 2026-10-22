@@ -9,7 +9,7 @@
   - `____Chats/law.md` (not in the repository) - Relation: Evidence: owner model of law as text-plus-companions, labels instead of titles, rival versions as new nodes, and domain separation; Gemini's first reply as the specimen of importing article-and-note structure
   - [Law Form and Validity](https://github.com/GeniusesGroup/memar/blob/main/docs/society/governance/law-form-and-validity.md) - Relation: Evidence: later owner rulings on the computer-code gate, constitution-as-label, and non-contradiction; conventional-model flaw of vague articles without an execution mechanism
 - Propagates to:
-  - Memar `docs/society/governance/law-form-and-validity.md`: Done — corpus left Memar; leftover form prose on [law-validity.md](../../../modules-plugable/rights/law-validity/law-validity.md) stripped 2026-09-21 (see later entry)
+  - Memar `docs/society/governance/law-form-and-validity.md`: Done — corpus left Memar; leftover form prose on [law-validity.md](../../../modules-plugable/rights/law/edges/validity/validity.md) stripped 2026-09-21 (see later entry)
   - `modules/computer/rule/rule.md`: Done — Rule-vs-Law bullet now points at this definition
   - Instance catalog: Done — instances are bundle modules ([Bundles](../../../bundles/bundles.md)), not this type
 - Contributors:
@@ -51,7 +51,7 @@ Traditional statute books (a title, numbered articles, rider notes, a later offi
 - Type: clarified, Fixed
 - Cited:
   - [Law](law.md) - Relation: Depends_on: the type this session restates
-  - [Law Validity](../../../modules-plugable/rights/law-validity/law-validity.md) - Relation: Evidence: leftover four-facet body was still restating the type after the society corpus landed as a bundle module
+  - [Law Validity](../../../modules-plugable/rights/law/edges/validity/validity.md) - Relation: Evidence: leftover four-facet body was still restating the type after the society corpus landed as a bundle module
   - [Bundles](../../../bundles/bundles.md) - Relation: Depends_on: instance statutes are bundle modules, not a libraries catalog
 - Propagates to:
   - `bundles/government/modules/law-validity/law-validity.md`: Done — four-facet approach is a stub pointing here; page is duration-only
@@ -69,7 +69,7 @@ Traditional statute books (a title, numbered articles, rider notes, a later offi
   - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — rewrote
 
 #### What changed
-The type document now states its claim in an Abstract and names the article-and-note failure as Motivation, without moving the session critique out of this changelog. Instance home is [Bundles](../../../bundles/bundles.md), not Memar `docs/society` and not a libraries folder. [Law Validity](../../../modules-plugable/rights/law-validity/law-validity.md) no longer restates goal/explanation/guarantee/computer-code; inbound four-facet syn lines point at this type.
+The type document now states its claim in an Abstract and names the article-and-note failure as Motivation, without moving the session critique out of this changelog. Instance home is [Bundles](../../../bundles/bundles.md), not Memar `docs/society` and not a libraries folder. [Law Validity](../../../modules-plugable/rights/law/edges/validity/validity.md) no longer restates goal/explanation/guarantee/computer-code; inbound four-facet syn lines point at this type.
 
 #### Deliberation
 The earlier entry left a Pending propagation to Memar. That corpus is gone from Memar; what remained was the imported bundle module still carrying the type as an "approach". Completing the original split — type here, duration there — is this session's work, not a new model.
@@ -222,7 +222,7 @@ Grok: politics is not kernel. No type. The critiques of the owner's sentence are
 - Cited:
   - [Status](../../knowledge/status/status.md) - Relation: Depends_on: a status is a loop-edge; the catalog lives there
   - Founding Arrangements (module removed; family and marriage are separate plugable modules) - Relation: Evidence: marriage, family, and the small law set
-  - [Election](widgets/election/election.md) - Relation: Evidence: critique and signature are separate acts; delegation is stated there
+  - [Election](ui/election/election.md) - Relation: Evidence: critique and signature are separate acts; delegation is stated there
   - [Politics](../../../modules-plugable/management/politics/politics.md) - Relation: Evidence: nearest parent, interest-weighing definition
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
@@ -275,7 +275,7 @@ Owner: delegation is already `modules/rights/delegate`. The open gap is the one-
 - Type: Added, clarified
 - Cited:
   - [Law Research 002](law.research.002.md) - Relation: Evidence: published accounts, and the placement that survived owner review
-  - [Laws](../../../modules-plugable/rights/laws/laws.md) - Relation: Evidence: basic statutes, including when a contract yields to a law
+  - [Laws](../../../modules-plugable/rights/law/laws/laws.md) - Relation: Evidence: basic statutes, including when a contract yields to a law
   - [Claims](../../../modules-plugable/rights/claims/claims.md) - Relation: Evidence: optional kinds of dispute, not the case type
   - [Supersedes](../../identity/thing/edges/supersedes/supersedes.md) - Relation: Depends_on: a record taking another's place is one relation
   - [Human code](edges/human_code/human_code.md) - Relation: Evidence: the human-language sentence
@@ -292,12 +292,12 @@ Owner: delegation is already `modules/rights/delegate`. The open gap is the one-
 - [law.research.002.md](law.research.002.md) records the external reading. [law.md](law.md) does not point at a research.
 - The human-language sentence is human code. The machine-checkable form is computer code. The word code alone is not an edge name.
 - What a vote does to another law is not this type. It is an optional edge in [claims](../../../modules-plugable/rights/claims/claims.md).
-- When a contract yields to a law is a statute in [laws](../../../modules-plugable/rights/laws/laws.md), not this type.
+- When a contract yields to a law is a statute in [laws](../../../modules-plugable/rights/law/laws/laws.md), not this type.
 - A record that takes another's place uses [supersedes](../../identity/thing/edges/supersedes/supersedes.md) on thing.
 - [law.md](law.md) states the node as one signed instrument. The legal order is which instruments are in force. Human code and computer code state the position the instrument creates. The goal does not outrank those two. A computer-code form that no input can satisfy is not signed. The human code in the payload is how a signer reads the law. Critique scenarios stay outside the digest.
 - "Constitution" is a comment label, not a second kind of law. The same cycle applies to every instrument. The type is not limited to the government of a society: an organization's articles of association are a law of this type.
-- The words commenters attach are registered in [law labels](../../../modules-plugable/rights/law-labels/law-labels.md). The attachment edge stays the label domain's. Rank words are not registered.
-- Whether a law supersedes a contract is the statute [law supersedes contract](../../../modules-plugable/rights/laws/law-supersedes-contract/law-supersedes-contract.md), not the type.
+- The words commenters attach are registered in [law labels](../../../modules-plugable/rights/law/labels/labels.md). The attachment edge stays the label domain's. Rank words are not registered.
+- Whether a law supersedes a contract is the statute [law supersedes contract](../../../modules-plugable/rights/law/laws/law-supersedes-contract/law-supersedes-contract.md), not the type.
 
 #### Deliberation
 Owner: the earlier critique of this type did not read sources outside the organization. An explanation states what is settled and does not point at a research. Two laws that contradict do not both execute; the remedy is the organization's dispute, not a court choosing between two laws in force. No-retroactivity and the standing of a contract against a law are statutes, not the type. Kinds of dispute are not the case type. The bare name code is ambiguous between the human sentence and the machine form.
@@ -305,3 +305,19 @@ Owner: the earlier critique of this type did not read sources outside the organi
 The reading did not settle whether law and contract share one computer-code edge, or whether contract terms are human code. Those stay on the handoffs.
 
 ---
+
+### The optional parts of law are one pluggable module
+- Time: 2026-10-20T07:00:00Z
+- Type: Changed
+- Cited:
+  - [Modules Research 001 → Owner decisions needed](../../modules.research.001.md#6-owner-decisions-needed) - Relation: Depends_on: rulings D2 and D3
+  - [Law — optional parts](../../../modules-plugable/rights/law/law.md) - Relation: Evidence: the module the parts moved into
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled the placement
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5 via Claude Code) — moved and wrote
+
+#### What changed
+[law.handoff.md](law.handoff.md) marks the 2026-09 placement of duration at `modules-plugable/rights/law-validity` superseded and records the new decision: labels, laws and validity are parts of one pluggable module at `modules-plugable/rights/law`. Links in this module's documents follow the move.
+
+#### Deliberation
+The earlier line is kept and marked, not deleted, because removal is the gated act.

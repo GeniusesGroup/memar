@@ -25,7 +25,7 @@ Active — the five `.kh` files are converted and return `accept` from the Khayy
 - **Highest-leverage conversion left in the repository:** `modules/identity/thing/protocol/dt-uuid.kh` is unconverted. It has to declare `ThingUUID` and `Field_ThingUUID` before this domain's files resolve, before `modules/identity/time/` resolves, and before the many other `dt-uuid.kh` files that already import those names can be written at all.
 - **Blocks this domain's `model.kh`:** `modules/knowledge/text/protocol/model.kh` is unconverted, so the `TextModel` entry in `URIModel` cannot resolve. The Go source listed `text_p.Model` as a requirement of the URI model, and that requirement is preserved in source but unresolved in the tree.
 - May a URI record's identity ever diverge from its thing identity? If it may, `protocol/dt-uuid.kh` needs a `URIUUID` value abstraction after all, and every `URIID` implementation changes with it.
-- Should `widgets/quiddity-uri` carry documents of its own? The sibling widget of the same shape, `modules-plugable/uri/username/widget/`, has none at all, so there is no precedent either way; this domain's widget is currently described from [`uri.md`](uri.md).
+- Should `widgets/quiddity-uri` carry documents of its own? The sibling widget of the same shape, `modules-plugable/uri/username/ui/`, has none at all, so there is no precedent either way; this domain's widget is currently described from [`uri.md`](uri.md).
 
 ## Assumptions
 
@@ -46,7 +46,7 @@ Active — the five `.kh` files are converted and return `accept` from the Khayy
 - `modules/knowledge/text/protocol/model.kh` — must declare `TextModel`.
 - `modules/identity/time/protocol/dt-uuid.kh`, `modules/identity/organization/protocol/dt-uuid.kh` — the two conversions that answered the UUID question differently from this one; the `organization` file re-imports the pilot's `UserUUID`.
 - `modules-plugable/uri/uri.md` — the URI protocol family that produces the values this domain stores.
-- `modules-plugable/uri/username/widget/protocol/` — the sibling widget of the same shape; its `Field_Username` shows what avoiding this domain's two `Field_URI`s looks like.
+- `modules-plugable/uri/username/ui/protocol/` — the sibling widget of the same shape; its `Field_Username` shows what avoiding this domain's two `Field_URI`s looks like.
 
 ## Notes
 

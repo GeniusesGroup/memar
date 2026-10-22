@@ -86,7 +86,7 @@ to write it into yet and stay unconverted, as the text domain's do.
   conversion's job — it is real logic, Phase 3 — but the text agent's deletion
   recommendation should be weighed against it: deleting the enum and the table
   together removes the only statement of which languages the system knows.
-- **`modules/knowledge/text/widgets/text/protocol/storage.kh` needs more from
+- **`modules/knowledge/text/ui/text/protocol/storage.kh` needs more from
   this domain than a field.** Its Go signatures read
   `Count(textID UUID, language language_p.UUID)` and
   `ListLanguages(textID UUID, ...) (languages []language_p.UUID, ...)`. The

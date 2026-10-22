@@ -257,7 +257,7 @@ Nothing is moved by this research. "Reclassify" means a different home or bucket
 | [edges/label-used_by](edges/label-used_by/label-used_by.md) | reclassify; maybe retire | Adoption by an organization is `vocabulary`'s; [Modules](../../modules.md#placement) says behaviour binds to identity so two organizations can share a word with different identity, which may make the edge unnecessary where identities are per organization | 9 |
 | [edges/list](edges/list/list.md) | reclassify | A list is a `collection`; the residue already carries `Field_RelationPriority` and ordered services, which the content research's claim of "unordered membership" does not see | 8 |
 | [edges/table](edges/table/table.md), [edges/matrix](edges/matrix/matrix.md) | reclassify | Boards are projections; the relation is an ordered `part_of` among labels; the stage vocabulary is the task domain's; the `TODO::: base on label or status or both??` is answered by finding 1, scenario 6 | 11 |
-| [widgets/categories](widgets/categories/protocol/data_model.kh) | reclassify | A GUI preference ("which categories a user's page shows"), which the knowledge survey's Q4 already moves out of the kernel | — |
+| [widgets/categories](ui/categories/protocol/data_model.kh) | reclassify | A GUI preference ("which categories a user's page shows"), which the knowledge survey's Q4 already moves out of the kernel | — |
 
 #### Status
 | Folder | Proposal | Reason | Owner question |

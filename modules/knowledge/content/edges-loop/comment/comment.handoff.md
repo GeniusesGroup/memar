@@ -36,7 +36,7 @@ Active — `protocol/dt-uuid.kh` is converted and returns `accept` from the Khay
 
 1. Write the behavior of a comment as a content into `comment.md`, and give the edge a requirement beyond its identifier, which is what rule 6 asks for.
 2. Decide the ordering and the same-group rule for replies, and record them on the edge or on the group.
-3. Convert the content widget domains that compose `Field_CommentID` — `group`, `group-user`, `log-activity`, `mentioned`, `object`, `pin`, `reply`, `tag`, `user_status` — plus `modules-plugable/gui/page-discussion/` and `modules/knowledge/text/widgets/text/`, the two consumers outside the content domain and the last of which was waiting on this file.
+3. Convert the content widget domains that compose `Field_CommentID` — `group`, `group-user`, `log-activity`, `mentioned`, `object`, `pin`, `reply`, `tag`, `user_status` — plus `modules-plugable/gui/page-discussion/` and `modules/knowledge/text/ui/text/`, the two consumers outside the content domain and the last of which was waiting on this file.
 
 ## Related Artifacts
 
@@ -44,12 +44,12 @@ Active — `protocol/dt-uuid.kh` is converted and returns `accept` from the Khay
 - [`comment.md`](comment.md) — the domain document; two lines, and the reason the behavior above is missing rather than merely unconverted.
 - `modules/knowledge/content/content.handoff.md` — records "Comment is not an independent entity — Content + a `reply_to` relation".
 - `modules/identity/thing/protocol/dt-uuid.kh` — the owner of the identifier this edge includes.
-- `modules/knowledge/content/widgets/reply/protocol/data_model.kh` — where the reply-to-another-comment relation is written, and the evidence that this edge is a loop-edge.
-- `modules/knowledge/text/widgets/text/protocol/gui-widget.kh` — a consumer of `Field_CommentID` outside the content domain.
+- `modules/knowledge/content/ui/reply/protocol/data_model.kh` — where the reply-to-another-comment relation is written, and the evidence that this edge is a loop-edge.
+- `modules/knowledge/text/ui/text/protocol/gui-widget.kh` — a consumer of `Field_CommentID` outside the content domain.
 
 ## Notes
 
 - The frontend was run through `node modules/khayyam/targets/go/frontend_check.ts` against a root built by copying every `.kh` of this repository into `org/` and every `.kh` of the memar repository into `memar/`, preserving relative paths. `protocol/dt-uuid.kh` returns `accept`.
-- `modules/knowledge/text/widgets/text/protocol/gui-widget.kh` was checked by override against this file to confirm the exported name is the one it asks for; it accepts. That override is a check, not an edit — the file belongs to another domain and was not written here.
+- `modules/knowledge/text/ui/text/protocol/gui-widget.kh` was checked by override against this file to confirm the exported name is the one it asks for; it accepts. That override is a check, not an edit — the file belongs to another domain and was not written here.
 - The Go source of this file carried no comments, so rule 5's extraction pass had nothing to move into `comment.md`; the gap that pass would have exposed is recorded above instead.
 - The `// TODO(go-migrate):` block is left in place, per the conversion brief and memar's `go-clue-residue` rule.

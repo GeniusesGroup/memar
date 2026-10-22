@@ -1,8 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp History in "modules/gui/protocol/history.kh"
-tp Navigator in "modules/gui/protocol/navigator.kh"
-tp Pages in "modules/gui/protocol/pages.kh"
+tp History in "modules-plugable/computer/ui/gui/protocol/history.kh"
+tp Navigator in "modules-plugable/computer/ui/gui/protocol/navigator.kh"
+tp Pages in "modules-plugable/computer/ui/gui/protocol/pages.kh"
 
 // GUI is default global protocol.Application like window global variable in browsers.
 // You must assign to it by any object implement protocol.Application on your main.go file. Suggestion:

@@ -28,7 +28,7 @@ another domain owns are still waiting on that domain; see Open questions.
   `TextID` spelling is the author's own as well as the corpus's.
 - **`Text` is a `String` the text domain owns.** `protocol/dt-text.kh` composes
   memar's `String` abstraction, following `QuiddityURI` in
-  `modules/identity/uri/widgets/quiddity-uri/protocol/dt-uri.kh`, which is the
+  `modules/identity/uri/ui/quiddity-uri/protocol/dt-uri.kh`, which is the
   same case: a Go `string`/`[]byte` value given a name of its own. **This has a
   cost worth a decision later:** satisfaction is structural, so *any* `String`
   capsule satisfies `Text`, and the domain loses the distinction between "text a

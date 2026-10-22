@@ -6,16 +6,16 @@
 - Time: 2026-09-08T16:20:34Z
 - Type: Added
 - Cited:
-  - [GUI](../gui/gui.md) — Reference: the GUI protocol already states the consumer-prohibition rule for graphical clients and relies on SDK-mediated access; this document generalizes the rule to every consumer and grounds that assumption.
-  - [Media Type](../identifier/media-type.md) — Reference: declares "Easily generate SDK in any programing language" as a goal; this document supplies the concept that goal points at.
-  - [Error](error.md) — Reference: the numeric error-coding discipline the SDK's boundary mapping adopts.
-  - [Process](../../process.md) — Reference: already names the SDK among legitimate retry initiators; consistent with the responsibility allocation recorded here, nothing changed there.
+  - [GUI](../../../../computer/ui/ui.md) — Reference: the GUI protocol already states the consumer-prohibition rule for graphical clients and relies on SDK-mediated access; this document generalizes the rule to every consumer and grounds that assumption.
+  - [Media Type](../../../../computer/mediatype/mediatype.md) — Reference: declares "Easily generate SDK in any programing language" as a goal; this document supplies the concept that goal points at.
+  - [Error](../../../error/error.md) — Reference: the numeric error-coding discipline the SDK's boundary mapping adopts.
+  - [Process](../../../process.md) — Reference: already names the SDK among legitimate retry initiators; consistent with the responsibility allocation recorded here, nothing changed there.
 - Propagates to:
   - gui.md: Done — the broken SDK link in the architecture position corrected to `./sdk.md` (cosmetic link repair; no changelog entry there, per the Changelog facet's trivial-repair rule).
   - media-type.md: Pending — the "Easily generate SDK" goal line gains a forward link to this document when the SDK document stabilizes.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../CONTRIBUTORS.md#zcode)) — extracted, recorded
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../../../CONTRIBUTORS.md#zcode)) — extracted, recorded
 
 #### What changed
 - Created as the concept record of Memar's SDK protocol: what an SDK is (the client-side deliverable realizing the service's contract, derived from the contract declaration, one deliverable per consumer language) and what it is not (a specification; a general utility library).
@@ -26,7 +26,7 @@
 #### Related work
 - OpenAPI (formerly Swagger) — the dominant specification-first delivery the position rejects as the default: an interface document handed to consumers, leaving client production to every consuming organization — and, in the intra-organizational case, to the frontend team generating its own client from the backend's document.
 - gRPC — the ecosystem's closest approach: stub code generated from interface definitions, delivered by the service side; assessed in the founding discussions as not having displaced specification-first delivery.
-- GraphQL — service-side aggregation examined and rejected as the default answer to over-/under-fetching (see [Aggregation and the cache](service-sdk.md#aggregation-and-the-cache) in the base document).
+- GraphQL — service-side aggregation examined and rejected as the default answer to over-/under-fetching (see [Aggregation and the cache](sdk.md#aggregation-and-the-cache) in the base document).
 - Repository pattern — identified in the founding discussions as derived from the SDK pattern: the same independent-access-layer shape applied to data access.
 - Vendor platform kits (hardware/OS vendors' toolsets) — the ecosystem's broad "SDK" usage, quoted as background in the founding discussions; a different sense from this protocol's subject.
 
@@ -55,16 +55,16 @@
 - Time: 2026-09-08T18:10:35Z
 - Type: Expanded
 - Cited:
-  - [Modularity](../../modularity.md) — Depends_on: this entry's module-conformance and invocation positions rely on Modularity's Module/Process/Protocol distinction and its Modularity-Is-Not-Deployment position, linked rather than restated.
-  - [Process](../../process.md) — Reference: the mechanism-independence of a process ([Definition](../../process.md#definition)) is the grounding for the process-opacity position.
-  - [Agency](../../agency.md) — Depends_on: the delegation position is stated through Agency's Principal, Delegation, Execution Agent, and Contracts machinery.
+  - [Modularity](../../../../../docs/modularity.md) — Depends_on: this entry's module-conformance and invocation positions rely on Modularity's Module/Process/Protocol distinction and its Modularity-Is-Not-Deployment position, linked rather than restated.
+  - [Process](../../../process.md) — Reference: the mechanism-independence of a process ([Definition](../../../process.md#definition)) is the grounding for the process-opacity position.
+  - [Agency](../../../../../docs/agency.md) — Depends_on: the delegation position is stated through Agency's Principal, Delegation, Execution Agent, and Contracts machinery.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../CONTRIBUTORS.md#zcode)) — recorded
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../../../CONTRIBUTORS.md#zcode)) — recorded
 
 #### What changed
 - Four working positions added (9–12): the SDK as part of the module's own protocol realization; two invocation kinds (local, network) behind one call surface; opaque process invocation; the network call as delegation under a pre-existing agreement.
-- Four topic sections recorded: [Part of the module, not beside it](service-sdk.md#part-of-the-module-not-beside-it), [Local and network invocation](service-sdk.md#local-and-network-invocation), [Invoking a process](service-sdk.md#invoking-a-process), [The call as delegation](service-sdk.md#the-call-as-delegation) — the last carrying the founding transfer example (debit 1,000 / credit 10,000) as the integrity test case.
+- Four topic sections recorded: [Part of the module, not beside it](sdk.md#part-of-the-module-not-beside-it), [Local and network invocation](sdk.md#local-and-network-invocation), [Invoking a process](sdk.md#invoking-a-process), [The call as delegation](sdk.md#the-call-as-delegation) — the last carrying the founding transfer example (debit 1,000 / credit 10,000) as the integrity test case.
 - The relationships section now covers concept documents as well as protocols; Modularity, Process, and Agency entries added. The Abstract updated to carry the four anchorings.
 
 #### Deliberation
@@ -80,13 +80,13 @@
 - Time: 2026-09-09T05:34:47Z
 - Type: Expanded
 - Cited:
-  - [Protocol](../../protocol.md) — Depends_on: the [Protocol vs Contract](../../protocol.md#protocol-vs-contract) distinction grounds the vocabulary rejection — a contract is a legal concept carrying parties and obligations; the SDK's subject is a declared interface, and calling it a contract imports obligations that do not exist here.
-  - [Networking](../net/networking.md) — Depends_on: the invocation reframing relies on Networking's scope position — a network exists wherever two computing entities exchange data ([Scope](../net/networking.md#scope)), not only between machines.
+  - [Protocol](../../../../../docs/protocol.md) — Depends_on: the [Protocol vs Contract](../../../../../docs/protocol.md#protocol-vs-contract) distinction grounds the vocabulary rejection — a contract is a legal concept carrying parties and obligations; the SDK's subject is a declared interface, and calling it a contract imports obligations that do not exist here.
+  - [Networking](../../../../net/net.md) — Depends_on: the invocation reframing relies on Networking's scope position — a network exists wherever two computing entities exchange data ([Scope](../../../../net/net.md#scope)), not only between machines.
 - Propagates to:
   - gui.md: Pending — the architecture position's "keeps the service contract in exactly one place" phrase may adopt the declaration vocabulary when the SDK document stabilizes.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../CONTRIBUTORS.md#zcode)) — recorded
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../../../CONTRIBUTORS.md#zcode)) — recorded
 
 #### What changed
 - The word "contract" removed from the base document's current vocabulary — replaced by the service's declaration / declared interface — throughout: the definition, the derivation paragraph, positions 7–9, the responsibility chain, the specification boundary, and the error topic.
@@ -113,12 +113,12 @@
   - sdk.handoff.md: Done — both entries now state what is settled and name only the residue each still owes.
   - agency.md: Pending — if the credential vocabulary lands in Agency's Contracts and Principal topics rather than in the owning system's own architecture, those topics owe the credential and revocation terms; not owed until the owner rules.
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- "The agreement artifact for delegation" narrowed to its residue. [The call as delegation](service-sdk.md#the-call-as-delegation) already states the artifact: the delegation's content is "the agreed process the SDK realizes", and "The SDK is how that agreement travels: not as a promise in a document, but as the generated code both sides already conform to" — so the agreement is the declared process as realized in the generated code both sides already conform to, neither a promise in a document nor a second agreement beside it, and Agency's Contracts topic does not own it.
+- "The agreement artifact for delegation" narrowed to its residue. [The call as delegation](sdk.md#the-call-as-delegation) already states the artifact: the delegation's content is "the agreed process the SDK realizes", and "The SDK is how that agreement travels: not as a promise in a document, but as the generated code both sides already conform to" — so the agreement is the declared process as realized in the generated code both sides already conform to, neither a promise in a document nor a second agreement beside it, and Agency's Contracts topic does not own it.
 - Residue recorded for that entry: how an all-or-nothing transition rule is *declared* so the generated SDK and the executing side enforce the same one. The passage settles the shape of the answer — a rule declared once in the declaration is the same rule both sides hold, because the SDK is generated from that declaration and the executing side realizes it — and what no sentence states is the declaration form itself.
-- "Revocation and integrity of a delegated credential": the owner question's first alternative withdrawn. "Does the credential need a protocol document of its own" is settled by [Framework → What the Framework Does Not Specify](../../framework.md#what-the-framework-does-not-specify), which leaves authentication, session, and authorization to the system that needs them, so what the question now asks is whether the credential belongs to Agency's Contracts and Principal vocabulary or to the architecture of the system that owns it.
+- "Revocation and integrity of a delegated credential": the owner question's first alternative withdrawn. "Does the credential need a protocol document of its own" is settled by [Framework → What the Framework Does Not Specify](../../../../../docs/framework.md#what-the-framework-does-not-specify), which leaves authentication, session, and authorization to the system that needs them, so what the question now asks is whether the credential belongs to Agency's Contracts and Principal vocabulary or to the architecture of the system that owns it.
 - No entry was deleted, and the base document's body is unchanged; the other ten entries under Open Questions are untouched.
 
 ---
@@ -127,12 +127,12 @@
 - Time: 2026-10-05T17:18:32Z
 - Type: Changed
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- `sdk.md` → [Working positions](service-sdk.md#working-positions) position 4 now stands as "Every call the consumer makes to the service is an SDK call", and the Abstract states the same: every call the consumer makes to that service is an SDK call, the consumer's own code names no transport and no serialization for it, and no consumer re-derives the declared interface from a specification.
+- `sdk.md` → [Working positions](sdk.md#working-positions) position 4 now stands as "Every call the consumer makes to the service is an SDK call", and the Abstract states the same: every call the consumer makes to that service is an SDK call, the consumer's own code names no transport and no serialization for it, and no consumer re-derives the declared interface from a specification.
 - The check that now decides it is per call site in the consumer's own source: every call it makes to that service's interface is an SDK call, and no consumer code names a transport or a serialization for it.
-- The replaced wording, that the consumer writes no network code at all, was unbounded — the same document separates a general-purpose client library from an SDK at [What an SDK is not](service-sdk.md#what-an-sdk-is-not), so a consumer may hold transport code for something that is not this service, and no party could decide the wider claim either way.
+- The replaced wording, that the consumer writes no network code at all, was unbounded — the same document separates a general-purpose client library from an SDK at [What an SDK is not](sdk.md#what-an-sdk-is-not), so a consumer may hold transport code for something that is not this service, and no party could decide the wider claim either way.
 
 ---
 
@@ -140,10 +140,10 @@
 - Time: 2026-10-07T15:14:08Z
 - Type: Moved
 - Cited:
-  - [Modules → One layout for both trees](../README.md#one-layout-for-both-trees) - Premise: a module is specified at `docs/modules/<category>/<name>.md` and realized at `modules/<category>/<name>/`; `modules/` (the category) was the `memar-go` registry folder and no responsibility.
+  - [Modules → One layout for both trees](../../../../../docs/modularity.changelog.md#the-one-layout-for-both-trees-argument-is-dropped-with-the-specification-folder) - Premise: a module is specified at `docs/modules/<category>/<name>.md` and realized at `modules/<category>/<name>/`; `modules/` (the category) was the `memar-go` registry folder and no responsibility.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
 - The document and its companions moved from `docs/modules/modules/sdk.*` to `docs/modules/process/service-sdk.*`. An SDK is a service's own deliverable, and the services that generate one (`make-sdk-go`, `make-sdk-js`, `make-sdk-ts`, `make-sdk-c`) moved in the same change to `modules/process/service/services/`. Every relative link was re-derived and every link into this document re-pointed. No content change.
@@ -155,9 +155,9 @@
 - Type: Added
 - Cited:
   - [MCP Architecture overview, revision 2026-07-28](https://modelcontextprotocol.io/docs/2026-07-28/learn/architecture) - Evidence: MCP's primary documentation, for its observable shape only — its SDKs are "SDKs for different programming languages that implement MCP", and a tool's `inputSchema` is "A JSON Schema that defines the expected input parameters".
-  - [The MCP comparison](../../comparisons/mcp.001.md) - Reference: the essay that carries the argument the new paragraph states in brief.
-  - [The Type](../computer/type.md#type-details-and-human-facing-identity) - Depends_on: the type details Working position 14 and its paragraph rest on.
-  - [Documentation — Handoff → Relationship to the Other Facets](../../documentation-handoff.md#relationship-to-the-other-facets) - Reference: a handoff does not hold settled design, so the ruled positions left it for this body.
+  - [The MCP comparison](../../../../../docs/comparisons/mcp.001.md) - Reference: the essay that carries the argument the new paragraph states in brief.
+  - [The Type](../../../../../docs/type.md#type-details-and-human-facing-identity) - Depends_on: the type details Working position 14 and its paragraph rest on.
+  - [Documentation — Handoff → Relationship to the Other Facets](../../../../knowledge/documentation/handoff/handoff.md#relationship-to-the-other-facets) - Reference: a handoff does not hold settled design, so the ruled positions left it for this body.
 - Propagates to:
   - docs/comparisons/mcp.001.md: Done - the essay landed in the same session, and the paragraph's link resolves.
   - service-sdk.handoff.md: Done - *The agent as an SDK consumer* keeps a pointer to the new home, the WASM delivery form, the question for the owner, the tentative Prompts extension, and Next.
@@ -167,20 +167,20 @@
   - modules/lib/lib.handoff.md, *MCP as a guest adapter*: Done - the self-description link points to What an SDK is.
   - docs/comparisons/mcp.001.md, line citations: Done - each citation of the moved lines, the section 11 second-opinion record's included, now names the line its sentence sits at: `service-sdk.md:51`–`:54` as `:53`–`:56`, `:57` as `:59`, `:68` as `:72`, and `:113` as `:119`.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
-  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [Cursor](../../../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- `service-sdk.md` → [What an SDK is not](service-sdk.md#what-an-sdk-is-not) gains one paragraph after its two boundary cases: MCP is an instance of the specification-first default and meets both edges at once — its server describes each tool's input as JSON Schema text that the language model, as consumer, re-derives each call from, and its SDKs are per-language implementations of the protocol, general-purpose client libraries for a protocol and not one service's delivered interface. The paragraph links the comparison essay for the argument.
-- Two positions graduated from [SDK Handoff → The agent as an SDK consumer](service-sdk.handoff.md#the-agent-as-an-sdk-consumer) into the body, appended as Working positions 13 and 14 so that no number cited elsewhere moves.
-- Working position 13: a consumer reads the service as text on its own side — the delivered SDK and the details its types carry — while every exchange on the wire keeps its binary form; an AI agent is a consumer like any other, bound by positions 1 and 4 unchanged. A new paragraph under [Local and network invocation](service-sdk.md#local-and-network-invocation) elaborates it: a protocol is designed for every participant of an exchange and the network it crosses, so text on the wire would charge every exchange — bandwidth, and serialization and parse work at both ends — for a need the SDK meets locally.
-- Working position 14: a resource is a typed value reached through an SDK call, not a primitive apart from calls; every type describes itself, so no type is ambiguous and the consumer's text about the service comes from the types the SDK carries. A new paragraph under [What an SDK is](service-sdk.md#what-an-sdk-is) elaborates it, linking [Type → Type details and human-facing identity](../computer/type.md#type-details-and-human-facing-identity) and the Khayyam `Details` declaration in `detail.kh`.
-- [Relationship to other protocols](service-sdk.md#relationship-to-other-protocols) gains a Type bullet.
+- `service-sdk.md` → [What an SDK is not](sdk.md#what-an-sdk-is-not) gains one paragraph after its two boundary cases: MCP is an instance of the specification-first default and meets both edges at once — its server describes each tool's input as JSON Schema text that the language model, as consumer, re-derives each call from, and its SDKs are per-language implementations of the protocol, general-purpose client libraries for a protocol and not one service's delivered interface. The paragraph links the comparison essay for the argument.
+- Two positions graduated from [SDK Handoff → The agent as an SDK consumer](sdk.handoff.md#the-agent-as-an-sdk-consumer) into the body, appended as Working positions 13 and 14 so that no number cited elsewhere moves.
+- Working position 13: a consumer reads the service as text on its own side — the delivered SDK and the details its types carry — while every exchange on the wire keeps its binary form; an AI agent is a consumer like any other, bound by positions 1 and 4 unchanged. A new paragraph under [Local and network invocation](sdk.md#local-and-network-invocation) elaborates it: a protocol is designed for every participant of an exchange and the network it crosses, so text on the wire would charge every exchange — bandwidth, and serialization and parse work at both ends — for a need the SDK meets locally.
+- Working position 14: a resource is a typed value reached through an SDK call, not a primitive apart from calls; every type describes itself, so no type is ambiguous and the consumer's text about the service comes from the types the SDK carries. A new paragraph under [What an SDK is](sdk.md#what-an-sdk-is) elaborates it, linking [Type → Type details and human-facing identity](../../../../../docs/type.md#type-details-and-human-facing-identity) and the Khayyam `Details` declaration in `detail.kh`.
+- [Relationship to other protocols](sdk.md#relationship-to-other-protocols) gains a Type bullet.
 - `service-sdk.handoff.md` → *The agent as an SDK consumer*: the graduated content is replaced by a pointer to Working positions 13 and 14; the question for the owner no longer calls the consumer position "above".
-- `service-sdk.handoff.md` → *The agent as an SDK consumer*, delivery form: containment of a delivered SDK is recorded as the consumer's connection policy, with WASM the preferred form and not a precondition; the question for the owner narrows to how the WASM bundle relates to Working position 7. [The MCP comparison](../../comparisons/mcp.001.md), section 4 item 4, gains one sentence stating the consumer-side domain check beside WASM's sandbox.
+- `service-sdk.handoff.md` → *The agent as an SDK consumer*, delivery form: containment of a delivered SDK is recorded as the consumer's connection policy, with WASM the preferred form and not a precondition; the question for the owner narrows to how the WASM bundle relates to Working position 7. [The MCP comparison](../../../../../docs/comparisons/mcp.001.md), section 4 item 4, gains one sentence stating the consumer-side domain check beside WASM's sandbox.
 
 #### Examined and not adopted
-- The vendor reports that MCP servers are being rebuilt as typed code the agent imports — Anthropic's "Code execution with MCP" and Cloudflare's "Code Mode" — are not stated or cited in the body. Each is taken as its vendor's primary documentation of its own product, supporting only claims about what that vendor built and reports measuring (owner ruling, 2026-10-10; [Documentation → Citations](../../documentation.md#citations) admits primary technical documentation of an artifact for claims about that artifact). They stay out of this body because [the MCP comparison](../../comparisons/mcp.001.md) carries that argument, not for want of standing.
+- The vendor reports that MCP servers are being rebuilt as typed code the agent imports — Anthropic's "Code execution with MCP" and Cloudflare's "Code Mode" — are not stated or cited in the body. Each is taken as its vendor's primary documentation of its own product, supporting only claims about what that vendor built and reports measuring (owner ruling, 2026-10-10; [Documentation → Citations](../../../../knowledge/documentation/documentation.md#citations) admits primary technical documentation of an artifact for claims about that artifact). They stay out of this body because [the MCP comparison](../../../../../docs/comparisons/mcp.001.md) carries that argument, not for want of standing.
 
 #### Decision
 - MCP is named here as a counter-example measured against this document's own positions, not as a source this document learned from (owner ruling, 2026-10-10).
@@ -194,11 +194,11 @@
 - Time: 2026-10-12T10:08:43Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
-  - Auto (model not recorded) via [OpenCode](../../../CONTRIBUTORS.md#opencode) - applied
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [OpenCode](../../../../../CONTRIBUTORS.md#opencode) - applied
 
 #### What changed
-- [SDK Handoff → What a delivery owes its consumer beyond call correctness](service-sdk.handoff.md#what-a-delivery-owes-its-consumer-beyond-call-correctness) records the open part of the obligation [What an SDK is](service-sdk.md#what-an-sdk-is) already states: the consumer's text about a service comes from types that describe themselves, and nothing says whether that reaches material that is not an interface - a document, a retrieved passage, a third-party corpus - where prose arrives whose origin and revision the consumer cannot name and so cannot tell from an answer it produced itself.
+- [SDK Handoff → What a delivery owes its consumer beyond call correctness](sdk.handoff.md#what-a-delivery-owes-its-consumer-beyond-call-correctness) records the open part of the obligation [What an SDK is](sdk.md#what-an-sdk-is) already states: the consumer's text about a service comes from types that describe themselves, and nothing says whether that reaches material that is not an interface - a document, a retrieved passage, a third-party corpus - where prose arrives whose origin and revision the consumer cannot name and so cannot tell from an answer it produced itself.
 - The same entry records the question from the other side: a corpus a project builds is a service, and a service owes a delivered interface to its consumers. Whether this protocol settles that or the owning module does is unstated.
 - Both are owner questions rather than mechanics, and neither waits on *Delivery and versioning*.
 
@@ -211,12 +211,12 @@
 - Time: 2026-10-12T11:01:35Z
 - Type: Changed
 - Contributors:
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — revised
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — revised
 
 #### What changed
 - The earlier entry "What a delivery owes its consumer beyond call correctness" carried a Time of 2026-10-12T11:20:00Z, which was invented and later than the write; it now carries the file's write time, 2026-10-12T10:08:43Z.
-- [SDK Handoff → What a delivery owes its consumer beyond call correctness](service-sdk.handoff.md#what-a-delivery-owes-its-consumer-beyond-call-correctness): the "What is not stated" claim is scoped to the search made.
-- The corpus-as-a-service question moved to its own entry, [SDK Handoff → Whether a corpus a project builds is a service that owes a delivered interface](service-sdk.handoff.md#whether-a-corpus-a-project-builds-is-a-service-that-owes-a-delivered-interface), marked as resting on the Organization project's design, which was not quoted or verified.
+- [SDK Handoff → What a delivery owes its consumer beyond call correctness](sdk.handoff.md#what-a-delivery-owes-its-consumer-beyond-call-correctness): the "What is not stated" claim is scoped to the search made.
+- The corpus-as-a-service question moved to its own entry, [SDK Handoff → Whether a corpus a project builds is a service that owes a delivered interface](sdk.handoff.md#whether-a-corpus-a-project-builds-is-a-service-that-owes-a-delivered-interface), marked as resting on the Organization project's design, which was not quoted or verified.
 
 #### Why
 - An independent evaluation (session 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and an unverified question mixed into a verified one.

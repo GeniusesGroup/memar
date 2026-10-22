@@ -2,8 +2,8 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Signed in "modules/math/integer/protocol/signed.kh"
-tp Scroll_Behavior in "modules/gui/protocol/scroll-behavior.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp Scroll_Behavior in "modules-plugable/computer/ui/gui/protocol/scroll-behavior.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // Scroll indicate scroll behavior in any elements.
 // If the element's direction is rtl (right-to-left), then scrollLeft is 0 when the scrollbar is at its rightmost position

@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
-tp Information in "modules/gui/protocol/information.kh"
-tp Picture_Image in "modules/codec/picture/protocol/image.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp Observer_MediaType in "modules/computer/mediatype/protocol/media-type.observers.kh"
+tp Information in "modules-plugable/computer/ui/gui/protocol/information.kh"
+tp Picture_Image in "modules/computer/codec/picture/protocol/image.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Page_Manifest ab {
     Observer_MediaType

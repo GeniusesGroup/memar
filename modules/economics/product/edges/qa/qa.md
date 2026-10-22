@@ -12,7 +12,7 @@
 ## Placement
 
 - **Not core `economics/product`.** The asking/answering capability already has a root home in `modules/knowledge/question` (root modules, knowledge category); a product only *hosts* questions through its content identity ([product.md](../../product.md) multi-typing).
-- Any "answerers group" (who is staffed to answer) is [management/group](../../../../management/group/) / role membership, not a product edge. GUI already separates the surface as [page-questionnarie](../../../../../modules-plugable/gui/page-questionnarie/).
+- Any "answerers group" (who is staffed to answer) is [management/group](../../../../management/group/) / role membership, not a product edge. GUI already separates the surface as [page-questionnarie](../../../../../modules-plugable/knowledge/question/ui/page-questionnarie/).
 - Verdict in the root-vs-pluggable terms: **root — but knowledge/management, not product**; no new pluggable warranted by this label alone.
 
 ## Open questions
