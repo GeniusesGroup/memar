@@ -35,3 +35,20 @@
 
 #### Left open
 - `status/rule-status.kh` and its folder are still in the tree; this task edited documents only.
+
+---
+
+### The `status/` folder is removed
+- Time: 2026-10-23T10:20:00Z
+- Type: Removed
+- Cited:
+  - [Rule → Status](./rule.md#status) - Depends_on: the owner's ruling D7 of 2026-10-20, carried out on his ruling of 2026-10-23.
+- Tasks:
+  - 20261023-T100229Z-17920: Closed - the task that removed it.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- `status/rule-status.kh` is deleted; [rule.md → Status](./rule.md#status) names the three names as the Go source's, and points to the handoff for declaring the label and the reading.
+- [rule.handoff.md](./rule.handoff.md): Next Step 4 now declares the label and the reading, the folder being removed; the conversion's findings on `status/` are dropped; [rule.research.001.md](./rule.research.001.md) names the deleted file without a link.
