@@ -78,3 +78,19 @@
 #### Left open
 - The cycle `content` → `task` → `label` → `task` in `bundles/memar/tests/module_graph.py` was there before this change (`label` imports `TaskId`, `task` imports `plan_labels`); it is not resolved here.
 - Where labels are declared still names the task domain's statuses as the first vocabulary declared this way; the topics now are.
+
+---
+
+### The topics are the first vocabulary declared as code
+- Time: 2026-10-23T10:20:00Z
+- Type: Changed
+- Cited:
+  - [Label → Where labels are declared](./label.md#where-labels-are-declared) - Depends_on: the owner's rulings of 2026-10-20 and 2026-10-23 that labels are declared in the `labels/` folder of the module whose they are.
+- Tasks:
+  - 20261023-T100229Z-17920: Closed - the task that corrected it.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- [Where labels are declared](./label.md#where-labels-are-declared) names the topics as the first vocabulary declared this way, and the task domain's statuses as the next.
