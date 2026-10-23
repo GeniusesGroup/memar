@@ -12,7 +12,7 @@ is given here once: the help `memar task --help` prints is built from it.
 The layout is the session's own and small (owner, 2026-10-20, C4): a session
 folder is not a module, and which role folders a module has is a pluggable
 profile's choice that no kernel module may import
-([Kernel Neutrality](../../../knowledge/classification/rules/kernel-neutrality/kernel-neutrality.md#the-rule)).
+([Kernel Neutrality](../../../knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule)).
 The folders are the ones its kinds go in, its tests, and its temporary files.
 
 A kind is told by the file's suffix, and only the kinds named in KINDS are

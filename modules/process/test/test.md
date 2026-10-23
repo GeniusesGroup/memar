@@ -181,7 +181,7 @@ Four things are not a Test, and each is mistaken for one often enough to be wort
 
 **Rule.** The owner of every structural condition about Tests. [Rule → Where Rules Live](../rule/rule.md#where-rules-live-rules-beside-protocol) places an owner's executable conditions in a Module's `rules/` folder beside its `protocol/` folder, and this document is the subject those Rules cite rather than the place they are stated. That separation is what lets an organization keep a layout this repository would not choose and still conform to this protocol.
 
-**Modularity.** [Modularity → Capability Completeness](../../../docs/modularity.md#capability-completeness) requires that the Rules governing a relationship belong with the Module that owns that relationship; the parallel requirement here is that the Tests of a Module's protocol surface belong with that Module. A Test kept outside its system is the same vacancy in the same place.
+**Modularity.** [Modularity → Capability Completeness](../../knowledge/modularity/modularity.md#capability-completeness) requires that the Rules governing a relationship belong with the Module that owns that relationship; the parallel requirement here is that the Tests of a Module's protocol surface belong with that Module. A Test kept outside its system is the same vacancy in the same place.
 
 **Linter.** An enforcement surface, not an author. Per [Linter → A rule's home is its subject's document](../../computer/linter/linter.md#a-rules-home-is-its-subjects-document), the linter owns the check and the subject's document owns the claim; the Rules this document points to are the claims, and whether an organization turns them on is per its linter configuration.
 

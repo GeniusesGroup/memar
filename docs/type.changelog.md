@@ -648,7 +648,7 @@ No new term was introduced: the passage reuses Type, the counterpart, conformanc
   - Khayyam handoff (`docs/khayyam/khayyam.handoff.md`): Done — "Bootstrapping without primitives" merged into "Stdlib bootstrap ordering under the no-hidden-primitive rule".
   - The Type handoff (`docs/modules/computer/type.handoff.md`): Done — received the life-cycle position-set question, the rule-checking strategy, and the delegation-pattern-library item.
   - The Type changelog (`docs/modules/computer/type.changelog.md`): Done — received the folder rename, the decision to keep `datatypes/`, and the declaration-family rename as results.
-  - [Modularity handoff](./modularity.handoff.md): Done — its pointer to the 2026-10-05 ruling retargeted from type.handoff.md to the Type module's changelog.
+  - [Modularity handoff](../modules/knowledge/modularity/modularity.handoff.md): Done — its pointer to the 2026-10-05 ruling retargeted from type.handoff.md to the Type module's changelog.
   - Future Khayyam tooling documents (the Pending propagation of the "Static Concepts" absorption entry): Pending — still open; the linter handoff and the polymorphism handoff now hold the content it waited for, but no tooling document exists.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided

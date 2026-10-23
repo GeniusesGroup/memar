@@ -15,8 +15,8 @@ moved or converted to Khayyam without the other
 ([Modeling Practice → The Modeling Workflow](../../../docs/modeling.practice.md#the-modeling-workflow)).
 An edge from a kernel module, under `modules/`, to one under `modules-plugable/`
 or `bundles/` runs against the direction of
-[Placement → The rule](../../../modules/knowledge/classification/rules/placement/placement.md#the-rule)
-and is a back edge ([Kernel Neutrality → How a check runs](../../../modules/knowledge/classification/rules/kernel-neutrality/kernel-neutrality.md#how-a-check-runs)),
+[Placement → The rule](../../../modules/knowledge/modularity/rules/placement/placement.md#the-rule)
+and is a back edge ([Kernel Neutrality → How a check runs](../../../modules/knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#how-a-check-runs)),
 unless `ALLOWED` names it with the owner's date and the condition that ends it.
 The types below the modules (`machine/`) are not modules and
 are not edges: they are what the modules share so that none has to import another for it.

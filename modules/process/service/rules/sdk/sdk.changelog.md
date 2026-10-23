@@ -55,7 +55,7 @@
 - Time: 2026-09-08T18:10:35Z
 - Type: Expanded
 - Cited:
-  - [Modularity](../../../../../docs/modularity.md) — Depends_on: this entry's module-conformance and invocation positions rely on Modularity's Module/Process/Protocol distinction and its Modularity-Is-Not-Deployment position, linked rather than restated.
+  - [Modularity](../../../../knowledge/modularity/modularity.md) — Depends_on: this entry's module-conformance and invocation positions rely on Modularity's Module/Process/Protocol distinction and its Modularity-Is-Not-Deployment position, linked rather than restated.
   - [Process](../../../process.md) — Reference: the mechanism-independence of a process ([Definition](../../../process.md#definition)) is the grounding for the process-opacity position.
   - [Agency](../../../../../docs/agency.md) — Depends_on: the delegation position is stated through Agency's Principal, Delegation, Execution Agent, and Contracts machinery.
 - Contributors:
@@ -140,7 +140,7 @@
 - Time: 2026-10-07T15:14:08Z
 - Type: Moved
 - Cited:
-  - [Modules → One layout for both trees](../../../../../docs/modularity.changelog.md#the-one-layout-for-both-trees-argument-is-dropped-with-the-specification-folder) - Premise: a module is specified at `docs/modules/<category>/<name>.md` and realized at `modules/<category>/<name>/`; `modules/` (the category) was the `memar-go` registry folder and no responsibility.
+  - [Modules → One layout for both trees](../../../../knowledge/modularity/modularity.changelog.md#the-one-layout-for-both-trees-argument-is-dropped-with-the-specification-folder) - Premise: a module is specified at `docs/modules/<category>/<name>.md` and realized at `modules/<category>/<name>/`; `modules/` (the category) was the `memar-go` registry folder and no responsibility.
 - Contributors:
   - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - Auto (model not recorded) via [Cursor](../../../../../CONTRIBUTORS.md#cursor) — applied

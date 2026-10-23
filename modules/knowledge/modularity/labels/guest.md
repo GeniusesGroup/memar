@@ -12,12 +12,12 @@ This document states what the `modules/lib/` module is and fixes the placement r
 ## What this module is
 The module holds realizations of **foreign** protocol surfaces. Each is a contract whose authority is outside this repository: RFC 8259 for the JSON grammar, the W3C's and IETF's HTTP specifications for the request and response shape, the SOAP and WSDL specifications for the envelope. Memar conforms to them and may implement them, and this is where the Khayyam realization of that conformance lives.
 
-The positions are documents in the same folders: [http.md](net/http/http.md) states *Memar's position* on HTTP, and it is where any divergence from the outside world's rule is argued. The declarations that position is realized in sit beside it. The two are not the same thing, and neither is a copy of the other; [the module index](../README.md#where-implementations-live) fixes the split between a specification and its realization, and this folder fixes its address.
+The positions are documents in the same folders: [http.md](./net/http/http.md) states *Memar's position* on HTTP, and it is where any divergence from the outside world's rule is argued. The declarations that position is realized in sit beside it. The two are not the same thing, and neither is a copy of the other; [the module index](../README.md#where-implementations-live) fixes the split between a specification and its realization, and this folder fixes its address.
 
 ## Membership criterion
 A document or a folder belongs here when its subject is a surface whose meaning **Memar cannot change without the agreement of someone outside this project** — the authority test of [The rule](#the-rule), applied to positions as well as to declarations. Two kinds of document pass it:
-- **A protocol surface owned outside Memar** that Memar's stack conforms to and may itself realize — [http.md](net/http/http.md) is the application-protocol case, [filesystem.md](memory/filesystem/filesystem.md) the storage case.
-- **A design name that circulates with senses Memar does not inherit** — [ddd.md](process/ddd/ddd.md) is the case. Such a name is not a protocol surface and has no declarations under this module; it is here because the authority over what the name means is outside Memar, which is the test, and not because of the form its subject takes.
+- **A protocol surface owned outside Memar** that Memar's stack conforms to and may itself realize — [http.md](./net/http/http.md) is the application-protocol case, [filesystem.md](./memory/filesystem/filesystem.md) the storage case.
+- **A design name that circulates with senses Memar does not inherit** — [ddd.md](./process/ddd/ddd.md) is the case. Such a name is not a protocol surface and has no declarations under this module; it is here because the authority over what the name means is outside Memar, which is the test, and not because of the form its subject takes.
 
 A protocol another organization offers for the same process is that organization's, decided against its own requirements ([Protocol → Who Defines a Protocol](../../docs/protocol.md#who-defines-a-protocol)); a document here states Memar's position on relying on it and never restates its requirements as Memar's own. Where Memar's position grows into rules of its own — a divergence from the outside world's rule, argued here — those rules are Memar's, and conformance to them is decided as for any module ([Protocol → Conformance](../../docs/protocol.md#conformance)).
 
@@ -58,7 +58,7 @@ Material belongs in this folder when its subject is **a protocol surface Memar d
 ## Related artifacts
 | Artifact | Relation | Action |
 | --- | --- | --- |
-| [`modules/lib/net/http/http.md`](net/http/http.md) | Reference — Memar's position on the HTTP surface this module realizes | None (read) |
+| [`modules/lib/net/http/http.md`](./net/http/http.md) | Reference — Memar's position on the HTTP surface this module realizes | None (read) |
 | [`modules/README.md`](../README.md) | Reference — the layer's own kinds of folder | Its "By responsibility" row should say what `lib/` is for |
 | [`modules/time/README.md`](../time/README.md) | Depends_on — the category that owns the timer, whose stray import address this module's move exposed | None (read) |
 | [`lib.handoff.md`](./lib.handoff.md) | Base — this module's open state | Follows this document |

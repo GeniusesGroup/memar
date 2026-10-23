@@ -384,7 +384,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - `docs/khayyam/modularity.changelog.md`: Done — holds that entry.
   - `docs/khayyam/khayyam.changelog.md`: Done — holds an entry recording a change to `khayyam.practice.md`, misplaced from `encapsulation.changelog.md`.
   - `docs/modules/net/networking.changelog.md`: Done — holds an entry recording a change to `networking.md`, misplaced from `giti.changelog.md`.
-  - [modularity.changelog.md](../../../../docs/modularity.changelog.md): Done — no longer holds the entry recording a rename inside the `modules/` tree, which moved to that tree's own ledger.
+  - [modularity.changelog.md](../../modularity/modularity.changelog.md): Done — no longer holds the entry recording a rename inside the `modules/` tree, which moved to that tree's own ledger.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — asked for the audit, reported misplaced records in `cognition.changelog.md`
   - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) — delegated, audited, applied

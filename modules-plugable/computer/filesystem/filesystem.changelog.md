@@ -202,7 +202,7 @@
 - Time: 2026-10-07T14:07:33Z
 - Type: Moved
 - Cited:
-  - [Lib → Membership criterion](../../../modules/knowledge/classification/primitive/guest.md#the-test) - Premise: `docs/protocols/` became `docs/modules/`, and positions on surfaces whose authority is outside Memar are gathered under `lib/`.
+  - [Lib → Membership criterion](../../../modules/knowledge/modularity/labels/guest.md#the-test) - Premise: `docs/protocols/` became `docs/modules/`, and positions on surfaces whose authority is outside Memar are gathered under `lib/`.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied

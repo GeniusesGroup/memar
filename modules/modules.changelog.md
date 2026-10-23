@@ -9,7 +9,7 @@
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
 
 #### What changed
-- `modules.md` → Placement no longer states the Kernel, Pluggable and Bundle tests or the operational rules of Memar's Pluggable; it cites Memar's [Classification](./knowledge/classification/classification.md) (with its Placement and Category Depth rules, the Label module and the `guest` label) as the authority. The heading and anchor `#placement` are kept because many documents link to it.
+- `modules.md` → Placement no longer states the Kernel, Pluggable and Bundle tests or the operational rules of Memar's Pluggable; it cites Memar's [Placements](./knowledge/modularity/placements.md) (with its Placement and Category Depth rules, the Label module and the `guest` label) as the authority. The heading and anchor `#placement` are kept because many documents link to it.
 - Kept as this repository's own: an edge becomes a module only with independent semantics; no bare edges; kernel does not reference the rule domain; the category-level `analytics` namespace for cross-domain analytics; behavior binds to UUID. Edge buckets, Edge folder and Module skeleton are unchanged.
 - `modules.handoff.md` gained "Re-reading this repository's categories": a proposal for `storage` under `computer` and for `management/organization` against `identity/organization`, and the categories not yet read.
 

@@ -1,5 +1,5 @@
 # Command Handoff
-Open work for the `process/command` module (`modules-plugable/computer/ui/command/`). Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See the repository's [documentation-handoff.md](../../../../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is. The module has no main document yet; the entry below was carried here from the handoff of the `lib` module when that module was dissolved ([Classification](../../../../modules/knowledge/classification/classification.md)).
+Open work for the `process/command` module (`modules-plugable/computer/ui/command/`). Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See the repository's [documentation-handoff.md](../../../../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is. The module has no main document yet; the entry below was carried here from the handoff of the `lib` module when that module was dissolved ([Placements](../../../../modules/knowledge/modularity/placements.md)).
 
 ## Decided
 ### The placement, the label, and the module's end

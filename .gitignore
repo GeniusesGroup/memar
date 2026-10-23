@@ -5,6 +5,7 @@ __pycache__/
 # external packages folder
 vendor/
 *bundle.*
+!/modules/knowledge/modularity/labels/bundle.md
 *-old
 
 # Go

@@ -289,7 +289,7 @@
 - Propagates to:
   - Khayyam → Abstraction (`docs/khayyam/abstraction.md`), Polymorphism (`docs/khayyam/polymorphism.md`), Inheritance (`docs/khayyam/inheritance.md`), Encapsulation (`docs/khayyam/encapsulation.md`), Variable (`docs/khayyam/variable.md`), Method (`docs/khayyam/method.md`): Rejected — restoring the sentences in the language documents was the position the owner's ruling removed them from; they are stated here instead, in a language that does not name one language's constructs.
   - The JavaScript target (`bundles/khayyam/targets/js/target.md`): Reference — it already states the realization's own mechanism, which this document points at rather than restates.
-  - [docs/modularity.md](../../modularity.md): Done — the name-collision reasoning the same audit removed, which is not this document's subject.
+  - [modules/knowledge/modularity/modularity.md](../../modularity.md): Done — the name-collision reasoning the same audit removed, which is not this document's subject.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, ruled
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied, classified
@@ -312,7 +312,7 @@
 
 #### Decision
 - A language document states what a construct is and not how a compiler lowers it, and the compiler protocol owns what a compiler is; these eight claims are therefore stated there, each marked as the guarantee, freedom, or rationale the protocol's own test requires (Omid Hekayati — decided).
-- Base documents take none of them. The name-collision reasoning went to [`docs/modularity.md`](../../modularity.md) instead, stated in terms of Responsibility and identity that hold for any kind of development, because the audit's own removal record named that document as its destination (`khayyam.changelog.md:630`) and `khayyam.md`'s Import Mechanism still points there (`khayyam.md:62`).
+- Base documents take none of them. The name-collision reasoning went to [`modules/knowledge/modularity/modularity.md`](../../modularity.md) instead, stated in terms of Responsibility and identity that hold for any kind of development, because the audit's own removal record named that document as its destination (`khayyam.changelog.md:630`) and `khayyam.md`'s Import Mechanism still points there (`khayyam.md:62`).
 
 ---
 

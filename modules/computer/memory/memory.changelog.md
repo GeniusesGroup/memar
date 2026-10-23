@@ -251,7 +251,7 @@
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
-- `memory.handoff.md`: "Where do `heap.kh` and `mem.kh` belong?" moved from `docs/modularity.handoff.md`.
+- `memory.handoff.md`: "Where do `heap.kh` and `mem.kh` belong?" moved from `modules/knowledge/modularity/modularity.handoff.md`.
 
 ---
 

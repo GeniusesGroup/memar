@@ -396,7 +396,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 
 #### Surveyed
 - **Model before storage, API, and structure** (`A-01`) - carried by [Modeling → The Model as the Primary Artifact](./modeling.md#the-model-as-the-primary-artifact) and System's statement that implementations are projections of the model. No new text; a second statement would be a copy that drifts.
-- **A Module is a conceptual boundary, not a deployment unit** (`A-02`) - carried by [Modularity → Module](./modularity.md).
+- **A Module is a conceptual boundary, not a deployment unit** (`A-02`) - carried by [Modularity → Module](../modules/knowledge/modularity/modularity.md).
 - **Independent identities for routing, service, operation, and request** (`A-03`) - carried by sRPC → Independent identities (`docs/modules/net/sRPC.md#independent-identities`); its open half is already SDK Handoff → What the declaration artifact is (`docs/modules/process/service-sdk.handoff.md#what-the-declaration-artifact-is`).
 - **Acquired facts, derived views, and caches differ in authority** (`A-04`) - carried by [Modeling → Acquired Data vs. Discovered Data](./modeling.md#acquired-data-vs-discovered-data), the shortcut-edge rule, and Memory's shadow-tier rule; when a discovered value may be persisted is already a [Modeling Handoff](./modeling.handoff.md) question.
 - **Error, Log, and Bug as three entities** (`A-08`, partly) - carried by Error → Boundary discipline (`docs/modules/process/error.md#boundary-discipline`); the panic half was recovered into Control Flow Handoff (`docs/modules/process/control-flow.handoff.md`) on 2026-09-17.

@@ -32,7 +32,7 @@
 - Type: refactor
 - Cited:
   - [System](../system.md) — Reference: the new "When Is a Responsibility Coherent?" section is cited from Composition Depth as a Decomposition Signal, since that topic's decomposition test is a Khayyam-specific, syntactically-enforced application of the general one stated there.
-  - [Modularity](../modularity.md) — Reference: cited alongside System for the same reason, at the architectural rather than conceptual level.
+  - [Modularity](../../modules/knowledge/modularity/modularity.md) — Reference: cited alongside System for the same reason, at the architectural rather than conceptual level.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
@@ -216,7 +216,7 @@
 - Type: Changed
 - Propagates to:
   - [Computer — Compiler](../modules/computer/compiler.md): Pending - the linking-phase account of a body-less method, and the resolution of a `vr`/`sc`/`mt` position, are now unanswered here.
-  - [System → When Is a Responsibility Coherent?](../system.md#when-is-a-responsibility-coherent) and [Modularity → Module Identity and Responsibility](../modularity.md#module-identity-and-responsibility): Pending - the decomposition test this document used to apply to a method body is stated there; this document no longer tells a reader what to do when the test fires.
+  - [System → When Is a Responsibility Coherent?](../system.md#when-is-a-responsibility-coherent) and [Modularity → Module Identity and Responsibility](../../modules/knowledge/modularity/modularity.md#module-identity-and-responsibility): Pending - the decomposition test this document used to apply to a method body is stated there; this document no longer tells a reader what to do when the test fires.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
@@ -230,7 +230,7 @@
 - [Composition Depth as a Decomposition Signal](./method.md#composition-depth-as-a-decomposition-signal-no-expression-chaining): the topic no longer reads named steps as a signal or tells the reader to decompose. Removed: "A method or widget body that accumulates many such named steps is treated as a deliberate design signal calling for further decomposition, not a cost to optimize away with chaining syntax", the worked "register comment" example, and "The correct response is always further decomposition: split out a separate widget/capsule with its own narrow responsibility and its own error boundary (e.g. a dedicated widget that returns only an `ActiveUserID`), never a request for implicit chaining syntax." What remains is what the grammar is: calls are statements, every intermediate result is a declared named variable, there is no syntactic slot to feed one call's result into another, and a pipeline's stages have no shortcut that collapses them.
 
 #### Considered and not done
-- **Keeping the decomposition test with a softened voice.** The topic's title still names a decomposition signal, and [Modularity](../modularity.md) and [System](../system.md) state the test itself. Softening rather than removing the topic was not done: a softened imperative is still a usage prescription, so the prescription went and the grammar facts stayed.
+- **Keeping the decomposition test with a softened voice.** The topic's title still names a decomposition signal, and [Modularity](../../modules/knowledge/modularity/modularity.md) and [System](../system.md) state the test itself. Softening rather than removing the topic was not done: a softened imperative is still a usage prescription, so the prescription went and the grammar facts stayed.
 
 ---
 

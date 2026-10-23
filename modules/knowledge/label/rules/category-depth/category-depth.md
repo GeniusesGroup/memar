@@ -1,12 +1,12 @@
 ---
-Title: "Classification Rule — Category Depth"
+Title: "Label Rule — Category Depth"
 Status: Draft
 Start Date: 2026-10-17
-ID: 497842
+ID: 497843
 ---
 
-# Classification Rule — Category Depth
-Classification's rules live one rule per directory under [`modules/knowledge/classification/rules/`](../README.md), and this is the rule for how many levels stand between a placement and a module. It is a governance rule of this repository, held for [Category](../../primitive/category.md).
+# Label Rule — Category Depth
+Label's rules live one rule per directory under [`modules/knowledge/label/rules/`](../README.md), and this is the rule for how many levels stand between a placement and a module. It is a governance rule of this repository, held for [Category](../../labels/category.md).
 
 ## The rule
 - **Between a placement and a module there is one level, the category.** The path of a kernel or pluggable module is its placement, one category, and the module; a place with another level in it is either a module that holds facets or a category that should not exist.

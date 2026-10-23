@@ -25,12 +25,12 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Modularity](../modularity.md) — Depends_on: the authoritative definition of Module and Modularity; this document now retains only Khayyam-specific language and ecosystem consequences.
+  - [Modularity](../../modules/knowledge/modularity/modularity.md) — Depends_on: the authoritative definition of Module and Modularity; this document now retains only Khayyam-specific language and ecosystem consequences.
   - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: defines the current Explanation-facet structure.
   - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
   - [How to make a new explanation document](../documentation-explanation.practice.md) — Reference: supplies the migration procedure.
 - Propagates to:
-  - [Modularity](../modularity.md): Done — the general document links to this document for the Khayyam language and ecosystem realization.
+  - [Modularity](../../modules/knowledge/modularity/modularity.md): Done — the general document links to this document for the Khayyam language and ecosystem realization.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
@@ -52,7 +52,7 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Modularity](../modularity.md) — Depends_on: distinguishes a Module's conceptual identity from its framework-level manifest representation.
+  - [Modularity](../../modules/knowledge/modularity/modularity.md) — Depends_on: distinguishes a Module's conceptual identity from its framework-level manifest representation.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
@@ -72,7 +72,7 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Modularity](../modularity.md) — Reference: supplies the shared conceptual methodology and the authoritative Module definition to which this document refers.
+  - [Modularity](../../modules/knowledge/modularity/modularity.md) — Reference: supplies the shared conceptual methodology and the authoritative Module definition to which this document refers.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — audited, rewrote
