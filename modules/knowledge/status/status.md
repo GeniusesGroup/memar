@@ -6,7 +6,9 @@ It is like labeling records But it is systematic labels.
 Labels check in business rules logic(Async), but status check in services logic(Sync).
 
 ## What a status is
-A status is a loop-edge. The edge type is the status, and the edge terminates on the record it marks: `(record)-[:draft]->(---)`. Code uses that edge type.
+A status is a [label](../label/label.md) combined with a [rule](../../process/rule/rule.md). A label may carry a rule or none; a status almost always carries one, and when it attaches to a node it makes an [Event](../../process/event/event.md) spread and work start: a Task made Queued is taken by an agent in the order of its priority. A label that starts nothing is a label, not a status. A status is not a [Role](../../management/role/role.md), which is authorization; in a module it has its own main folder, `status/`, beside `edges/` and `protocol/` ([Modules → Edge buckets](../../modules.md#edge-buckets)).
+
+In the graph a status is a loop-edge. The edge type is the status, and the edge terminates on the record it marks: `(record)-[:draft]->(---)`. Code uses that edge type.
 
 Memar's [classification test](../../../docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) keeps a status as a loop-edge. A marker such as active or archived has no lifecycle of its own, so it stays the edge rather than becoming a node on the far side of a generic `status` edge. A generic `(record)-[:status]->(draft-node)` would promote the marker into a concept it does not independently carry.
 
@@ -25,6 +27,5 @@ The rows are laws. Draft is the predicate: the edge type. That type is already t
 A status becomes a node when other records take the status itself as their subject — a lifecycle of draft apart from the records that carry the edge. A scan for those records is the edge type used as a type.
 
 ## Policies (rules)
-
 - all edges e,g, `draft` MUST have `status` label.
 - All edges CAN indicate which `user` set the status, When the status set, and the chain of changes to specific status

@@ -538,3 +538,20 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 
 #### Considered and not done
 - **Moving the open questions of the old handoff to the modules they concern.** Not done: they stay in the placements handoff until each is ruled on, and each moves with its ruling.
+
+---
+
+### Kernel Neutrality states which tooling it binds
+- Time: 2026-10-23T10:20:00Z
+- Type: Changed
+- Cited:
+  - [Placements Handoff → Decisions](./placements.handoff.md#decisions) - Depends_on: the decision of 2026-10-23, taken by the coordinator from the owner's rulings of 2026-10-20 and 2026-10-23.
+- Tasks:
+  - 20261023-T100229Z-17920: Closed - the task that wrote it.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- [Kernel Neutrality → What this rule does not claim](./rules/kernel-neutrality/kernel-neutrality.md#what-this-rule-does-not-claim) says the rule does not bind a bundle or Memar's own tooling, and binds Memar's tool modules under `modules/`.
+- The open question in [Placements Handoff](./placements.handoff.md) is recorded as decided.

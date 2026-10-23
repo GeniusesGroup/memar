@@ -97,3 +97,19 @@ In organization (commit `19834121`) `modules/README.md` was a git symlink to `mo
 - [Edge buckets](./modules.md#edge-buckets) names four kinds: `status/` holds the loop-edges whose kind is Status and sits beside `edges/` and `protocol/`; `edges-loop/` no longer spells `Status_*` and keeps every other one-node classification, the status module's shared statuses excepted. The edge folder sentence names `status/` with the other three.
 - [Module skeleton](./modules.md#module-skeleton) states the two layers, the structural kinds and the kinds of work, and that a need only one domain has is a part of it, not a role.
 - [README](./README.md#the-kinds-of-folder-here) gains the bullet *By structure inside a module*, which lists `protocol/`, the edge folders and `status/`, and says that `status/` is neither a role folder nor a Role.
+
+---
+
+### `labels/` joins the structural layer of the module skeleton
+- Time: 2026-10-23T10:20:00Z
+- Type: Changed
+- Cited:
+  - [Modules Handoff → Decisions](./modules.handoff.md#decisions) - Depends_on: the decision of 2026-10-23, taken by the coordinator from the owner's rulings of 2026-10-20 and 2026-10-23.
+- Tasks:
+  - 20261023-T100229Z-17920: Closed - the task that wrote it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- [Module skeleton](./modules.md#module-skeleton) lists `labels` among the structural kinds: the folder in which every module, kernel or pluggable, declares its own labels as code.
