@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for making a module's role folders in `modules-plugable/knowledge/module-skeleton/services/ensure_folders.py`.
+"""Tests for making a module's role folders in `modules-plugable/knowledge/module-skeleton/services/module_ensure_folders.py`.
 
-    MEMAR_SERVER=0 PYTHONPATH="<checkout>/bundles/memar/services;<checkout>" python modules-plugable/knowledge/module-skeleton/tests/ensure_folders.py
+    MEMAR_SERVER=0 PYTHONPATH="<checkout>/bundles/memar/services;<checkout>" python modules-plugable/knowledge/module-skeleton/tests/module_ensure_folders.py
 
 The subject is `memar module ensure-folders` and the role list it makes, named
 for the file that holds it per
@@ -23,7 +23,7 @@ What is pinned, and what each pin is for:
 
   RolesMatchTheReadme  The role names are the ones `modules/README.md` lists in
                        its bullet "By role inside a module", which points at
-                       `ensure_folders.py` for what each role holds;
+                       `module_ensure_folders.py` for what each role holds;
                        a role added there and not here, or here and not there,
                        fails. Only the bare `name/` paths of the sentence that
                        lists the roles are read, so `services/<name>/`, the
@@ -140,7 +140,7 @@ class RolesMatchTheReadme(unittest.TestCase):
 
     def test_the_readme_points_at_the_code_and_retypes_no_description(self) -> None:
         bullet = next((line for line in MODULES_README.read_text(encoding='utf-8').splitlines() if line.startswith(ROLE_BULLET)))
-        self.assertIn('module-skeleton/services/ensure_folders.py', bullet)
+        self.assertIn('module-skeleton/services/module_ensure_folders.py', bullet)
         flat = ' '.join(bullet.split())
         for role in ensure_folders.Role:
             with self.subTest(role=role.folder):
@@ -171,7 +171,7 @@ class ToolsReadTheProfile(unittest.TestCase):
         self.assertTrue(set(ensure_folders.ROLE_FOLDERS) <= launcher.NOT_MODULES)
 
     def test_the_filesystem_service_names_this_service(self) -> None:
-        self.assertEqual(Path(ensure_folders.__file__).resolve(), (TESTS.parent / 'services' / 'ensure_folders.py').resolve())
+        self.assertEqual(Path(ensure_folders.__file__).resolve(), (TESTS.parent / 'services' / 'module_ensure_folders.py').resolve())
 
 class MakesOnlyWhatIsMissing(Fixture):
 

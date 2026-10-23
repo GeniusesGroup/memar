@@ -48,7 +48,7 @@ RECORDS_BRANCH = 'dev-knowledge'
 PUBLISHED_REPOSITORY = 'GeniusesGroup/memar'
 PUBLISH_BRANCH = 'main'
 PUBLISHED_PAGES = f'https://github.com/{PUBLISHED_REPOSITORY}/blob/{PUBLISH_BRANCH}/'
-MODULE_SKELETON = 'modules-plugable.knowledge.module-skeleton.services.ensure_folders'
+MODULE_SKELETON = 'modules-plugable.knowledge.module-skeleton.services.module_ensure_folders'
 
 def role_folders() -> tuple[str, ...]:
     """The role folders' names the module-skeleton profile declares; none when that pluggable module is absent.
@@ -64,14 +64,14 @@ def role_folders() -> tuple[str, ...]:
         return ()
 
 def checkout_root() -> Path:
-    """The checkout this file is in: the parent of `.agents`.
+    """The checkout this file is in: the parent of the `modules-plugable` folder that holds it.
 
-    Counted from this file rather than from the scripts folder, because the shelf
-    the file sits in is a level deep and a count that named a folder instead of
-    the relation would have to change whenever the shelf did. `.agents` is a
-    checkout's own, so the checkout is its parent.
+    Counted from this file, which sits at
+    `modules-plugable/computer/filesystem/services/`, four levels below the
+    checkout; a move of this file changes the count, and the test
+    `test_checkout_root_is_this_checkout` fails until it is changed with it.
     """
-    return Path(__file__).resolve().parents[3]
+    return Path(__file__).resolve().parents[4]
 
 def memar_root() -> Path:
     """The Memar root scratch lives under: recorded MEMAR_ROOT else this checkout.

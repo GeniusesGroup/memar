@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/knowledge/module-skeleton/services/module_folders.py — `memar module folders`: a module's role folders made inside a folder.
+"""modules-plugable/knowledge/module-skeleton/services/module_ensure_folders.py — `memar module ensure-folders`: a module's role folders made inside a folder.
 
 A module that carries more than one kind of work groups each kind in a folder
 named for its role, so the module's root reads as a list of kinds rather than
 of instances. Which roles there are, and what each holds and does not, is
 declared here once, in `Role`: the name, what the folder holds, and what it does
 not. `modules/README.md` names the roles and points here, and `memar module
-folders --help` prints each by calling the enum, so no other place retypes a
+ensure-folders --help` prints each by calling the enum, so no other place retypes a
 description ([A Fact in Code Is Written Once](../../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 A role folder carries its role's name exactly, which is why the names are taken
 from the enum and never spelled at the call.
@@ -26,8 +26,9 @@ owner, 2026-10-20). No kernel module imports it: a task keeps its own small
 layout (`task_layout`), the name of the `temp` folder is
 `modules-plugable/computer/filesystem/services/fs_memar.py`'s, and the tools that must not take a role folder for a
 module ask `modules-plugable/computer/filesystem/services/fs_memar.py`'s `role_folders()`, which reads `ROLE_FOLDERS` here.
-The file is named for the `module` verb it goes under, as the router's rule for
-a capability kept outside its domain's folder asks.
+The file is named `module_` and then its verb, as the router's rule for a
+capability kept outside its domain's folder asks: the router offers it under
+`memar module` only because its name starts with that domain and an underscore.
 """
 from __future__ import annotations
 from importlib import import_module
@@ -45,7 +46,7 @@ class Role(Enum):
 
     `modules/README.md`, in its bullet "By role inside a module", names the
     roles and points here for what each holds; the list is open there, and a
-    role it names is added here. `tests/module_folders.py` beside this shelf fails when
+    role it names is added here. `tests/module_ensure_folders.py` beside this shelf fails when
     the two differ, or when the README retypes a description. A role folder is
     named for the kind it holds, and a kind that is one thing for the whole
     module is singular (`protocol/`, `primitive/`).
@@ -69,7 +70,7 @@ class Role(Enum):
         """Every role as the help prints it: its folder, what it holds, what it does not."""
 
         def wrap(text: str, indent: str) -> str:
-            return textwrap.fill(text, width=78, initial_indent=indent, subsequent_indent='  ')
+            return textwrap.fill(text, width=78, initial_indent=indent, subsequent_indent='  ', break_on_hyphens=False)
         return '\n\n'.join((wrap(f'{role.folder}/ holds {role.holds}', '') + '\n' + wrap(f'Excludes: {role.holds_not}', '  ') for role in cls))
 ROLE_FOLDERS = tuple((role.folder for role in Role))
 "The role folders' names, in the enum's order, for the callers that need only the names."
@@ -101,7 +102,7 @@ def listed(roles: list[str] | tuple[str, ...]) -> str:
     return ', '.join((f'{role}/' for role in roles))
 
 def make_folders(path: str) -> int:
-    """`folders`: make the missing role folders inside PATH and say what was made and what was there."""
+    """`ensure-folders`: make the missing role folders inside PATH and say what was made and what was there."""
     from machine.console import fail, note
     folder = Path(path)
     if not folder.is_dir():

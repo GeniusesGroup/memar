@@ -70,7 +70,8 @@ class OwnLayout(unittest.TestCase):
     def test_it_reads_no_module_profile(self) -> None:
         source = Path(task_layout.__file__).read_text(encoding='utf-8')
         self.assertNotIn('role_folders', source)
-        self.assertNotIn('module_folders', source)
+        self.assertNotIn('module-skeleton', source)
+        self.assertNotIn('MODULE_SKELETON', source)
 
 class TempIsNotKept(unittest.TestCase):
     """The task's `temp` role folder (owner, 2026-10-15): what is made there is not part of the task's record."""

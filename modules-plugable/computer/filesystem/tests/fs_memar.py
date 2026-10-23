@@ -82,7 +82,7 @@ class DefaultLocation(unittest.TestCase):
                         memar_fs.memar_root()
 
     def test_checkout_root_is_this_checkout(self) -> None:
-        self.assertEqual(memar_fs.checkout_root(), CHECKOUT)
+        self.assertEqual(memar_fs.checkout_root(), REPO)
 
 class TaskDir(unittest.TestCase):
 
