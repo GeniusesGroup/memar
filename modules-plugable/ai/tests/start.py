@@ -21,10 +21,10 @@ say is not pinned at all.
 What is pinned, and what each pin is for:
 
   PartsInOrder     The text is parts, each opened by a mark line, in one order:
-                   the session, the model it needs, the plan, the folder, the
+                   the task, the model it needs, the plan, the folder, the
                    skill, the documents, the commands, the help, the ending; with
                    `--without-skill` the skill is left out.
-  SessionPart      The session's id, path, plan and report are printed, and
+  TaskPart      The task's id, path, plan and report are printed, and
                    starting is `new --task-id`: the role folders and the
                    report are there afterwards.
   ModelPart        A kind that is judgment names the strongest model and what
@@ -36,7 +36,7 @@ What is pinned, and what each pin is for:
   Documents        The sections the plan's Kind's normative references name
                    are printed, as `modules/knowledge/content/services/task_context.py` composes them
                    from Memar's lists, under their first line, and recorded in
-                   the session's `temp/context_read.txt`: the every-act sections
+                   the task's `temp/context_read.txt`: the every-act sections
                    alone for a plan with no kind; the lists of the project the
                    plan names are read in the folders its preference names, and
                    one that does not exist is said on the first line; a design prints no Khayyam passage
@@ -48,8 +48,8 @@ What is pinned, and what each pin is for:
                    nothing: the card is that command's own output, and a
                    service printing it would hold a second copy that drifts.
   Help             The help of each command the plan names is printed, once,
-                   with the help of `session` and `content write` which every
-                   session needs; a command that does not exist is said.
+                   with the help of `task` and `content write` which every
+                   task needs; a command that does not exist is said.
   Ending           What a sub-agent does last is printed.
   InParts          A text past the bound prints in ordered parts, as
                    `machine/console_parts.py` cuts them: each part under the
@@ -61,8 +61,8 @@ What is pinned, and what each pin is for:
                    the project the plan names, which no closing line repeats;
                    the flag outranks it; a value that is not a number is
                    refused, naming the file.
-  Refusal          A session with no folder or no plan is refused, naming how
-                   a session is opened.
+  Refusal          A task with no folder or no plan is refused, naming how
+                   a task is opened.
   StartHelp        The help says what it prints, names the kinds from the
                    registry, and offers `--without-skill`, `--part` and
                    `--most-characters`.
@@ -91,9 +91,9 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
-import modules.management.task.services.temp as session_temp
-session_start = import_module('modules-plugable.ai.services.get_task_init_context')
-import modules.knowledge.label.services.plan_labels as session_plan_labels
+import modules.management.task.services.temp as task_temp
+task_start = import_module('modules-plugable.ai.services.get_task_init_context')
+import modules.knowledge.label.services.plan_labels as task_plan_labels
 commands = import_module('modules-plugable.computer.ui.command.command')
 from modules.knowledge.documentation.primitive.label import Label, Labels, new_id
 from modules.knowledge.documentation.plan.labels import task_kind
@@ -147,15 +147,15 @@ class Fixture(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(text, encoding='utf-8', newline='\n')
 
-    def session(self, plan: str) -> str:
+    def task(self, plan: str) -> str:
         folder = memar_fs.task_dir(SID, create=True)
         (folder / PLAN_NAME).write_text(plan, encoding='utf-8', newline='\n')
         return SID
 
     def text(self, plan: str | None=None, with_skill: bool=True) -> str:
         if plan is not None:
-            self.session(plan)
-        return session_start.start_text(SID, with_skill=with_skill)
+            self.task(plan)
+        return task_start.start_text(SID, with_skill=with_skill)
 
     def parts(self, plan: str | None=None, with_skill: bool=True) -> dict[str, str]:
         found: dict[str, str] = {}
@@ -181,7 +181,7 @@ class PartsInOrder(Fixture):
     def test_nothing_comes_before_the_first_mark(self) -> None:
         self.assertTrue(self.text(plan_with()).startswith(MARK))
 
-class SessionPart(Fixture):
+class TaskPart(Fixture):
 
     def test_the_id_and_the_paths_are_printed(self) -> None:
         part = self.parts(plan_with())['task']
@@ -198,7 +198,7 @@ class SessionPart(Fixture):
 class ModelPart(Fixture):
 
     def test_a_kind_that_is_judgment_names_the_strongest_model_and_the_block(self) -> None:
-        for kind in (word for word in session_plan_labels.STRONG_KINDS if word in session_plan_labels.TASK_KINDS):
+        for kind in (word for word in task_plan_labels.STRONG_KINDS if word in task_plan_labels.TASK_KINDS):
             with self.subTest(kind=kind):
                 part = self.parts(plan_with(kind))['model']
                 self.assertIn(f'kind: {kind}', part)
@@ -281,7 +281,7 @@ class Documents(Fixture):
         self.assertIn(", 1 from this project's", part.splitlines()[0])
         self.assertIn('rules/gone', part.splitlines()[0])
 
-    def test_what_the_documents_part_printed_is_recorded_in_the_session(self) -> None:
+    def test_what_the_documents_part_printed_is_recorded_in_the_task(self) -> None:
         self.parts(plan_with('design'))
         recorded = read_record(memar_fs.task_dir(SID))
         self.assertIn(('memar', 'docs/modeling.md', 'abstract'), {line[:3] for line in recorded})
@@ -379,7 +379,7 @@ class Commands(Fixture):
 
 class Help(Fixture):
 
-    def test_the_help_every_session_needs_is_printed(self) -> None:
+    def test_the_help_every_task_needs_is_printed(self) -> None:
         part = self.parts(plan_with())['help']
         self.assertIn('`memar task --help`', part)
         self.assertIn('usage: memar task', part)
@@ -411,21 +411,21 @@ class Ending(Fixture):
 
     def test_what_a_sub_agent_does_last_is_printed(self) -> None:
         part = self.parts(plan_with())['ending']
-        for phrase in ('without rewriting', '`memar task --help`', 'return the report as your final text', '`memar content write --create FILE --content-file SCRATCHFILE`', session_temp.TEMP_SENTENCE):
+        for phrase in ('without rewriting', '`memar task --help`', 'return the report as your final text', '`memar content write --create FILE --content-file SCRATCHFILE`', task_temp.TEMP_SENTENCE):
             self.assertIn(phrase, part)
 
-    def test_the_folder_rule_is_said_once_in_the_session_help(self) -> None:
+    def test_the_folder_rule_is_said_once_in_the_task_help(self) -> None:
         parts = self.parts(plan_with())
         self.assertIn('holds only plan.md and report.md', parts['help'])
         self.assertNotIn('plan.md and report.md', parts['ending'])
 
-class SessionHelp(Fixture):
+class TaskHelp(Fixture):
 
     def test_its_verbs_are_left_to_the_card(self) -> None:
         parts = self.parts(plan_with())
-        session_help = parts['help'].split('--- `memar content write --help` ---')[0]
-        self.assertIn(session_start.CARD_POINTER, session_help)
-        self.assertNotIn('\nverbs:', session_help)
+        task_help = parts['help'].split('--- `memar content write --help` ---')[0]
+        self.assertIn(task_start.CARD_POINTER, task_help)
+        self.assertNotIn('\nverbs:', task_help)
         self.assertIn('memar task ensure', parts['commands'])
 SMALL = 8000
 
@@ -438,7 +438,7 @@ class InParts(Fixture):
     def printed(self, part: int, with_skill: bool=True, most: int | None=SMALL) -> str:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_start.get_task_init_context(SID, with_skill, part=part, most=most)
+            task_start.get_task_init_context(SID, with_skill, part=part, most=most)
         return out.getvalue()
 
     def every_part(self, with_skill: bool=True, most: int | None=SMALL) -> list[str]:
@@ -448,42 +448,42 @@ class InParts(Fixture):
         return parts
 
     def test_the_passages_joined_are_the_text(self) -> None:
-        self.session(plan_with('implement'))
-        self.assertEqual(''.join(session_start.start_passages(SID)), session_start.start_text(SID))
+        self.task(plan_with('implement'))
+        self.assertEqual(''.join(task_start.start_passages(SID)), task_start.start_text(SID))
 
     def test_every_part_run_in_order_joins_to_the_text_each_under_the_bound(self) -> None:
-        self.session(plan_with('implement'))
+        self.task(plan_with('implement'))
         parts = self.every_part()
         self.assertGreater(len(parts), 2)
         for number, part in enumerate(parts, 1):
             with self.subTest(part=number):
                 self.assertLessEqual(len(part), SMALL)
-        self.assertEqual(''.join((body(part) for part in parts)), session_start.start_text(SID))
+        self.assertEqual(''.join((body(part) for part in parts)), task_start.start_text(SID))
 
     def test_a_closing_line_names_start_with_the_same_flags_and_the_next_part(self) -> None:
-        self.session(plan_with('implement'))
+        self.task(plan_with('implement'))
         first = self.printed(1, with_skill=False)
         self.assertIn(f'`memar ai get-task-init-context --task-id {SID} --without-skill --most-characters {SMALL} --part 2`', first)
 
     def test_a_text_under_the_bound_prints_whole_with_no_closing_line(self) -> None:
-        self.session(plan_with('implement'))
-        whole = self.printed(1, most=10 * len(session_start.start_text(SID)))
+        self.task(plan_with('implement'))
+        whole = self.printed(1, most=10 * len(task_start.start_text(SID)))
         self.assertNotIn(CLOSING_MARK, whole)
-        self.assertEqual(whole, session_start.start_text(SID))
+        self.assertEqual(whole, task_start.start_text(SID))
 
     def test_the_default_bound_is_the_declared_one(self) -> None:
-        self.session(plan_with('implement'))
+        self.task(plan_with('implement'))
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_start.get_task_init_context(SID)
+            task_start.get_task_init_context(SID)
         self.assertLessEqual(len(out.getvalue()), MOST_CHARACTERS)
 
     def project_preferring(self, value: str) -> Path:
-        """A project whose preferences file sets `most-characters` to VALUE, and a session of it."""
+        """A project whose preferences file sets `most-characters` to VALUE, and a task of it."""
         project = self.fake_root / 'project'
         project.mkdir(parents=True)
-        (project / 'manifest.yaml').write_text(f'memar:\n  sessions:\n  most-characters: {value}\n', encoding='utf-8', newline='\n')
-        self.session(plan_with('implement', project=project))
+        (project / 'manifest.yaml').write_text(f'memar:\n  tasks:\n  most-characters: {value}\n', encoding='utf-8', newline='\n')
+        self.task(plan_with('implement', project=project))
         return project
 
     def test_the_projects_preference_is_the_bound_and_no_closing_line_names_it(self) -> None:
@@ -494,7 +494,7 @@ class InParts(Fixture):
             with self.subTest(part=number):
                 self.assertLessEqual(len(part), SMALL)
         self.assertIn(f'`memar ai get-task-init-context --task-id {SID} --part 2`', parts[0])
-        self.assertEqual(''.join((body(part) for part in parts)), session_start.start_text(SID))
+        self.assertEqual(''.join((body(part) for part in parts)), task_start.start_text(SID))
 
     def test_the_flag_outranks_the_preference(self) -> None:
         self.project_preferring(str(SMALL * 2))
@@ -513,35 +513,35 @@ class InParts(Fixture):
 
     def test_every_part_names_one_hash_of_the_whole_text(self) -> None:
         from machine.console_parts import text_id
-        self.session(plan_with('implement'))
+        self.task(plan_with('implement'))
         parts = self.every_part()
-        whole = text_id(session_start.start_text(SID))
+        whole = text_id(task_start.start_text(SID))
         for number, part in enumerate(parts, 1):
             with self.subTest(part=number):
                 self.assertIn(f'{CLOSING_MARK} part {number} of {len(parts)} of text {whole}', part)
 
 class Refusal(Fixture):
 
-    def test_a_session_with_no_folder_is_refused_naming_how_one_is_opened(self) -> None:
+    def test_a_task_with_no_folder_is_refused_naming_how_one_is_opened(self) -> None:
         with self.assertRaises(SystemExit) as refused:
-            session_start.start_text(SID)
+            task_start.start_text(SID)
         self.assertIn(f'no task to start in {SID}', str(refused.exception.code))
         self.assertIn('`memar task ensure --title T --parent ID --project NAME`', str(refused.exception.code))
 
-    def test_a_session_with_no_plan_is_refused(self) -> None:
+    def test_a_task_with_no_plan_is_refused(self) -> None:
         memar_fs.task_dir(SID, create=True)
         with self.assertRaises(SystemExit) as refused:
-            session_start.start_text(SID)
+            task_start.start_text(SID)
         self.assertIn(f'no task to start in {SID}', str(refused.exception.code))
 
     def test_run_prints_the_text_and_a_refusal_prints_nothing(self) -> None:
-        self.session(plan_with())
+        self.task(plan_with())
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_start.get_task_init_context(SID)
+            task_start.get_task_init_context(SID)
         self.assertTrue(out.getvalue().startswith(MARK))
         with contextlib.redirect_stdout(io.StringIO()) as nothing, self.assertRaises(SystemExit):
-            session_start.get_task_init_context('a/b')
+            task_start.get_task_init_context('a/b')
         self.assertEqual(nothing.getvalue(), '')
 
 class StartHelp(unittest.TestCase):
@@ -551,7 +551,7 @@ class StartHelp(unittest.TestCase):
         done = subprocess.run([sys.executable, str(SCRIPTS / 'memar'), 'ai', 'get-task-init-context', '--help'], capture_output=True, env=environment)
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
-        for phrase in ('--without-skill', '--part', '--most-characters', 'memar content get-act-context', 'every agent', ', '.join(session_plan_labels.TASK_KINDS)):
+        for phrase in ('--without-skill', '--part', '--most-characters', 'memar content get-act-context', 'every agent', ', '.join(task_plan_labels.TASK_KINDS)):
             self.assertIn(phrase, shown)
 if __name__ == '__main__':
     unittest.main(verbosity=2)

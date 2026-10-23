@@ -1,5 +1,5 @@
 # Cognition Handoff
-Open work for `cognition.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `cognition.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -27,7 +27,11 @@ Open work for `cognition.md`. Entries are mutable current state — revised as e
 - State: the critical-thinking literature (Paul and Elder) pairs its standards with elements of thought — purpose, question, information, concepts, assumptions, inferences, implications, point of view. Several are already present here as disciplines (goal, assumptions) or operations (inference); whether the rest — what a piece of cognitive material is made of, rather than what is done to it — earn a component class of their own is undecided.
 - Next: decide when a norm or practice needs to name a part of cognitive material that no current component names.
 
-## Settled This Session (removed from Open when closed)
+### A change's size is judged by its reach, and the judge is the one least likely to examine it
+- State: moved 2026-10-19 from README.md → Where Memar Stops (a section removed when organization joined this repository; task 20261019-T183339Z-19720). Its claim: the practice has no threshold below which it is skipped. A change's size is judged by the participant about to make it, from inside the exchange where it is proposed, and that judgment is the one least likely to be examined, because the exchange feels too small to hold one. A one-line edit to a definition is a large-scope change. Loading the practice costs a few reads; a concept quietly redefined is paid for, silently, by every document that cites it. [Confirm before large-scope changes](./cognition.md#confirm-before-large-scope-changes) already turns on reach rather than line count; the point about who judges, and why, is not in it.
+- Next: fold the point about who judges into that norm, or into [Cognition Practice → Norm Application Points](./cognition.practice.md#norm-application-points), when the norm is next revised.
+
+## Settled This Chat (removed from Open when closed)
 
 ### Two concerns believed conflated — seam sharpened
 - Was: owner suspected model/derivation vs operational discourse-norms were mixed, and that the practice was not the right operational home.
@@ -37,7 +41,7 @@ Open work for `cognition.md`. Entries are mutable current state — revised as e
 ## Anticipated Work
 - The component classes — operations, standards, disciplines — grow as Memar's work demonstrates dependence on a further member, each addition argued in this document's changelog; the translation table of named kinds gains a row when a name keeps arriving in the project's work, never a section.
 - **TizFekri vocabulary survey:** map the TizFekri institute's practice vocabulary (پرورش مهارت‌های اجرایی، پرسشگری/استدلال‌ورزی/تصمیم‌گیری نقادانه، دلیل آوردن و نقد دلایل، «باهم اندیشیدن» و «با هم ساختن»، #اندیشیدن_آموختنی_است) against this document's components — including the *consult other cognitive systems* norm against باهم اندیشیدن / با هم ساختن; the survey decides whether any mapping earns a place in the body or stays a reference.
-- **Use-rule reader test:** watch whether working sessions actually translate named kinds into components and hold input, steps, and output to the standards, or keep reaching for the names; revise wording where the rule still requires interpretation.
+- **Use-rule reader test:** watch whether working chats actually translate named kinds into components and hold input, steps, and output to the standards, or keep reaching for the names; revise wording where the rule still requires interpretation.
 - If the conversation-as-two-cognitive-systems model is formalized as a Protocol, this document remains the conceptual home and the protocol document the normative one, following the project's concept/implementation separation.
 - Deeper cognitive-science grounding is expected to refine the norms over time — replacing qualitative statements with better-specified ones as the underlying science warrants.
 - Candidate graduation (not scheduled): the named kinds left the Abstract when the model was rebuilt on components; if the translation table grows past a translation aid, graduate it to a companion Explanation under the progressive-migration pattern, keeping the components here.

@@ -1,5 +1,5 @@
 # Abstract Data Types Handoff
-Open work for `modules/computer/adt.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../content/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `modules/computer/adt.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Plan
 - **Review ADT protocols against Liskov & Guttag operation classification** — Use creators, producers, observers, and mutators (Liskov & Guttag, *Abstraction and Specification in Program Development*, MIT Press, 1986) to classify and align protocol abstractions with the observer and mutator rule (`modules/computer/adt/rules/observer-mutator/observer-mutator.md`). Start with `modules/computer/adt/container/protocol/accessor.kh`. Not started.
@@ -8,9 +8,9 @@ Open work for `modules/computer/adt.md`. Entries are mutable current state — r
 
 ### What is the abstract-data-type abstraction in Khayyam, and are the existing declarations sound
 - State: the ADT abstraction in Khayyam has not been worked out (owner, 2026-10-16). The `.kh` declarations under `modules/computer/adt/` and the modules that compose them were converted from Go to Khayyam, and may be wrong in their composition and their names; names have been upgraded in several rounds and still need work. This is why `modules/process/error/protocol/error.kh` composes only `Nil` while the document says the whole family.
-- The question, for the owner and for later sessions: settle what the abstraction is in Khayyam before any declaration that composes it is trusted. Each module session checks the declarations it uses against that decision.
+- The question, for the owner and for later chats: settle what the abstraction is in Khayyam before any declaration that composes it is trusted. Each module session checks the declarations it uses against that decision.
 - What waits on the answer: the three mismatches between code and documents found on 2026-10-16 are held back until it is settled (see the handoffs of Error and of the observer-mutator rule).
-- Path: a modeling session of the ADT abstraction, then a pass over the declarations that compose it.
+- Path: a modeling chat of the ADT abstraction, then a pass over the declarations that compose it.
 
 ### Do the abstract data types belong under `computer`, or under `math`?
 - State: the element index is not declared among the numbers (ruled 2026-09-27, owner) — it is declared with the containers, at `modules/computer/adt/container/protocol/index.kh` as `Container_ElementIndex`, and the math folder's README (`modules/math/README.md`) states the boundary. What raises this question is that ruling: an index is not the only declaration that sat on the wrong side of it. The containers, arrays, lists, graphs, hash tables, queues, stacks and markers are all declared under `modules/computer/adt/`, and no document says a data type belongs to a computer rather than to a number. `modules/math/integer/protocol/adt-container-index.kh` remains on disk holding nothing but its license header and a pointer to the container's declaration; removing it is the owner's call, not this entry's. (Raised by the memar-go port.)

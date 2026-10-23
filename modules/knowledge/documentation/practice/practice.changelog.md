@@ -88,11 +88,11 @@ Open work (Skill-file conventions beyond the cited examples; optional-section ca
 #### What changed
 - [Frontmatter](./practice.md#frontmatter) now states that `name` is the name of the file it heads: a Practice companion's base name, the part before `.practice.md`, and for a `SKILL.md` the name of its folder. Before, it said only "lowercase with hyphens", and five Practices carried a name that did not follow their file. No Memar document stated the rule; `memar content search` for "base name", "agentskills", and the five names found none.
 - `documentation-practice.practice.md`'s front-matter `name` was `document-practice-creator`; it is now `documentation-practice`, the file's base name, as [Documentation — Practice → Frontmatter](./practice.md#frontmatter) now states. No other document referred to the old name. Its description's pointer to `document-explanation-creator` now reads `documentation-explanation`.
-- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
-- Made in session 20261015-T110002Z-23000.
+- Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in task 20261015-T110002Z-23000.
 
 #### Considered and not done
-- Citing agentskills.io as the source of the rule: not done. The plan of this session reports that the format it was adopted from ties a skill's name to its folder, but the specification could not be fetched in this session (the connection was refused), so the rule is stated on its own reason rather than on a claim not read.
+- Citing agentskills.io as the source of the rule: not done. The plan of this task reports that the format it was adopted from ties a skill's name to its folder, but the specification could not be fetched in this chat (the connection was refused), so the rule is stated on its own reason rather than on a claim not read.
 
 ---
 
@@ -100,7 +100,7 @@ Open work (Skill-file conventions beyond the cited examples; optional-section ca
 - Time: 2026-10-16T18:06:00Z
 - Type: Changed
 - Propagates to:
-  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+  - modules/content/documentation/documentation.md: Done (task `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
@@ -108,7 +108,7 @@ Open work (Skill-file conventions beyond the cited examples; optional-section ca
 #### What changed
 - [Reader relationship](./practice.md#reader-relationship): the definition `documentation.md` held for this facet moved here — the content followed to accomplish something, and why its front matter is two fields and its body a procedure. The note that the schema was adopted from three AI ecosystems was already in [Abstract](./practice.md#abstract), so it was merged, not repeated.
 - The clause that restated Explanation's relationship now points at Explanation's own section.
-- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+- Made in task 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
 
 #### Considered and not done
 - **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
@@ -124,4 +124,4 @@ Open work (Skill-file conventions beyond the cited examples; optional-section ca
 
 #### What changed
 - Step 1 no longer says a practice has no front matter; it has the two fields of the Practice facet and none of the Explanation facet's.
-- Why: session 20261016-T095101Z-22960 found the text contradicted the documents and types in use; the owner approved the correction on 2026-10-17.
+- Why: task 20261016-T095101Z-22960 found the text contradicted the documents and types in use; the owner approved the correction on 2026-10-17.

@@ -89,7 +89,7 @@ This document records why and how `documentation.md` changed over time. See [Doc
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote.
 
 #### What changed
-- Registered the Handoff facet in the meta-layer as the fourth facet: the Abstract now names four facets (adding "read to resume a paused discussion"), the core observation paragraph's three-reader enumeration became four readers, the Facets list gained a Handoff entry (definition plus pointer to [documentation-handoff.md](./handoff/handoff.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance, Extensibility, hierarchy table (now five files), Drawbacks, and Future possibilities were updated to the four-facet model, and the Methodology records that the Handoff pattern repeated informally across working sessions before being named — the same adoption path as the Changelog facet.
+- Registered the Handoff facet in the meta-layer as the fourth facet: the Abstract now names four facets (adding "read to resume a paused discussion"), the core observation paragraph's three-reader enumeration became four readers, the Facets list gained a Handoff entry (definition plus pointer to [documentation-handoff.md](./handoff/handoff.md), following the lean definition-plus-pointer pattern established for the other facets), the facet-selection guidance, Extensibility, hierarchy table (now five files), Drawbacks, and Future possibilities were updated to the four-facet model, and the Methodology records that the Handoff pattern repeated informally across working chats before being named — the same adoption path as the Changelog facet.
 - The Facet topic's Unresolved question about future reader relationships was updated to reflect that the discussion-resumption relationship was observed in real records before it was named.
 - Separately, a new cross-cutting content rule — "No Fabricated or Redundant Provenance" — was added under Explanation: no invented facts, and historical/migration narration lives once (in the paired changelog), never repeated across documents.
 
@@ -229,10 +229,10 @@ Fixed skeleton: four sections. Everything else optional, catalogued. Open questi
 
 #### What changed
 - [documentation.practice.md](./documentation.practice.md) states that work a practice already covers is done by reading that practice. The paired explanation is opened when a step names a section to check, or when the task is to change the explanation.
-- The changelog step states session consolidation: one session produces one entry on a base artifact. A later edit in that session extends the entry.
+- The changelog step states session consolidation: one session produces one entry on a base artifact. A later edit in that chat extends the entry.
 
 #### Deliberation
-Owner: an executing agent does not need to read the explanatory document to carry out a rule that the practice can state. The practice files already existed for that split, and they did not say so as a reading rule. The modeling session wrote a relation rule into the explanation and did not add the steps to the practice.
+Owner: an executing agent does not need to read the explanatory document to carry out a rule that the practice can state. The practice files already existed for that split, and they did not say so as a reading rule. The modeling chat wrote a relation rule into the explanation and did not add the steps to the practice.
 
 ---
 
@@ -260,11 +260,11 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Time: 2026-10-03T00:00:00Z
 - Type: Added
 - Cited:
-  - [Modeling → Expected Output of a Modeling Session](../../../docs/modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
+  - [Modeling → Expected Output of a Modeling Chat](../../../docs/modeling.md#expected-output-of-a-modeling-session) - Depends_on: the document that now carries the reduced claim and points here for the rule
   - Khayyam Rules Catalog (`bundles/khayyam/rules/README.md`) - Evidence: "Each rule has its own folder, holding a main document named after the rule" - the one kind of artifact in this repository that already kept the rule, and the precedent it is drawn from
   - [Documentation Practice → Folder READMEs](./documentation.practice.md#folder-readmes) - Depends_on: the folder-README rule that makes a folder's main document addressable by a path a reader types
 - Propagates to:
-  - docs/modeling.md: Done - the rule it stated is now a pointer here, and its Abstract and *Expected Output of a Modeling Session* carry the reduced claim.
+  - docs/modeling.md: Done - the rule it stated is now a pointer here, and its Abstract and *Expected Output of a Modeling Chat* carry the reduced claim.
   - docs/modeling.practice.md: Done - its closing pointer goes here.
   - docs/modeling.changelog.md: Done - the entry recording the rename now cites the rule's home.
 - Contributors:
@@ -414,7 +414,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-07T03:45:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Comparison](./comparison/comparison.md) - Evidence: its Method requirements, added in the same session from the tensorus and hindsight comparisons.
+  - [Documentation — Comparison](./comparison/comparison.md) - Evidence: its Method requirements, added in the same chat from the tensorus and hindsight comparisons.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
@@ -506,7 +506,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 #### What changed
 - New section [A README Points; Content Gets a Document](./documentation.md#a-readme-points-content-gets-a-document): content whose changes matter does not live in a folder README; finding it there is the signal to make it a document. Any agent may create a missing changelog for a document it changes.
-- The citation-direction rule, today kept in docs/khayyam/README.md and docs/modules/README.md and not followed, is the standing instance; session 20261012-T105449Z-28376 gives it a document of its own.
+- The citation-direction rule, today kept in docs/khayyam/README.md and docs/modules/README.md and not followed, is the standing instance; task 20261012-T105449Z-28376 gives it a document of its own.
 
 ---
 
@@ -519,7 +519,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
   - [docs/README.md](../../../docs/README.md): Done — the `khayyam/` paragraph points here instead of restating the rule
   - `.agents/scripts/services/content_check.py`: Done — an upward relative link is reported as a problem, with its tests in `.agents/scripts/services/tests/content_check.py` (class `CitationDirection`)
   - Every document in `docs/` outside `docs/khayyam/`: Done — 658 upward links in 88 files turned into plain text
-  - Every document in `docs/khayyam/`: Pending — 119 upward links, left to session 20261012-T105448Z-14472, which owns that folder
+  - Every document in `docs/khayyam/`: Pending — 119 upward links, left to task 20261012-T105448Z-14472, which owns that folder
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
@@ -557,16 +557,16 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-13T10:40:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/session_plan.py`, `session_report.py`, the other session readers, and `memar session --help`: Done (sessions `20261013-T103111Z-27036` and the sessions of topic `memar-projects`) - the plan's `open` and `done` become `Active` and `Complete`, the report's `Stop` line is read as a Status, and plan.md and report.md carry PascalCase front matter; readers first, writers a release later, as the proposal of session `20261013-T085819Z-2244` orders. The report carries a Status only (session `20261013-T142914Z-28176`): `session_report.py` reads the old `Outcome` and `Stop` words as the Status they leave, the report skeleton, the help, and the digest speak Status alone, and the old words are one table in the script, easy to change.
-  - `.agents/skills/memar/SKILL.md` and [documentation-handoff.practice.md](./handoff/handoff.practice.md): Done (session `20261013-T111639Z-22724`) - wording that says a plan's Status is `open`, or names a "Stop line", changes with the writers.
+  - `.agents/scripts/services/session_plan.py`, `session_report.py`, the other session readers, and `memar task --help`: Done (tasks `20261013-T103111Z-27036` and the sessions of topic `memar-projects`) - the plan's `open` and `done` become `Active` and `Complete`, the report's `Stop` line is read as a Status, and plan.md and report.md carry PascalCase front matter; readers first, writers a release later, as the proposal of task `20261013-T085819Z-2244` orders. The report carries a Status only (task `20261013-T142914Z-28176`): `session_report.py` reads the old `Outcome` and `Stop` words as the Status they leave, the report skeleton, the help, and the digest speak Status alone, and the old words are one table in the script, easy to change.
+  - `.agents/skills/memar/SKILL.md` and [documentation-handoff.practice.md](./handoff/handoff.practice.md): Done (task `20261013-T111639Z-22724`) - wording that says a plan's Status is `open`, or names a "Stop line", changes with the writers.
 - Contributors:
   - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
-- New section [Status](./documentation.md#status) holds the one table of Status values, each with its meaning, the kinds that may use it, and whether it is safe to depend on: `Draft`, `Proposed`, `Final`, `Superseded`, `Rejected` for Explanation-facet documents; `Queued`, `Active`, `Blocked`, `Complete` for a session's plan; `Active`, `Paused`, `Blocked`, `Complete` for a handoff; `Active`, `Paused`, `Complete`, `Withdrawn` for a research. The one table serves a session's plan and its report: a value says which kinds may use it, so a value for the report alone would be a row whose only kind is the session report, and none is needed now. The section says how a run that ended unmet reads (budget ended or no progress: `Active`; stopped at an act needing approval: `Blocked`; the report's Result part says which), and when a plan and its report agree (equal Statuses). The Abstract names it among the cross-cutting conventions.
+- New section [Status](./documentation.md#status) holds the one table of Status values, each with its meaning, the kinds that may use it, and whether it is safe to depend on: `Draft`, `Proposed`, `Final`, `Superseded`, `Rejected` for Explanation-facet documents; `Queued`, `Active`, `Blocked`, `Complete` for a task's plan; `Active`, `Paused`, `Blocked`, `Complete` for a handoff; `Active`, `Paused`, `Complete`, `Withdrawn` for a research. The one table serves a task's plan and its report: a value says which kinds may use it, so a value for the report alone would be a row whose only kind is the task report, and none is needed now. The section says how a run that ended unmet reads (budget ended or no progress: `Active`; stopped at an act needing approval: `Blocked`; the report's Result part says which), and when a plan and its report agree (equal Statuses). The Abstract names it among the cross-cutting conventions.
 - The Explanation, Handoff and Research Status passages now link to it and keep only what is specific to the kind; the values themselves are stated nowhere else.
-- Why: the values were defined in four places (the Explanation table, the Handoff line, the Research line, and the session plan's help text), the six endings had no document home, and the plan's `open` and `done` were the only words in the set that no document defined.
-- Rests on recommended answers the owner has not yet given, from the proposal in session `20261013-T085819Z-2244`: (1) the plan's `open` and `done` unify with Handoff and Research as `Active` and `Complete`; (5) the home is this document, with the Handoff and Research placements unchanged; (6) no `Withdrawn` for a plan; the owner ruled (2026-10-13, session `20261013-T103111Z-30088`) that Status and the report's Outcome are one concept in one table, which replaced the proposal's decisions (2) and (3), a separate `Outcome` field with its own six words. The words `Active`/`Complete` for `open`/`done`, the PascalCase keys, and the lazy migration are accepted provisionally, so the script keeps them in tables that are one place to change. Decision 4 (PascalCase keys in plan.md and report.md, lazy migration) is not written in the document: the field-naming rule already covers it and the migration is script work.
+- Why: the values were defined in four places (the Explanation table, the Handoff line, the Research line, and the task plan's help text), the six endings had no document home, and the plan's `open` and `done` were the only words in the set that no document defined.
+- Rests on recommended answers the owner has not yet given, from the proposal in task `20261013-T085819Z-2244`: (1) the plan's `open` and `done` unify with Handoff and Research as `Active` and `Complete`; (5) the home is this document, with the Handoff and Research placements unchanged; (6) no `Withdrawn` for a plan; the owner ruled (2026-10-13, task `20261013-T103111Z-30088`) that Status and the report's Outcome are one concept in one table, which replaced the proposal's decisions (2) and (3), a separate `Outcome` field with its own six words. The words `Active`/`Complete` for `open`/`done`, the PascalCase keys, and the lazy migration are accepted provisionally, so the script keeps them in tables that are one place to change. Decision 4 (PascalCase keys in plan.md and report.md, lazy migration) is not written in the document: the field-naming rule already covers it and the migration is script work.
 
 #### Considered and not done
 - **A new document for Status** (not done, proposed answer to decision 5): the section is cross-cutting like Results routing and File Naming, which already live here.
@@ -582,9 +582,9 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Cited:
   - [Modeling](../../../docs/modeling.md#one-authoritative-location-per-concerns-data) - Reference: a text copy of a fact in code is the derived copy with no re-derivation path that this section names.
 - Propagates to:
-  - `memar session --help`, `.agents/scripts/services/session_plan.py`, `session_report.py`: Pending - the Status values and the record fields are stated again in the help and in the scripts; the sessions of topic `memar-khayyam-types` make them one definition that the help calls.
+  - `memar task --help`, `.agents/scripts/services/session_plan.py`, `session_report.py`: Pending - the Status values and the record fields are stated again in the help and in the scripts; the sessions of topic `memar-khayyam-types` make them one definition that the help calls.
   - The organization's rule of one file per human language: Pending - the third list item of the new section defers to it; a session of the topic writes it in the other repository.
-  - [documentation.md](./documentation.md#status): Done (session `20261013-T190846Z-16860`) - the table is gone and the section names the type; see the entry *The Status table leaves documentation.md*.
+  - [documentation.md](./documentation.md#status): Done (task `20261013-T190846Z-16860`) - the table is gone and the section names the type; see the entry *The Status table leaves documentation.md*.
 - Contributors:
   - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
@@ -592,9 +592,9 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - New section [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once). Where a fact is written in code, no place keeps a copy: a document names the type, a help text calls its methods.
 - Five questions in order: 0 the presumption that everything is code unless shown otherwise, then 1 a program reads or branches on it, 2 a closed set or fixed shape, 3 stated in two places, 4 a reader must be persuaded, which alone shows otherwise. A statement holding a fact and its reason is split.
 - The citation-direction case is settled: a base document does not embed a declaration and names the type by a code span path; a module document does the same; a document of the language or of an implementation may show a fragment as an example of syntax, which is text and defines no type's fact.
-- Examples: Status, the session plan and report as records without a separate Outcome, and a service's inputs and outputs as types.
+- Examples: Status, the task plan and report as records without a separate Outcome, and a service's inputs and outputs as types.
 - The Content Rule's *No redundant restatement* bullet and the Abstract point to it.
-- Rests on the owner's rulings of 2026-10-13 (session `20261013-T142915Z-8820`): the presumption, no copy of a code fact, concepts shown in code and documents referring to it, human-language descriptions in a file per language. Not yet reviewed by a session that did not write it.
+- Rests on the owner's rulings of 2026-10-13 (task `20261013-T142915Z-8820`): the presumption, no copy of a code fact, concepts shown in code and documents referring to it, human-language descriptions in a file per language. Not yet reviewed by a session that did not write it.
 
 #### Considered and not done
 - **Letting a base document embed a short declaration** (not done): it is a copy no compiler checks, and it carries one language's syntax into the base layer.
@@ -608,7 +608,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-13T16:16:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/status.py`, `session_record.py`, `session_plan.py`, `session_report.py`, `session.py` and the other session readers: Done (session `20261013-T160505Z-29212`) - the Status values and the plan and report records are declared once and obtained from the types; no script spells a Status word.
+  - `.agents/scripts/services/status.py`, `session_record.py`, `session_plan.py`, `session_report.py`, `session.py` and the other session readers: Done (task `20261013-T160505Z-29212`) - the Status values and the plan and report records are declared once and obtained from the types; no script spells a Status word.
 - Contributors:
   - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
@@ -623,17 +623,17 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 ---
 
-### The session records' shape is printed by `memar session new --help`
+### The task records' shape is printed by `memar task ensure --help`
 - Time: 2026-10-14T18:20:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/session_new.py`: Done (session `20261014-T175052Z-9344`) - its help prints the plan's outline and the report's skeleton by calling the record types.
+  - `.agents/scripts/services/session_new.py`: Done (task `20261014-T175052Z-9344`) - its help prints the plan's outline and the report's skeleton by calling the record types.
 - Contributors:
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
 #### What changed
-- Two places, the *Session records* bullet under [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once) and the bullet under [Status](./documentation.md#status) that names where the shape of plan.md and report.md is stated, now name `memar session new --help` in place of `memar session --help`.
-- Why: by the owner's ruling of 2026-10-14 each command's help states only its own work; `new` is the verb that writes the two files, so their shape moved into its help, and `memar session --help` keeps the Status words and how a session ends.
+- Two places, the *Task records* bullet under [A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once) and the bullet under [Status](./documentation.md#status) that names where the shape of plan.md and report.md is stated, now name `memar task ensure --help` in place of `memar task --help`.
+- Why: by the owner's ruling of 2026-10-14 each command's help states only its own work; `new` is the verb that writes the two files, so their shape moved into its help, and `memar task --help` keeps the Status words and how a session ends.
 
 ---
 
@@ -646,8 +646,8 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 #### What changed
 - `documentation.practice.md`'s `description` now states what it is not: one facet's own procedure, which it routes to, and the schemas, naming, and language rules, which [Documentation — Practice → Description quality criteria](./practice/practice.md#description-quality-criteria) requires.
-- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
-- Made in session 20261015-T110002Z-23000.
+- Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in task 20261015-T110002Z-23000.
 
 ---
 
@@ -655,10 +655,10 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Time: 2026-10-16T00:07:29Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/content_links.py` and its test `.agents/scripts/services/tests/content_check.py`: Done (sessions `20261015-T122252Z-5984` and `20261016-T075834Z-5360`) - the layer map has the two layers, and an upward link is printed as a warning, a debt, not counted as a problem.
-  - `docs/khayyam/` documents, changelogs, handoffs and research, and the base documents that linked into the Documentation module: Pending (session `20261016-T075836Z-9780`) - the links that sessions `20261015-T122252Z-5984` and P6b turned into plain words are restored, pointing at the new paths.
-  - Fences in documents that restate a real definition: Pending (session `20261015-T122303Z-23544`) - each is replaced by a pointer to the definition; an illustrative example stays.
-  - `docs/khayyam/README.md`, `docs/README.md`, `docs/modules/README.md`, `modules/README.md`: Done (sessions `20261015-T122252Z-5984` and `20261016-T075834Z-5360`).
+  - `.agents/scripts/services/content_links.py` and its test `.agents/scripts/services/tests/content_check.py`: Done (tasks `20261015-T122252Z-5984` and `20261016-T075834Z-5360`) - the layer map has the two layers, and an upward link is printed as a warning, a debt, not counted as a problem.
+  - `docs/khayyam/` documents, changelogs, handoffs and research, and the base documents that linked into the Documentation module: Pending (task `20261016-T075836Z-9780`) - the links that tasks `20261015-T122252Z-5984` and P6b turned into plain words are restored, pointing at the new paths.
+  - Fences in documents that restate a real definition: Pending (task `20261015-T122303Z-23544`) - each is replaced by a pointer to the definition; an illustrative example stays.
+  - `docs/khayyam/README.md`, `docs/README.md`, `docs/modules/README.md`, `modules/README.md`: Done (tasks `20261015-T122252Z-5984` and `20261016-T075834Z-5360`).
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled, approved the first wording, corrected its course on 2026-10-16
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — proposed, revised, applied, amended
@@ -668,10 +668,10 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - [Citation Direction](./documentation.md#citation-direction): two layers instead of four. The language documents are base documents, since the modules are written in the language and its grammar adopts no module's semantics; a module's documents and code are one layer, so a module's document links to its code. That a base document refers to a module only as a concept is the direction the base travels in, not a reason to delete a link: a link is never removed to comply, an existing upward link is a debt repaid when its text is upgraded conceptually, and a new one may be written where the text needs it. A base document's changelog and handoff, and a comparison essay, may name a file's path in a code span. The example of a base concept is Type, since no base document defines Error.
 - `memar content check` maps the two layers and prints an upward link among its warnings, apart from its problems.
 - `docs/khayyam/README.md`, `docs/README.md`, `docs/modules/README.md` and `modules/README.md` say the same.
-- What happened between: the first application (session `20261015-T122252Z-5984`) stated that no document holds code, with a comparison essay excepted, and made an upward link a problem; to clear it, that session turned 140 links from `docs/khayyam/` into plain words (88 labelled records in changelogs and handoffs, 52 concept names), and session P6b turned 187 links from base documents into the Documentation module into words and removed 19 parenthetical path code spans. The owner's answers of 2026-10-16 replaced the ban by the distinction above and ruled that a needed link is never deleted, whatever the reason: where only the link went and the text stayed, an implicit reference remains. Those conversions are to be undone (Propagates to, above); the comparison exception to the ban, which the ban alone made necessary, is removed.
-- Why: the owner's rulings of 2026-10-14 (Khayyam official and allowed in all documents; no pseudocode), of 2026-10-15 (the base refers to modules as concepts; Khayyam's documents are base documents; documents beside their modules; code-span paths in base changelogs and handoffs, and in `docs/comparisons/`, stay allowed) and of 2026-10-16 (example code is not banned, only real code has its own file; a link is never removed to comply; the referencing principle belongs in the definition of concepts), split into sessions by session 20261014T113228Z-12672-0.
+- What happened between: the first application (task `20261015-T122252Z-5984`) stated that no document holds code, with a comparison essay excepted, and made an upward link a problem; to clear it, that chat turned 140 links from `docs/khayyam/` into plain words (88 labelled records in changelogs and handoffs, 52 concept names), and session P6b turned 187 links from base documents into the Documentation module into words and removed 19 parenthetical path code spans. The owner's answers of 2026-10-16 replaced the ban by the distinction above and ruled that a needed link is never deleted, whatever the reason: where only the link went and the text stayed, an implicit reference remains. Those conversions are to be undone (Propagates to, above); the comparison exception to the ban, which the ban alone made necessary, is removed.
+- Why: the owner's rulings of 2026-10-14 (Khayyam official and allowed in all documents; no pseudocode), of 2026-10-15 (the base refers to modules as concepts; Khayyam's documents are base documents; documents beside their modules; code-span paths in base changelogs and handoffs, and in `docs/comparisons/`, stay allowed) and of 2026-10-16 (example code is not banned, only real code has its own file; a link is never removed to comply; the referencing principle belongs in the definition of concepts), split into sessions by task 20261014T113228Z-12672-0.
 - The six open questions of 2026-10-14 in the [handoff](./documentation.handoff.md) are closed by these rulings: the Tentative statements of the section are rewritten; what "official" binds is answered by [Framework → Khayyam and Other Languages](../../../docs/framework.md#khayyam-and-other-languages); citation direction protects that a base claim holds without reading any module; where documentation lives is the open entry *The place of Documentation under Content is not final*; the code a document refers to lives in the module whose subject it is. The entry *Does the presumption reach a concept defined at the base layer* is restated as *Where does a base concept's Khayyam declaration live*. The entry *Does the principle of referencing belong in the definition of concepts* is opened (the owner leans to Terminology; not settled).
-- Made in session 20261015-T122252Z-5984; amended in session 20261016-T075834Z-5360, before any commit, to the owner's answers of 2026-10-16.
+- Made in task 20261015-T122252Z-5984; amended in task 20261016-T075834Z-5360, before any commit, to the owner's answers of 2026-10-16.
 
 #### Considered and not done
 - **Keeping four layers and changing only their justification** (the handoff's earlier recommendation): it kept the language above the modules, which contradicts the grammar's refusal of protocol semantics and the owner's ruling that the language documents are base documents.
@@ -686,7 +686,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 - Type: Changed
 - Propagates to:
   - documentation.handoff.md: Pending - its *Facet growth* item states that the `Facets currently defined` section "grows by one entry per facet", and its registry question reasons from "the current scale of five facets"; neither is true after this entry, and both need the state it leaves.
-  - modules/content/documentation/plan/plan.md and modules/content/documentation/report/report.md: Done (session `20261016-T141543Z-22844`) - the two specifications this entry's first facet addition applies to; their own changelog entries record their creation.
+  - modules/content/documentation/plan/plan.md and modules/content/documentation/report/report.md: Done (task `20261016-T141543Z-22844`) - the two specifications this entry's first facet addition applies to; their own changelog entries record their creation.
   - modules/content/documentation/comparison/comparison.md: Done - its [Methodology](./comparison/comparison.md#methodology) says an essay's reader relationship "is none the five facets define"; the claim holds, the number is gone, and the file's own method is not this document's subject.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
@@ -711,7 +711,7 @@ The facet count and the facet enumeration this document held are gone, so that p
 
 #### Considered and not done
 - **Rewriting the enumerations as a list of seven facets** (the first draft's route): it is the inventory the Content Rule forbids, and it keeps the count as a fact this document holds, which is what the owner ruled against.
-- **Printing the shape of the records in `memar session new --help` by calling the record type**, which `session_record.py`'s own docstring claims it does: out of scope here, and `tests/session.py` pins that help's wording; the claim in that docstring is left standing and recorded below.
+- **Printing the shape of the records in `memar task ensure --help` by calling the record type**, which `session_record.py`'s own docstring claims it does: out of scope here, and `tests/session.py` pins that help's wording; the claim in that docstring is left standing and recorded below.
 - **Moving the `####` facet definitions into the five existing facet specifications**: the remedy for the residue named above, deferred because it reaches five specifications this change did not touch.
 
 ---
@@ -720,8 +720,8 @@ The facet count and the facet enumeration this document held are gone, so that p
 - Time: 2026-10-16T18:06:00Z
 - Type: Changed
 - Propagates to:
-  - explanation, practice, changelog, handoff and research specifications under modules/content/documentation/: Done (session `20261016-T150928Z-4276`) - each holds its own `Reader relationship` section, recorded in its changelog.
-  - plan and report specifications under modules/content/documentation/: Done (session `20261016-T150928Z-4276`) - the two facets `documentation.md` never defined; they still read whole.
+  - explanation, practice, changelog, handoff and research specifications under modules/content/documentation/: Done (task `20261016-T150928Z-4276`) - each holds its own `Reader relationship` section, recorded in its changelog.
+  - plan and report specifications under modules/content/documentation/: Done (task `20261016-T150928Z-4276`) - the two facets `documentation.md` never defined; they still read whole.
   - documentation.handoff.md: Done - its *Facet growth* item already states that a new facet edits nothing here.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
@@ -733,7 +733,7 @@ The facet count and the facet enumeration this document held are gone, so that p
 - [Which facet does a document belong to?](./documentation.md#which-facet-does-a-document-belong-to) no longer lists the five purposes: it tells the author to compare against the relationship each specification states, found by listing this folder.
 - [Extensibility](./documentation.md#extensibility) and [Relationship between this document and its facet specifications](./documentation.md#relationship-between-this-document-and-its-facet-specifications) name no facet and no count.
 - The earlier entry *A facet is registered by its specification alone* said the enumeration at `:78` was kept and the `####` sections remained; this entry removes both, which is the remedy that entry named. Its two links to the removed section were taken out of link form into code spans, as [Links in recorded entries](./changelog/changelog.md#links-in-recorded-entries) says.
-- Made in session 20261016-T150928Z-4276.
+- Made in task 20261016-T150928Z-4276.
 
 **Why none of this is the derivative inventory the Content Rule forbids.** What replaces the definitions is a pointer to the folder and the rule that each specification states its own relationship; no list of facets, no count and no table is kept here, so the next facet edits only its own module. `memar content backlinks` found no document linking into the removed section.
 
@@ -747,7 +747,7 @@ The facet count and the facet enumeration this document held are gone, so that p
 - Time: 2026-10-16T19:23:38Z
 - Type: Removed
 - Propagates to:
-  - [explanation.md](./explanation/explanation.md#status), [handoff.md](./handoff/handoff.md#status), [research.md](./research/research.md#status-mandatory): Done (session `20261016-T194830Z-21416`) - each listed the Status values its kind may take, a copy of what `Status.for_kind` gives under the same ruling; removing them is a removal in three facet specifications, left to the owner.
+  - [explanation.md](./explanation/explanation.md#status), [handoff.md](./handoff/handoff.md#status), [research.md](./research/research.md#status-mandatory): Done (task `20261016-T194830Z-21416`) - each listed the Status values its kind may take, a copy of what `Status.for_kind` gives under the same ruling; removing them is a removal in three facet specifications, left to the owner.
   - [documentation.handoff.md](./documentation.handoff.md): Done - the entry *Status table or type: which is the source* is answered by the ruling and removed.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
@@ -757,11 +757,11 @@ The facet count and the facet enumeration this document held are gone, so that p
 - The table of eleven Status values (value, meaning, kinds, safe to depend on) is gone from [Status](./documentation.md#status). The section keeps its rules and reasons and names `.agents/scripts/services/status.py` as the one declaration of the values; a value is read, added or changed in the type alone. It says the type is a Python class now and a Khayyam capsule later, and that its place under `.agents/scripts` is not settled.
 - The test that rendered the table from the type and compared it with this document (`TableEqualsCode` in `.agents/scripts/services/tests/status.py`) and the method it called (`Status.table_lines`) are removed: with no copy there is nothing to keep equal.
 - The owner's ruling of 2026-10-16 decides it: every field documentation declares is a type, and once typed the prose restating it leaves the document, keeping only reason and explanation.
-- Made in session 20261013-T190846Z-16860.
+- Made in task 20261013-T190846Z-16860.
 
 #### Considered and not done
 - **Keeping the table as a checked copy**: the earlier recommendation, until the table could be generated. The ruling removes restating prose whether or not it is checked, and the owner named the check an extra cost.
-- **A `memar content` verb that prints the table from the type**: no reader needs it now; it is left as a question in session 20261013-T190846Z-16860's report.
+- **A `memar content` verb that prints the table from the type**: no reader needs it now; it is left as a question in task 20261013-T190846Z-16860's report.
 
 ---
 
@@ -773,16 +773,16 @@ The facet count and the facet enumeration this document held are gone, so that p
   - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
 
 #### What changed
-- [Status](./documentation.md#status): the closed set of values is declared in `modules/content/documentation/primitive/status.py` and the shape of a session's plan and report in `modules/content/documentation/record.py`, not in the scripts' `services/`. No value or rule changed.
-- Why: the owner's rulings of 2026-10-17 place a module's primitive types in the module's own `primitive/` and the shapes built from them in its root; the Status type and the session record's shape were the first moved out of the scripts' `services/`.
-- Made in session 20261017-T082614Z-25876.
+- [Status](./documentation.md#status): the closed set of values is declared in `modules/content/documentation/primitive/status.py` and the shape of a task's plan and report in `modules/content/documentation/record.py`, not in the scripts' `services/`. No value or rule changed.
+- Why: the owner's rulings of 2026-10-17 place a module's primitive types in the module's own `primitive/` and the shapes built from them in its root; the Status type and the task record's shape were the first moved out of the scripts' `services/`.
+- Made in task 20261017-T082614Z-25876.
 
 ---
 
 ### Bulk edits skip symbolic-link READMEs
 - Time: 2026-10-19T00:00:00Z
 - Type: Added
-- Ruling: owner, 2026-10-18/19 (in the organization repository); carried here when organization merged into memar (session 20261018-T133019Z-4704)
+- Ruling: owner, 2026-10-18/19 (in the organization repository); carried here when organization merged into memar (task 20261018-T133019Z-4704)
 - Contributors:
   - Claude Opus 5.5 - applied
 

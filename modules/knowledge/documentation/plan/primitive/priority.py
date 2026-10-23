@@ -6,8 +6,8 @@
 A whole number from 1 to 10, the higher sooner. It is a type so that the
 bounds, the default and the words a help prints about them are written here and
 nowhere else ([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
-`session_plan_priority` reads and writes the key by it, `session_claims` ranks
-by it, and the help of `new` and `priority` call `range_words` and
+`task_plan_priority` reads and writes the key by it, `task_claims` ranks
+by it, and the help of `ensure` and `priority` call `range_words` and
 `default_words`.
 
 A plan that writes none has the middle value, so every plan written before

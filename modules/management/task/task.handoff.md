@@ -56,11 +56,11 @@ From the Task section *(open)* bullet above, plus consolidated list items about 
 4. Logical-snapshot tooling, and whether any real need for global-state entities survives.
 
 ### The twelve Task rules, and what of `process/session` belongs here
-- State: the twelve rule folders stand under `modules-plugable/management/task/rules/` — a second placement for this module's name, with no main document and no manifest — while this handoff and `task.changelog.md` record them as Task's rules. Owner 2026-10-20: after full migration of services, `modules/process/session` is **deleted**; the word *session* in modules is only the OSI Session layer (`modules/net/protocol/osi_5-session.kh`); `memar task` verbs go too. Migration session `20261020-T131909Z-22300` carries the inventory and destination table (opened when Decision 4 of `20261019-T133400Z-4624` had assumed a session that did not exist).
+- State: the twelve rule folders stand under `modules-plugable/management/task/rules/` — a second placement for this module's name, with no main document and no manifest — while this handoff and `task.changelog.md` record them as Task's rules. Owner 2026-10-20: after full migration of services, `modules/process/session` is **deleted**; the word *session* in modules is only the OSI Session layer (`modules/net/protocol/osi_5-session.kh`); `memar task` verbs go too. Migration task `20261020-T131909Z-22300` carries the inventory and destination table (opened when Decision 4 of `20261019-T133400Z-4624` had assumed a session that did not exist).
 - Options: (1) move the twelve rule folders into `modules/management/task/rules/`, the role folder of this module — the reading the owner's words favour, since the rules state what a Task is; (2) make them a pluggable capability with its own name, main document and manifest.
 - Anchor: `modules-plugable/management/task/rules/`; deletion of `modules/process/session` after migration.
 - Blocks: implement `20261020-T163035Z-14292` (table + task-id); then naming/git-shelf `20261020-T180133Z-19180`; then scripts `20261020-T163034Z-14292`.
-- Asked: 2026-10-19, by session 20261019-T133400Z-4624; deletion end-state ruled 2026-10-20 in coordinator `20261020-T131818Z-22300`.
+- Asked: 2026-10-19, by task 20261019-T133400Z-4624; deletion end-state ruled 2026-10-20 in coordinator `20261020-T131818Z-22300`.
 
 ## Khayyam conversion (2026-10-03)
 
@@ -183,12 +183,12 @@ Recorded as the owner stated them. They supersede the parts of the research name
 - **Name of the intent-to-change edge:** no idea; the owner will leave a todo in the code if one comes. *(owner)*
 
 ### Owner intake — Session versus Task span (2026-10-20)
-Recorded from the coordinating chat of session `20261020-T131818Z-22300`. Sitting 8 (`20261018-T203922Z-11220`) took a thin batch yes on 2026-10-20; see the next section for what became Decided and what stayed open.
+Recorded from the coordinating chat of task `20261020-T131818Z-22300`. Sitting 8 (`20261018-T203922Z-11220`) took a thin batch yes on 2026-10-20; see the next section for what became Decided and what stayed open.
 
 - **No work-item *session* outside OSI.** Owner 2026-10-20: Memar's process "session" was Task misnamed; the word *session* in modules remains only for the network Session layer (`modules/net/protocol/osi_5-session.kh`). `modules/process/session` is deleted after service migration; `memar task` verbs go too. Until that migration finishes, the tooling is a temporary adapter — not a second concept.
-- **One Task holds its whole process.** Designing the plan, evaluating it, and changing the plan are steps of the same Task — not separate Tasks/sessions. Mixing the status of a document the Task changes with the Task's own status produced many sessions for one ask; that is a defect to correct in practice and in the conversion of session records after terms settle.
+- **One Task holds its whole process.** Designing the plan, evaluating it, and changing the plan are steps of the same Task — not separate Tasks/sessions. Mixing the status of a document the Task changes with the Task's own status produced many sessions for one ask; that is a defect to correct in practice and in the conversion of task records after terms settle.
 - **Independent asks stay separate and linked.** Work that must stand alone is its own Task, and those Tasks must be connected (`part_of`, `blocks`, or further relations the owner accepts). Several independent asks must not be stuffed into one Task.
-- **Session records not yet pushed.** Live and archived session folders may be rewritten by a script once terms settle (new commit or history rewrite — owner chooses later).
+- **Task records not yet pushed.** Live and archived task folders may be rewritten by a script once terms settle (new commit or history rewrite — owner chooses later).
 - Follow-ups queued from that chat: migration `20261020-T131909Z-22300`; filesystem/edge storage `20261020-T131910Z-22300`; content primary vs transcription `20261020-T131911Z-22300`.
 ### Owner accepted sitting-8 defaults (2026-10-20)
 *(coordinator chat; thin consent first, then four clarifying answers the same day after a conflict check.)*
@@ -208,7 +208,7 @@ Recorded from the coordinating chat of session `20261020-T131818Z-22300`. Sittin
 **Still Tentative:** TA2.29, TA2.30, TA2.34. TA.15 Decided (Decision label on Content + Task shortcut + text).
 
 ## Questions Found During a Task
-- **2026-10-20 — migration `20261020-T163035Z-14292` shelf-only (answered same day).** Owner: (1) identity terminology must finish in that session — flags/types/helpers now `--task-id` / `TaskId`; remaining help prose “session” → follow-up; (2) deep critique+rename of all Memar CLI verbs/services → `20261020-T180133Z-19180` (new chat); (3) `computer/records`→`git` and (4) `task_kind`→label → same `180133`. Scripts session `20261020-T163034Z-14292` Depends_on `163035` and `180133`.
+- **2026-10-20 — migration `20261020-T163035Z-14292` shelf-only (answered same day).** Owner: (1) identity terminology must finish in that chat — flags/types/helpers now `--task-id` / `TaskId`; remaining help prose “session” → follow-up; (2) deep critique+rename of all Memar CLI verbs/services → `20261020-T180133Z-19180` (new chat); (3) `computer/records`→`git` and (4) `task_kind`→label → same `180133`. Scripts task `20261020-T163034Z-14292` Depends_on `163035` and `180133`.
 
 ## Related Artifacts
 - [`task.research.002.md`](task.research.002.md) — outside work on source control, context and many participants set against the domain

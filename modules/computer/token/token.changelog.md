@@ -8,21 +8,21 @@
 - Cited:
   - Modules → What does not belong here (`modules/README.md`) - Depends_on: the placement rule this document follows — specifications and general claims live in the repository's `docs/`, and the modules layer realizes them rather than restating them.
   - Khayyam module → Local placement (`bundles/khayyam/README.md`) - Depends_on: the same rule as a row of that module's placement table, which sends cross-cutting host-independent design to `docs/` and protocols to `docs/protocols/`.
-  - [Protocols → Where implementations live](../README.md) - Depends_on: this folder is each protocol's source of truth and is not executable code, which is why the subject belongs here and the realization that exercised the evidence does not.
-  - [Linter handoff → Topic & Purpose](./linter.handoff.md) - Evidence: the record of the lift that moved memory, linter, compiler, and runtime out of `modules/` into `docs/protocols/` and rewrote them as language-independent protocols — the decision this document's placement honours rather than repeats.
+  - [Protocols → Where implementations live](../../README.md) - Depends_on: this folder is each protocol's source of truth and is not executable code, which is why the subject belongs here and the realization that exercised the evidence does not.
+  - [Linter handoff → Topic & Purpose](../linter/linter.handoff.md) - Evidence: the record of the lift that moved memory, linter, compiler, and runtime out of `modules/` into `docs/protocols/` and rewrote them as language-independent protocols — the decision this document's placement honours rather than repeats.
   - Khayyam Display Research 002 (`bundles/khayyam/display/display.research.002.md`) - Evidence: the host's own published classification, the super-type mechanism, what a type nothing matches becomes, the boundary between what a language publishes and what a consumer decides, and the principles with their costs.
   - Khayyam Display Research 001 (`bundles/khayyam/display/display.research.001.md`) - Evidence: the ownership findings and the measured contrast and colour-vision work behind one realization's sheet, used for the value-side boundary and for the fault that reads as an absence.
   - Khayyam Display (`bundles/khayyam/display/display.md`) - Evidence: the twenty-one-role contract in prose, its two mechanisms, and the rule that a role names what an identifier is rather than where it appears.
   - Khayyam Display Handoff (`bundles/khayyam/display/display.handoff.md`) - Evidence: the four host mechanics a realization must be designed against, the corrected ground for refusing a bridge, and the owner's open question on the four roles no standard class can express.
   - Khayyam display contract (JSON) (`bundles/khayyam/display/display.json`) - Evidence: the machine form of the same contract — the three-answer kind statement, the two-way statement of what implements a role, the theme contract, and the drift policy.
   - [verify-roles.mjs](../../../.agents/vscode/extensions/khayyam-language/scripts/verify-roles.mjs) - Evidence: what a check that reads the consumer's own list refuses, and the matching arithmetic stated in the consumer's numbers rather than asserted.
-  - [Content → Theme / Role-to-Rendering Mapping](../../content.md#theme--role-to-rendering-mapping) - Depends_on: the consumer-independence position at the base layer, which this protocol states once for classified things and the values a consumer decides.
-  - [Lexer](./lexer.md) - Depends_on: the sibling protocol this one is divided from; its output is a lexical unit and its own naming is deliberately unsettled.
+  - [Content → Theme / Role-to-Rendering Mapping](../../knowledge/content/content.md#theme--role-to-rendering-mapping) - Depends_on: the consumer-independence position at the base layer, which this protocol states once for classified things and the values a consumer decides.
+  - [Lexer](../lexer/lexer.md) - Depends_on: the sibling protocol this one is divided from; its output is a lexical unit and its own naming is deliberately unsettled.
 - Propagates to:
-  - [CONTRIBUTORS.md](../../../CONTRIBUTORS.md) - Done: the model that drafted this entry has its own entry under the Stealth Models entity, recorded in the same session.
+  - [CONTRIBUTORS.md](../../../CONTRIBUTORS.md) - Done: the model that drafted this entry has its own entry under the Stealth Models entity, recorded in the same chat.
   - Display handoff → Where this material belongs in the long run (`bundles/khayyam/display/display.handoff.md#where-this-material-belongs-in-the-long-run--owner-ruling`) - Pending: the citations this entry and the base document carry point into `modules/khayyam/display/`, and the owner ruling on that folder's home moves them; the content of those records is unaffected either way.
   - Token handoff (`token.handoff.md`, not yet created) - Pending: a `Draft` carrying the owner's open decisions has no paired handoff yet, so the resolution work — what would settle each open question, and in what order — has no home.
-  - [Protocols → Membership criterion](../README.md) - Rejected: the folder states its criterion and does not list its documents, so no index entry is added.
+  - [Protocols → Membership criterion](../../README.md) - Rejected: the folder states its criterion and does not list its documents, so no index entry is added.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested, decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted
@@ -48,7 +48,7 @@
 #### Related work
 - `bundles/khayyam/display/display.research.002.md` — the inquiry that read one consumer's own published classification and its super-type mechanism out of its implementation, mapped twenty-one roles against it, and drew the boundary this protocol states as its own: a language publishes a set of named types, each optionally declaring a standard super type, and publishes nothing about values; a consumer decides every value. Its F6 supplies the standing costs above in the same form.
 - `bundles/khayyam/display/display.research.001.md` — the inquiry that read the merge out of the consumer's product and found a token no style resolves is discarded rather than left unstyled, which is why an unresolved token is ruled an absence here rather than a visible nothing.
-- [Content → What a Host's Own Mechanism Costs a Realization](../../content.md#what-a-hosts-own-mechanism-costs-a-realization) — the four host mechanics already stated at the base layer, of which ruling 1 and the parser rule are this protocol's form and the value- and setting-shaped ones stay the host's.
+- [Content → What a Host's Own Mechanism Costs a Realization](../../knowledge/content/content.md#what-a-hosts-own-mechanism-costs-a-realization) — the four host mechanics already stated at the base layer, of which ruling 1 and the parser rule are this protocol's form and the value- and setting-shaped ones stay the host's.
 
 #### Deliberation
 - The owner directed that the concepts this stretch of work stumbled into be written down as a protocol beside the Lexer protocol, so that a class of requirement is answered once and language-independently rather than per language, and named the requirement in one sentence: a consumer must be able to colour a file it is not told the contents of, consistently, against the theme the reader chose, without every language inventing its own vocabulary (Omid Hekayati — directed).
@@ -79,13 +79,13 @@
 - Time: 2026-10-07T14:07:33Z
 - Type: Moved
 - Cited:
-  - [Modules → One layout for both trees](../README.md#one-layout-for-both-trees) - Premise: `docs/protocols/` became `docs/modules/`, whose category folders are the layout of the repository's modules; a document at the folder's root had no category.
+  - [Modules → One layout for both trees](../../knowledge/modularity/modularity.changelog.md#the-one-layout-for-both-trees-argument-is-dropped-with-the-specification-folder) - Premise: `docs/protocols/` became `docs/modules/`, whose category folders are the layout of the repository's modules; a document at the folder's root had no category.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
-- The document and this changelog moved from `docs/protocols/` to `docs/modules/computer/`, beside [Lexer](./lexer.md), the module [The Boundary with the Lexer](./token.md#the-boundary-with-the-lexer) draws its line against; every relative link was re-derived for the new depth. No content change.
+- The document and this changelog moved from `docs/protocols/` to `docs/modules/computer/`, beside [Lexer](../lexer/lexer.md), the module [The Boundary with the Lexer](./token.md#the-boundary-with-the-lexer) draws its line against; every relative link was re-derived for the new depth. No content change.
 
 #### Considered and not done
 - **`docs/modules/gui/` (rejected)**: the consumer the protocol addresses is a renderer, but what the document governs is what a producer publishes, and its producers are the toolchain components beside the Lexer.
@@ -100,3 +100,23 @@
 
 #### What changed
 - Reviewed; no change needed. The uncommitted change to this changelog re-derives every relative link for the new folder depth and the bundle move (all resolve), and adds the entries "Standing Costs item 5 given its input and its check" and "Moved to `docs/modules/computer/`". Both entries are consistent with `token.md` (the cited Standing Costs and What Conformance Means anchors exist) and with the move recorded in this folder. No earlier entry was removed or reworded beyond its links; the new entries sit after the older ones, in order.
+
+---
+
+### Organization's token text carried into this document
+- Time: 2026-10-19T11:00:00Z
+- Type: Changed
+- Cited:
+  - Organization's `modules/computer/token/token.md` at commit 19834121 — `Depends_on`: the text the merge of 2026-10-19 left only in history, carried here by hand
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- Added [Other Senses of the Word](./token.md#other-senses-of-the-word): organization's document was a stub on authentication, access and session tokens, a different concept from the one this document governs, and the section says so and names where that concept belongs, instead of setting a second model beside the first.
+- Occasion: the merge of organization into memar kept this file and left organization's version in history.
+
+#### Considered and not done
+- **The "Session ID" section (dropped as a section)**: its text was a Wikipedia definition of a session identifier; the new section keeps its one claim (a server-issued value that ties the messages of a stateless protocol together) and not its shopping-cart example.
+- **The empty "Cryptography" and "Usage" headings (dropped)**: they held no text, and "Usage" only said the rules rest on the `computer/token` domain.
+- **The "Account deactivation" idea (kept here, not ratified)**: full user deletion is not realistic because of legal complexity, so the register service must warn the user about deactivation and not promise deletion. Review questions it carried: is the sign-up warning an identity concern of [User](../../identity/user/user.md), with this module only revoking credentials on deactivation; does deactivate-versus-delete need a user status that a token merely reacts to; who owns the legal-retention policy, a rule domain or [Rights](../../rights/rights.md). It belongs in the User handoff, which this chat did not write; the report names it.
+- The links organization's document held to `modules/management/vocabulary-discipline.handoff.md` were not carried, because the idea they governed is not carried as text.

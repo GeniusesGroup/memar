@@ -34,7 +34,7 @@ question; a test run, which must never reach the machine it runs on; and
 MEMAR_NO_AUTO_UPDATE set to anything but empty or 0. A notice left is still
 printed under that opt-out, because the opt-out stops the update and a notice
 may be about something else; a test run prints none. The once-a-day guard is
-`s_lock.claim_today`, the one the session sweep asks too, and two runs
+`s_lock.claim_today`, the one the task sweep asks too, and two runs
 at once are kept apart by a lock from the same module: a run that finds it held
 goes away rather than waiting, because the run holding it is doing the same
 work.
@@ -99,13 +99,13 @@ def detach(command: list[str], log: Path) -> subprocess.Popen:
 
     On Windows the child gets a console of its own with no window, so the
     console programs it starts open none either, and it leaves the caller's
-    job where the job allows it; elsewhere it gets a session of its own.
+    job where the job allows it; elsewhere it gets a task of its own.
     """
     import subprocess
     options: dict = {'stdin': subprocess.DEVNULL, 'stderr': subprocess.STDOUT, 'close_fds': True}
     with log.open('w', encoding='utf-8') as output:
         if os.name != 'nt':
-            return subprocess.Popen(command, stdout=output, start_new_session=True, **options)
+            return subprocess.Popen(command, stdout=output, start_new_task=True, **options)
         flags = subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP
         try:
             return subprocess.Popen(command, stdout=output, creationflags=flags | subprocess.CREATE_BREAKAWAY_FROM_JOB, **options)

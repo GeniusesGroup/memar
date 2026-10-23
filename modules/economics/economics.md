@@ -6,7 +6,7 @@ Economics is a **browsing namespace** for bookkeeping of any countable quantity:
 
 ## Core domains (index)
 
-A domain is core only if removing it would force the kernel to fabricate or distort another foundational concept (core-by-necessity). Importance or prevalence is not the test. Current economics cores (subject to a future repo-wide placement audit; that session's working brief is ephemeral and must not live under `modules/`):
+A domain is core only if removing it would force the kernel to fabricate or distort another foundational concept (core-by-necessity). Importance or prevalence is not the test. Current economics cores (subject to a future repo-wide placement audit; that chat's working brief is ephemeral and must not live under `modules/`):
 
 - [account](account/README.md) — holds the bookkeeping state of one quantity with one count unit. Decisions: [account.handoff.md](account/account.handoff.md).
 - [transaction](transaction/README.md) — a request by one or more users for a bookkeeping change; not an operation. Decisions: [transaction.handoff.md](transaction/transaction.handoff.md).
@@ -21,7 +21,7 @@ Kernel edge: [bookkeeping](account/edges/bookkeeping/README.md). Cross-domain UU
 
 ## Agreed next steps
 
-Order settled in the modeling sessions (2026-08/09); each step's findings land in the module docs:
+Order settled in the modeling chats (2026-08/09); each step's findings land in the module docs:
 
 1. Finalize the [bookkeeping](account/edges/bookkeeping/README.md) edge: fields, sign convention, cardinality, ordering/concurrency, reversal/finality, TransactionIndex as contract-or-detail.
 2. Cross-check rule-engine mechanics (triggers, authority/priority, idempotency, races, dependent transactions) — see [rule README](../computer/rule/README.md) and [rule.handoff.md](../computer/rule/rule.handoff.md).
@@ -29,4 +29,4 @@ Order settled in the modeling sessions (2026-08/09); each step's findings land i
 4. Keep [settlement](../../modules-plugable/economics/settlement/README.md) separated from clearing and matching; test against bank, warehouse, and securities scenarios.
 5. Re-review [invoice](invoice/README.md)/[product](product/README.md)/[money](../../modules-plugable/economics/money/README.md) against tax, rent, penalties, and rounding contracts.
 6. Then securities/custody, credit, payroll, analytics.
-7. Repo-wide placement audit (move early-development edges that fail core-by-necessity into `modules-plugable/`) — wave 1 landed POS, brand, service occupancy, good ingredients, discount analytics, pricing, invoice totals, and product-kind labels in those owning homes; remaining categories follow in later sessions. Do not reintroduce a category-level doctrine file under `modules/`.
+7. Repo-wide placement audit (move early-development edges that fail core-by-necessity into `modules-plugable/`) — wave 1 landed POS, brand, service occupancy, good ingredients, discount analytics, pricing, invoice totals, and product-kind labels in those owning homes; remaining categories follow in later chats. Do not reintroduce a category-level doctrine file under `modules/`.

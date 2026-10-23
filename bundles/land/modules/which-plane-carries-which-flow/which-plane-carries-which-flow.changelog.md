@@ -43,7 +43,7 @@ No legacy-unresolved references occur in this document; its "Suspended network..
 - Time: 2026-09-20T10:37:24Z
 - Type: clarified
 - Cited:
-  - [Which Plane Carries Which Flow — Handoff](which-plane-carries-which-flow.handoff.md) - Relation: Evidence: Q1 is the owner ruling this session recorded.
+  - [Which Plane Carries Which Flow — Handoff](which-plane-carries-which-flow.handoff.md) - Relation: Evidence: Q1 is the owner ruling this chat recorded.
 - Propagates to:
   - form-and-land/stewardship-of-ground-cover.md: Done — the forest record's school-walk hook no longer puts origin-destination travel on soil.
   - movement/human-travel-network.md: Done — boarding height is not a statute; each settlement chooses its movement mix and re-times capacity figures; no protocol sample height.

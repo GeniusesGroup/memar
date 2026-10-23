@@ -1,5 +1,5 @@
 # Rule Handoff
-Open work for `rule.md`. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `rule.md`. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -13,10 +13,10 @@ Should `modules/process/rule/` and `modules/process/rules-engine/` gain a protoc
 [Rule → Retiring a Rule](./rule.md#retiring-a-rule) states what retirement does to a Rule's claim and executable form, and nothing more. Nothing in Memar yet obliges a retiring party to establish what problem the Rule was introduced for, what it was holding true, or whether that problem still exists. The three positions a retiring party could take — the problem remains and this is still the right answer to it; the problem remains and something else answers it better now; the problem no longer exists — are stated nowhere, and the concept has no practice companion to state them in. A Rule, a mandatory step, a compatibility branch, and a legacy guard are one shape, so the answer is not specific to Rules. The question was first tracked from `process.research.002.md`, which is no longer in `docs/`.
 
 ### Vocabulary findings recorded from sources of no standing
-[Rule Research 001](./rule.research.001.md) states what the SBVR and Business Rules Group vocabularies say, and read them from industry-community articles and a tertiary compilation rather than from the specification that defines them. Those sources carry no standing under [Documentation → Citations → Source standing](./documentation.md#citations), so the findings are this repository's own reading and are marked provisional. Whether they should be resolved against the OMG specification, or withdrawn as prior art that no document relies upon — `rule.md` derives its definition from this repository's own practice — is unanswered.
+[Rule Research 001](./rule.research.001.md) states what the SBVR and Business Rules Group vocabularies say, and read them from industry-community articles and a tertiary compilation rather than from the specification that defines them. Those sources carry no standing under [Documentation → Citations → Source standing](../../knowledge/documentation/documentation.md#citations), so the findings are this repository's own reading and are marked provisional. Whether they should be resolved against the OMG specification, or withdrawn as prior art that no document relies upon — `rule.md` derives its definition from this repository's own practice — is unanswered.
 
 ## Follow-up work: relocate document-level rules
-Inventory of normative rule passages still stated at document level (not moved in this session). Each entry: anchor, short quote, proposed `rules/` target. Count: **32** entries.
+Inventory of normative rule passages still stated at document level (not moved in this chat). Each entry: anchor, short quote, proposed `rules/` target. Count: **32** entries.
 
 ### `docs/khayyam/`
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
@@ -65,19 +65,19 @@ Inventory of normative rule passages still stated at document level (not moved i
 ### `docs/type*.md` and other `docs/` roots
 | Anchor | Quote (abbrev.) | Proposed `rules/` folder |
 | --- | --- | --- |
-| [type.md#structure-is-fixed-by-definition](./type.md#structure-is-fixed-by-definition) | "no concept introduction … can be minted into a running system" | `modules/computer/type/rules/structure-fixed-at-definition/` (ontology-tier; may remain concept-only) |
-| [type.md#type-and-rules](./type.md#type-and-rules) | Taxonomy: invariants, constraints, behavioral rules, business rules | Concept framing only — no relocation; informs Rule kinds |
-| [modeling.md#constraints-belong-to-the-constraining-concern](./modeling.md#constraints-belong-to-the-constraining-concern) | constraint modeled on constraining concern, not duplicated on resources | Modeling principle — optional `modules/modeling/rules/` if executable checks emerge |
-| [terminology.md#architectural-rule](./terminology.md#architectural-rule) | reasoning order: problem → concepts → principles → technologies → tools → products | `organization` repo or `modules/terminology/rules/` — not Khayyam/protocol executable |
-| [documentation-explanation.md#conventions](./documentation-explanation.md#conventions) | PascalCase front-matter fields; hyperlink cross-references | `docs/` documentation practice — not Module `rules/` |
+| [type.md#structure-is-fixed-by-definition](../../../docs/type.md#structure-is-fixed-by-definition) | "no concept introduction … can be minted into a running system" | `modules/computer/type/rules/structure-fixed-at-definition/` (ontology-tier; may remain concept-only) |
+| [type.md#type-and-rules](../../../docs/type.md#type-and-rules) | Taxonomy: invariants, constraints, behavioral rules, business rules | Concept framing only — no relocation; informs Rule kinds |
+| [modeling.md#constraints-belong-to-the-constraining-concern](../../../docs/modeling.md#constraints-belong-to-the-constraining-concern) | constraint modeled on constraining concern, not duplicated on resources | Modeling principle — optional `modules/modeling/rules/` if executable checks emerge |
+| [terminology.md#architectural-rule](../../../docs/terminology.md#architectural-rule) | reasoning order: problem → concepts → principles → technologies → tools → products | `organization` repo or `modules/terminology/rules/` — not Khayyam/protocol executable |
+| [documentation-explanation.md#conventions](../../knowledge/documentation/explanation/explanation.md#conventions) | PascalCase front-matter fields; hyperlink cross-references | `docs/` documentation practice — not Module `rules/` |
 
 ### Notes on inventory
 - Khayyam docs not listed above already link to `bundles/khayyam/rules/` (naming, import, orphan extension, etc.).
-- Memory module paths live under `modules/memory/`; capsule lifecycle targets remain under `modules/computer/capsule/` until a rule document states otherwise.
+- Memory module paths live under `modules/computer/memory/`; capsule lifecycle targets remain under `modules/computer/capsule/` until a rule document states otherwise.
 - Protocol documents that are **entirely** rule sets (for example `docs/modules/net/chapar.md` wire format) may relocate rule-by-rule or gain a single `modules/net/chapar/rules/README.md` index without moving protocol narrative.
 
 ## Memar server defining document
-No `docs/` document yet defines the Memar server as a concept. The name appears in Khayyam handoff → Rule model (`bundles/khayyam/khayyam.handoff.md`) (diagnostics without target invocation) and [Knowledge → Knowledge and Code](./knowledge.md#knowledge-and-code) (callable generative services / language-server-style tools). Anticipated work on server capabilities is routed to those handoffs until a protocol document exists.
+No `docs/` document yet defines the Memar server as a concept. The name appears in Khayyam handoff → Rule model (`bundles/khayyam/khayyam.handoff.md`) (diagnostics without target invocation) and [Knowledge → Knowledge and Code](../../knowledge/knowledge.md#knowledge-and-code) (callable generative services / language-server-style tools). Anticipated work on server capabilities is routed to those handoffs until a protocol document exists.
 
 ## Follow-up work: classify `bundles/khayyam/rules/`
 Plan only — read each rule, classify, move nothing. Counts over the 24 rules in the Khayyam rules index (`bundles/khayyam/rules/README.md`): **(a) 5**, **(b) 5**, **(c) 15**.
@@ -87,7 +87,7 @@ Plan only — read each rule, classify, move nothing. Counts over the 24 rules i
 | --- | --- | --- |
 | comment-policy (`bundles/khayyam/rules/comment-policy/comment-policy.md`) | `organization` repository or documentation practice | License header and documentation placement for this repository's `.kh` files — organizational policy, not Khayyam grammar |
 | file-layout (`bundles/khayyam/rules/file-layout/file-layout.md`) | `organization` repository or a future module-organization rules home | File size, declaration-order, and one-abstraction-per-protocol-file convention for human-authored sources in this repository — classified not Khayyam-specific; candidate to relocate when a module-organization rules home exists (no move yet) |
-| lifecycle-method-names (`bundles/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md`) | `modules/memory/rules/` or `modules/computer/capsule/rules/` | Conventional `Deinit`/`Free`/`IsNull` spellings cite Memory (`docs/modules/memory/memory.md`), not Khayyam grammar |
+| lifecycle-method-names (`bundles/khayyam/rules/lifecycle-method-names/lifecycle-method-names.md`) | `modules/computer/memory/rules/` or `modules/computer/capsule/rules/` | Conventional `Deinit`/`Free`/`IsNull` spellings cite Memory (`docs/modules/memory/memory.md`), not Khayyam grammar |
 | observer-mutator (`modules/computer/adt/rules/observer-mutator/observer-mutator.md`) | `modules/computer/adt/rules/observer-mutator/` (relocated 2026-09-29) | Liskov & Guttag ADT observer/mutator families — ADT protocol subject, not Khayyam grammar |
 | import-address (`bundles/khayyam/rules/import-address/import-address.md`) | `modules/dependency-management/rules/` (or the module that owns URI resolution) | URI scheme and repository-root base are dependency-management choices; Khayyam states only that `in` carries a URI |
 
@@ -112,7 +112,7 @@ A measurement applied **both** halves of [rule.md → Which Module a Rule Belong
 - Blocks continuation: yes, for any verdict on where these fourteen go. Relocating them into modules is not the answer, and the (a) and (b) classifications above must not be read as licence to do it — the subject test says no module inside this repository owns their subject.
 - Second blocker, independent of the first: the test's two halves are **recorded as disagreeing** in the catalog's own Which rules here are the language's own (`bundles/khayyam/rules/README.md#which-rules-here-are-the-languages-own`), which states that one half would fail `scope-visibility` — the one Rule whose subject is plainly the language's — and that "the sentence in `rule.md` needs one half of it rewritten". A verdict produced from either half alone is therefore not reproducible, and the disagreement must be settled in `rule.md` before any row of the 27 is acted on.
 - Path: the owner's, on two questions in order. Which half of the sentence decides, and then who is the owner of this codebase as a subject's owner rather than as a module inside it.
-- Not done here: no folder was moved, no Rule was re-homed, and `rule.md` was not edited. This entry records the measurement and its two blockers so the next session starts from them.
+- Not done here: no folder was moved, no Rule was re-homed, and `rule.md` was not edited. This entry records the measurement and its two blockers so the next chat starts from them.
 
 ## Anticipated work
 1. Relocate inventory entries per module owner review (priority: Khayyam compiler rules, Chapar wire rules, Error naming).

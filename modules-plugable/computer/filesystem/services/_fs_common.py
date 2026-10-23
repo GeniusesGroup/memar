@@ -4,7 +4,7 @@
 """Shared helpers for path-invoked filesystem constraint scripts.
 
 There is deliberately no command here that prints the operating system's
-temporary directory. Session scratch has one home under the checkout; a command
+temporary directory. Task scratch has one home under the checkout; a command
 whose output is that path invites the failure the rule exists to stop.
 """
 from __future__ import annotations

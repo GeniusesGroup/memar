@@ -9,8 +9,8 @@
   - Encapsulation in Khayyam → Primitive Capsule Specification (`docs/khayyam/encapsulation.md#primitive-capsule-specification`) - Premise: numeric tower content belonged at the protocol layer, not in the language document.
   - Encapsulation in Khayyam Handoff (`docs/khayyam/encapsulation.handoff.md`) - Premise: numeric open questions and owner notes carried from the memar-go port session.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: implementation and protocol-domain content must not live under `docs/khayyam/`
-  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: implementation and protocol-domain content must not live under `docs/khayyam/`
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `math.md`: initial Draft with the number tower (`I`/`W`/`R`), complex and platform-sized exceptions, and realization membership (from `modules/math/README.md`).
@@ -28,11 +28,11 @@
 - Propagates to:
   - [Math Research 001 → Participants](./math.research.001.md#participants): Done — the section names the delegating party and the sub-agents it delegated to, and the sentence claiming the session's runtime exposed no sub-agent facility is gone.
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
-- [Math Research 001 → Participants](./math.research.001.md#participants): the paragraph headed "Sub-agent roles: none convened", which stated that the session's runtime exposed no sub-agent facility and that the bounded-exploration work was therefore carried in the main session, is replaced by a participant entry for the sub-agents of [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) who took part in it, in the role the memar skill's session-economy section reserves for delegated scanning.
-- The `Researcher` entry now records Space Bunny Alpha as the party that delegated, and the sub-agent entry names the work they carried — the scans this record reports and the declaration-level reading under [Methodology](./math.research.001.md#methodology) — and records that their output entered the record as reports the delegating party merged and checked against the passages behind them. The facet requires one entry per participant who took part and makes the reviewer's outcome explicit; naming no sub-agent left the record's own account of its method unexaminable ([Documentation → Research → Participants](../../documentation-research.md#participants-mandatory)).
+- [Math Research 001 → Participants](./math.research.001.md#participants): the paragraph headed "Sub-agent roles: none convened", which stated that the session's runtime exposed no sub-agent facility and that the bounded-exploration work was therefore carried in the main session, is replaced by a participant entry for the sub-agents of [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) who took part in it, in the role the memar skill's session-economy section reserves for delegated scanning.
+- The `Researcher` entry now records Space Bunny Alpha as the party that delegated, and the sub-agent entry names the work they carried — the scans this record reports and the declaration-level reading under [Methodology](./math.research.001.md#methodology) — and records that their output entered the record as reports the delegating party merged and checked against the passages behind them. The facet requires one entry per participant who took part and makes the reviewer's outcome explicit; naming no sub-agent left the record's own account of its method unexaminable ([Documentation → Research → Participants](../knowledge/documentation/research/research.md#participants-mandatory)).
 - The questions, the goals, the findings, the open questions, and the status are unchanged: the record stays `Active`, because an `Active` research is a mutable working record and a false statement about who took part is a repair of that record, not a revision of what it found.
 
 ---
@@ -41,7 +41,7 @@
 - Time: 2026-10-12T09:47:00Z
 - Type: Changed
 - Contributors:
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the uncommitted change to this changelog (the *Participants corrected* entry), `math.handoff.md` (the new entry on `modules/math/per/`), and the new `math.research.001.md` (read whole). The links and anchors resolve (`memar content check`).
@@ -51,4 +51,4 @@
 
 #### Considered and not done
 - **Re-running the census of base documents per folder (not done)**: the record dates it to its scan, and a count of the renamed tree would be a new finding, not a correction.
-- **Rewriting the research's status language ("which this session is not to edit")**: left; it states that record's own session constraint, and the record stays `Active`.
+- **Rewriting the research's status language ("which this chat is not to edit")**: left; it states that record's own session constraint, and the record stays `Active`.

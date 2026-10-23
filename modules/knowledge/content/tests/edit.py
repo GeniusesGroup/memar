@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 
 Nothing here writes outside its scratch folder: the file edited and the Memar
 root the lock lives under are both inside one, made under the folder
-`machine/fs_test_scratch.py` names, and removed again.
+`modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed again.
 
 What is pinned, and what each pin is for:
 
@@ -24,30 +24,25 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_fs_lock = plugable_load('computer.filesystem.services.fs_lock')
+fs_lock = _m_fs_lock
+_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+memar_fs = _m_fs_memar
 import sys
 import tempfile
 import unittest
 import unittest.mock
 from argparse import Namespace
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import machine.fs_lock as fs_lock
-import machine.fs_memar as memar_fs
 import modules.knowledge.content.services.edit as content_edit
-
 
 class EditTakesTheLock(unittest.TestCase):
     """The edit verb takes the per-file lock around the read and the write.
@@ -66,61 +61,48 @@ class EditTakesTheLock(unittest.TestCase):
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.root = Path(self.scratch.name)
-        self.target = self.root / "notes.md"
-        self.target.write_text("# Notes\n", encoding="utf-8", newline="\n")
-        self.scratch_root = self.root / "memar"
+        self.target = self.root / 'notes.md'
+        self.target.write_text('# Notes\n', encoding='utf-8', newline='\n')
+        self.scratch_root = self.root / 'memar'
         self.scratch_root.mkdir()
-        patched = unittest.mock.patch.object(memar_fs, "memar_root", return_value=self.scratch_root)
+        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=self.scratch_root)
         patched.start()
         self.addCleanup(patched.stop)
 
     def args(self, **overrides) -> Namespace:
-        defaults = dict(
-            file=str(self.target),
-            old=None,
-            old_file=None,
-            new=None,
-            new_file=None,
-            all=False,
-            newline=None,
-        )
+        defaults = dict(file=str(self.target), old=None, old_file=None, new=None, new_file=None, all=False, newline=None)
         defaults.update(overrides)
         return Namespace(**defaults)
 
     def held_locks(self) -> list[Path]:
-        return list((self.scratch_root / "temp").rglob("*.lock"))
+        return list((self.scratch_root / 'temp').rglob('*.lock'))
 
     def test_an_edit_takes_the_lock_around_the_read_and_the_write(self) -> None:
         taken: list[Path] = []
-        saved = fs_lock.edit_session
+        saved = fs_lock.edit_task
 
         def record(target, **keywords):
             taken.append(target)
             return saved(target, **keywords)
-
-        fs_lock.edit_session = record
-        self.addCleanup(setattr, fs_lock, "edit_session", saved)
-        content_edit.cmd_edit(self.args(old="# Notes", new="# Renamed"), self.root)
+        fs_lock.edit_task = record
+        self.addCleanup(setattr, fs_lock, 'edit_task', saved)
+        content_edit.cmd_edit(self.args(old='# Notes', new='# Renamed'), self.root)
         self.assertEqual(taken, [self.target])
-        self.assertEqual(self.target.read_text(encoding="utf-8"), "# Renamed\n")
+        self.assertEqual(self.target.read_text(encoding='utf-8'), '# Renamed\n')
 
     def test_an_edit_leaves_the_lock_behind_it(self) -> None:
-        content_edit.cmd_edit(self.args(old="# Notes", new="# Renamed"), self.root)
+        content_edit.cmd_edit(self.args(old='# Notes', new='# Renamed'), self.root)
         self.assertEqual(self.held_locks(), [])
 
     def test_a_refused_edit_leaves_no_lock_and_no_change(self) -> None:
         with self.assertRaises(SystemExit):
-            content_edit.cmd_edit(self.args(old="# Absent", new="x"), self.root)
+            content_edit.cmd_edit(self.args(old='# Absent', new='x'), self.root)
         self.assertEqual(self.held_locks(), [])
-        self.assertEqual(self.target.read_text(encoding="utf-8"), "# Notes\n")
+        self.assertEqual(self.target.read_text(encoding='utf-8'), '# Notes\n')
 
     def test_an_edit_with_a_newline_flag_writes_the_line_ending_it_names(self) -> None:
-        self.target.write_text("# Notes\n\nBody\n", encoding="utf-8", newline="\n")
-        content_edit.cmd_edit(
-            self.args(old="Body", new="Text", newline="crlf"), self.root
-        )
-        self.assertEqual(self.target.read_bytes(), b"# Notes\r\n\r\nText\r\n")
-
-
-if __name__ == "__main__":
+        self.target.write_text('# Notes\n\nBody\n', encoding='utf-8', newline='\n')
+        content_edit.cmd_edit(self.args(old='Body', new='Text', newline='crlf'), self.root)
+        self.assertEqual(self.target.read_bytes(), b'# Notes\r\n\r\nText\r\n')
+if __name__ == '__main__':
     unittest.main(verbosity=2)

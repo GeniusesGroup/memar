@@ -137,7 +137,7 @@ def checkout_skill() -> Path:
     """The skill folder in the checkout the location variable names, which the pointer is made from.
 
     Asked of the module that owns the variable and refuses to guess when it
-    names no repository, because a session that quietly put a checkout on the
+    names no repository, because a task that quietly put a checkout on the
     machine would produce a location nothing else agrees on.
     """
     return resolve_root() / '.agents' / 'skills' / 'memar'

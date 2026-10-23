@@ -1,12 +1,12 @@
 # Knowledge Management Handoff
 
 ## Topic & Purpose
-Organizational knowledge-management practice for the Organization project: a **bundle** composing Content, Task, Timeline, Text, Status, Group, and related modules — not a Memar concept document and not a kernel domain. This handoff holds migrated durable material from the former seed (`todo-knowledge-management.md`) and from the brainstorm chat (`knowledge management - chat context.md`), pending dedicated design sessions that turn it into governed Explanation-facet documentation.
+Organizational knowledge-management practice for the Organization project: a **bundle** composing Content, Task, Timeline, Text, Status, Group, and related modules — not a Memar concept document and not a kernel domain. This handoff holds migrated durable material from the former seed (`todo-knowledge-management.md`) and from the brainstorm chat (`knowledge management - chat context.md`), pending dedicated design chats that turn it into governed Explanation-facet documentation.
 
 **Owner framing already settled for placement:** Knowledge management is a *bundle* of several organization-repo modules (an upstream composition), not a Memar-owned practice document, not a single `modules/` core domain, and not one `modules-plugable` capability. Memar still needs the *problem* solved (organizational knowledge trapped outside the org — e.g. RFCs living only on GitHub, chat archives as fragile task history), but the *practice design* belongs here.
 
 ## Status
-Active migration / seed — awaiting dedicated design session. Framing claim not yet re-grounded as a falsifiable proposition against this repository's modules. Large brainstorm dialectic preserved in the Discussion sections of this handoff; nothing from the ephemeral sources was intentionally dropped.
+Active migration / seed — awaiting dedicated design chat. Framing claim not yet re-grounded as a falsifiable proposition against this repository's modules. Large brainstorm dialectic preserved in the Discussion sections of this handoff; nothing from the ephemeral sources was intentionally dropped.
 
 ## Decisions
 
@@ -21,9 +21,9 @@ Active migration / seed — awaiting dedicated design session. Framing claim not
   - The purpose chain — knowledge (material) → thinking (activity) → intelligence (quality) → agency (exercise) → goals (beyond the chain, e.g. quality of life) — and Memar's goal statement: Memar `docs/framework.md` → Memar's Purpose Space: From Knowledge to Agency. (No standalone `intelligence.md` exists — intelligence is an output relation of the other concepts.)
   - Agency's dependence on shared knowledge and Cognitive Debt: Memar `docs/agency.md` → Agency and Knowledge Management.
   - Discourse norms governing how knowledge material travels between thinking systems: Memar `docs/thinking.md`.
-  - Questioning/research/evaluating procedures (kept in Memar deliberately — thinking disciplines, not organizational ones; revisit this split if the dedicated session needs them here): Memar `docs/knowledge.practice.md`.
+  - Questioning/research/evaluating procedures (kept in Memar deliberately — thinking disciplines, not organizational ones; revisit this split if the dedicated chat needs them here): Memar `docs/knowledge.practice.md`.
 - **This document's / this bundle's subject:** what an *organization* does with those constraints: how knowledge is created, converted from tacit to explicit, preserved across personnel transitions, discovered by the members who need it, and revised as evidence changes — as practice, workflow, and organizational structure.
-- **Seed provenance (historical):** extracted on 2026-09-05 when Memar `docs/knowledge-management.md` was renamed (`git mv`, commit `2dc8576`) and re-scoped to `docs/knowledge.md` (the concept). Full decision provenance: Memar `docs/knowledge.changelog.md` (2026-09-05 entries). The seed was a distillation; the full generalized cross-domain framework is recoverable from Memar git history at `git show 4b8fc31:docs/knowledge-management.md`. Memar changelog records this as a `Propagates to: Pending` obligation — the dedicated session that turns the seed into a real document discharges it; when done, mark Done in Memar's `docs/knowledge.changelog.md`.
+- **Seed provenance (historical):** extracted on 2026-09-05 when Memar `docs/knowledge-management.md` was renamed (`git mv`, commit `2dc8576`) and re-scoped to `docs/knowledge.md` (the concept). Full decision provenance: Memar `docs/knowledge.changelog.md` (2026-09-05 entries). The seed was a distillation; the full generalized cross-domain framework is recoverable from Memar git history at `git show 4b8fc31:docs/knowledge-management.md`. Memar changelog records this as a `Propagates to: Pending` obligation — the dedicated chat that turns the seed into a real document discharges it; when done, mark Done in Memar's `docs/knowledge.changelog.md`.
 
 ### SECI / knowledge-creating company *(from seed — directional)*
 
@@ -116,7 +116,7 @@ Active migration / seed — awaiting dedicated design session. Framing claim not
 - Hypothesized missing shape: an **AI-native Knowledge Development Environment** (neither IDE, chat, wiki, nor task manager alone, but a combination): concepts with status and stakeholders, affected-documents links, open questions, and agent contributions landing as artifacts instead of chat messages.
 - Larger context windows do not solve this (which idea was finalized? which is still contested? which document does a decision affect? — these are KM questions, not context questions).
 - Multi-agent frameworks (AutoGen/CrewAI/LangGraph-class) target task execution, not knowledge-lifecycle management.
-- Dedicated session must decide whether that environment is in scope for this project or remains an external tool requirement. *(open)*
+- Dedicated chat must decide whether that environment is in scope for this project or remains an external tool requirement. *(open)*
 
 ## Ambiguities Resolved
 
@@ -139,7 +139,7 @@ Active migration / seed — awaiting dedicated design session. Framing claim not
 - Where the organizational claim ("KM failure is the root cause of most organizational dysfunction") is argued: here, or in an analysis document with evidence from the modules.
 - Memar pending obligation discharge (changelog Done) when this seed becomes a real document.
 - Whether the AI-native Knowledge Development Environment is in-scope for Organization or an external tool requirement.
-- All five "Organizational questions this document must answer" above remain practice-design open questions until answered in dedicated sessions.
+- All five "Organizational questions this document must answer" above remain practice-design open questions until answered in dedicated chats.
 
 ### From brainstorm (unsettled / explicitly open)
 
@@ -162,7 +162,7 @@ Active migration / seed — awaiting dedicated design session. Framing claim not
 
 ## Assumptions
 
-- **SECI remains a useful process model** for organizational KM design even though operationalization details are not yet chosen — stability: Unexamined pending dedicated session.
+- **SECI remains a useful process model** for organizational KM design even though operationalization details are not yet chosen — stability: Unexamined pending dedicated chat.
 - **Memar nine principles apply** to Organization practice without restating them here — stability: Strong (scope boundary already recorded in Memar).
 - **Owner placement (KM = bundle)** will survive dedicated design — stability: Strong for this migration; reconfirm if core-by-necessity analysis is reopened.
 - **Task-centric history can replace commit-message culture** for organizational knowledge retrieval — stability: Strong directional; global snapshot need still assumed uncertain.
@@ -183,7 +183,7 @@ Smallest reusable knowledge unit (directional): any token (word, phrase, questio
 
 ## Proposed Next Steps
 
-1. Dedicated design session: re-ground the framing claim as a falsifiable proposition against `management/*` and `identity/*` models; decide whether the claim is argued in this bundle's future Explanation doc or a separate analysis artifact.
+1. Dedicated design chat: re-ground the framing claim as a falsifiable proposition against `management/*` and `identity/*` models; decide whether the claim is argued in this bundle's future Explanation doc or a separate analysis artifact.
 2. Map SECI + sector patterns onto concrete module workflows (Task, Meeting, Content, Status, channel import) — answer seed organizational questions 1–5 with repository-real verbs.
 3. Decide AI-native KDE scope (in-project vs external).
 4. Discharge Memar `docs/knowledge.changelog.md` pending obligation when a real Explanation-facet document replaces this handoff's seed role.
@@ -192,7 +192,7 @@ Smallest reusable knowledge unit (directional): any token (word, phrase, questio
 7. Keep Discussion sections below until their durable claims graduate into Explanation docs or module handoffs.
 8. Specify the orientation-service slice for this bundle: typed extraction over code and document sources, community analysis, read-only query and serving — with Memar-side `backlinks`/`obligations` as the floor, not the ceiling. Open sub-questions: (a) first-sources scope — which sources earn extraction first (Khayyam `.kh`/`.ts`? which languages next, and what earns a language its extractor?); (b) extraction-confidence vocabulary — standardize per-edge EXTRACTED/INFERRED-style marking, or keep it per-projection?; (c) serving shape — CLI-only, MCP stdio, or shared HTTP serving, and which consumers each serves? *(open — from 2026-10-05 session; design here, not in Memar)*
 
-### Reading order for the dedicated session *(from seed)*
+### Reading order for the dedicated chat *(from seed)*
 
 1. This handoff (including Discussion sections) — extracted organizational content + brainstorm.
 2. Memar `docs/knowledge.md` — concept home; especially *Knowledge in Memar's Concept Web* and the nine principles.

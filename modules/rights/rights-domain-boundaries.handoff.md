@@ -7,7 +7,7 @@ Drawing the internal boundary of the `rights` category: which domains it contain
 Blocked — awaiting Omid's own model of the rights category, which was never stated in the source session. Everything below is the assistant's proposal under test, not a decision.
 
 ## Decisions
-None. The entire content is a **proposal awaiting review** (confidence: Explored-but-unresolved throughout). Its structural commitments live in [`README.md`](README.md) ("Boundary notes" — the three items Omid *did* confirm in the estate session: accounting outside rights, estates as subjects not members, rights-first ordering) and in the per-module open questions:
+None. The entire content is a **proposal awaiting review** (confidence: Explored-but-unresolved throughout). Its structural commitments live in [`README.md`](README.md) ("Boundary notes" — the three items Omid *did* confirm in the estate chat: accounting outside rights, estates as subjects not members, rights-first ordering) and in the per-module open questions:
 - [`ownership/README.md`](ownership/README.md) — bare edge vs node vs rights-creating relation
 - [`contract/README.md`](contract/README.md) — Contract ≠ Right; marriage-as-contract (Omid-confirmed)
 - [`law/README.md`](law/README.md) — law as independent normative source, not right's attribute; Rule-vs-Law boundary
@@ -37,7 +37,7 @@ None. The entire content is a **proposal awaiting review** (confidence: Explored
 - **The existing module subfolders are a reasonable starting inventory** — stability: Weak; the map may restructure them.
 
 ## Key Definitions Established
-- Omid-confirmed (from the estate session, recorded in [`README.md`](README.md)): rights exist first; ownership/legal relations arise from rights. Marriage is a contract like any other.
+- Omid-confirmed (from the estate chat, recorded in [`README.md`](README.md)): rights exist first; ownership/legal relations arise from rights. Marriage is a contract like any other.
 
 ## Proposed Next Steps
 1. Omid states his own rights model (the test's missing half).

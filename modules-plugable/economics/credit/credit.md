@@ -28,7 +28,7 @@ Credit — money that exists as debt — is NOT modeled by the kernel. This modu
 
 ### Unresolved questions
 
-- The full debt-based-money model was explicitly deferred to a dedicated session; nothing here should be treated as its design.
+- The full debt-based-money model was explicitly deferred to a dedicated chat; nothing here should be treated as its design.
 - Interaction of credit state with restriction and settlement rules on the same account.
 - Deferred payment — instalments, post-dated cheques, a pre-sale — leaves a debt between seller and buyer: does this module own instalments, or the invoice's conditional attachment, or a deferred-payment capability of its own? No method is forced on an organization; the problem is made visible (a warning when the product's price moved strongly) and methods are offered (instalments indexed to a chosen price index), per [price index → Deferred-payment sales](../price-index/price-index.md#deferred-payment-sales).
 

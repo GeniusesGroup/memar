@@ -10,8 +10,8 @@ theirs, the machine and the agent apps.
 Writes one thing for agents: the `## Memar` section of the project's AGENTS.md,
 which says to load the Memar skill and where `memar` comes from when it is
 missing. AGENTS.md is sent with every prompt, so the section is the whole of
-what a session needs before the skill and points at no file in between: a file
-that only names the next file costs every session a tool call and says nothing.
+what a task needs before the skill and points at no file in between: a file
+that only names the next file costs every task a tool call and says nothing.
 The Memar repository's section names its own skill file, which it holds.
 
 An install of an earlier Memar wrote `.agents/memar/README.md` as that file in
@@ -22,7 +22,7 @@ block in the project's own manifest, which no agent reads and no install writes
 install is not read any more, and an install says so and leaves it.
 
 Every module has a `temp` folder for what the work makes and no record needs
-(`modules-plugable/computer/filesystem/services/fs_memar.py`'s `TEMP_FOLDER`), every session included, so a project under
+(`modules-plugable/computer/filesystem/services/fs_memar.py`'s `TEMP_FOLDER`), every task included, so a project under
 git is given a `.gitignore` line that ignores a folder of that name at any
 depth, added once when no line there already does, with the file's own lines
 and line endings kept.
@@ -86,8 +86,8 @@ OBSOLETE_README = Path('.agents') / 'memar' / 'README.md'
 OBSOLETE_PREFERENCES = OBSOLETE_README.with_name('preferences.md')
 MEMAR_HEADING = '## Memar'
 AGENTS_H1 = '# Repository instructions'
-AGENTS_SECTION_BODY = f'Before any other work in a session, load and follow the Memar skill: `memar content resolve-path {SKILL_RELATIVE.as_posix()}/SKILL.md` prints its file. Where `memar` is not on PATH, install Memar with {INSTALL_BOOTSTRAP}, or run `memar install --help`.'
-MEMAR_SECTION_BODY = f'Before any other work in a session, load and follow [`{SKILL_RELATIVE.as_posix()}/SKILL.md`]({SKILL_RELATIVE.as_posix()}/SKILL.md).'
+AGENTS_SECTION_BODY = f'Before any other work in a task, load and follow the Memar skill: `memar content resolve-path {SKILL_RELATIVE.as_posix()}/SKILL.md` prints its file. Where `memar` is not on PATH, install Memar with {INSTALL_BOOTSTRAP}, or run `memar install --help`.'
+MEMAR_SECTION_BODY = f'Before any other work in a task, load and follow [`{SKILL_RELATIVE.as_posix()}/SKILL.md`]({SKILL_RELATIVE.as_posix()}/SKILL.md).'
 HEADING_RE = re.compile('(?m)^## Memar[ \\t]*$')
 NEXT_HEADING_RE = re.compile('(?m)^#{1,2}[ \\t]+\\S')
 GITIGNORE = '.gitignore'

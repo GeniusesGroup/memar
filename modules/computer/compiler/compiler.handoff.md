@@ -1,5 +1,5 @@
 # Compiler Handoff
-Open work for `compiler.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
+Open work for `compiler.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -13,7 +13,7 @@ How a single binary links multiple runtime libraries, each with its own boot con
 The designation mechanism itself — a naming convention, an `ab` contract, or a compiler directive — is not yet specified, nor is how a compile-time evaluation failure (a designated operation that turns out to touch runtime state) is reported.
 
 ### What the `unsafe` tag gates
-What the `unsafe` tag concretely gates — a compiler refusal unless explicitly enabled, a linter rule, or both — and how a patching operation is audited, are not yet specified. Shared with [Runtime](runtime.handoff.md).
+What the `unsafe` tag concretely gates — a compiler refusal unless explicitly enabled, a linter rule, or both — and how a patching operation is audited, are not yet specified. Shared with [Runtime](../runtime/runtime.handoff.md).
 
 ### Language-versus-implementation boundary, with worked examples
 The precise boundary between "what a language specifies" and "what a compiler of that language provides" still needs worked examples before it can be considered settled — shared with Khayyam's open question on the same boundary (`docs/khayyam/khayyam.handoff.md#the-precise-boundary-between-what-khayyam-specifies-and-what-a-khayyam-toolchain-or-module-provides-still-needs-worked-examples-before-it-can-be-considered-settled`).
@@ -35,8 +35,8 @@ The precise boundary between "what a language specifies" and "what a compiler of
 - Next: the owner. A ruling that contradicts one of the freedom's three items is a signal that the item or the ruling is wrong, in the same way [What the compiler places at the disposal of flow-management modules](#what-the-compiler-places-at-the-disposal-of-flow-management-modules) makes a mechanism ruling answerable against the guarantees beside it.
 
 ### Where a declaration outside any operation's body gets its first instance
-- State: stated as a freedom under [Entry and lifecycle are not grammar](compiler.md#entry-and-lifecycle-are-not-grammar) — the realization establishes it, this protocol guarantees none of the ways and forbids none. No document states what this repository's toolchain does, and the language document's own handoff (`docs/khayyam/variable.handoff.md`) still rests a premise on a sentence the 2026-10-03 audit removed (`docs/khayyam/variable.changelog.md:223`). That file was not this session's to write.
-- What a ruling must decide: whether a file-level declaration's initial state is established by generated source, by the link phase, or by the [Runtime](runtime.md) — and which document states the answer.
+- State: stated as a freedom under [Entry and lifecycle are not grammar](compiler.md#entry-and-lifecycle-are-not-grammar) — the realization establishes it, this protocol guarantees none of the ways and forbids none. No document states what this repository's toolchain does, and the language document's own handoff (`docs/khayyam/variable.handoff.md`) still rests a premise on a sentence the 2026-10-03 audit removed (`docs/khayyam/variable.changelog.md:223`). That file was not this chat's to write.
+- What a ruling must decide: whether a file-level declaration's initial state is established by generated source, by the link phase, or by the [Runtime](../runtime/runtime.md) — and which document states the answer.
 - Next: the owner, jointly with the language document's own open question on file-level initialization.
 
 ### The method-ownership expectation has no home yet
@@ -48,6 +48,6 @@ The precise boundary between "what a language specifies" and "what a compiler of
 - A conformance test suite a compiler realization can run against, turning each requirement from review-time guidance into a checkable contract.
 - A dedicated specification for the compiler's emitted analysis events, before the first analysis tool depends on the contract.
 - A conformance check for the branch-body guarantees, of the shape a link-map entry already records — a requirement named and the section it is read at — so that "does this compiler serve a drive by call, jump, progression, or continuation" becomes an answerable question rather than a reading of its output. It depends on the mechanism ruling above only for what the check compares against, not for whether it can be written.
-- Frontend questions beyond the [Lexer](lexer.md) — input, output, responsibility boundary, contract with a given backend — stay here until a dedicated frontend protocol is justified.
+- Frontend questions beyond the [Lexer](../lexer/lexer.md) — input, output, responsibility boundary, contract with a given backend — stay here until a dedicated frontend protocol is justified.
 - An **Implementation Readiness Review** before any compiler code is written: for each remaining open item, settle whether the concept is defined, its boundary is clear, its semantic rule is explicit, it belongs to the language or to a compiler, it is foundational law or pluggable policy, multiple realizations can satisfy it, and what must remain invariant across realizations.
 - A **first implementation prototype targeting JavaScript**: a language frontend → a semantic representation → the local Khayyam toolchain under `bundles/khayyam/` → V8, with WebAssembly as the intended second target. The prototype exists to reach running feedback quickly. Two disciplines bind it: the JS backend must never become the hidden specification of the language's semantics; standing up two backends behind one semantic representation is the earliest test that those semantics are implementation-independent. The name `Parser` is not assumed for the frontend.

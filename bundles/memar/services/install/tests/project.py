@@ -8,10 +8,10 @@
 The `## Memar` section it writes into AGENTS.md is pinned whole, because it is
 fixed text: a wording change is an edit of two files, never a drift one of them
 absorbs alone. It is the only thing written for agents: AGENTS.md is sent with
-every prompt, so a file in between would cost every session a tool call. For a
+every prompt, so a file in between would cost every task a tool call. For a
 machine without `memar` it names where installing is said, not the commands,
 which only such a machine needs. The location is read through the module that
-owns it, so a session opened before the value was written does not send this
+owns it, so a task opened before the value was written does not send this
 project to the bootstrap a second time.
 
 What an earlier install wrote is the other case: its `.agents/memar/README.md`
@@ -62,8 +62,8 @@ DRY_RUN_WRITE = re.compile('^dry-run: write (.+)$')
 OBSOLETE_README = Path('.agents/memar/README.md')
 OBSOLETE_PREFERENCES = Path('.agents/memar/preferences.md')
 AGENTS_FILE = 'AGENTS.md'
-EXPECTED_SECTION = '## Memar\nBefore any other work in a session, load and follow the Memar skill: `memar content resolve-path .agents/skills/memar/SKILL.md` prints its file. Where `memar` is not on PATH, install Memar with `.agents/scripts/install.sh` or `.agents/scripts/install.ps1` (https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/), or run `memar install --help`.'
-EXPECTED_MEMAR_SECTION = '## Memar\nBefore any other work in a session, load and follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md).'
+EXPECTED_SECTION = '## Memar\nBefore any other work in a task, load and follow the Memar skill: `memar content resolve-path .agents/skills/memar/SKILL.md` prints its file. Where `memar` is not on PATH, install Memar with `.agents/scripts/install.sh` or `.agents/scripts/install.ps1` (https://raw.githubusercontent.com/GeniusesGroup/memar/main/.agents/scripts/), or run `memar install --help`.'
+EXPECTED_MEMAR_SECTION = '## Memar\nBefore any other work in a task, load and follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md).'
 
 class ReachedByTheCommand(unittest.TestCase):
     """What a consuming project is left holding, as the installer's own run says."""
@@ -165,7 +165,7 @@ class EarlierInstall(unittest.TestCase):
 
     def test_a_preferences_file_is_named_and_left(self):
         preferences = self.project / OBSOLETE_PREFERENCES
-        preferences.write_text('---\nsessions: work\n---\n', encoding='utf-8')
+        preferences.write_text('---\ntasks: work\n---\n', encoding='utf-8')
         _, said = self.into_project()
         self.assertTrue(preferences.is_file())
         self.assertIn('is not read any more', said)

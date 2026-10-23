@@ -6,11 +6,11 @@
 - Time: 2026-09-21T15:36:36Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](../memory/filesystem.md) — Extends: this document is the same kind of protocol-folder member — Memar's position on an external protocol surface — applied to HTTP rather than to POSIX/VFS.
-  - [sRPC](../../net/sRPC.md) — Depends_for: the four-identity collapse and the "re-encoded URL" caution originated as lost sRPC design rationale; the HTTP critique moves here so sRPC can state its independent identities as a positive contract.
-  - [Networking Connection](../../net/networking-connection.md) — Depends_for: the "stateless HTTP" versus cookie reconstruction instance moves here so the connection document can state state-ownership without prosecuting HTTP.
-  - [Networking](../../net/networking.md) — Depends_for: the HTTP-shaped-traffic filter case moves here; Networking keeps the general rule that a deployment constraint is not an architecture.
-  - [Content](../../../content.md) — Depends_on: Reference vs. Locator is the reason shareable addresses survive this critique.
+  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](../../computer/filesystem/filesystem.md) — Extends: this document is the same kind of protocol-folder member — Memar's position on an external protocol surface — applied to HTTP rather than to POSIX/VFS.
+  - [sRPC](../../../modules/net/srpc/srpc.md) — Depends_for: the four-identity collapse and the "re-encoded URL" caution originated as lost sRPC design rationale; the HTTP critique moves here so sRPC can state its independent identities as a positive contract.
+  - [Networking Connection](../../../modules/net/connection/connection.md) — Depends_for: the "stateless HTTP" versus cookie reconstruction instance moves here so the connection document can state state-ownership without prosecuting HTTP.
+  - [Networking](../../../modules/net/net.md) — Depends_for: the HTTP-shaped-traffic filter case moves here; Networking keeps the general rule that a deployment constraint is not an architecture.
+  - [Content](../../../modules/knowledge/content/content.md) — Depends_on: Reference vs. Locator is the reason shareable addresses survive this critique.
   - [RFC 3986](https://www.rfc-editor.org/rfc/rfc3986) — Evidence: URI syntax as the locator job.
   - [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110) — Evidence: HTTP semantics, including that GET content is not well-defined and that `303` exists for POST-to-GET handoff.
   - [RFC 6265](https://www.rfc-editor.org/rfc/rfc6265) — Evidence: cookies as specified persistent state against the "stateless" slogan.
@@ -23,8 +23,8 @@
   - sRPC.md: Done — independent-identities rationale added as a positive contract; http-uri form framed as adapter.
   - sRPC.handoff.md: Done — URL-critique open question graduated into this document and into sRPC's positive rationale.
 - Contributors:
-  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided, requested
-  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../../CONTRIBUTORS.md#cursor)) — argued, drafted
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided, requested
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — argued, drafted
 
 #### What changed
 - Created `http.md` as Memar's position on depending on HTTP: guest interoperability library, not the foundation of application, session, or addressing models.
@@ -60,8 +60,8 @@
   - http.practice.md: Done — criterion 2 no longer attributes "destination only" to Content; criterion 5 includes header-bearing handoff; cache-key anti-pattern added.
   - http.handoff.md: Rejected — no new open question; the additions are body claims, not unsettled work.
 - Contributors:
-  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../../CONTRIBUTORS.md#cursor)) — reviewed, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — reviewed, applied
 
 #### What changed
 - Abstract tightened around the claim (URL overload, non-locator credential channels, locator leakage, check-not-ban) rather than previewing every topic as a tour.
@@ -72,7 +72,7 @@
 - Guest use states the filesystem-parallel explicitly: a shareable HTTP URL may project a Memar address; it must not become the address.
 - Implications added as forced consequences of adopting the position.
 - Inbound sRPC link now targets `#independent-identities` as well as `#service-id`.
-- Content citations now target the real heading [Reference as a Relation, Not a Property](../../../content.md#reference-as-a-relation-not-a-property); `#reference-vs-locator` was not a heading.
+- Content citations now target the real heading [Reference as a Relation, Not a Property](../../../modules/knowledge/content/content.md#reference-as-a-relation-not-a-property); `#reference-vs-locator` was not a heading.
 
 #### Considered and not done
 - **Leave the Networking-principle "not yet in the body" sentence in Methodology** (rejected): that is working state, not method. (Grok)
@@ -84,11 +84,11 @@
 - Time: 2026-10-04T20:58:37Z
 - Type: Changed
 - Cited:
-  - [Networking](../../net/networking.md) — Reference: this document's Methodology already scopes itself to the HTTP instance of the rule.
+  - [Networking](../../../modules/net/net.md) — Reference: this document's Methodology already scopes itself to the HTTP instance of the rule.
 - Propagates to:
   - networking.handoff.md: Done — the entry "The address carries only destination information" already tracks the formalization there; no edit needed.
 - Contributors:
-  - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - The Open Questions entry "Where the address-only-destination principle is written in Networking" is deleted, with no replacement marker.
@@ -105,7 +105,7 @@
 - Time: 2026-10-05T17:18:32Z
 - Type: Changed
 - Contributors:
-  - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - `http.practice.md` → [The Need Check](./http.practice.md#the-need-check) item 6: "the architecture must not inherit the filter" now carries its test — meaning carried in path segments and query keys is the filter's model, not the protocol's own, in the shapes [Anti-patterns](./http.practice.md#anti-patterns) already names.
@@ -118,10 +118,10 @@
 - Time: 2026-10-07T14:07:33Z
 - Type: Moved
 - Cited:
-  - [Lib → Membership criterion](../README.md#membership-criterion) - Premise: `docs/protocols/` became `docs/modules/`, and positions on surfaces whose authority is outside Memar are gathered under `lib/`, opposite `modules/lib/`.
+  - [Lib → Membership criterion](../../../modules/knowledge/modularity/labels/guest.md#the-test) - Premise: `docs/protocols/` became `docs/modules/`, and positions on surfaces whose authority is outside Memar are gathered under `lib/`, opposite `modules/lib/`.
 - Contributors:
-  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - Auto (model not recorded) via [Cursor](../../../../CONTRIBUTORS.md#cursor) — applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
 - The document, its practice, its handoff, and this changelog moved from `docs/protocols/net/` to `docs/modules/lib/net/`, opposite the realization at `modules/lib/net/http/`; every relative link was re-derived for the new depth.
@@ -133,7 +133,21 @@
 - Time: 2026-10-12T09:45:50Z
 - Type: Reviewed
 - Contributors:
-  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
 
 #### What changed
 - Reviewed; no change needed. The added handoff entry on the status vocabulary: `status.observers.kh` lines 6 and 9 declare the two observers as cited, `version.kh` is one line, and `const.kh` opens with the archived block. The question is left to the owner.
+
+---
+
+### Practice description states when and what not
+- Time: 2026-10-15T11:58:47Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — allowed the fix
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
+
+#### What changed
+- `http.practice.md`'s `description` now states when the check is run, from its *When to Run the Check* section, and what it is not: the argument against the default, and the design of the protocol chosen, which [Documentation — Practice → Description quality criteria](../../../modules/knowledge/documentation/practice/practice.md#description-quality-criteria) requires.
+- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in session 20261015-T110002Z-23000.

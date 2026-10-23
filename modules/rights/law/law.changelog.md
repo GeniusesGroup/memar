@@ -41,7 +41,7 @@ Later owner rulings recorded on the Memar society page, applied here as type rul
 - Add scope, monitoring, and an in-place amendment procedure as fields of the law — rejected: scope belongs in the text and its explanation; monitoring and amendment are other processes; amendment is replaced by rival nodes.
 - Store change history, opponent/supporter lists, and vote tallies on the law node — rejected: wrong domain.
 - Treat Gemini's "four-facet plus title plus articles" hybrid as a compromise — rejected: the hybrid is the traditional model with extra headings.
-- Dual-maintain this type definition in Memar `docs/society` as a pointer or a shortened copy — rejected this session: a pointer makes the framework repo incomplete without Organization; a copy drifts. The society corpus as a whole is leaving Memar for the libraries layer.
+- Dual-maintain this type definition in Memar `docs/society` as a pointer or a shortened copy — rejected this chat: a pointer makes the framework repo incomplete without Organization; a copy drifts. The society corpus as a whole is leaving Memar for the libraries layer.
 
 #### Related work
 Traditional statute books (a title, numbered articles, rider notes, a later official interpretation or implementing bylaw) are the prior art this model refuses. The refusal is not that those books sometimes write poorly; it is that the article-and-note shape lets a proposer hide coverage, mix purpose with procedure, and leave enforcement unstated, so judges and officers fill the gap with preference. Software constraints (username rules, protocol MUST/MAY) are the closer analogue: a single normative sentence plus definitions, not a committee redline of numbered clauses.
@@ -50,7 +50,7 @@ Traditional statute books (a title, numbered articles, rider notes, a later offi
 - Time: 2026-09-21T13:50:07Z
 - Type: clarified, Fixed
 - Cited:
-  - [Law](law.md) - Relation: Depends_on: the type this session restates
+  - [Law](law.md) - Relation: Depends_on: the type this chat restates
   - [Law Validity](../../../modules-plugable/rights/law/edges/validity/validity.md) - Relation: Evidence: leftover four-facet body was still restating the type after the society corpus landed as a bundle module
   - [Bundles](../../../bundles/bundles.md) - Relation: Depends_on: instance statutes are bundle modules, not a libraries catalog
 - Propagates to:
@@ -72,7 +72,7 @@ Traditional statute books (a title, numbered articles, rider notes, a later offi
 The type document now states its claim in an Abstract and names the article-and-note failure as Motivation, without moving the session critique out of this changelog. Instance home is [Bundles](../../../bundles/bundles.md), not Memar `docs/society` and not a libraries folder. [Law Validity](../../../modules-plugable/rights/law/edges/validity/validity.md) no longer restates goal/explanation/guarantee/computer-code; inbound four-facet syn lines point at this type.
 
 #### Deliberation
-The earlier entry left a Pending propagation to Memar. That corpus is gone from Memar; what remained was the imported bundle module still carrying the type as an "approach". Completing the original split — type here, duration there — is this session's work, not a new model.
+The earlier entry left a Pending propagation to Memar. That corpus is gone from Memar; what remained was the imported bundle module still carrying the type as an "approach". Completing the original split — type here, duration there — is this chat's work, not a new model.
 
 ---
 
@@ -202,7 +202,7 @@ Owner: is politics surely a kernel domain? And was there a critique of what I sa
 
 Owner: beside `edges/`, a domain should have `status/`, one folder per status, because statuses become types code can use. Some statuses are general and currently sit in `modules/knowledge/status/edges-loop`, which is not final. A status may just be the label a rule assigns; we do not fix the assignment, because it can differ over time. `draft` is the same status in every domain. Moving from it to another status is an event a rule may block.
 
-Grok: the mercy example and the assembly-calendar example do not survive the owner's test. They are not laws this domain should grow. Marriage was already a contract in the estate session; the law page had not been using that.
+Grok: the mercy example and the assembly-calendar example do not survive the owner's test. They are not laws this domain should grow. Marriage was already a contract in the estate chat; the law page had not been using that.
 
 Grok: revealed votes are a reading layer. If revelation is required for the tally, coercion and blocs are the cost. Like already has a plugable reaction overlay. Per-viewer preference must not become a global sort, and must not weight the ballot.
 
@@ -310,7 +310,7 @@ The reading did not settle whether law and contract share one computer-code edge
 - Time: 2026-10-20T07:00:00Z
 - Type: Changed
 - Cited:
-  - [Modules Research 001 → Owner decisions needed](../../modules.research.001.md#6-owner-decisions-needed) - Relation: Depends_on: rulings D2 and D3
+  - [Modules Research 001 → Owner decisions needed](../../../.agents/tasks/20261019-T191746Z-12632/docs/modules.research.001.md#6-owner-decisions-needed) - Relation: Depends_on: rulings D2 and D3
   - [Law — optional parts](../../../modules-plugable/rights/law/law.md) - Relation: Evidence: the module the parts moved into
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled the placement

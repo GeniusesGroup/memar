@@ -50,7 +50,7 @@ SC sweep: every approach heading carries its strippable section-title handles su
 - Time: 2026-09-20T10:37:24Z
 - Type: Fixed, clarified
 - Cited:
-  - [Law Form and Validity — Handoff](law-validity.handoff.md) - Relation: Evidence: Q3 and Q4 were the queued defects; Q1 was the owner ruling this session recorded.
+  - [Law Form and Validity — Handoff](law-validity.handoff.md) - Relation: Evidence: Q3 and Q4 were the queued defects; Q1 was the owner ruling this chat recorded.
 - Propagates to:
   - governance/government-organs.md: Done — empty code field cannot leave draft; constitution is a category label; new law must not contradict existing law.
 - Contributors:
@@ -84,7 +84,7 @@ SC sweep: every approach heading carries its strippable section-title handles su
 Title is Law Validity. Abstract, Motivation, and the problem statement ask only duration and substrate. The four-facet heading remains as a stub pointing at kernel [Law](../../../modules/rights/law/law.md) so inbound anchors do not break; its mechanism, metrics, and conventional-model-flaw prose are not repeated here. Collision no longer legislates the coding gate or constitution-as-label. Syn and related-docs that meant the type now point at the kernel; related-docs that meant duration stay on this page with corrected local paths.
 
 #### Deliberation
-Owner originally required the definition of law to live in Organization, not as a society requirement. The import of this page still carried that definition as a rival approach. This session applies that split now that the file lives here. The two sunset records, Deconstruction Cost, civic maturity as an event, and silence-is-not-assent stay — they are statutes about duration, written on the type.
+Owner originally required the definition of law to live in Organization, not as a society requirement. The import of this page still carried that definition as a rival approach. This chat applies that split now that the file lives here. The two sunset records, Deconstruction Cost, civic maturity as an event, and silence-is-not-assent stay — they are statutes about duration, written on the type.
 
 ### Moved to modules-plugable/rights
 - Time: 2026-09-21T14:25:00Z

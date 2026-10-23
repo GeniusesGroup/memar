@@ -20,7 +20,7 @@ What is pinned:
 
   AnswersAsTheCli       Each tool's answer — its stdout, its stderr, its exit status — is byte for
                         byte what `memar` prints for the same arguments, for `content search`,
-                        `content find`, `content section`, `session list` and `commands`, a refusal
+                        `content find`, `content section`, `task list` and `commands`, a refusal
                         by the verb and a refusal by the parser among them.
   ToolsAreTheVerbs      `tools/list` holds one tool per leaf verb `memar --help` reaches, and no
                         tool for `mcp` itself.
@@ -60,7 +60,7 @@ for folder in (TOP, SCRIPTS, SCRIPTS / 'services'):
 sys.dont_write_bytecode = True
 from mcp.services import _call, _tools, serve
 ROUTER = SCRIPTS / 'memar'
-THIS_SESSION = '20261019-T111413Z-21136'
+THIS_TASK = '20261019-T111413Z-21136'
 
 def cli(argv: list[str], stdin: str='') -> subprocess.CompletedProcess:
     return subprocess.run([sys.executable, str(ROUTER), *argv], input=stdin.encode('utf-8'), capture_output=True)
@@ -122,7 +122,7 @@ class WithServer(unittest.TestCase):
         cls.server.close()
 
 class AnswersAsTheCli(WithServer):
-    CASES = (('content_search', {'patterns': ['guest adapter']}, ['content', 'search', 'guest adapter']), ('content_find', {'text': 'mcp guest adapter', 'top': 3}, ['content', 'find', 'mcp guest adapter', '--top', '3']), ('content_find', {'text': 'server stdio', 'no_links': True}, ['content', 'find', '--no-links', 'server stdio']), ('content_find', {'text': 'anything', 'top': 0}, ['content', 'find', 'anything', '--top', '0']), ('content_find', {'top': 2}, ['content', 'find', '--top', '2']), ('content_get-section', {'file': 'modules/net/srpc/srpc.md', 'heading': 'Abstract'}, ['content', 'get-section', 'modules/net/srpc/srpc.md', 'Abstract']), ('content_get-section', {'file': 'modules/net/srpc/srpc.md', 'heading': '#abstract', 'hash': True}, ['content', 'get-section', '--hash', 'modules/net/srpc/srpc.md', '#abstract']), ('content_get-section', {'file': 'modules/net/srpc/srpc.md', 'heading': 'No Such Heading'}, ['content', 'get-section', 'modules/net/srpc/srpc.md', 'No Such Heading']), ('task_list', {'text': THIS_SESSION}, ['task', 'list', THIS_SESSION]), ('commands', {}, ['commands']))
+    CASES = (('content_search', {'patterns': ['guest adapter']}, ['content', 'search', 'guest adapter']), ('content_find', {'text': 'mcp guest adapter', 'top': 3}, ['content', 'find', 'mcp guest adapter', '--top', '3']), ('content_find', {'text': 'server stdio', 'no_links': True}, ['content', 'find', '--no-links', 'server stdio']), ('content_find', {'text': 'anything', 'top': 0}, ['content', 'find', 'anything', '--top', '0']), ('content_find', {'top': 2}, ['content', 'find', '--top', '2']), ('content_get-section', {'file': 'modules/net/srpc/srpc.md', 'heading': 'Abstract'}, ['content', 'get-section', 'modules/net/srpc/srpc.md', 'Abstract']), ('content_get-section', {'file': 'modules/net/srpc/srpc.md', 'heading': '#abstract', 'hash': True}, ['content', 'get-section', '--hash', 'modules/net/srpc/srpc.md', '#abstract']), ('content_get-section', {'file': 'modules/net/srpc/srpc.md', 'heading': 'No Such Heading'}, ['content', 'get-section', 'modules/net/srpc/srpc.md', 'No Such Heading']), ('task_list', {'text': THIS_TASK}, ['task', 'list', THIS_TASK]), ('commands', {}, ['commands']))
 
     def test_every_answer_is_the_clis_byte_for_byte(self):
         for name, arguments, argv in self.CASES:

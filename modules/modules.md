@@ -17,19 +17,20 @@ These rules are this repository's own, over its graph of vertices and edges:
 - Behavior binds to a module's UUID, never to a name, so two organizations may ship the same term with different identity and different rules.
 
 ## Edge buckets
-Every relationship folder under a domain is one of three kinds, decided in this order. Ground: Memar `docs/modeling.md` → *Edge Types and Their Traditional Counterparts*.
+Every relationship folder under a domain is one of four kinds, decided in this order. Ground: Memar `docs/modeling.md` → *Edge Types and Their Traditional Counterparts*.
 
 - `edges/` — two distinct nodes: an acquired relation.
-- `edges-loop/` — a classification on one node, the node related to itself, spelled as a single `Type_*` or `Status_*` marker on that node.
+- `status/` — a loop-edge whose kind is Status: a label combined with a rule, which makes an Event spread and work start when it attaches to a node ([Status](knowledge/status/status.md#what-a-status-is)). It is a main folder of the module, beside `edges/` and `protocol/`, and not a role.
+- `edges-loop/` — every other classification on one node, the node related to itself, spelled as a single `Type_*` marker or a flag on that node. The one exception is the status module, whose `edges-loop/` holds the statuses shared by every domain.
 - `edges-shortcut/` — a derived cache of a walk already in the graph. It is never the source of truth, and its document names the source edges it recomputes from. A fact the user sets (mute, pin, invite) is acquired and is not a shortcut.
 
 ## Edge folder
-Every edge is one folder under the owning `edges/`, `edges-loop/`, or `edges-shortcut/`: `<name>/<name>.md` plus a one-line `README.md`, with the sections Model, Policies, Placement, and Open questions. There is no aggregate `edges.md`, and a domain document does not list its folders or point at that directory as a substitute for the list — membership is the directory. A sentence may name an edge that lives in another domain when that placement is the judgment. Uncertain edge notes stay in that edge's Open questions; non-edge sketches go to the domain backlog as `**Idea**` / `**Review questions**`. Ground: Memar `docs/documentation.md` → *No derivative inventories*.
+Every edge is one folder under the owning `edges/`, `status/`, `edges-loop/`, or `edges-shortcut/`: `<name>/<name>.md` plus a one-line `README.md`, with the sections Model, Policies, Placement, and Open questions. There is no aggregate `edges.md`, and a domain document does not list its folders or point at that directory as a substitute for the list — membership is the directory. A sentence may name an edge that lives in another domain when that placement is the judgment. Uncertain edge notes stay in that edge's Open questions; non-edge sketches go to the domain backlog as `**Idea**` / `**Review questions**`. Ground: Memar `docs/documentation.md` → *No derivative inventories*.
 
 The path is the owner; the folder name is the relation. Name it for the relation (`depend-on`, `citizen`, `site`) or, when several labels share one document, for the other end (`module`, `group`). Do not repeat the owning domain in the folder name unless that word is the classification itself (`budget/edges/budget`). A deleted path is not archived: once the claim is in the document, `Migrated from`, `Verbatim`, and `(deleted …)` are not part of the model, and a `Source` line names only a file that is still in the tree.
 
 ## Module skeleton
-A module's folders are one project-defined skeleton — `manifest`, `edges`, `edges-loop`, `edges-shortcut`, `protocol`, `services`, `status` — and a module does not invent a private taxonomy. The skeleton's exact names are under revision; the open item is in [Modules Handoff](modules.handoff.md).
+A module's folders are one project-defined skeleton in two layers — the structural kinds, `manifest`, `protocol`, `edges`, `status`, `edges-loop`, `edges-shortcut`, with `status` a main folder beside `edges` and `protocol`; and the kinds of work, `services` and the roles [modules/README.md](README.md#the-kinds-of-folder-here) names — and a module does not invent a private taxonomy: a need only one domain has is a part of that domain, not a role. The skeleton's exact names are under revision; the open item is in [Modules Handoff](modules.handoff.md).
 
 ## Model
 

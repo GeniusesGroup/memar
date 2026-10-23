@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/ensure.py — one session's folder, plan and report ensured, wherever the project keeps its sessions.
+"""modules/management/task/services/ensure.py — one task's folder, plan and report ensured, wherever the project keeps its tasks.
 
-What `new` and `start` both ask: the folder is found or made in the location the project names, its
-plan is written or kept (`session_plan_write`), its report and its folders (`session_layout`) are made, and the id and
-path come back. The verb's own help and what it prints are in `session_new`.
+What `ensure` and `get-task-init-context` both ask: the folder is found or made in the location the project names, its
+plan is written or kept (`task_plan_write`), its report and its folders (`task_layout`) are made, and the id and
+path come back. The verb's own help and what it prints are in `task_new`.
 
-A session writes only inside its own folder: --task-id reuses an id only to continue the same
-session, and two sessions writing one folder reintroduce the unattributed mixing session folders
-exist to remove. The parent a new session names must be a session folder that is there, because its
+A task writes only inside its own folder: --task-id reuses an id only to continue the same
+task, and two tasks writing one folder reintroduce the unattributed mixing task folders
+exist to remove. The parent a new task names must be a task folder that is there, because its
 conversation is read from it. Where exactly a folder is made is asked of the project the plan
-names (`session_location`), and the day's sweep runs when one is opened (`session_gc`), never
-touching the session being opened or continued.
+names (`task_location`), and the day's sweep runs when one is opened (`task_gc`), never
+touching the task being opened or continued.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
@@ -23,8 +23,8 @@ from machine.console import fail
 from modules.management.task.services.dependency import DependsOn, Reader, Ref, refused_for_writing
 from modules.knowledge.documentation.plan.primitive.priority import Priority
 from modules.process.project.services.find import project_by_path
-from modules.process.project.services.preferences import SESSIONS_KEY, preferences_path
-from modules.management.task.services.folder import folder_of, project_folder_of, read_session
+from modules.process.project.services.preferences import TASKS_KEY, preferences_path
+from modules.management.task.services.folder import folder_of, project_folder_of, read_task
 _m_gc = plugable_load('computer.git.services.sweep_idle_task_folders')
 reap_once_a_day = _m_gc.reap_once_a_day
 from modules.management.task.services.layout import ensure_folders
@@ -35,17 +35,16 @@ record = _m_log.record
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, checked_title
 from modules.management.task.services.depends import BLOCKED_EVENT, reconcile
 from modules.knowledge.documentation.plan.services.depends import set_depends_on
-from modules.knowledge.label.services.plan_labels import TOPIC, add_label, checked_label, keep_definition, registry_for
+from modules.knowledge.label.services.plan_labels import add_label, checked_label, registry_for
 from modules.knowledge.documentation.plan.services.priority import set_priority
 from modules.knowledge.documentation.plan.services.write import queue_plan, write_plan
 from modules.knowledge.documentation.report.services.report import write_report
-from modules.knowledge.label.services.add import warn_near
 from modules.knowledge.documentation.primitive.label import Labels
 from modules.knowledge.documentation.primitive.status import Status
 from modules.process.project.primitive.project_name import ProjectName
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 ENSURE_COMMAND = 'ensure'
-PROJECT_REQUIRED = f'{ENSURE_COMMAND} needs {ProjectName.either_words()} to make a task folder: the project is always named, by a name `memar project find` resolves or by a folder, and the folder this runs in is never read; a session that is already there is continued without it'
+PROJECT_REQUIRED = f'{ENSURE_COMMAND} needs {ProjectName.either_words()} to make a task folder: the project is always named, by a name `memar project find` resolves or by a folder, and the folder this runs in is never read; a task that is already there is continued without it'
 
 def named_project(project: str | None) -> Path | None:
     """The project whose folder is PROJECT, its git top-level, or None when none was named.
@@ -60,52 +59,53 @@ def named_project(project: str | None) -> Path | None:
 
 def recorded_project(folder: Path) -> Path | None:
     """The project FOLDER's plan records, when it names a folder that is there, else None."""
-    named = ((read_session(folder).front or {}).get(PlanKey.PROJECT.key) or '').strip()
+    named = ((read_task(folder).front or {}).get(PlanKey.PROJECT.key) or '').strip()
     if not named:
         return None
     where = Path(named)
     return where if where.is_dir() else None
 
 def linked_conversation(task_id: str, parent: str) -> str:
-    """The conversation a session opened from PARENT belongs to; PARENT must be a session folder."""
+    """The conversation a task opened from PARENT belongs to; PARENT must be a task folder."""
     if parent == task_id:
-        fail('--parent names this session itself; name the session this task came from')
+        fail('--parent names this task itself; name the task this task came from')
     folder = folder_of(parent)
     if not folder.is_dir():
-        fail(f'no session folder {parent}: --parent names a session that is there, the one this task came from')
-    return read_session(folder).conversation
+        fail(f'no task folder {parent}: --parent names a task that is there, the one this task came from')
+    return read_task(folder).conversation
 
 def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
-    """Ensure the session's folder, its plan.md and report.md, and its folders exist; return its id and path.
+    """Ensure the task's folder, its plan.md and report.md, and its folders exist; return its id and path.
 
     TITLE is required when the folder has no plan.md yet, and unused when it
-    has one. PARENT links a new plan to the session it came from; a plan that
+    has one. PARENT links a new plan to the task it came from; a plan that
     is there keeps the link it was written with, and a different one is
     refused rather than ignored. A rerun with the same id is idempotent: the
     folder, its plan, and its report are kept as they are and the same id and
-    path are reported again. A session an earlier Memar left in temp/ is
-    continued where it is; no second folder is made for it. A session in a project's
+    path are reported again. A task an earlier Memar left in temp/ is
+    continued where it is; no second folder is made for it. A task in a project's
     own location is continued there. A folder that is nowhere yet is made in
     the location the project's preferences set, else .agents/tasks/ inside the project (the Memar checkout's own is under Memar's root); a
-    name already taken there by anything that is not a session folder is
+    name already taken there by anything that is not a task folder is
     refused, and a location that cannot be made fails with a message. The
-    first call of a day also reaps the session folders that have been idle past
+    first call of a day also reaps the task folders that have been idle past
     the limit, other than this one. QUEUED leaves a new plan queued, or queues
     an active one; PRIORITY, checked before anything is made, is written into a
     new plan or set on the one that is there; so are LABELS, each `KIND=WORD`
     checked against its kind before anything is made and added to the plan
-    (several of one kind are kept, none is twice), and a topic near one the
-    project uses is warned about, not refused.
+    (several of one kind are kept, none is twice); a topic the project
+    declares nowhere is refused, with the declaration to write and the
+    declared topics near it (`checked_label`).
 
     PROJECT, a name or a folder, is required to make a folder, and an empty
     one is refused: the project is always named, and the folder the process
     runs in is never read. A folder that is there is continued without it, its
     project the one its plan records.
 
-    DEPENDS_ON, references to sessions, are checked before anything is made
+    DEPENDS_ON, references to tasks, are checked before anything is made
     (`depends_on.refused_for_writing`) and added to the plan's key; a new
-    session with an unmet one is written Blocked, and an existing queued one
-    becomes Blocked (`session_depends`).
+    task with an unmet one is written Blocked, and an existing queued one
+    becomes Blocked (`task_depends`).
     """
     priority = None if priority is None else Priority.checked(priority)
     cited = DependsOn.normalized((Ref.parse(word) for word in depends_on or []))
@@ -124,15 +124,11 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         folder = location / sid
         if folder.exists() or folder.is_symlink():
             fail(f'{folder} is there and is not a task folder; `ensure` never writes into it. Pass --task-id a name not used in that location, or none to mint one')
-    given, kept = (None, [])
+    given = None
     if labels is not None:
         given, registry = (Labels(), registry_for(project))
         for text in labels:
-            label, fresh = checked_label(text, project, registry)
-            if fresh is not None:
-                registry.add(fresh)
-                kept.append(fresh)
-            given = given.with_label(label)
+            given = given.with_label(checked_label(text, project, registry))
     existed = folder.is_dir()
     has_plan = (folder / PLAN_NAME).is_file()
     title = checked_title(title, required=not has_plan)
@@ -140,25 +136,22 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     conversation = None
     if parent is not None:
         if has_plan:
-            recorded = read_session(folder).parent
+            recorded = read_task(folder).parent
             if recorded != parent:
-                fail(f"session {sid} was opened with parent {recorded or '(none)'}; a session's link is written once, with its plan")
+                fail(f"task {sid} was opened with parent {recorded or '(none)'}; a task's link is written once, with its plan")
         else:
             conversation = linked_conversation(sid, parent)
     reader = Reader(project)
-    now = DependsOn.normalized([*(DependsOn.of(read_session(folder).front) if has_plan else ()), *cited])
+    now = DependsOn.normalized([*(DependsOn.of(read_task(folder).front) if has_plan else ()), *cited])
     if cited:
         refused_for_writing(sid, now, reader, cited)
-    for fresh in kept:
-        if project is not None:
-            keep_definition(project, fresh)
     path = folder
     if not existed:
         try:
             path.mkdir(parents=True, exist_ok=True)
         except OSError as error:
-            where = f'; check `{SESSIONS_KEY}` in {preferences_path(project)}' if location is not None and project is not None else ''
-            fail(f'the session folder {path} could not be made ({error.strerror or error}){where}')
+            where = f'; check `{TASKS_KEY}` in {preferences_path(project)}' if location is not None and project is not None else ''
+            fail(f'the task folder {path} could not be made ({error.strerror or error}){where}')
         record('opened', sid, f'parent {parent}' if parent else '', folder=path)
     if in_project_location(path):
         register(path.parent, project)
@@ -177,12 +170,8 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
             add_label(path / PLAN_NAME, label)
         if cited:
             set_depends_on(path / PLAN_NAME, now)
-            reconcile(read_session(path), reader)
-    if project is not None:
-        for label in given or ():
-            if any((taken.word == TOPIC for taken in registry_for(project).kinds_of(label))):
-                warn_near(label.word, project, sid)
-    write_report(path, sid, (read_session(path).front or {}).get(PlanKey.TITLE.key))
+            reconcile(read_task(path), reader)
+    write_report(path, sid, (read_task(path).front or {}).get(PlanKey.TITLE.key))
     ensure_folders(path)
     reap_once_a_day(keep=sid)
     return (sid, path)

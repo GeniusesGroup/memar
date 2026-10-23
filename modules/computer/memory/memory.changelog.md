@@ -37,7 +37,7 @@
 - The reclamation question is shown inescapable: manager inescapable, collector optional; cost moves, never disappears.
 - The reclamation mechanisms are classified, with runtime tracing GC as one family among several.
 - The contract rules of the initial draft are retained unchanged as the document's second half.
-- The concept-vs-label pattern this rejection exercises was written into [type.md](../../type.md) as "Concepts Outlive Their Labels" (Super Z).
+- The concept-vs-label pattern this rejection exercises was written into [type.md](../../../docs/type.md) as "Concepts Outlive Their Labels" (Super Z).
 
 #### Deliberation
 - The initial draft's jump into "management" without definitions was judged a writing defect, and the restructure was directed: define memory first, then manage it (Omid Hekayati — directed).
@@ -45,7 +45,7 @@
 - The correct classifier for memory is **volatility** — volatile, semi-volatile, non-volatile per the standard taxonomy — not the ecosystem's memory/storage two-name split, which is rejected outright, including its attribution to the von Neumann architecture tradition (Omid Hekayati).
 - The GC concept is misplaced in the ecosystem: **no language with dynamic allocation escapes the reclamation question** — what languages like Rust actually distance themselves from is *runtime GC mechanisms*, and their ownership scheme is itself automatic reclamation requiring its own tooling, so the mechanisms marketed as "GC" must be classified as one subcategory (runtime GC mechanisms) under the broader spread, or the term becomes incoherent (Omid Hekayati).
 - The framing argument from the OS document: a founding layer grants bounded memory entitlements, never per-variable allocation services — so the manager inside the grant is the system's own, and reclamation policy is meaning defined above the guarantee boundary (Omid Hekayati).
-- It was directed that the OOP/FP concept-vs-label pattern be recorded in [type.md](../../type.md) rather than only alluded to here (Omid Hekayati — directed).
+- It was directed that the OOP/FP concept-vs-label pattern be recorded in [type.md](../../../docs/type.md) rather than only alluded to here (Omid Hekayati — directed).
 - Strong counter-argument against his own positions was requested before acceptance (Omid Hekayati — requested).
 - The claims were verified and strengthened before recording (Super Z — verified).
 - The von Neumann attribution was corrected: the architecture's stored-program core is a *unification* of instruction and data memory; the two-name split is a later industry convention, making the rejection stronger, not weaker (Super Z — corrected).
@@ -134,8 +134,8 @@
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../computer/linter.md) — Consumed contract: safety checks are governance this protocol states and that protocol checks.
-  - [Compiler](../computer/compiler.md) — Consumed contract: uninitialized reads are ontology; teardown automation may emit source.
+  - [Linter](../linter/linter.md) — Consumed contract: safety checks are governance this protocol states and that protocol checks.
+  - [Compiler](../compiler/compiler.md) — Consumed contract: uninitialized reads are ontology; teardown automation may emit source.
 - Propagates to:
   - memory.handoff.md: Done — Khayyam-shelf relocation item closed; generated-source convention and binary-mutation questions recorded.
   - memory_model.md: Done — retired and deleted; managerial positions absorbed here.
@@ -202,7 +202,7 @@
 - Time: 2026-09-28T14:34:08Z
 - Type: Added
 - Cited:
-  - [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled that Go `uintptr` belongs to the memory domain, not to the numeric tower.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled that Go `uintptr` belongs to the memory domain, not to the numeric tower.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - recorded
@@ -222,7 +222,7 @@
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- `memory.handoff.md → Where does an address-sized integer (uintptr) go?` and this changelog's 2026-09-28 entry cite the owner's ruling at [Math Handoff → Does the tower hold widths the reference does not declare?](../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare).
+- `memory.handoff.md → Where does an address-sized integer (uintptr) go?` and this changelog's 2026-09-28 entry cite the owner's ruling at [Math Handoff → Does the tower hold widths the reference does not declare?](../../math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare).
 
 ---
 
@@ -230,7 +230,7 @@
 - Time: 2026-09-29T11:17:00Z
 - Type: Changed
 - Cited:
-  - [Math](../math/math.md) - Premise: protocol layer owns the number tower.
+  - [Math](../../math/math.md) - Premise: protocol layer owns the number tower.
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
 
@@ -245,7 +245,7 @@
 - Time: 2026-09-29T14:00:00Z
 - Type: Changed
 - Cited:
-  - [Modularity Changelog](../../modularity.changelog.md) - Premise: allocator file placement belongs with the memory module, not the Modularity concept.
+  - [Modularity Changelog](../../knowledge/modularity/modularity.changelog.md) - Premise: allocator file placement belongs with the memory module, not the Modularity concept.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
@@ -265,7 +265,7 @@
 
 #### What changed
 - The paired handoff's Open Questions entry "Volatility vocabulary in the OS contract's storage topic" narrowed to its residue; no line under Anticipated Work changed, and the entry's title is kept so its anchor survives.
-- Recorded as settled: [OS → Storage](../computer/os.md#storage-block-abstractions-not-filesystems) already applies the vocabulary — the block grant is "the same kind of answer it provides for volatile memory" and "Non-volatile storage deserves the same restraint" — and already keeps the block-grant framing. Both alternatives the entry weighed are therefore in force, so what was open was not which to choose but what the two documents have not said to each other.
+- Recorded as settled: [OS → Storage](../os/os.md#storage-block-abstractions-not-filesystems) already applies the vocabulary — the block grant is "the same kind of answer it provides for volatile memory" and "Non-volatile storage deserves the same restraint" — and already keeps the block-grant framing. Both alternatives the entry weighed are therefore in force, so what was open was not which to choose but what the two documents have not said to each other.
 - Residue recorded: the OS storage topic carries no cross-link to this document's volatility classification and never states that the block grant is non-volatile memory under this definition rather than a separate class the two documents happen to name alike.
 - The base document's body is unchanged; the other thirteen entries under Open Questions are untouched.
 

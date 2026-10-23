@@ -12,10 +12,10 @@
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: evidence that general-purpose filesystems are not universal requirements, supporting filesystem-as-optional-capability.
   - [Usage and usefulness of technical software documentation](https://www.sciencedirect.com/science/article/abs/pii/S095058491400192X) — Reference: documentation value depends on discoverability, relevance, and accessibility — all knowledge-management concerns.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — argued, analyzed
-  - [Claude](../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed, argued
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — rewrote, researched
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — argued, analyzed
+  - [Claude](../../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed, argued
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — rewrote, researched
 
 #### What changed
 - First draft of the specification, synthesized from extensive multi-party architectural discussions spanning the filesystem critique, Git analysis, content-modeling explorations, and knowledge-management theory in the software-development context. Intentionally principle-focused rather than implementation-focused, establishing the philosophical foundations for Geniuses Group's approach to knowledge in software development.
@@ -44,8 +44,8 @@
   - [The Implementation of Knowledge Management in Health and Social Care Organisations](https://pmc.ncbi.nlm.nih.gov/articles/PMC12460784) — Reference: practical KM implementation assessment.
   - [Tacit Knowledge Sharing in Educational Organizations](https://toknowpress.net/ISBN/978-961-6914-28-4/4.pdf) — Reference: tacit knowledge assessment and transfer challenges.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — researched, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, deep think max) — researched, rewrote
 
 #### What changed
 - Expanded from a software-focused specification to a cross-domain framework, on the recognition that the underlying principles are domain-independent.
@@ -63,11 +63,11 @@
 - Time: 2026-09-05T11:30:00Z
 - Type: Changed
 - Cited:
-  - [System](./system.md) — Depends_for: the foundational one-line definition of Knowledge lives there; this document is now the detailed treatment it defers to, following the precedent of Protocol.
-  - [Thinking](./cognition.md) — Reference: thinking is the activity whose material knowledge is; the 4E section of that document already depends on this one.
-  - [Agency](./agency.md) — Reference: agency acts on models built from knowledge; its Knowledge Management topics now link here.
-  - [Framework](./framework.md) — Reference: the knowledge→thinking→intelligence→agency→goals chain this document's Concept Web topic links to is owned by Framework's Purpose Space topic.
-  - [Content](./content.md) — Reference: the Content/Relation domain model that the knowledge-side integration must be worked out against.
+  - [System](../../docs/system.md) — Depends_for: the foundational one-line definition of Knowledge lives there; this document is now the detailed treatment it defers to, following the precedent of Protocol.
+  - [Thinking](../../docs/cognition.md) — Reference: thinking is the activity whose material knowledge is; the 4E section of that document already depends on this one.
+  - [Agency](../../docs/agency.md) — Reference: agency acts on models built from knowledge; its Knowledge Management topics now link here.
+  - [Framework](../../docs/framework.md) — Reference: the knowledge→thinking→intelligence→agency→goals chain this document's Concept Web topic links to is owned by Framework's Purpose Space topic.
+  - [Content](content/content.md) — Reference: the Content/Relation domain model that the knowledge-side integration must be worked out against.
 - Propagates to:
   - `docs/system.md`: Done — Knowledge and Science now defers the detailed treatment to this document.
   - `docs/thinking.md`: Done — the 4E link retargeted to `./knowledge.md`.
@@ -75,10 +75,10 @@
   - `docs/protocols/memory/filesystem.md`: Done — stale citation title and URI fixed (the URI had broken in the protocols/ relocation); the "Principle 5" reference made name-based so renumbering cannot break it; and the document itself migrated to the Explanation-facet structure with a paired changelog in the same pass.
   - `docs/framework.md`: Done — new *Memar's Purpose Space: From Knowledge to Agency* topic states the chain and Memar's goal definition.
   - `README.md`: Done — Goals section now states the purpose chain and links to Framework.
-  - Organization project (`GeniusesGroup/organization`): Done — seed document `docs/knowledge-management.md` created carrying the extracted KM-discipline content, with session context transferred to its `____Chats/`. Pending — the dedicated design session there that turns the seed into a real document.
+  - Organization project (`GeniusesGroup/organization`): Done — seed document `docs/knowledge-management.md` created carrying the extracted KM-discipline content, with session context transferred to its `____Chats/`. Pending — the dedicated design chat there that turns the seed into a real document.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote
 
 #### What changed
 - `knowledge-management.md` was renamed to `knowledge.md` (pure `git mv` commit `2dc8576`, history preserved) and the document was re-scoped from the KM discipline to the concept: the Abstract's central claim was re-grounded from an unfalsifiable organizational claim ("KM failure is the root cause of most organizational dysfunction") to a modeling claim (systems that conflate knowledge with its representations lose knowledge while keeping its artifacts) (Qwen — performed).
@@ -98,10 +98,10 @@
 - Merging the reserved practice placeholders into one companion was directed (Omid Hekayati).
 
 #### Considered and not done
-- **Keep the name Knowledge Management (rejected)**: it names an organizational discipline, not a concept — management rules cannot be stated before knowledge itself is defined, and most of the discipline belongs to the Organization project. The rename follows the precedent of [Agency](./agency.md), which was named after the property rather than the position/artifact once the property was recognized as more fundamental. The old H1's "A Cross-Domain Framework" additionally misused *Framework*, which Memar defines precisely ([Framework](./framework.md)).
+- **Keep the name Knowledge Management (rejected)**: it names an organizational discipline, not a concept — management rules cannot be stated before knowledge itself is defined, and most of the discipline belongs to the Organization project. The rename follows the precedent of [Agency](../../docs/agency.md), which was named after the property rather than the position/artifact once the property was recognized as more fundamental. The old H1's "A Cross-Domain Framework" additionally misused *Framework*, which Memar defines precisely ([Framework](../../docs/framework.md)).
 - **Create a new document with a new ID (rejected)**: the title change alters the concept, which normally means a new document — but this document never left Draft, nothing depends on its identity, and re-scoping a Draft in place with the rename recorded here preserves the chain of reasoning without orphaning a never-settled number.
 - **Delete all cross-domain content with the rename (rejected)**: the principles' domain-independence claim needs at least compact evidence; only the application discipline moved, not every non-software example.
-- **Create `intelligence.md` as the home of the purpose chain (rejected)**: intelligence is an output relation of knowledge, thinking, and agency — a dedicated document could only restate its constituents. It is defined inline where the chain is stated ([Framework → Memar's Purpose Space](./framework.md#memars-purpose-space-from-knowledge-to-agency)), following the precedent of *Science* in [System](./system.md#knowledge-and-science), which is defined inline without its own document.
+- **Create `intelligence.md` as the home of the purpose chain (rejected)**: intelligence is an output relation of knowledge, thinking, and agency — a dedicated document could only restate its constituents. It is defined inline where the chain is stated ([Framework → Memar's Purpose Space](../../docs/framework.md#memars-purpose-space-from-knowledge-to-agency)), following the precedent of *Science* in [System](../../docs/system.md#knowledge-and-science), which is defined inline without its own document.
 
 ---
 
@@ -111,8 +111,8 @@
 - Propagates to:
   - knowledge.handoff.md: Created - open questions and anticipated work moved there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested
-  - [Qwen](../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../CONTRIBUTORS.md#opencode)) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Qwen](../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) - moved
 
 #### What changed
 - The body now carries only the fixed top-level sections Abstract, Introduction, Explanation, Results; the document-level `## Discussion` section and its five subsections (`Drawbacks`, `Rationale and alternatives`, `Prior art`, `Unresolved questions`, `Future possibilities`) are retired from it.
@@ -129,7 +129,7 @@
 - **"Keep current tools but be more disciplined" (partial acceptance; migrated from the same)**: commit-message conventions, structured clinical notes, and standardized syllabi mitigate symptoms but do not cure the disease; for organizations already invested in existing tooling, this is a reasonable transitional strategy while building toward principle-aligned systems.
 - **"These principles only apply to large organizations" (rejected; migrated from the same)**: small teams suffer knowledge loss more acutely, because they lack institutional memory and redundant personnel; the principles scale down — a solo practitioner benefits from task-centric history and explicit relationships.
 - **Define knowledge as a static asset (rejected; migrated from the `Rationale and alternatives` nested under `Definition`)**: the research literature on organizational knowledge creation (Nonaka & Takeuchi's SECI model) established knowledge as a dynamic, social process rather than a stock of artifacts. The modeling principles below follow that reading — knowledge exists in the living relationships between assertions, evidence, tasks, and participants, not in the files that freeze them. The organizational application of that process view is developed in the Organization project.
-- **Leave "knowledge" undefined and regulate only storage behavior (rejected; migrated from the same nested block)**: management rules stated over an undefined central term import the reader's colloquial sense. Memar's terminology governance ([Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance)) requires defining a load-bearing term once, here, and letting other documents reference that definition.
+- **Leave "knowledge" undefined and regulate only storage behavior (rejected; migrated from the same nested block)**: management rules stated over an undefined central term import the reader's colloquial sense. Memar's terminology governance ([Terminology → Terminology Authority and Governance](../../docs/terminology.md#terminology-authority-and-governance)) requires defining a load-bearing term once, here, and letting other documents reference that definition.
 
 #### Considered and not done (from the removed document-level Drawbacks section)
 - **The principles are demanding — infrastructure investment**: graph-based storage, content-addressable identifiers, and rich relationship modeling do not come free with traditional stacks. The investment does scale, however: small teams can start with stable identifiers and structured decision logging alone. (Migrated from the retired document-level Drawbacks)
@@ -154,15 +154,15 @@
 - Time: 2026-09-18T12:20:00Z
 - Type: Changed
 - Cited:
-  - [comparisons/superpowers.001.md](./comparisons/superpowers.001.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
-  - [Agency → Prompt Engineering and Harness Engineering](./agency.md#prompt-engineering-and-harness-engineering) — Depends_on: distribution and harness technique remain under Communication, not the knowledge model.
+  - [comparisons/superpowers.001.md](../../docs/comparisons/superpowers.001.md) — Evidence: owner critique of treating marketplace/plugin skill packs, prose recipes for generative work, and reader-workaround documentation as substitutes for a continuous knowledge model.
+  - [Agency → Prompt Engineering and Harness Engineering](../../docs/agency.md#prompt-engineering-and-harness-engineering) — Depends_on: distribution and harness technique remain under Communication, not the knowledge model.
 - Propagates to:
-  - [.agents/scripts/README.md](../.agents/scripts/README.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
-  - [.agents/skills/README.md](../.agents/skills/README.md) — Recorded: failed split of Khayyam/Cognition into peer skills.
-  - [comparisons/README.md](./comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
+  - [.agents/scripts/README.md](../../.agents/scripts/README.md) — Clarified: marketplace/plugin are delivery tax, not the mental model.
+  - [.agents/skills/README.md](../../.agents/skills/README.md) — Recorded: failed split of Khayyam/Cognition into peer skills.
+  - [comparisons/README.md](../../docs/comparisons/README.md) — Points at these principles as standing assumptions for public comparisons.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Composer](../CONTRIBUTORS.md#composer) (Composer via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Composer](../../CONTRIBUTORS.md#composer) (Composer via [Cursor](../../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - Expanded [Knowledge and Code](./knowledge.md#knowledge-and-code) to separate prose contracts from executable generative services (language-server / tool-call style), using Error-module generation as the illustrative pattern rather than a Practice that narrates each concrete artifact.
@@ -180,14 +180,14 @@
 - Cited:
   - [schema.org](https://schema.org/) — Depends_on: identity vocabulary for `manifest.yaml` (SoftwareApplication, SoftwareSourceCode, and shared CreativeWork properties). CodeMeta was considered as a middle vocabulary and rejected: it is a citation crosswalk that restricts and extends schema.org for scientific software, which this file is not.
 - Propagates to:
-  - [AGENTS.md](../AGENTS.md): Done — session entry is now `.agents/memar/README.md`; `.agents/README.md` is a directory index, not loaded every session.
-  - [README.md](../README.md): Done — two install scripts (project via AGENTS.md, agent apps) plus a weaker chatbot path.
-  - [.agents/skills/README.md](../.agents/skills/README.md): Done — plugin/marketplace pointer removed.
-  - [comparisons/README.md](./comparisons/README.md): Done — standing principle retargeted off `installing.md`.
+  - [AGENTS.md](../../AGENTS.md): Done — session entry is now `.agents/memar/README.md`; `.agents/README.md` is a directory index, not loaded every session.
+  - [README.md](../../README.md): Done — two install scripts (project via AGENTS.md, agent apps) plus a weaker chatbot path.
+  - [.agents/skills/README.md](../../.agents/skills/README.md): Done — plugin/marketplace pointer removed.
+  - [comparisons/README.md](../../docs/comparisons/README.md): Done — standing principle retargeted off `installing.md`.
   - `.agents/installing.md` and host-tool plugin/marketplace manifests: Done — removed.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
-  - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — drafted
 
 #### What changed
 - [A Project Carries One Continuous Mental Model](./knowledge.md#a-project-carries-one-continuous-mental-model) no longer treats marketplace/plugin packaging as a tax Memar still pays. Access is a pointer installed into a consuming project's instruction files, plus an optional user-level skill copy; the skill remains a routing practice into the live `docs/` tree.
@@ -209,11 +209,11 @@
   - [Karpathy on consuming model output](https://x.com/karpathy/status/2105819303471976479) — **Evidence**: the occasion. The post's own claim is that his authors get more readable output when asked for STE, which is a self-assessment of practice; it is admitted as the claim being weighed, not as support for what this document now states.
 - Propagates to:
   - [knowledge.research.001.md](./knowledge.research.001.md): Complete — the inquiry this entry answers; its [Findings](./knowledge.research.001.md#findings) hold the reasoning and its [Conclusion](./knowledge.research.001.md#conclusion) holds the negative result.
-  - [content.md](./content.md): Done — the same occasion adds the inspectability consequence to [Concrete Evidence: Tree/Graph Notation in This Very Document](./content.md#concrete-evidence-treegraph-notation-in-this-very-document).
-  - [terminology.md](./terminology.md): None needed — [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) already confines Memar's governance to the terms it has defined and disclaims the language generally, which is what makes the diagnosis portable here without the instrument.
+  - [content.md](content/content.md): Done — the same occasion adds the inspectability consequence to [Concrete Evidence: Tree/Graph Notation in This Very Document](content/content.md#concrete-evidence-treegraph-notation-in-this-very-document).
+  - [terminology.md](../../docs/terminology.md): None needed — [Terminology → Terminology Authority and Governance](../../docs/terminology.md#terminology-authority-and-governance) already confines Memar's governance to the terms it has defined and disclaims the language generally, which is what makes the diagnosis portable here without the instrument.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — directed
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — directed
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — drafted
 
 #### What changed
 - [Write for the Structure of the Subject, Not for Today's Reader Limits](./knowledge.md#write-for-the-structure-of-the-subject-not-for-todays-reader-limits) now states that what a document owes its reader is weighted by what that reader's misreading costs. Where the subject cannot absorb an error, what is owed is not legibility but performability: every step executable as written, with no step left to interpretation.
@@ -222,9 +222,9 @@
 - The paragraph was written once and then rewritten within the same day. Its first version rested on a claim sourced to a tertiary article, and on a premise about the standard's intended reader that the maintainers deny; the claim was replaced with statements read from the maintainers and the narrow premise was withdrawn. [Knowledge Research 001 → A correction this research's own first pass required](./knowledge.research.001.md#a-correction-this-researchs-own-first-pass-required) records the correction rather than only its repair.
 
 #### Considered and not done
-- **Adopting a controlled vocabulary for Memar's written record**: rejected. [Terminology → Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) governs the terms Memar has defined and disclaims ordinary language, and [cognition.practice.md](./cognition.practice.md) lists terminology policing — objecting to word choice while agreeing on meaning — among the critiques that are not critique. A dictionary-bound register would also freeze the questions this project keeps open, several of which are open precisely because no name has been settled yet.
+- **Adopting a controlled vocabulary for Memar's written record**: rejected. [Terminology → Terminology Authority and Governance](../../docs/terminology.md#terminology-authority-and-governance) governs the terms Memar has defined and disclaims ordinary language, and [cognition.practice.md](../../docs/cognition.practice.md) lists terminology policing — objecting to word choice while agreeing on meaning — among the critiques that are not critique. A dictionary-bound register would also freeze the questions this project keeps open, several of which are open precisely because no name has been settled yet.
 - **A separate principle section for the cost weighting, with its own Principle statement**: not taken. The weighting qualifies the section it was found through rather than standing beside it, and a second section would have split one principle into two summaries of each other.
-- **An interactive HTML or generated-video rendering of Memar documents**: not taken, and not recorded here. The rendering side of that question belongs to [Content → Authoring Syntax vs. Semantic Graph](./content.md#authoring-syntax-vs-semantic-graph), which already states that the Graph is reached by many independent Renderers; whether this project wants such renderers is an open question, and the occasion does not settle it.
+- **An interactive HTML or generated-video rendering of Memar documents**: not taken, and not recorded here. The rendering side of that question belongs to [Content → Authoring Syntax vs. Semantic Graph](content/content.md#authoring-syntax-vs-semantic-graph), which already states that the Graph is reached by many independent Renderers; whether this project wants such renderers is an open question, and the occasion does not settle it.
 
 ---
 
@@ -232,17 +232,17 @@
 - Time: 2026-10-04T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Terminology → A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open) - **Reference**: the class and its single member, decided in the session that recorded them.
+  - [Terminology → A Term Deliberately Left Open](../../docs/terminology.md#a-term-deliberately-left-open) - **Reference**: the class and its single member, decided in the session that recorded them.
 - Propagates to:
-  - [terminology.md](./terminology.md): Done - the class this site points at.
-  - [documentation-changelog.md](./documentation-changelog.md): Done - the `Tasks` field marks its own use the same way.
-  - [documentation.practice.md](./documentation.practice.md): None needed - the practice's Research procedure sends an inquiry's outcome to its base changelog, which is where this entry is.
+  - [terminology.md](../../docs/terminology.md): Done - the class this site points at.
+  - [documentation-changelog.md](documentation/changelog/changelog.md): Done - the `Tasks` field marks its own use the same way.
+  - [documentation.practice.md](documentation/documentation.practice.md): None needed - the practice's Research procedure sends an inquiry's outcome to its base changelog, which is where this entry is.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided the position this site records
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided the position this site records
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - drafted
 
 #### What changed
-- [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) states, at the principle statement that makes the Task the primary unit of knowledge evolution, that the word carries its ordinary sense and is deliberately not defined by Memar, with a link to [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open). The passage is one of the two places where the word does real work in Memar, and it is read far more often than the facet that now governs the term; a reader arriving here first met the principle without the qualification, and a reader who took the ordinary sense as Memar's had adopted a definition Memar never made.
+- [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) states, at the principle statement that makes the Task the primary unit of knowledge evolution, that the word carries its ordinary sense and is deliberately not defined by Memar, with a link to [A Term Deliberately Left Open](../../docs/terminology.md#a-term-deliberately-left-open). The passage is one of the two places where the word does real work in Memar, and it is read far more often than the facet that now governs the term; a reader arriving here first met the principle without the qualification, and a reader who took the ordinary sense as Memar's had adopted a definition Memar never made.
 
 #### Considered and not done
 - **A footnote rather than a sentence in the principle statement (rejected):** the qualification is not incidental to the claim. The claim's force depends on the Task being a unit rather than an event, and a reader who reads *Task* as Memar's undefined-but-defaulted word is reading a different claim.
@@ -253,11 +253,11 @@
 ### Restate the relation of two sources recorded before the standing rule
 - Time: 2026-10-04T13:27:43Z
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
 
 #### What changed
-No entry above is edited. This entry states the relation two of them recorded, under [Documentation → Citations → Source standing](./documentation.md#citations) as that rule now reads.
+No entry above is edited. This entry states the relation two of them recorded, under [Documentation → Citations → Source standing](documentation/documentation.md#citations) as that rule now reads.
 - The tertiary compilation cited in *Scale what the record owes a reader by what misreading it costs* is recorded with the `Reference` relation, not `Evidence`. A tertiary compilation is a pointer toward primary sources, and the entry's own text already said that no claim in the document rests on it alone; the body text it supported does not carry the claim it was cited for.
 - The social-media post cited in that entry and in *A rendering is checked by eye, and names the reader it is for* is recorded with the `Reference` relation, not `Evidence`. A post of that kind is admitted as the claim being weighed and as the occasion for the question, which is what both entries already said in their own words; the conclusions rest on the notation examined in the documents themselves.
 
@@ -266,7 +266,7 @@ No entry above is edited. This entry states the relation two of them recorded, u
 - Withdrawing the social-media post from the record entirely was rejected (Space Bunny Alpha — argued). Recording where a question came from is legitimate and both entries record it honestly; what was wrong was the relation, not the record.
 
 #### Deliberation
-The rule added in [Documentation → Citations](./documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and four citations across four records were found that the rule does not accept (Space Bunny Alpha — argued). Two were in records this session owns and were corrected there: `rule.research.001.md`, whose vocabulary sources support nothing and whose specification was never read, and `documentation-handoff.research.001.md`, whose vendor article is a vendor's account of its own product. The other two sit in changelogs written by earlier sessions and are corrected by this entry instead (Omid Hekayati — decided).
+The rule added in [Documentation → Citations](documentation/documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and four citations across four records were found that the rule does not accept (Space Bunny Alpha — argued). Two were in records this chat owns and were corrected there: `rule.research.001.md`, whose vocabulary sources support nothing and whose specification was never read, and `documentation-handoff.research.001.md`, whose vendor article is a vendor's account of its own product. The other two sit in changelogs written by earlier chats and are corrected by this entry instead (Omid Hekayati — decided).
 
 ---
 
@@ -277,7 +277,7 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Propagates to:
   - knowledge.handoff.md: Done — the "What IS the minimum viable knowledge unit?" and "Can snapshot-style state ever be completely eliminated?" open questions were deleted; `knowledge.md` already answers both (handoff: no entry of its own).
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - `docs/knowledge.handoff.md` no longer carries the open question on the minimum viable knowledge unit. Its answer is in [Knowledge → The Smallest Knowledge Unit Is Smaller Than You Think](./knowledge.md#the-smallest-knowledge-unit-is-smaller-than-you-think): units are representable "at the granularity of individual concepts, assertions, and distinctions", the list extends from Concept and Assertion to Distinction, Pattern, Rule, and Question, and the principle statement closes the domain-dependence half of the question with "The choice of granularity should be driven by the use case, not by storage convenience."
@@ -285,7 +285,7 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - No other open question in that handoff was touched.
 
 #### Considered and not done
-- Rewriting the entries as resolved entries, or marking them "Answered": a handoff holds current state, and a rule already recorded in its governing document must not be restated there — the duplicate is what drifts. Both questions leave without a marker, per [Documentation Handoff → Optional Sections](./documentation-handoff.md#optional-sections).
+- Rewriting the entries as resolved entries, or marking them "Answered": a handoff holds current state, and a rule already recorded in its governing document must not be restated there — the duplicate is what drifts. Both questions leave without a marker, per [Documentation Handoff → Optional Sections](documentation/handoff/handoff.md#optional-sections).
 - Deleting the `## Anticipated Work` line on **Versioning Strategy**: it asks how versioning works in a non-file-centric system — content versions, snapshot versions, logical timestamps — which is broader than the coexistence of snapshot state with task-centric evolution, so it stays as work still owed.
 - Narrowing the **Versioning Strategy** line to exclude the snapshot half, since that half is now settled: the line's own question — how versioning works where there are no files — is not what the deleted question asked, and rewording it would be an edit the closed question does not justify.
 
@@ -297,7 +297,7 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Propagates to:
   - knowledge.handoff.md: Done — the open question on where hierarchical classification is actually optimal was deleted; the answer is in the governing document.
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - [Classification Should Not Be Confined to a Single Hierarchy](./knowledge.md#classification-should-not-be-confined-to-a-single-hierarchy) gains a paragraph stating that a tree remains a legitimate projection where membership is genuinely single-parent — configuration baselines, taxonomic ranks, library classification — but that it is a projection and not the knowledge model: identity stays independent of position there as elsewhere, and a second taxonomy is added beside the tree rather than replacing it. The paragraph locates the crossover in the first question whose answer requires crossing facets rather than in a class of domains, and qualifies the section's Principle statement instead of excepting itself from it.
@@ -313,23 +313,23 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Time: 2026-10-05T11:40:00Z
 - Type: Changed
 - Cited:
-  - [Terminology](./terminology.md) - Consumed definitions: Terminology Authority and Governance (one authoritative home per Definition, and the governing document where two disagree) and A Term Deliberately Left Open (Task as a term used but never defined in Memar).
-  - [Changelog](./documentation-changelog.md) - Consumed structure: Considered and not done, the home for reasoning examined and not applied.
+  - [Terminology](../../docs/terminology.md) - Consumed definitions: Terminology Authority and Governance (one authoritative home per Definition, and the governing document where two disagree) and A Term Deliberately Left Open (Task as a term used but never defined in Memar).
+  - [Changelog](documentation/changelog/changelog.md) - Consumed structure: Considered and not done, the home for reasoning examined and not applied.
 - Propagates to:
   - knowledge.handoff.md: Done - three open questions removed: concurrent knowledge modification without locking semantics, whether the Task concept decomposes further, and the entry point into a knowledge system.
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) gains a paragraph stating that concurrent modification is reconciled as what it is: two changes to one definition arriving at once are two decisions about the same invariant rather than two writes to one text, the invariant has one authoritative home, and what is reconciled is the claim and not the file — the revision that holds stands in the governing document, and the reasoning of the one that does not stays readable as Considered and not done.
 - [The Smallest Knowledge Unit Is Smaller Than You Think](./knowledge.md#the-smallest-knowledge-unit-is-smaller-than-you-think) gains a paragraph stating that an entry into a knowledge system is one of its units surfaced rather than a page — a concept carrying its definition together with the context that unit holds — and that a listing, a wiki page, or a search result remains a valid projection of that entry.
-- `knowledge.handoff.md` no longer carries three entries. "How do we handle concurrent knowledge modification without locking semantics?" and "What is the entry point into a knowledge system, and what does a concept hub carry?" are answered by the two paragraphs above. "Does the Task concept itself decompose further?" is answered by [Terminology → A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open): Task is a term used but never defined in Memar, and what a Task is structurally, what states it has, and how one is identified belong to the project developing it. Its remaining entry, on cultural factors in principle adoption, is untouched.
-- The removed entry-point entry's registered candidate source, a wiki system named Genera, stays unregistered. No primary source for it has been read, so under [Documentation → Citations](./documentation.md#citations) it may prompt a question but may never carry a conclusion; the one thing it was registered to settle — whether that system's entry is a page or a unit surfaced — is settled here without it.
+- `knowledge.handoff.md` no longer carries three entries. "How do we handle concurrent knowledge modification without locking semantics?" and "What is the entry point into a knowledge system, and what does a concept hub carry?" are answered by the two paragraphs above. "Does the Task concept itself decompose further?" is answered by [Terminology → A Term Deliberately Left Open](../../docs/terminology.md#a-term-deliberately-left-open): Task is a term used but never defined in Memar, and what a Task is structurally, what states it has, and how one is identified belong to the project developing it. Its remaining entry, on cultural factors in principle adoption, is untouched.
+- The removed entry-point entry's registered candidate source, a wiki system named Genera, stays unregistered. No primary source for it has been read, so under [Documentation → Citations](documentation/documentation.md#citations) it may prompt a question but may never carry a conclusion; the one thing it was registered to settle — whether that system's entry is a page or a unit surfaced — is settled here without it.
 
 #### Considered and not done
 - **Answering the entry-point question from a named external system (rejected)**: the handoff recorded the candidate and withheld its link until a primary source is read. A conclusion resting on an unread source is a claim the record cannot defend, and the conclusion the entry was reaching for follows from two principles this document already states.
-- **Naming a concept-hub type, or an entry-point pattern beside it (rejected)**: a Type carries the four elements [Terminology Authority and Governance](./terminology.md#terminology-authority-and-governance) requires before a term has authority, and the paragraph states what the entry carries without adding a word the framework would then have to govern.
-- **Defining Task here as Memar's own primitive, so the decomposition question could close in this document (rejected)**: [A Term Deliberately Left Open](./terminology.md#a-term-deliberately-left-open) states the price of taking the word — the concept cannot grow past the shape the framework's convenience gave it — and names the project where Task's structure is being worked out.
+- **Naming a concept-hub type, or an entry-point pattern beside it (rejected)**: a Type carries the four elements [Terminology Authority and Governance](../../docs/terminology.md#terminology-authority-and-governance) requires before a term has authority, and the paragraph states what the entry carries without adding a word the framework would then have to govern.
+- **Defining Task here as Memar's own primitive, so the decomposition question could close in this document (rejected)**: [A Term Deliberately Left Open](../../docs/terminology.md#a-term-deliberately-left-open) states the price of taking the word — the concept cannot grow past the shape the framework's convenience gave it — and names the project where Task's structure is being worked out.
 - **Adding a locking or merge-semantics section beside the new paragraph (rejected)**: such a section would state a mechanism over the artifact rather than over the unit of evolution, which is the thing the paragraph identifies as what gets reconciled.
 - **Restating the entry-point conclusion in `knowledge.handoff.md` as a settled entry (rejected)**: a handoff holds current state, and a rule the governing document now carries must not be duplicated there.
 
@@ -339,18 +339,18 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Time: 2026-10-05T12:20:00Z
 - Type: Changed
 - Cited:
-  - [Protocol](./protocol.md) - Consumed definitions: Who Defines a Protocol (each definer's account is decidable at the level of the organization that offers it; plurality of definers is what makes convergence objective rather than hypothetical).
-  - [Terminology](./terminology.md) - Consumed definitions: A Term Deliberately Left Open (what a Task is structurally belongs to the project developing it, not to the framework) and Terminology Authority and Governance.
+  - [Protocol](../../docs/protocol.md) - Consumed definitions: Who Defines a Protocol (each definer's account is decidable at the level of the organization that offers it; plurality of definers is what makes convergence objective rather than hypothetical).
+  - [Terminology](../../docs/terminology.md) - Consumed definitions: A Term Deliberately Left Open (what a Task is structurally belongs to the project developing it, not to the framework) and Terminology Authority and Governance.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- [Methodology](./knowledge.md#methodology) now names its warrant for domain-independence as one observer's, and records the stronger route beside it: "That is one observer's route to that conclusion, and the record should name it as such rather than let it read as the only available one. The stronger route is that separate organizations have arrived at these failures and the principles addressing them independently; each states its account at the level of the organization that developed it ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and their agreement where they overlap is what identifies the concept they are each modelling rather than leaving it assumed."
+- [Methodology](./knowledge.md#methodology) now names its warrant for domain-independence as one observer's, and records the stronger route beside it: "That is one observer's route to that conclusion, and the record should name it as such rather than let it read as the only available one. The stronger route is that separate organizations have arrived at these failures and the principles addressing them independently; each states its account at the level of the organization that developed it ([Protocol → Who Defines a Protocol](../../docs/protocol.md#who-defines-a-protocol)), and their agreement where they overlap is what identifies the concept they are each modelling rather than leaving it assumed."
 - The scope boundary under [Knowledge in Memar's Concept Web](./knowledge.md#knowledge-in-memars-concept-web) now reads that knowledge management as an organizational discipline "belongs to whichever project is developing it; the Organization project is where that development is happening, not where the concept is owned."
 
 #### Deliberation
-- Both passages were identified in an earlier read-only pass of this session by the same participant now applying them, which surveyed `docs/` for passages in tension with the organizational-plurality ruling; that ruling was made elsewhere in this session and applied to the Protocol document earlier in the wave.
+- Both passages were identified in an earlier read-only pass of this chat by the same participant now applying them, which surveyed `docs/` for passages in tension with the organizational-plurality ruling; that ruling was made elsewhere in this chat and applied to the Protocol document earlier in the wave.
 - The Methodology sentence was left standing and named rather than replaced. The cross-domain observation is real evidence and this document performed it; dropping it in favour of independent arrivals would replace a warrant the record holds with one it does not yet hold, since no second organization's independently arrived-at account of these principles has been read.
 - The scope-boundary sentence was read as naming where the work happens rather than where the concept lives, because that is what the surrounding clause does elsewhere: it routes creation workflows, tacit-to-explicit conversion practice, sector adoption patterns, and change management out of this document. Ownership language would have said the concept has one home, which is the claim the change removes.
 - The open question "How do cultural factors affect principle adoption?" stays. It asks whether the principles need cultural localization, and what this entry records is which warrant supports their universality — a different question, and one the entry's own wording keeps open by stating the independent-arrival route as stronger without asserting that it has been satisfied.
@@ -362,13 +362,13 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Time: 2026-10-07T06:25:00Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - Evidence: the comparison whose separate-research items raised the question, and whose account of the categories this survey inherited rather than re-read.
+  - [Comparison: Memar and GitHub Spec Kit](../../docs/comparisons/spec-kit.001.md) - Evidence: the comparison whose separate-research items raised the question, and whose account of the categories this survey inherited rather than re-read.
 - Propagates to:
   - knowledge.handoff.md: Done - the survey's five open questions now live there.
   - documentation.md: Reference - the Content Rule was the first candidate home and was set aside on its own scope statement; nothing changed there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioner, goal-setter
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - researcher
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - questioner, goal-setter
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - researcher
 
 #### What changed
 - No document changed. What this entry records is a survey and its negative result: whether Memar needs a named category for material that exists in the shared medium without any decision having produced it, and if so what kind of thing that category would be.
@@ -388,7 +388,7 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Time: 2026-10-12T09:45:29Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the working tree against HEAD for `knowledge.md`, `knowledge.handoff.md`, `knowledge.changelog.md` and `knowledge.research.001.md`. The link changes from `protocols/` to `modules/` resolve (`memar content check`). The five body additions (Methodology's one-observer sentence, the scope boundary, the concurrent-modification paragraph, the single-parent tree paragraph, the entry-point paragraph) are each carried by the 2026-10-04 and 2026-10-05 entries above, and the handoff removals they record are the only removals; no changelog entry was removed.
@@ -405,16 +405,16 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Time: 2026-10-12T10:08:42Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - Auto (model not recorded) via [OpenCode](../CONTRIBUTORS.md#opencode) - applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - Auto (model not recorded) via [OpenCode](../../CONTRIBUTORS.md#opencode) - applied
 
 #### What changed
 - [Knowledge Handoff → What an agent is to do when it lacks a third-party library's shape](./knowledge.handoff.md#what-an-agent-is-to-do-when-it-lacks-a-third-party-librarys-shape) records the question: no Memar document states the route an agent takes when it needs the current interface of a library the project depends on and cannot reach it from the project's own sources.
-- The entry names the four norms the surrounding documents already hold for that case - source is context and never a substitute for inspectable support, a stale shared artifact is reported rather than propagated, an answer the lookup does not hold is reported rather than supplied, and the performed service over a live corpus is delivered outside this repository - so that the next session does not re-derive them.
+- The entry names the four norms the surrounding documents already hold for that case - source is context and never a substitute for inspectable support, a stale shared artifact is reported rather than propagated, an answer the lookup does not hold is reported rather than supplied, and the performed service over a live corpus is delivered outside this repository - so that the next chat does not re-derive them.
 - Two questions are left to the owner: which route is sanctioned, and whether such material grounds an agent's reasoning or is evidence to be checked.
 
 #### Considered and not done
-- Writing the rule in `knowledge.md` or `agency.md`: not done. A source's standing is already held as a discourse norm ([Cognition → Evaluate claims on their merits](./cognition.md#evaluate-claims-on-their-merits-treat-source-as-neither-authority-nor-disqualifier)), so a second statement would restate it, and the act the question turns on - a text an agent reads as material rather than a claim offered in an exchange - is not the act that norm governs. The gap is the question, not the norm.
+- Writing the rule in `knowledge.md` or `agency.md`: not done. A source's standing is already held as a discourse norm ([Cognition → Evaluate claims on their merits](../../docs/cognition.md#evaluate-claims-on-their-merits-treat-source-as-neither-authority-nor-disqualifier)), so a second statement would restate it, and the act the question turns on - a text an agent reads as material rather than a claim offered in an exchange - is not the act that norm governs. The gap is the question, not the norm.
 - Naming the neighbouring project this question came from: not done, by the owner's ruling. The examination is a document in `docs/comparisons/` and is found by listing that folder.
 
 ---
@@ -423,14 +423,61 @@ The rule added in [Documentation → Citations](./documentation.md#citations) wa
 - Time: 2026-10-12T11:01:35Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) — revised
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — revised
 
 #### What changed
 - The earlier entry "An agent's route to a third-party library's shape is a question, not a rule" carried a Time of 2026-10-12T11:20:00Z, which was invented and later than the write; it now carries the file's write time, 2026-10-12T10:08:42Z.
 - [Knowledge Handoff → What an agent is to do when it lacks a third-party library's shape](./knowledge.handoff.md#what-an-agent-is-to-do-when-it-lacks-a-third-party-librarys-shape): the absence claim is scoped to the search made, and the entry now cites Module dependency (`docs/modules/computer/module-dependency.md`), whose pinned repository reference already answers which revision a project builds against, and says what stays open. The earlier entry's "four norms" was wrong: three are norms and the README sentence is a scoping statement; the handoff now says so.
 
 #### Why
-- An independent evaluation (session 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and a missing citation of the document that already answers part of the question.
+- An independent evaluation (task 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and a missing citation of the document that already answers part of the question.
 
 #### Considered and not done
 - Moving the question out of Knowledge: not done. Knowledge is a weak home, but no better owner was found, and the owner has not ruled.
+
+---
+
+### Practice description states when and what not
+- Time: 2026-10-15T11:58:47Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — allowed the fix
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
+
+#### What changed
+- `knowledge.practice.md`'s `description` now states when each of its three procedures is used and what it is not — the critique procedure, and the concept and its principles, which Documentation — Practice → Description quality criteria requires.
+- Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in task 20261015-T110002Z-23000.
+
+---
+
+### The document moves to `modules/knowledge/`
+- Time: 2026-10-17T12:30:00Z
+- Type: Changed
+- Cited:
+  - [Modules → What does not belong here](../README.md#what-does-not-belong-here) — `Depends_on`: a concept document stands beside the module or category of its subject
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- `docs/knowledge.md` and its companions (changelog, handoff, practice and research) moved to `modules/knowledge/`, so the concept stands in the category it belongs to and the category's `README.md` is a link to it. Links to the documents were rewritten and nothing else in them changed; a closing section naming the category's modules was added to the document.
+- Occasion: the owner's ruling of 2026-10-17 that a category without its concept document invites a misreading of the concept.
+
+---
+
+### Organization's knowledge text carried into this document
+- Time: 2026-10-19T11:00:00Z
+- Type: Changed
+- Cited:
+  - Organization's `modules/knowledge/knowledge.md` at commit 19834121 — `Depends_on`: the text the merge of 2026-10-19 left only in history, carried here by hand
+- Contributors:
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- Added to [The Modules of This Category](./knowledge.md#the-modules-of-this-category) the placement of organizational knowledge management: a composition bundle, not a module, with its bundle, handoff and channel-comms links.
+- Occasion: the merge of organization into memar kept this file and left organization's version in history.
+
+#### Considered and not done
+- **The Wikipedia definition of knowledge and of knowledge management (dropped)**: the [Definition](./knowledge.md#definition) section and the opening paragraph already define both for Memar's purpose, and a second definition beside them would be two models.
+- **The "Idea backlog" on health-directive labels "Life support" and "Donate" (kept here, not ratified)**: bare labels with no semantics in a protocol package. Review questions it carried: which capability owns an advance health directive, a signed-instrument concern of [Contract](../rights/contract/contract.md), a person-record label set, or something else; until who may set it and what it triggers is written the labels fail the no-bare-edges test and stay backlog; and why the category root carried them at all, possibly a misplaced protocol. `modules/knowledge/protocol` does not exist in memar, so no labels were carried.

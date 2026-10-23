@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/primitive/claim.py — the claim an agent leaves in a session's folder while it holds the task, declared once.
+"""modules/management/task/primitive/claim.py — the claim an agent leaves in a task's folder while it holds the task, declared once.
 
 A claim is a file, created with exclusive create so that exactly one of two
-agents taking one session wins (`session_claim` does the taking). What the
+agents taking one task wins (`task_claim` does the taking). What the
 claim is — the file's name, the name of the guard held while a stale claim is
 replaced, how long a claim lives, and what the file says — is the type's, and
 every service that takes, keeps, lays out or describes a claim calls it
@@ -12,9 +12,9 @@ every service that takes, keeps, lays out or describes a claim calls it
 
 Why a claim lapses. Nothing keeps a claim fresh: no process of Memar's watches
 the sub-agent, so a claim's age is only the time since it was taken. A dead
-agent's claim must still lapse, or its session is held forever; but the lapse
-must not take a session from a sub-agent still at work, and one evening's
-batch of sessions, handed out one after another, can run through the night.
+agent's claim must still lapse, or its task is held forever; but the lapse
+must not take a task from a sub-agent still at work, and one evening's
+batch of tasks, handed out one after another, can run through the night.
 A day outlasts that batch.
 """
 from __future__ import annotations
@@ -25,7 +25,7 @@ from typing import ClassVar
 
 @dataclass(frozen=True)
 class Claim:
-    """The claim of one session FOLDER: where it is, and whether it still holds."""
+    """The claim of one task FOLDER: where it is, and whether it still holds."""
     folder: Path
     NAME: ClassVar[str] = 'claim'
     TAKEOVER_NAME: ClassVar[str] = f'{NAME}.takeover'

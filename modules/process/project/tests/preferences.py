@@ -61,7 +61,7 @@ class Fixture(unittest.TestCase):
     def prefer(self, value: str | None) -> None:
         path = preferences_path(self.project)
         key = '' if value is None else f'  {PREFERENCE}: {value}\n'
-        path.write_text(f'name: orchard\n{BLOCK_KEY}:\n  sessions:\n{key}', encoding='utf-8', newline='\n')
+        path.write_text(f'name: orchard\n{BLOCK_KEY}:\n  tasks:\n{key}', encoding='utf-8', newline='\n')
 
     def places(self):
         return normative_reference_places(self.project, self.memar)
@@ -113,8 +113,8 @@ class Manifest(Fixture):
         preferences_path(self.project).write_text(text, encoding='utf-8', newline='\n')
 
     def test_only_the_block_is_read(self) -> None:
-        self.write('"@type": SoftwareSourceCode\nsessions: not-memars\nmemar:\n  # a note\n  sessions: work\n  records: off\nkeywords:\n  - records: x\n')
-        self.assertEqual(read_preferences(self.project), {'sessions': 'work', 'records': 'off'})
+        self.write('"@type": SoftwareSourceCode\ntasks: not-memars\nmemar:\n  # a note\n  tasks: work\n  records: off\nkeywords:\n  - records: x\n')
+        self.assertEqual(read_preferences(self.project), {'tasks': 'work', 'records': 'off'})
 
     def test_a_manifest_without_the_block_or_no_manifest_sets_nothing(self) -> None:
         self.assertEqual(read_preferences(self.project), {})
@@ -122,7 +122,7 @@ class Manifest(Fixture):
         self.assertEqual(read_preferences(self.project), {})
 
     def test_the_text_written_for_values_reads_back_as_them(self) -> None:
-        values = {'sessions': 'work/sessions', PREFERENCE: 'rules/refs, docs/refs'}
+        values = {'tasks': 'work/tasks', PREFERENCE: 'rules/refs, docs/refs'}
         self.write(preferences_text(values))
         self.assertEqual(read_preferences(self.project), values)
 if __name__ == '__main__':

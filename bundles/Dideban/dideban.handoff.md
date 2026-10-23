@@ -4,7 +4,7 @@
 Physical security/protection requirement modeling: whether protection is a shared requirement across organizations of vastly different scale (a few-square-meter shop vs a multi-hundred-floor complex), with the requirement itself identical and only execution scale differing - comparable to Android vendors sharing one kernel and differing in GUI/vendor layer. Raised as an example in the shared-requirements discussion; not yet modeled.
 
 ## Status
-Paused - flagged for a dedicated session; nothing modeled.
+Paused - flagged for a dedicated chat; nothing modeled.
 
 ## Decisions
 None. The claim under exploration:

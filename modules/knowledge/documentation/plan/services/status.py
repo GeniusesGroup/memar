@@ -20,7 +20,7 @@ def set_status(path: Path, status: str, expected: tuple[str, ...] | None=None) -
     and no Status is given one, last. With EXPECTED, the status is set only
     while it is still one of those, checked on the plan as it is when written
     (`rewrite`); otherwise the plan is left as it is and the caller refused.
-    STATUS and EXPECTED are statuses a session plan may take (`PLAN.statuses`); any other word is refused.
+    STATUS and EXPECTED are statuses a task plan may take (`PLAN.statuses`); any other word is refused.
     """
     status = status_word(status)
     wanted = None if expected is None else tuple((status_word(word) for word in expected))

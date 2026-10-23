@@ -6,23 +6,23 @@
 - Created `docs/rule.md` (Draft) as the language-neutral Rule and rule-engine concept document at `docs/` root beside `modularity.md`.
 - Created `docs/rule.research.001.md` (Complete) recording terminology research (rule vs policy vs constraint vs convention; SBVR, BRG, production rules).
 - Created `docs/rule.handoff.md` with open questions and an inventory of 32 document-level rule passages proposed for relocation to Module `rules/` folders.
-- Linked from [modularity.md → Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) and modules/khayyam/rules/README.md (`bundles/khayyam/rules/README.md`).
+- Linked from [modularity.md → Rules as a Provisional Term](../../knowledge/modularity/modularity.md#rules-as-a-provisional-term) and modules/khayyam/rules/README.md (`bundles/khayyam/rules/README.md`).
 
 ### Why
 - Owner position: Rule is a Memar-wide concept; any Module may carry `rules/` beside `protocol/`; rules are owner-introduced, not language/protocol properties; rule-making is general practice.
 
 ### Cited
 - [Rule Research 001](./rule.research.001.md) — `Evidence`
-- [Modularity → Rules as a Provisional Term](./modularity.md#rules-as-a-provisional-term) — `Extends`
+- [Modularity → Rules as a Provisional Term](../../knowledge/modularity/modularity.md#rules-as-a-provisional-term) — `Extends`
 - Linter (`docs/modules/computer/linter.md`) — `Reference`
-- [Modeling → Separating Structure (Code) from Policy (Rule)](./modeling.md#separating-structure-code-from-policy-rule) — `Reference`
+- [Modeling → Separating Structure (Code) from Policy (Rule)](../../../docs/modeling.md#separating-structure-code-from-policy-rule) — `Reference`
 
 ### Applied to
 - modularity.md: Done — pointer to `rule.md` added; section no longer marked provisional in title.
 - modules/khayyam/rules/README.md: Done — link to general Rule concept at top.
 
 ### Considered and not done
-- **Relocating inventory entries in the same session**: scoped out; recorded in handoff only.
+- **Relocating inventory entries in the same chat**: scoped out; recorded in handoff only.
 - **Promoting `rule.md` to Proposed immediately**: left Draft until framing open question is reviewed.
 
 ## 2026-09-29 — Rules, code, and services boundary
@@ -37,7 +37,7 @@
 
 ### Cited
 - Khayyam execution handoff → Rule model (`bundles/khayyam/khayyam.handoff.md`) — `Reference` (Memar server mention; no defining doc)
-- [Knowledge → Knowledge and Code](./knowledge.md#knowledge-and-code) — `Reference` (callable generative services)
+- [Knowledge → Knowledge and Code](../../knowledge/knowledge.md#knowledge-and-code) — `Reference` (callable generative services)
 
 ### Considered and not done
 - **Linking to a Memar server protocol document**: none exists under `docs/`; noted in handoff instead of inventing one.
@@ -64,7 +64,7 @@
 - Cited:
   - Linter → A rule's home is its subject's document (`docs/modules/computer/linter.md#a-rules-home-is-its-subjects-document`) — `Evidence`: the principle this criterion extends from the claim to the `rules/` folder
   - Khayyam → Minimal Legislation (`docs/khayyam/khayyam.md#minimal-legislation-a-principle`) — `Evidence`: `:177` and `:181` for the language test
-  - [Modeling → Constraints Belong to the Constraining Concern](./modeling.md#constraints-belong-to-the-constraining-concern) — `Evidence`: a condition is owned by the concern that originates it
+  - [Modeling → Constraints Belong to the Constraining Concern](../../../docs/modeling.md#constraints-belong-to-the-constraining-concern) — `Evidence`: a condition is owned by the concern that originates it
   - Control Flow Model → Halt (`modules/process/control-flow/control-flow.md#halt`) — `Reference`: `:129` for the name `Halt` and `:131` for the refused `panic`
   - protocols → Where implementations live (`docs/modules/README.md#where-implementations-live`) — `Reference`: `:16` names the module the relocated Rule's protocol claims
   - Test → Placement (`modules/process/test/rules/test-placement/test-placement.md`) — `Reference`: a Rule already filed in the module that owns its subject
@@ -83,7 +83,7 @@ The owner's challenge of 2026-10-03 asked whether all rules relating to Khayyam 
 - **Moving the catalog's 13 repository-convention Rules out of it**: named as the measurement that motivates the criterion, not performed. Each is a separate relocation with its own subject to argue, and the question was where a Rule goes rather than which Rules leave.
 - **Placing the relocated Rule in `modules/process/error/rules/`**: that folder exists and is empty and the owner named it as a candidate; not taken, because what an Error *is* is that module's subject and how execution continues once one has occurred is not — `docs/protocols/process/control-flow.md:139` draws that line itself.
 - **Creating an independent `panic` module**: not taken; `modules/process/control-flow/` already holds the concept, its two declarations, and its contract, and `panic` is a refused name at `control-flow.md:131`.
-- **Writing the Scope Visibility claim into `docs/khayyam/`**: not written. `docs/khayyam/khayyam.research.001.md:444` records the statement of a `sc` block's reach as owed beside `khayyam.md:129`, and that folder is not this session's to write; the Rule cites the debt rather than closing it.
+- **Writing the Scope Visibility claim into `docs/khayyam/`**: not written. `docs/khayyam/khayyam.research.001.md:444` records the statement of a `sc` block's reach as owed beside `khayyam.md:129`, and that folder is not this chat's to write; the Rule cites the debt rather than closing it.
 - **Settling the two cases the criterion leaves undecided**: recorded in the body as undecided rather than answered, because those two are questions about subjects and no placement rule can decide them.
 
 ---
@@ -94,8 +94,8 @@ The owner's challenge of 2026-10-03 asked whether all rules relating to Khayyam 
   - rule.md: Reference - its definition derives from this repository's own practice and rests on no external source, so no change was needed
   - rule.handoff.md: Done - an open question added recording that the vocabulary findings are a reading and are provisional against the specification
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - requested, decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - requested, decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
 
 #### What changed
 - `rule.research.001.md` no longer cites the industry-community articles and the tertiary compilation it read as `Evidence`, and no longer records their URLs. Each affected finding is now attributed to internet research with the `Reference` relation.
@@ -106,7 +106,7 @@ The owner's challenge of 2026-10-03 asked whether all rules relating to Khayyam 
 
 #### Considered and not done
 - A superseding research was not opened (Omid Hekayati — declined). The facet's own lifecycle makes supersession the correction mechanism for a frozen record, and that rule was set on the owner's approval; he directed that the record be corrected in place regardless of its status, and the tension between the two instructions is recorded here rather than resolved by this entry.
-- Re-attributing the vocabulary definitions to the specification was rejected as fabrication (Space Bunny Alpha — argued). The inquiry did not read that specification, and attributing a reading to a document nobody opened is exactly what [Documentation → Content Rule](./documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids. The gap is recorded as a limitation and as an open question instead.
+- Re-attributing the vocabulary definitions to the specification was rejected as fabrication (Space Bunny Alpha — argued). The inquiry did not read that specification, and attributing a reading to a document nobody opened is exactly what [Documentation → Content Rule](../../knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids. The gap is recorded as a limitation and as an open question instead.
 - Withdrawing the vocabulary findings as prior art no document relies upon was not done (Omid Hekayati — pending). It is a defensible outcome and is now a question in `rule.handoff.md`.
 
 #### Deliberation
@@ -121,8 +121,8 @@ The new `Source standing` rule in `documentation.md` was found to invalidate cit
   - modeling.md: Done - the graph-lens requirement kept and joined to the module lens through the same link
   - rule.handoff.md: Done - the two-views question and the anticipated-work items that existed only to settle it removed; every other entry left open
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - Added [Rule → One Concept, Two Lenses](./rule.md#one-concept-two-lenses): a Rule is one thing seen through two lenses, and each lens carries obligations the other does not discharge. The graph lens owes it an identity of its own — addressable and nameable apart from the Code element it governs — and reach into the model through named edges; the module lens owes it a stated boundary, its own identity and lifecycle, and attachment across an explicit relationship rather than through a host's essential identity.
@@ -132,9 +132,9 @@ The new `Source standing` rule in `documentation.md` was found to invalidate cit
 
 #### Considered and not done
 - **Naming one lens the primary framing**: rejected (Omid Hekayati — ruled). A primary lens settles the question by dropping the other lens's obligations, and both sets of obligations are requirements on the same Rule; a formulation that answers only one of them is not the concept either subject document was describing.
-- **Treating the two descriptions as two concepts wanting two names**: rejected (Omid Hekayati — ruled). What the two lenses look at is one thing — one condition, one subject, one boundary — and it is [Modularity → One Term, One Identity](./modularity.md#one-term-one-identity) applied in reverse that produced the doubt: the collision would exist only if the module attachment and the graph node were independently identified, which they are not.
+- **Treating the two descriptions as two concepts wanting two names**: rejected (Omid Hekayati — ruled). What the two lenses look at is one thing — one condition, one subject, one boundary — and it is [Modularity → One Term, One Identity](../../knowledge/modularity/modularity.md#one-term-one-identity) applied in reverse that produced the doubt: the collision would exist only if the module attachment and the graph node were independently identified, which they are not.
 - **Promoting `rule.md` beyond `Draft`**: not done. The status is the owner's to move, and this entry records the front matter as it stands.
-- **Naming what a Rule's own edges must be called**: not done. [Modeling → Edge Types and Their Traditional Counterparts](./modeling.md#edge-types-and-their-traditional-counterparts) owns the taxonomy, and whether an ordinary edge is addressable in its own right is open there.
+- **Naming what a Rule's own edges must be called**: not done. [Modeling → Edge Types and Their Traditional Counterparts](../../../docs/modeling.md#edge-types-and-their-traditional-counterparts) owns the taxonomy, and whether an ordinary edge is addressable in its own right is open there.
 
 #### Deliberation
 The question on record — which framing is primary, or whether the two are views of one concept — was mis-shaped as a choice, and the owner's ruling settled it by answering that no choice exists (Omid Hekayati — decided). "Which is primary" presupposes two descriptions competing for one name, and it was the presupposition that kept both documents hedged: `modularity.md` wrote that a Rule *may* be a Module, and `modeling.md` wrote of a separate framing. The concept is one; what differs is what a session must produce when it works in either lens, so the obligations were stated per lens rather than ranked between them (Space Bunny Alpha — argued).
@@ -147,7 +147,7 @@ The question on record — which framing is primary, or whether the two are view
 - Propagates to:
   - rule.handoff.md: Done — the ontology-checks question and the retiring-a-Rule question were deleted; each is answered in the body
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - `### Who Owns and Introduces Rules` now states that a grammar's well-formedness condition is a Rule and that its being part of the language does not stop it being one: a condition is outside a language, protocol, or concept until an owner elevates it by stating it in that subject's own document, and a well-formedness condition is elevated there by the owner of the language it constrains.
@@ -166,13 +166,13 @@ The question on record — which framing is primary, or whether the two are view
 - Time: 2026-10-05T17:15:06Z
 - Type: Changed
 - Cited:
-  - [Type → Abstract](./type.md#abstract) — Evidence: "every semantic entity is a Type", which is what a checkable condition on a governed subject is
-  - [Type → Type and Rules](./type.md#type-and-rules) — Evidence: a rule exists at the modeling level as a stated constraint or valid-behavior description, and the checking code is one realization rather than the rule itself
+  - [Type → Abstract](../../../docs/type.md#abstract) — Evidence: "every semantic entity is a Type", which is what a checkable condition on a governed subject is
+  - [Type → Type and Rules](../../../docs/type.md#type-and-rules) — Evidence: a rule exists at the modeling level as a stated constraint or valid-behavior description, and the checking code is one realization rather than the rule itself
 - Propagates to:
   - Linter → How a governance rule is authored (`docs/modules/computer/linter.md#how-a-governance-rule-is-authored`): Done — that document's closing paragraph now carries the sentence, recorded in its own changelog
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - *Normative Claim and Executable Form* now adds that the members a governance Rule carries for linter consumption describe the authoring form a Rule takes, while the claim itself is a Type on the subject it governs, and a notation is one rendering of that statement rather than its carrier. The two halves of the section are now stated as separate: the normative claim is what a Rule says, and the members — Subject, Tier, Default, Override — are how it is written down.
@@ -191,7 +191,7 @@ The finding was that the document's principal carrier of normative semantics is 
 - Time: 2026-10-12T09:44:11Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the uncommitted change to `rule.md`, `rule.handoff.md`, `rule.research.001.md` and this changelog against HEAD: the link repointing after the `protocols/` to `modules/` and `modules/khayyam/` to `bundles/khayyam/` moves (`memar content check` reports no problem), the new sections [One Concept, Two Lenses](./rule.md#one-concept-two-lenses), [Retiring a Rule](./rule.md#retiring-a-rule) and [Which Module a Rule Belongs To](./rule.md#which-module-a-rule-belongs-to), the sentence on a grammar's well-formedness condition and the Type sentence in the body, the three entries added to this changelog, and the handoff's removed questions and added measurement.
@@ -201,3 +201,18 @@ The finding was that the document's principal carrier of normative semantics is 
 #### Considered and not done
 - The other removed handoff questions (framing, ontology checks) stay removed: each is answered in `rule.md` and recorded in the 2026-10-05 entries.
 - The unmatched `process.research.002.md` link in the removed question was not restored, since the file is no longer in `docs/`.
+
+---
+
+### The document moves to `modules/process/rule/`
+- Time: 2026-10-17T10:41:00Z
+- Type: Changed
+- Cited:
+  - [Modules → What does not belong here](../../README.md#what-does-not-belong-here) — `Depends_on`: a concept document that needs code leaves `docs/`
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- `docs/rule.md`, `rule.changelog.md`, `rule.handoff.md` and `rule.research.001.md` moved to this module, beside its `protocol/`. Links to them were rewritten and nothing else in them changed.
+- Occasion: the owner's ruling of 2026-10-17 that a document which needs code to state itself is not kept in `docs/`, and that rules have that property where Type and Process do not.

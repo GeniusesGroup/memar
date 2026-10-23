@@ -9,13 +9,13 @@ Active — the type states the signed instrument, what is in force, and what is 
 ## Decisions
 - The four companions are present before a binding signature. After that signature the payload stays as signed. Critique can continue in the same period; a reaction is not a signature. *(Decided — owner)*
 - Changing a disputed number is a new node because its effects are not small. *(Decided — owner)*
-- Executive guarantee is how the law takes effect, not a mandatory sanction. *(Decided — owner this session)*
-- A law is typically realized as one or more [Rule](../../computer/rule/rule.md) nodes. Law and Rule are layers, not islands. The Rule set is inside the digest. *(Decided — owner this session)*
-- Folk labels attach to comments, not to the law node. Influence filters reading, not vote weight. *(Decided — owner this session)*
+- Executive guarantee is how the law takes effect, not a mandatory sanction. *(Decided — owner this chat)*
+- A law is typically realized as one or more [Rule](../../computer/rule/rule.md) nodes. Law and Rule are layers, not islands. The Rule set is inside the digest. *(Decided — owner this chat)*
+- Folk labels attach to comments, not to the law node. Influence filters reading, not vote weight. *(Decided — owner this chat)*
 - Specific statutes are instances, not this type. *(Decided — owner)*
 - Do not dual-maintain the type. *(Decided — owner)*
 - Duration of votes and laws is a plugable organisational capability. *(Decided — owner; git mv to `modules-plugable/rights/law-validity`; placement superseded 2026-10-20 by the next line)*
-- The law type's optional parts are one pluggable module, [`modules-plugable/rights/law`](../../../modules-plugable/rights/law/law.md), with one removal unit: its labels in `labels/`, the laws it introduces in `laws/`, validity as edges that raise a law's identity in `edges/validity/`, and the rule domain's rules run under law in `rules/` once one exists. *(Decided — owner, 2026-10-20, rulings D2 and D3 on [Modules Research 001](../../modules.research.001.md#6-owner-decisions-needed))*
+- The law type's optional parts are one pluggable module, [`modules-plugable/rights/law`](../../../modules-plugable/rights/law/law.md), with one removal unit: its labels in `labels/`, the laws it introduces in `laws/`, validity as edges that raise a law's identity in `edges/validity/`, and the rule domain's rules run under law in `rules/` once one exists. *(Decided — owner, 2026-10-20, rulings D2 and D3 on [Modules Research 001](../../../.agents/tasks/20261019-T191746Z-12632/docs/modules.research.001.md#6-owner-decisions-needed))*
 - Appointing a voter is [Delegate](../delegate/delegate.md). The delegate's signature on each proposition is visible. Replacing that signature on one proposition, while the appointment continues, is the owner's rule. Whether the empty rule on the delegate record (the whole appointment given back) is also that one-proposition case is open. *(Decided — owner for the rule; gap against the existing record is open)*
 - Family and marriage are separate plugable modules a bundle includes or leaves out. *(Decided — owner)*
 - Two contradictory laws do not both stay in force for a later choice of which one executes. Passing a new law that conflicts cancels the previous one, through a link stated with the proposal. That is not a complaint for a judiciary to resolve. *(Decided — owner, reviewing research 002)*
@@ -28,9 +28,9 @@ Active — the type states the signed instrument, what is in force, and what is 
 - **Where instance statutes live after the society corpus left Memar.** Settlement-specific statutes are modules of the bundle that enforces them. Duration/sunset is not one of those; it is plugable.
 - **`### Model` on a domain document.** A Cypher/edge list is a cache of `edges/` and `edges/aggregation.kh`. Removed from [law.md](law.md).
 - **Wholesale bundle→plugable.** Only duration left government. Membership and judiciary are split questions on [bundles.handoff.md](../../../bundles/bundles.handoff.md).
-- **Post-vote explanation-append.** Not an owner rule. It was Grok's inference from "later precision appends to interpretation." Once voting starts, nothing in the payload changes. *(How: owner this session, answering research 001 finding 1.)*
-- **Empty computer_code as the only draft gate.** Too strong a reading of one example. Any empty required companion keeps the record in draft. *(How: owner this session.)*
-- **Guarantee as sanction.** A misread of ضمانت اجرایی. *(How: owner this session.)*
+- **Post-vote explanation-append.** Not an owner rule. It was Grok's inference from "later precision appends to interpretation." Once voting starts, nothing in the payload changes. *(How: owner this chat, answering research 001 finding 1.)*
+- **Empty computer_code as the only draft gate.** Too strong a reading of one example. Any empty required companion keeps the record in draft. *(How: owner this chat.)*
+- **Guarantee as sanction.** A misread of ضمانت اجرایی. *(How: owner this chat.)*
 - **The node and the order.** A law node is one signed instrument. The legal order is which instruments are in force together. The human code and computer code state the position (duty, permission, power, or immunity). The type does not add a companion that only names that position. *(How: research 002, written into the type.)*
 - **Goal against the sentence.** The goal does not outrank human code or computer code. A result the sentence refuses is a drafting failure before signature. A more general reason is still a goal. *(How: research 002.)*
 - **Unsatisfiable computer code.** A form no input can satisfy is not opened for a signature. *(How: research 002.)*
@@ -54,7 +54,7 @@ Active — the type states the signed instrument, what is in force, and what is 
 11. **What the shared edge would attach to.** If computer code is one edge, whose signature digest includes it when the record is a contract rather than a law? A contract is signed by its parties. A law is signed by the people the vote binds.
 
 ## Anticipated Work
-- If vote edges move, the Boundaries bullet in [law.md](law.md) updates in the same session.
+- If vote edges move, the Boundaries bullet in [law.md](law.md) updates in the same chat.
 - Resolve whether a one-proposition signature is the delegate record's empty rule or a separate fact.
 - Do not open `law-priority` or a separate retroactivity module. Basic statutes are [laws](../../../modules-plugable/rights/law/laws/laws.md). Kinds of dispute are [claims](../../../modules-plugable/rights/claims/claims.md).
 

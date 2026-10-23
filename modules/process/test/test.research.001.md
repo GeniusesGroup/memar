@@ -25,7 +25,7 @@ The four questions carry final standing, but the inquiry is not closed. The web-
 
 ### Goals
 - Give Test Placement (`modules/process/test/rules/test-placement/test-placement.md`) and Test Naming (`modules/process/test/rules/test-naming/test-naming.md`) an external basis, or record explicitly that none exists, so that neither Rule is mistakable for a standard and neither claims authority it lacks — Met
-- Record what the ecosystems actually do, so that a later session does not re-derive the survey from documentation to answer a question already answered here — Met
+- Record what the ecosystems actually do, so that a later chat does not re-derive the survey from documentation to answer a question already answered here — Met
 - Identify where this repository's arrangement sits among the existing ones, so the Rules' arguments are about a real position rather than an invented alternative — Met
 
 ### Scope
@@ -122,7 +122,7 @@ What the survey does **not** support is the claim that a `tests/` folder is bett
 - Whether the two singular role folders in this repository's own Khayyam toolchain (`core/test/`, `targets/*/test/`) are the same case as the plural folders the placement Rule governs, or a drift. The plural was argued in the Rule from the count of instances a folder holds; the general convention has no document of its own. Since the survey, the Khayyam toolchain's test folders were all moved to the plural `tests/` (commit 8f63a66), so the drift half of this question is closed in that tree; the general convention still has no document of its own.
 
 ## Conclusion
-Question 1 is answered in the negative, specifically and verifiably: no language specification and no standards body mandates any test layout, naming rule, or discovery scheme. The two constructions that appear in specifications — D's `unittest` and Zig's `test` — constrain where tests may be *written within a file*, and neither constrains a filename or a directory. This is the load-bearing finding, because it establishes that a condition about test placement is necessarily an owner's Rule rather than a standard, which is the form `docs/rule.md` already prescribes.
+Question 1 is answered in the negative, specifically and verifiably: no language specification and no standards body mandates any test layout, naming rule, or discovery scheme. The two constructions that appear in specifications — D's `unittest` and Zig's `test` — constrain where tests may be *written within a file*, and neither constrains a filename or a directory. This is the load-bearing finding, because it establishes that a condition about test placement is necessarily an owner's Rule rather than a standard, which is the form `modules/process/rule/rule.md` already prescribes.
 
 Question 2 is answered: discovery is not one mechanism, and the mechanism determines how much a repository's layout matters. Question 3 is answered in the affirmative and with precedent on both halves, while the survey establishes no external basis for preferring this arrangement over its alternatives — so the Rules' own stated argument is what carries them.
 

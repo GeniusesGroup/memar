@@ -14,20 +14,20 @@ do.
 Memar repository is not only its Markdown: `modules/` holds the model
 definitions, the rules, the protocol implementations, and `.kh` sources,
 `bundles/` holds what runs or aggregates those modules, and `.agents/` holds
-the configuration a session is driven by. A tool named for
+the configuration a task is driven by. A tool named for
 content that could not search code would be a tool for documents. So `search`,
 `backlinks`, `obligations`, and the Memar half of `check` all read across the
 checkout, and the folders a reader does not want are excluded rather than the
-ones they happen to live in. The sessions' records are content too, but each is
-one session's claim and never a ruling, so `find` and `search` read them only
-when asked with `--from sessions` (`primitive/corpus_source.py`), from the
-records branch and the live session folders, and every hit names the session. See [Lib → The rule](../modularity/labels/guest.md#the-rule)
+ones they happen to live in. The tasks' records are content too, but each is
+one task's claim and never a ruling, so `find` and `search` read them only
+when asked with `--from tasks` (`primitive/corpus_source.py`), from the
+records branch and the live task folders, and every hit names the task. See [Lib → The rule](../modularity/labels/guest.md#the-rule)
 for the shape of that reasoning applied elsewhere: the subject decides the
 folder, and a name that states a narrower subject than the file serves is a
 name that will be believed.
 
 **The Memar root is not decided here.** `machine/env_location.py` is the one place
-that reads the location variable, and `machine/fs_memar.py` resolves the root from
+that reads the location variable, and `modules-plugable/computer/filesystem/services/fs_memar.py` resolves the root from
 it; each verb asks that module once when it runs, and nothing decides for
 itself. Minting a document ID asks the clock rather than the checkout, so it
 works on a machine that has not installed Memar at all.
@@ -38,29 +38,12 @@ holds only light standard-library imports at its top, and the root, the lock,
 and the repository test are reached inside the verb that uses them.
 """
 from __future__ import annotations
-
 import argparse
-
-VERB = "content"
-SUMMARY = (
-    "what Memar has written: `memar content path` says where this checkout is, "
-    "`memar content search <term>` looks through it"
-)
-OVERVIEW = (
-    "The written content of a Memar checkout. Every verb is "
-    "here: one subject, one word. `path` and `search` are "
-    "where to start. A `/docs/...` link in a Memar document is "
-    "relative to the checkout; on a shell that rewrites a "
-    "leading `/` (Git Bash/MSYS), pass it without the slash."
-)
-
+VERB = 'content'
+SUMMARY = 'what Memar has written: `memar content resolve-path` says where this checkout is, `memar content search <term>` looks through it'
+OVERVIEW = 'The written content of a Memar checkout. Every verb is here: one subject, one word. `resolve-path` and `search` are where to start. A `/docs/...` link in a Memar document is relative to the checkout; on a shell that rewrites a leading `/` (Git Bash/MSYS), pass it without the slash.'
 
 def describe(verbs) -> None:
     """`memar content`, which only groups its verbs: nothing is owed before every one."""
-    verbs.add_parser(
-        VERB,
-        help=SUMMARY,
-        description=OVERVIEW,
-        formatter_class=argparse.HelpFormatter,
-    )
+    verbs.add_parser(VERB, help=SUMMARY, description=OVERVIEW, formatter_class=argparse.HelpFormatter)
     return None

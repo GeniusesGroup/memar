@@ -8,53 +8,30 @@ discipline `content_text` holds: UTF-8 with no BOM, the file's own line endings,
 a final newline. An empty write and a write to a path that does not exist are
 refused unless asked for, because both look like a mistake and neither is
 reversible. The write is taken under the per-file lock, so a cooperating
-session writing the same file is serialized rather than interleaved.
+task writing the same file is serialized rather than interleaved.
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
+_m_fs_lock = plugable_load('computer.filesystem.services.fs_lock')
+edit_task = _m_fs_lock.edit_task
 import argparse
 import sys
 from pathlib import Path
-
 from modules.knowledge.content.services.reference import content_root
 from modules.knowledge.content.services.text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
 
-
 def describe(verbs):
-    parser = verbs.add_parser(
-        "write",
-        help="write a text file as UTF-8 without a BOM, preserving its newlines",
-        description="Put text into FILE as UTF-8 with no BOM, keeping the "
-                    "file's own line endings (LF for a new file) and "
-                    "guaranteeing a final newline. Never put text into a file "
-                    "through a shell's own text handling. The write is taken "
-                    "under the per-file lock, so a cooperating session writing "
-                    "the same file is serialized rather than interleaved.",
-        formatter_class=argparse.HelpFormatter,
-    )
-    parser.add_argument("file", help="path to write (any path, not only in this repo)")
-    parser.add_argument(
-        "--content-file",
-        default=None,
-        help="read the new text from this file instead of stdin",
-    )
-    parser.add_argument(
-        "--newline",
-        choices=["lf", "crlf"],
-        default=None,
-        help="line ending; default is the file's own, or LF for a new file",
-    )
-    parser.add_argument(
-        "--create",
-        action="store_true",
-        help="required to create a file that does not exist yet",
-    )
+    parser = verbs.add_parser('write', help='write a text file as UTF-8 without a BOM, preserving its newlines', description="Put text into FILE as UTF-8 with no BOM, keeping the file's own line endings (LF for a new file) and guaranteeing a final newline. Never put text into a file through a shell's own text handling. The write is taken under the per-file lock, so a cooperating task writing the same file is serialized rather than interleaved.", formatter_class=argparse.HelpFormatter)
+    parser.add_argument('file', help='path to write (any path, not only in this repo)')
+    parser.add_argument('--content-file', default=None, help='read the new text from this file instead of stdin')
+    parser.add_argument('--newline', choices=['lf', 'crlf'], default=None, help="line ending; default is the file's own, or LF for a new file")
+    parser.add_argument('--create', action='store_true', help='required to create a file that does not exist yet')
     return run
-
 
 def run(args: argparse.Namespace) -> None:
     cmd_write(args, content_root())
-
 
 def content_from(args: argparse.Namespace) -> str:
     """The new text, from a file if asked for, else from stdin.
@@ -76,29 +53,26 @@ def content_from(args: argparse.Namespace) -> str:
     read only when the transports above it are absent: a caller whose text is
     on disk must never wait on a pipe nobody is going to close.
     """
-    source = getattr(args, "content_file", None)
+    source = getattr(args, 'content_file', None)
     if source:
         refuse_kept_scratch(Path(source).expanduser())
         try:
-            return Path(source).expanduser().read_bytes().decode("utf-8")
+            return Path(source).expanduser().read_bytes().decode('utf-8')
         except UnicodeDecodeError as error:
-            sys.exit(f"error: --content-file is not valid UTF-8: {error}")
+            sys.exit(f'error: --content-file is not valid UTF-8: {error}')
         except OSError as error:
-            sys.exit(f"error: cannot read --content-file {source}: {error}")
+            sys.exit(f'error: cannot read --content-file {source}: {error}')
     return sys.stdin.read()
 
-
 def refuse_kept_scratch(source: Path) -> None:
-    """Refuse a SOURCE that is scratch lying where a session's records are kept.
+    """Refuse a SOURCE that is scratch lying where a task's records are kept.
 
-    A text staged only to be handed to this command, left in a session's docs/
-    or beside its plan, is archived with the session and kept twice, once as
-    the document written from it. Scratch goes in the session's temp/ folder,
+    A text staged only to be handed to this command, left in a task's docs/
+    or beside its plan, is archived with the task and kept twice, once as
+    the document written from it. Scratch goes in the task's temp/ folder,
     which is never archived.
     """
-    from modules.computer.module.services.folders import TEMP_FOLDER
     from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-
     try:
         resolved = source.resolve()
     except OSError:
@@ -107,13 +81,8 @@ def refuse_kept_scratch(source: Path) -> None:
         if (folder / PLAN_NAME).is_file():
             relative = resolved.relative_to(folder)
             if relative.parts[0] != TEMP_FOLDER:
-                sys.exit(
-                    f"error: --content-file {source} lies in session folder {folder.name} outside its {TEMP_FOLDER}/ "
-                    f"folder, where it would be archived with the session as a second copy of what is written from it. "
-                    f"Nothing was written. Put the scratch file in {folder / TEMP_FOLDER}/ and pass that."
-                )
+                sys.exit(f'error: --content-file {source} lies in task folder {folder.name} outside its {TEMP_FOLDER}/ folder, where it would be archived with the task as a second copy of what is written from it. Nothing was written. Put the scratch file in {folder / TEMP_FOLDER}/ and pass that.')
             return
-
 
 def refuse_empty(path: Path, text: str, verb: str) -> None:
     """An empty write is almost never meant, and it is not reversible.
@@ -124,44 +93,21 @@ def refuse_empty(path: Path, text: str, verb: str) -> None:
     the whole point of having this command rather than a shell redirect.
     """
     if not text.strip():
-        sys.exit(
-            f"error: no text to {verb} {path.name}. Nothing was written.\n"
-            "  Empty input usually means the pipe or redirect delivered nothing,\n"
-            "  not that the file should be emptied. Pass the text on stdin, or\n"
-            "  use --content-file PATH."
-        )
-
+        sys.exit(f'error: no text to {verb} {path.name}. Nothing was written.\n  Empty input usually means the pipe or redirect delivered nothing,\n  not that the file should be emptied. Pass the text on stdin, or\n  use --content-file PATH.')
 
 def cmd_write(args: argparse.Namespace, root: Path) -> None:
-    from machine.fs_lock import edit_session
-
     path = plain_path(args.file)
-    if not path.is_file() and not args.create:
-        sys.exit(
-            f"error: {path} does not exist. Nothing was written.\n"
-            "  Pass --create if you mean to add a new file. A mistyped path in a\n"
-            "  write would otherwise leave a stray file with no complaint."
-        )
+    if not path.is_file() and (not args.create):
+        sys.exit(f'error: {path} does not exist. Nothing was written.\n  Pass --create if you mean to add a new file. A mistyped path in a\n  write would otherwise leave a stray file with no complaint.')
     text = content_from(args)
-    refuse_empty(path, text, "write")
+    refuse_empty(path, text, 'write')
     newline = chosen_newline(args.newline, path)
     existed = path.is_file()
     if existed:
         _, had_bom = read_utf8_strict(path)
         if had_bom:
-            print(f"note: {path.name} had a BOM; the write removes it")
-    # Held across the write, and released however this ends. The whole text
-    # arrives at once, so there is nothing to re-derive: the lock is here to
-    # keep another cooperating session from writing the same file between this
-    # session's decision to write it and the bytes reaching disk. It is
-    # advisory — a file-write tool does not take it — and the intent note is
-    # what a waiter that takes over a stale lock reads to learn what this
-    # session meant to do to this file and against which base.
-    with edit_session(
-        path,
-        session_id=writer_id(),
-        plan_summary=f"write {len(text)} bytes to {path.name}",
-    ):
+            print(f'note: {path.name} had a BOM; the write removes it')
+    with edit_task(path, task_id=writer_id(), plan_summary=f'write {len(text)} bytes to {path.name}'):
         size = write_utf8(path, text, newline)
-    verb = "rewrote" if existed else "wrote"
-    print(f"{verb} {path} ({size} bytes, utf-8, no BOM, {newline!r} newlines)")
+    verb = 'rewrote' if existed else 'wrote'
+    print(f'{verb} {path} ({size} bytes, utf-8, no BOM, {newline!r} newlines)')

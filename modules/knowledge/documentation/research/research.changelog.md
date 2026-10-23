@@ -59,7 +59,7 @@
 ### Separate a question's origin from a citation
 - Time: 2026-10-04T13:27:43Z
 - Propagates to:
-  - documentation.md: Reference - the rule this section defers to was added in the same session
+  - documentation.md: Reference - the rule this section defers to was added in the same chat
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - decided
   - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) - claimed, argued
@@ -73,7 +73,7 @@
 - No `Evidence` relation was added for an origin, and no requirement was added that a research name the material it read but did not rely on (Space Bunny Alpha — argued). The Methodology already requires the sources consulted to be stated, and a source of no standing is named there by class rather than by name.
 
 #### Deliberation
-The new `Source standing` rule in `documentation.md` sends a question's origin to this facet's `Participants` and leaves the consequence unstated here, which left the two documents able to disagree about whether an origin supports a finding (Space Bunny Alpha — argued). The gap was closed on the owner's authorization to complete the propagation the same session rather than leave it open (Omid Hekayati — decided).
+The new `Source standing` rule in `documentation.md` sends a question's origin to this facet's `Participants` and leaves the consequence unstated here, which left the two documents able to disagree about whether an origin supports a finding (Space Bunny Alpha — argued). The gap was closed on the owner's authorization to complete the propagation the same chat rather than leave it open (Omid Hekayati — decided).
 
 ---
 
@@ -168,12 +168,12 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 #### What changed
 - The audit form is withdrawn. The previous entry introduced <base>.audit.<NNN>.md and this one reverses it, because the facet the form duplicated already existed: [Documentation — Changelog](../changelog/changelog.md) declares comparative prior-art surveys and decision-shaping context to be its own content classes, and every one of the three records had its reasoning in the very entries that carried their findings.
 - What was genuinely missing is now stated in the specification that owns it. A new topic, [Changelog membership](../changelog/changelog.md#changelog-membership-what-may-be-recorded-here), holds that an entry records an event bearing on the artifact's state and that the event need not be a change to its text - among them a survey whose negative result is the finding, which is the case no other facet admitted. The boundary is the test each case passes: still to be done is a handoff entry; settled, settled-against, or already held is recorded here. A survey that produced open questions records the survey in the ledger and the questions in the handoffs that own them.
-- Two catalog sections were added for it: [Surveyed](../changelog/changelog.md#surveyed), what was checked against what and what the check found, stated so a later session does not repeat it; and [Examined and not adopted](../changelog/changelog.md#examined-and-not-adopted), material examined and deliberately not carried with its reason - a case that had no home at all, because a rejected claim produces no change to hang from.
-- The three records are removed and their residue carried by three entries. The Go-group audit's residue was the largest: twenty-six claim clusters checked against the documents, twelve already carried, eleven becoming open questions in ten handoffs, five categories of claim examined and not adopted, and the deletion condition that let the raw exports be removed. Two artifacts gained handoff files in that session and the questions remain live there.
+- Two catalog sections were added for it: [Surveyed](../changelog/changelog.md#surveyed), what was checked against what and what the check found, stated so a later chat does not repeat it; and [Examined and not adopted](../changelog/changelog.md#examined-and-not-adopted), material examined and deliberately not carried with its reason - a case that had no home at all, because a rejected claim produces no change to hang from.
+- The three records are removed and their residue carried by three entries. The Go-group audit's residue was the largest: twenty-six claim clusters checked against the documents, twelve already carried, eleven becoming open questions in ten handoffs, five categories of claim examined and not adopted, and the deletion condition that let the raw exports be removed. Two artifacts gained handoff files in that chat and the questions remain live there.
 - Where such material belongs is now said once, in the criterion topic: an internal survey is recorded in the changelog of the artifact it examines.
 
 #### Considered and not done
-- **Renaming the Changelog facet to Audit** (rejected, and the question is the owner's if it returns): "audit" already names the reader relationship this facet serves - a reader auditing how the current state came to be - and would now also name one of its own sections, so the facet would point at its contents rather than at its subject. What the practice actually lacked was membership, not a name; if a rename is ever wanted, History is the accurate generalization, because the facet's subject is how the state came to be whether or not this session changed it.
+- **Renaming the Changelog facet to Audit** (rejected, and the question is the owner's if it returns): "audit" already names the reader relationship this facet serves - a reader auditing how the current state came to be - and would now also name one of its own sections, so the facet would point at its contents rather than at its subject. What the practice actually lacked was membership, not a name; if a rename is ever wanted, History is the accurate generalization, because the facet's subject is how the state came to be whether or not this chat changed it.
 - **Registering the audit form in documentation.md instead** (not taken): it would register a second non-facet artifact kind on the strength of three instances whose residue the changelog already had a home for, which is the implicit-convention state the facet system exists to eliminate.
 
 ---
@@ -205,7 +205,7 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 - Time: 2026-10-16T18:06:00Z
 - Type: Changed
 - Propagates to:
-  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+  - modules/content/documentation/documentation.md: Done (task `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
@@ -213,7 +213,7 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 #### What changed
 - [Reader relationship](./research.md#reader-relationship): the definition `documentation.md` held for this facet moved here — the content examined to evaluate a deliberate inquiry. That a negative result has no other home, the per-base ordinal and the lifecycle (mutable while Active, frozen once Complete or Withdrawn) were already in this specification and were merged, not repeated.
 - The sentence that restated the Explanation, Changelog and Handoff relationships now points at their own sections, and says that a relationship none of them answers enters by its own specification.
-- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+- Made in task 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
 
 #### Considered and not done
 - **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
@@ -230,7 +230,7 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 #### What changed
 - [./research.md#status-mandatory]: the sentence no longer lists the Status values this kind may take; it names the type `Status` and the way a script asks it (`Status.for_kind`), and keeps its rules.
 - Why: the closed set is code in `.agents/scripts/services/status.py`, and a prose list of a closed set is a copy ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); [documentation.md → Status](../documentation.md#status) had already dropped its table under the same ruling.
-- Made in session 20261016-T194830Z-21416.
+- Made in task 20261016-T194830Z-21416.
 
 ---
 
@@ -244,4 +244,4 @@ ule.research.001.md cite none, and would not meet the criterion as now stated. W
 #### What changed
 - The question statuses and goal statuses are no longer listed in [Question and Goals](./research.md#question-and-goals-mandatory) (`QuestionStatus`, `GoalStatus`). The sections are typed (`ResearchSection`, with the mandatory core marked); their prose is unchanged.
 - Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
-- Made in session 20261016-T194831Z-4504.
+- Made in task 20261016-T194831Z-4504.

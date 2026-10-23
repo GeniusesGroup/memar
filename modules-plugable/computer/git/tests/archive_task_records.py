@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for keeping a session's records in `modules-plugable/computer/git/services/archive_task_records.py`.
+"""Tests for keeping a task's records in `modules-plugable/computer/git/services/archive_task_records.py`.
 
     python modules/management/task/tests/archive.py
 
-The subject is keeping a session's records on a branch of its project's own
+The subject is keeping a task's records on a branch of its project's own
 repository — the owner's rulings of 2026-10-14 and 2026-10-15 that
-`session_archive`'s docstring states — named for the file that holds it per
+`task_archive`'s docstring states — named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
@@ -20,17 +20,17 @@ checked unmoved.
 
 What is pinned, and what each pin is for:
 
-  WhatIsKept      A session's whole folder is on the branch dev-knowledge at
+  WhatIsKept      A task's whole folder is on the branch dev-knowledge at
                   .agents/tasks/<id>/ except the claim, caches, a path
                   with a .git part, binary files, a non-document file over
-                  256 KB, and the session's own temp folder. The kept plan
+                  256 KB, and the task's own temp folder. The kept plan
                   names its project by its registered name and is otherwise as
                   written, bytes and line endings; the commit message lists
                   each leave-out with its size and reason. Keeping again
                   writes what the folder holds now, drops what it no longer
                   holds, and makes no commit when nothing changed; a dry run
                   writes nothing and says what would be kept.
-  Standing        Whether a session is archived is whether the branch holds
+  Standing        Whether a task is archived is whether the branch holds
                   what archiving would write now: a change after archiving, in
                   a file that is kept, makes it not archived; in temp, not.
   WhenNotOwed     A project whose preferences say `records: off`, a plan that
@@ -45,7 +45,7 @@ What is pinned, and what each pin is for:
   BranchNameIsOneConstant
                   The branch name is spelled in one line of the scripts,
                   `fs_memar.RECORDS_BRANCH`.
-  RelatedSessions `archive` keeps the session named and every session whose
+  RelatedTasks `archive` keeps the task named and every task whose
                   Parent chain leads to it in one commit, and prints the
                   branch reference of each and the commit.
 
@@ -71,7 +71,7 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-session_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
+task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 from modules.process.project.services.registry import add_project
 Outcome = import_module('modules-plugable.computer.git.services.archive_task_records').Outcome
 State = import_module('modules-plugable.computer.git.services.archive_task_records').State
@@ -103,7 +103,7 @@ class Fixture(unittest.TestCase):
     def prefer(self, text: str) -> None:
         (self.project / 'manifest.yaml').write_text(f'memar:\n  {text}\n', encoding='utf-8', newline='\n')
 
-    def session(self, sid: str, *, project: str | None=None, parent: str='', report: str='') -> Path:
+    def task(self, sid: str, *, project: str | None=None, parent: str='', report: str='') -> Path:
         folder = memar_fs.task_dir(sid, create=True)
         named = str(self.project) if project is None else project
         front = ['---', f'Title: Task {sid}', 'Status: Complete', 'Opened: 2026-10-14T00:00:00Z']
@@ -136,14 +136,14 @@ class Fixture(unittest.TestCase):
     def commits(self) -> int:
         return len(self.git('rev-list', BRANCH).split()) if self.git('branch', '--list', BRANCH) else 0
 
-    def keep(self, folder: Path, **named) -> session_archive.Kept:
-        return session_archive.keep_records([folder], **named)[0]
+    def keep(self, folder: Path, **named) -> task_archive.Kept:
+        return task_archive.keep_records([folder], **named)[0]
 
 class WhatIsKept(Fixture):
     REPORT = '---\nTitle: T\nStatus: Complete\n---\n# Report\n\n## Result\nThe entry is [drafted](docs/entry.md#first), the script [here](services/fix.py).\n'
 
     def make(self) -> Path:
-        folder = self.session('20261014-T100000Z-1', report=self.REPORT)
+        folder = self.task('20261014-T100000Z-1', report=self.REPORT)
         self.put(folder, 'docs/entry.md', b'# Entry\n')
         self.put(folder, 'docs/scratch.txt', b'not linked, kept\n')
         self.put(folder, 'services/fix.py', b"print('fix')\n")
@@ -180,7 +180,7 @@ class WhatIsKept(Fixture):
         self.assertEqual(self.git('rev-parse', 'HEAD'), head)
         self.assertEqual(self.git('symbolic-ref', 'HEAD'), 'refs/heads/main')
         self.assertEqual(self.git('status', '--porcelain'), status)
-        self.assertFalse((self.project / '.agents' / 'sessions').exists())
+        self.assertFalse((self.project / '.agents' / 'tasks').exists())
 
     def test_the_kept_plan_names_its_project_by_name_and_is_otherwise_as_written(self) -> None:
         folder = self.make()
@@ -230,8 +230,8 @@ class WhatIsKept(Fixture):
         self.assertEqual(again.commit, first.commit)
         self.assertEqual(self.commits(), 1)
 
-    def test_another_sessions_records_stay_when_this_one_is_kept_again(self) -> None:
-        one, two = (self.session('20261014-T100001Z-2'), self.session('20261014-T100002Z-3'))
+    def test_another_tasks_records_stay_when_this_one_is_kept_again(self) -> None:
+        one, two = (self.task('20261014-T100001Z-2'), self.task('20261014-T100002Z-3'))
         self.keep(one)
         self.keep(two)
         self.put(one, 'docs/more.md')
@@ -248,62 +248,62 @@ class WhatIsKept(Fixture):
 
 class Standing(Fixture):
 
-    def test_a_session_is_archived_once_the_branch_holds_what_archiving_would_write(self) -> None:
-        folder = self.session('20261014-T101000Z-1')
-        before = session_archive.standing(folder)
+    def test_a_task_is_archived_once_the_branch_holds_what_archiving_would_write(self) -> None:
+        folder = self.task('20261014-T101000Z-1')
+        before = task_archive.standing(folder)
         self.assertIs(before.state, State.WAITING)
         self.keep(folder)
-        self.assertIs(session_archive.standing(folder).state, State.ARCHIVED)
+        self.assertIs(task_archive.standing(folder).state, State.ARCHIVED)
 
     def test_a_change_after_archiving_in_a_kept_file_makes_it_not_archived_again(self) -> None:
-        folder = self.session('20261014-T101001Z-2')
+        folder = self.task('20261014-T101001Z-2')
         self.keep(folder)
         self.put(folder, 'docs/late.md')
-        self.assertIs(session_archive.standing(folder).state, State.WAITING)
+        self.assertIs(task_archive.standing(folder).state, State.WAITING)
         self.keep(folder)
-        self.assertIs(session_archive.standing(folder).state, State.ARCHIVED)
+        self.assertIs(task_archive.standing(folder).state, State.ARCHIVED)
 
     def test_a_change_in_temp_or_the_claim_leaves_it_archived(self) -> None:
-        folder = self.session('20261014-T101002Z-3')
+        folder = self.task('20261014-T101002Z-3')
         self.keep(folder)
         self.put(folder, 'temp/x.md')
         self.put(folder, 'claim', b'changed\n')
-        self.assertIs(session_archive.standing(folder).state, State.ARCHIVED)
+        self.assertIs(task_archive.standing(folder).state, State.ARCHIVED)
 
     def test_standing_writes_nothing(self) -> None:
-        folder = self.session('20261014-T101003Z-4')
-        session_archive.standing(folder)
+        folder = self.task('20261014-T101003Z-4')
+        task_archive.standing(folder)
         self.assertFalse(self.git('branch', '--list', BRANCH))
 
     def test_standing_says_not_owed_and_refused_as_keeping_would(self) -> None:
         self.prefer('records: off')
-        off = self.session('20261014-T101004Z-5')
-        self.assertIs(session_archive.standing(off).state, State.NOT_OWED)
+        off = self.task('20261014-T101004Z-5')
+        self.assertIs(task_archive.standing(off).state, State.NOT_OWED)
         self.prefer('records: maybe')
-        self.assertIs(session_archive.standing(off).state, State.REFUSED)
+        self.assertIs(task_archive.standing(off).state, State.REFUSED)
 
-    def test_the_reference_is_the_branch_and_the_sessions_folder_on_it(self) -> None:
-        self.assertEqual(session_archive.reference('20261014-T101005Z-6'), f'{BRANCH}:.agents/tasks/20261014-T101005Z-6/')
+    def test_the_reference_is_the_branch_and_the_tasks_folder_on_it(self) -> None:
+        self.assertEqual(task_archive.reference('20261014-T101005Z-6'), f'{BRANCH}:.agents/tasks/20261014-T101005Z-6/')
 
 class WhenNotOwed(Fixture):
 
     def test_a_project_that_says_off_keeps_none(self) -> None:
         self.prefer('records: off')
-        folder = self.session('20261014-T100001Z-2')
+        folder = self.task('20261014-T100001Z-2')
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.NOT_OWED)
         self.assertIn('records: off', kept.why)
         self.assertFalse(self.git('branch', '--list', BRANCH))
 
     def test_an_empty_key_and_on_keep_them(self) -> None:
-        for text in ('records:', 'records: on', 'sessions:'):
+        for text in ('records:', 'records: on', 'tasks:'):
             with self.subTest(text=text):
                 self.prefer(text)
-                folder = self.session(f'20261014-T10000{len(text) % 10}Z-3')
+                folder = self.task(f'20261014-T10000{len(text) % 10}Z-3')
                 self.assertIs(self.keep(folder).outcome, Outcome.KEPT)
 
     def test_a_plan_that_names_no_project_owes_none(self) -> None:
-        folder = self.session('20261014-T100002Z-4', project='')
+        folder = self.task('20261014-T100002Z-4', project='')
         self.assertIs(self.keep(folder).outcome, Outcome.NOT_OWED)
         self.assertFalse(self.git('branch', '--list', BRANCH))
 
@@ -321,10 +321,10 @@ class WhenRefused(Fixture):
 
     def test_a_value_records_may_not_take_is_refused(self) -> None:
         self.prefer('records: maybe')
-        self.assertRefused(self.session('20261014-T100004Z-6'), 'maybe')
+        self.assertRefused(self.task('20261014-T100004Z-6'), 'maybe')
 
     def test_a_project_not_on_this_computer_is_refused(self) -> None:
-        folder = self.session('20261014-T100005Z-7', project=str(self.fake_root / 'elsewhere'))
+        folder = self.task('20261014-T100005Z-7', project=str(self.fake_root / 'elsewhere'))
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.REFUSED)
         self.assertIn('not a folder', kept.why)
@@ -333,7 +333,7 @@ class WhenRefused(Fixture):
         other = self.fake_root / 'work' / 'unnamed'
         other.mkdir(parents=True)
         self.git('init', '-q', '-b', 'main', folder=other)
-        folder = self.session('20261014-T100006Z-8', project=str(other))
+        folder = self.task('20261014-T100006Z-8', project=str(other))
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.REFUSED)
         self.assertIn('memar project add', kept.why)
@@ -343,7 +343,7 @@ class WhenRefused(Fixture):
         plain = self.fake_root / 'work' / 'plain'
         plain.mkdir(parents=True)
         add_project('plain', plain)
-        folder = self.session('20261014-T100007Z-9', project=str(plain))
+        folder = self.task('20261014-T100007Z-9', project=str(plain))
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.REFUSED)
         self.assertIn('not the top folder of a git repository', kept.why)
@@ -351,7 +351,7 @@ class WhenRefused(Fixture):
 
     def test_a_project_whose_checked_out_branch_is_the_records_branch_is_refused(self) -> None:
         self.git('checkout', '-q', '-b', BRANCH)
-        folder = self.session('20261014-T100008Z-10')
+        folder = self.task('20261014-T100008Z-10')
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.REFUSED)
         self.assertIn('checked out', kept.why)
@@ -366,52 +366,52 @@ class BranchNameIsOneConstant(unittest.TestCase):
         self.assertEqual(spelled, ['modules-plugable/computer/filesystem/services/fs_memar.py'])
         self.assertEqual(memar_fs.RECORDS_BRANCH, BRANCH)
 
-class RelatedSessions(Fixture):
+class RelatedTasks(Fixture):
 
     def run_archive(self, sid: str) -> str:
         parser = argparse.ArgumentParser()
         verbs = parser.add_subparsers()
-        run = session_archive.describe(verbs)
+        run = task_archive.describe(verbs)
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            run(parser.parse_args([session_archive.ARCHIVE_COMMAND, '--task-id', sid]))
+            run(parser.parse_args([task_archive.ARCHIVE_COMMAND, '--task-id', sid]))
         return out.getvalue()
 
-    def test_the_session_and_those_its_parent_chain_leads_to_are_kept_in_one_commit_and_named(self) -> None:
-        top = self.session('20261014-T110000Z-10')
-        child = self.session('20261014-T110001Z-11', parent=top.name)
-        grandchild = self.session('20261014-T110002Z-12', parent=child.name)
-        other = self.session('20261014-T110003Z-13')
+    def test_the_task_and_those_its_parent_chain_leads_to_are_kept_in_one_commit_and_named(self) -> None:
+        top = self.task('20261014-T110000Z-10')
+        child = self.task('20261014-T110001Z-11', parent=top.name)
+        grandchild = self.task('20261014-T110002Z-12', parent=child.name)
+        other = self.task('20261014-T110003Z-13')
         said = self.run_archive(top.name)
         for each in (top, child, grandchild):
             self.assertIn('plan.md', self.branch_files(each.name), each.name)
-            self.assertIn(session_archive.reference(each.name), said)
+            self.assertIn(task_archive.reference(each.name), said)
         self.assertEqual(self.branch_files(other.name), [])
         self.assertEqual(self.commits(), 1)
         self.assertIn(self.git('rev-parse', BRANCH), said)
 
-    def test_a_refused_session_is_named_with_why_and_fails_the_verb(self) -> None:
-        top = self.session('20261014-T110004Z-14', project=str(self.fake_root / 'elsewhere'))
+    def test_a_refused_task_is_named_with_why_and_fails_the_verb(self) -> None:
+        top = self.task('20261014-T110004Z-14', project=str(self.fake_root / 'elsewhere'))
         with self.assertRaises(SystemExit):
             self.run_archive(top.name)
 
-    def test_a_refused_session_stops_the_others_of_the_task_too(self) -> None:
-        top = self.session('20261014-T110006Z-16')
-        self.session('20261014-T110007Z-17', parent=top.name, project=str(self.fake_root / 'elsewhere'))
+    def test_a_refused_task_stops_the_others_of_the_task_too(self) -> None:
+        top = self.task('20261014-T110006Z-16')
+        self.task('20261014-T110007Z-17', parent=top.name, project=str(self.fake_root / 'elsewhere'))
         with self.assertRaises(SystemExit):
             self.run_archive(top.name)
         self.assertEqual(self.branch_files(top.name), [])
 
-    def test_an_unknown_session_is_refused(self) -> None:
+    def test_an_unknown_task_is_refused(self) -> None:
         with self.assertRaises(SystemExit):
             self.run_archive('20261014-T110005Z-15')
 
     def test_the_help_names_the_branch_and_what_is_left_out(self) -> None:
         parser = argparse.ArgumentParser()
-        session_archive.describe(parser.add_subparsers())
+        task_archive.describe(parser.add_subparsers())
         helper = io.StringIO()
         with contextlib.redirect_stdout(helper), self.assertRaises(SystemExit):
-            parser.parse_args([session_archive.ARCHIVE_COMMAND, '--help'])
+            parser.parse_args([task_archive.ARCHIVE_COMMAND, '--help'])
         said = helper.getvalue()
         for words in (BRANCH, '.agents/tasks/', 'temp', 'claim', '256 KB', 'binary', 'never pushes'):
             self.assertIn(words, said)

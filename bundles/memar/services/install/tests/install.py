@@ -12,9 +12,9 @@ the platform's own record of MEMAR_ROOT is read but never written.
 
 What is pinned, and what each pin is for:
 
-  RecordOverSession  The record decides where Memar lives; the process
+  RecordOverTask  The record decides where Memar lives; the process
                      environment is only the copy a program started with. A
-                     session opened before the value was written reads nothing
+                     task opened before the value was written reads nothing
                      and installs again over a record that is already there.
   ProfileRoundTrip  What writes the record on POSIX is what reads it back, so
                      "read and write agree" is a fact and not an intention.
@@ -54,7 +54,7 @@ SiblingSurface    Each layer imports the module that owns the concern it needs,
                       rather than walking through which step clones. A
                       successful run also prints the one command this program
                       runs next; that command is the run's own output.
-  PathStaysIdempotent  PATH is read from the record and the session, duplicates
+  PathStaysIdempotent  PATH is read from the record and the task, duplicates
                       and empty parts do not duplicate the entry, and a second
                       run adds nothing.
   DeveloperIsMarked  `--developer` marks the recorded checkout as a development
@@ -627,7 +627,7 @@ class HelpUnchanged(unittest.TestCase):
     Not by pinning the bytes of a `--help`. A byte pin over a file this change
     edits is a pin that has to be refreshed by the same change that should have
     made a reader stop, which is why the earlier one was refreshed three times in
-    two sessions and then trusted on neither platform: argparse wraps help to the
+    two tasks and then trusted on neither platform: argparse wraps help to the
     terminal width, so the bytes are a property of the machine as much as of the
     file. What is pinned here is the interface a consumer names — the options and
     their order — and each tool's own subject, in whatever wording it uses.

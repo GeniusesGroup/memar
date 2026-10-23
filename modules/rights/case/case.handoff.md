@@ -1,17 +1,13 @@
 # Case Handoff
-
-Open work for the case draft. Entries are the state a later session needs. Dated answers from Omid are in [case.pilot-context.md](case.pilot-context.md). This file does not add an answer he did not give.
+Open work for the case draft. Entries are the state a later chat needs. Dated answers from Omid are in [case.pilot-context.md](case.pilot-context.md). This file does not add an answer he did not give.
 
 ## Topic & Purpose
-
 Phase 0 models dispute resolution on `case`: petition, complaint, votes, the ruling shortcut, the pool and the margin, links between cases, and execution. The weight is a graph that will not have to be redrawn because an open question was papered over. Model v6 proposes one shape for a changed execution. That shape is not ratified.
 
 ## Status
-
 Active
 
 ## Decisions
-
 Confidence is Decided unless the bullet says otherwise. A draft sentence he did not say is not listed here.
 
 - **Decided (2026-09-26).** The pilot designs the best dispute-resolution model between persons. Matching a country's procedure is not a goal. Prior art is evidence, not a compatibility target.
@@ -40,7 +36,6 @@ Confidence is Decided unless the bullet says otherwise. A draft sentence he did 
 - **Decided as his instruction (2026-09-28), graph Explored-but-unresolved.** He asked the pilot to leave a usable solution, or a later phase will be forced to add conditional accept. He named three candidates: A, full reject and the claimant chains an adjusted claim; B, full reject plus a consensus claim; C, conditional accept, which needs a consensus claim. He said a judge who wants a change edits the draft request, the edit produces a new request attached to the vote, the vote's text explains, and the registered request wins. He said conditional accept is not allowed on the consensus claim, and consensus means choosing one of those requests. He asked whether consensus could mean anything else. Model v6 proposes B, narrowed so the attachment sits only on reject, the claimant files exactly one of those requests, and the same judges cast a fresh accept or reject. **That proposal is awaiting ratification. The vote-to-request edge is not drawn.** Questions 1–5 are that gap. The rejected alternatives are in [case.changelog.md](case.changelog.md).
 
 ## Ambiguities Resolved
-
 - **Abstain.** Morning of 2026-09-27 he asked what a majority is when votes are for the plaintiff, for the defendant, or abstain, and he floated that an abstain counts as a negative. Afternoon: there is no abstention. [case.research.005.md](case.research.005.md) questions 1 and 2 are closed by that sentence.
 - **Blind voting and aliases.** [case.research.006.md](case.research.006.md) questions 1–6 are closed by the independence rule, the rejection of one draft the others sign, the drop of the justice-domain alias, and the judge edge pointing at the user with an optional role for assignment. Who may open a hidden binding does not arise here, because this domain does not hide the person.
 - **Arbitration as a second type.** [case.research.007.md](case.research.007.md) questions 1, 2, 3, 5, and 6 are closed by one adjudicator type, party-named persons on the same judge edge, no referral of a seated case to a second forum, and civil versus criminal as a label. Question 4's remainder is whether any person may be a judge.
@@ -55,7 +50,6 @@ Confidence is Decided unless the bullet says otherwise. A draft sentence he did 
 - **Pre-filing registry lookup.** [case.research.003.md](case.research.003.md) question 5. The inquiry is its own claim, not a provisional-filing gate.
 
 ## Open Questions
-
 Each item he has not closed. A model-v6 sentence is a proposal, not his answer. Suggested path in every case: he ratifies, rejects, or replaces the cited sentence. This handoff does not pick.
 
 1. **Ballot edge.** Critique v4 question 1 and model v5 blocked fork 1. Must every attached alternate sit on `vote_reject` only, with `vote_accept` strictly as filed? If yes, vote-reject has to carry an optional request. If no, which edge records accept-with-a-changed-service? Model v6 proposes the first reading and does not draw the edge. **Explored-but-unresolved. Proposal awaiting ratification.** Matters because the margin cannot classify an unnamed third outcome. Blocks the ballot and what a ruling executes. It does not block a plain accept of the filed service or a plain reject that points at nothing.
@@ -141,25 +135,22 @@ Each item he has not closed. A model-v6 sentence is a proposal, not his answer. 
 41. **Who writes grounds, evidence, and answers.** Critique v1 found that who may create each edge is mostly unrecorded. Most files now say so for their own edge. [grounds.md](edges/grounds/grounds.md), [evidence.md](edges/evidence/evidence.md), and [answers.md](edges/answers/answers.md) state no creator and do not ask for one. He did not answer. Matters because an edge with no who-may-create rule is a bare edge. Blocks ratifying those three edges.
 
 ## Assumptions
-
 - **Strong.** Matching any country's law is not a goal. If that were reversed, questions 6, 8, 9, 10, 13, and 14 would have to be re-read against the opened sources as targets rather than as evidence.
 - **Strong.** This phase writes no code. A Go file is not the model.
 - **Weak.** Sentences in the case drafts that he has not ratified, including model v6's pointer, describe a proposal. If he rejects B, questions 1–5 and 10–12 move with that rejection, and the rejected list in the changelog stays as the record of what was not done.
 
 ## Proposed Next Steps
-
 1. He ratifies or rejects model v6's B, including whether a vote-to-request edge is drawn. Depends on questions 1–5.
 2. He does not treat draft sentences cited under questions 6–41 as his answers. Each one is still his question.
 3. A file that carries an unratified sentence marks it in place. Entering the repository does not ratify it. The model v6 proposal stays in that set for as long as the vote-to-request edge is not drawn and he has not ratified it.
 
 ## Related Artifacts
-
 - [case.md](case.md) — Review. The draft states the proposal and links this handoff for enforcement.
 - [case.changelog.md](case.changelog.md) — None beyond what that entry already says. Rejected alternatives live there.
 - [case.pilot-context.md](case.pilot-context.md) — None. Dated inputs.
 - [case.research.001.md](case.research.001.md) through [case.research.007.md](case.research.007.md) — Review. Question disposition is in the notes below.
 - Critique v1-v4, model v1-v6, and the synthesis, which this handoff's questions cite by name — None. They were the pilot's review records. What each one was is in the last entry of [case.changelog.md](case.changelog.md), and each question above carries what it needs from them.
-- [claim labels](../../../modules-plugable/rights/claim-labels/claim-labels.handoff.md) — None for the complaint label. Action there is the handoff's own.
+- [claim labels](../../../modules-plugable/rights/claims/labels/labels.handoff.md) — None for the complaint label. Action there is the handoff's own.
 - [registry inquiry](../../../modules-plugable/rights/claims/edges/registry-inquiry/registry-inquiry.handoff.md) — Review. Joint procedure and the identity-theft service list.
 - [judge assignment](../../../modules-plugable/rights/judge-assignment/judge-assignment.handoff.md) — Review. Who may be a judge, the score examples, a later higher rank.
 - [judicial office](../../../modules-plugable/rights/judicial-office/judicial-office.handoff.md) — Review. A standing authorization with no case.
@@ -168,7 +159,6 @@ Each item he has not closed. A model-v6 sentence is a proposal, not his answer. 
 - User, content, and timeline domains — Create is not this phase. Notes only: identity hiding, and visibility until every required judge has voted.
 
 ## Notes
-
 Model v6's own Questions for Omid says the comparison picks B and asks nothing further. That is the proposal's stance. It is not ratification. Questions 1–5 stay open because the edge is not drawn.
 
 Disposition of every Questions-for-Omid item in the researches, so none is dropped:
@@ -234,14 +224,13 @@ Disposition of every Questions-for-Omid item in the researches, so none is dropp
 Model v1's nineteen questions are merged into model v2's eighteen. Critique v2 and critique v3 questions are the same forks. Critique v2's adjudicator-collapse question is closed by one judge edge, except the enforcement and challenge queries he named as the falsifier, which stay the falsifier and are not a second type. Critique v2's partial-quantum and numeric-reason questions are questions 10 and 12. Critique v3's four questions are questions 1–4.
 
 ## Earlier thread: graded enforcement and coercion capability
-
 The sections below are the content this file held before the justice pilot was merged into it. They are kept in full, and they concern a different topic: the graded enforcement capability and the Go to Khayyam conversion of this domain. Their headings sit one level lower than the pilot sections above.
 
 ### Topic & Purpose
 The graded enforcement/coercion capability question: whether the ability to restrict another party's freedom of action (detaining a person, enforcing settlement of a debt) is a government-exclusive attribute or a graded capability any organization can hold in different scopes. Raised during tax-modeling/enforcement discussion; explicitly deferred to a dedicated chat.
 
 ### Status
-Paused - deferred to a dedicated session; the core claim is untested.
+Paused - deferred to a dedicated chat; the core claim is untested.
 
 ### Decisions
 None. The working hypothesis is under exploration:

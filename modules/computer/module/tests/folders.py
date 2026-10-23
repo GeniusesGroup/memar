@@ -159,14 +159,14 @@ class RolesMatchTheReadme(unittest.TestCase):
         self.assertIn("the list is open", said)
 
     def test_temp_is_a_role_and_its_name_is_defined_once(self) -> None:
-        # Every module has a `temp` folder, every session included (owner,
-        # 2026-10-15): the name is the role's constant here, and the session's
+        # Every module has a `temp` folder, every task included (owner,
+        # 2026-10-15): the name is the role's constant here, and the task's
         # temporary-files sentence takes it from here rather than a copy.
         self.assertEqual(module_folders.TEMP_FOLDER, "temp")
         self.assertIn(module_folders.TEMP_FOLDER, module_folders.ROLE_FOLDERS)
-        import modules.process.session.services.temp as session_temp
-        self.assertIs(session_temp.TEMP_FOLDER, module_folders.TEMP_FOLDER)
-        source = Path(session_temp.__file__).read_text(encoding="utf-8")
+        import modules.process.task.services.temp as task_temp
+        self.assertIs(task_temp.TEMP_FOLDER, module_folders.TEMP_FOLDER)
+        source = Path(task_temp.__file__).read_text(encoding="utf-8")
         self.assertNotIn("TEMP_FOLDER = ", source)
         self.assertNotIn('"temp"', source)
 

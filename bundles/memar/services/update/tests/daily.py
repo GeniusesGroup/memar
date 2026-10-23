@@ -129,7 +129,7 @@ class DeclaredAsAHook(unittest.TestCase):
 class OnceADay(Fixture):
 
     def test_the_first_verb_of_the_day_starts_the_run_and_no_later_one_does(self) -> None:
-        for verb in ('content', 'session', None, 'install'):
+        for verb in ('content', 'task', None, 'install'):
             self.assertEqual(self.ask(verb), ('', ''))
         self.assertEqual(self.started, [[sys.executable, str(daily.LAUNCHER), daily.UPDATE_VERB, daily.BACKGROUND_FLAG]])
         self.assertTrue(daily.LAUNCHER.is_file())

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/ai/services/get_task_answer_context.py — `memar ai get-task-answer-context`: the prompt an agent answering a session's questions reads first, in one output, writing nothing.
+"""modules-plugable/ai/services/get_task_answer_context.py — `memar ai get-task-answer-context`: the prompt an agent answering a task's questions reads first, in one output, writing nothing.
 
 An agent does not bring the owner a question another agent can
 answer, because the owner's answer is the slower one (owner, 2026-10-15). It
@@ -10,30 +10,30 @@ hands the questions to an agent with the questions' brief
 second opinion [Norm Application Points](../../../docs/cognition.practice.md#norm-application-points)
 asks for before a question reaches the owner, given a fixed route.
 
-The questions are the lines under `Decisions needed` in the session's report:
-that is where a session's questions for the owner already stand, one line
+The questions are the lines under `Decisions needed` in the task's report:
+that is where a task's questions for the owner already stand, one line
 each, pointing to the handoff entry that holds a question at length
 ([Questions Found During a
 Task](../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
-and where the digest gathers them. A session with no such line has no
+and where the digest gathers them. A task with no such line has no
 question, and is refused; why is said by `questions_problem` here, which the
 questions' brief asks too, so the two refuse alike.
 
 The verb is named for what the prompt makes happen, questions answered (owner,
 2026-10-16; `prompts`), not by the one word of the `answer` kind it serves.
 
-**It writes nothing.** The agent it is for does not take the session up: it
-opens no session, creates none, claims none, and changes nothing in the one
-whose questions it answers, because that session belongs to the agent that
+**It writes nothing.** The agent it is for does not take the task up: it
+opens no task, creates none, claims none, and changes nothing in the one
+whose questions it answers, because that task belongs to the agent that
 handed the questions over, which writes what follows from the answers. So,
 unlike `start`, this is not `new --task-id`: no report, no role folder and
-no log line is made, and it prints no folder listing and no `session` or
+no log line is made, and it prints no folder listing and no `task` or
 `content write` help, which only a writing agent needs.
 
 The parts, in order, each opened by a mark line `=== NAME ===`, as `start`
-marks and cuts them (`session_start`, `machine/console_parts.py`):
+marks and cuts them (`task_start`, `machine/console_parts.py`):
 
-    session    the id and the paths of the plan and the report, read and not taken up
+    task    the id and the paths of the plan and the report, read and not taken up
     model      answering is judgment: the strongest model
     plan.md    the plan, whole
     report.md  the report, whole: its `Decisions needed` holds the questions
@@ -59,7 +59,7 @@ from machine.console import fail
 from machine.console_parts import add_part_arguments, bound, next_command
 from machine.console_parts import part_text as parted
 from modules.knowledge.content.services.reference import content_root, read_text
-SESSION_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
+TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
 from modules.management.task.services.folder import folder_of, is_task_folder
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
 from modules.knowledge.documentation.record import REPORT
@@ -67,17 +67,18 @@ from modules.knowledge.documentation.report.services.report import REPORT_NAME, 
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 from .get_task_init_context import SKILL_FILE, commands, documents, marked_part, marked_passages, model_part, plan_project, step_documents
 from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.primitive.task_id import TaskId
 ANSWERING_COMMAND = 'get-task-answer-context'
-ENDING = f"You answer the questions of this session; you do not take it up. Its questions are the lines under `{REPORT.hand_back_part}` in its {REPORT_NAME} (above), each with the handoff entry it points to, if any.\nYour answering opens no task and creates none: run no `memar ai get-task-init-context`, `ensure`, `claim` or `claims`. It writes nothing: no file in this session's folder, in the checkout, or elsewhere; the session that handed you the questions writes what follows from your answers.\nFor each question, in the order asked: read the plan, the entry it points to, and the passages of the documents it concerns, found as the skill says; answer it with its reasons, citing the passages they rest on; and say whether you are sure. Say you are unsure where the documents do not settle it, and say so too where it is one of the kinds the Norm Application Points (above) send to the owner however well settled: those go to the owner.\nReturn the answers as your final text, one per question, each marked sure or unsure, and name the model you run on."
+ENDING = f"You answer the questions of this task; you do not take it up. Its questions are the lines under `{REPORT.hand_back_part}` in its {REPORT_NAME} (above), each with the handoff entry it points to, if any.\nYour answering opens no task and creates none: run no `memar ai get-task-init-context`, `ensure`, `claim` or `claims`. It writes nothing: no file in this task's folder, in the checkout, or elsewhere; the task that handed you the questions writes what follows from your answers.\nFor each question, in the order asked: read the plan, the entry it points to, and the passages of the documents it concerns, found as the skill says; answer it with its reasons, citing the passages they rest on; and say whether you are sure. Say you are unsure where the documents do not settle it, and say so too where it is one of the kinds the Norm Application Points (above) send to the owner however well settled: those go to the owner.\nReturn the answers as your final text, one per question, each marked sure or unsure, and name the model you run on."
 
 def questions_problem(folder) -> str | None:
     """Why FOLDER has no questions to hand over; None when its report has a line under its hand-back part."""
     if decisions_needed(folder):
         return None
-    return f"its {REPORT_NAME} has no line under `{REPORT.hand_back_part}`, where a session's questions stand. Write each question there first, one line each"
+    return f"its {REPORT_NAME} has no line under `{REPORT.hand_back_part}`, where a task's questions stand. Write each question there first, one line each"
 
-def session_part(task_id: str, folder) -> str:
-    return marked_part('task', f'task_id: {task_id}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}\nIts questions are read here, and the session is not taken up.')
+def task_part(task_id: str, folder) -> str:
+    return marked_part('task', f'task_id: {task_id}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}\nIts questions are read here, and the task is not taken up.')
 
 def documents_part(root, questions: list[str], project: Path | None) -> list[str]:
     """The sections the `answer` kind's normative references name, then the documents the QUESTIONS name; nothing is recorded, since answering writes nothing."""
@@ -87,12 +88,12 @@ def answer_passages(task_id: str, with_skill: bool=True) -> list[str]:
     """The text that hands TASK_ID's questions to an agent, as the passages a part is cut between; the skill only WITH_SKILL."""
     folder = folder_of(task_id)
     if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
-        fail(f'no questions to answer in {task_id}: it has no session folder with a {PLAN_NAME}')
+        fail(f'no questions to answer in {task_id}: it has no task folder with a {PLAN_NAME}')
     problem = questions_problem(folder)
     if problem:
         fail(f'no questions to answer in {task_id}: {problem}')
     root = content_root()
-    passages = [session_part(task_id, folder), model_part(TaskKind.ANSWER.word), marked_part(PLAN_NAME, (folder / PLAN_NAME).read_text(encoding='utf-8-sig')), marked_part(REPORT_NAME, (folder / REPORT_NAME).read_text(encoding='utf-8-sig')), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *documents_part(root, decisions_needed(folder), plan_project(task_id)), marked_part('commands', commands.card_text()), marked_part('ending', ENDING)]
+    passages = [task_part(task_id, folder), model_part(TaskKind.ANSWER.word), marked_part(PLAN_NAME, (folder / PLAN_NAME).read_text(encoding='utf-8-sig')), marked_part(REPORT_NAME, (folder / REPORT_NAME).read_text(encoding='utf-8-sig')), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *documents_part(root, decisions_needed(folder), plan_project(task_id)), marked_part('commands', commands.card_text()), marked_part('ending', ENDING)]
     return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
 def answer_text(task_id: str, with_skill: bool=True) -> str:
@@ -102,15 +103,15 @@ def answer_text(task_id: str, with_skill: bool=True) -> str:
 def get_task_answer_context(task_id: str, with_skill: bool=True, part: int=1, most: int | None=None) -> None:
     """`answer`: print part PART of TASK_ID's answer text under MOST characters, else under its project's
     preference, else the default; the whole text when it fits."""
-    words = ['memar', SESSION_COMMAND, ANSWERING_COMMAND, '--task-id', task_id, *([] if with_skill else ['--without-skill'])]
+    words = ['memar', TASK_COMMAND, ANSWERING_COMMAND, TaskId.FLAG, task_id, *([] if with_skill else ['--without-skill'])]
     passages = answer_passages(task_id, with_skill)
     limit = bound(most, most_characters_preference(plan_project(task_id)))
     sys.stdout.write(parted(passages, part, limit, next_command(words, most)))
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar ai get-task-answer-context`."""
-    answerer = verbs.add_parser(ANSWERING_COMMAND, help="print what an agent answering a session's open questions reads first; it writes nothing", description=f"""For an agent handed a session's questions, not its task, by\n`memar {SESSION_COMMAND} get-task-questions-answer-brief ID`.\nThe questions are the lines under `{REPORT.hand_back_part}` in the session's {REPORT_NAME}.\nPrint, in parts each opened by a line `=== NAME ===`, and in this order: the session's id\nand the paths of its {PLAN_NAME} and {REPORT_NAME}, the model answering needs, the plan and\nthe report whole, the Memar skill, the passages of Memar's documents the `answer` kind\nrequires and then the documents the questions name, the command that prints every\ncommand, and how to answer.\nRun it first, once.\n\nIt writes nothing and opens no task: no report, no role folder and no log line is\nmade, and the task is not taken up. It refuses an ID that has no folder with a plan,\nor whose report has no line under that heading.\n\nA text too long for one tool output prints in ordered parts, each at most --most-characters\nlong: each part but the last ends with the exact command for the next (--part N), to run\nat once; read every part before acting. Each part says "part N of M of text H", H a hash\nof the whole text: a part naming another H is of another version of it.""")
-    answerer.add_argument('--task-id', required=True, metavar='ID', help='the session whose questions are handed to you')
+    answerer = verbs.add_parser(ANSWERING_COMMAND, help="print what an agent answering a task's open questions reads first; it writes nothing", description=f"""For an agent handed a task's questions, not its task, by\n`memar {TASK_COMMAND} get-task-questions-answer-brief ID`.\nThe questions are the lines under `{REPORT.hand_back_part}` in the task's {REPORT_NAME}.\nPrint, in parts each opened by a line `=== NAME ===`, and in this order: the task's id\nand the paths of its {PLAN_NAME} and {REPORT_NAME}, the model answering needs, the plan and\nthe report whole, the Memar skill, the passages of Memar's documents the `answer` kind\nrequires and then the documents the questions name, the command that prints every\ncommand, and how to answer.\nRun it first, once.\n\nIt writes nothing and opens no task: no report, no role folder and no log line is\nmade, and the task is not taken up. It refuses an ID that has no folder with a plan,\nor whose report has no line under that heading.\n\nA text too long for one tool output prints in ordered parts, each at most --most-characters\nlong: each part but the last ends with the exact command for the next (--part N), to run\nat once; read every part before acting. Each part says "part N of M of text H", H a hash\nof the whole text: a part naming another H is of another version of it.""")
+    TaskId.add_flag(answerer, 'the task whose questions are handed to you', required=True)
     answerer.add_argument('--without-skill', action='store_true', help='leave the Memar skill out, for an agent whose runtime already loaded it')
     add_part_arguments(answerer, f'the `{MOST_CHARACTERS_KEY}` in the {PREFERENCES_RELATIVE.as_posix()} of the project the plan names')
     return run

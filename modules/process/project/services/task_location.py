@@ -4,40 +4,40 @@
 """modules/process/project/services/task_location.py — where a task's folder is made: Memar's own .agents/tasks/, or the project's own task location.
 
 A project keeps its own task folders. Unless it says otherwise with the
-`sessions` key of its preferences (`project_preferences`), they are made in
+`tasks` key of its preferences (`project_preferences`), they are made in
 `.agents/tasks/` inside the project, as Memar's are inside Memar's checkout,
 so git can see them and a branch switch does not drop the work silently. The
 one project that does not get that default treated as a foreign location is the
 Memar checkout itself, whose folders are made under the Memar root
 (`modules-plugable/computer/filesystem/services/fs_memar.py`) and swept from there once their task is done. A
-project may put them elsewhere with the `sessions` key. Those folders are the
+project may put them elsewhere with the `tasks` key. Those folders are the
 project's, not Memar's: the sweep (`sweep_idle_task_folders`) never touches them,
 and keeping or deleting one is the project's business, which `ensure` says each
 time it makes or continues one there and `gc` says by naming the locations it
 did not sweep.
 
-A project's location is outside every Memar root, so the other session verbs —
+A project's location is outside every Memar root, so the other task verbs —
 `list`, `close`, `new --task-id` — could not find a folder there from
 another working directory without searching the disk. Memar keeps the
 locations instead, on the project's own entry in temp/projects.log
-(`project_registry`, the `locations` array beside its names): `new` adds a
-location each time it makes or continues a session there and the entry does
+(`project_registry`, the `locations` array beside its names): `ensure` adds a
+location each time it makes or continues a task there and the entry does
 not hold it, making the entry from the project's folder name when there is
 none, and reporting, never renaming, a name another project holds. Every
 other reader passes over a location that no longer exists rather than
 removing it, since it may be a drive that is not mounted now. Only `gc`, which
 a person runs, removes those locations (`prune_registry`) and names each one,
-and a location used again is recorded again by the next `new` there.
+and a location used again is recorded again by the next `ensure` there.
 
 The earlier record, `.agents/tasks/tasks.projects` (and before that
-`.agents/tasks/sessions.projects`; one location a line, no project), is not
+`.agents/tasks/tasks.projects`; one location a line, no project), is not
 read here. A reader of locations that finds it says so on stderr, and that a
 location it lists is recorded again the next time `ensure` makes or continues a
 task there, as every location is; it names no conversion, and leaves the file
 as it is.
 
 Which project a folder is in is answered here (`project_root`), because
-`new` records it in a plan and `list --project` compares against it, and the
+`ensure` records it in a plan and `list --project` compares against it, and the
 two must not disagree: a folder's project is its git top-level, else the
 folder itself. Which locations are a project's own is answered here too, for
 `list --project`: the one its preferences set, and each one on its entry, where a
@@ -50,29 +50,29 @@ No answer here reads the folder the process runs in: a project is always given.
 A location that resolves inside Memar's own scratch root is Memar's, not the
 project's: folders there are already found, swept, and moved by the rules for
 Memar's own, and a second set of rules for the same folder would be two
-answers to whether it may go. `new` says so each time, since the person who
+answers to whether it may go. `ensure` says so each time, since the person who
 set it expects otherwise. A location that resolves to the project's top folder,
-or to a drive or filesystem root, is refused: its session folders would sit
-among folders that are not sessions, which only the test in `session_folder`
-keeps every session verb out of.
+or to a drive or filesystem root, is refused: its task folders would sit
+among folders that are not tasks, which only the test in `task_folder`
+keeps every task verb out of.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
 AGENTS_DIRNAME = _m_fs_memar.AGENTS_DIRNAME
-SESSIONS_DIRNAME = _m_fs_memar.SESSIONS_DIRNAME
+TASKS_DIRNAME = _m_fs_memar.TASKS_DIRNAME
 TASKS_DIRNAME = _m_fs_memar.TASKS_DIRNAME
 TEMP_DIRNAME = _m_fs_memar.TEMP_DIRNAME
-project_sessions_registry = _m_fs_memar.project_sessions_registry
+project_tasks_registry = _m_fs_memar.project_tasks_registry
 scratch_root = _m_fs_memar.scratch_root
-sessions_root = _m_fs_memar.sessions_root
+tasks_root = _m_fs_memar.tasks_root
 import os
 import subprocess
 import sys
 from pathlib import Path
 from machine.console import fail
 from modules.process.project.services.registry import add_location, forget_missing_locations, read_entries
-from modules.process.project.services.preferences import PREFERENCES_RELATIVE, SESSIONS_KEY, preferences_path, sessions_location
+from modules.process.project.services.preferences import PREFERENCES_RELATIVE, TASKS_KEY, preferences_path, tasks_location
 EARLIER_RECORD_REMEDY = 'a location it lists is recorded again the next time `memar task ensure` makes or continues a task there'
 
 def _inside(path: Path, root: Path) -> bool:
@@ -102,7 +102,7 @@ def same_path(one: Path | str, other: Path | str) -> bool:
         return False
 
 def _refused(project: Path, location: Path) -> str | None:
-    """What LOCATION is when it may not hold PROJECT's session folders, else None."""
+    """What LOCATION is when it may not hold PROJECT's task folders, else None."""
     resolved = location.resolve()
     if resolved == project.resolve():
         return "the project's top folder"
@@ -121,13 +121,13 @@ def default_location(project: Path) -> Path:
 
 def configured_location(project: Path) -> Path:
     """The folder PROJECT's preferences name, else its default."""
-    named = sessions_location(project)
+    named = tasks_location(project)
     return named if named is not None else default_location(project)
 
 def _memar_own_tasks(location: Path) -> bool:
     """Whether LOCATION is Memar's own live tasks root (or still under temp scratch from before the cutover)."""
     try:
-        return same_path(location, sessions_root()) or _inside(location, sessions_root()) or _inside(location, scratch_root())
+        return same_path(location, tasks_root()) or _inside(location, tasks_root()) or _inside(location, scratch_root())
     except OSError:
         return False
 
@@ -167,17 +167,17 @@ def project_location(project: Path) -> Path | None:
     resolved = location.resolve()
     what = _refused(project, location)
     if what is not None:
-        fail(f'`{SESSIONS_KEY}` in {preferences_path(project)} resolves to {resolved}, {what}; name a folder inside the project, relative to its top folder, or an absolute one')
+        fail(f'`{TASKS_KEY}` in {preferences_path(project)} resolves to {resolved}, {what}; name a folder inside the project, relative to its top folder, or an absolute one')
     if _memar_own_tasks(location):
         return None
     return location
 
 def memar_own_note(project: Path) -> str | None:
-    """The one line `ensure` prints when PROJECT's `sessions` resolves to Memar's own tasks root, else None."""
-    location = sessions_location(project)
+    """The one line `ensure` prints when PROJECT's `tasks` resolves to Memar's own tasks root, else None."""
+    location = tasks_location(project)
     if location is None or not _memar_own_tasks(location):
         return None
-    return f"{SESSIONS_KEY}: {location}, set in {preferences_path(project)}, is Memar's own tasks folder under .agents/{TASKS_DIRNAME}/, so it is not used as a project location: folders there are swept like Memar's"
+    return f"{TASKS_KEY}: {location}, set in {preferences_path(project)}, is Memar's own tasks folder under .agents/{TASKS_DIRNAME}/, so it is not used as a project location: folders there are swept like Memar's"
 
 def in_project_location(folder: Path) -> bool:
     """Whether FOLDER, a task folder, lies outside Memar's own tasks root (and outside temp scratch)."""
@@ -224,19 +224,19 @@ def prune_registry() -> list[Path]:
     """Remove each recorded location whose folder no longer exists from its entry, and return those removed.
 
     The entry stays, and the registry is read again under its lock just before
-    it is replaced, so a location a `new` recorded meanwhile is kept.
+    it is replaced, so a location a `ensure` recorded meanwhile is kept.
     """
     note_earlier_record()
     try:
         return forget_missing_locations()
     except OSError as error:
-        print(f'warning: the project session locations could not be rewritten ({error})', file=sys.stderr)
+        print(f'warning: the project task locations could not be rewritten ({error})', file=sys.stderr)
         return []
 
 def register(location: Path, project: Path | None=None) -> None:
-    """Record LOCATION, once, on PROJECT's entry so the session verbs find its folders from any working directory.
+    """Record LOCATION, once, on PROJECT's entry so the task verbs find its folders from any working directory.
 
-    PROJECT is the project `new` works for. Given none, it is the git
+    PROJECT is the project `ensure` works for. Given none, it is the git
     top-level of LOCATION, else the folder above it, never the folder the
     process runs in. A project with no entry gets one named from its folder;
     a name another project holds is reported and nothing is stored.
@@ -251,16 +251,16 @@ def register(location: Path, project: Path | None=None) -> None:
     try:
         add_location(owner, place)
     except SystemExit as stopped:
-        print(f'warning: the project session location could not be recorded ({stopped.code})', file=sys.stderr)
+        print(f'warning: the project task location could not be recorded ({stopped.code})', file=sys.stderr)
     except OSError as error:
-        print(f'warning: the project session location could not be recorded ({error})', file=sys.stderr)
+        print(f'warning: the project task location could not be recorded ({error})', file=sys.stderr)
 
 def note_earlier_record() -> None:
-    """Say on stderr that the earlier record sessions.projects is there, is not read, and how its locations come back; nothing when it is not."""
-    old = project_sessions_registry()
+    """Say on stderr that the earlier record tasks.projects is there, is not read, and how its locations come back; nothing when it is not."""
+    old = project_tasks_registry()
     if old.is_file():
-        print(f'memar: {old} is the earlier record of project session locations and is not read; {EARLIER_RECORD_REMEDY}', file=sys.stderr)
+        print(f'memar: {old} is the earlier record of project task locations and is not read; {EARLIER_RECORD_REMEDY}', file=sys.stderr)
 
 def project_location_note(folder: Path) -> str:
-    """The one line `new` prints for a session folder in a project's own location."""
-    return f"location: {folder.parent} is a project's own session location, set in its {PREFERENCES_RELATIVE.as_posix()} or, when that sets none, .agents/tasks/ in the project; Memar's sweep never moves a folder there — keeping or deleting it is the project's"
+    """The one line `ensure` prints for a task folder in a project's own location."""
+    return f"location: {folder.parent} is a project's own task location, set in its {PREFERENCES_RELATIVE.as_posix()} or, when that sets none, .agents/tasks/ in the project; Memar's sweep never moves a folder there — keeping or deleting it is the project's"

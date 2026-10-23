@@ -20,8 +20,8 @@ interface for one behavior, and the two would drift.
     describe(verbs) -> callable | None
 
 `verbs` is where the module's verb goes: `memar`'s own verbs for a domain's
-own file (`modules/process/session/session.py`), that domain verb's sub-verbs
-for one of its capabilities (`modules/process/session/services/new.py`). It offers argparse's `add_parser`;
+own file (`modules/process/task/task.py`), that domain verb's sub-verbs
+for one of its capabilities (`modules/management/task/services/new.py`). It offers argparse's `add_parser`;
 the service registers at most one verb on it, with its one-line summary as
 `help` and, where it has one, its overview as `description`, adds the verb's
 arguments, and returns
@@ -103,10 +103,10 @@ SEARCHED_ROOTS = (
     ("bundles/memar/services", "."),
 )
 NOT_MODULES = frozenset({SERVICES, *role_folders(), "node_modules", "__pycache__"})
-# A module that has a command-line face keeps it in a file named by its folder (`session/session.py`);
+# A module that has a command-line face keeps it in a file named by its folder (`task/task.py`);
 # each capability is a file in its `services/` folder. The name the router works with is the folder's
 # alone for the module's own file, and the folder, this separator and the file's name for a capability
-# (`session_new`), which is how a capability finds the verb it goes under.
+# (`task_new`), which is how a capability finds the verb it goes under.
 DOMAIN_SEPARATOR = "_"
 VERB_METAVAR = "<verb>"
 HELP_WORDS = ("help",)

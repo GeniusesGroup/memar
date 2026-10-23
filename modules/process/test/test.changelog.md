@@ -23,9 +23,9 @@
   - [test.research.002.md](./test.research.002.md): Added - the testing literature written before TDD, read from primary texts, with its negative results recorded.
   - `modules/process/test/`: Added - the module realizing this protocol, carrying the placement and naming Rules this document points to.
   - [../../../AGENTS.md](../../../AGENTS.md): Done - a section stating that text is not to be put into a file through a shell, with the command that does it instead.
-  - [../../../.agents/scripts/memar-documentation.py](../../knowledge/content/content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this session produced twice.
+  - [../../../.agents/scripts/memar-documentation.py](../../knowledge/content/content.py): Done - gained `write`, `edit`, and `check`, because a document silently damaged by an encoding round trip is the failure this chat produced twice.
   - [../../../.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - gained a section on putting text into a file, and one on what a subfolder there is for.
-  - [../../../.agents/scripts/tests/install.py](../../../bundles/memar/install/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
+  - [../../../.agents/scripts/tests/install.py](../../../bundles/memar/services/install/tests/install.py): Done - the installer's Tests moved out of the folder that owns what they check, into one named for the role, and the suite still passes.
   - [../../../.agents/skills/memar/SKILL.md](../../../.agents/skills/memar/SKILL.md): Updated - a development step now binds to a Test written first.
   - [../ddd.md](../../../modules-plugable/process/ddd/ddd.md): Done - its TDD relationship entry retargeted, since a document that no longer exists cannot be a sibling case.
   - [../ddd.handoff.md](../../../modules-plugable/process/ddd/ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.
@@ -33,7 +33,7 @@
   - [../../process.changelog.md](../process.changelog.md): Done - the link the absorption invalidated retargeted, and its historical entries on the absorbed document annotated.
   - [../../documentation-explanation.changelog.md](../../knowledge/documentation/explanation/explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
   - [../comparisons/superpowers.001.md](../../../docs/comparisons/superpowers.001.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
-  - [../../documentation-changelog.md](../../knowledge/documentation/changelog/changelog.md) - Reference: within one working session an entry may still be revised, which is why this session's six drafts are one entry.
+  - [../../documentation-changelog.md](../../knowledge/documentation/changelog/changelog.md) - Reference: within one working chat an entry may still be revised, which is why this chat's six drafts are one entry.
 
 #### What changed
 - Added [test.md](./test.md), stating the Test as the written expectations of a named Process, produced before the work and kept as a standing part of the system that owes them. It separates the Test from the check and from the runner, states the obligation a system carries over the parts of its protocol surface whose expectations are decidable, what a Test may assume, what a passing suite does and does not establish, and the routing among development under the discipline, verification, and inquiry. It states no structural rule and points to the Rules that carry them instead.

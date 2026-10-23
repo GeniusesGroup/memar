@@ -40,7 +40,7 @@ Names under `bundles/` were cut at different times. They are not a closed classi
 New bundle names (energy, water, food, buildings, land, travel, security) are opened when a cluster of base rules has no honest existing home. They can merge or rename later; that is cheaper than stuffing them under a false umbrella.
 
 ### Landing shape for former Memar society pages
-Each requirement becomes a module folder, not a remaining `docs/society/<theme>/` tree. Companions (`.changelog.md`, `.handoff.md`) stay with that module. Rival approaches inside a page stay until a later session graduates them into code or drops them; the import does not freeze Memar's requirement-page format as the module's forever shape.
+Each requirement becomes a module folder, not a remaining `docs/society/<theme>/` tree. Companions (`.changelog.md`, `.handoff.md`) stay with that module. Rival approaches inside a page stay until a later chat graduates them into code or drops them; the import does not freeze Memar's requirement-page format as the module's forever shape.
 
 Paths below are relative to Memar `docs/society/` on the left and to `bundles/` here on the right. Companions (`.changelog.md`, `.handoff.md`) travel with the module. Memar `docs/society/README.md` is not imported. The law *type* stays at kernel [`modules/rights/law`](../modules/rights/law/law.md); `law-form-and-validity` lands as `law-validity` because what remains after that type is duration and sunset.
 
@@ -106,7 +106,7 @@ Paths below are relative to Memar `docs/society/` on the left and to `bundles/` 
 | `security-and-resilience/securing-sensitive-spaces` | `Dideban/modules/securing-sensitive-spaces` |
 | `security-and-resilience/autonomy-in-crisis` | `security/modules/autonomy-in-crisis` |
 
-The kernel law type is not copied. `libraries/` was a fourth root invented to hold instance packs; that job is bundle modules, so `libraries/` does not remain. Imported pages keep the requirement-notebook shape they had in Memar until a later session rewrites each as a module document and computer code; this import does not freeze that notebook format as the module's forever shape.
+The kernel law type is not copied. `libraries/` was a fourth root invented to hold instance packs; that job is bundle modules, so `libraries/` does not remain. Imported pages keep the requirement-notebook shape they had in Memar until a later chat rewrites each as a module document and computer code; this import does not freeze that notebook format as the module's forever shape.
 
 The twelve Memar theme directories (`governance`, `economy`, `form-and-land`, …) were a notebook grouping of questions, not a second taxonomy. They carried no extra rule beyond "these pages sit together." Spreading by concept already dropped the false umbrellas; the table above is the whole record of that grouping. What was *not* folder structure — and was skipped with `docs/society/README.md` — are the corpus operating rules that still apply to those pages until rewritten: a requirement is a question that favors no answer; a rejected approach stays visible; network pages (energy, water, data, movement) state abstract rules and name no consumer, while consumer pages declare their needs toward the network; approach headings keep their section-id suffix. Those rules are working constraints for anyone editing an imported page, not a reason to rebuild the theme tree.
 

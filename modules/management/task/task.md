@@ -76,15 +76,15 @@ Its home is not yet decided; see Open questions.
 ## Dependencies
 `blocks` and `part_of` are the only relations the kernel knows between Tasks. A Task that cannot start until another ends is `blocks`-ed; the status of the blocked Task follows. A Task that is a step of another is `part_of`. Several Tasks may name one Task as a step: one inspection can serve two phases.
 
-## Memar session terms to Task terms
-Memar's session tooling is kept as it is and nothing more is built on it; the Task replaces that tooling's work item. A session id in a commit message stays as it is. This table maps Memar session-tool terms to Task terms; it does not define what a session is as a concept — that meaning is still open (see the handoff section Owner intake — Session versus Task span).
+## Memar task-record terms to Task terms
+The work item of Memar's tooling, once called a session, is this module's Task (owner, 2026-10-20), and the folder of records it keeps is that Task's record. The tooling is kept as it is and nothing more is built on it beyond this module. A task id in a commit message stays as it is. This table maps the terms of that record to the Task concept's terms; it does not define what a task is as a concept — that meaning is still open (see the handoff section Owner intake — Session versus Task span).
 
-| Memar session term | Task term |
+| Memar task-record term | Task concept term |
 |---|---|
-| Session | Task |
-| Project (the session's subject) | the organization or group the Task belongs to |
+| Task folder (the record) | the Task's record: its declared state and the content reached through `changes` |
+| Project (the task's subject) | the organization or group the Task belongs to |
 | Conversation | the Task's own timeline, owned by content; a chat is a way a participant reads and writes it, not a record of its own |
-| Parent session | `part_of` parent |
+| Parent task | `part_of` parent |
 | Plan | the Task's declared state: intent, check, reason, children, successors |
 | Request | intent (content) and acceptance check (rule) |
 | Check, acceptance check | acceptance check |
@@ -106,11 +106,11 @@ Memar's session tooling is kept as it is and nothing more is built on it; the Ta
 | Claim holder | a member of the Task's team with a role |
 | Sub-agent | a holder that is a thing, acting through a delegation |
 | Coordinator | the holder of a parent Task with open children |
-| Session log | the Task's events |
-| Session folder, scratch | no counterpart: working material is content, and where it is kept is not part of the concept |
+| Task log | the Task's events |
+| Task folder, scratch | no counterpart: working material is content, and where it is kept is not part of the concept |
 | Archive, close, sweep | no counterpart: nothing is lost; what is shown is a visibility question for authorization |
-| Commit naming session ids | `changes` |
-| One session holds one task | one Task, one thing asked, one check |
+| Commit naming task ids | `changes` |
+| One task folder holds one task | one Task, one thing asked, one check |
 
 ## Assign task rules
 - A Task is assigned to users (staff) by the skill it requires. If a Task needs `Design`, a user with `Designer` or `Designing` skill is suggested. In this way `Technology Department` can hire a user with `cognitive science` skills. A team may be formed for one Task and dissolved at its end.

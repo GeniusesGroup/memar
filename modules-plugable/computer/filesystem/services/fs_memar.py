@@ -4,7 +4,7 @@
 """modules-plugable/computer/filesystem/services/fs_memar.py — where Memar lives on disk: the one home for location answers.
 
 Every script that needs a Memar path — the checkout, the recorded root, the
-scratch root, a session folder — asks here instead of recomputing it. One need,
+scratch root, a task folder — asks here instead of recomputing it. One need,
 one method: a second copy of any of these answers is a second truth about where
 things are, and the two drift.
 
@@ -34,8 +34,8 @@ TEMP_DIRNAME = TEMP_FOLDER
 # Live and archived task folders share this name under `.agents/` (owner, 2026-10-20):
 # not under temp/, so a branch switch or clean cannot drop the work without git noticing.
 TASKS_DIRNAME = 'tasks'
-SESSIONS_DIRNAME = TASKS_DIRNAME  # older import name; same folder
-PROJECT_SESSIONS_NAME = 'tasks.projects'
+TASKS_DIRNAME = TASKS_DIRNAME  # older import name; same folder
+PROJECT_TASKS_NAME = 'tasks.projects'
 PROJECTS_LOG_NAME = 'projects.log'
 SCRIPTS_RELATIVE = Path(AGENTS_DIRNAME) / 'scripts'
 LAUNCHER_RELATIVE = Path('bundles') / 'memar'
@@ -94,7 +94,7 @@ def scratch_root() -> Path:
     root.mkdir(parents=True, exist_ok=True)
     return root
 
-def sessions_root() -> Path:
+def tasks_root() -> Path:
     """The folder every live task folder lives in: <root>/.agents/tasks/.
 
     Same relative path as archived records on `RECORDS_BRANCH` (`RECORDS_RELATIVE`).
@@ -105,16 +105,16 @@ def sessions_root() -> Path:
     root.mkdir(parents=True, exist_ok=True)
     return root
 
-tasks_root = sessions_root
+tasks_root = tasks_root
 
-def project_sessions_registry() -> Path:
+def project_tasks_registry() -> Path:
     """The earlier file listing the project folders task folders were made in: <root>/.agents/tasks/tasks.projects.
 
     The core only notices it (`task_location`) and never reads it: a
     location it lists is recorded on its project's entry in `projects_log()`
     again when a task is next made or continued there.
     """
-    return sessions_root() / PROJECT_SESSIONS_NAME
+    return tasks_root() / PROJECT_TASKS_NAME
 
 def projects_log() -> Path:
     """The registry of projects and their names: <root>/temp/projects.log.
@@ -134,7 +134,7 @@ def task_dir(task_id: str, *, create: bool=False) -> Path:
     """
     if not task_id or task_id in ('.', '..') or '/' in task_id or ('\\' in task_id):
         fail(f'refusing task id {task_id!r}: name one folder segment, not a path.')
-    path = sessions_root() / task_id
+    path = tasks_root() / task_id
     if create:
         path.mkdir(parents=True, exist_ok=True)
     return path

@@ -27,10 +27,10 @@ What is pinned, and what each pin is for:
                      fails instead of taking; after a release the same take
                      succeeds.
   StaleTakeover      A lock older than the stale age is taken over, while a
-                     fresh lock is waited out - so a dead session never
+                     fresh lock is waited out - so a dead task never
                      blocks others forever, and a live one is never robbed.
   IntentRoundTrip    What is written as the intent to change is what is read
-                     back: session, file, plan, and the base hash and mtime
+                     back: task, file, plan, and the base hash and mtime
                      the re-verify step compares against.
   ChangedBaseDetected  Verifying after acquiring compares the plan-time base
                      against the lock-time file; any move - edited, deleted,
@@ -179,9 +179,9 @@ class IntentRoundTrip(Fixture):
         self.addCleanup(fs_lock.release_file_lock, lock)
         base = fs_lock.file_snapshot(self.target)
         intent = fs_lock.edit_intent_path(lock)
-        fs_lock.write_intent(intent, task_id='session-7', target=self.target, plan_summary='add a section on locks', base=base)
+        fs_lock.write_intent(intent, task_id='task-7', target=self.target, plan_summary='add a section on locks', base=base)
         found = fs_lock.read_intent(intent)
-        self.assertEqual(found['task_id'], 'session-7')
+        self.assertEqual(found['task_id'], 'task-7')
         self.assertEqual(found['file'], str(self.target.absolute()))
         self.assertEqual(found['plan_summary'], 'add a section on locks')
         self.assertEqual(found['base_hash'], base['hash'])
@@ -231,17 +231,17 @@ class ChangedBaseDetected(Fixture):
         self.take(lock)
         self.addCleanup(fs_lock.release_file_lock, lock)
         with self.target.open('a', encoding='utf-8', newline='\n') as handle:
-            handle.write('\nA rival session wrote first.\n')
+            handle.write('\nA rival task wrote first.\n')
         with self.assertRaises(fs_lock.BaseChangedError):
             fs_lock.verify_base_unchanged(self.target, base)
 
-    def test_edit_session_yields_then_releases(self) -> None:
+    def test_edit_task_yields_then_releases(self) -> None:
         lock = self.lock_for()
-        with fs_lock.edit_session(self.target, 'session-7', 'add a section', lock_dir=self.lock_dir, wait_seconds=5, stale_seconds=60, poll_seconds=0.05):
+        with fs_lock.edit_task(self.target, 'task-7', 'add a section', lock_dir=self.lock_dir, wait_seconds=5, stale_seconds=60, poll_seconds=0.05):
             self.assertTrue(lock.is_file())
         self.assertFalse(lock.exists())
 
-    def test_edit_session_refuses_a_moved_base_without_yielding(self) -> None:
+    def test_edit_task_refuses_a_moved_base_without_yielding(self) -> None:
         lock = self.lock_for()
 
         def moved(target: Path, base: dict) -> None:
@@ -249,7 +249,7 @@ class ChangedBaseDetected(Fixture):
         entered = []
         with unittest.mock.patch.object(fs_lock, 'verify_base_unchanged', moved):
             with self.assertRaises(fs_lock.BaseChangedError):
-                with fs_lock.edit_session(self.target, 'session-7', 'add a section', lock_dir=self.lock_dir, wait_seconds=5, stale_seconds=60, poll_seconds=0.05):
+                with fs_lock.edit_task(self.target, 'task-7', 'add a section', lock_dir=self.lock_dir, wait_seconds=5, stale_seconds=60, poll_seconds=0.05):
                     entered.append(True)
         self.assertEqual(entered, [])
         self.assertFalse(lock.exists())

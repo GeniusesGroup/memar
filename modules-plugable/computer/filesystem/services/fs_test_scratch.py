@@ -9,18 +9,18 @@ resolves to are decided in this file and nowhere else. A suite that spelled the
 name itself, or fell back on its own, would be one more place to disagree about
 where a run leaves its files.
 
-MEMAR_TEST_SCRATCH, when set, names that folder: an agent with a session points
-it into its own session folder, so what its test runs leave lands with the rest
+MEMAR_TEST_SCRATCH, when set, names that folder: an agent with a task points
+it into its own task folder, so what its test runs leave lands with the rest
 of its scratch. The folder has to exist already; a value naming nothing is
 refused rather than created, because a mistyped value would otherwise leave a
 folder where nobody looks.
 
 Unset, the folder is `temp/test-scratch/` in the checkout this file sits in, and
-never the OS temporary directory: a session's scratch is not kept there, and
+never the OS temporary directory: a task's scratch is not kept there, and
 neither is a suite's. `temp/` is the checkout's one scratch root, named by
 `modules-plugable/computer/filesystem/services/fs_memar.py` and ignored by the checkout's `.gitignore`, so a run
 leaves nothing git sees and whatever a failed run leaves is found where a person
-looks for scratch. The folder is not named the way a session is, so the session
+looks for scratch. The folder is not named the way a task is, so the task
 sweep never takes it.
 
 What a suite makes there it removes whole with `remove_tree`, never by

@@ -44,7 +44,7 @@
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
 
 #### What changed
-- The Go → Khayyam migration map, held only as a gitignored brief under `____Chats/`, graduated by facet: its governing rules, disposition triage, and review criteria are now [`Khayyam.practice.md`](../Khayyam.practice.md), and its phase record, corpus conventions, pilot findings, and open questions are [`Khayyam.handoff.md`](../Khayyam.handoff.md).
+- The Go → Khayyam migration map, held only as a gitignored brief under `____Chats/`, graduated by facet: its governing rules, disposition triage, and review criteria are now `Khayyam.practice.md`, and its phase record, corpus conventions, pilot findings, and open questions are `Khayyam.handoff.md` (both at the top of the `organization` repository as it stood then; the links were turned into plain names on 2026-10-20 because neither path exists in this repository).
 - `modules.md` gained the edge-folder shape the Phase 0 pass produced: one folder per edge with Model, Policies, Placement, and Open questions; no aggregate `edges.md`; no archived deleted path; and the folder named for the relation rather than for the owning domain.
 - The twelve module handoffs that cited the brief by its scratch path now link the practice document, and `thing` and `comment` also link the handoff for the pilot findings and the Phase 0 review. `AGENTS.md` declares the practice before source work.
 - The brief itself went to the platform trash through `host/fs.py`.
@@ -64,3 +64,36 @@
 - `modules.md` now states that it and its companions hold only how a module is placed and added; a change inside a module is recorded in that module's own changelog and handoff.
 - An entry recording the `replacement-cost` module and the pricing decision, written here the same day, moved to [replacement-cost.changelog.md](../modules-plugable/economics/replacement-cost/replacement-cost.changelog.md) and [pricing.changelog.md](../modules-plugable/economics/pricing/pricing.changelog.md).
 - The entry recording the eight edge documents written for `computer/software` and `computer/instance_of` (2026-10-09) moved to [software.changelog.md](computer/software/software.changelog.md) and [instance_of.changelog.md](computer/instance_of/instance_of.changelog.md), each carrying the part about its own edges.
+
+---
+
+### organization's modules README carried after the merge
+- Time: 2026-10-19T12:00:00Z
+- Type: changed
+- Cited:
+  - [Modules](./modules.md) - Relation: Evidence: the document organization's `modules/README.md` pointed at
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — carried, recorded
+
+#### What changed
+In organization (commit `19834121`) `modules/README.md` was a git symlink to `modules.md`, so it held no text of its own; memar's `README.md` here is a separate document describing the layer. `README.md` gained the section *Placement and the edge rules*, which names `modules.md` as the main document for placement, edge buckets, the edge folder and the module skeleton, so the entry point organization's README gave is kept without a second statement of it. `modules.md` itself is the content session's file and was not touched here. Nothing else from organization's side existed to carry or to drop.
+
+---
+
+### `status/` is a main folder beside `edges/` and `protocol/`
+- Time: 2026-10-20T07:00:00Z
+- Type: Changed
+- Cited:
+  - [Modules Research 001 → 6](../.agents/tasks/20261019-T191746Z-12632/docs/modules.research.001.md#6-owner-decisions-needed) - Depends_on: the owner's rulings D5 and D6 of 2026-10-20.
+  - [Modules Categories Research 001 → 7](../.agents/tasks/20261019-T191746Z-16420/docs/modules.categories.research.001.md#7-owner-decisions-needed) - Depends_on: the owner's ruling C3 of 2026-10-20, one profile with two layers.
+- Tasks:
+  - 20261020-T060221Z-19268: Closed - the session that applied the rulings.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- [Edge buckets](./modules.md#edge-buckets) names four kinds: `status/` holds the loop-edges whose kind is Status and sits beside `edges/` and `protocol/`; `edges-loop/` no longer spells `Status_*` and keeps every other one-node classification, the status module's shared statuses excepted. The edge folder sentence names `status/` with the other three.
+- [Module skeleton](./modules.md#module-skeleton) states the two layers, the structural kinds and the kinds of work, and that a need only one domain has is a part of it, not a role.
+- [README](./README.md#the-kinds-of-folder-here) gains the bullet *By structure inside a module*, which lists `protocol/`, the edge folders and `status/`, and says that `status/` is neither a role folder nor a Role.

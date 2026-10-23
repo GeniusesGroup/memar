@@ -8,7 +8,7 @@ This layer writes it, for the current user, persistently, and reads it back for
 everything that needs to know where Memar is. Nothing else decides it, and
 nothing keeps a second copy of the repository. What the variable says is what
 the platform's record of it says, not merely what this process was started with:
-a session that opened before the value was written still finds it.
+a task that opened before the value was written still finds it.
 
 Obtaining the repository is not here, and the reason is where it belongs: the
 bootstrap is what puts a checkout on a machine, and this layer is only ever run
@@ -18,7 +18,7 @@ develops — and the machine around a recorded checkout:
 
   - writes MEMAR_ROOT for the current user, into that user's shell profile on
     POSIX and into the registry-backed user environment on Windows, so it
-    survives the session;
+    survives the task;
   - puts the `memar` command on the user's PATH;
   - installs the editor extensions that checkout ships, under the names their
     own manifests give, writing the checkout's copy over any it installed before;
@@ -30,7 +30,7 @@ What each of those is is asked rather than repeated here:
 `machine/env_location.py` what the location variable
 says and where that variable lives, `machine/env_path.py` the user's PATH,
 `modules-plugable/computer/filesystem/services/fs_target.py` the folder a run would use, `modules-plugable/computer/filesystem/services/fs_lock.py` two
-sessions at once, `modules-plugable/computer/filesystem/services/fs_memar.py` where the checkout and its scratch live,
+tasks at once, `modules-plugable/computer/filesystem/services/fs_memar.py` where the checkout and its scratch live,
 `machine/editor_extension.py` the editor extensions, and `machine/console.py`
 how a step is printed.
 
@@ -43,12 +43,12 @@ record would print — or that there would be none. It writes nothing, clones
 nothing, and touches neither the variable nor the editor, so the refusal can be
 proved on a machine that is already installed.
 
-Two sessions arriving at once never record one folder at once: the recording is
+Two tasks arriving at once never record one folder at once: the recording is
 taken under a lock file, and it is idempotent, so the second waits and then
 finds the work already done.
 
 MEMAR_ROOT takes effect for programs started *after* it is written. Other
-programs — your editor, your shell, this session's parent — must be restarted
+programs — your editor, your shell, this task's parent — must be restarted
 before they see it: a running program does not read a new value. This process
 sets it for itself, so the layers `bundles/memar/services/install/install.py` asks after this one, in
 this same process, see it. When this process's own copy disagrees with the
@@ -92,7 +92,7 @@ def report_installed(path: Path, *, dry_run: bool=False) -> None:
     They do not decide anything now: they make sure git and Python are here,
     obtain the checkout, and then hand the run to `memar install`. So the
     question whether Memar is already on this machine is asked here, against the
-    record, and not by a shell reading a copy of the variable that a session
+    record, and not by a shell reading a copy of the variable that a task
     opened earlier may not hold.
 
     A re-run costs nothing, so it also puts the launcher on PATH when a move

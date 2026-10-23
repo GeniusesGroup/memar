@@ -1,7 +1,7 @@
 ---
 Title: "The Error"
 Status: Proposed
-Start Date: 2026-07-08
+Start Date: 2026-07-09
 ID: 495440
 ---
 
@@ -27,7 +27,7 @@ This document answers each of these directly, recording the reasoning and the al
 ### Methodology
 This document is the consolidation of two documents previously maintained in parallel: the *Error Abstraction* document (composition, identity, tooling-facing declaration, optional capability interfaces) and the *Error vs. Log* document (the Capture → Persist → Re-express translation discipline). The two were merged because they answer two halves of the same question — what an `Error` is, and what an `Error` is allowed to do when it leaves its origin layer — and forcing a reader to load two documents to assemble a single mental model produced the same scattering problem this project's documentation specification was written to eliminate.
 
-The content was arrived at through: sustained design discussion across multiple working sessions, with each proposed change argued for and against rather than accepted on first suggestion; rejection of an earlier `Equivalence[Error]` method on the grounds that it duplicated the `GetTypeID()` comparison; rejection of a sealed-interface marker pattern after evidence accumulated that it bought no real guarantee beyond a plain exported method; correction of a host-language-specific realization detail that had been incorrectly generalized into the abstraction's canonical composition (the `ADT` family narrowing); and direct testing of the boundary-translation rule against a concrete worked example (the financial-transaction service used in the [Boundary translation](#boundary-translation) topic below) to confirm the three-step Capture → Persist → Re-express pattern actually resolves the two failure modes the rule was written to prevent.
+The content was arrived at through: sustained design discussion across multiple working chats, with each proposed change argued for and against rather than accepted on first suggestion; rejection of an earlier `Equivalence[Error]` method on the grounds that it duplicated the `GetTypeID()` comparison; rejection of a sealed-interface marker pattern after evidence accumulated that it bought no real guarantee beyond a plain exported method; correction of a host-language-specific realization detail that had been incorrectly generalized into the abstraction's canonical composition (the `ADT` family narrowing); and direct testing of the boundary-translation rule against a concrete worked example (the financial-transaction service used in the [Boundary translation](#boundary-translation) topic below) to confirm the three-step Capture → Persist → Re-express pattern actually resolves the two failure modes the rule was written to prevent.
 
 ## Explanation
 
@@ -78,7 +78,7 @@ tp Retry mt (self SomeService) (req Request) (result Result) (err Error) {
 The point is that the dispatch is by *type*, not by string comparison or an enum field, and that a concrete error remains free to declare *none* of these capabilities when none apply.
 
 #### Admitting a new capability interface
-The set admits more than these three. A new orthogonal capability interface is proposed in this topic with a concrete need behind it — not an anticipated one — and admitted by the owner of this protocol's subject ([rule.md → Who Owns and Introduces Rules](../../../docs/rule.md#who-owns-and-introduces-rules)) when the question generic infrastructure would ask it is one no existing capability answers, and its presence implies none of theirs.
+The set admits more than these three. A new orthogonal capability interface is proposed in this topic with a concrete need behind it — not an anticipated one — and admitted by the owner of this protocol's subject ([rule.md → Who Owns and Introduces Rules](../rule/rule.md#who-owns-and-introduces-rules)) when the question generic infrastructure would ask it is one no existing capability answers, and its presence implies none of theirs.
 
 ### Multi-cause returns
 A method that can fail in more than one way returns the `Error` abstraction; a method with exactly one possible failure cause returns that concrete type directly (a covariant-return consequence of the underlying [Type](../../../docs/type.md) identity principle):
@@ -233,7 +233,7 @@ tp ImplError mt (self ErrServiceNotFound) () () {
 This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
 
 ### Enforcement of the "each Error is its own type" rule
-Per the [Type](../../../docs/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../content/documentation/explanation/explanation.md#conventions).
+Per the [Type](../../../docs/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../knowledge/documentation/explanation/explanation.md#conventions).
 
 This rule is the load-bearing one that everything else in this document depends on. Without it:
 

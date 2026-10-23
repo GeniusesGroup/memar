@@ -17,7 +17,7 @@ the moment it is printed, from the command line the services declare
 (`assemble` in the router), so a verb added, renamed or given another argument
 is on the card without anyone writing a line, and the card cannot disagree with
 `--help` because it reads the same parsers. No service copies it: `get-task-init-context` and `get-task-answer-context` name `memar commands` in the part where
-they once printed it, so an agent that took up a session runs that one command
+they once printed it, so an agent that took up a task runs that one command
 and the card is reached in one place.
 """
 from __future__ import annotations

@@ -51,7 +51,7 @@ class CardIsGenerated(unittest.TestCase):
         self.assertIn('memar thing make name\n    make a thing.\n', card)
         self.assertIn('memar bare\n    no arguments\n', card)
 
-    def test_the_real_card_lists_the_commands_every_session_uses(self) -> None:
+    def test_the_real_card_lists_the_commands_every_task_uses(self) -> None:
         card = commands.card_text()
         for line in ('memar ai get-task-init-context --task-id ID', 'memar content write', 'memar commands'):
             self.assertIn(line, card)

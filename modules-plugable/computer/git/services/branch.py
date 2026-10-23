@@ -3,14 +3,14 @@
 
 """modules-plugable/computer/git/services/branch.py — a project's records branch: what it holds, and the one way a commit is added to it.
 
-A project's sessions' records are kept on a branch of the project's own
-repository (`fs_memar.RECORDS_BRANCH`), each session
+A project's tasks' records are kept on a branch of the project's own
+repository (`fs_memar.RECORDS_BRANCH`), each task
 at `.agents/tasks/<id>/` in the branch's tree, so the history of the work
 does not grow with them and nothing of the checkout moves when one is kept. This
-file is the whole of what the other session services know about git:
+file is the whole of what the other task services know about git:
 
   reading   whether a folder is a repository, what the branch holds for a
-            session (each file's blob id), the bytes of one file, and the blob
+            task (each file's blob id), the bytes of one file, and the blob
             id a file would have, all read-only and all told the repository,
             never the folder the process runs in;
   writing   one commit through `_host_git_cli.py record`, run by its path, which
@@ -45,11 +45,11 @@ def _git(project: Path, args: list[str], data: bytes | None=None) -> subprocess.
     return subprocess.run([found, '-C', str(project), *args], input=data, capture_output=True)
 
 def reference(task_id: str) -> str:
-    """How a session's records are named wherever they are cited: the branch, a colon, the session's folder on it; `modules-plugable/computer/git/services/_git_records.py` holds the form, which the content module reads too."""
+    """How a task's records are named wherever they are cited: the branch, a colon, the task's folder on it; `modules-plugable/computer/git/services/_git_records.py` holds the form, which the content module reads too."""
     return git_records.reference(task_id)
 
 def folder_on_branch(task_id: str) -> str:
-    """The path of a session's folder in the branch's tree, without a trailing slash."""
+    """The path of a task's folder in the branch's tree, without a trailing slash."""
     return git_records.folder_on_branch(task_id)
 
 def is_repository(project: Path) -> bool:
@@ -71,7 +71,7 @@ def exists(project: Path) -> bool:
     return _git(project, ['rev-parse', '--verify', '-q', f'refs/heads/{RECORDS_BRANCH}']).returncode == 0
 
 def held(project: Path, task_id: str) -> dict[str, str]:
-    """The files the branch holds for TASK_ID, by path from the session's folder, each with its blob id; none when it holds none."""
+    """The files the branch holds for TASK_ID, by path from the task's folder, each with its blob id; none when it holds none."""
     prefix = folder_on_branch(task_id) + '/'
     if not exists(project):
         return {}
@@ -90,6 +90,27 @@ def read(project: Path, task_id: str, relative: str) -> bytes | None:
         return None
     done = _git(project, ['cat-file', 'blob', f'refs/heads/{RECORDS_BRANCH}:{folder_on_branch(task_id)}/{relative}'])
     return done.stdout if done.returncode == 0 else None
+
+def read_many(project: Path, task_id: str, relatives: list[str]) -> dict[str, bytes]:
+    """The bytes of each of RELATIVES in TASK_ID's folder on the branch, in one `git cat-file --batch`; one the branch does not hold, or no branch, is left out.
+
+    One process start for all of them, where `read` starts two for each: on a machine
+    that scans every executable start, the starts are the cost.
+    """
+    asked = ''.join((f'refs/heads/{RECORDS_BRANCH}:{folder_on_branch(task_id)}/{each}\n' for each in relatives)).encode('utf-8')
+    done = _git(project, ['cat-file', '--batch'], asked)
+    out, at, found = (done.stdout, 0, {})
+    for each in relatives:
+        end = out.find(b'\n', at)
+        if end < 0:
+            break
+        header = out[at:end].decode('utf-8', 'replace').split()
+        at = end + 1
+        if len(header) == 3 and header[1] == 'blob':
+            size = int(header[2])
+            found[each] = out[at:at + size]
+            at += size + 1
+    return found
 
 def blob_ids(project: Path, files: list[Path]) -> list[str]:
     """The blob id each of FILES would have in PROJECT's repository, the bytes as they are, in order."""

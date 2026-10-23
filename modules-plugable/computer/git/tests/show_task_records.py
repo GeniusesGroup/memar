@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for reading a session's records in `modules-plugable/computer/git/services/show.py`.
+"""Tests for reading a task's records in `modules-plugable/computer/git/services/show.py`.
 
     python modules/management/task/tests/show.py
 
-The subject is `memar git show-task-records`, which returns a session's plan and report,
+The subject is `memar git show-task-records`, which returns a task's plan and report,
 or the files an agent asks for, from the main repository's temp first and then
 from the records branch (owner, 2026-10-15). It is named for the file that
 holds it per
@@ -19,24 +19,24 @@ made inside it.
 
 What is pinned, and what each pin is for:
 
-  ReadsTempFirst   A session whose folder is still in temp is read from the
+  ReadsTempFirst   A task whose folder is still in temp is read from the
                    folder, even where the branch holds an older copy; a file
                    the folder lacks is read from the branch; each file says
                    where it came from.
-  ReadsTheBranch   A session whose folder is gone is read from the project's
+  ReadsTheBranch   A task whose folder is gone is read from the project's
                    records branch: the plan, the report, and any file asked
-                   for by its path from the session's folder; the plan as kept
+                   for by its path from the task's folder; the plan as kept
                    names the project by name.
   Refusals         A project must be named, by `--project` or
                    `--project-path`, and the folder this runs in is never
                    read. A file that is nowhere, a path that leaves the
-                   session's folder, a session in neither place, and a
+                   task's folder, a task in neither place, and a
                    project with no branch are refused saying where each was
                    looked for.
   HandBack         `--hand-back` prints the report's Status, its path and the
                    lines under Decisions needed, and no other line of the
                    report; a report that is not a hand-back is named with why.
-  Listing          `--list` names the files the session has, from the folder
+  Listing          `--list` names the files the task has, from the folder
                    when it is in temp, else from the branch.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
@@ -62,8 +62,8 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-session_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
-session_show = import_module('modules-plugable.computer.git.services.show_task_records')
+task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
+task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 from modules.process.project.services.registry import add_project
 NAME = 'example'
 SID = '20261015-T100000Z-1'
@@ -83,7 +83,7 @@ class Fixture(unittest.TestCase):
         for args in (['init', '-q', '-b', 'main'], ['config', 'user.name', 'Test'], ['config', 'user.email', 't@example.org']):
             subprocess.run(['git', '-C', str(self.project), *args], check=True, capture_output=True)
 
-    def session(self, sid: str=SID) -> Path:
+    def task(self, sid: str=SID) -> Path:
         folder = memar_fs.task_dir(sid, create=True)
         (folder / 'plan.md').write_bytes(f'---\nTitle: T\nStatus: Complete\nOpened: x\nProject: {self.project}\n---\n# T\n\n## Request\nPlan text.\n'.encode('utf-8'))
         (folder / 'report.md').write_bytes(b'---\nTitle: T\nStatus: Complete\n---\n# Report\nBranch report.\n')
@@ -92,8 +92,8 @@ class Fixture(unittest.TestCase):
         return folder
 
     def archived_and_gone(self, sid: str=SID) -> Path:
-        folder = self.session(sid)
-        self.assertEqual(session_archive.keep_records([folder])[0].outcome, session_archive.Outcome.KEPT)
+        folder = self.task(sid)
+        self.assertEqual(task_archive.keep_records([folder])[0].outcome, task_archive.Outcome.KEPT)
         shutil.rmtree(folder)
         return folder
 
@@ -101,12 +101,12 @@ class Fixture(unittest.TestCase):
         """What `show` printed and, when it stopped, why."""
         parser = argparse.ArgumentParser()
         verbs = parser.add_subparsers()
-        run = session_show.describe(verbs)
+        run = task_show.describe(verbs)
         flags = {'path': ['--project-path', str(self.project)], 'name': ['--project', NAME], None: []}[project]
         out = io.StringIO()
         try:
             with contextlib.redirect_stdout(out):
-                run(parser.parse_args([session_show.SHOW_COMMAND, '--task-id', SID, *flags, *arguments]))
+                run(parser.parse_args([task_show.SHOW_COMMAND, '--task-id', SID, *flags, *arguments]))
         except SystemExit as stopped:
             return (out.getvalue(), str(stopped.code))
         return (out.getvalue(), None)
@@ -114,8 +114,8 @@ class Fixture(unittest.TestCase):
 class ReadsTempFirst(Fixture):
 
     def test_a_folder_still_in_temp_is_read_from_the_folder_even_where_the_branch_has_an_older_copy(self) -> None:
-        folder = self.session()
-        session_archive.keep_records([folder])
+        folder = self.task()
+        task_archive.keep_records([folder])
         (folder / 'report.md').write_bytes(b'---\nTitle: T\nStatus: Complete\n---\n# Report\nFolder report.\n')
         said, stopped = self.show()
         self.assertIsNone(stopped)
@@ -124,14 +124,14 @@ class ReadsTempFirst(Fixture):
         self.assertIn(str(folder / 'report.md'), said)
 
     def test_a_file_the_folder_lacks_is_read_from_the_branch_and_says_so(self) -> None:
-        folder = self.session()
-        session_archive.keep_records([folder])
+        folder = self.task()
+        task_archive.keep_records([folder])
         (folder / 'report.md').unlink()
         said, stopped = self.show()
         self.assertIsNone(stopped)
         self.assertIn('Plan text.', said)
         self.assertIn('Branch report.', said)
-        self.assertIn(session_archive.reference(SID) + 'report.md', said)
+        self.assertIn(task_archive.reference(SID) + 'report.md', said)
 
 class ReadsTheBranch(Fixture):
 
@@ -144,7 +144,7 @@ class ReadsTheBranch(Fixture):
         self.assertIn(f'Project: {NAME}', said)
         self.assertLess(said.index('Plan text.'), said.index('Branch report.'))
 
-    def test_a_named_file_is_returned_from_the_sessions_folder_and_only_that_one(self) -> None:
+    def test_a_named_file_is_returned_from_the_tasks_folder_and_only_that_one(self) -> None:
         self.archived_and_gone()
         said, stopped = self.show('--file', 'docs/note.md')
         self.assertIsNone(stopped)
@@ -160,7 +160,7 @@ class ReadsTheBranch(Fixture):
     def test_each_file_is_headed_by_its_name_and_where_it_came_from(self) -> None:
         self.archived_and_gone()
         said, _ = self.show()
-        self.assertIn(f'=== plan.md ({session_archive.reference(SID)}plan.md)', said)
+        self.assertIn(f'=== plan.md ({task_archive.reference(SID)}plan.md)', said)
 
 class Refusals(Fixture):
 
@@ -175,14 +175,14 @@ class Refusals(Fixture):
         self.assertIn('docs/none.md', stopped or '')
         self.assertIn('dev-knowledge', stopped or '')
 
-    def test_a_path_that_leaves_the_sessions_folder_is_refused(self) -> None:
+    def test_a_path_that_leaves_the_tasks_folder_is_refused(self) -> None:
         self.archived_and_gone()
         for bad in ('../x.md', '/etc/passwd', 'docs/../../x.md', 'C:\\x.md', ''):
             with self.subTest(bad=bad):
                 _, stopped = self.show('--file', bad)
                 self.assertIsNotNone(stopped)
 
-    def test_a_session_in_neither_place_is_refused(self) -> None:
+    def test_a_task_in_neither_place_is_refused(self) -> None:
         subprocess.run(['git', '-C', str(self.project), 'commit', '-q', '--allow-empty', '-m', 'base'], check=True, capture_output=True)
         _, stopped = self.show()
         self.assertIn(SID, stopped or '')
@@ -194,7 +194,7 @@ class Refusals(Fixture):
 class Listing(Fixture):
 
     def test_a_folder_in_temp_is_listed_from_the_folder(self) -> None:
-        folder = self.session()
+        folder = self.task()
         (folder / 'temp').mkdir()
         (folder / 'temp' / 'draft.md').write_bytes(b'd\n')
         said, stopped = self.show('--list')
@@ -210,7 +210,7 @@ class Listing(Fixture):
 class HandBack(Fixture):
 
     def report(self, text: bytes) -> None:
-        folder = self.session()
+        folder = self.task()
         (folder / 'report.md').write_bytes(text)
 
     def test_only_the_status_the_path_and_the_decisions_are_printed(self) -> None:
@@ -235,7 +235,7 @@ class HandBack(Fixture):
         said, _ = self.show('--hand-back')
         self.assertIn('Not a hand-back: report.md has no Status', said)
 
-    def test_a_session_with_no_folder_is_refused(self) -> None:
+    def test_a_task_with_no_folder_is_refused(self) -> None:
         said, stopped = self.show('--hand-back')
         self.assertEqual(said, '')
         self.assertIn('no folder in temp', stopped)

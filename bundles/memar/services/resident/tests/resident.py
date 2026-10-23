@@ -8,7 +8,7 @@
 The subject is the resident process `resident/services/serve.py` starts and the client `machine/resident.py`
 the router asks first, named for the file that holds the verb per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md). Its defining document is the
-verbs' own help and the plan of session 20261020-T061848Z-22132; the expectations below are the plan's.
+verbs' own help and the plan of task 20261020-T061848Z-22132; the expectations below are the plan's.
 
 Every process here keeps its state in a folder of its own (MEMAR_SERVER_STATE), so none meets the owner's resident
 process, and every child has the null device for stdin, which is what an agent's shell call has.
@@ -156,7 +156,7 @@ class CallsOverlap(WithState):
 
         def slow() -> None:
             started = time.monotonic()
-            results['slow'] = (cli(['content', 'find', 'sessions'], environment(self.state, True)), time.monotonic() - started)
+            results['slow'] = (cli(['content', 'find', 'tasks'], environment(self.state, True)), time.monotonic() - started)
         thread = threading.Thread(target=slow)
         thread.start()
         time.sleep(0.5)
@@ -207,7 +207,7 @@ class BusyIsDoneInPlace(WithState):
         self.assertEqual(first.returncode, 0)
         self.assertIsNotNone(wait_for(lambda: state_file(self.state)))
         wait_for(lambda: cli(['resident', 'status'], environment(self.state, False)).returncode == 0)
-        holder = threading.Thread(target=lambda: cli(['content', 'find', 'sessions'], env))
+        holder = threading.Thread(target=lambda: cli(['content', 'find', 'tasks'], env))
         holder.start()
         time.sleep(0.5)
         before = self.count()

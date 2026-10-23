@@ -5,55 +5,38 @@
 
 `memar content find` and `memar content search` read a corpus, and the agent says which
 sources it is made of with `--from`, once per source; without it, the documents and the code,
-as before the flag existed. The sessions are a source of their own because what a session
-wrote is that session's claim, never a ruling: a reader asks for them by name and a hit from
-them names the session it came from (owner, 2026-10-19: a filter on `memar content`, not a new
+as before the flag existed. The tasks are a source of their own because what a task
+wrote is that task's claim, never a ruling: a reader asks for them by name and a hit from
+them names the task it came from (owner, 2026-10-19: a filter on `memar content`, not a new
 verb). The flag, its values, what each reads and the default are the type's, and every help
 text that names them asks it
 ([A Fact in Code Is Written Once](../../documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
-
+from machine.plugable_import import load as plugable_load
+_m_git_records = plugable_load('computer.git.services._git_records')
+reference = _m_git_records.reference
 import argparse
 from enum import Enum
-
-from machine.git_records import reference
-
-# The flag, its metavar, and the attribute a parser gives it. Module constants and not
-# members' neighbours in the class, since an Enum would take them for values.
-FLAG = "--from"
-METAVAR = "SOURCE"
-DEST = "sources"
-
+FLAG = '--from'
+METAVAR = 'SOURCE'
+DEST = 'sources'
 
 class CorpusSource(Enum):
     """One source of the corpus a content verb reads."""
-
-    DOCUMENTS = "documents"
-    CODE = "code"
-    SESSIONS = "sessions"
+    DOCUMENTS = 'documents'
+    CODE = 'code'
+    TASKS = 'tasks'
 
     @property
     def suffixes(self) -> tuple[str, ...]:
-        """The file suffixes this source takes from the checkout's folders; none for the sessions, which take every text file."""
-        return {"documents": (".md",), "code": (".kh",)}.get(self.value, ())
+        """The file suffixes this source takes from the checkout's folders; none for the tasks, which take every text file."""
+        return {'documents': ('.md',), 'code': ('.kh',)}.get(self.value, ())
 
     @property
     def reads(self) -> str:
         """What this source reads, as a help text says it."""
-        return {
-            "documents": (
-                "the Markdown files of the checkout's docs/, modules/, modules-plugable/, bundles/ and .agents/, "
-                "and its README.md and AGENTS.md; not handoffs, changelogs, research companions, temp/ or generated folders"
-            ),
-            "code": "the .kh files of the same folders",
-            "sessions": (
-                "every session's records, each a session's claim and never a ruling: the archived ones on the "
-                f"project's records branch, cited as {reference('<id>')}, unless its preferences say "
-                "`records: off`, and the live session folders of the project, each text file but a session's "
-                "own temp/; a session with a live folder is read from it"
-            ),
-        }[self.value]
+        return {'documents': "the Markdown files of the checkout's docs/, modules/, modules-plugable/, bundles/ and .agents/, and its README.md and AGENTS.md; not handoffs, changelogs, research companions, temp/ or generated folders", 'code': 'the .kh files of the same folders', 'tasks': f"every task's records, each a task's claim and never a ruling: the archived ones on the project's records branch, cited as {reference('<id>')}, unless its preferences say `records: off`, and the live task folders of the project, each text file but a task's own temp/; a task with a live folder is read from it"}[self.value]
 
     @classmethod
     def default(cls) -> tuple[CorpusSource, ...]:
@@ -63,16 +46,9 @@ class CorpusSource(Enum):
     @classmethod
     def add_flag(cls, parser: argparse.ArgumentParser) -> None:
         """Give PARSER the `--from` flag, repeatable, its help listing each value and what it reads."""
-        listed = "; ".join(f"`{each.value}`: {each.reads}" for each in cls)
-        named = " and ".join(f"`{each.value}`" for each in cls.default())
-        parser.add_argument(
-            FLAG,
-            dest=DEST,
-            action="append",
-            choices=[each.value for each in cls],
-            metavar=METAVAR,
-            help=f"a source to read, repeated for several; without it, {named}. {listed}",
-        )
+        listed = '; '.join((f'`{each.value}`: {each.reads}' for each in cls))
+        named = ' and '.join((f'`{each.value}`' for each in cls.default()))
+        parser.add_argument(FLAG, dest=DEST, action='append', choices=[each.value for each in cls], metavar=METAVAR, help=f'a source to read, repeated for several; without it, {named}. {listed}')
 
     @classmethod
     def chosen(cls, args: argparse.Namespace) -> tuple[CorpusSource, ...]:
@@ -80,4 +56,4 @@ class CorpusSource(Enum):
         named = getattr(args, DEST, None)
         if not named:
             return cls.default()
-        return tuple(each for each in cls if each.value in named)
+        return tuple((each for each in cls if each.value in named))

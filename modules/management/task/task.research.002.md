@@ -164,7 +164,7 @@ The consequence for the model is the central claim of this addendum: **the bound
 - **Discussion** has many writers safely, because each entry is its own content placed on a timeline; appending distinct contents does not contend for one changer.
 
 #### 12. A chat is a run on a Task, not the Task
-(agent) Today an agent session is a chat opened and closed; what it decided lives in its scrollback unless written elsewhere. Claude Code carries knowledge across sessions only through files loaded at start ("Each Claude Code session begins with a fresh context window"; auto memory loads its "first 200 lines or 25KB"; nested instruction files "load on demand", [Claude Code memory](https://code.claude.com/docs/en/memory), read). Devin's knowledge is "retrieved when relevant, not all at once" by a trigger description ([Devin knowledge](https://docs.devin.ai/Onboard_Devin/knowledge), search summary). MemGPT treats the window as main memory paged from external storage ([arXiv 2310.08560](https://arxiv.org/abs/2310.08560), search summary). All three keep the durable part outside the chat; none ties it to a unit of agreed work. Memar's session does: its plan outlives its context, which is why this session can be handed to a sub-agent at all.
+(agent) Today an agent session is a chat opened and closed; what it decided lives in its scrollback unless written elsewhere. Claude Code carries knowledge across sessions only through files loaded at start ("Each Claude Code session begins with a fresh context window"; auto memory loads its "first 200 lines or 25KB"; nested instruction files "load on demand", [Claude Code memory](https://code.claude.com/docs/en/memory), read). Devin's knowledge is "retrieved when relevant, not all at once" by a trigger description ([Devin knowledge](https://docs.devin.ai/Onboard_Devin/knowledge), search summary). MemGPT treats the window as main memory paged from external storage ([arXiv 2310.08560](https://arxiv.org/abs/2310.08560), search summary). All three keep the durable part outside the chat; none ties it to a unit of agreed work. Memar's session does: its plan outlives its context, which is why this chat can be handed to a sub-agent at all.
 
 In the model: the Task owns intent, check, status, outcome, relations and claim; the conversation is a timeline of content the Task refers to; each message is a content; text owns the words; the agent's run is an event span on the Task by its holder, owned by the organization's concept of how agents run. Closing the chat ends a run, not the Task. What is lost is only the run's working state (its cache, its unwritten reasoning); what is gained is that every later reader, of any kind, starts from the Task's view and not from a transcript.
 
@@ -222,7 +222,7 @@ Revised defaults for questions 17 to 26, then new questions. Ordered by what the
 ## Second opinion — a fresh agent, positions formed before reading the addendum (2026-10-18)
 Written at the owner's request after his answers recorded in the [handoff](task.handoff.md#owners-answers-to-the-review-2026-10-18). A different model was tried and was unavailable for lack of credits, so the same tier ran; independence is only that its positions A to G were written before it read the addendum. Nothing here is ratified. It replaces question 33 and the addendum's reading of a run, adds `same_ask` as a candidate fifth Task relation, and adds four tests for a new Task versus a participant.
 
-Written by an AI agent (Claude, model Opus 5.5, `claude-opus-5-5`, as reported by the runtime) for session 20261018-T170339Z-16088. A different model was wanted and was not available, so this is the same tier as the earlier reviewer. Every proposal is Tentative and changes no module document.
+Written by an AI agent (Claude, model Opus 5.5, `claude-opus-5-5`, as reported by the runtime) for task 20261018-T170339Z-16088. A different model was wanted and was not available, so this is the same tier as the earlier reviewer. Every proposal is Tentative and changes no module document.
 
 **Independence.** Positions A to G were formed from `task.md`, `task.handoff.md`, `task.research.002.md` lines 1 to 129, `content.handoff.md`, the group, delegate, timeline and text-mention documents, and Memar's Agency sections, and were written to a scratch file of the review session before the addendum (lines 130 to 229) was read. Section H is written after it. Where the final text below differs from that file, the change is said in H.
 
@@ -236,7 +236,7 @@ Written by an AI agent (Claude, model Opus 5.5, `claude-opus-5-5`, as reported b
 
 If none holds (they are asked one question, answer in the discussion, and the asking holder judges the answer), they are a participant: a member of the Task's group with a role, writing discussion entries.
 
-**Worked example.** In session 17560 the owner wanted an opinion on Research 002. That opinion has its own check (positions on every question), its holder may be Blocked, and the second opinion (this one) needs a view without the first. All four tests hold, so 11200 and 16088 are Tasks, and they are children of 17560 through `part_of`: the session records already say "parent: 20261017-T162411Z-17560". The `#11200` that the owner compared to GitHub is therefore not only a mention; underneath it is `part_of`. By contrast, if during 17560 the owner had written "@Ali, is the outcome word 'abandoned' right in Persian?", Ali is a participant: one reply in the discussion, judged by the holder, no own check.
+**Worked example.** In chat 17560 the owner wanted an opinion on Research 002. That opinion has its own check (positions on every question), its holder may be Blocked, and the second opinion (this one) needs a view without the first. All four tests hold, so 11200 and 16088 are Tasks, and they are children of 17560 through `part_of`: the task records already say "parent: 20261017-T162411Z-17560". The `#11200` that the owner compared to GitHub is therefore not only a mention; underneath it is `part_of`. By contrast, if during 17560 the owner had written "@Ali, is the outcome word 'abandoned' right in Persian?", Ali is a participant: one reply in the discussion, judged by the holder, no own check.
 
 **Organization as participant.** An organization is a member of the Task's group (group allows organizations as members) and accepts through delegate. It never works inside our space: its own internal work on the answer is a Task in its own space, and what reaches our Task is its answer, placed in our discussion as content by the agent that speaks for it. Our Task does not see its internal Tasks; it sees the answer and who stands behind it.
 
@@ -288,7 +288,7 @@ If none holds (they are asked one question, answer in the discussion, and the as
 
 This meets the earlier finding (decisions reach siblings whole; traces need not) exactly: thinking is a trace.
 
-**Worked example.** This session's own reasoning is thinking text. Its report and `opinion.md` are the discussion and report contents. If this reasoning had concluded "the coordinator should merge 11200 and 16088" but written it nowhere else, the coordinator, reading only the report, is not misled: that conclusion does not bind, because it was not recorded.
+**Worked example.** This chat's own reasoning is thinking text. Its report and `opinion.md` are the discussion and report contents. If this reasoning had concluded "the coordinator should merge 11200 and 16088" but written it nowhere else, the coordinator, reading only the report, is not misled: that conclusion does not bind, because it was not recorded.
 
 **Gains.** Views stay small and cacheable; history is complete for audit and for the debrief of a run; a reader with a question can pull how a position was reached.
 
@@ -398,7 +398,7 @@ Agreements for a different reason:
 Additions not in the addendum: the four tests for a new Task (A); the three things called "mention" (B); organizations as participants working in their own space (A); a summary over content a reader may not see as a leak (E).
 
 ### What could not be verified
-- The positions rest on the documents read in this session; `task.research.001.md` (78 KB) was not read, so its questions are known only through `task.handoff.md` and `task.md`.
+- The positions rest on the documents read in this chat; `task.research.001.md` (78 KB) was not read, so its questions are known only through `task.handoff.md` and `task.md`.
 - Session 11200's own report was not read; the earlier review is known only through the addendum.
 - The GitHub duplicate behaviour is from a page summary by a small model; whether marking closes the issue was not stated in that summary.
 - Whether any runtime exposes an AI system's thinking faithfully was not checked; C treats it as a claim.

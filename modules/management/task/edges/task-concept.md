@@ -24,7 +24,7 @@ Author(s): []
 ---
 
 ## Summary
-Task is proposed as a single, deliberately general primitive representing any unit of work that can be planned, discussed, decomposed into subordinate units, and tracked toward completion — intended to replace the need for separate, incompatible models for things commonly (and, in Omid's view, ambiguously) branded across the software industry as project management, production/manufacturing tracking, issue tracking, and customer support ticketing. This document captures only the framing and motivating examples discussed so far. The actual data model, state semantics, and dependency mechanics are explicitly out of scope here and deferred to a dedicated design session.
+Task is proposed as a single, deliberately general primitive representing any unit of work that can be planned, discussed, decomposed into subordinate units, and tracked toward completion — intended to replace the need for separate, incompatible models for things commonly (and, in Omid's view, ambiguously) branded across the software industry as project management, production/manufacturing tracking, issue tracking, and customer support ticketing. This document captures only the framing and motivating examples discussed so far. The actual data model, state semantics, and dependency mechanics are explicitly out of scope here and deferred to a dedicated design chat.
 
 Two definitional stances from the 2026-08-04/05 discussion constrain the design:
 
@@ -55,7 +55,7 @@ Deliberately not addressed in this seed document. This is where the real design 
 
 ## Drawbacks
 
-Not fully explored yet; concerns worth carrying into the dedicated session:
+Not fully explored yet; concerns worth carrying into the dedicated chat:
 
 - A primitive general enough to cover a project, a production run, an issue, and a ticket risks becoming too undifferentiated to do useful classification or validation work, unless it is later paired with enough structure to distinguish meaningfully different uses without reintroducing the same category-proliferation problem this RFC is trying to avoid.
 - Automatic completion propagation from subordinate Tasks to a parent needs real semantics: partial completion, a failed or rejected subordinate, optional versus required subordinates, and parallel versus sequential dependency structures. This is comparable in depth to long-studied workflow-modeling problems and should not be treated as an incidental detail.
@@ -64,7 +64,7 @@ Not fully explored yet; concerns worth carrying into the dedicated session:
 
 ## Rationale and alternatives
 
-- Deferred in general to the dedicated session. Two stances already taken:
+- Deferred in general to the dedicated chat. Two stances already taken:
 - **Flat Task over the industry hierarchy**: `Project → Epic → Story → Task/Bug` presumes scale-graded entity types. Under the dictionary definition, all of these are "pieces of work undertaken"; what differs (duration, subtask count, number of responsible parties, resource breadth, dependency depth) are attributes and relations. Rejected alternative: separate Project/Epic entity types — reintroduces the ERP-style category proliferation this RFC exists to avoid.
 - **Word choice deferred, not decided**: "Task" is kept as the working name for lack of a better word and for lexical fit (same argument style as `user`), while the question "is Task the fundamental entity, or another industry label on something deeper?" stays open (unresolved #8).
 
@@ -72,7 +72,7 @@ Not fully explored yet; concerns worth carrying into the dedicated session:
 
 Not addressed yet, beyond points worth carrying forward:
 
-- Rejecting vendor-branded terms like ERP or BPMS does not necessarily mean rejecting the underlying technical and academic literature on workflow modeling (task decomposition, dependency graphs, exception handling in process models), which exists independently of any specific commercial product and predates most of the branded tools built on top of it. That literature may be worth reviewing in the dedicated session, independent of any vendor terminology.
+- Rejecting vendor-branded terms like ERP or BPMS does not necessarily mean rejecting the underlying technical and academic literature on workflow modeling (task decomposition, dependency graphs, exception handling in process models), which exists independently of any specific commercial product and predates most of the branded tools built on top of it. That literature may be worth reviewing in the dedicated chat, independent of any vendor terminology.
 - The recurring reduction pattern observed across this project (and Memar before it): Service → maybe Capability; Repository → maybe Storage Policy; Aggregate → maybe Boundary; Event → maybe Observation; and here: Project → maybe Task; Department → maybe Group (see [`group/README.md`](../../group/README.md)); Reminder → maybe Rule; Sprint → maybe Time Constraint. The working question in every case: *is this an independent concept, or a configuration of a more fundamental one?*
 
 ## Unresolved questions
@@ -94,4 +94,4 @@ Essentially everything beyond the Summary, Motivation, and Guide-level explanati
 
 ## Future possibilities
 
-Deferred to the dedicated session.
+Deferred to the dedicated chat.

@@ -13,7 +13,7 @@ and `project_find` turns a word into a folder through it.
 The format is one project a line, each line a JSON object with the folder and
 an array of names: `{"path": "C:\\\\work\\\\org", "names": ["organization", "org", "سازمان"]}`.
 A line may also hold `"locations"`, an array of the folders outside Memar's temp
-where the project's session folders are made (`session_location`); it is absent
+where the project's task folders are made (`task_location`); it is absent
 when there are none, and a damaged value costs the locations, not the entry.
 JSON, not a column format, because names are free text in any language and a
 separator character would one day be inside one. The first name is the
@@ -174,7 +174,7 @@ def add_project(name: str, path: Path | str, aliases=()) -> Entry:
     return _update(change)
 
 def add_location(project: Path | str, location: Path | str) -> Entry:
-    """Record LOCATION, a folder holding PROJECT's session folders, on PROJECT's entry, once.
+    """Record LOCATION, a folder holding PROJECT's task folders, on PROJECT's entry, once.
 
     A project with no entry gets one, named from its folder's name; a name
     another project already holds, or a folder with no name, is refused with the
@@ -197,7 +197,7 @@ def add_location(project: Path | str, location: Path | str) -> Entry:
             fail(f'the folder {folder} has no name to register its project under; use `memar project add NAME PATH`')
         for entry in entries:
             if normalized(name) in {normalized(each) for each in entry.names}:
-                fail(f'the name {name} is already the project {entry.names[0]} at {entry.path}, so {folder} was not registered with its session location {place}; use `memar project add NAME {folder}` with another name')
+                fail(f'the name {name} is already the project {entry.names[0]} at {entry.path}, so {folder} was not registered with its task location {place}; use `memar project add NAME {folder}` with another name')
         made = Entry(str(folder), (name,), (place,))
         return ([*entries, made], made)
     return _update(change)

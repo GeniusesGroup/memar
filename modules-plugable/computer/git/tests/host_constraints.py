@@ -15,7 +15,7 @@ this repository no longer has.
 What is pinned, and what each pin is for:
 
   NothingIsPermanent     No verb in this shelf deletes. Permanent deletion is
-                         the failure both files exist to prevent: a session that
+                         the failure both files exist to prevent: a task that
                          deep-deletes then needs the file pays for it in
                          reconstructed tokens.
   RefusesWhenAbsent      A path that is not there is reported rather than
@@ -23,7 +23,7 @@ What is pinned, and what each pin is for:
                          worse than no delete.
   RestoreRefusesFirst    Discarding uncommitted work needs an explicit
                          irreversible token, because tidying status is exactly
-                         what sessions do when they lose work by accident.
+                         what tasks do when they lose work by accident.
   RenameIsHistoryKeeping A move goes through `git mv`, which records the rename;
                          a plain move leaves history behind claiming the file
                          was always somewhere else.
@@ -31,7 +31,7 @@ What is pinned, and what each pin is for:
                          left alone — a stash that claimed to hold everything
                          would be a way to lose an ignored file.
   TempIsNotAPath         There is no verb that prints the operating system's
-                         temporary directory. Session scratch has one home
+                         temporary directory. Task scratch has one home
                          under the checkout, and a command whose output is the
                          path that rule forbids invites the failure the rule
                          exists to stop.
@@ -43,7 +43,7 @@ What is pinned, and what each pin is for:
                          not a thing Memar offers.
   CommitTakesOnlyWhatItNames
                          A commit in a shared tree carries the paths it names
-                         and nothing another session staged, and a fold never
+                         and nothing another task staged, and a fold never
                          rewrites what is already upstream. A move `rename`
                          staged is taken only when both of its paths are named,
                          the destination through `--as` only when its file is
@@ -54,7 +54,7 @@ What is pinned, and what each pin is for:
   UncommitKeepsTheWork   Taking back a commit moves HEAD to its parent only
                          when the caller named that commit, it has one parent,
                          and it is not upstream; its work stays in the tree,
-                         unstaged, another session's staging stays staged, and
+                         unstaged, another task's staging stays staged, and
                          the commit stays in the reflog the command points to.
   CommitWaitsOutALock    A lock another git process holds is waited for, and a
                          commit finishes once it is let go. One held past the
@@ -68,14 +68,14 @@ What is pinned, and what each pin is for:
                          and an undo leaves it staged.
                          A failure that is not a lock is not retried. No lock
                          is ever deleted by the command.
-  CommitCitesItsSessions A commit names the sessions it carries out, one
-                         `Session:` trailer each, which the verb writes from
+  CommitCitesItsTasks A commit names the tasks it carries out, one
+                         `Task:` trailer each, which the verb writes from
                          `--task-id` and `git log` reads back beside the
                          message's other trailers. One that cites none is
                          refused with the form it wants unless it says
-                         `--no-session`; an id `memar git show-task-records` cannot
+                         `--no-task`; an id `memar git show-task-records` cannot
                          find, or one written into the message by hand, is
-                         refused; a fold keeps the sessions it replaces.
+                         refused; a fold keeps the tasks it replaces.
 """
 from __future__ import annotations
 
@@ -342,8 +342,8 @@ class ScratchRepository(unittest.TestCase):
         return subprocess.run([sys.executable, str(GIT_CLI), *args], cwd=self.repo, capture_output=True, text=True)
 
     def commit(self, *args: str):
-        """A commit that carries out no session, as every test of what a commit takes makes: the sessions it cites are `CommitCitesItsSessions`' subject."""
-        return self.host_git('commit', '-F', str(self.message), '--no-session', *args)
+        """A commit that carries out no task, as every test of what a commit takes makes: the tasks it cites are `CommitCitesItsTasks`' subject."""
+        return self.host_git('commit', '-F', str(self.message), '--no-task', *args)
 
     def a_file_long_enough_to_keep_a_rename(self) -> str:
         """Commit mine.md long enough that a license header added to it leaves git pairing a move of it."""
@@ -414,7 +414,7 @@ class EveryWorkingVerbTakesTheRepository(ScratchRepository):
 
 class CommitTakesOnlyWhatItNames(ScratchRepository):
 
-    def test_a_named_path_is_committed_and_another_sessions_staging_stays_staged(self) -> None:
+    def test_a_named_path_is_committed_and_another_tasks_staging_stays_staged(self) -> None:
         self.put('mine.md', 'mine\n')
         self.put('theirs.md', 'theirs\n')
         self.git('add', 'theirs.md')
@@ -443,7 +443,7 @@ class CommitTakesOnlyWhatItNames(ScratchRepository):
         self.assertRegex(self.git('diff-tree', '-r', '-M', '--name-status', 'HEAD^', 'HEAD'), '^R\\d+\\tmine.md\\tmoved.md$')
         self.assertEqual(self.git('status', '--porcelain', '--', 'mine.md', 'moved.md'), '')
 
-    def test_a_move_staged_with_an_edit_another_session_staged_is_committed(self) -> None:
+    def test_a_move_staged_with_an_edit_another_task_staged_is_committed(self) -> None:
         body = self.a_file_long_enough_to_keep_a_rename()
         self.git('mv', 'mine.md', 'moved.md')
         self.put('moved.md', '/* license */\n\n' + body)
@@ -683,7 +683,7 @@ class CommitWaitsOutALock(ScratchRepository):
         return (None, said.getvalue())
 
     def commit_here(self, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.module.cmd_commit(self.repo, [Path('mine.md')], [], [], 0, self.message, sessions=[], no_session=True), *patches)
+        return self.here(lambda: self.module.cmd_commit(self.repo, [Path('mine.md')], [], [], 0, self.message, tasks=[], no_task=True), *patches)
 
     def uncommit_here(self, expect: str, *patches) -> tuple[str | None, str]:
         return self.here(lambda: self.uncommit_module.cmd_uncommit(self.repo, expect), *patches)
@@ -786,7 +786,7 @@ class CommitWaitsOutALock(ScratchRepository):
     def stopped_rename_after_head_moved(self) -> str:
         moved = self.host_git('rename', 'mine.md', 'moved.md')
         self.assertEqual(moved.returncode, 0, moved.stderr)
-        stopped, _ = self.here(lambda: self.module.cmd_commit(self.repo, [Path('mine.md'), Path('moved.md')], [], [], 0, self.message, sessions=[], no_session=True), self.grabbed_after_update_ref())
+        stopped, _ = self.here(lambda: self.module.cmd_commit(self.repo, [Path('mine.md'), Path('moved.md')], [], [], 0, self.message, tasks=[], no_task=True), self.grabbed_after_update_ref())
         self.assertIsNotNone(stopped)
         made = self.git('rev-parse', 'HEAD')
         self.assertIn(f'reindex --repository {self.repo} --undo --from {made} --was {self.base} -- mine.md moved.md', stopped)
@@ -915,7 +915,7 @@ class CommitKnowsItsRepositoryAndKeepsItsOwnIndex(ScratchRepository):
         done: dict[str, subprocess.CompletedProcess] = {}
 
         def commit(name: str) -> None:
-            done[name] = subprocess.run([sys.executable, str(GIT_CLI), 'commit', '--repository', str(self.repo), '-F', str(self.message.with_name(f'{name}.msg')), '--no-session', name], cwd=self.elsewhere, capture_output=True, text=True)
+            done[name] = subprocess.run([sys.executable, str(GIT_CLI), 'commit', '--repository', str(self.repo), '-F', str(self.message.with_name(f'{name}.msg')), '--no-task', name], cwd=self.elsewhere, capture_output=True, text=True)
         threads = [threading.Thread(target=commit, args=(name,)) for name in ('a.md', 'b.md')]
         for thread in threads:
             thread.start()
@@ -926,8 +926,8 @@ class CommitKnowsItsRepositoryAndKeepsItsOwnIndex(ScratchRepository):
         for commit_id in self.git('rev-list', f'{self.base}..HEAD').split():
             self.assertEqual(len(self.git('show', '--name-only', '--format=', commit_id).split()), 1)
 
-class CommitCitesItsSessions(ScratchRepository):
-    """`commit` names the sessions it carries out in `Session:` trailers it writes itself, each one a session `memar git show-task-records` finds."""
+class CommitCitesItsTasks(ScratchRepository):
+    """`commit` names the tasks it carries out in `Task:` trailers it writes itself, each one a task `memar git show-task-records` finds."""
     KNOWN = '20000101-T000000Z-1'
     OTHER = '20000101-T000000Z-2'
     UNKNOWN = '20000101-T000000Z-9'
@@ -964,62 +964,62 @@ class CommitCitesItsSessions(ScratchRepository):
     def cite(self, *args: str):
         return self.host_git('commit', '-F', str(self.message), *args)
 
-    def sessions_of(self, commit: str='HEAD') -> list[str]:
-        return self.git('log', '-1', '--format=%(trailers:key=Session,valueonly)', commit).split()
+    def tasks_of(self, commit: str='HEAD') -> list[str]:
+        return self.git('log', '-1', '--format=%(trailers:key=Task,valueonly)', commit).split()
 
-    def test_a_commit_that_cites_no_session_is_refused_naming_the_form_it_wants(self) -> None:
+    def test_a_commit_that_cites_no_task_is_refused_naming_the_form_it_wants(self) -> None:
         done = self.cite('mine.md')
         self.assertNotEqual(done.returncode, 0)
-        for wanted in ('--task-id', 'Session: ', '--no-session'):
+        for wanted in ('--task-id', 'Task: ', '--no-task'):
             self.assertIn(wanted, done.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
         self.assertIn('M mine.md', self.git('status', '--porcelain'))
 
-    def test_an_id_with_no_session_folder_and_no_record_is_refused(self) -> None:
+    def test_an_id_with_no_task_folder_and_no_record_is_refused(self) -> None:
         done = self.cite('--task-id', self.KNOWN, '--task-id', self.UNKNOWN, 'mine.md')
         self.assertNotEqual(done.returncode, 0)
         self.assertIn(self.UNKNOWN, done.stderr)
-        self.assertNotIn(f'no session {self.KNOWN}', done.stderr)
+        self.assertNotIn(f'no task {self.KNOWN}', done.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
 
-    def test_a_commit_that_carries_out_no_session_is_accepted_with_the_opt_out(self) -> None:
-        done = self.cite('--no-session', 'mine.md')
+    def test_a_commit_that_carries_out_no_task_is_accepted_with_the_opt_out(self) -> None:
+        done = self.cite('--no-task', 'mine.md')
         self.assertEqual(done.returncode, 0, done.stderr)
         self.assertEqual(self.git('show', '--name-only', '--format=', 'HEAD'), 'mine.md')
-        self.assertEqual(self.sessions_of(), [])
+        self.assertEqual(self.tasks_of(), [])
 
-    def test_the_opt_out_and_a_session_together_are_refused(self) -> None:
-        done = self.cite('--no-session', '--task-id', self.KNOWN, 'mine.md')
+    def test_the_opt_out_and_a_task_together_are_refused(self) -> None:
+        done = self.cite('--no-task', '--task-id', self.KNOWN, 'mine.md')
         self.assertNotEqual(done.returncode, 0)
-        self.assertIn('--no-session', done.stderr)
+        self.assertIn('--no-task', done.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
 
-    def test_each_session_is_a_trailer_git_log_reads_back_beside_the_others(self) -> None:
+    def test_each_task_is_a_trailer_git_log_reads_back_beside_the_others(self) -> None:
         self.message.write_text('subject\n\nbody\n\nCo-Authored-By: Someone <someone@example.org>\n', encoding='utf-8', newline='\n')
         done = self.cite('--task-id', self.KNOWN, '--task-id', self.OTHER, '--task-id', self.KNOWN, 'mine.md')
         self.assertEqual(done.returncode, 0, done.stderr)
-        self.assertEqual(self.sessions_of(), [self.KNOWN, self.OTHER])
+        self.assertEqual(self.tasks_of(), [self.KNOWN, self.OTHER])
         self.assertEqual(self.git('log', '-1', '--format=%(trailers:key=Co-Authored-By,valueonly)'), 'Someone <someone@example.org>')
         self.assertEqual(self.git('log', '-1', '--format=%s'), 'subject')
 
-    def test_a_session_written_into_the_message_by_hand_is_refused(self) -> None:
-        self.message.write_text(f'subject\n\nSession: {self.KNOWN}\n', encoding='utf-8', newline='\n')
-        done = self.cite('--no-session', 'mine.md')
+    def test_a_task_written_into_the_message_by_hand_is_refused(self) -> None:
+        self.message.write_text(f'subject\n\nTask: {self.KNOWN}\n', encoding='utf-8', newline='\n')
+        done = self.cite('--no-task', 'mine.md')
         self.assertNotEqual(done.returncode, 0)
         self.assertIn('--task-id', done.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
 
-    def test_a_fold_keeps_the_sessions_of_the_commits_it_replaces(self) -> None:
+    def test_a_fold_keeps_the_tasks_of_the_commits_it_replaces(self) -> None:
         self.assertEqual(self.cite('--task-id', self.KNOWN, 'mine.md').returncode, 0)
         self.put('shared.md', 'a finding\n')
         done = self.cite('--fold', '1', '--task-id', self.OTHER, 'mine.md', 'shared.md')
         self.assertEqual(done.returncode, 0, done.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD^'), self.base)
-        self.assertEqual(self.sessions_of(), [self.KNOWN, self.OTHER])
+        self.assertEqual(self.tasks_of(), [self.KNOWN, self.OTHER])
         self.put('shared.md', 'a second finding\n')
         done = self.cite('--fold', '1', 'shared.md')
         self.assertEqual(done.returncode, 0, done.stderr)
-        self.assertEqual(self.sessions_of(), [self.KNOWN, self.OTHER])
+        self.assertEqual(self.tasks_of(), [self.KNOWN, self.OTHER])
 
 class RecordWritesAnotherBranch(ScratchRepository):
     """`record`: a commit on another branch, made without HEAD, the index or the working tree."""

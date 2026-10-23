@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/_host_git_cli.py — a git operation with the constraint a session keeps violating.
+"""modules-plugable/computer/git/services/_host_git_cli.py — a git operation with the constraint a task keeps violating.
 
 **Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
 below is what `--help` prints, and each verb's `description=` and the `help=`
@@ -11,7 +11,7 @@ about to run one of these — usually an agent holding uncommitted work. Everyth
 from here down is addressed to whoever opens this file.
 
 **Frozen (the owner, 2026-10-17).** Git is a sink the project means to leave, so no new idea is added to this file or to `computer/git/services/_*.py`
-unless it is indispensable; a session-id rule in a commit message is accepted as it stands and is not refined. A change here
+unless it is indispensable; a task-id rule in a commit message is accepted as it stands and is not refined. A change here
 states in one line why it is indispensable.
 
 The host tool already speaks git. This file is the constraint, not the
@@ -34,11 +34,11 @@ capability:
            the disappearance with `git add -u` so the index matches.
 
   stash    Park uncommitted work (tracked + untracked, not ignored) so a
-           later session can recover it. Prefer this — or an ordinary
+           later task can recover it. Prefer this — or an ordinary
            commit — over discarding the working tree to tidy status.
 
   restore  Refuse to discard uncommitted work by default. Host `git restore`
-           / checkout-of-paths / clean are what sessions use to "tidy"
+           / checkout-of-paths / clean are what tasks use to "tidy"
            status and lose WIP. This command exits non-zero unless the
            caller passes an explicit irreversible confirmation token.
            Presence of the subcommand is not permission to call it casually.
@@ -46,17 +46,17 @@ capability:
   undelete Bring a path back from a commit, into the index and the working
            tree both. `restore` is the opposite operation and does not do this:
            it gives committed work back to HEAD by *discarding* what is
-           uncommitted. A session that deletes a tracked path and then needs
+           uncommitted. A task that deletes a tracked path and then needs
            it again has neither `remove` (which goes forward) nor `restore`
            (which goes to HEAD by throwing work away), and falls back to
            hand-written `git restore --source --staged --worktree`, which is
            the same class of un-verbbed git the other verbs exist to replace.
 
-  commit   Commit named paths, and only them, in a tree other sessions share.
+  commit   Commit named paths, and only them, in a tree other tasks share.
            Host `git commit` commits the shared index, which holds whatever
-           another session staged, and an agent runtime may rewrite any
+           another task staged, and an agent runtime may rewrite any
            command spelled `git commit…` into exactly that — one rewrote
-           `git commit-tree` and committed another session's staged renames.
+           `git commit-tree` and committed another task's staged renames.
            This builds the tree in a private index under `.git/`, writes the
            commit object with `hash-object`, moves the branch with
            `update-ref` against the commit it expects, and then updates the
@@ -64,17 +64,17 @@ capability:
            never holds some of them updated and some not. `--fold` replaces the
            last unpushed commits with the one it writes; `--leave-out` keeps a
            path's change out of that fold; `--as` commits a prepared file as
-           a path, which is how one session's hunk is committed out of a file
-           another session is also editing. Hooks do not run. Every commit
-           names the sessions it carries out (`git_sessions.py`): the caller
+           a path, which is how one task's hunk is committed out of a file
+           another task is also editing. Hooks do not run. Every commit
+           names the tasks it carries out (`git_tasks.py`): the caller
            gives each with `--task-id`, `memar git show-task-records` must find it,
-           and the verb writes a `Session:` trailer for it; one that cites none
-           is refused unless it says `--no-session`.
+           and the verb writes a `Task:` trailer for it; one that cites none
+           is refused unless it says `--no-task`.
 
   uncommit Take back the last commit, unpushed, keeping its work. Host
            `git reset --soft HEAD~1` leaves the commit's changes staged in
            the shared index, where `commit` then refuses them as another
-           session's, and `reset --hard` or a mixed reset throws away or
+           task's, and `reset --hard` or a mixed reset throws away or
            unstages what others hold. This moves HEAD to the parent with
            `update-ref` against the commit the caller names, resets the
            shared index to the parent for that commit's paths alone, and
@@ -96,7 +96,7 @@ capability:
            stage reached — nothing changed, the commit object written but HEAD
            not moved, or HEAD moved but the shared index not — the lock's path
            and age and how many git processes are running, and the two
-           commands that finish or undo it. Both are this verb, so a session
+           commands that finish or undo it. Both are this verb, so a task
            reaches for neither internals nor a host `git update-ref` or
            `git reset`. Finishing is refused once HEAD no longer holds the
            paths as the commit does, undoing once HEAD is not that commit, and
@@ -110,7 +110,7 @@ capability:
 
   record   Commit files onto a branch other than the one checked out, without
            touching HEAD, the shared index or the working tree: a branch that
-           keeps a record out of the history of the work (the session records
+           keeps a record out of the history of the work (the task records
            `memar git archive-task-records` keeps). It is the plumbing of `commit`
            pointed at another branch — a private index read from that
            branch's tip, blobs written byte for byte, a commit object, and
@@ -153,7 +153,7 @@ from machine.console import use_utf8_stdio
 DESCRIPTION = '''modules-plugable/computer/git/services/_host_git_cli.py — git operations that do not lose work
 
 Git already does all of this. Each command here does it with the constraint a
-session keeps wanting to skip, and says which in its own --help.
+task keeps wanting to skip, and says which in its own --help.
 
 Deleting, moving, discarding, stashing, restoring, and committing go through
 this file and the path-invoked services under
@@ -163,10 +163,10 @@ own command for those acts — rm, Remove-Item, git rm, git restore, git checkou
 of paths, git clean, a plain git commit — and never a command a runtime rewrites.
 Run each with Python by path inside the checkout; none is a memar verb.
 
-In a working tree other sessions share, commit only this session's paths. The
-records of the task's sessions are not among them: memar git archive-task-records
-keeps them on the records branch. Every commit names the sessions it carries
-out with --task-id for each, or says --no-session; the message itself names
+In a working tree other tasks share, commit only this task's paths. The
+records of the task's tasks are not among them: memar git archive-task-records
+keeps them on the records branch. Every commit names the tasks it carries
+out with --task-id for each, or says --no-task; the message itself names
 none. Commits follow the whole piece of work, by area (usually the top folder
 a change lies in), staged in place from git status and git diff --stat; a
 sub-agent never commits. A move rides with the commit while git still sees a

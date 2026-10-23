@@ -46,7 +46,7 @@
 
 #### Considered and not done
 - Renaming the protocol (candidates considered: Client, Binding, Service Client) — not done: gui.md, media-type.md, process.md, and the founding discussions all use SDK, and the word's general sense covers the concept; the narrowed meaning is defined in the base document. Final naming stays an open question in the handoff.
-- Drafting the normative generation and tooling specification now — not done: generation mechanics (the contract declaration's location, the generator's input) need a dedicated design session; this document fixes ownership and the direction of derivation only.
+- Drafting the normative generation and tooling specification now — not done: generation mechanics (the contract declaration's location, the generator's input) need a dedicated design chat; this document fixes ownership and the direction of derivation only.
 - Restating the CQRS/cache analysis as a critique section in the body — not done: it serves the audit reader, so it lives here (Related work, Deliberation) per the relevance discipline; only the settled placement position entered the body.
 
 ---
@@ -99,7 +99,7 @@
 - "Contract" was rejected as the delivery vocabulary: like entity and object in the software ecosystem, the word distorts more than it carries — not unrelated to the intent, but transferring too few of the ideas behind it to be worth using; the Protocol-vs-Contract distinction (parties and obligations) makes the attribution wrong (Omid Hekayati — claimed).
 - Language mismatch was named a non-problem: a caller wanting Go while the module delivers its SDK in Khayyam consumes via porting or FFI without any violation — so the declaration cannot be said to bind languages (Omid Hekayati).
 - "Network" was reframed per networking.md: not two applications on two different machines — the defined path out of one application's agency space into another's; Android's OS-delivered SDK named as a genuine SDK instance (Omid Hekayati).
-- The two critiques were applied the same session (Super Z — recorded).
+- The two critiques were applied the same chat (Super Z — recorded).
 
 #### Considered and not done
 - Rewriting the two earlier entries' vocabulary — not done: changelog entries are append-only history recording the artifact's state when made; this entry records the correction instead. The one exception applied: relation labels in the previous entry (authored in this same working thread, uncommitted) were corrected in place and disclosed above.
@@ -159,7 +159,7 @@
   - [The Type](../../../../../docs/type.md#type-details-and-human-facing-identity) - Depends_on: the type details Working position 14 and its paragraph rest on.
   - [Documentation — Handoff → Relationship to the Other Facets](../../../../knowledge/documentation/handoff/handoff.md#relationship-to-the-other-facets) - Reference: a handoff does not hold settled design, so the ruled positions left it for this body.
 - Propagates to:
-  - docs/comparisons/mcp.001.md: Done - the essay landed in the same session, and the paragraph's link resolves.
+  - docs/comparisons/mcp.001.md: Done - the essay landed in the same chat, and the paragraph's link resolves.
   - service-sdk.handoff.md: Done - *The agent as an SDK consumer* keeps a pointer to the new home, the WASM delivery form, the question for the owner, the tentative Prompts extension, and Next.
   - docs/modules/net/sRPC.md: Done - the wire's side of the same ruling is its goal 4, recorded in its own changelog.
   - docs/comparisons/mcp.001.md, *Reject*: Done - Resources' home is Working position 14 and What an SDK is; Prompts' tentative home stays the handoff.
@@ -219,7 +219,7 @@
 - The corpus-as-a-service question moved to its own entry, [SDK Handoff → Whether a corpus a project builds is a service that owes a delivered interface](sdk.handoff.md#whether-a-corpus-a-project-builds-is-a-service-that-owes-a-delivered-interface), marked as resting on the Organization project's design, which was not quoted or verified.
 
 #### Why
-- An independent evaluation (session 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and an unverified question mixed into a verified one.
+- An independent evaluation (task 20261012-T105448Z-25360) found the invented time, an unscoped absence claim, and an unverified question mixed into a verified one.
 
 #### Considered and not done
 - Verifying the Organization design now: not done; it is the first step recorded under the new entry's Next.

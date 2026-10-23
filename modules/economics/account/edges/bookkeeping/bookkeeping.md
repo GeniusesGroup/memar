@@ -6,7 +6,7 @@ The kernel edge between a transaction and an account: the realized effect of pro
 
 Discovered in this domain, general enough to govern all of Memar: **domain models MUST NOT embed or return each other's types.** A cross-domain link is held as a UUID reference only; a separate service resolves UUID → record when the full object is needed. This edge is the working example: it holds `Field_AccountID` and `Field_TransactionID` — UUIDs, nothing more. Account does not carry Transaction objects; Transaction does not carry Account objects.
 
-Why (from the Account & Transaction modeling session, 2026-08):
+Why (from the Account & Transaction modeling chat, 2026-08):
 
 - Account ↔ Transaction is a genuinely mutual conceptual dependency (a transaction names accounts; a ledger entry names its transaction). Fighting it with shared abstraction packages or interfaces only hides the cycle or throws away type information. With UUID-only fields there is no bidirectional *type* dependency at all — the "cycle" was never a domain problem; it is an artifact of aggregate-style modeling (DDD) that embeds child records inside one owner.
 - Caching: the consumer of a UUID decides whether/how to resolve and cache; an embedded aggregate forces the producer's freshness semantics onto every consumer.

@@ -61,7 +61,7 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
   - [Qwen](../../../../CONTRIBUTORS.md#qwen) (qwen3.8-flash via ZCode) — recovered
 
 #### What changed
-The transfer audit found one lost owner idea touching this requirement, recovered from «یک قانون برای توسعه زمین‌ها» and National_Constitution.odt: the enforcement doctrine for the 20% cap that never reached the sheet — «نظارت پسینی نه پیشینی» (ex-post supervision, not ex-ante), with the sanction «تعلیق یا عدم پذیرش سازمانی که در قلمروی جغرافیایی مورد ادعای خود، حداکثر سطح اشغال را رعایت نکرده باشد» and the monthly satellite re-check of claimed territory. Added as a new approach, "Ex-post recognition enforcement: suspension or non-recognition of any organization that fails the coverage cap inside its own claimed territory (Ex-Post Recognition Enforcement)" — id (new; lowest free owner id, claimed this session). The Abstract's answer count and enumeration were extended to name it; no existing text was removed or softened. In the new record the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, with the Persian sanctions clause and the slogan quoted in the original); Fit & substrate, Cognitive anchor, Narrative hook and the wording of the collision-neutral placement are reviewer-authored and unconfirmed.
+The transfer audit found one lost owner idea touching this requirement, recovered from «یک قانون برای توسعه زمین‌ها» and National_Constitution.odt: the enforcement doctrine for the 20% cap that never reached the sheet — «نظارت پسینی نه پیشینی» (ex-post supervision, not ex-ante), with the sanction «تعلیق یا عدم پذیرش سازمانی که در قلمروی جغرافیایی مورد ادعای خود، حداکثر سطح اشغال را رعایت نکرده باشد» and the monthly satellite re-check of claimed territory. Added as a new approach, "Ex-post recognition enforcement: suspension or non-recognition of any organization that fails the coverage cap inside its own claimed territory (Ex-Post Recognition Enforcement)" — id (new; lowest free owner id, claimed this chat). The Abstract's answer count and enumeration were extended to name it; no existing text was removed or softened. In the new record the Mechanism, Metrics, Prerequisites, Conventional-model flaw and Tags carry the owner's claims (translated, with the Persian sanctions clause and the slogan quoted in the original); Fit & substrate, Cognitive anchor, Narrative hook and the wording of the collision-neutral placement are reviewer-authored and unconfirmed.
 
 ---
 
@@ -69,7 +69,7 @@ The transfer audit found one lost owner idea touching this requirement, recovere
 - Time: 2026-09-20T10:37:24Z
 - Type: clarified
 - Cited:
-  - [Buildable Share and Density Allocation — Handoff](buildable-share-and-density-allocation.handoff.md) - Relation: Evidence: Q5 is the owner ruling this session recorded.
+  - [Buildable Share and Density Allocation — Handoff](buildable-share-and-density-allocation.handoff.md) - Relation: Evidence: Q5 is the owner ruling this chat recorded.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Grok](../../../../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — recorded

@@ -11,10 +11,10 @@ written for one. A preference agents should follow is a Memar rule or a line of
 the project's AGENTS.md, not a key here.
 
     memar:
-      sessions: work/sessions
+      tasks: work/tasks
       records: off
 
-`sessions` is the folder new task folders are made in: a path relative to
+`tasks` is the folder new task folders are made in: a path relative to
 the project's top folder, or an absolute one, but neither that top folder
 itself nor a drive or filesystem root; unset, they are made in `.agents/tasks/`
 inside the project, which git can stage so a branch switch does not drop them
@@ -35,9 +35,9 @@ commas, each a folder inside the project and none the top folder itself.
 
 The manifest is the project's own: `memar install` neither creates nor writes
 it. The block is read without a YAML library, the way a plan's front matter is
-(`session_plan`): the line `memar:` at the left margin, then the indented
+(`task_plan`): the line `memar:` at the left margin, then the indented
 `key: value` lines below it, up to the next line at the margin; a key left
-empty, `sessions:` alone, reads as unset, and the rest of the manifest is not
+empty, `tasks:` alone, reads as unset, and the rest of the manifest is not
 read. A file that is absent, has no block, or cannot be read sets nothing: what
 a project has not said is Memar's default.
 """
@@ -49,13 +49,13 @@ from machine.console_parts import MOST_FLAG
 PREFERENCES_RELATIVE = Path('manifest.yaml')
 BLOCK_KEY = 'memar'
 NORMATIVE_REFERENCES_KEY = 'normative_references'
-SESSIONS_KEY = 'sessions'
+TASKS_KEY = 'tasks'
 RECORDS_KEY = 'records'
 MOST_CHARACTERS_KEY = MOST_FLAG.removeprefix('--')
 FOLDER_SEPARATOR = ','
 
 class Records(Enum):
-    """What the `records` key may say: keep a session's records in the project, or not."""
+    """What the `records` key may say: keep a task's records in the project, or not."""
     ON = 'on'
     OFF = 'off'
 
@@ -92,13 +92,13 @@ def read_preferences(project: Path) -> dict[str, str]:
                 found[key.strip()] = value
     return found
 
-def sessions_location(project: Path) -> Path | None:
-    """The folder PROJECT's session folders are made in, or None for Memar's own.
+def tasks_location(project: Path) -> Path | None:
+    """The folder PROJECT's task folders are made in, or None for Memar's own.
 
     A relative value is under PROJECT's top folder; an absolute one is used as
     it is.
     """
-    value = read_preferences(project).get(SESSIONS_KEY, '').strip().strip('"\'').strip()
+    value = read_preferences(project).get(TASKS_KEY, '').strip().strip('"\'').strip()
     if not value:
         return None
     return project / value
@@ -119,7 +119,7 @@ def most_characters_preference(project: Path | None) -> int | None:
     return int(value)
 
 def records_preference(project: Path) -> Records | None:
-    """Whether PROJECT keeps its sessions' records: ON when its preferences say nothing, None for a value `records` may not take."""
+    """Whether PROJECT keeps its tasks' records: ON when its preferences say nothing, None for a value `records` may not take."""
     value = read_preferences(project).get(RECORDS_KEY, '').strip().strip('"\'').strip().lower()
     if not value:
         return Records.ON

@@ -3,7 +3,7 @@
 
 """One install at a time.
 
-Two sessions on one machine reach the installer at the same time when two
+Two tasks on one machine reach the installer at the same time when two
 projects are opened at once. Whoever takes the lock records where Memar lives;
 the other waits and then finds the work already done, because recording is
 idempotent. A lock left by a killed process must not block every later run, so
@@ -15,7 +15,7 @@ second reports a failed clone rather than waiting.
 
 Who gets to do a thing is asked here whatever the span: one install at a time,
 one edit of a file at a time, and — by a dated marker rather than a lock —
-one run of a daily job a day. The session sweep and the daily update both ask
+one run of a daily job a day. The task sweep and the daily update both ask
 `claim_today`, so the guard is written once.
 """
 from __future__ import annotations
@@ -122,7 +122,7 @@ def edit_lock_dir(lock_dir: Path | None=None) -> Path:
     """Where per-file lock and intent files live.
 
     Under <memar-root>/temp/ by default, so lock files and intent notes share
-    the ONE session-scratch root and never enter git except through the ignored
+    the ONE task-scratch root and never enter git except through the ignored
     temp entry. An explicit directory (the tests pass a scratch folder) is
     honored instead, which is how the location is proved without writing
     to the machine's checkout.
@@ -172,10 +172,10 @@ def file_snapshot(target: Path) -> dict:
     return {'exists': True, 'hash': hashlib.sha256(raw).hexdigest(), 'mtime_ns': stat.st_mtime_ns, 'size': stat.st_size}
 
 def write_intent(intent: Path, *, task_id: str, target: Path, plan_summary: str, base: dict) -> None:
-    """Record what this session means to change, and against which base.
+    """Record what this task means to change, and against which base.
 
     Written after the lock is taken so a waiter that takes over a stale
-    lock can read what the dead session had planned. Atomic: written to a
+    lock can read what the dead task had planned. Atomic: written to a
     temporary sibling and renamed, so a reader never sees half a note.
     """
     payload = {'task_id': task_id, 'file': str(Path(target).absolute()), 'plan_summary': plan_summary, 'base_hash': base.get('hash'), 'base_mtime_ns': base.get('mtime_ns'), 'base_size': base.get('size'), 'created_at': time.time()}
@@ -194,11 +194,11 @@ def take_file_lock(lock: Path, wait_seconds: float=FILE_LOCK_WAIT_SECONDS, stale
 
     The install lock's pattern, generalized: atomic take via O_EXCL, stale
     takeover by mtime, wait with a deadline then fail. A lock older than
-    stale_seconds is unlinked by the waiter, so a killed session blocks
+    stale_seconds is unlinked by the waiter, so a killed task blocks
     others for at most that long. Past the deadline this fails the run
     rather than applying a change blind.
     """
-    _take_advisory_lock(lock, wait_seconds=wait_seconds, stale_seconds=stale_seconds, poll_seconds=poll_seconds, waiting_message=f'another session is editing; waiting for it (lock: {lock})\n', timeout_message=f'waited {wait_seconds}s for the edit lock ({lock}) and it is still held; if no session is editing, remove that file and run this again.')
+    _take_advisory_lock(lock, wait_seconds=wait_seconds, stale_seconds=stale_seconds, poll_seconds=poll_seconds, waiting_message=f'another task is editing; waiting for it (lock: {lock})\n', timeout_message=f'waited {wait_seconds}s for the edit lock ({lock}) and it is still held; if no task is editing, remove that file and run this again.')
     return None
 
 def release_file_lock(lock: Path) -> None:
@@ -233,7 +233,7 @@ def verify_base_unchanged(target: Path, base: dict) -> None:
         raise BaseChangedError(f"{target} was touched since the plan was made (mtime {base.get('mtime_ns')}, now {current.get('mtime_ns')}); re-derive the plan against the current content.")
 
 @contextlib.contextmanager
-def edit_session(target: Path, task_id: str, plan_summary: str, lock_dir: Path | None=None, wait_seconds: float=FILE_LOCK_WAIT_SECONDS, stale_seconds: float=FILE_LOCK_STALE_SECONDS, poll_seconds: float=FILE_LOCK_POLL_SECONDS):
+def edit_task(target: Path, task_id: str, plan_summary: str, lock_dir: Path | None=None, wait_seconds: float=FILE_LOCK_WAIT_SECONDS, stale_seconds: float=FILE_LOCK_STALE_SECONDS, poll_seconds: float=FILE_LOCK_POLL_SECONDS):
     """Hold the per-file lock for one edit, releasing however it ends.
 
     Snapshots the base, takes the lock, writes the intent note, then

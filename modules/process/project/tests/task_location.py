@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the session locations kept in the projects registry, in `modules/process/project/services/task_location.py` and `modules/process/project/services/registry.py`.
+"""Tests for the task locations kept in the projects registry, in `modules/process/project/services/task_location.py` and `modules/process/project/services/registry.py`.
 
     python modules/management/task/tests/location.py
 
-The subject is where Memar remembers the session locations of the projects it
-has made folders in: no longer the file .agents/tasks/sessions.projects (one
+The subject is where Memar remembers the task locations of the projects it
+has made folders in: no longer the file .agents/tasks/tasks.projects (one
 path a line, no project), but the `locations` array of the project's own entry
 in temp/projects.log, so a location is found from its project and a project is
-always named. The rulings are the owner's of 2026-10-13, recorded in session
+always named. The rulings are the owner's of 2026-10-13, recorded in task
 20261013T085819Z-27156-0. Named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md).
 
@@ -27,9 +27,9 @@ What is pinned, and what each pin is for:
               over a location that is gone, and never one inside Memar's scratch;
               a nested project's location is its own.
   Prune       A location that is gone is removed from its entry, which stays.
-  EarlierRecord  The old sessions.projects is not read: a reader of locations
+  EarlierRecord  The old tasks.projects is not read: a reader of locations
               says so on stderr, and that a location it lists is recorded again
-              when `memar task ensure` next makes or continues a session there;
+              when `memar task ensure` next makes or continues a task there;
               it names no conversion script, and leaves the file alone.
 """
 from __future__ import annotations
@@ -54,7 +54,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.process.project.services.registry as registry
-import modules.process.project.services.task_location as session_location
+import modules.process.project.services.task_location as task_location
 from modules.process.project.services.task_location import locations_of, prune_registry, register, registered_locations
 
 def git_init(folder: Path) -> Path:
@@ -80,7 +80,7 @@ class Fixture(unittest.TestCase):
     def project(self, name: str) -> Path:
         return git_init(self.base / name)
 
-    def location(self, project: Path, name: str='sessions') -> Path:
+    def location(self, project: Path, name: str='tasks') -> Path:
         path = project / name
         path.mkdir(parents=True, exist_ok=True)
         return path
@@ -107,7 +107,7 @@ class Register(Fixture):
 
     def test_the_project_is_the_git_top_level_of_the_location_when_not_given(self) -> None:
         project = self.project('organization')
-        register(self.location(project, 'work/sessions'))
+        register(self.location(project, 'work/tasks'))
         self.assertEqual(Path(self.entries()['organization'].path), project)
 
     def test_a_location_in_no_repository_belongs_to_the_folder_above_it(self) -> None:
@@ -142,14 +142,14 @@ class Register(Fixture):
         self.assertEqual(registered_locations(), [])
 
     def test_a_location_inside_the_memar_scratch_is_not_a_project_location(self) -> None:
-        inside = memar_fs.sessions_root()
+        inside = memar_fs.tasks_root()
         register(inside, self.memar)
         self.assertEqual(registered_locations(), [])
 
     def test_nothing_is_made_by_reading_when_nothing_was_registered(self) -> None:
         self.assertEqual(registered_locations(), [])
         self.assertFalse(memar_fs.projects_log().exists())
-        self.assertFalse(memar_fs.project_sessions_registry().exists())
+        self.assertFalse(memar_fs.project_tasks_registry().exists())
 
 class Read(Fixture):
 
@@ -166,18 +166,18 @@ class Read(Fixture):
     def test_locations_of_a_project_are_its_preferred_one_and_its_recorded_ones(self) -> None:
         project = self.project('organization')
         other = self.project('other')
-        mine = self.location(project, 'work/sessions')
+        mine = self.location(project, 'work/tasks')
         register(mine, project)
         register(self.location(other), other)
         self.assertEqual(locations_of(project), [mine.resolve()])
-        self.assertEqual(locations_of(other), [(other / 'sessions').resolve()])
+        self.assertEqual(locations_of(other), [(other / 'tasks').resolve()])
 
     def test_a_nested_projects_location_is_its_own_not_the_enclosing_ones(self) -> None:
         project = self.project('organization')
         inner = git_init(project / 'inner')
         register(self.location(inner))
         self.assertEqual(locations_of(project), [])
-        self.assertEqual(locations_of(inner), [(inner / 'sessions').resolve()])
+        self.assertEqual(locations_of(inner), [(inner / 'tasks').resolve()])
 
     def test_a_folder_that_is_no_project_owns_no_location_beneath_it(self) -> None:
         project = self.project('organization')
@@ -228,14 +228,14 @@ class Prune(Fixture):
         def add_then_forget():
             register(added, project)
             return original()
-        with unittest.mock.patch.object(session_location, 'forget_missing_locations', side_effect=add_then_forget):
+        with unittest.mock.patch.object(task_location, 'forget_missing_locations', side_effect=add_then_forget):
             self.assertEqual(prune_registry(), [gone])
         self.assertEqual(registered_locations(), [added])
 
 class EarlierRecord(Fixture):
 
     def legacy(self, *lines: Path | str) -> Path:
-        old = memar_fs.project_sessions_registry()
+        old = memar_fs.project_tasks_registry()
         old.write_text(''.join((f'{line}\n' for line in lines)), encoding='utf-8', newline='\n')
         return old
 
@@ -243,8 +243,8 @@ class EarlierRecord(Fixture):
         project = self.project('organization')
         old = self.legacy(self.location(project))
         said = self.err(lambda: self.assertEqual(registered_locations(), []))
-        self.assertIn('sessions.projects', said)
-        self.assertIn(session_location.EARLIER_RECORD_REMEDY, said)
+        self.assertIn('tasks.projects', said)
+        self.assertIn(task_location.EARLIER_RECORD_REMEDY, said)
         self.assertIn('memar task ensure', said)
         self.assertNotIn('.py', said)
         self.assertEqual(self.entries(), {})
@@ -255,11 +255,11 @@ class EarlierRecord(Fixture):
         self.legacy(self.location(project))
         for call in (registered_locations, lambda: locations_of(project), prune_registry):
             with self.subTest(call=call):
-                self.assertIn(session_location.EARLIER_RECORD_REMEDY, self.err(call))
+                self.assertIn(task_location.EARLIER_RECORD_REMEDY, self.err(call))
 
     def test_without_the_old_file_or_with_only_its_kept_name_nothing_is_said(self) -> None:
         self.assertEqual(self.err(registered_locations), '')
-        (memar_fs.sessions_root() / (memar_fs.PROJECT_SESSIONS_NAME + '.migrated')).write_text('x\n', encoding='utf-8')
+        (memar_fs.tasks_root() / (memar_fs.PROJECT_TASKS_NAME + '.migrated')).write_text('x\n', encoding='utf-8')
         self.assertEqual(self.err(registered_locations), '')
 
 class EntryFormat(Fixture):

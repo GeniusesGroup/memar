@@ -60,7 +60,7 @@ The following analytical fields are reviewer-authored (Omid Hekayati has not yet
 - Time: 2026-09-20T10:37:24Z
 - Type: Fixed, clarified
 - Cited:
-  - [Settlement Grain and Scaling — Handoff](settlement-grain-and-scaling.handoff.md) - Relation: Evidence: the mislinked syn was queued there; Q1 and Q2 are the owner rulings this session recorded.
+  - [Settlement Grain and Scaling — Handoff](settlement-grain-and-scaling.handoff.md) - Relation: Evidence: the mislinked syn was queued there; Q1 and Q2 are the owner rulings this chat recorded.
   - [Housing-bubble drain engine and reverse renewal of the decayed fabric (Urban Deflation Engine)](../../../government/modules/bubble-drain-and-renewal/bubble-drain-and-renewal.md#housing-bubble-drain-engine-and-reverse-renewal-of-the-decayed-fabric-urban-deflation-engine) - Relation: Evidence: the labelled owner of "bubble-drain engine".
 - Propagates to:
   - economy/bubble-drain-and-renewal.md: Done — Q1 removes the supposed conflict with a 50-thousand cell cap that was never structural law; that note is now on the bubble-drain handoff.

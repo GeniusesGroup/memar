@@ -7,12 +7,15 @@ A topic is a label whose definition takes the label `Topic`
 (`modules/knowledge/documentation/primitive/label.py`): a plan takes as many as
 it needs, and `claims` batches the queued tasks that carry one. A task with two
 subjects may carry two, but a topic is not assigned needlessly: it is added when
-another task is to be found by it. It is free text normalized when written
-(lower case, runs of white space as one hyphen), and it is defined when first
-used, in the project's own label registry, not in a list this code keeps: a kept
-list in code would stop a new subject at the moment it appears. A typo that
-splits one subject in two is met by showing the labels in use and by warning of
-a near match (`session_label`). A plan without a topic has none.
+another task is to be found by it. Its word is normalized when written (lower
+case, runs of white space as one hyphen). The kind lists no word: a topic is
+declared, with `topic()` below, by the domain whose it is — a stream of work by
+the task domain, and a topic that names a module by that module
+([Label → Where labels are declared](../../../label/label.md#where-labels-are-declared)) —
+so a new subject is a declaration written where it belongs, with the sentence
+that says what it means, and a word nobody declared is refused naming the
+declared ones near it (`modules/knowledge/label/services/plan_labels.py`). A plan
+without a topic has none.
 
 It is a type so that the rule of normalizing and the check of a one-line value
 are written here and nowhere else
@@ -20,7 +23,7 @@ are written here and nowhere else
 """
 from __future__ import annotations
 from machine.console import fail
-from modules.knowledge.documentation.primitive.label import Label, LabelKind, LabelProblem
+from modules.knowledge.documentation.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
 LABEL_KIND_NAME = 'Topic'
 TOPIC_LABEL = Label(LABEL_KIND_NAME, '01a14a04-6536-7c2e-8cc6-276de9a45ba5')
 
@@ -46,4 +49,14 @@ def _word(text: str) -> str:
     if not word:
         raise LabelProblem('a topic is not empty; to remove one, remove its label')
     return str(word)
-LABEL_KIND = LabelKind(TOPIC_LABEL, 'the subject a task is about, free text in lower case with spaces as hyphens', '`claims`, which batches the queued tasks that carry one, and `labels`, which lists those in use', _word)
+LABEL_KIND = LabelKind(TOPIC_LABEL, 'the subject a task is about, in lower case with spaces as hyphens, declared by the domain whose it is', '`claims`, which batches the queued tasks that carry one, and `labels`, which lists those in use', _word)
+
+def topic(word: str, identifier: str, meaning: str, *, ended: str='', replaced_by: tuple[Label, ...]=()) -> LabelDefinition:
+    """The declaration of the topic WORD: its IDENTIFIER, minted once and never changed, the one sentence of its MEANING, and, once it has ended, the date ENDED and the labels REPLACED_BY; refused when the word is not as the kind writes it or the meaning is empty."""
+    if _word(word) != word:
+        raise LabelProblem(f'a topic is declared as it is written, {_word(word)!r}, not {word!r}')
+    if not meaning.strip():
+        raise LabelProblem(f'the topic {word!r} is declared with the sentence that says what it means')
+    if Label.read(f'{word}({identifier})') is None:
+        raise LabelProblem(f'the topic {word!r} is declared with a UUID version 7 identifier, not {identifier!r}')
+    return LabelDefinition(Label(word, identifier), (TOPIC_LABEL,), meaning.strip(), ended, replaced_by)

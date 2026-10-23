@@ -5,7 +5,7 @@
 
     python modules/management/task/tests/answering.py
 
-The subject is the one multi-part text an agent handed a session's questions
+The subject is the one multi-part text an agent handed a task's questions
 reads first, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
@@ -22,11 +22,11 @@ skill and small documents of its own, and copies of Memar's every-act and
 What is pinned, and what each pin is for:
 
   PartsInOrder     The text is parts, each opened by a mark line, in one order:
-                   the session, the model it needs, the plan, the report, the
+                   the task, the model it needs, the plan, the report, the
                    skill, the documents, the commands, the ending; with
                    `--without-skill` the skill is left out.
   ReadOnly         Printing it writes nothing anywhere: no report, no role
-                   folder, no log line; it opens no session.
+                   folder, no log line; it opens no task.
   ModelPart        Answering is judgment: the strongest model is named.
   PlanAndReport    The plan and the report, whose `Decisions needed` holds the
                    questions, are printed whole.
@@ -36,12 +36,12 @@ What is pinned, and what each pin is for:
   Commands         The part names `memar commands`, the one command that prints
                    every command and what it takes, and copies nothing.
   Ending           The agent answers each question with its reasons, says which
-                   it is unsure of, writes nothing, opens no session, and
+                   it is unsure of, writes nothing, opens no task, and
                    returns the answers as its final text.
   InParts          A text past the bound prints in parts, each closing line
                    naming `memar ai get-task-answer-context` again with
                    the same flags and the next part.
-  Refusal          A session with no folder, no plan, or no line under its
+  Refusal          A task with no folder, no plan, or no line under its
                    report's `Decisions needed` is refused, and nothing printed.
   AnswerHelp       The help says what it prints, for whom, and that it writes
                    nothing.
@@ -112,7 +112,7 @@ class Fixture(unittest.TestCase):
             (self.fake_root / path).parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / path, self.fake_root / path)
 
-    def session(self, report: str | None=REPORT, plan: str=PLAN) -> Path:
+    def task(self, report: str | None=REPORT, plan: str=PLAN) -> Path:
         folder = memar_fs.task_dir(SID, create=True)
         (folder / PLAN_NAME).write_text(plan, encoding='utf-8', newline='\n')
         if report is not None:
@@ -133,23 +133,23 @@ class Fixture(unittest.TestCase):
 class PartsInOrder(Fixture):
 
     def test_the_text_is_marked_parts_in_one_order(self) -> None:
-        self.session()
+        self.task()
         self.assertEqual(list(self.parts()), ['task', 'model', PLAN_NAME, REPORT_NAME, 'skill', 'documents', 'commands', 'ending'])
 
     def test_without_the_skill_the_skill_is_left_out(self) -> None:
-        self.session()
+        self.task()
         parts = self.parts(with_skill=False)
         self.assertNotIn('skill', parts)
         self.assertNotIn('SKILL-TEXT', ''.join(parts.values()))
 
     def test_nothing_comes_before_the_first_mark(self) -> None:
-        self.session()
+        self.task()
         self.assertTrue(answering.answer_text(SID).startswith(MARK))
 
 class ReadOnly(Fixture):
 
-    def test_printing_writes_nothing_and_opens_no_session(self) -> None:
-        self.session()
+    def test_printing_writes_nothing_and_opens_no_task(self) -> None:
+        self.task()
 
         def everything() -> dict[str, bytes | None]:
             return {path.relative_to(self.fake_root).as_posix(): path.read_bytes() if path.is_file() else None for path in self.fake_root.rglob('*')}
@@ -159,7 +159,7 @@ class ReadOnly(Fixture):
         self.assertEqual(everything(), before)
 
     def test_the_task_part_says_it_is_read_and_not_taken_up(self) -> None:
-        folder = self.session()
+        folder = self.task()
         part = self.parts()['task']
         for line in (f'task_id: {SID}', f'plan: {folder / PLAN_NAME}', f'report: {folder / REPORT_NAME}'):
             self.assertIn(line, part)
@@ -168,7 +168,7 @@ class ReadOnly(Fixture):
 class ModelPart(Fixture):
 
     def test_answering_is_judgment_and_names_the_strongest_model(self) -> None:
-        self.session()
+        self.task()
         part = self.parts()['model']
         self.assertIn('kind: answer', part)
         self.assertIn('strongest model', part)
@@ -176,7 +176,7 @@ class ModelPart(Fixture):
 class PlanAndReport(Fixture):
 
     def test_the_plan_and_the_report_are_printed_whole(self) -> None:
-        self.session()
+        self.task()
         parts = self.parts()
         self.assertIn('PLAN-REQUEST', parts[PLAN_NAME])
         self.assertIn('REPORT-RESULT', parts[REPORT_NAME])
@@ -186,7 +186,7 @@ class PlanAndReport(Fixture):
 class Documents(Fixture):
 
     def test_the_answer_kind_passages_then_the_documents_the_questions_name(self) -> None:
-        self.session()
+        self.task()
         part = self.parts()['documents']
         kind = [line for line in headers(context_text([memar_place(self.fake_root)], [TaskKind.ANSWER])) if '(description)' not in line]
         self.assertTrue(kind)
@@ -198,20 +198,20 @@ class Documents(Fixture):
         self.assertLess(part.index(kind[-1]), part.index('STEPS-DETAIL'))
 
     def test_a_document_the_plan_alone_names_is_not_printed(self) -> None:
-        self.session(plan=PLAN.replace('PLAN-REQUEST', 'PLAN-REQUEST, see /docs/plain.md#body'))
+        self.task(plan=PLAN.replace('PLAN-REQUEST', 'PLAN-REQUEST, see /docs/plain.md#body'))
         self.assertNotIn('PLAIN-BODY', self.parts()['documents'])
 
 class Commands(Fixture):
 
     def test_the_part_is_the_card_the_command_module_generates(self) -> None:
-        self.session()
+        self.task()
         part = self.parts()['commands']
         self.assertEqual(part.strip(), commands.card_text().strip())
 
 class Ending(Fixture):
 
     def test_what_the_answering_agent_does_is_printed(self) -> None:
-        self.session()
+        self.task()
         part = ' '.join(self.parts()['ending'].split())
         for phrase in ('Decisions needed', 'with its reasons', 'unsure', 'opens no task', 'writes nothing', 'final text', '`memar ai get-task-init-context`'):
             self.assertIn(phrase, part)
@@ -226,19 +226,19 @@ class InParts(Fixture):
         return out.getvalue()
 
     def test_a_closing_line_names_answer_with_the_same_flags_and_the_next_part(self) -> None:
-        self.session()
+        self.task()
         first = self.printed(1, with_skill=False)
         self.assertIn(CLOSING_MARK, first)
         self.assertLessEqual(len(first), SMALL)
         self.assertIn(f'`memar ai get-task-answer-context --task-id {SID} --without-skill --most-characters {SMALL} --part 2`', first)
 
     def test_the_passages_joined_are_the_text(self) -> None:
-        self.session()
+        self.task()
         self.assertEqual(''.join(answering.answer_passages(SID)), answering.answer_text(SID))
 
 class Refusal(Fixture):
 
-    def test_a_session_with_no_folder_or_no_plan_is_refused(self) -> None:
+    def test_a_task_with_no_folder_or_no_plan_is_refused(self) -> None:
         with self.assertRaises(SystemExit) as refused:
             answering.answer_text(SID)
         self.assertIn(f'no questions to answer in {SID}', str(refused.exception.code))
@@ -246,10 +246,10 @@ class Refusal(Fixture):
         with self.assertRaises(SystemExit):
             answering.answer_text(SID)
 
-    def test_a_session_with_no_question_under_decisions_needed_is_refused(self) -> None:
+    def test_a_task_with_no_question_under_decisions_needed_is_refused(self) -> None:
         for report in (None, NO_QUESTIONS):
             with self.subTest(report=report):
-                self.session(report)
+                self.task(report)
                 with contextlib.redirect_stdout(io.StringIO()) as out, self.assertRaises(SystemExit) as refused:
                     answering.get_task_answer_context(SID)
                 self.assertEqual(out.getvalue(), '')

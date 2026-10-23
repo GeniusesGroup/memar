@@ -5,7 +5,7 @@
 
     python modules/management/task/tests/primitive_claim.py
 
-The subject is the claim an agent leaves in a session's folder while it holds
+The subject is the claim an agent leaves in a task's folder while it holds
 the task: the file's name, the name of the guard held while a stale claim is
 replaced, how long a claim lives, and what the file says. Named for the file
 that holds it per
@@ -20,7 +20,7 @@ Writes only in a scratch folder this suite makes and removes.
 What is pinned, and what each pin is for:
 
   Names      The claim file and its takeover guard are two names, held with
-             the other names a session folder's top may hold.
+             the other names a task folder's top may hold.
   Staleness  A claim is fresh for a day and then a dead agent's; the hours a
              help says come from the same number.
   Content    The file says when it was taken, by which host and process.

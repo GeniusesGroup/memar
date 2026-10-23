@@ -6,7 +6,7 @@
     python bundles/memar/tests/shared_types.py
 
 The subject is the rule [A Fact in Code Is Written Once](../../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)
-applied to the facts the services share: a session id, a project's name and its
+applied to the facts the services share: a task id, a project's name and its
 path, a claim, a priority, a topic, and the keys of a plan's front matter. Each
 is declared as a type in a file of its own, and a service or a help text that
 needs the fact calls the type. This suite reads the scripts' source (never a
@@ -22,7 +22,7 @@ What is pinned, and what each pin is for:
 
   OneHome   For each fact a pattern that would spell it, and the one file
             allowed to: the bounds and the words of a priority, the form and
-            clock format of a session id, the names and life of a claim, the
+            clock format of a task id, the names and life of a claim, the
             two project flags and their attributes, the front-matter keys read
             as strings, and the dependency key and its inverse.
 
@@ -54,7 +54,7 @@ def sources() -> dict[str, str]:
                 found[relative.as_posix()] = path.read_bytes().decode('utf-8')
     found['memar'] = (SCRIPTS / 'memar').read_bytes().decode('utf-8')
     return found
-SPELLINGS = (("a priority's bounds and default as names", '\\b(?:LOWEST|HIGHEST|DEFAULT)_PRIORITY\\b', 'modules/knowledge/documentation/plan/primitive/priority.py'), ("a priority's range as words", '\\b1 to 10\\b', 'modules/knowledge/documentation/plan/primitive/priority.py'), ('the form of a session id', '\\\\d\\{8\\}-T', 'modules/management/task/primitive/task_id.py'), ('the clock format of a session id', '%Y%m%d-T', 'modules/management/task/primitive/task_id.py'), ("a claim's file name as a name", '\\bCLAIM_(?:NAME|TAKEOVER_NAME|STALE_SECONDS)\\b', 'modules/management/task/primitive/claim.py'), ("a claim's takeover guard", 'claim\\.takeover', 'modules/management/task/primitive/claim.py'), ("the flag that carries a project's name", '[\\"\']--project[\\"\']', 'modules/process/project/primitive/project_name.py'), ("the flag that carries a project's path", '[\\"\']--project-path[\\"\']', 'modules/process/project/primitive/project_path.py'), ('the old flag names', '\\b(?:NAME|PATH)_FLAG\\b', 'services/none.py'), ('the attribute a parser gives the path flag', 'getattr\\(args, [\\"\']project_path[\\"\']', 'services/none.py'), ("a plan's key read as a string", '\\.get\\(\\"(?:title|project|parent|conversation|opened|priority|topic|kind|session)\\"', 'services/none.py'), ("the key of a plan's dependencies, as a string literal", '[\\"\']depends_on[\\"\']', 'modules/knowledge/documentation/plan/primitive/plan_key.py'), ("the written key of a plan's dependencies", '[\\"\']Depends_on[\\"\']', 'services/none.py'), ("the inverse of a plan's dependencies", '[\\"\']Depends_for[\\"\']', 'modules/management/task/services/dependency.py'), ("a plan's priority or topic helper by its old name", '\\b(?:priority_of|checked_priority|normalized_topic|checked_topic|topic_of|new_task_id|is_task_id)\\b', 'services/none.py'))
+SPELLINGS = (("a priority's bounds and default as names", '\\b(?:LOWEST|HIGHEST|DEFAULT)_PRIORITY\\b', 'modules/knowledge/documentation/plan/primitive/priority.py'), ("a priority's range as words", '\\b1 to 10\\b', 'modules/knowledge/documentation/plan/primitive/priority.py'), ('the form of a task id', '\\\\d\\{8\\}-T', 'modules/management/task/primitive/task_id.py'), ('the clock format of a task id', '%Y%m%d-T', 'modules/management/task/primitive/task_id.py'), ("a claim's file name as a name", '\\bCLAIM_(?:NAME|TAKEOVER_NAME|STALE_SECONDS)\\b', 'modules/management/task/primitive/claim.py'), ("a claim's takeover guard", 'claim\\.takeover', 'modules/management/task/primitive/claim.py'), ("the flag that carries a project's name", '[\\"\']--project[\\"\']', 'modules/process/project/primitive/project_name.py'), ("the flag that carries a project's path", '[\\"\']--project-path[\\"\']', 'modules/process/project/primitive/project_path.py'), ('the old flag names', '\\b(?:NAME|PATH)_FLAG\\b', 'services/none.py'), ('the attribute a parser gives the path flag', 'getattr\\(args, [\\"\']project_path[\\"\']', 'services/none.py'), ("a plan's key read as a string", '\\.get\\(\\"(?:title|project|parent|conversation|opened|priority|topic|kind|task)\\"', 'services/none.py'), ("the key of a plan's dependencies, as a string literal", '[\\"\']depends_on[\\"\']', 'modules/knowledge/documentation/plan/primitive/plan_key.py'), ("the written key of a plan's dependencies", '[\\"\']Depends_on[\\"\']', 'services/none.py'), ("the inverse of a plan's dependencies", '[\\"\']Depends_for[\\"\']', 'modules/management/task/services/dependency.py'), ("a plan's priority or topic helper by its old name", '\\b(?:priority_of|checked_priority|normalized_topic|checked_topic|topic_of|new_task_id|is_task_id)\\b', 'services/none.py'))
 
 class OneHome(unittest.TestCase):
 

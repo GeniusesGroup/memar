@@ -131,7 +131,7 @@ def start(top: Path) -> None:
     try:
         marker.parent.mkdir(parents=True, exist_ok=True)
         marker.write_text(str(os.getpid()), encoding='utf-8')
-        options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_session': True}
+        options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_task': True}
         subprocess.Popen([sys.executable, '-c', BOOT, str(ROUTER.parent), str(ROUTER.parents[2])], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
     except OSError:
         pass

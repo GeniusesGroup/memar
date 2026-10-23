@@ -1,5 +1,5 @@
 # ADT Rule — Observer and Mutator Handoff
-Open state for [observer-mutator.md](./observer-mutator.md). See the repository's [documentation-handoff.md](../../../../content/documentation/handoff/handoff.md) for what a handoff is.
+Open state for [observer-mutator.md](./observer-mutator.md). See the repository's [documentation-handoff.md](../../../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Status
 Active — rule relocated from `bundles/khayyam/rules/observer-mutator-abstractions/` to `modules/computer/adt/rules/observer-mutator/` 2026-09-29 (owner). Observer/mutator family names, method naming, and side-file default decided same day.
@@ -15,7 +15,7 @@ Active — rule relocated from `bundles/khayyam/rules/observer-mutator-abstracti
 ## Open Questions
 
 ### Two declarations disagree with the rule's examples
-- State: found 2026-10-16 while the rule's copy of its examples was replaced by pointers. (1) `modules/memory/file/protocol/name.mutators.kh` names the method of `Mutator_Rename` `File_Mutator_Rename_Rename`, where the rule asks for the domain verb `Rename`. (2) `modules/net/uri/protocol/uri.kh` declares `URI` without composing any observer, where the removed example showed `URI` composing `Observer_Scheme` and `Observer_URI_Path`. The owner ruled the same day to leave both to later sessions, since the declarations come from the Go conversion and the ADT abstraction in Khayyam is not worked out ([adt.handoff.md](../../adt.handoff.md)).
+- State: found 2026-10-16 while the rule's copy of its examples was replaced by pointers. (1) `modules/computer/memory/file/protocol/name.mutators.kh` names the method of `Mutator_Rename` `File_Mutator_Rename_Rename`, where the rule asks for the domain verb `Rename`. (2) `modules/net/uri/protocol/uri.kh` declares `URI` without composing any observer, where the removed example showed `URI` composing `Observer_Scheme` and `Observer_URI_Path`. The owner ruled the same day to leave both to later chats, since the declarations come from the Go conversion and the ADT abstraction in Khayyam is not worked out ([adt.handoff.md](../../adt.handoff.md)).
 - What waits on the answer: which side changes, the rule or the declaration.
 - **Which module owns a concept declared twice** — `Record_Observer_RecordUUID` / `Storage_Observer_RecordUUID` and related pairs; see [qualified names handoff](../../../../../bundles/khayyam/rules/qualified-names/qualified-names.handoff.md).
 

@@ -319,7 +319,7 @@ here is ratified, and no file in the tree yet asserts it.
   prerequisite and assumes ZKP attestation (stability: Weak there); Q1 and Q2
   bear directly on that assumption (Review).
 - Source: the bank PDF named in Topic & Purpose; its extracted text was scratch
-  in a Memar session folder, not a repository artifact (None).
+  in a Memar task folder, not a repository artifact (None).
 
 ### Proposed Next Steps
 1. Resolve authority registration (Q1) — the policy's central guard; no
@@ -383,3 +383,7 @@ Each carries a recommended default and what it blocks; the full text is in the r
 ### Related Artifacts added
 - [user.research.001.md](user.research.001.md) — the research; the eight sections, the sibling reconciliation, the contradictions (Update).
 - [user.changelog.md](user.changelog.md) — the record of this addition (Update).
+
+## Deactivation instead of deletion (idea, not ratified)
+- State: carried 2026-10-19 from organization's `modules/computer/token/token.md` → Idea backlog from service code comments, when organization merged into memar (task 20261019-T103359Z-18676 recorded it in [token.changelog.md](../../computer/token/token.changelog.md); it is placed here because it is about the user). The idea: deleting a user entirely is not realistic, given the legal complexity, so registration warns the user about deactivation instead of promising deletion. Review discipline per [vocabulary discipline](../../management/vocabulary-discipline.handoff.md).
+- Questions: is the sign-up warning a registration concern of User, while Token only revokes credentials on deactivation? Does deactivate-versus-delete need a user status that Token only reacts to? Who owns the legal-retention policy, the rule domain or [Rights](../../rights/rights.md)?

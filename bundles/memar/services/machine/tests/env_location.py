@@ -38,7 +38,7 @@ sys.dont_write_bytecode = True
 import machine.env_location as location
 VARIABLE = location.VARIABLE
 
-class RecordOverSession(unittest.TestCase):
+class RecordOverTask(unittest.TestCase):
     """The record is the value; the process environment is a cache of it."""
 
     def setUp(self) -> None:
@@ -55,26 +55,26 @@ class RecordOverSession(unittest.TestCase):
         location.NOTICE_REPORTED = self.saved_notice
         location.persisted_value = self.saved_persisted
 
-    def ask(self, record: str, session: str) -> str:
-        """What a program sees when the record holds RECORD and its own copy holds SESSION."""
+    def ask(self, record: str, task: str) -> str:
+        """What a program sees when the record holds RECORD and its own copy holds TASK."""
         location.persisted_value = lambda: record
-        if session:
-            os.environ[VARIABLE] = session
+        if task:
+            os.environ[VARIABLE] = task
         else:
             os.environ.pop(VARIABLE, None)
         with contextlib.redirect_stdout(io.StringIO()):
             return location.recorded_value()
 
-    def test_the_record_answers_when_the_session_reads_nothing(self):
+    def test_the_record_answers_when_the_task_reads_nothing(self):
         self.assertEqual(self.ask('C:\\Users\\you\\Memar', ''), 'C:\\Users\\you\\Memar')
 
-    def test_the_record_answers_when_the_session_holds_another_value(self):
+    def test_the_record_answers_when_the_task_holds_another_value(self):
         self.assertEqual(self.ask('C:\\Users\\you\\Memar', 'D:\\elsewhere'), 'C:\\Users\\you\\Memar')
 
-    def test_the_session_answers_when_the_record_is_silent(self):
+    def test_the_task_answers_when_the_record_is_silent(self):
         self.assertEqual(self.ask('', 'D:\\elsewhere'), 'D:\\elsewhere')
 
-    def test_a_stale_session_is_reported_rather_than_ignored(self):
+    def test_a_stale_task_is_reported_rather_than_ignored(self):
         location.persisted_value = lambda: 'C:\\Users\\you\\Memar'
         os.environ.pop(VARIABLE, None)
         printed = io.StringIO()
@@ -86,7 +86,7 @@ class RecordOverSession(unittest.TestCase):
         self.assertIn('C:\\Users\\you\\Memar', text)
         self.assertIn('unset', text)
 
-    def test_a_stale_session_is_reported_once_not_once_per_read(self):
+    def test_a_stale_task_is_reported_once_not_once_per_read(self):
         location.persisted_value = lambda: 'C:\\Users\\you\\Memar'
         os.environ.pop(VARIABLE, None)
         printed = io.StringIO()
@@ -95,7 +95,7 @@ class RecordOverSession(unittest.TestCase):
                 location.recorded_value()
         self.assertEqual(printed.getvalue().count('disagrees with the record'), 1)
 
-    def test_a_session_that_agrees_with_the_record_says_nothing(self):
+    def test_a_task_that_agrees_with_the_record_says_nothing(self):
         location.persisted_value = lambda: 'C:\\Users\\you\\Memar'
         os.environ[VARIABLE] = 'C:\\Users\\you\\Memar'
         printed = io.StringIO()
@@ -103,7 +103,7 @@ class RecordOverSession(unittest.TestCase):
             location.recorded_value()
         self.assertEqual(printed.getvalue(), '')
 
-    def test_a_session_only_value_is_not_reported_as_stale(self):
+    def test_a_task_only_value_is_not_reported_as_stale(self):
         location.persisted_value = lambda: ''
         os.environ[VARIABLE] = 'D:\\elsewhere'
         printed = io.StringIO()

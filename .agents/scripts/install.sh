@@ -55,7 +55,7 @@
 #      and is used as it is. A run that named no folder fetches nothing when it
 #      can find a checkout to run from, because whether Memar is already on this
 #      machine is a question for the installer to ask against the record, and not
-#      for this shell to answer from the copy of the variable this session holds.
+#      for this shell to answer from the copy of the variable this task holds.
 #      No file of the architecture is fetched over the network and none is run
 #      from memory, so a first run costs one clone and nothing else. A folder you
 #      named that already holds something else is refused, and nothing is deleted.
@@ -336,7 +336,7 @@ case "$mode" in
     *)
         # Nothing was named, and nothing is fetched: whether Memar is already on
         # this machine is the installer's question, asked against the record, and
-        # a shell reading this session's copy of the variable could answer it
+        # a shell reading this task's copy of the variable could answer it
         # differently from the record. So this step only needs a checkout to run
         # that question from, and a run that named a folder is the one that
         # fetches.

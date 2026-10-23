@@ -36,7 +36,7 @@ Active - the three `.kh` files under this domain accept under the Khayyam fronte
 4. **Whether an ownership node needs more than an identity** - `owner.md` and `heir.md` and `creator.md` all hang off it, and `ownership.md` lists fraction, scope, start/end, restrictions, origin and transferability as candidate content. None of that is modelled; the node currently has an identity and nothing else.
 
 ## Pointer: Contract Research 001
-[Contract Research 001](../contract/contract.research.001.md) (unratified, session `20261018-T195816Z-15768`) analyses this domain with contract and delegate. Its proposals, none decided:
+[Contract Research 001](../contract/contract.research.001.md) (unratified, task `20261018-T195816Z-15768`) analyses this domain with contract and delegate. Its proposals, none decided:
 - Ownership is a node: a title declared by an authority (the existing `issuer`), with a scope (the bundle of rights, reading "rights first"), holders with kind and fraction, an origin, and status events (finding 2). Answers open 1 and 4 above by default.
 - "Owner" names two things: title, and record stewardship ("just the owner MUST edit the related record", [owner.md](./edges/owner/owner.md)). Stewardship is a rule over standings, not an edge (contradiction 1; its question 4).
 - Mapping (finding 5): `heir` to succession of title, `creator` to attribution, `belongs_to-org` and `belongs_to-module` to the thing's declarer and registering domain, `reserved` to a reservation capability, `assigner` joins the strip verdict (answers open 3 above), the other loop folders stay stripped.

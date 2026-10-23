@@ -17,7 +17,7 @@ Open work for `modules/process/service-sdk.md`. Entries are mutable current stat
 
 ### Generation mechanics
 - State: generation is the declared mechanism and compile-time generation the position for compiled languages; the generator's architecture (one generator with per-language backends, templates, or AST-level output) is open, as is the balance between per-language idiomatic quality and uniform shape across languages.
-- Next: a dedicated design session after the declaration-artifact question settles.
+- Next: a dedicated design chat after the declaration-artifact question settles.
 
 ### The validation-sharing shape
 - State: GUI's accessor/setter pattern is named as the mechanism the SDK's generation includes; how validation rules are declared once and surface in both the server and the generated client is undesigned.
@@ -25,11 +25,11 @@ Open work for `modules/process/service-sdk.md`. Entries are mutable current stat
 
 ### Aggregation placement in detail
 - State: composition is a consumer-side capability, and coarse operations are allowed where the domain genuinely has them; the test for "genuinely" — what distinguishes a domain aggregate from a view-serving aggregate — is not drawn. The founding discussion's access-control example (an aggregated model mixing fields some consumers may not see, forcing per-field access decisions into the aggregate) is the standing test case.
-- Next: settle with the GUI and Modeling documents during the design session.
+- Next: settle with the GUI and Modeling documents during the design chat.
 
 ### How "part of the module's protocol realization" binds concretely
 - State: position 9 makes the delivered client face a conformance obligation of the module ([Part of the module, not beside it](sdk.md#part-of-the-module-not-beside-it)); what enforces that obligation is undesigned — whether a module's protocol declaration is invalid without its client face, whether conformance is checked at release, and how it interacts with the local module placement in [modules/README.md](../../../../README.md).
-- Next: decide in the design session; the check belongs to a linter-conformance discussion if the protocol declaration carries it.
+- Next: decide in the design chat; the check belongs to a linter-conformance discussion if the protocol declaration carries it.
 
 ### The local/network realization decision surface
 - State: both invocation kinds are behind one call surface, and the backing realization is a delivery decision ([Local and network invocation](sdk.md#local-and-network-invocation)); who makes that decision per call — the SDK's generator, the module's packaging, deployment configuration, or a runtime resolution — and whether a consumer can ever observe or force one kind, is open. The security framing (execution crossing out of the consumer's agency space under the module's control) suggests some crossings must be non-bypassable, but the mechanism is not designed.
@@ -37,7 +37,7 @@ Open work for `modules/process/service-sdk.md`. Entries are mutable current stat
 
 ### Correctness ownership of non-generated consumption paths
 - State: the declared interface binds no consumer language ([Working positions](sdk.md#working-positions) 7) — FFI against a delivered SDK and ports are legitimate external consumption paths (the founding example: an external Go caller consuming a module whose SDK is delivered in Khayyam). Whether a consumer-made port inherits any ownership or support claim from the module, or is simply the consumer's own code over the same declared interface, is undecided.
-- Next: settle in the design session; likely a boundary statement rather than machinery.
+- Next: settle in the design chat; likely a boundary statement rather than machinery.
 
 ### The agreement artifact for delegation
 - State: what the agreement *is* is settled. [The call as delegation](sdk.md#the-call-as-delegation) states that a delegation is trustworthy only where the process has been agreed beforehand, that the delegation's content is "the agreed process the SDK realizes", and that "The SDK is how that agreement travels: not as a promise in a document, but as the generated code both sides already conform to" — so the artifact is the declared process as realized in the generated code both sides already conform to, neither a promise in a document nor a second agreement beside it. Residue: how an all-or-nothing transition rule is *declared* so that the generated SDK and the executing side enforce the same one. The passage settles the shape of the answer — a rule declared once in the declaration is the same rule both sides hold, because the SDK is generated from that declaration and the executing side realizes it — and what no sentence states is the declaration form itself.
@@ -50,7 +50,7 @@ Open work for `modules/process/service-sdk.md`. Entries are mutable current stat
 
 ### Whether the serving side becomes an Agent identity
 - State: the delegation position borrows Agency's Principal / Execution Agent vocabulary; whether the module's node takes on a persistent Agent identity in the Agency document's sense (with `agent_for`, accountability, trust relationships), or whether the SDK call stays a nameless delegation realized per call, is undecided.
-- Next: settle with the Agency document's [`agent_for`](../../../../../docs/agency.md#the-agent_for-relationship) treatment during the design session.
+- Next: settle with the Agency document's [`agent_for`](../../../../../docs/agency.md#the-agent_for-relationship) treatment during the design chat.
 
 ### The agent as an SDK consumer
 - State: the consumer position has graduated to the body: [Working positions](sdk.md#working-positions) 13 and 14, elaborated under [What an SDK is](sdk.md#what-an-sdk-is) and [Local and network invocation](sdk.md#local-and-network-invocation); the wire's side is [sRPC → Goals and non-goals](../../../../net/srpc/srpc.md#goals-and-non-goals). Tentative, a session extension the owner has not ruled on: instructions to a model on using a service fall under the same self-description its types carry.
@@ -59,7 +59,7 @@ Open work for `modules/process/service-sdk.md`. Entries are mutable current stat
 - Next: settle with [Delivery and versioning](#delivery-and-versioning) and [What the declaration artifact is](#what-the-declaration-artifact-is). How a consumer obtains the SDK over the wire is [sRPC → A reserved service that delivers a service's SDK](../../../../net/srpc/srpc.handoff.md#a-reserved-service-that-delivers-a-services-sdk); MCP is set against this position in [the MCP comparison](../../../../../docs/comparisons/mcp.001.md).
 
 ### What a delivery owes its consumer beyond call correctness
-- State: the SDK carries what a consumer needs to call the service correctly, in types that describe themselves, so the consumer's text about the service comes from those types rather than from a description written beside them ([SDK → What an SDK is](sdk.md#what-an-sdk-is)). Scoped to the search made: a search of `docs/` by the session that raised this entry, for retrieved passages, documents, and third-party corpora as material a service delivers, found no statement that the obligation reaches material that is not an interface, where the consumer otherwise receives prose whose origin and revision it cannot name, and so cannot tell an answer from one it produced itself. The search's exact terms were not recorded; the next session repeats it, records them, and treats a hit as superseding this sentence ([Cognition → Report absence rather than supplying it](../../../../../docs/cognition.md#report-absence-rather-than-supplying-it)).
+- State: the SDK carries what a consumer needs to call the service correctly, in types that describe themselves, so the consumer's text about the service comes from those types rather than from a description written beside them ([SDK → What an SDK is](sdk.md#what-an-sdk-is)). Scoped to the search made: a search of `docs/` by the session that raised this entry, for retrieved passages, documents, and third-party corpora as material a service delivers, found no statement that the obligation reaches material that is not an interface, where the consumer otherwise receives prose whose origin and revision it cannot name, and so cannot tell an answer from one it produced itself. The search's exact terms were not recorded; the next chat repeats it, records them, and treats a hit as superseding this sentence ([Cognition → Report absence rather than supplying it](../../../../../docs/cognition.md#report-absence-rather-than-supplying-it)).
 - Open: whether the obligation reaches material that is not an interface - a document, a retrieved passage, a third-party corpus.
 - Next: owner's ruling. This is a position question rather than mechanics, and it does not wait on *Delivery and versioning* above.
 
@@ -73,17 +73,17 @@ Open work for `modules/process/service-sdk.md`. Entries are mutable current stat
 - Options: (1) state both once in the SDK document: an outside value selects nothing without the owner's declaration, and an answer received through an SDK is material, not an instruction (recommended; cost is two sentences and a check that a generated SDK accepts only declared selections); (2) state only the first, for modules, and leave the agent's side to Cognition; (3) leave each subject's own entry to answer for itself.
 - Anchor: docs/modules/process/service-sdk.md, What an SDK is and Local and network invocation; docs/agency.md, Failure of Agency (authority failure); docs/cognition.md, Treat shared artifacts as claims. The answer lands in service-sdk.md.
 - Blocks: nothing is blocked. Assumption meanwhile: no module lets an outside value select what runs without a declaration by its owner (Tentative).
-- Asked: 2026-10-13, Claude (queued as session `20261013-T052606Z-5004`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+- Asked: 2026-10-13, Claude (queued as task `20261013-T052606Z-5004`, written by task `20261015-T103826Z-18580`), for Omid Hekayati.
 
 ### What does an SDK consumer receive from a call whose answer comes in parts?
 - State: [sRPC](../../../../net/srpc/srpc.md#frames) carries streams at the wire (Open-Stream, Close-Stream, payload, Error, Stream ID) and the SDK is the only thing a consumer calls ([Working positions](sdk.md#working-positions) 4), but service-sdk.md does not say what a consumer receives when a service's result is a stream or a batch: whether an incremental result has a type at the call surface; whether a call that could be incremental but is answered whole (a stream of one item) is distinguishable from one that really streams, and whether the SDK declares which it is; and what a consumer composing several SDKs (Working positions 5) does with a partial result and a failure mid-stream. The question is only what the caller receives and when (an answer whole, an answer in parts, an answer that never completes), not what the answer is turned into.
 - Options: (1) the SDK declares for each operation whether its answer is whole or in parts, types the parts, and states what a failure after some parts means (recommended; cost is one declared property per operation); (2) every call is typed as whole and a stream is a separate operation kind; (3) leave it to the realization.
 - Anchor: docs/modules/process/service-sdk.md, Working positions 4 and 5, Invoking a process; docs/modules/net/sRPC.md, Frames. The answer lands in service-sdk.md.
 - Blocks: nothing is blocked. Assumption meanwhile: the SDK declares nothing about how an answer arrives (Tentative).
-- Asked: 2026-10-13, Claude (queued as session `20261013-T035748Z-1516`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+- Asked: 2026-10-13, Claude (queued as task `20261013-T035748Z-1516`, written by task `20261015-T103826Z-18580`), for Omid Hekayati.
 
 ## Anticipated Work
 - **Generate a service from its name and path** — owner position (2026-09-29): a Memar server capability that materializes a service given only its name and module path, without hand-authored Rule text or Practices narrating each artifact. Relates to [Knowledge → Knowledge and Code](../../../../knowledge/knowledge.md#knowledge-and-code) (generative work belongs in callable services). No `docs/` document yet defines the Memar server; nearest record is Khayyam handoff → Rule model (`bundles/khayyam/khayyam.handoff.md`).
-- The dedicated design session that turns this document into the protocol proper: the minimal obligation set, the declaration artifact, the generation pipeline, delivery and versioning.
+- The dedicated design chat that turns this document into the protocol proper: the minimal obligation set, the declaration artifact, the generation pipeline, delivery and versioning.
 - Propagation: media-type.md's goal line gains a link to this document when it stabilizes (Pending in [sdk.changelog.md](sdk.changelog.md)); gui.md's "service contract" phrase may adopt the declaration vocabulary (Pending in [sdk.changelog.md](sdk.changelog.md)).
 - A naming review if the ecosystem word SDK proves too broad for the protocol's narrowed subject; any rename graduates through the changelog with full propagation (gui.md, media-type.md, process.md all use the word).

@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Initial Draft positioning the version-control repository as the dependency mechanism — repository references, explicit pinning, local relative addressing — with the package-manager layer (registries, resolution, lockfiles) recorded as an unnecessary default and the strongest practical objections kept open.
@@ -29,8 +29,8 @@
 - Propagates to:
   - dependency-management.handoff.md: Done - anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's `Discussion` wrappers dissolved entirely, per the finalized documentation method (documentation-explanation.changelog.md, same date) (Omid Hekayati - decided; Super Z - applied).
@@ -58,13 +58,13 @@
   - opencode (space-bunny) - applied
 
 #### What changed
-- The 2026-09-29 rulings that bear on this document were recorded in its [handoff](module-dependency.handoff.md) rather than in its body: the base an address is resolved from is the manifest of the module that wrote it; a manifest says everything about its own module in four obligations and is complete; a fault in one is a fault in the whole module; and its name is `memar.manifest.{format}`. They are in the handoff because they **collide with this document's stated position** — its Abstract names the version-control repository as the dependency mechanism and a manifest as machinery Memar's default does not require — and a reader of the body would meet a settled design and no sign of the conflict. The possible reconciliation, a manifest declaring identity and reachability while the VCS pins revisions, is recorded there as a question and is not adopted.
+- The 2026-09-29 rulings that bear on this document were recorded in its [handoff](dependency.handoff.md) rather than in its body: the base an address is resolved from is the manifest of the module that wrote it; a manifest says everything about its own module in four obligations and is complete; a fault in one is a fault in the whole module; and its name is `memar.manifest.{format}`. They are in the handoff because they **collide with this document's stated position** — its Abstract names the version-control repository as the dependency mechanism and a manifest as machinery Memar's default does not require — and a reader of the body would meet a settled design and no sign of the conflict. The possible reconciliation, a manifest declaring identity and reachability while the VCS pins revisions, is recorded there as a question and is not adopted.
 - A module claims an address by a pattern rather than by a row per declaration, and either a whole framework or each of its parts may be a module. The precedence question this raises, what answers when a whole's claim and a part's claim both cover one address, is recorded as open, along with the receiver's reading that a claim should be a path-shaped pattern rather than a regular expression — offered for the owner to accept or overrule, and not adopted.
 - No sentence of this document's body changed, and nothing here supersedes its position.
 
 #### Considered and not done
 - **Writing the four obligations and the manifest's name into this document's body.** Considered and not done, because the rulings have not been reconciled with the position the body states, and stating them as current design would hide that. The alternative was to revise the position in place, which is a change to a protocol document and the owner's to make.
-- **Creating a new document for the manifest.** Considered and not done: this document is already the subject, at ID 496870 since 2026-09-06. A second dependency document would have split one subject across two files and left a later session choosing between them.
+- **Creating a new document for the manifest.** Considered and not done: this document is already the subject, at ID 496870 since 2026-09-06. A second dependency document would have split one subject across two files and left a later chat choosing between them.
 
 ---
 
@@ -72,10 +72,10 @@
 - Time: 2026-10-07T15:14:08Z
 - Type: Moved
 - Cited:
-  - [Modules → One layout for both trees](../README.md#one-layout-for-both-trees) - Premise: a module is specified at `docs/modules/<category>/<name>.md` and realized at `modules/<category>/<name>/`; `modules/` (the category) was the `memar-go` registry folder and no responsibility.
+  - [Modules → One layout for both trees](../../../knowledge/modularity/modularity.changelog.md#the-one-layout-for-both-trees-argument-is-dropped-with-the-specification-folder) - Premise: a module is specified at `docs/modules/<category>/<name>.md` and realized at `modules/<category>/<name>/`; `modules/` (the category) was the `memar-go` registry folder and no responsibility.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) — applied
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - Auto (model not recorded) via [Cursor](../../../../CONTRIBUTORS.md#cursor) — applied
 
 #### What changed
 - The document and its companions moved from `docs/modules/modules/dependency-management.*` to `docs/modules/computer/module-dependency.*`, beside the module system it governs, whose realization moved in the same change from `modules/modules/module/` to `modules/computer/module/`. Every relative link was re-derived, and every link into this document re-pointed, including the comments in `modules/khayyam/lsp/src/resolve.ts` and `manifest.ts` and the refusal text `resolve.ts` publishes. No content change.

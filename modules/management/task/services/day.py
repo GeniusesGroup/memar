@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/day.py — the day a review is asked for, and the day a session belongs to.
+"""modules/management/task/services/day.py — the day a review is asked for, and the day a task belongs to.
 
-The owner reviews sessions by the day they were worked, because what they ask
-for is "what happened today". A session belongs to the local day of the latest
-change anywhere in its folder (`session_folder.last_change`), not the day it
+The owner reviews tasks by the day they were worked, because what they ask
+for is "what happened today". A task belongs to the local day of the latest
+change anywhere in its folder (`task_folder.last_change`), not the day it
 was opened: a task opened yesterday and finished today is part of today's
 review, and one opened today and left alone is not part of tomorrow's. The day
 is local because the owner's day is, not UTC's. A day is named `today`,
 `yesterday`, or `YYYY-MM-DD`; anything else is refused with what is accepted,
-since a guessed day would review the wrong sessions.
+since a guessed day would review the wrong tasks.
 """
 from __future__ import annotations
 from datetime import date, datetime, timedelta

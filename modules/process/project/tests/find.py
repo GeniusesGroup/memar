@@ -7,7 +7,7 @@
 
 The subject is the lookup that turns a word into a project folder, so that no
 agent reasons about names or guesses a path. The rulings it holds are the
-owner's of 2026-10-13, recorded in session 20261013T085819Z-27156-0: an exact
+owner's of 2026-10-13, recorded in task 20261013T085819Z-27156-0: an exact
 name or alias, in any case, is one answer; otherwise the word is compared by
 similarity on Unicode-normalised text against the whole name and each alias, a
 prefix counting as near, only so that the name need not be exact; one near

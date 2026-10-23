@@ -3,7 +3,7 @@
 
 """modules-plugable/ai/ai.py — `memar ai`: agent-context verbs (start, briefs, answering, new chats).
 
-Groups the how-agents-run verbs that left process/session. Not Task. Each verb
+Groups the how-agents-run verbs that left process/task. Not Task. Each verb
 is declared by its own service under services/.
 """
 from __future__ import annotations

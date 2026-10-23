@@ -34,7 +34,7 @@ This project's owner pre-sold apartments; the money paid for them years later wa
 
 - At the approval of an invoice with deferred payment — instalments, post-dated cheques, a pre-sale — a rule may warn the approver that the product's price has moved strongly in recent months, so that a fixed-amount instalment is a poor method. The movement is discovered from the product's own price versions or from an index the product is evaluated against; which measure and which window is the rule's configuration.
 - An organization may offer instalments whose amounts are indexed to a chosen price index: each instalment is its stated amount × the index value at its due date ÷ the index value at the invoice's issue.
-- Where these rules attach is open: neither [credit](../credit/credit.md), which defers debt-based money to a dedicated session, nor [settlement](../settlement/settlement.md), which is tiered bookkeeping, models deferred payment. The invoice's [conditional](../../../modules/economics/invoice/edges/conditional/conditional.md) attachment is the existing point at which an invoice rule attaches.
+- Where these rules attach is open: neither [credit](../credit/credit.md), which defers debt-based money to a dedicated chat, nor [settlement](../settlement/settlement.md), which is tiered bookkeeping, models deferred payment. The invoice's [conditional](../../../modules/economics/invoice/edges/conditional/conditional.md) attachment is the existing point at which an invoice rule attaches.
 
 ## Placement
 

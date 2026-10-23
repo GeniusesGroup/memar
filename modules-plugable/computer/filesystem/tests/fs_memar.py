@@ -13,25 +13,25 @@ in the `tests/` folder of the module that owns it per
 
 Nothing here writes to the machine. Roots are patched onto a scratch folder
 inside this one; the one test that touches the real checkout only reads
-constant properties of it. Session folders are created under a scratch
+constant properties of it. Task folders are created under a scratch
 folder and removed again.
 
 What is pinned, and what each pin is for:
 
-  DefaultLocation    Locks, intents, and session folders default under
+  DefaultLocation    Locks, intents, and task folders default under
                      <memar-root>/temp/, the ONE scratch root, so they can
                      only ever occupy the ignored temp entry and no ignore
                      rule is owed; an unresolvable root errors rather than
                      guessing.
-  SessionDir         A session id names one folder segment under the sessions
+  TaskDir         A task id names one folder segment under the tasks
                      root, .agents/tasks/, and nothing else; anything shaped
                      like a path is refused, and readers never create.
-  ProjectSessionsRegistry
-                     The record of project session locations is Memar's own
-                     state, a file beside the session folders, and asking
+  ProjectTasksRegistry
+                     The record of project task locations is Memar's own
+                     state, a file beside the task folders, and asking
                      where it is creates nothing.
   ProjectsLog        The registry of projects and their names is a file at the
-                     root of temp, not inside the sessions folder, and asking
+                     root of temp, not inside the tasks folder, and asking
                      where it is creates nothing but the temp folder.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
@@ -84,15 +84,15 @@ class DefaultLocation(unittest.TestCase):
     def test_checkout_root_is_this_checkout(self) -> None:
         self.assertEqual(memar_fs.checkout_root(), CHECKOUT)
 
-class SessionDir(unittest.TestCase):
+class TaskDir(unittest.TestCase):
 
-    def test_task_dir_is_one_segment_under_the_sessions_root(self) -> None:
+    def test_task_dir_is_one_segment_under_the_tasks_root(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):
                 path = memar_fs.task_dir('s-1')
                 self.assertEqual(path, fake_root / '.agents' / 'tasks' / 's-1')
-                self.assertEqual(path.parent, memar_fs.sessions_root())
+                self.assertEqual(path.parent, memar_fs.tasks_root())
                 self.assertFalse(path.exists())
 
     def test_task_dir_creates_only_when_asked(self) -> None:
@@ -111,19 +111,19 @@ class SessionDir(unittest.TestCase):
                         with self.assertRaises(SystemExit):
                             memar_fs.task_dir(bad)
 
-class ProjectSessionsRegistry(unittest.TestCase):
+class ProjectTasksRegistry(unittest.TestCase):
 
-    def test_the_registry_is_memar_state_beside_the_session_folders_and_not_a_session(self) -> None:
+    def test_the_registry_is_memar_state_beside_the_task_folders_and_not_a_task(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):
-                registry = memar_fs.project_sessions_registry()
-                self.assertEqual(registry, fake_root / '.agents' / 'tasks' / memar_fs.PROJECT_SESSIONS_NAME)
+                registry = memar_fs.project_tasks_registry()
+                self.assertEqual(registry, fake_root / '.agents' / 'tasks' / memar_fs.PROJECT_TASKS_NAME)
                 self.assertFalse(registry.exists())
 
 class ProjectsLog(unittest.TestCase):
 
-    def test_the_projects_log_is_at_the_root_of_temp_not_inside_sessions(self) -> None:
+    def test_the_projects_log_is_at_the_root_of_temp_not_inside_tasks(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)
             with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):

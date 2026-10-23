@@ -1,10 +1,10 @@
 ---
 name: modeling
-description: Defines the concrete, step-by-step procedure for running a Memar modeling session — discovering a model from scratch, refining an existing one, or critically reviewing a model (including one published by another organization) — and for placing a new edge or relation. Use this file to do the work. Open modeling.md only when a step names a section to check.
+description: Defines the concrete, step-by-step procedure for running a Memar modeling chat — discovering a model from scratch, refining an existing one, or critically reviewing a model (including one published by another organization) — and for placing a new edge or relation. Use this file to do the work. Open modeling.md only when a step names a section to check. Not for mapping an accepted concept onto a type, which the type practice does, nor for critique of material that is not a model, which the cognition practice does.
 ---
 
 # Modeling Practice
-> **Purpose:** This practice defines how a Memar modeling session is carried out in practice — the concrete steps, checklists, and session-quality signals referenced by [modeling.md](./modeling.md).
+> **Purpose:** This practice defines how a Memar modeling chat is carried out in practice — the concrete steps, checklists, and session-quality signals referenced by [modeling.md](./modeling.md).
 > **Nature:** This is a *Practice* — a method commonly used for this type of work, not a claim about knowledge, skill, or capability.
 
 Discovering a model from an unstructured requirement, refining an existing model, and critically reviewing a model someone else proposed — including a model published as open data by another organization — are not separate activities. They share the same procedure below. Whatever the starting point, the same critical scrutiny applies to a concept whether it was proposed by you or by someone else: the modeling phase is where the smallest mistake is cheapest to catch and most expensive to leave uncaught, since everything downstream — every implementation decision — builds on top of it.
@@ -183,4 +183,4 @@ A modeling or review session is successful if it produces:
 - Refined relationships.
 - Improved responsibility boundaries.
 
-A session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions. When it does deliver a model as a document in a folder of its own, the name is not the session's to choose: [Documentation → File Naming](./documentation.md#file-naming) fixes it to the concept's own name, and the paired handoff takes the same base name.
+A session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions. When it does deliver a model as a document in a folder of its own, the name is not the session's to choose: [Documentation → File Naming](../modules/knowledge/documentation/documentation.md#file-naming) fixes it to the concept's own name, and the paired handoff takes the same base name.

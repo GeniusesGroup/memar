@@ -18,7 +18,7 @@
   - [Super Z](../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
-- Created `documentation-handoff.md` (ID 496741) as the governing specification for the Handoff facet: a `<base>.handoff.md` companion capturing the distilled state of a discussion so a later session — AI, human, or organizational — can resume it (Omid Hekayati — decided; Super Z — drafted).
+- Created `documentation-handoff.md` (ID 496741) as the governing specification for the Handoff facet: a `<base>.handoff.md` companion capturing the distilled state of a discussion so a later chat — AI, human, or organizational — can resume it (Omid Hekayati — decided; Super Z — drafted).
 - The specification defines the concept (state transfer across a session boundary, borrowing the established cross-domain term), its central discipline (analysis, not transcription — three named risks with structural controls: fixed skeleton against selection asymmetry, mandatory confidence vocabulary against analysis-record confusion, required rationale capture against invisible premises), its relationship to the existing facets (no design claims — conclusions graduate into Explanation-facet documents; mutable state, not append-only history), the fixed section skeleton, and the file format (Super Z — drafted).
 - Created the paired practice file with the producing, consuming, and placement procedures (Super Z — drafted).
 - Absorbed and deleted the three practice documents; the surviving references to them are these provenance records (Omid Hekayati — directed; Super Z — executed).
@@ -72,12 +72,12 @@
 
 #### Considered and not done
 - Naming the artifact "continuity note" (rejected): describes a hope (that the topic continues) rather than the artifact's function (transferring state across a boundary); "Handoff" names the function with an established, cross-domain word, consistent with the project's preference for established terminology over invented labels. (Omid Hekayati - the naming argument)
-- Naming the artifact "conversation note" (rejected): scopes the artifact to AI chat sessions; the need is agent-generic - a fully human working session (a design review, a pair-modeling session, a shift handover) requires exactly the same state transfer. (Omid Hekayati)
+- Naming the artifact "conversation note" (rejected): scopes the artifact to AI chat sessions; the need is agent-generic - a fully human working chat (a design review, a pair-modeling chat, a shift handover) requires exactly the same state transfer. (Omid Hekayati)
 - Leaving the handoff as convention without a governing specification (rejected): the pattern was already repeating across real artifacts; leaving it unnamed would reproduce the drift the documentation meta-layer exists to prevent. (Omid Hekayati)
 - Free-form structure (rejected): the fixed skeleton is the selection-asymmetry control; a free-form handoff cannot be audited for what it omitted. (Omid Hekayati)
 - A machine-readable format (YAML/JSON) instead of Markdown (considered, not chosen): would make handoffs queryable, but the artifact's primary reader is a session that reads prose, and a structured format raises the writing cost at exactly the point (session end) where the writer has least capacity for it. A structured extraction can be added later as tooling. (Super Z)
 - Timestamped entries like a changelog (rejected): a handoff's entries are the current state of a discussion, not a history of changes to it - the state is rewritten as the discussion moves, not appended to. (Omid Hekayati)
-- Specify a transcript-based handoff (rejected): preserves fidelity but fails the purpose - the next session must re-analyze the full exchange, paying again the cost the handoff existed to avoid, and transcript volume discourages writing the artifact at all. (Super Z)
+- Specify a transcript-based handoff (rejected): preserves fidelity but fails the purpose - the next chat must re-analyze the full exchange, paying again the cost the handoff existed to avoid, and transcript volume discourages writing the artifact at all. (Super Z)
 - Specify only a free-form summary (rejected): minimal effort, but leaves all three distillation risks uncontrolled. (Super Z)
 - Use meeting-minutes format as-is (considered, not chosen): minutes capture outcomes and action items but conventionally omit confidence levels, assumption tracking, and rejected-alternative rationale - the three controls this specification makes mandatory; the handoff structure is minutes extended with those controls. (Super Z)
 - Extend the Practice facet instead, with a bigger practice document and no new facet (rejected): a practice is followed to accomplish something; a handoff is consulted to resume state - different reader relationships. (Super Z)
@@ -107,14 +107,14 @@ The wrapper titles are gone from this specification's body; open questions and a
   - [Qwen](../../../../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) - argued, wrote
 
 #### What changed
-- The practice gained a `Mid-Session Tangents` section: a tangent (a request opening a development thread whose context the current session will not otherwise need) is now a mid-session handoff trigger, with the procedure - propose a separate session once, the person's choice final; record the tangent's state into the appropriate handoff immediately; state in one line what was recorded and where; load no more context than recording requires. Clarifying questions and small related edits are explicitly excluded from the definition, so the trigger cannot degrade into nagging.
+- The practice gained a `Mid-Session Tangents` section: a tangent (a request opening a development thread whose context the current chat will not otherwise need) is now a mid-session handoff trigger, with the procedure - propose a separate session once, the person's choice final; record the tangent's state into the appropriate handoff immediately; state in one line what was recorded and where; load no more context than recording requires. Clarifying questions and small related edits are explicitly excluded from the definition, so the trigger cannot degrade into nagging.
 - The skill carries only the intake trigger and a pointer to this practice, not the procedure.
 - Consuming step 4 was qualified: a resolved question stays in Ambiguities Resolved only until its resolution graduates; a graduated item is removed from the handoff, because the specification carries the answer and the changelog carries the record.
 
 #### Deliberation
-- The tangent rule was motivated by an observed failure: a documentation-change request raised inside an unrelated session polluted that session's context and the work could not be completed there (Omid Hekayati - the failure report).
+- The tangent rule was motivated by an observed failure: a documentation-change request raised inside an unrelated session polluted that chat's context and the work could not be completed there (Omid Hekayati - the failure report).
 - The first draft carried the full tangent procedure in the skill; the owner redirected to a minimal trigger there with the procedure in this practice, so no information is duplicated across the layers (Omid Hekayati - the redirect; Qwen - applied).
-- The first version of this entry kept the resolution's explanation in the handoff's Ambiguities Resolved and left the position chronology inside `What changed`; the owner flagged both as violations of the method the same session had just written - graduated content leaves the handoff, and a new writing rule binds the entry that introduces it (Omid Hekayati - the critique; Qwen - accepted and restructured).
+- The first version of this entry kept the resolution's explanation in the handoff's Ambiguities Resolved and left the position chronology inside `What changed`; the owner flagged both as violations of the method the same chat had just written - graduated content leaves the handoff, and a new writing rule binds the entry that introduces it (Omid Hekayati - the critique; Qwen - accepted and restructured).
 - The critique exposed the step 4 ambiguity: "resolved questions move to Ambiguities Resolved" read as permanent retention; the owner directed closing it with the graduation qualifier (Omid Hekayati - decided; Qwen - drafted).
 
 ### Graduation rule made explicit for handoff decisions
@@ -134,8 +134,8 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### Deliberation
 - The owner read a real handoff's Decisions section, found settled content there, and posed the alternative reading: the handoff is the place for material a future session can still answer or improve, not for decisions taken and finished (Omid Hekayati - critiqued).
-- The root check confirmed the reader was not misreading: the specification carried a graduation rule for the handoff as a whole and, since the previous session, an explicit one for resolved questions in the practice's consuming procedure - but the Decisions section itself carried none, so a writer following the skeleton could fill it with graduated decisions while violating no stated section-level rule (Super Z - the analysis; the specification was the defect, not the reading).
-- The boundary drawn is graduation, not confidence level: a Decided-but-not-yet-graduated decision is genuine resumable state - the next session must not re-argue it, and it may not yet be written anywhere else - while a graduated one already has its two authoritative homes (Super Z - the extension; the critique itself did not argue this far, so it is recorded as the receiver's extension and stands by the evidence standard).
+- The root check confirmed the reader was not misreading: the specification carried a graduation rule for the handoff as a whole and, since the previous chat, an explicit one for resolved questions in the practice's consuming procedure - but the Decisions section itself carried none, so a writer following the skeleton could fill it with graduated decisions while violating no stated section-level rule (Super Z - the analysis; the specification was the defect, not the reading).
+- The boundary drawn is graduation, not confidence level: a Decided-but-not-yet-graduated decision is genuine resumable state - the next chat must not re-argue it, and it may not yet be written anywhere else - while a graduated one already has its two authoritative homes (Super Z - the extension; the critique itself did not argue this far, so it is recorded as the receiver's extension and stands by the evidence standard).
 
 #### Considered and not done
 - Keeping graduated decisions in the handoff as a summary of where the design stands (rejected): the base document carries the rule and the changelog carries the record; a summary copy is guaranteed to drift, and the handoff's Topic & Purpose is the one narrative home for how the discussion stands.
@@ -223,7 +223,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### What changed
 - [When This Practice Applies](./handoff.practice.md#when-this-practice-applies) said a *session* ends only when the person who started it declares the work finished. That was a leftover from before a session meant one task: it is the *conversation* that ends on the person's word, while a session ends when its task's check passes or the task stops.
-- A new section, [Correcting Another Session's Work](./handoff.practice.md#correcting-another-sessions-work): a session may correct another session's work once that session has finished and the problem still stands, and reports each correction in the changed document's record, in its own report, and to the person.
+- A new section, [Correcting Another Session's Work](./handoff.practice.md#correcting-another-tasks-work): a session may correct another session's work once that chat has finished and the problem still stands, and reports each correction in the changed document's record, in its own report, and to the person.
 
 #### Considered and not done
 - **Forbidding corrections across sessions (rejected; owner's decision)**: work does not belong to the session that wrote it; what must be avoided is interfering with a session still running.
@@ -240,7 +240,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - A new section, [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), documents the work engine `memar task` now provides: a conversation queues further tasks as sessions and never works them in its own context; a priority from 1 to 10 (5 when absent, the higher sooner) that anyone may change, saying why; `claims N` hands the N first in line to a coordinator, which gives each brief to one fresh sub-agent; a hand-back of the Stop line, the report's path, and at most ten lines of `Decisions needed`; and `digest`, the one list of decisive questions the owner reads instead of every report.
 - Observed: one conversation carrying six tasks, with full reports handed back into it, reached about 500K tokens; the coordinator's context and the owner's attention were the two bottlenecks the engine answers.
-- The [handoff](./handoff.handoff.md) gained the open question of where a project's sessions live (owner observation, for queued session `20261012-T155915Z-12312`) and the anticipated work of running queued sessions unattended, which belongs to the `organization` project.
+- The [handoff](./handoff.handoff.md) gained the open question of where a project's sessions live (owner observation, for queued task `20261012-T155915Z-12312`) and the anticipated work of running queued sessions unattended, which belongs to the `organization` project.
 
 #### Considered and not done
 - **A runner that launches each queued session itself (`memar task run` with a launch template)**: Memar starts no agent; the coordinator starts each sub-agent the way its runtime does, and scheduled execution is left to the `organization` project.
@@ -257,7 +257,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now points to `memar task --help` for the commands and the limits they enforce — the priority's range and default, the lines a hand-back may hold, how long a claim holds — and keeps what is its own: why the work runs so, and that whoever changes a priority says why in the plan.
 - The digest is run for the coordinator's own conversation, holds every failed hand-back whether or not it carries decisions, and leaves out done sessions; the practice and the help say the same.
-- Prompted by a review that had not seen the work (session `20261012-T160457Z-8656`), which found the practice restating the help's numbers and the two disagreeing about the digest.
+- Prompted by a review that had not seen the work (task `20261012-T160457Z-8656`), which found the practice restating the help's numbers and the two disagreeing about the digest.
 
 ---
 
@@ -271,7 +271,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back) now says `memar task claims` takes only from the one project the coordinator names, with no default and no way to take from all, and that a coordinator that does not know the project asks the owner; `claims` refuses without `--project`, and its help and `memar task --help` say the same.
 - Why: one run serves one project, and a guessed or spanning scope hides which project the work lands in.
-- The owner's ruling, applied in session `20261012-T163251Z-25244`.
+- The owner's ruling, applied in task `20261012-T163251Z-25244`.
 
 ---
 
@@ -285,7 +285,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - A new section, [Sizing a Task and Recording Follow-Ups](./handoff.practice.md#sizing-a-task-and-recording-follow-ups), states that a task's size is set by weighing a session's load against its work and by the files and governing reading its tasks share: split at an owner decision, at a change testable alone with different files and reading, and at a parallel unit; merge sequential tasks on the same files and reading; hand related tasks queued under one topic to one agent; cut the load per step before merging. It also says to record worth-doing follow-ups as queued sessions opened with `--parent`, erring toward one too many.
 - The skill's Delegation bullet now points here and keeps only the working marks it applies.
-- Why: the owner ruled (2026-10-13) that this is a general concept Memar solves once for every project, so it does not live in a project's preferences.md. The conclusions come from sessions `20261013-T054743Z-12960` and `20261013-T054829Z-23016`, applied in session `20261013-T060529Z-24608`.
+- Why: the owner ruled (2026-10-13) that this is a general concept Memar solves once for every project, so it does not live in a project's preferences.md. The conclusions come from tasks `20261013-T054743Z-12960` and `20261013-T054829Z-23016`, applied in task `20261013-T060529Z-24608`.
 
 #### Considered and not done
 - **A numeric break-even (a multiple of the session load)**: not derived from measurement, so withdrawn by the reviewer; the rule is provisional until a real session is measured.
@@ -302,7 +302,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), under Taking queued work, now says that `memar task claims` takes the first task's topic batch next, in line order, and says what it passed over; and that the coordinator hands a batch of one topic to one fresh sub-agent, each session keeping its own plan and report, never sessions of different topics to one sub-agent. It replaces the rule of one sub-agent per session, never two sessions to one sub-agent.
 - `memar task --help` now lists `topic`, `topics`, `new --topic` and `claims --topic --fill`, shows the `topic:` front-matter line, tells the queuer to give each queued task a topic and to run `topics` first, and carries the same batch rule in the coordinator steps.
-- Why: the owner ruled that related tasks on the same files and reading cost less in one context; the behaviour was implemented in session `20261013-T060530Z-28452` and the text applied in session `20261013-T060530Z-19088`.
+- Why: the owner ruled that related tasks on the same files and reading cost less in one context; the behaviour was implemented in task `20261013-T060530Z-28452` and the text applied in task `20261013-T060530Z-19088`.
 
 ---
 
@@ -316,7 +316,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Queued Work and Its Hand-Back](./handoff.practice.md#queued-work-and-its-hand-back), under The digest, now says that `memar task get-decisions-digest --day` is the owner's review of a day's sessions, closed one by one with `memar git trash-task-folder` on the owner's word, that a done session with decisions is in the digest, and that the digest, `list`, and `gc` flag a session not done that looks finished or abandoned. `memar task --help` carries the same recipe.
 - `memar task list`, `gc`, and `digest` now raise a `concerns:` line for a session whose steps are all checked while it is open, whose Request is empty and quiet for a day, or that has no status. They only flag: nothing is moved or closed by it.
-- Why: the owner audited about thirty finished-but-never-closed folders by hand and ruled that digest should be a review run with an agent; done in sessions `20261013-T041036Z-24948` and `20261012-T163252Z-11472`.
+- Why: the owner audited about thirty finished-but-never-closed folders by hand and ruled that digest should be a review run with an agent; done in tasks `20261013-T041036Z-24948` and `20261012-T163252Z-11472`.
 
 ---
 
@@ -325,7 +325,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Type: Added
 - Propagates to:
   - [Cognition Practice](../../../../docs/cognition.practice.md#norm-application-points): Done - the escalation checkpoint points at the practice section below.
-  - `memar content questions` and the lint of entries: Pending - later sessions of topic `question-handoff`.
+  - `memar content questions` and the lint of entries: Pending - later chats of topic `question-handoff`.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - decided the direction
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
@@ -333,7 +333,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Open Questions](./handoff.md#open-questions) now lists the six fields of an entry written during a task (heading as the question, State, Options with the recommended first, Anchor, Blocks with the Tentative assumption, Asked), the standalone test, and that an entry is open by being present and leaves by graduation or recorded drop.
 - [Questions Found During a Task](./handoff.practice.md#questions-found-during-a-task) is new: the entry or a queued session by whether an agent could make the question smaller; the finding session writes it, or the coordinator for a sub-agent that may not write; the raising session is done at once, with one pointer line per entry; the answer graduates and the entry is removed, its heading named in the changelog; an uncommitted entry lives on one machine only.
-- Why: questions left in the conversation or in a report are lost when the session is swept; the owner ruled (2026-10-13) that they last in the handoff. Design from session `20261013-T085819Z-21616`; applied in sessions `20261013-T103109Z-22272` and `20261013-T103110Z-17584`. The wording awaits the owner's approval, recorded in [documentation-handoff.handoff.md](./handoff.handoff.md).
+- Why: questions left in the conversation or in a report are lost when the session is swept; the owner ruled (2026-10-13) that they last in the handoff. Design from task `20261013-T085819Z-21616`; applied in tasks `20261013-T103109Z-22272` and `20261013-T103110Z-17584`. The wording awaits the owner's approval, recorded in [documentation-handoff.handoff.md](./handoff.handoff.md).
 
 #### Considered and not done
 - **An explicit `Answer: Pending` field**: presence under the heading already means open, as the practice removes answered entries.
@@ -362,8 +362,8 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### What changed
 - [Documentation Handoff Practice](./handoff.practice.md): a finished session is read by its plan's Status (Complete or Blocked, not Active or Queued), a queued plan becomes Active when claimed, the hand-back carries the report's Status rather than a Stop line, and the digest prints it. A project told by a word is resolved by `memar project find WORD`, never by reasoning about the name.
-- [Where a project's sessions live](./handoff.handoff.md): the entry now says no session verb has a default project or reads the calling folder, names are resolved through `temp/projects.log`, and a missing sessions folder is created.
-- Why: the scripts moved to Queued, Active, Blocked, Complete (sessions `20261013-T103111Z-27036`, `20261013-T103108Z-15196`); the prose agents read first must speak the same words.
+- [Where a project's sessions live](./handoff.handoff.md): the entry now says no task verb has a default project or reads the calling folder, names are resolved through `temp/projects.log`, and a missing tasks folder is created.
+- Why: the scripts moved to Queued, Active, Blocked, Complete (tasks `20261013-T103111Z-27036`, `20261013-T103108Z-15196`); the prose agents read first must speak the same words.
 
 #### Considered and not done
 - **Rewriting the earlier changelog entries that say `Stop` or `open`**: they are history.
@@ -391,7 +391,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-14T18:20:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/session.py` and the session verbs' services: Done (session `20261014-T175052Z-9344`) - `memar task --help` states only the domain's own work; each verb's own help states its part.
+  - `.agents/scripts/services/session.py` and the task verbs' services: Done (task `20261014-T175052Z-9344`) - `memar task --help` states only the domain's own work; each verb's own help states its part.
   - `modules/lib/lib.handoff.md`: Done - the entry *What protocol a command's help follows once `process/command/` is complete*
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
@@ -415,8 +415,8 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### What changed
 - `documentation-handoff.practice.md`'s `description` now states the cases it covers beyond producing and consuming a handoff, when it is used, and what it is not for — a trivial exchange, what a handoff is, a changelog entry, which [Documentation — Practice → Description quality criteria](../practice/practice.md#description-quality-criteria) requires.
-- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
-- Made in session 20261015-T110002Z-23000.
+- Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in task 20261015-T110002Z-23000.
 
 ---
 
@@ -431,8 +431,8 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### What changed
 - [Questions Found During a Task](./handoff.practice.md#questions-found-during-a-task) gains a bullet: a question about what the Memar skill or one of Memar's scripts should say or do is queued, when it is found, as a session that studies and decides it, asking under its report's `Decisions needed` only the rulings the owner alone can give. The bullet "Never a session" and [Recording follow-ups](./handoff.practice.md#recording-follow-ups) name it as their one exception; a question about any other document stays an entry.
-- Why: the owner ruled on 2026-10-15 (the study of session 20261015-T061908Z-9468, Owner response 8) that questions about the skill become sessions at once and are solved fast, because they affect the whole development path. The practice said a question for the owner is never a session, so an agent following it would park a skill question in a handoff the skill does not have. The scripts are included on the recommendation of session 20261015-T100151Z-24064 (Decision 2), whose proposal the owner agreed to: they shape every session as the skill does, and their README has no handoff either.
-- Made in session 20261015-T110005Z-23504.
+- Why: the owner ruled on 2026-10-15 (the study of task 20261015-T061908Z-9468, Owner response 8) that questions about the skill become sessions at once and are solved fast, because they affect the whole development path. The practice said a question for the owner is never a session, so an agent following it would park a skill question in a handoff the skill does not have. The scripts are included on the recommendation of task 20261015-T100151Z-24064 (Decision 2), whose proposal the owner agreed to: they shape every session as the skill does, and their README has no handoff either.
+- Made in task 20261015-T110005Z-23504.
 
 #### Considered and not done
 - **Giving the skill and the scripts a handoff, so the rule stays "an entry"**: an entry still waits for the owner's reading while every session works by the rule in doubt, which is what the ruling is against.
@@ -443,18 +443,18 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-15T16:32:57Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/task_kind.py`, `session_plan_kind.py`, `session_new.py`: Done (session `20261015-T105953Z-20196`) - the kind words, when each applies, whether a plan may carry it and the passages each requires read are declared once in `task_kind.py`; `session_plan_kind.py` and the help of `memar task ensure` read them from there; `services/tests/task_kind.py` fails when a passage stops answering to its heading or a kind word is spelt elsewhere in the scripts.
+  - `.agents/scripts/services/task_kind.py`, `session_plan_kind.py`, `session_new.py`: Done (task `20261015-T105953Z-20196`) - the kind words, when each applies, whether a plan may carry it and the passages each requires read are declared once in `task_kind.py`; `session_plan_kind.py` and the help of `memar task ensure` read them from there; `services/tests/task_kind.py` fails when a passage stops answering to its heading or a kind word is spelt elsewhere in the scripts.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
 #### What changed
 - In [documentation-handoff.handoff.md](./handoff.handoff.md), the *Blocks* line of the entry *Which task kinds need the strongest model, and is there a cheaper kind for carrying out a settled design?* no longer says the old list is kept: it names the declaration, the merge of `ideation` and `modeling` into `design`, the two new kinds `implement` and `document`, the two contexts `answer` and `plan` that no plan carries, and the transitional rule kept in `session_plan_kind.py`.
 - Why: the line stated the list of `services/session_plan_kind.py` as it stood, and the list moved; a handoff that says the old list is kept would send the next reader to the wrong file. The entry's ruling and its question stay as they are.
-- Rests on the plan of session 20261015-T100151Z-24064 (D1, D4), which the owner agreed to, its critique 20261015-T110115Z-24008, and the owner's rulings of 2026-10-15 that the kinds are not a section of a base document and that no document is parsed by code.
+- Rests on the plan of task 20261015-T100151Z-24064 (D1, D4), which the owner agreed to, its critique 20261015-T110115Z-24008, and the owner's rulings of 2026-10-15 that the kinds are not a section of a base document and that no document is parsed by code.
 
 #### Considered and not done
 - **Writing the kinds and their passages as a section of a document** (`docs/agency.practice.md`, the plan's D2): rejected by the owner and by [A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once); the words and the passages are a closed set programs read.
-- **Keeping a judgment flag on each word**, as the ruling of the entry above words it: each kind now names its own reading, so the flag `start` would read for the judgment reading has nothing left to select; the Labels design is revised on this in session 20261015-T110003Z-7644.
+- **Keeping a judgment flag on each word**, as the ruling of the entry above words it: each kind now names its own reading, so the flag `start` would read for the judgment reading has nothing left to select; the Labels design is revised on this in task 20261015-T110003Z-7644.
 
 ---
 
@@ -462,13 +462,13 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-16T08:00:00Z
 - Type: Removed
 - Propagates to:
-  - `.agents/scripts/services/task_kind.py`: Done (session `20261015-T105953Z-20196`) - the words and what each kind requires are declared there; no word carries a judgment flag or a model tier.
+  - `.agents/scripts/services/task_kind.py`: Done (task `20261015-T105953Z-20196`) - the words and what each kind requires are declared there; no word carries a judgment flag or a model tier.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
 - In [handoff.handoff.md](./handoff.handoff.md), the entry *Which task kinds need the strongest model, and is there a cheaper kind for carrying out a settled design?* is removed.
-- Why: the owner ruled on 2026-10-15 that no `TaskKind` word carries a model tier and that the plan's `AIModel` carries the difficulty; the registry session 20261015-T105953Z-20196 declares the words without a judgment flag, so nothing in the entry was still open, and an answered entry leaves at once. Its ruling lives in the declaration's docstring and in the revised Labels design (session 20261015-T110003Z-7644).
+- Why: the owner ruled on 2026-10-15 that no `TaskKind` word carries a model tier and that the plan's `AIModel` carries the difficulty; the registry task 20261015-T105953Z-20196 declares the words without a judgment flag, so nothing in the entry was still open, and an answered entry leaves at once. Its ruling lives in the declaration's docstring and in the revised Labels design (task 20261015-T110003Z-7644).
 
 ---
 
@@ -476,14 +476,14 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-16T09:00:00Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/session_brief.py`, `session_answer.py`: Done (session `20261015-T112820Z-7124`) - `memar task brief ID --answer` and `memar task answer` are the mechanism.
+  - `.agents/scripts/services/session_brief.py`, `session_answer.py`: Done (task `20261015-T112820Z-7124`) - `memar task brief ID --answer` and `memar task answer` are the mechanism.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) - drafted, applied
 
 #### What changed
 - In [handoff.practice.md](./handoff.practice.md), the bullet *How it is answered* now says that before a question reaches the owner the coordinator hands it to an agent with `memar task brief ID --answer`, and that an answer the agent is sure of, outside the four kinds the Norm Application Points always send to the owner, is written as a Tentative decision with its reasons and the entry removed.
-- Why: the owner agreed (2026-10-16) to session 20261015-T112820Z-7124's Decision D2; the bullet allowed only the owner, or an agent on the owner's word, to remove an entry, and the owner's word of 2026-10-15 is that a question another agent can answer is not brought to him.
-- Rests on the report of session 20261015-T112820Z-7124 and Cognition Practice → Norm Application Points.
+- Why: the owner agreed (2026-10-16) to task 20261015-T112820Z-7124's Decision D2; the bullet allowed only the owner, or an agent on the owner's word, to remove an entry, and the owner's word of 2026-10-15 is that a question another agent can answer is not brought to him.
+- Rests on the report of task 20261015-T112820Z-7124 and Cognition Practice → Norm Application Points.
 
 #### Considered and not done
 - **A shape for open questions and decisions shared by every kind of documentation** (the owner, 2026-10-16: documentation is to become more exact, one module per part with fixed types, so open questions and open decisions share one structure): not done here; this edit only records the permission.
@@ -508,7 +508,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-16T08:37:55Z
 - Type: Changed
 - Propagates to:
-  - `.agents/scripts/services/prompts_questions_brief.py`, `prompts_answering.py`: Done (session `20261016-T082349Z-12028`) - `memar ai get-task-questions-answer-brief ID` and `memar ai get-task-answer-context` replace `memar task brief ID --answer` and `memar task answer`.
+  - `.agents/scripts/services/prompts_questions_brief.py`, `prompts_answering.py`: Done (task `20261016-T082349Z-12028`) - `memar ai get-task-questions-answer-brief ID` and `memar ai get-task-answer-context` replace `memar task brief ID --answer` and `memar task answer`.
 - Contributors:
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus 5.5) - drafted, applied
 
@@ -522,7 +522,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 - Time: 2026-10-16T18:06:00Z
 - Type: Changed
 - Propagates to:
-  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+  - modules/content/documentation/documentation.md: Done (task `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
@@ -530,7 +530,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [Reader relationship](./handoff.md#reader-relationship): the definition `documentation.md` held for this facet moved here — the content read to resume a paused discussion, served by the same companion-file convention as the Changelog facet, the analysis-not-transcript discipline, the agent-general scope, and the record being mutable working state retired when nothing open remains.
 - The sentence that restated the Changelog relationship now points at the Changelog specification.
-- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+- Made in task 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
 
 #### Considered and not done
 - **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
@@ -560,7 +560,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - [./handoff.md#status]: the sentence no longer lists the Status values this kind may take; it names the type `Status` and the way a script asks it (`Status.for_kind`), and keeps its rules.
 - Why: the closed set is code in `.agents/scripts/services/status.py`, and a prose list of a closed set is a copy ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); [documentation.md → Status](../documentation.md#status) had already dropped its table under the same ruling.
-- Made in session 20261016-T194830Z-21416.
+- Made in task 20261016-T194830Z-21416.
 
 ---
 
@@ -573,8 +573,8 @@ The wrapper titles are gone from this specification's body; open questions and a
 
 #### What changed
 - The entries "Do a plan's Topic and Kind become one Labels list whose entries name their label kind, written one `LabelKind: word` per line?" and "Which plan keys stay keys rather than labels: Status, Priority, and the model a session runs on?" are removed from [handoff.handoff.md](./handoff.handoff.md). Both were answered (a block of `- Kind: word` lines under `Labels`; Status, Priority and the model stay fields, not labels) and the core change that carries the answer has landed: a plan's `Labels` field and its kinds `TaskKind` and `Topic` are declared in `modules/content/documentation/primitive/label.py`, `primitive/task_kind.py` and `primitive/topic.py`, and `new --label`, `label` and `labels` replace `--topic`, `--kind`, `topic` and `topics`.
-- Why: the owner ruled on 2026-10-15 that an answered entry is removed at once, because it is forgotten later, and on 2026-10-16 that Kind and Topic become one field, `Labels`. The removed text is kept in the records of session `20261016-T194828Z-13988`.
-- Made in session 20261016-T194828Z-13988.
+- Why: the owner ruled on 2026-10-15 that an answered entry is removed at once, because it is forgotten later, and on 2026-10-16 that Kind and Topic become one field, `Labels`. The removed text is kept in the records of task `20261016-T194828Z-13988`.
+- Made in task 20261016-T194828Z-13988.
 
 #### Considered and not done
 - **Removing the entry on more than one Topic label with it**: its first half is answered and landed, but its second half, whether a batch is bounded by the same `AIModel`, concerns the `AIModel` field, which is not built yet; it stays until that lands.
@@ -591,7 +591,7 @@ The wrapper titles are gone from this specification's body; open questions and a
 #### What changed
 - The confidence and stability words are no longer listed in the Decisions, Assumptions and writing-rule texts (`Confidence`, `Stability`), and the bullet list of an Open Questions entry's fields is replaced by the type `QuestionField`. The section catalog is typed (`HandoffSection`); its prose is unchanged.
 - Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
-- Made in session 20261016-T194831Z-4504.
+- Made in task 20261016-T194831Z-4504.
 
 ---
 

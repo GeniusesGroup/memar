@@ -54,7 +54,7 @@ The transfer audit found two lost constitutional doctrines that never reached th
 - Time: 2026-09-20T10:37:24Z
 - Type: clarified
 - Cited:
-  - [Form of Government Organs — Handoff](government-organs.handoff.md) - Relation: Evidence: Q3 was the arithmetic defect; Q1 was the owner ruling this session recorded.
+  - [Form of Government Organs — Handoff](government-organs.handoff.md) - Relation: Evidence: Q3 was the arithmetic defect; Q1 was the owner ruling this chat recorded.
 - Propagates to:
   - governance/law-form-and-validity.md: Done — code-before-voting and product-price charges recorded on both pages.
 - Contributors:

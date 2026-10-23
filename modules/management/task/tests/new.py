@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for opening a session in `modules/management/task/services/ensure.py`.
+"""Tests for opening a task in `modules/management/task/services/ensure.py`.
 
     python modules/management/task/tests/new.py
 
-The subject is how one session's folder and plan come to exist, named for the
+The subject is how one task's folder and plan come to exist, named for the
 file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
@@ -13,77 +13,77 @@ in the `tests/` folder of the shelf that owns it per
 
 Nothing here writes outside its scratch folder. The Memar root is patched onto
 one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
-again; session folders, locks, and intent notes land there and are removed
+again; task folders, locks, and intent notes land there and are removed
 with it. The only subprocess is git's top-level, which writes nothing.
 
 What is pinned, and what each pin is for:
 
-  CreatesFolder      `new` ensures the session's folder and prints its id,
-                     path, and plan, so every session works inside its own
+  CreatesFolder      `ensure` ensures the task's folder and prints its id,
+                     path, and plan, so every task works inside its own
                      folder and nothing lands in git by accident; an id shaped
                      like a path is refused.
-  RerunIsIdempotent  Reusing one session id keeps the folder as is and reports
+  RerunIsIdempotent  Reusing one task id keeps the folder as is and reports
                      the same id and path again.
-  TitleRequired      A folder gets its plan.md from `--title`, so a session is
+  TitleRequired      A folder gets its plan.md from `--title`, so a task is
                      not minted, nor a folder with no plan.md taken up, without
                      one; a folder that has a plan is continued without one.
   PlanWritten        The plan is written in UTF-8 with LF and no BOM, records
-                     the project `new` resolves, which is the git top-level
+                     the project `ensure` resolves, which is the git top-level
                      else the current folder — asked of a given folder the
                      same way, which `list --project` relies on —
                      and is never overwritten: it is the record the next
-                     session continues from.
-  ParentLinked       `--parent` records the session a task came from and the
-                     first session of its conversation, read off the parent's
-                     own plan; a parent that is not there, or the session
+                     task continues from.
+  ParentLinked       `--parent` records the task a task came from and the
+                     first task of its conversation, read off the parent's
+                     own plan; a parent that is not there, or the task
                      itself, is refused, and a plan keeps the link it was
                      written with.
-  ReportWritten      Beside the plan, `new` writes report.md's skeleton when
+  ReportWritten      Beside the plan, `ensure` writes report.md's skeleton when
                      it is absent and never overwrites one, and prints where
                      it is.
-  RoleFoldersMade    Every run makes the folders of the session's own layout
-                     (`session_layout`, owner 2026-10-20) the session folder
+  RoleFoldersMade    Every run makes the folders of the task's own layout
+                     (`task_layout`, owner 2026-10-20) the task folder
                      lacks, and leaves what is in them alone.
-  ProjectLocation    A project whose preferences set `sessions` gets its new
+  ProjectLocation    A project whose preferences set `tasks` gets its new
                      folders there, relative to its top folder or absolute;
                      with no preferences or an empty key, a project other
                      than the Memar checkout gets .agents/tasks/ inside
-                     itself (and `new` says when git does not ignore it),
+                     itself (and `ensure` says when git does not ignore it),
                      the checkout its own .agents/tasks/; a location inside
-                     Memar's scratch is Memar's as before, and `new` says so. The project's top folder or
+                     Memar's scratch is Memar's as before, and `ensure` says so. The project's top folder or
                      a root is refused, and a location that cannot be made
                      fails with a message, both with nothing made. A name
-                     there that is not a session folder is refused and never
+                     there that is not a task folder is refused and never
                      written into; a new one is made there. A
                      folder there is recorded, continued and linked to from
-                     another project, and `new` says each time that it is the
+                     another project, and `ensure` says each time that it is the
                      project's and never swept; a recorded location that is
                      gone is passed over, and once `gc` has removed it, the
                      next folder made there records it again; a location a
-                     `new` records while `gc` prunes is kept. The project is
+                     `ensure` records while `gc` prunes is kept. The project is
                      a scratch folder, so a real project's preferences never
                      reach a test.
-  ProjectNamed       `new` needs its project, a name or alias the registry
+  ProjectNamed       `ensure` needs its project, a name or alias the registry
                      resolves or a folder (its git top-level), and refuses
                      none, an empty one, or an ambiguous name, saying why and
                      making nothing; the folder it runs in is never read; a
-                     session already there is continued without one; a project
-                     with no `sessions` preference is not refused, and Memar is
+                     task already there is continued without one; a project
+                     with no `tasks` preference is not refused, and Memar is
                      an entry like any other.
   KindWritten        `--label TaskKind=K` writes the plan's task kind, lower case,
                      into a new plan and adds it to one that is there; a word outside the
                      closed list, or a kind no plan carries, is refused and
                      makes nothing; the help lists the kinds from
                      `modules/knowledge/documentation/plan/labels/task_kind.py`.
-  BriefPrinted       A session made with --parent ends with the brief that
+  BriefPrinted       A task made with --parent ends with the brief that
                      hands it to a sub-agent, its id filled in; one without
                      a parent prints none.
-  OpeningRecorded    Opening a folder is one line in the session log, naming
+  OpeningRecorded    Opening a folder is one line in the task log, naming
                      the parent when there is one; a folder in a project's
                      own location is recorded in that location's log, not
                      Memar's.
   LockSharesTheRoot  Locks and intent notes land under the same temp root the
-                     session folders are under. How a lock behaves is pinned in
+                     task folders are under. How a lock behaves is pinned in
                      `machine/tests/fs_lock.py`, which owns it.
   UnresolvableRoot   With no root to resolve, opening errors rather than
                      guessing a folder.
@@ -117,28 +117,28 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.process.project.services.preferences as project_preferences
-import modules.management.task.services.temp as session_temp
+import modules.management.task.services.temp as task_temp
 import modules.process.project.services.registry as registry
-import modules.management.task.services.ensure as session_ensure
-import modules.management.task.services.new as session_new
+import modules.management.task.services.ensure as task_ensure
+import modules.management.task.services.new as task_new
 from modules.management.task.services.layout import FOLDERS
-from modules.management.task.services.folder import read_session
+from modules.management.task.services.folder import read_task
 from modules.management.task.primitive.task_id import TaskId
 _m_plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
 from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
-import modules.process.project.services.task_location as session_location
+import modules.process.project.services.task_location as task_location
 import modules.process.project.services.registry as project_registry
 from modules.process.project.services.task_location import prune_registry, registered_locations
 _m_log = import_module('modules-plugable.computer.git.services.log')
-SESSION_LOG_NAME = _m_log.SESSION_LOG_NAME
+TASK_LOG_NAME = _m_log.TASK_LOG_NAME
 log_path = _m_log.log_path
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
 from modules.knowledge.documentation.report.services.report import REPORT_NAME
-TITLE = 'Test the session services'
+TITLE = 'Test the task services'
 REPORT = f'---\nID: s-report\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n'
 OPENED = '\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z'
-GIT_PROJECT_ROOT = session_location.project_root
+GIT_PROJECT_ROOT = task_location.project_root
 
 class Fixture(unittest.TestCase):
 
@@ -155,20 +155,20 @@ class Fixture(unittest.TestCase):
 
     def ensure(self, *arguments, **options):
         """`ensure_task` told the project this test works in, as `--project` tells it."""
-        return session_ensure.ensure_task(*arguments, **{'project': str(self.current), **options})
+        return task_ensure.ensure_task(*arguments, **{'project': str(self.current), **options})
 
     def call_open(self, *arguments, **options):
-        return session_new.open_task(*arguments, **{'project': str(self.current), **options})
+        return task_new.open_task(*arguments, **{'project': str(self.current), **options})
 
     def in_project(self, project: Path) -> None:
         self.current = project
-        patched = unittest.mock.patch.object(session_ensure, 'project_root', return_value=project)
+        patched = unittest.mock.patch.object(task_ensure, 'project_root', return_value=project)
         patched.start()
         self.addCleanup(patched.stop)
 
-    def prefer(self, project: Path, sessions: str) -> None:
+    def prefer(self, project: Path, tasks: str) -> None:
         path = project_preferences.preferences_path(project)
-        path.write_text(project_preferences.preferences_text({project_preferences.SESSIONS_KEY: sessions}), encoding='utf-8', newline='\n')
+        path.write_text(project_preferences.preferences_text({project_preferences.TASKS_KEY: tasks}), encoding='utf-8', newline='\n')
 
     def minted_folders(self) -> list[str]:
         root = memar_fs.task_dir('probe').parent
@@ -191,7 +191,7 @@ class CreatesFolder(Fixture):
         self.assertIn('task_id: s-2', text)
         self.assertIn(f'path: {path}', text)
         self.assertIn(f'plan: {path / PLAN_NAME}', text)
-        self.assertIn(session_temp.TEMP_SENTENCE, text)
+        self.assertIn(task_temp.TEMP_SENTENCE, text)
 
     def test_mints_an_id_when_none_is_given(self) -> None:
         sid, path = self.ensure(title=TITLE)
@@ -215,7 +215,7 @@ class RerunIsIdempotent(Fixture):
 
 class TitleRequired(Fixture):
 
-    def test_a_new_session_needs_a_title(self) -> None:
+    def test_a_new_task_needs_a_title(self) -> None:
         for title in (None, '', '   ', 'two\nlines'):
             with self.subTest(title=title):
                 with self.assertRaises(SystemExit):
@@ -284,13 +284,13 @@ class KindWritten(Fixture):
 
     def label_help(self) -> str:
         parser = argparse.ArgumentParser()
-        session_new.describe(parser.add_subparsers())
+        task_new.describe(parser.add_subparsers())
         new = parser._subparsers._group_actions[0].choices['ensure']
         return next((action.help for action in new._actions if '--label' in action.option_strings))
 
     def test_the_old_flags_are_gone(self) -> None:
         parser = argparse.ArgumentParser()
-        session_new.describe(parser.add_subparsers())
+        task_new.describe(parser.add_subparsers())
         new = parser._subparsers._group_actions[0].choices['ensure']
         flags = {flag for action in new._actions for flag in action.option_strings}
         self.assertNotIn('--kind', flags)
@@ -348,7 +348,7 @@ class RoleFoldersMade(Fixture):
         self.assertTrue((path / 'docs' / 'note.md').is_file())
 
 class ProjectLocation(Fixture):
-    """A project gets its session folders in the location its preferences set, else in its own .agents/tasks/."""
+    """A project gets its task folders in the location its preferences set, else in its own .agents/tasks/."""
 
     def setUp(self) -> None:
         super().setUp()
@@ -370,10 +370,10 @@ class ProjectLocation(Fixture):
                 location = self.project / '.agents' / 'tasks'
                 self.assertEqual(path, location / sid)
                 self.assertFalse(memar_fs.task_dir(sid).exists())
-                self.assertIn(f"location: {location} is a project's own session location", printed)
+                self.assertIn(f"location: {location} is a project's own task location", printed)
                 self.assertIn(location.resolve(), registered_locations())
 
-    def test_the_memar_checkout_itself_keeps_its_folders_in_its_own_temp_sessions(self) -> None:
+    def test_the_memar_checkout_itself_keeps_its_folders_in_its_own_temp_tasks(self) -> None:
         for prepare in (lambda: None, lambda: self.prefer(self.fake_root, '')):
             with self.subTest(prepare=prepare):
                 prepare()
@@ -384,29 +384,29 @@ class ProjectLocation(Fixture):
                 self.assertEqual(registered_locations(), [])
 
     def test_a_preference_still_wins_over_the_default(self) -> None:
-        self.prefer(self.project, 'work/sessions')
+        self.prefer(self.project, 'work/tasks')
         sid, path, _ = self.open(None, TITLE, None)
-        self.assertEqual(path, self.project / 'work' / 'sessions' / sid)
+        self.assertEqual(path, self.project / 'work' / 'tasks' / sid)
         self.assertFalse((self.project / 'temp').exists())
 
     def test_the_default_location_is_found_again_from_memar_and_from_another_project(self) -> None:
         sid, path, _ = self.open(None, TITLE, None)
-        self.assertEqual(session_location.locations_of(self.project), [path.parent.resolve()])
+        self.assertEqual(task_location.locations_of(self.project), [path.parent.resolve()])
         other = self.fake_root / 'other'
         other.mkdir()
         self.in_project(other)
         again, path_again, _ = self.open(sid, None, None)
         self.assertEqual((again, path_again), (sid, path))
         _, child, _ = self.open(None, 'Delegated step', sid)
-        self.assertEqual(read_session(child).parent, sid)
+        self.assertEqual(read_task(child).parent, sid)
 
     def test_a_custom_location_git_does_not_ignore_is_told_so_and_nothing_is_written_to_it(self) -> None:
         subprocess.run(['git', 'init', '-q', str(self.project)], check=True, capture_output=True)
-        self.prefer(self.project, 'work/sessions')
+        self.prefer(self.project, 'work/tasks')
         _, _, printed = self.open(None, TITLE, None)
         self.assertRegex(printed, 'not ignored by git')
         self.assertFalse((self.project / '.gitignore').exists())
-        (self.project / '.gitignore').write_text('work/sessions\n', encoding='utf-8', newline='\n')
+        (self.project / '.gitignore').write_text('work/tasks\n', encoding='utf-8', newline='\n')
         _, _, printed = self.open(None, TITLE, None)
         self.assertNotIn('not ignored by git', printed)
 
@@ -416,15 +416,15 @@ class ProjectLocation(Fixture):
         self.assertNotIn('not ignored by git', printed)
 
     def test_a_relative_location_is_under_the_projects_top_folder(self) -> None:
-        self.prefer(self.project, 'work/sessions')
+        self.prefer(self.project, 'work/tasks')
         sid, path, printed = self.open(None, TITLE, None)
-        location = self.project / 'work' / 'sessions'
+        location = self.project / 'work' / 'tasks'
         self.assertEqual(path, location / sid)
         self.assertTrue((path / PLAN_NAME).is_file())
         self.assertTrue((path / REPORT_NAME).is_file())
         self.assertTrue(all(((path / folder).is_dir() for folder in FOLDERS)))
         self.assertFalse(memar_fs.task_dir(sid).exists())
-        self.assertIn(f"location: {location} is a project's own session location", printed)
+        self.assertIn(f"location: {location} is a project's own task location", printed)
         self.assertIn("Memar's sweep never moves a folder there", printed)
         self.assertEqual(registered_locations(), [location.resolve()])
 
@@ -435,7 +435,7 @@ class ProjectLocation(Fixture):
         self.assertEqual(path, elsewhere / sid)
 
     def test_a_location_inside_memars_scratch_is_memars_own_and_new_says_so(self) -> None:
-        self.prefer(self.project, str(memar_fs.sessions_root()))
+        self.prefer(self.project, str(memar_fs.tasks_root()))
         sid, path, printed = self.open(None, TITLE, None)
         self.assertEqual(path, memar_fs.task_dir(sid))
         self.assertNotRegex(printed, re.compile('^\\s*location:', re.M))
@@ -451,12 +451,12 @@ class ProjectLocation(Fixture):
                 before = sorted((entry.name for entry in self.project.iterdir()))
                 with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(SystemExit) as raised:
                     self.call_open(None, TITLE, None)
-                self.assertIn('`sessions` in', str(raised.exception.code))
+                self.assertIn('`tasks` in', str(raised.exception.code))
                 self.assertEqual(sorted((entry.name for entry in self.project.iterdir())), before)
                 self.assertEqual(self.minted_folders(), [])
                 self.assertEqual(registered_locations(), [])
 
-    def test_an_existing_folder_that_is_not_a_session_is_never_written_into(self) -> None:
+    def test_an_existing_folder_that_is_not_a_task_is_never_written_into(self) -> None:
         self.prefer(self.project, 'work')
         own = self.project / 'work' / 'src'
         own.mkdir(parents=True)
@@ -487,7 +487,7 @@ class ProjectLocation(Fixture):
         self.assertEqual(registered_locations(), [])
 
     def test_it_is_continued_and_linked_to_from_another_project_and_says_so_again(self) -> None:
-        self.prefer(self.project, 'sessions')
+        self.prefer(self.project, 'tasks')
         sid, path, _ = self.open(None, TITLE, None)
         other = self.fake_root / 'other'
         other.mkdir()
@@ -497,22 +497,22 @@ class ProjectLocation(Fixture):
         self.assertIn('location:', printed)
         _, child, _ = self.open(None, 'Delegated step', sid)
         self.assertEqual(child, other / '.agents' / 'tasks' / child.name)
-        self.assertEqual(read_session(child).parent, sid)
+        self.assertEqual(read_task(child).parent, sid)
 
     def test_a_location_registered_once_and_gone_is_passed_over(self) -> None:
-        self.prefer(self.project, 'sessions')
+        self.prefer(self.project, 'tasks')
         self.open(None, TITLE, None)
         self.open(None, TITLE, None)
         entry, = [each for each in project_registry.read_entries() if each.locations]
         self.assertEqual(len(entry.locations), 1)
         self.assertEqual(Path(entry.path), self.project.resolve())
         project_registry.add_location(self.project, self.fake_root / 'unmounted')
-        self.assertEqual(registered_locations(), [(self.project / 'sessions').resolve()])
+        self.assertEqual(registered_locations(), [(self.project / 'tasks').resolve()])
 
-    def test_a_location_pruned_once_gone_is_recorded_again_when_a_session_is_made_there(self) -> None:
-        self.prefer(self.project, 'sessions')
+    def test_a_location_pruned_once_gone_is_recorded_again_when_a_task_is_made_there(self) -> None:
+        self.prefer(self.project, 'tasks')
         self.open(None, TITLE, None)
-        location = (self.project / 'sessions').resolve()
+        location = (self.project / 'tasks').resolve()
         shutil.rmtree(location)
         self.assertEqual(prune_registry(), [location])
         self.assertEqual(registered_locations(), [])
@@ -520,11 +520,11 @@ class ProjectLocation(Fixture):
         self.assertEqual(registered_locations(), [location])
 
 class ProjectNamed(Fixture):
-    """`new` is told its project, by name or by folder, and never reads the folder it runs in."""
+    """`ensure` is told its project, by name or by folder, and never reads the folder it runs in."""
 
     def setUp(self) -> None:
         super().setUp()
-        real = unittest.mock.patch.object(session_ensure, 'project_root', GIT_PROJECT_ROOT)
+        real = unittest.mock.patch.object(task_ensure, 'project_root', GIT_PROJECT_ROOT)
         real.start()
         self.addCleanup(real.stop)
         self.work = self.fake_root / 'work'
@@ -533,19 +533,19 @@ class ProjectNamed(Fixture):
 
     def refused(self, *arguments, **options) -> str:
         with self.assertRaises(SystemExit) as raised, contextlib.redirect_stdout(io.StringIO()):
-            session_ensure.ensure_task(*arguments, **options)
+            task_ensure.ensure_task(*arguments, **options)
         return str(raised.exception.code)
 
     def cli(self, *argv: str) -> str:
-        """`memar task ensure ARGV` as the router runs it: the flags parsed, a name resolved, then the session made."""
+        """`memar task ensure ARGV` as the router runs it: the flags parsed, a name resolved, then the task made."""
         parser = argparse.ArgumentParser()
-        command = session_new.describe(parser.add_subparsers())
+        command = task_new.describe(parser.add_subparsers())
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             command(parser.parse_args(['ensure', *argv]))
         return out.getvalue()
 
-    def test_a_new_session_without_a_project_is_refused_with_the_reason_and_nothing_is_made(self) -> None:
+    def test_a_new_task_without_a_project_is_refused_with_the_reason_and_nothing_is_made(self) -> None:
         for options in ({}, {'project': ''}, {'project': '  '}):
             for sid in (None, 's-fresh'):
                 with self.subTest(options=options, sid=sid):
@@ -564,7 +564,7 @@ class ProjectNamed(Fixture):
             os.chdir(original)
         self.assertFalse((self.work / 'temp').exists())
 
-    def test_a_project_named_by_a_name_or_an_alias_gets_its_folder_in_its_own_temp_sessions(self) -> None:
+    def test_a_project_named_by_a_name_or_an_alias_gets_its_folder_in_its_own_temp_tasks(self) -> None:
         registry.add_project('works', self.work, ['travaux'])
         for word in ('works', 'WORKS', 'travaux', 'work'):
             with self.subTest(word=word):
@@ -587,7 +587,7 @@ class ProjectNamed(Fixture):
         inside = self.work / 'src'
         inside.mkdir()
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_ensure.ensure_task(None, TITLE, project=str(inside))
+            sid, path = task_ensure.ensure_task(None, TITLE, project=str(inside))
         self.assertEqual(path, self.work.resolve() / '.agents' / 'tasks' / sid)
 
     def test_an_ambiguous_name_prints_its_candidates_and_makes_nothing(self) -> None:
@@ -603,45 +603,45 @@ class ProjectNamed(Fixture):
         self.assertFalse((self.work / 'temp').exists())
         self.assertFalse((other / 'temp').exists())
 
-    def test_a_session_that_is_there_is_continued_without_a_project(self) -> None:
+    def test_a_task_that_is_there_is_continued_without_a_project(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = session_ensure.ensure_task('s-here', TITLE, project=str(self.work))
-            self.assertEqual(session_ensure.ensure_task(sid), (sid, path))
-        with unittest.mock.patch.object(session_ensure, 'project_root', return_value=self.fake_root):
+            sid, path = task_ensure.ensure_task('s-here', TITLE, project=str(self.work))
+            self.assertEqual(task_ensure.ensure_task(sid), (sid, path))
+        with unittest.mock.patch.object(task_ensure, 'project_root', return_value=self.fake_root):
             with contextlib.redirect_stdout(io.StringIO()):
-                own, own_path = session_ensure.ensure_task('s-memar', TITLE, project=str(self.fake_root))
+                own, own_path = task_ensure.ensure_task('s-memar', TITLE, project=str(self.fake_root))
             self.assertEqual(own_path, memar_fs.task_dir(own))
         with contextlib.redirect_stdout(io.StringIO()):
-            self.assertEqual(session_ensure.ensure_task(own), (own, own_path))
+            self.assertEqual(task_ensure.ensure_task(own), (own, own_path))
 
     def test_open_task_continuing_without_a_project_says_where_it_is(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            session_ensure.ensure_task('s-here', TITLE, project=str(self.work))
+            task_ensure.ensure_task('s-here', TITLE, project=str(self.work))
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            session_new.open_task('s-here', None, None)
+            task_new.open_task('s-here', None, None)
         self.assertIn(str(self.work.resolve() / '.agents' / 'tasks' / 's-here'), out.getvalue())
 
-    def test_a_project_with_no_sessions_preference_is_not_refused_and_its_folder_is_made(self) -> None:
+    def test_a_project_with_no_tasks_preference_is_not_refused_and_its_folder_is_made(self) -> None:
         self.assertFalse((self.work / 'temp').exists())
         with contextlib.redirect_stdout(io.StringIO()):
-            _, path = session_ensure.ensure_task(None, TITLE, project=str(self.work))
+            _, path = task_ensure.ensure_task(None, TITLE, project=str(self.work))
         self.assertTrue(path.is_dir())
 
-    def test_a_missing_memar_temp_never_blocks_creating_a_session(self) -> None:
+    def test_a_missing_memar_temp_never_blocks_creating_a_task(self) -> None:
         shutil.rmtree(self.fake_root / 'temp', ignore_errors=True)
         with contextlib.redirect_stdout(io.StringIO()):
-            _, path = session_ensure.ensure_task(None, TITLE, project=str(self.work))
+            _, path = task_ensure.ensure_task(None, TITLE, project=str(self.work))
         self.assertTrue(path.is_dir())
 
     def test_memar_is_the_same_kind_of_entry_as_any_project(self) -> None:
         for project in (self.work, self.fake_root):
             with self.subTest(project=project):
-                self.assertEqual(session_location.default_location(project), project / '.agents' / 'tasks')
-                self.assertEqual(session_location.configured_location(project), project / '.agents' / 'tasks')
-        self.assertEqual(session_location.default_location(self.fake_root), memar_fs.sessions_root())
-        self.assertIsNone(session_location.project_location(self.fake_root))
-        self.assertEqual(session_location.project_location(self.work), self.work / '.agents' / 'tasks')
+                self.assertEqual(task_location.default_location(project), project / '.agents' / 'tasks')
+                self.assertEqual(task_location.configured_location(project), project / '.agents' / 'tasks')
+        self.assertEqual(task_location.default_location(self.fake_root), memar_fs.tasks_root())
+        self.assertIsNone(task_location.project_location(self.fake_root))
+        self.assertEqual(task_location.project_location(self.work), self.work / '.agents' / 'tasks')
 
 class BriefPrinted(Fixture):
 
@@ -651,24 +651,24 @@ class BriefPrinted(Fixture):
             self.call_open(*arguments)
         return out.getvalue()
 
-    def test_a_session_made_with_a_parent_ends_with_its_brief_ready_to_paste(self) -> None:
+    def test_a_task_made_with_a_parent_ends_with_its_brief_ready_to_paste(self) -> None:
         self.ensure('first', TITLE)
         printed = self.opened('second', 'Delegated step', 'first').splitlines()
         self.assertEqual(printed[-2], '    brief:')
         self.assertEqual(printed[-1], f"        {brief_text('second')}")
         self.assertIn('memar ai get-task-init-context --task-id second', printed[-1])
 
-    def test_a_session_made_without_a_parent_prints_no_brief(self) -> None:
+    def test_a_task_made_without_a_parent_prints_no_brief(self) -> None:
         self.assertNotIn('brief:', self.opened('first', TITLE, None))
         self.assertNotIn('brief:', self.opened('first', None, None))
 
 class ParentLinked(Fixture):
 
-    def test_a_session_opened_from_another_records_it_and_the_first_of_the_conversation(self) -> None:
+    def test_a_task_opened_from_another_records_it_and_the_first_of_the_conversation(self) -> None:
         self.ensure('first', TITLE)
         _, second = self.ensure('second', 'Second task', parent='first')
         _, third = self.ensure('third', 'Delegated step', parent='second')
-        two, three = (read_session(second), read_session(third))
+        two, three = (read_task(second), read_task(third))
         self.assertEqual((two.parent, two.conversation), ('first', 'first'))
         self.assertEqual((three.parent, three.conversation), ('second', 'first'))
 
@@ -687,7 +687,7 @@ class ParentLinked(Fixture):
         self.assertEqual(self.ensure('second', parent='first')[0], 'second')
         with self.assertRaises(SystemExit):
             self.ensure('second', parent='other')
-        self.assertEqual(read_session(memar_fs.task_dir('second')).parent, 'first')
+        self.assertEqual(read_task(memar_fs.task_dir('second')).parent, 'first')
 
 class OpeningRecorded(Fixture):
 
@@ -699,14 +699,14 @@ class OpeningRecorded(Fixture):
         opened = [event for event in opened if event[0] == 'opened']
         self.assertEqual(opened, [['opened', 'first', ''], ['opened', 'second', 'parent first']])
 
-    def test_a_session_in_a_project_location_is_recorded_in_that_locations_log(self) -> None:
+    def test_a_task_in_a_project_location_is_recorded_in_that_locations_log(self) -> None:
         self.in_project(self.project)
-        self.prefer(self.project, 'sessions')
+        self.prefer(self.project, 'tasks')
         self.ensure('first', TITLE)
         _, path = self.ensure('second', TITLE, parent='first')
-        own = (self.project / 'sessions' / SESSION_LOG_NAME).read_text(encoding='utf-8').splitlines()
+        own = (self.project / 'tasks' / TASK_LOG_NAME).read_text(encoding='utf-8').splitlines()
         self.assertEqual([line.split('\t')[1:4] for line in own], [['opened', 'first', ''], ['opened', 'second', 'parent first']])
-        self.assertEqual(log_path(path), path.parent / SESSION_LOG_NAME)
+        self.assertEqual(log_path(path), path.parent / TASK_LOG_NAME)
         memars = log_path().read_text(encoding='utf-8') if log_path().is_file() else ''
         self.assertNotIn('\topened\t', memars)
 
@@ -729,6 +729,6 @@ class UnresolvableRoot(unittest.TestCase):
     def test_errors_rather_than_guessing(self) -> None:
         with unittest.mock.patch.object(memar_fs, 'memar_root', side_effect=SystemExit('error: no root')):
             with self.assertRaises(SystemExit):
-                session_ensure.ensure_task('s-1', TITLE, project=str(Path(__file__).resolve().parent))
+                task_ensure.ensure_task('s-1', TITLE, project=str(Path(__file__).resolve().parent))
 if __name__ == '__main__':
     unittest.main(verbosity=2)

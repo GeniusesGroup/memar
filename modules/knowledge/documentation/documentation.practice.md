@@ -22,7 +22,7 @@ A position the owner has rejected is not a record, and the work it generates is 
 When work produces something durable, route it by type — do not invent a side note:
 1. Anticipated claim of a document → that document's Abstract ([Results routing](./documentation.md#results-routing)).
 2. Derived consequences of adopting a design → Implications (optional section on the Explanation facet).
-3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./changelog/changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar content changelog-append`, do not preload the whole changelog to find the insertion point. If this session already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./changelog/changelog.md#trivial-changes)).
+3. Observed change to an artifact → one entry on the paired `.changelog.md` for the whole session, not one entry per edit ([Session consolidation](./changelog/changelog.md#session-consolidation)). Append at end-of-file, oldest-first; use `memar content changelog-append`, do not preload the whole changelog to find the insertion point. If this chat already has an entry on that file, extend it. Same-session undone mistakes with no lasting design change get **no** entry ([Trivial changes](./changelog/changelog.md#trivial-changes)).
 4. Open questions and anticipated work → the paired `.handoff.md`.
 5. A deliberate inquiry (including a negative result) → a `.research.<NNN>.md` companion.
 

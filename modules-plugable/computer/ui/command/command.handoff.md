@@ -18,5 +18,5 @@ Open work for the `process/command` module (`modules-plugable/computer/ui/comman
 - Also asked: where a recipe that crosses verbs belongs once help is generated — the queued-work recipe now in `memar task claims --help`, the hand-over in `memar task ensure --help` — a command's `Overview`, its `UserActionNote`, or the practice that already argues it ([Handoff Practice → Queued Work and Its Hand-Back](../../../../modules/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back)) with the help naming it.
 - Anchor: `modules-plugable/computer/ui/command/protocol/command.kh`; the answer lands in a position document beside this module and in the router's docstring, `.agents/scripts/memar`.
 - Blocks: nothing now; the module is not built on until it is complete. Meanwhile the scripts keep argparse, each help stating only its own work, by the owner's ruling of 2026-10-14.
-- Asked: 2026-10-14, by Claude (session `20261014-T175052Z-9344`), on the owner's request.
+- Asked: 2026-10-14, by Claude (task `20261014-T175052Z-9344`), on the owner's request.
 - Superseded: the owner ruled on 2026-10-19 (see Decided) that the Command protocol is not Memar's and will be deleted, so no help protocol is designed for this module; the scripts keep argparse until the conversion.

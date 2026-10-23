@@ -71,7 +71,7 @@ What it does, in order, printing each step:
      nothing when it can find a checkout to run from, because whether Memar is
      already on this machine is a question for the installer to ask against the
      record, and not for this script to answer from the copy of the variable this
-     session holds. No file of the architecture is fetched over the network and
+     task holds. No file of the architecture is fetched over the network and
      none is run from memory, so a first run costs one clone and nothing else. A
      folder you named that already holds something else is refused, and nothing
      is deleted.
@@ -83,7 +83,7 @@ What it does, in order, printing each step:
 The launcher asks the daily update before every verb it routes, and the
 hand-off keeps it from starting one: MEMAR_NO_AUTO_UPDATE=1 is set for the
 installer's process alone, and put back as it was afterwards, because this
-script may be running inside the caller's own session. An update started
+script may be running inside the caller's own task. An update started
 mid-install would fetch into a checkout the install has not recorded yet - or
 into the one recorded before it - and refresh the skill copies and editor
 extensions the install is writing at the same moment.
@@ -227,7 +227,7 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
     }
     Update-ProcessPath
     if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
-        Fail "`git` was installed but is not on PATH in this session. Open a new terminal and re-run."
+        Fail "`git` was installed but is not on PATH in this task. Open a new terminal and re-run."
     }
     Write-Note "git: $((Get-Command git).Source)"
 }
@@ -243,7 +243,7 @@ if (-not $python) {
     Update-ProcessPath
     $python = Find-Python
     if (-not $python) {
-        Fail "Python 3 was installed but is not on PATH in this session. Open a new terminal and re-run."
+        Fail "Python 3 was installed but is not on PATH in this task. Open a new terminal and re-run."
     }
 }
 Write-Note "python: $((Get-Command $python).Source)"
@@ -310,7 +310,7 @@ switch ($Mode) {
     default {
         # Nothing was named, and nothing is fetched: whether Memar is already on
         # this machine is the installer's question, asked against the record, and
-        # a script reading this session's copy of the variable could answer it
+        # a script reading this task's copy of the variable could answer it
         # differently from the record. So this step only needs a checkout to run
         # that question from, and a run that named a folder is the one that
         # fetches.

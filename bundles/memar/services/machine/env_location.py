@@ -10,7 +10,7 @@ the copy a program started with, and a copy can be older than what it copied.
 
 So the record decides, and the copy only fills in what the record does not say.
 When the two disagree the record is used and the disagreement is printed, never
-swallowed: a session that reads nothing where a record exists concludes that
+swallowed: a task that reads nothing where a record exists concludes that
 Memar was never installed, and installs again over a location that is already
 recorded — overwriting the recorded value and the editor's extensions along with
 it. Which is why the reading and the writing here name the same place, and why
@@ -31,7 +31,7 @@ WINDOWS_ENVIRONMENT_KEY = 'Environment'
 PROFILE_BEGIN = f'# >>> {VARIABLE} (written by Memar .agents/scripts/install.sh) >>>'
 PROFILE_END = f'# <<< {VARIABLE} <<<'
 PROFILE_ASSIGNMENT = re.compile(f'^\\s*(?:export\\s+)?{VARIABLE}\\s*=\\s*(.*?)\\s*$')
-INSTALL_HINT = f"run install.sh (POSIX) or install.ps1 (Windows) — the bootstrap in this folder, which a consuming project's AGENTS.md also names — or set {VARIABLE} yourself for this session"
+INSTALL_HINT = f"run install.sh (POSIX) or install.ps1 (Windows) — the bootstrap in this folder, which a consuming project's AGENTS.md also names — or set {VARIABLE} yourself for this task"
 NOTICE_REPORTED = False
 
 def shell_profile() -> Path:
@@ -130,15 +130,15 @@ def write_user_variable(value: str) -> str:
     profile = write_profile_variable(value)
     return str(profile)
 
-def report_stale_session(record: str, session: str) -> None:
-    """Say that this session's copy disagrees with the record, and that the
+def report_stale_task(record: str, task: str) -> None:
+    """Say that this task's copy disagrees with the record, and that the
     record is what was used. A stale copy is not a decision, and a reader who
     cannot see it cannot tell an install from a re-install."""
     global NOTICE_REPORTED
     if NOTICE_REPORTED:
         return
     NOTICE_REPORTED = True
-    note(f"warning: {VARIABLE} in this session's environment disagrees with the record, so the record is used: recorded {record}, this session {session or 'unset'}")
+    note(f"warning: {VARIABLE} in this task's environment disagrees with the record, so the record is used: recorded {record}, this task {task or 'unset'}")
 
 def recorded_value() -> str:
     """What the variable says, or nothing. The only read of it in this folder.
@@ -150,10 +150,10 @@ def recorded_value() -> str:
     it. The two are never merged, and never averaged.
     """
     record = persisted_value()
-    session = os.environ.get(VARIABLE, '').strip()
-    if record and record != session:
-        report_stale_session(record, session)
-    return record or session
+    task = os.environ.get(VARIABLE, '').strip()
+    if record and record != task:
+        report_stale_task(record, task)
+    return record or task
 
 def recorded_root() -> Path | None:
     """The checkout the variable names, or None.
@@ -171,7 +171,7 @@ def recorded_root() -> Path | None:
 def resolve_root() -> Path:
     """The checkout the variable names, or stop saying what to do about it.
 
-    Never installs and never falls back to a location of its own: a session that
+    Never installs and never falls back to a location of its own: a task that
     quietly puts a repository on the machine produces a location nothing else
     agrees on, which is the failure the single variable exists to prevent.
     """

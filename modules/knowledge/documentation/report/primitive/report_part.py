@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""primitive/report_part.py — the parts under a session report's front matter, in order, and the hand-back part a session adds when it needs a decision, declared once.
+"""primitive/report_part.py — the parts under a task report's front matter, in order, and the hand-back part a task adds when it needs a decision, declared once.
 
 [Documentation — Report](../report.md) names these; they are code and are written here and
 nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-code-is-written-once)).
@@ -15,11 +15,11 @@ class ReportPart(Section):
     CHECK = ('Check', "what the task's own check found")
     RESULT = ('Result', 'how the run ended, with its Status')
     LEFT_OPEN = ('Left open', 'what the next party still has to do')
-    DECISIONS_NEEDED = ('Decisions needed', 'the decisions the session hands back; at most ten lines')
+    DECISIONS_NEEDED = ('Decisions needed', 'the decisions the task hands back; at most ten lines')
 
     @property
     def hand_back(self) -> bool:
-        """Whether this is the part a session adds when it needs someone's decision, and not one every report has."""
+        """Whether this is the part a task adds when it needs someone's decision, and not one every report has."""
         return self is ReportPart.DECISIONS_NEEDED
 
     @classmethod

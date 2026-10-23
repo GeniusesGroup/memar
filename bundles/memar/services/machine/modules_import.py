@@ -3,7 +3,7 @@
 
 """Import a `modules.*` address without a single string literal the module graph reads.
 
-Used only where the process/session split temporarily inverts a dependence
+Used only where the process/task split temporarily inverts a dependence
 (plan/label/content reading task-folder helpers that also import those shelves).
 The dependence is real at runtime; the graph check would report a cycle until
 the shared task-folder substrate is extracted below both sides. Prefer that

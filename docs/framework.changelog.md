@@ -170,7 +170,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - Time: 2026-09-05T11:30:00Z
 - Type: Added
 - Cited:
-  - [Knowledge](./knowledge.md) — Reference: owns the first link of the chain; its Concept Web topic defers the chain statement to this document.
+  - [Knowledge](../modules/knowledge/knowledge.md) — Reference: owns the first link of the chain; its Concept Web topic defers the chain statement to this document.
   - [Thinking](./cognition.md) — Reference: the activity whose material knowledge is and whose quality intelligence names.
   - [Agency](./agency.md) — Reference: the exercise of intelligence toward objectives.
 - Propagates to:
@@ -221,7 +221,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - **Terminological cost of the framework/sub-framework distinction (drawback recorded per the migration; migrated from the Framework-and-Sub-Framework topic's retired Drawbacks)**: every existing system called a "framework" in the industry must now be re-evaluated: is it a framework or a sub-framework? This re-evaluation is labor-intensive and may be perceived as gatekeeping — as Memar declaring that most of the industry's "frameworks" are not "real" frameworks. The mitigation is the same as for all of Memar's terminological divergences: the distinction exists because it captures a real structural difference that affects how systems are built, and the cost of not making the distinction (silent gaps in guidance, integration friction between incompatible sub-frameworks) is higher than the cost of the unfamiliar terminology.
 - **The conventional model — framework inside language and OS (rejected; migrated from the Memar's-Framework topic's retired Rationale and alternatives)**: it guarantees that the framework will eventually be constrained by assumptions it did not make and cannot change. The cost of that constraint compounds over time — each new capability the framework needs must be negotiated against what the language and OS already decided, rather than being specified from first principles. Memar's approach accepts a higher initial cost (no incremental adoption, no reuse of existing language/OS tooling without design review) in exchange for eliminating that compounding constraint cost.
 - **A dedicated `intelligence.md` (rejected; migrated from the Memar's-Purpose-Space topic's retired Rationale and alternatives)**: intelligence is what the other three documents jointly produce; a standalone document could only restate them and would become the project's first tautology-bearing file. The chain needs a home, not each link of it.
-- **Stating the chain inside [Knowledge](./knowledge.md) (rejected; migrated from the same topic's retired Rationale and alternatives)**: one link of the chain cannot own the whole chain without every other document either duplicating it or deferring to a sibling that is not its owner; the purpose space of a framework belongs in the framework document — [framework.md](./framework.md), by its own Purpose Space rule.
+- **Stating the chain inside [Knowledge](../modules/knowledge/knowledge.md) (rejected; migrated from the same topic's retired Rationale and alternatives)**: one link of the chain cannot own the whole chain without every other document either duplicating it or deferring to a sibling that is not its owner; the purpose space of a framework belongs in the framework document — [framework.md](./framework.md), by its own Purpose Space rule.
 - **Stating the goal only in the README (rejected; migrated from the same topic's retired Rationale and alternatives)**: the README is a first-visitor index, not a normative home; it now carries a short pointer to the statement in [framework.md](./framework.md#memars-purpose-space-from-knowledge-to-agency) rather than a competing one.
 
 #### Related work
@@ -247,7 +247,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - No other open question in that handoff was touched.
 
 #### Considered and not done
-- Adding the answer to the handoff as a resolved entry, or marking the question "Answered": a handoff records what a discussion still stands at, and a rule already landed in its governing document must not be duplicated there — the copy is what drifts. The question therefore leaves the artifact without a trace, per [Documentation Handoff → Decisions and Open Questions](./documentation-handoff.md#optional-sections).
+- Adding the answer to the handoff as a resolved entry, or marking the question "Answered": a handoff records what a discussion still stands at, and a rule already landed in its governing document must not be duplicated there — the copy is what drifts. The question therefore leaves the artifact without a trace, per [Documentation Handoff → Decisions and Open Questions](../modules/knowledge/documentation/handoff/handoff.md#optional-sections).
 - Deleting an `## Anticipated Work` line: the two lines nearest the deleted question (framework goals as a named section, goals-as-design-space notation) schedule different work and stay.
 
 ---
@@ -353,7 +353,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - [What the Framework Does Not Specify](./framework.md#what-the-framework-does-not-specify) closes its first paragraph with the ground the subject-distinctness argument does not reach: "Each is left because the level at which it is meaningful is the level of the organization that offers it ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and Memar is not that level for any of them."
 
 #### Deliberation
-- Both passages were identified in an earlier read-only pass of this session by the same participant now applying them, which surveyed `docs/` for passages that a reader of the rulings would have to reconcile against; the rulings those passages now cite were made elsewhere in this session, and the second of them was applied to this same document earlier in the wave.
+- Both passages were identified in an earlier read-only pass of this chat by the same participant now applying them, which surveyed `docs/` for passages that a reader of the rulings would have to reconcile against; the rulings those passages now cite were made elsewhere in this chat, and the second of them was applied to this same document earlier in the wave.
 - The specificity requirement was read as stated for one framework's readers rather than for all readers of all frameworks. Read universally it forbids the divergence the plurality ruling endorses, and it forbids it in the one place a framework most needs the latitude — its own goals, which the section's residential-building example already shows two frameworks satisfying incompatibly.
 - The clause added to *What the Framework Does Not Specify* names the organizational level rather than the three subjects' distinctness, because subject-distinctness was already argued from and does not by itself explain why the framework declines to specify them: a distinct subject with a specified answer would still not be the framework's to specify. The paragraph says neither that authentication is unlike other protocols nor that it is like them; it says where the decision to specify one belongs.
 - The word *hypothetical* was deliberately avoided in both sentences. [The Nature of Framework](./framework.md#the-nature-of-framework) defines it as "assumed before realization," explicitly not "imaginary or unrealizable," and Protocol's topic uses it in the everyday sense. Writing "objective rather than hypothetical" here would have put two senses of a defined term in one document, so the sentence says "identifiable rather than assumed" instead.
@@ -373,10 +373,10 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- [Goal-Oriented Frameworks and Purpose Space](./framework.md#goal-oriented-frameworks-and-purpose-space) gains a paragraph: the consistency requirement binds the framework's public self-report, and a maintained statement of where it applies its goals — and where it does not, including tried-and-abandoned disciplines — is anticipated work recorded here as a requirement, not a report. [README → Where Memar Stops](../README.md#where-memar-stops-and-where-work-continues) carries the one-line pointer to it.
+- [Goal-Oriented Frameworks and Purpose Space](./framework.md#goal-oriented-frameworks-and-purpose-space) gains a paragraph: the consistency requirement binds the framework's public self-report, and a maintained statement of where it applies its goals — and where it does not, including tried-and-abandoned disciplines — is anticipated work recorded here as a requirement, not a report. [README → Where Memar Stops](https://github.com/GeniusesGroup/memar/blob/dc3d1433/README.md#where-memar-stops-and-where-work-continues) carries the one-line pointer to it.
 
 #### Considered and not done
-- **Writing the failure statement itself now (deferred)**: the honest record cannot be produced in this session without performative narrative; the requirement is stated, and the statement is anticipated work rather than prose.
+- **Writing the failure statement itself now (deferred)**: the honest record cannot be produced in this chat without performative narrative; the requirement is stated, and the statement is anticipated work rather than prose.
 
 ---
 
@@ -400,7 +400,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - **Independent identities for routing, service, operation, and request** (`A-03`) - carried by sRPC → Independent identities (`docs/modules/net/sRPC.md#independent-identities`); its open half is already SDK Handoff → What the declaration artifact is (`docs/modules/process/service-sdk.handoff.md#what-the-declaration-artifact-is`).
 - **Acquired facts, derived views, and caches differ in authority** (`A-04`) - carried by [Modeling → Acquired Data vs. Discovered Data](./modeling.md#acquired-data-vs-discovered-data), the shortcut-edge rule, and Memory's shadow-tier rule; when a discovered value may be persisted is already a [Modeling Handoff](./modeling.handoff.md) question.
 - **Error, Log, and Bug as three entities** (`A-08`, partly) - carried by Error → Boundary discipline (`docs/modules/process/error.md#boundary-discipline`); the panic half was recovered into Control Flow Handoff (`docs/modules/process/control-flow.handoff.md`) on 2026-09-17.
-- **Operation semantics, not a universal context object** (`A-09`) - [Process → Data carriage between layers](./process.md#data-carriage-between-layers) already refuses context as a cross-layer carrier, which is the position the sources take; the plan's `OperationContext` proposal contradicted the document and was not carried.
+- **Operation semantics, not a universal context object** (`A-09`) - [Process → Data carriage between layers](../modules/process/process.md#data-carriage-between-layers) already refuses context as a cross-layer carrier, which is the position the sources take; the plan's `OperationContext` proposal contradicted the document and was not carried.
 - **Channels and buffers are different things; execution units are pooled** - carried by Concurrency → Channels are signals, not stores (`docs/modules/computer/concurrency.md#channels-are-signals-not-stores`) and Concurrency → Execution units are pooled, not spawned (`docs/modules/computer/concurrency.md#execution-units-are-pooled-not-spawned`).
 - **Ownership, copy, and lifetime are contract members; allocation claims are measurement claims** (`A-21`, `A-22`) - carried by Memory → Copy and ownership semantics are contract members (`docs/modules/memory/memory.md#copy-and-ownership-semantics-are-contract-members`) and Memory → Allocation claims are measurement claims (`docs/modules/memory/memory.md#allocation-claims-are-measurement-claims`); no benchmark number from the sources was carried with them, which is the correct outcome - the documents record the discipline, not one ecosystem's measurements.
 - **The GUI does not speak the network; one routing authority; validation generated once** (`A-14`, `A-15` in part) - carried by GUI → Position on GUI Architecture (`docs/modules/gui/gui.md`), whose changelog already attributes the claims to the owner.
@@ -408,7 +408,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - **HTTP is a guest surface, and its URL is not the routing model** (`A-19`) - carried by HTTP → Memar's Stance on the HTTP Protocol Surface (`docs/modules/lib/net/http.md#memars-stance-on-the-http-protocol-surface`).
 - **Dependency and version management is the repository's own mechanism** - carried by Dependency and Version Management (`docs/modules/computer/module-dependency.md`), including the counter-arguments.
 - **Encapsulation, closure-as-implicit-capsule, and concepts outliving rejected names** (`A-23`) - carried by Khayyam's two protocol texts and [Type → Concepts Outlive Their Labels](./type.md#concepts-outlive-their-labels).
-- **Communication channels produce knowledge that must be extracted and preserved** (`A-25`) - carried by [Knowledge → Communication Channels Produce Knowledge but Are Not Knowledge Repositories](./knowledge.md). The audit was that principle being carried out, and this entry is its output.
+- **Communication channels produce knowledge that must be extracted and preserved** (`A-25`) - carried by [Knowledge → Communication Channels Produce Knowledge but Are Not Knowledge Repositories](../modules/knowledge/knowledge.md). The audit was that principle being carried out, and this entry is its output.
 - **Uncarried claims that became questions elsewhere** (`A-05`, `A-06`, `A-07`, `A-08`, `A-10`, `A-11`, `A-12`, `A-15`, `A-16`, `A-17`, `A-20`) - each is an open question in the handoff of the artifact that owns its subject, linked from the audit's own record and now from this entry's `Propagates to`. The largest is `A-16`: authentication, session, and authorization appear in the corpus only as an example of bundled protocols, and no document, handoff, or vocabulary owns the subject.
 
 #### Examined and not adopted
@@ -441,3 +441,43 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - Fix: restored the entry *The event-taxonomy cluster's link repaired after the question it names was answered* (2026-10-04T18:55:00Z), which the working tree had removed without a record; a changelog is history, and nothing justified the loss. Its one link was updated to `./modules/process/event.md#what-an-event-is`, the folder's current name.
 - Fix, `docs/comparisons/context7.001.md`: the guest-adapter links named `../modules/lib/lib.md` and `../modules/lib/lib.handoff.md`, which do not exist under `docs/`; they now point to `../../modules/lib/lib.md` and `../../modules/lib/lib.handoff.md#mcp-as-a-guest-adapter`, where the module and the entry live. The file ended without a newline; one was added. The citation `docs/cognition.md:176` was moved to `:192` (the passage on stale artifacts now sits there), and the citation `docs/knowledge.md:288` was removed from the freshness claim, because that line concerns implicit relationships and does not support it.
 - Checked and unchanged: the Memar passages quoted in `context7.001.md` (`README.md:30`, `README.md:31`, `terminology.md:389`, `service-sdk.md` positions and sections) match the text; the claims about the Context7 checkout were not re-read, since the checkout is not present in this tree.
+
+---
+
+### Organization's README carried into the root README after the merge
+- Time: 2026-10-19T12:00:00Z
+- Type: changed
+- Cited:
+  - [README.md](../README.md) - Relation: Evidence: the file this entry changes
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — carried, recorded
+
+#### What changed
+organization's `README.md` (commit `19834121`, merged into memar by `ceba0177`) was read whole beside memar's; memar's kept, and these parts of organization's came over in memar's voice:
+- The premise of the "What is this?" section — the structural requirements shared by every kind of collective entity, differing in scale and in rules — as the new README section *System Categories → Organization*, with the method relation of "Relationship to the wider Memar framework" (Memar is the way of thinking, organization one of the largest domains modeled with it) and its warning about restarting from common management vocabulary, linked to `modules/management/vocabulary-discipline.handoff.md`.
+- The Goals bullet on adding services through a GUI, as a bullet of *Computer*; the other three Goals bullets (low-code, Unikernel, distributed without an admin) were already there.
+- The five alternatives (Odoo, Discourse, ERPNext, Salesforce, Softr), as named candidates in the comparisons paragraph, with no claim of parity.
+- The two sentences that sent the reader to "the Organization project" at its separate GitHub address now link `bundles/org/README.md`, which the owner copied from organization by hand and which keeps the rest of organization's README text.
+
+Dropped, with the reason: *Not Goals* (it says nothing is identified, and memar's own Not Goals stands); *Project status* (describes a separate repository with its own folder layout in doubt); *Relationship to the wider Memar framework* as a list of components (Khayyam, PersiaOS, Chapar/GP/sRPC are memar's own content and described above); the See-also link to GeniusesGroup; *Enterprise* (memar's section carries all three of its addresses and the same two offers); the *Alternatives* DRAFT framing paragraph (a claim about a separate product's direction, with an open question to the owner about what may be said as delivered; it is in `bundles/org/README.md`).
+
+#### Considered and not done
+- Carrying the whole README as a section — not taken: it would describe organization as a separate repository, which is no longer true.
+
+---
+
+### The root README describes one repository and points to LEGAL
+- Time: 2026-10-19T00:00:00Z
+- Type: Changed
+- Ruling: owner, 2026-10-19 (task 20261019-T183339Z-19720): with organization in this repository, README.md points to what holds a fact instead of restating it, so nothing cached there goes stale.
+- Contributors:
+  - Claude Opus 5.5 - applied
+
+#### What changed
+- README.md → Where Memar Stops, and Where Work Continues is removed. Its claim that Memar states the path while the finished system is delivered elsewhere, under Enterprise, no longer holds: the product bundles are in this repository. Its two rules that still hold were moved. "Subjects no Memar document governs" now sits in How to navigate Memar's content, step 3. "Every change, whatever its size" is an entry in [Cognition Handoff](./cognition.handoff.md), to be folded into the norm it sharpens. Its note on a record of Memar's own limits was already anticipated work in [Framework Handoff → Evaluating progress toward Memar's stated goal](./framework.handoff.md).
+- README.md → Enterprise becomes Licence: it points to LICENSE and LEGAL for commercial use and its contact. The list of components offered as commercial software (ChaparKhane, Achaemenid) and the three contact addresses are removed: the bundles are in the tree, and LEGAL holds the contact.
+- README.md → How to navigate: the list of organization-side comparison candidates moved to [Comparison Handoff](../modules/knowledge/documentation/comparison/comparison.handoff.md), since the README points at the comparisons and does not track their state.
+
+#### Considered and not done
+- **Keeping Where Memar Stops as a statement of the framework's limits.** Not done: what it limited was the line between framework and product, and that line is now an open question about the one tree ([Framework Handoff → The framework and the product it builds, in one repository](./framework.handoff.md)).

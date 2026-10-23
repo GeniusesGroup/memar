@@ -100,7 +100,7 @@
 - Time: 2026-08-15T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Process](./process.md) — Depends_on: Process now has its own document; this document's Protocol-Process-System ontology depends on it the same way it depends on System.
+  - [Process](../modules/process/process.md) — Depends_on: Process now has its own document; this document's Protocol-Process-System ontology depends on it the same way it depends on System.
 - Propagates to:
   - process.md: Done — no new content needed there; process.md's existing Process Composition topic already covers the nesting behavior this document previously duplicated.
 - Contributors:
@@ -269,7 +269,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 #### Considered and not done
 - Narrowing the question rather than deleting it — not taken, as a reworded version of the same inquiry. What would remain undecided is the philosophical question the body already names as outside its practical ruling, and a handoff entry phrased that way would schedule a question no document asks as work.
 - Marking the entry Answered rather than deleting it — not taken. A resolved question is state the base document now carries; a marker here would duplicate the answer and guarantee drift.
-- Recording the residual philosophical question in [Terminology](./terminology.md)'s own open work — not taken. Whether protocol and specification are identical in general is a question about Memar's own vocabulary, but nothing in this session examined it, and attributing an unexamined direction to a document this session did not touch would put a claim in someone else's record.
+- Recording the residual philosophical question in [Terminology](./terminology.md)'s own open work — not taken. Whether protocol and specification are identical in general is a question about Memar's own vocabulary, but nothing in this chat examined it, and attributing an unexamined direction to a document this chat did not touch would put a claim in someone else's record.
 
 ---
 
@@ -292,7 +292,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 #### Considered and not done
 - **Answering the cross-module half by pointing at Modularity alone**: not taken. Modularity says a process may cross several Modules; what a Protocol does about that is Protocol's own claim, and the derivation needed the Protocol–Process–System chain that only this document states.
 - **Leaving the coordination half as an open question**: rejected. A Protocol declares requirements that any entity satisfies without negotiating with a counterparty, and conformance is the measure of whether those requirements are satisfied regardless of how; a bilateral question between two authorities is a Contract, which this document already keeps at a different layer. The remaining institutional question — who attests — is the entry below it, and it stays open.
-- **Writing the vocabulary consequence into *Terminology***: not done, that document is not this session's to write, and the two residues are recorded in `protocol.handoff.md` as that session's work.
+- **Writing the vocabulary consequence into *Terminology***: not done, that document is not this chat's to write, and the two residues are recorded in `protocol.handoff.md` as that chat's work.
 - **Restoring the Standard-boundary entry's account of the retired knowledge note it recovered**: not done. The note's Protocol/Standard split and its conformance-from-label point are carried in the body, and a handoff entry is not where the history of how they got there belongs.
 
 ---
@@ -332,7 +332,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 - **Keeping the three candidates in the body as a survey of the field**: not done. A comparison of rejected alternatives serves the reader auditing how the current state came to be rather than the reader understanding it, so it belongs in this entry.
 - **Placing the definers claim in Modeling or Framework**: not done, for the reason recorded above; the protocol half is this document's own claim and the model half is recorded as `Pending` for Modeling.
 - **Narrowing the "Protocol Conformance Measurement" entry instead of deleting it**: not done. Its document-level half is settled by the falsifiability requirement now stated in the body, and its tooling half is already Anticipated Work; a narrowed entry would restate the first and duplicate the second.
-- **Correcting the survey sentence in `comparisons/llm-wiki.001.md`**: not done, that file is not this session's to write; it is recorded as `Pending` above.
+- **Correcting the survey sentence in `comparisons/llm-wiki.001.md`**: not done, that file is not this chat's to write; it is recorded as `Pending` above.
 
 #### Decision
 - Candidate C, the Verifiable Interaction Model, is what a Protocol is; Candidates A and B are not. Reproducibility governs, and a protocol that no procedure can settle is a proposal (Omid Hekayati).
@@ -363,7 +363,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 - `protocol.handoff.md` no longer asks either half of its cross-module/cross-organization question; the entry records the boundary paragraph in *Protocol, Process, and System* and *Who Defines a Protocol* as the answers, with pointers, and keeps the coordination-mechanism residue with its `Next:`.
 
 #### Deliberation
-- All six body edits were proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The reasoning is that sweep's, not a fresh discovery, and it is recorded because the ruling says which definition governs and not which of these passages were still carrying the older account (Space Bunny Alpha).
+- All six body edits were proposed in this chat's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The reasoning is that sweep's, not a fresh discovery, and it is recorded because the ruling says which definition governs and not which of these passages were still carrying the older account (Space Bunny Alpha).
 - The discriminator move is the one that could not be read off the ruling alone. Methodology remains a Protocol property and is still stated; what changed is that it stopped being the thing that makes a text a protocol, which this topic had asserted in bold and which the `ab` bullet had then rested on by saying the constraint guarantees the output is a protocol (Space Bunny Alpha).
 - The definers paragraph was added to *Conformance* rather than left to *Who Defines a Protocol* because that topic settles whose protocol governs and does not say which rules a deciding party applies when two organizations each have one; the paragraph states the consequence once and points back (Space Bunny Alpha).
 

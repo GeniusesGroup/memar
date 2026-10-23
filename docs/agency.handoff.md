@@ -1,5 +1,5 @@
 # Agency Handoff
-Open work for `agency.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is.
+Open work for `agency.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -24,7 +24,7 @@ This is a genuine reflexive question rather than a rhetorical one: the process t
 - Options: (1) a scoping constraint names the operations it constrains and the ones it leaves neutral, so that a review can check each against the scope (recommended; cost is a longer statement of every constraint); (2) only the constrained operations are named and every other operation is neutral by default; (3) leave it to the Principal's judgment and add nothing.
 - Anchor: docs/agency.md, Authority and Interaction With an Agent; the answer lands in Authority.
 - Blocks: nothing is blocked. Assumption meanwhile: a delegation names what it constrains where it can (Tentative).
-- Asked: 2026-10-13, Claude (queued as session `20261013-T072631Z-28228`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+- Asked: 2026-10-13, Claude (queued as task `20261013-T072631Z-28228`, written by task `20261015-T103826Z-18580`), for Omid Hekayati.
 
 ## Anticipated Work
 - Define `role.md`, `permission.md`, and `contract.md` if they prove dense enough to warrant their own documents — concepts mentioned during the discussion that produced this document as ones that may eventually reference Agency rather than redefine it; consistent with the Delegation decision in [Delegation](./agency.md#delegation), the same "can it be defined without first defining Agency?" test should be applied to each before splitting it out. (From the document-level Future possibilities.)

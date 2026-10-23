@@ -66,7 +66,7 @@ The transfer audit found one lost movement answer and one transition clause. Add
 - Time: 2026-09-20T14:30:00Z
 - Type: clarified
 - Cited:
-  - [Human Travel Network — Handoff](human-travel-network.handoff.md) - Relation: Evidence: Q1 is the owner ruling this session recorded.
+  - [Human Travel Network — Handoff](human-travel-network.handoff.md) - Relation: Evidence: Q1 is the owner ruling this chat recorded.
   - [Which Plane Carries Which Flow](../../../land/modules/which-plane-carries-which-flow/which-plane-carries-which-flow.md) - Relation: Evidence: aerial height is a recommended minimum, not a statute.
 - Propagates to:
   - form-and-land/which-plane-carries-which-flow.md: Done — plane law already left height to developers; this page now leaves the mode mix to the settlement.

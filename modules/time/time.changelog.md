@@ -6,8 +6,8 @@
 - Time: 2026-09-06T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, rewrote
 
 #### What changed
 - Initial Draft created, recording the interface-shaped position: time's framework presence is a small ordering/comparison contract plus three separable satellite concerns; mutability ruled out; the definitional question kept genuinely open (Omid Hekayati).
@@ -30,8 +30,8 @@
 - Propagates to:
   - time.handoff.md: Done - anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's `Discussion` wrappers dissolved entirely, per the finalized documentation method (documentation-explanation.changelog.md, same date) (Omid Hekayati - decided; Super Z - applied).
@@ -53,10 +53,10 @@
 - Time: 2026-09-29T10:40:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Content Rule](../../documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
+  - [Documentation → Content Rule](../knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
-  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `time.md → A contract states a duration, not a unit`: a new section carrying the owner's statement that defining a timer does not force a dependency on a unit of time, and the rule that every contract over a span states a Duration and leaves the unit to the implementation. It came from the module document `modules/time/time.md`, which was deleted under the owner's decision above.
@@ -73,7 +73,7 @@
 - Time: 2026-09-29T11:17:00Z
 - Type: Changed
 - Contributors:
-  - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied
+  - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
 - `time.md`: realization membership for `modules/time/`.
@@ -88,7 +88,7 @@
 - Propagates to:
   - time.handoff.md: Done — the placement question removed; the base document's realization-membership rule is its answer's home.
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - `time.handoff.md`: "Is civil conversion a framework-level concern at all?" removed — [Realization membership](time.md#realization-membership) places a declaration whose subject is "a calendar that reckons instants into human or astronomical units" under `modules/time/`, and [The four separable concerns](time.md#the-four-separable-concerns) already states civil conversion's contract as inherently political and historical.
@@ -105,7 +105,7 @@
 - Propagates to:
   - time.handoff.md: Done — the entry now states that no resolution concept is admitted and asks only about `NanoInSecond`.
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - The paired handoff's Open Questions entry "Is there a common concept over the duration units?" narrowed to its residue.
@@ -122,7 +122,7 @@
 - Cited:
   - [Time Changelog](./time.changelog.md) - Premise: the owner's own deliberated formulation this rule answers to, recorded in that file's earlier entry.
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - `time.md` → [The definitional question, kept open](./time.md#the-definitional-question-kept-open): the requirement as it now stands is that a time contract's terms are ordering and comparison alone, the minimal commitments any of the candidate definitions support.
@@ -135,7 +135,7 @@
 - Time: 2026-10-12T09:45:50Z
 - Type: Reviewed
 - Contributors:
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
 
 #### What changed
 - Reviewed; no change needed. Two added handoff entries: the unix realization (`modules/time/unix/` holds five `.kh` files with no `tp`, `cp` or `vr` line; `time.kh` lines 9, 15, 19, 22 match the cited declarations) and the timer constants (`modules/time/timer/const.kh` lines 12-20 match). Both anchors in `time.md` exist. The questions are left to the owner.
@@ -146,19 +146,19 @@
 - Time: 2026-10-15T08:30:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Handoff Practice → Questions Found During a Task](../../documentation-handoff.practice.md#questions-found-during-a-task) - Premise: each question is settled from owning material and recorded Tentative, made smaller by a queued session, or written for the owner.
+  - [Documentation — Handoff Practice → Questions Found During a Task](../knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) - Premise: each question is settled from owning material and recorded Tentative, made smaller by a queued session, or written for the owner.
   - Abstraction in Khayyam → A concept is an abstraction; a concrete instance is a capsule (`docs/khayyam/abstraction.md#a-concept-is-an-abstraction-a-concrete-instance-is-a-capsule`) - Premise: a contract's unit or width is the implementation's.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: documents and moves are held until session 12672 settles placement; protocol declarations may be drafted in Khayyam
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) - argued, drafted, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: documents and moves are held until session 12672 settles placement; protocol declarations may be drafted in Khayyam
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5) - argued, drafted, applied
 
 #### What changed
 - `time.handoff.md`: a Decisions section, each from cited owning material and without a second opinion yet: the Instant contract carries no representation term (Tentative); `NanoInSecond` is an instance of `Duration` (Tentative); `Timer.When` stays (Tentative); causality and cross-component ordering are not this module's question (Tentative); a fuller concept document (Deferred, on 12672); `maxWhen`, `verifyTimers` and `heapAry` belong to the timing heap's realization (Tentative). Each answered entry keeps its place and points at its decision until the owner rules.
-- `time.handoff.md`: a new entry "Does the time contract become ordering, comparison and a clock?", asking the owner to adopt a drafted replacement of `Time` and `Duration` and a new `Clock`, kept in session 20261014T124124Z-3000-0.
+- `time.handoff.md`: a new entry "Does the time contract become ordering, comparison and a clock?", asking the owner to adopt a drafted replacement of `Time` and `Duration` and a new `Clock`, kept in task 20261014T124124Z-3000-0.
 - `time.handoff.md` → "Does any contract need a timer that also reports the instant it fires at?": corrected. Its statement that the timer contract reports status only was inaccurate; `modules/time/timer/protocol/timer.kh` declares `When`.
 - `time.handoff.md` → "The unix realization declares nothing...": corrected. Its statement that `modules/time/monotonic/` and `modules/time/epoch/` declare what `unix/` lacks was inaccurate; no folder realizes `Time`. The question now waits on session 28224 for which of unix and utc is a lib candidate.
-- `time.handoff.md` → "What protects a time-limited value from a clock that moves?": queued session 20261015-T080417Z-23696 to make it smaller, with `Deadline` in `modules/process/operation/protocol/deadline.kh` named as a live consumer.
+- `time.handoff.md` → "What protects a time-limited value from a clock that moves?": queued task 20261015-T080417Z-23696 to make it smaller, with `Deadline` in `modules/process/operation/protocol/deadline.kh` named as a live consumer.
 
 #### Considered and not done
-- Removing the entries the Decisions answer, and moving "Distributed ordering versus the Instant contract" to GP's and sRPC's handoffs: removal waits for the owner ([Recording Is Not Gated; Removal Is](../../documentation.md#recording-is-not-gated-removal-is)).
+- Removing the entries the Decisions answer, and moving "Distributed ordering versus the Instant contract" to GP's and sRPC's handoffs: removal waits for the owner ([Recording Is Not Gated; Removal Is](../knowledge/documentation/documentation.md#recording-is-not-gated-removal-is)).
 - Editing `modules/time/protocol/time.kh` and `modules/time/duration/protocol/duration.kh`: they are definitions other modules consume, so the replacement is asked, not applied.

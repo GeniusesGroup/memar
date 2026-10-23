@@ -51,7 +51,7 @@
 
 #### What changed
 - A new section, [How an essay is identified over time](./comparison.md#how-an-essay-is-identified-over-time), states the naming rule: one essay per examination, <project>.001.md then <project>.002.md, the ordinal carrying creation order and nothing else. The distinction it turns on is correction against re-examination - a wrong citation or a moved count is fixed in the file that is wrong, while a project examined again at a later revision gets a new essay that cites the first, so a reader can always tell which state of both projects an argument was made against. All eight essays were renamed accordingly, and the fourteen files holding inbound links were retargeted, historical changelog citations among them: a path that no longer resolves is a broken link, and the entry that cites it is a record of a claim rather than of a filename.
-- The location section now states where the essays are - docs/comparisons/, with the folder's README.md a symlink to this document - and keeps only the two rules that generalize: listing rather than indexing, and one essay per file named after its project. The previous wording offered the location as a project's decision, which in this repository it is not, and would have had agents re-asking a settled question in every later session.
+- The location section now states where the essays are - docs/comparisons/, with the folder's README.md a symlink to this document - and keeps only the two rules that generalize: listing rather than indexing, and one essay per file named after its project. The previous wording offered the location as a project's decision, which in this repository it is not, and would have had agents re-asking a settled question in every later chat.
 - The two sections that spoke of the folder now speak of the essay, and the sections are titled accordingly.
 
 #### Considered and not done
@@ -70,4 +70,4 @@
 #### What changed
 - The ten stages of an essay are no longer listed in [The essay's required shape](./comparison.md#the-essays-required-shape); the type `EssayStage` gives them and their order.
 - Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
-- Made in session 20261016-T194831Z-4504.
+- Made in task 20261016-T194831Z-4504.

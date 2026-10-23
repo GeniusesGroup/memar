@@ -5,7 +5,7 @@
 
     python modules/knowledge/documentation/report/tests/report_part.py
 
-The subject is the parts under a session report's front matter, in order, and the hand-back part a session adds when it needs a decision. Named for the file that holds it per
+The subject is the parts under a task report's front matter, in order, and the hand-back part a task adds when it needs a decision. Named for the file that holds it per
 [Test Naming](../../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
 [Test Placement](../../../../process/test/rules/test-placement/test-placement.md).
 

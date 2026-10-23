@@ -102,7 +102,7 @@ def _lock_account(lock: Path) -> str:
     else:
         seen = f'{running} git process(es) are running on this machine ({COUNT_INCLUDES})'
     if age < LOCK_STALE_SECONDS:
-        verdict = 'a lock this young most likely belongs to a live git process — an editor refreshing its status, or another session — which lets go on its own'
+        verdict = 'a lock this young most likely belongs to a live git process — an editor refreshing its status, or another task — which lets go on its own'
     elif running == 0:
         verdict = 'a lock this old with no git process running was most likely left by one that crashed; a person may delete it once sure of that — this script never does'
     else:

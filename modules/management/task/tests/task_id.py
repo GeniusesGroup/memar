@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a session's identity in `modules/management/task/primitive/task_id.py`.
+"""Tests for a task's identity in `modules/management/task/primitive/task_id.py`.
 
     python modules/management/task/tests/task_id.py
 
-The subject is the id a session's folder and intent notes carry, named for the
+The subject is the id a task's folder and intent notes carry, named for the
 file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
@@ -16,13 +16,13 @@ Nothing here writes anything: an id is minted and read back.
 What is pinned, and what each pin is for:
 
   MintedIdUnique     Two ids minted by one process differ, also within one
-                     second, so two sessions opening a shared scratch root
+                     second, so two tasks opening a shared scratch root
                      cannot land on one folder; the form is the date, a dash,
                      the time, and the process id, so a person reads it and a
-                     name sort is creation order; only that form is a session
+                     name sort is creation order; only that form is a task
                      id, so a person's folder named by a date is not one, and
                      neither is a name in a form minted before (a folder so
-                     named is a session by its plan, `session_folder`, as
+                     named is a task by its plan, `task_folder`, as
                      long as it keeps that name).
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
@@ -41,10 +41,10 @@ sys.dont_write_bytecode = True
 import modules.management.task.primitive.task_id as task_id
 
 class MintedIdUnique(unittest.TestCase):
-    """The id a session gets when it does not bring one.
+    """The id a task gets when it does not bring one.
 
-    Minting happens in a module of its own rather than in the session command,
-    so a caller that needs an id without running a session can have one; what
+    Minting happens in a module of its own rather than in the task command,
+    so a caller that needs an id without running a task can have one; what
     makes it an identity rather than a label is that no two calls agree, which is
     the one property a shared scratch root depends on.
     """

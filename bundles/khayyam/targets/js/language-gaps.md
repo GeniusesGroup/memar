@@ -306,7 +306,7 @@ In this repository's Khayyam realization the jump a branch is built on is a body
 **Language, protocol, or toolchain.** The **protocol** — a framework-level placement rule, language-independent. Not the language: the language says nothing about which module a declaration lives in, and [`khayyam.md:169`](../../../../docs/khayyam/khayyam.md) sends exactly this kind of convention to the rules catalog.
 
 #### I-M — Correcting the record of the scope parameter's type
-**The gap.** [`modules/khayyam/targets/js/target.handoff.md:50`](./target.handoff.md) places "The type of a scope argument is unstated in the documents, so the model declares one" under **Ambiguities Resolved**, which [`documentation-handoff.md`](../../../../docs/documentation-handoff.md) makes a section a next session treats as settled, while [`modules/process/control-flow/model.handoff.md:35`](../../../process/control-flow/model.handoff.md) carries the same question as open and [`docs/khayyam/method.md:71`](../../../../docs/khayyam/method.md#type-level-arguments-for-sc-and-mt) answers neither.
+**The gap.** [`modules/khayyam/targets/js/target.handoff.md:50`](./target.handoff.md) places "The type of a scope argument is unstated in the documents, so the model declares one" under **Ambiguities Resolved**, which [`documentation-handoff.md`](../../../../docs/documentation-handoff.md) makes a section a next chat treats as settled, while [`modules/process/control-flow/model.handoff.md:35`](../../../process/control-flow/model.handoff.md) carries the same question as open and [`docs/khayyam/method.md:71`](../../../../docs/khayyam/method.md#type-level-arguments-for-sc-and-mt) answers neither.
 
 **Document and anchor.** [`modules/khayyam/targets/js/target.handoff.md`](./target.handoff.md): the entry at `:50` moves out of **Ambiguities Resolved** into **Open Questions**, as a new `###` under the section that begins at `:53`.
 
@@ -321,7 +321,7 @@ In this repository's Khayyam realization the jump a branch is built on is a body
 
 **Why this text and not a weaker or stronger one.** It makes one claim about the record: the entry was in the wrong section, and its content is evidence rather than a resolution. It deliberately does not say the model was wrong, because [`modules/process/control-flow/`](../../../process/control-flow/) does not own this file and which of the two documents misstates the state of the model is the owner's call. It deliberately states the measurement's status — a build product whose source is absent — because [`target.md:2`](./target.md) already says an artifact "is a build product and never a source of truth: the semantic representation is". A stronger edit would assert the answer in this file, which is the error the entry made.
 
-**What it would unblock.** Nothing new is released, but a next session reading either handoff stops being misled, and the two handoffs stop disagreeing about the same question.
+**What it would unblock.** Nothing new is released, but a next chat reading either handoff stops being misled, and the two handoffs stop disagreeing about the same question.
 
 **What it would change elsewhere.** One file, plus the paired changelog entry for whichever session applies it. [`modules/process/control-flow/answers.md:179`](../../../process/control-flow/answers.md) already records the disagreement; once this is applied, that record describes a corrected state.
 

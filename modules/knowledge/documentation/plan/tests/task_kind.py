@@ -21,8 +21,8 @@ What is pinned, and what each pin is for:
                    sentence on when it applies; a word is read in any case and
                    a word that is no kind is None, never a guess.
   Carried          A plan may carry every kind but `answer` and `plan`: a
-                   question answered in chat opens no session, and `plan` is
-                   the context a coordinating session adds to its own kind.
+                   question answered in chat opens no task, and `plan` is
+                   the context a coordinating task adds to its own kind.
   NoPassages       A kind holds its word, when it applies and whether a plan
                    carries it, and no passage: the declaration names no
                    document's section, since what an act reads is the
@@ -48,7 +48,7 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
 DECLARATION = SCRIPTS.parent.parent / 'modules/knowledge/documentation/plan/labels/task_kind.py'
-READER = SCRIPTS.parent.parent / 'modules/knowledge/documentation/plan/primitive/session_plan_kind.py'
+READER = SCRIPTS.parent.parent / 'modules/knowledge/documentation/plan/primitive/task_plan_kind.py'
 RETIRED = ('ideation', 'modeling')
 WHO_RUNS = re.compile('\\b(models?|tiers?|strong|stronger|strongest|cheap|cheaper|small|smaller|claude|opus|sonnet|haiku|fable|gpt)\\b', re.IGNORECASE)
 

@@ -31,7 +31,7 @@ Active. The inquiry is answered; the owner has not reviewed it, and the open que
 1. Give the owner the host's own classification, in the host's own terms, read out of the host's own product — so a decision about super types is made against what the host does rather than against what it is assumed to do. — **Met**
 2. Say what a re-cut of the role list would have to be built on, without re-cutting it. — **Met**
 3. Name the concrete things a non-editor consumer is owed and does not have. — **Met**
-4. Keep every lesson phrased as a rule a later session can apply, with what it cost. — **Met**
+4. Keep every lesson phrased as a rule a later chat can apply, with what it cost. — **Met**
 
 ### Scope
 The host's classification, its super-type mechanism, and its rule-matching, as found in the installed product's own bundle and declarations; this repository's contract, manifest, grammar, and language server as the thing being judged. It does not choose a palette, does not change the contract, the manifest, a theme, a grammar, or the server, and does not answer what the *language* calls the identities the roles name — that is a question for [docs/khayyam/](../../../docs/khayyam/) and the owner, and this record does not reach it.

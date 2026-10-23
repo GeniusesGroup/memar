@@ -9,7 +9,7 @@ their ids ([Label](../../label/label.md)). It is written with its identifier,
 identity (a topic `design` and the task kind `design` are two labels): the
 identifier is what a search finds every record that took one label by, and the
 word is what a reader sees. The identifier is a UUID version 7, so identifiers
-sort by the time they were made, as a session id does.
+sort by the time they were made, as a task id does.
 
 A label is **defined once**, in one place (`LabelDefinition`), and its
 definition takes labels of its own: the label `design` takes the label
@@ -17,8 +17,9 @@ definition takes labels of its own: the label `design` takes the label
 a Status value takes `Status`. So a *kind* is not a separate thing written
 beside every label: it is a label other labels take (`LabelKind`), declared
 with the rule that makes a word of it valid. A closed kind lists its words in
-code; a free kind makes a definition when a word is first used, and the
-definition is kept where the project keeps its own (`LabelRegistry`).
+code with the kind; a free kind's words are declared as code by the domains
+that use them, each definition with the sentence that carries its meaning, and
+a project's are gathered for a run in a `LabelRegistry`.
 
 A record takes as many labels as it needs and none it does not: nothing counts
 them, and a label is added only when another record is to be found by it. In
@@ -32,74 +33,61 @@ This file holds no kind and no definition: they are declared with the types
 they belong to ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
-
 import os
 import re
 import time
 from dataclasses import dataclass
 from typing import Callable, Iterable
-
-FLAG_SEPARATOR = "="
-_ID = r"[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
-_LABEL = re.compile(rf"^(?:[-*]\s+)?(?P<word>[^()\s][^()]*?)\s*\((?P<id>{_ID})\)$")
-_DEFINITION = re.compile(r"^(?:[-*]\s+)?(?P<label>.+?\([0-9a-f-]{36}\))\s*:\s*(?P<takes>.*)$")
-
+FLAG_SEPARATOR = '='
+_ID = '[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}'
+_LABEL = re.compile(f'^(?:[-*]\\s+)?(?P<word>[^()\\s][^()]*?)\\s*\\((?P<id>{_ID})\\)$')
 
 class LabelProblem(ValueError):
     """A word its kind's rule refuses, or a label that is not defined; the message says what is accepted."""
 
-
 def new_id() -> str:
     """A new UUID version 7: 48 bits of Unix time in milliseconds, then random bits, so identifiers sort by when they were made."""
     stamp = int(time.time() * 1000)
-    random_bits = int.from_bytes(os.urandom(10), "big")
-    number = (stamp << 80) | (0x7 << 76) | (((random_bits >> 68) & 0xFFF) << 64) | (0b10 << 62) | (random_bits & ((1 << 62) - 1))
-    digits = f"{number:032x}"
-    return f"{digits[:8]}-{digits[8:12]}-{digits[12:16]}-{digits[16:20]}-{digits[20:]}"
-
+    random_bits = int.from_bytes(os.urandom(10), 'big')
+    number = stamp << 80 | 7 << 76 | (random_bits >> 68 & 4095) << 64 | 2 << 62 | random_bits & (1 << 62) - 1
+    digits = f'{number:032x}'
+    return f'{digits[:8]}-{digits[8:12]}-{digits[12:16]}-{digits[16:20]}-{digits[20:]}'
 
 @dataclass(frozen=True)
 class Label:
     """A word and the identifier of the label it names: `design(01a14a04-...)`."""
-
     word: str
     id: str
 
     def __str__(self) -> str:
-        return f"{self.word}({self.id})"
+        return f'{self.word}({self.id})'
 
     @classmethod
     def read(cls, text: str) -> Label | None:
         """The label TEXT writes, as a block line (`- design(id)`) or bare (`design(id)`); None when it is no label."""
         found = _LABEL.match(text.strip())
-        return cls(found["word"].strip(), found["id"]) if found else None
-
+        return cls(found['word'].strip(), found['id']) if found else None
 
 @dataclass(frozen=True)
 class LabelDefinition:
-    """The one place a label is defined: the label, and the labels its definition takes (the kinds it is a member of)."""
+    """The one place a label is defined, as an error is declared: the label (its word and identifier), the labels its definition takes (the kinds it is a member of), the sentence that carries its meaning, and its end of life.
 
+    A label relates a word to a concept: its word may be refined and keeps its
+    identifier, and when the concept changes the label ends, ENDED the date it
+    did, and REPLACED_BY the less ambiguous labels that take its place. An
+    ended label still names the records that took it; it is taken by no new one.
+    The definition only returns these values: where it is registered is the
+    caller's choice, and it forces no store.
+    """
     label: Label
     takes: tuple[Label, ...] = ()
+    meaning: str = ''
+    ended: str = ''
+    replaced_by: tuple[Label, ...] = ()
 
     def is_a(self, kind: Label) -> bool:
         """Whether this definition takes the label KIND."""
-        return any(taken.id == kind.id for taken in self.takes)
-
-    def line(self) -> str:
-        """The definition as a registry line: `- word(id): kind(id), ...`."""
-        return f"- {self.label}: " + ", ".join(str(taken) for taken in self.takes)
-
-    @classmethod
-    def read(cls, text: str) -> LabelDefinition | None:
-        """The definition a registry line writes; None when the line is none."""
-        found = _DEFINITION.match(text.strip())
-        label = Label.read(found["label"]) if found else None
-        if not label:
-            return None
-        taken = tuple(item for item in (Label.read(part) for part in found["takes"].split(",")) if item)
-        return cls(label, taken)
-
+        return any((taken.id == kind.id for taken in self.takes))
 
 @dataclass(frozen=True)
 class LabelKind:
@@ -108,9 +96,8 @@ class LabelKind:
     NORMALIZE returns the word as the kind writes it, or raises `LabelProblem`
     saying what the kind accepts. A closed kind lists CLOSED, the definitions
     of all its words, in code; a free kind has none, and a word it accepts is
-    defined when first used.
+    declared, with its meaning, by the domain whose it is.
     """
-
     label: Label
     summary: str
     read_by: str
@@ -125,11 +112,9 @@ class LabelKind:
         """A new definition of the word TEXT makes under this kind, with a new identifier; `LabelProblem` when the rule refuses it."""
         return LabelDefinition(Label(self.normalize(text), new_id()), (self.label,))
 
-
 @dataclass(frozen=True)
 class Labels:
     """The labels of one record, in the order written, none twice; as many as the record needs."""
-
     items: tuple[Label, ...] = ()
 
     def __iter__(self):
@@ -153,39 +138,37 @@ class Labels:
 
     def with_label(self, label: Label) -> Labels:
         """These labels and LABEL last; unchanged when the record already carries that label (by identifier)."""
-        return self if any(item.id == label.id for item in self.items) else Labels((*self.items, label))
+        return self if any((item.id == label.id for item in self.items)) else Labels((*self.items, label))
 
     def without(self, label: Label) -> Labels:
         """These labels but LABEL (by identifier); unchanged when it is not one."""
-        return Labels(tuple(item for item in self.items if item.id != label.id))
+        return Labels(tuple((item for item in self.items if item.id != label.id)))
 
     def lines(self) -> list[str]:
         """The block's lines under the key, one `  - word(id)` a label."""
-        return [f"  - {label}" for label in self.items]
-
+        return [f'  - {label}' for label in self.items]
 
 class LabelRegistry:
-    """The definitions known to one project: those the kinds declare in code, and those the project keeps for its free kinds.
+    """The definitions known to one project for a run: those the kinds declare with themselves, and those the project's domains declare for its free kinds.
 
-    The project's own are a text file of `- word(id): kind(id), ...` lines
-    (`parse`, `render`), tracked with the project so every clone reads one
-    identifier for one label.
+    It is held in memory and kept in no store; whoever builds it says where
+    the declared definitions come from, and the first of one identifier wins.
     """
 
-    def __init__(self, kinds: Iterable[LabelKind], kept: Iterable[LabelDefinition] = ()) -> None:
+    def __init__(self, kinds: Iterable[LabelKind], declared: Iterable[LabelDefinition]=()) -> None:
         self.kinds = {kind.name: kind for kind in kinds}
         self._by_id: dict[str, LabelDefinition] = {}
         for kind in self.kinds.values():
             self._by_id[kind.label.id] = LabelDefinition(kind.label)
             for definition in kind.closed:
                 self._by_id[definition.label.id] = definition
-        for definition in kept:
+        for definition in declared:
             self._by_id.setdefault(definition.label.id, definition)
 
-    @staticmethod
-    def parse(text: str) -> tuple[LabelDefinition, ...]:
-        """The definitions a registry file holds; a line that is no definition is left out."""
-        return tuple(item for item in (LabelDefinition.read(line) for line in text.splitlines()) if item)
+    def definitions(self, kind: str) -> tuple[LabelDefinition, ...]:
+        """The definitions known that take the kind named KIND."""
+        wanted = self.kinds[kind].label
+        return tuple((definition for definition in self._by_id.values() if definition.is_a(wanted)))
 
     def definition(self, label: Label) -> LabelDefinition | None:
         """The definition of LABEL, by identifier; None when it is defined nowhere known."""
@@ -197,24 +180,26 @@ class LabelRegistry:
         return definition.takes if definition else ()
 
     def words(self, labels: Labels, kind: str) -> tuple[str, ...]:
-        """The words of the labels among LABELS whose definition takes the kind named KIND, in the order written."""
+        """The words of the labels among LABELS whose definition takes the kind named KIND, in the order written, each as its definition writes it (a refined word is read for an earlier one)."""
         wanted = self.kinds[kind].label
-        return tuple(label.word for label in labels if any(taken.id == wanted.id for taken in self.kinds_of(label)))
+        return tuple((self._by_id[label.id].label.word for label in labels if any((taken.id == wanted.id for taken in self.kinds_of(label)))))
 
     def add(self, definition: LabelDefinition) -> None:
         """Know DEFINITION from now on (one made in this run, before it is kept)."""
         self._by_id.setdefault(definition.label.id, definition)
 
     def resolve(self, text: str) -> tuple[Label, LabelDefinition | None]:
-        """TEXT, `KIND=WORD`, as the label it names, and the new definition it needs (None when the label is already defined).
+        """TEXT, `KIND=WORD`, as the label it names, and the new definition it would need (None when the label is already defined).
 
         A closed kind accepts only a word it lists; a free kind accepts any
-        word its rule makes, and defines one not yet known. `LabelProblem`
-        names what is accepted when it is not.
+        word its rule makes, and for one not yet defined returns the
+        definition, with a new identifier, that would declare it; whether that
+        is declared is the caller's. `LabelProblem` names what is accepted when
+        it is not.
         """
         kind_name, found, word = text.partition(FLAG_SEPARATOR)
-        if not found or not kind_name.strip() or not word.strip():
-            raise LabelProblem(f"a label is written KIND{FLAG_SEPARATOR}WORD, e.g. {self._example()}; {text!r} is not one")
+        if not found or not kind_name.strip() or (not word.strip()):
+            raise LabelProblem(f'a label is written KIND{FLAG_SEPARATOR}WORD, e.g. {self._example()}; {text!r} is not one')
         kind = self.kinds.get(kind_name.strip())
         if kind is None:
             raise LabelProblem(f"a plan carries labels of the kinds {', '.join(self.kinds)}; {kind_name.strip()!r} is none of them")
@@ -222,15 +207,15 @@ class LabelRegistry:
             made = kind.normalize(word)
             for definition in kind.closed:
                 if definition.label.word == made:
-                    return definition.label, None
-            raise LabelProblem(f"{made!r} is not a {kind.name}")
+                    return (definition.label, None)
+            raise LabelProblem(f'{made!r} is not a {kind.name}')
         made = kind.normalize(word)
         for definition in self._by_id.values():
             if definition.label.word == made and definition.is_a(kind.label):
-                return definition.label, None
+                return (definition.label, None)
         fresh = kind.define(made)
-        return fresh.label, fresh
+        return (fresh.label, fresh)
 
     def _example(self) -> str:
         free = next((kind for kind in self.kinds.values() if not kind.closed), next(iter(self.kinds.values())))
-        return f"{free.name}{FLAG_SEPARATOR}memar-scripts"
+        return f'{free.name}{FLAG_SEPARATOR}memar-scripts'

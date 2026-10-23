@@ -84,7 +84,7 @@ Active
 - **The three concepts are enough for the first declarations** — Stability: Weak. What changes it: a declaration that cannot be written without a fourth concept, which is the test the first pass of declarations will apply. Mitigation: this is the question the next pass answers by writing, not by reasoning.
 - **`Container_Iteration` is the established owner of repetition and will stay there** — Stability: Weak. It is a ported declaration with no methods, so its standing rests on the protocol document rather than on an implementation. What changes it: a ruling that iteration belongs to this module.
 - **The protocol's preferred form is the reachable default for an organization** — Stability: Weak. It is the protocol's stated preference, and the protocol's handoff records the naming, placement, and delegation-verification mechanics for it as all undecided. What changes it: a ruling on those three, any of which could make the generic form the only writable one.
-- **Nothing outside `modules/process/control-flow/` will move to make a name fit** — Stability: Unexamined. What changes it: an owner ruling that the surviving conditional pair moves here from `computer/adt` or `process/operation`, which is a propagation this module's owner may authorize but this session may not make.
+- **Nothing outside `modules/process/control-flow/` will move to make a name fit** — Stability: Unexamined. What changes it: an owner ruling that the surviving conditional pair moves here from `computer/adt` or `process/operation`, which is a propagation this module's owner may authorize but this chat may not make.
 
 ## Anticipated Work
 - Writing the protocol's conditional-pair topic as an abstraction contract, once the pair's owner and names are settled. Its four stated subjects — how the condition is evaluated, whether the branches are symmetric, how the receiver's state is read, and how the pair relates to the presence/absence family — are all answerable from this model except the last, which waits on the pair-placement ruling.
@@ -96,21 +96,21 @@ Active
 | Artifact | Relation | Action |
 | --- | --- | --- |
 | [model.md](./model.md) | Base — the model this carries the open state of | Follows this document |
-| [`protocol/`](./protocol/) | Depends_on — the corpus the model describes; `if.kh` and `panic-recovery.kh` are the only files that declare anything | None in this session; `if.kh` is a draft the toolchain handoff deliberately leaves as a negative |
+| [`protocol/`](./protocol/) | Depends_on — the corpus the model describes; `if.kh` and `panic-recovery.kh` are the only files that declare anything | None in this chat; `if.kh` is a draft the toolchain handoff deliberately leaves as a negative |
 | [Control Flow protocol](../../../docs/protocols/process/control-flow.md) | Depends_on — states the contract this models | None; its handoff owns the owner question |
 | [Control Flow protocol handoff](../../../docs/protocols/process/control-flow.handoff.md) | Depends_on — carries the questions this model cannot answer | None (read) |
 | [Khayyam → Scope](../../../docs/khayyam/khayyam.md#scope) | Depends_on — states the inertness the whole model rests on | Ruling needed on the scope parameter's type |
 | [Khayyam handoff](../../../docs/khayyam/khayyam.handoff.md) | Depends_on — the language questions this library waits on | Ruling needed on a body's declaration order |
 | [The Error](../../../docs/protocols/process/error.md) | Reference — owns what an error is; the library owns only what happens next | None (read) |
-| [`modules/computer/adt/protocol/listeners.kh`](../../computer/adt/protocol/listeners.kh) | Conflicts — declares `OnAbsent`/`OnPresent` here in another module | Owner ruling needed; not this session's to make |
+| [`modules/computer/adt/protocol/listeners.kh`](../../computer/adt/protocol/listeners.kh) | Conflicts — declares `OnAbsent`/`OnPresent` here in another module | Owner ruling needed; not this chat's to make |
 | [`modules/process/operation/protocol/on-failure.kh`](../operation/protocol/on-failure.kh) and `on-success.kh` | Conflicts — declares `OnFailure`/`OnSuccess` in another module | Owner ruling needed |
 | [`modules/math/logic/conditional.kh`](../../math/logic/conditional.kh) | Conflicts — declares `Conditional`, whose Go block enumerates flow outcomes | Owner ruling of that module needed |
 | [`modules/computer/adt/container/protocol/iteration.kh`](../../computer/adt/container/protocol/iteration.kh) and `iterate.kh` | Reference — the existing relation this model reuses for repetition | None (read) |
-| [`README.md`](./README.md) | Reference — states what the folder is | Should point at this model and this handoff; not edited in this session |
+| [`README.md`](./README.md) | Reference — states what the folder is | Should point at this model and this handoff; not edited in this chat |
 | [JavaScript target](../../khayyam/targets/js/target.md) | Reference — the commands a body may hold, which fix what the library may declare | None (read) |
 
 ## Notes
 - Confidence vocabulary follows the repository's handoff specification: Decided / Tentative / Explored-but-unresolved / Deferred for decisions; Strong / Weak / Unexamined for assumptions.
 - The model was written before any declaration, so every question above is answerable by a ruling rather than by a measurement. The first declarations are the measurement.
 - No `.kh` file under `protocol/` was edited, no file outside this folder was touched, nothing was staged, and no git command was run.
-- Three defects found outside this folder are recorded in the session's report rather than fixed here: `protocol/if.kh`'s inclusion of the Go-draft `modules/process/error/error.kh` (already tracked in the toolchain handoff), the untracked root scratch `main.kh:4` naming `modules/control-flow`, which resolves to nothing, and the compiled `modules/khayyam/targets/js/build/modules/khayyam/targets/js/lib/branch.js`, a build product whose source file no longer exists.
+- Three defects found outside this folder are recorded in the task's report rather than fixed here: `protocol/if.kh`'s inclusion of the Go-draft `modules/process/error/error.kh` (already tracked in the toolchain handoff), the untracked root scratch `main.kh:4` naming `modules/control-flow`, which resolves to nothing, and the compiled `modules/khayyam/targets/js/build/modules/khayyam/targets/js/lib/branch.js`, a build product whose source file no longer exists.

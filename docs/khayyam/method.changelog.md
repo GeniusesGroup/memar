@@ -8,7 +8,7 @@
 - Cited:
   - [Khayyam - Programming Language](./khayyam.md) — Reference: the canonical specification defines the `mt` subtype and the method signature grammar this document elaborates and motivates.
   - [Encapsulation in Khayyam](./encapsulation.md) — Depends_on: Method Structure relies on the capsule model — Capsule Structure and Privacy, Sovereign Encapsulation — defined there, for its common-case examples and for the state-protection guarantee described under Pass-by-Reference and State Protection. Encapsulation in Khayyam references this document back for the method-signature mechanics.
-  - [Logic in Khayyam](../modules/process/control-flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
+  - [Logic in Khayyam](../../modules/process/control-flow/control-flow.md) — Reference: Logic in Khayyam's IF/ELSE model relies on the same pass-by-reference, explicit-influenced-variable mechanic specified here under Method Structure — no chaining, in either document, is a consequence of that mechanic.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.2, medium effort) — rewrote
@@ -115,7 +115,7 @@
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../modules/computer/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
+  - [Linter](../../modules/computer/linter/linter.md) — Consumed contract: the check is governance; this document owns the grammar.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
@@ -215,7 +215,7 @@
 - Time: 2026-10-03T11:16:28Z
 - Type: Changed
 - Propagates to:
-  - [Computer — Compiler](../modules/computer/compiler.md): Pending - the linking-phase account of a body-less method, and the resolution of a `vr`/`sc`/`mt` position, are now unanswered here.
+  - [Computer — Compiler](../../modules/computer/compiler/compiler.md): Pending - the linking-phase account of a body-less method, and the resolution of a `vr`/`sc`/`mt` position, are now unanswered here.
   - [System → When Is a Responsibility Coherent?](../system.md#when-is-a-responsibility-coherent) and [Modularity → Module Identity and Responsibility](../../modules/knowledge/modularity/modularity.md#module-identity-and-responsibility): Pending - the decomposition test this document used to apply to a method body is stated there; this document no longer tells a reader what to do when the test fires.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied

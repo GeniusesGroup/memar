@@ -10,9 +10,7 @@ that declare a record's keys subclass `RecordKey` in their own `primitive/`
 ([PlanKey](../plan/primitive/plan_key.py), [ReportKey](../report/primitive/report_key.py)).
 """
 from __future__ import annotations
-
 from enum import Enum
-
 
 class RecordKey(Enum):
     """A front-matter key: the (lower-case) key callers ask for, what it holds, how it is written, and its earlier names.
@@ -24,7 +22,7 @@ class RecordKey(Enum):
     they are read as the key and never written.
     """
 
-    def __init__(self, key: str, description: str, written: str | None = None, earlier: tuple[str, ...] = ()) -> None:
+    def __init__(self, key: str, description: str, written: str | None=None, earlier: tuple[str, ...]=()) -> None:
         self.key = key
         self.description = description
         self.earlier = earlier
@@ -34,11 +32,5 @@ class RecordKey(Enum):
     def written(self) -> str:
         """The key as the front matter writes it."""
         return self._written or self.key.capitalize()
-
-
-# Every record names the one it is, one declaration for all of them: the
-# Explanation's ID and a session plan's and report's `Session` are one field
-# (owner, 2026-10-16), found inside the document because a folder may be moved,
-# renamed or swept ([Documentation — Plan](../plan/plan.md)).
-START_DATE_FIELD = ("start date", "when the record was first written, UTC: a plan's time, an Explanation's date, e.g. 2026-10-08T13:20:34Z", "Start Date", ("opened",))
-ID_FIELD = ("id", "the id of the record, found inside the document; a session's for a plan and a report", "ID", ("session",))
+START_DATE_FIELD = ('start date', "when the record was first written, UTC: a plan's time, an Explanation's date, e.g. 2026-10-08T13:20:34Z", 'Start Date', ('opened',))
+ID_FIELD = ('id', "the id of the record, found inside the document; a task's for a plan and a report", 'ID', ('task',))

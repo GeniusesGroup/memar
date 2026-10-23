@@ -3,7 +3,7 @@ Open work for `modules/computer/ui/ui.md`. Entries are mutable current state —
 
 ## Decisions
 
-### The ui design and the correction of this module's placement (Tentative, owner rulings of 2026-10-20 to 2026-10-22; session 20261020-T060223Z-17988)
+### The ui design and the correction of this module's placement (Tentative, owner rulings of 2026-10-20 to 2026-10-22; task 20261020-T060223Z-17988)
 The decisions below are Tentative; the moves they led to are listed at the end of this entry.
 
 - **What this module is.** `modules/gui` was written as the base for developing the concept of an interface, not for one application, and it was placed as a main category by mistake. The concept is **ui**: how any agent (a person, a screen, a voice, a command line, a program) meets services. gui, vui and cli are realizations of it. *(owner)*
@@ -15,7 +15,7 @@ The decisions below are Tentative; the moves they led to are listed at the end o
 - **Command line.** `modules-plugable/computer/ui/command` is not a process concept: it is how a service is called, so it belongs to ui as a module `command` of its own; `cli` is later a separate module that uses `command` (as a future `bash` module would), not its folder. Its Python implementation was not developed with Memar's thinking and must not be carried into Khayyam as it stands; a note to say so is owed in its handoff. *(owner)*
 - **The SDK rule.** "No part of a Memar GUI speaks the network; it calls generated SDK functions" is a rule of the service domain, not of ui: no agent that calls a service writes the call itself. It belongs in `modules/process/service/rules`, and `sdk.md` at the root of that module should move under it. ui cites it. *(owner)*
 
-#### Applied on 2026-10-22 (owner approved the plan and asked this session to apply it)
+#### Applied on 2026-10-22 (owner approved the plan and asked this chat to apply it)
 Moved by one scripted pass, with every relative link, path string and `.kh` import that named a moved path rewritten (changelogs: links only, their prose is history). Nothing is committed.
 1. The SDK module moved to `modules/process/service/rules/sdk` (see [SDK](../../process/service/rules/sdk/sdk.md)).
 2. Deviation from the plan: all of the former `modules/gui` code went to `modules-plugable/computer/ui/gui`, not only the screen parts, because `PageState` imports `DOM`, `Screen`, `ScreenMode` and `SOM`, and `Page`, `Navigator`, `Application` and `Pages` depend on `Page`; a core protocol may not import a pluggable one, so the neutral protocols cannot be cut out until the open question on page state below is designed. The concept documents (this handoff, its changelog and `ui.md`) are in `modules/computer/ui`; `ui.md` still states the GUI position and is to be split into the neutral part and the gui part.

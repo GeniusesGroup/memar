@@ -19,20 +19,20 @@ Per kind it holds: the word; one sentence on when the kind applies, which says
 when to choose it and does not restate what a Practice's own `description`
 says of itself; and whether a plan may carry it. Two words are kinds of
 context and not of task: `answer`, a question answered in the conversation,
-which opens no session and so has no plan; and `plan`, the coordinating acts —
-writing, queuing and handing over other sessions' plans, asking for a review —
-which a coordinating session adds to the kind of its own task, whatever that
+which opens no task and so has no plan; and `plan`, the coordinating acts —
+writing, queuing and handing over other tasks' plans, asking for a review —
+which a coordinating task adds to the kind of its own task, whatever that
 is. A plan carries neither.
 
 Which agent runs a kind, and how able it must be, is not said here and is not
 a fact of the kind: a plan's own AI is the Labels design's concern
-(session 20261014T120306Z-20292-0), and until it lands the reader of these words
-(`session_plan_labels`) keeps the rule `start` applies, as a transitional rule
+(task 20261014T120306Z-20292-0), and until it lands the reader of these words
+(`task_plan_labels`) keeps the rule `start` applies, as a transitional rule
 with its reason.
 
 This file moves whole to the `protocol/` folder of the `task` module once the
 scripts are modules (study 20261015-T112819Z-23712, R7); the move of services
-into modules is its own session (20261015-T123046Z-17544).
+into modules is its own task (20261015-T123046Z-17544).
 """
 from __future__ import annotations
 from enum import Enum
@@ -40,8 +40,8 @@ from modules.knowledge.documentation.primitive.label import Label, LabelDefiniti
 
 class TaskKind(Enum):
     """One kind, in the order a task usually meets them: (word, when it applies, whether a plan may carry it)."""
-    ANSWER = ('answer', 'A question is answered in the conversation itself, which opens no session and so writes no plan.', False)
-    PLAN = ('plan', 'A session coordinates other sessions — writes, queues or hands over their plans, or asks for a review of their work — and adds this to the kind of its own task, so no plan carries it.', False)
+    ANSWER = ('answer', 'A question is answered in the conversation itself, which opens no task and so writes no plan.', False)
+    PLAN = ('plan', 'A task coordinates other tasks — writes, queues or hands over their plans, or asks for a review of their work — and adds this to the kind of its own task, so no plan carries it.', False)
     DESIGN = ('design', 'The task decides what something is — a concept, an abstraction, a protocol, a language construct, a rule — or chooses between proposals for one, before anything is built from it.', True)
     CRITIQUE = ('critique', 'The task judges work it did not make against the documents that govern that work, and returns a verdict on each part.', True)
     IMPLEMENT = ('implement', 'The task builds or changes code, a test or a tool whose design is already settled, one checked step at a time.', True)

@@ -1,7 +1,7 @@
 # Transaction Handoff
 
 ## Topic & Purpose
-Load-bearing decisions for the Transaction domain: request-vs-effect, cardinality, ordering, compensation, cause reference, processing/retry patterns, and open naming/multiplicity questions. Consolidated from Account & Transaction modeling sessions (2026-08) and the Organization ideas backlog (2026-09-16 migration).
+Load-bearing decisions for the Transaction domain: request-vs-effect, cardinality, ordering, compensation, cause reference, processing/retry patterns, and open naming/multiplicity questions. Consolidated from Account & Transaction modeling chats (2026-08) and the Organization ideas backlog (2026-09-16 migration).
 
 ## Status
 Active — invariants practiced in README/edges; open questions below still block final naming and Transfer-vs-Transaction clarification.

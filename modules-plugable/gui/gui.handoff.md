@@ -7,7 +7,7 @@ Org product GUI / projection requirements and second-pass Semantic UI bullets: G
 Active — multi-GUI / logical-snapshot decided; org GUI projections live in `modules-plugable/gui` (not kernel). Semantic UI catalog ownership and org-vs-Memar UI modeling remain open/direction.
 
 ## Placement (superseded in part, Tentative)
-The ui design of 2026-10-22 moved the `page-*` folders to the domain whose subject each page is; see [UI Handoff → Decisions](../../modules/computer/ui/ui.handoff.md#the-ui-design-and-the-correction-of-this-modules-placement-tentative-owner-rulings-of-2026-10-20-to-2026-10-22-session-20261020-t060223z-17988). What stays here is the pages with no settled domain (cart, discussion, economic-indicator, friendship_cycle, market, payment, process, shipping, store, summary, work_flow), each a sign to resolve: a domain to model, an existing domain, or the application bundle. This folder is not a category and disappears when they are placed.
+The ui design of 2026-10-22 moved the `page-*` folders to the domain whose subject each page is; see [UI Handoff → Decisions](../../modules/computer/ui/ui.handoff.md#the-ui-design-and-the-correction-of-this-modules-placement-tentative-owner-rulings-of-2026-10-20-to-2026-10-22-task-20261020-t060223z-17988). What stays here is the pages with no settled domain (cart, discussion, economic-indicator, friendship_cycle, market, payment, process, shipping, store, summary, work_flow), each a sign to resolve: a domain to model, an existing domain, or the application bundle. This folder is not a category and disappears when they are placed.
 
 A GUI is a consumer of domain contracts, not a core-by-necessity domain: removing these pages does not force fabricating Account, User, Content, or Task. `bundles/gui` stays the runtime/composition host; this folder holds projection pages (`page-*`) only.
 
@@ -34,7 +34,7 @@ A GUI is a consumer of domain contracts, not a core-by-necessity domain: removin
 - **AI-era discovery discipline: hypothesis-rejection rate is the real metric, not hypothesis-production
   rate.** A chatbot accelerates generating candidates as much as generating wrong candidates; a fixed
   rubric + stop criteria must gate batch classification regardless of speed. Applies directly to how
-  the org runs AI-assisted requirement extraction and domain-modeling sessions. *(decided method)*
+  the org runs AI-assisted requirement extraction and domain-modeling chats. *(decided method)*
 - **Upper document states principles, never instantiations.** Whatever top-level document governs a
   domain (UI, bookkeeping, tasks) must introduce the general principles and refuse positive per-case
   rules ("disabled is a State" never belongs there) — instances are discovered in the domain's own

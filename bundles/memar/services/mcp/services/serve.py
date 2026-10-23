@@ -4,7 +4,7 @@
 """mcp/services/serve.py — `memar mcp serve`: the MCP server on stdio, a relay to a worker that is replaced when Memar's code changes.
 
 **Why two processes.** An agent app starts this once per conversation and keeps it, so it lives
-across edits to the services it runs: a pull, a checkout or a session's own change to a script.
+across edits to the services it runs: a pull, a checkout or a task's own change to a script.
 A process that imported those services cannot unimport them, so the services live in a worker
 (`_worker.py` beside this file), and this file holds nothing a verb is made of. Before it hands a
 message on, it compares a fingerprint of the Python the router reads; when it differs, the worker is

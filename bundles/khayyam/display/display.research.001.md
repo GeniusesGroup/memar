@@ -156,7 +156,7 @@ What collapses: every use site. A `vr` name reads as a declaration, a parameter 
 That is the cost of the TextMate profile, and it is the honest answer to the owner's requirement. The spectrum itself does hold in both modes — every value drawn with no server running is a value from the same twenty-pair sheet, and the classes that survive are drawn in their own class's colour — but the parameter/local/imported distinction does not, because no TextMate grammar can make it. See Q1.
 
 ### F7 — What the verification script must gain
-`verify-roles.mjs` today proves that the three files agree. It does not prove that the values are usable, and nothing in the tree would fail if every value were replaced by a near-identical one. Stated as conditions, so a reader can check them and a later session can implement them:
+`verify-roles.mjs` today proves that the three files agree. It does not prove that the values are usable, and nothing in the tree would fail if every value were replaced by a near-identical one. Stated as conditions, so a reader can check them and a later chat can implement them:
 
 1. Every value is a six-digit hex triple whose sRGB components are all in range, and every theme's own `editor.background` is read from that theme file rather than assumed.
 2. Every role's value meets or exceeds 4.5:1 against its own theme's background, except a role the contract names as one that must recede, which has a floor of 3:1 stated in the contract rather than in the check.

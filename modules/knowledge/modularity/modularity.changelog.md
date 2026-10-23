@@ -133,7 +133,7 @@
 
 #### Deliberation
 - The discovery discussions these principles generalize from were driven — capabilities repeatedly misread as candidate new domains; one capability's parts nearly scattered across endpoint Modules; mutual conceptual dependency mistaken for a defect because of language-level cycle rules (Omid Hekayati).
-- The positions were co-developed across parallel sessions, including the reversal that had initially separated a capability's processing from its relationship (ChatGPT).
+- The positions were co-developed across parallel chats, including the reversal that had initially separated a capability's processing from its relationship (ChatGPT).
 - Scope and wording were approved (Omid Hekayati).
 
 #### Considered and not done
@@ -157,7 +157,7 @@
 
 #### Deliberation
 - The criterion was reached during a core-versus-plugable review of an economics domain tree — a foundational abstraction is one whose absence would force fabricating or altering another foundational concept to express the same reality (Omid Hekayati).
-- The criterion and its application were co-developed across the same session (ChatGPT).
+- The criterion and its application were co-developed across the same chat (ChatGPT).
 - Importance and usage frequency were confirmed to carry no evidentiary weight (Omid Hekayati).
 
 #### Considered and not done
@@ -296,7 +296,7 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 - Propagates to:
   - Khayyam → Import Mechanism (`in`) (`docs/khayyam/khayyam.md#import-mechanism-in`): Reference — its `Modularity is the subject` sentence now resolves; nothing in that file needed changing.
   - [Type → Type Identity](../../../docs/type.md#type-identity): Rejected — it already states the general rule, in the terms a name-collision finding is a special case of; adding the modular consequence there would have put a claim about Module identity into a document about Type.
-  - Khayyam Rule — Qualified Names (`bundles/khayyam/rules/qualified-names/qualified-names.md`): Pending — its opening paragraph, its third case, its *Why it exists*, and its third *does not claim* bullet all cite the language document as holding the claim that a collision is an architecture error whose remedy is a redesign. That sentence was removed on 2026-10-03 and the section now points here instead, so four of its sentences rest on a premise its citation no longer carries. Not this session's file to write.
+  - Khayyam Rule — Qualified Names (`bundles/khayyam/rules/qualified-names/qualified-names.md`): Pending — its opening paragraph, its third case, its *Why it exists*, and its third *does not claim* bullet all cite the language document as holding the claim that a collision is an architecture error whose remedy is a redesign. That sentence was removed on 2026-10-03 and the section now points here instead, so four of its sentences rest on a premise its citation no longer carries. Not this chat's file to write.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, ruled
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied, placed
@@ -382,7 +382,7 @@ Added a pointer from "Rules as a Provisional Term" to modeling.md's new "Separat
 
 #### What changed
 - `### Rules as a Provisional Term` now states what holds on the modular side: a Rule is a Module developed on its own, related to another Module, and its behavior can be attached to an existing Module without becoming part of that Module's essential identity.
-- The paragraph that left the module and graph-node framings unreconciled, and this document's refusal to take a position on them, is replaced by a link to [Rule → One Concept, Two Lenses](./rule.md#one-concept-two-lenses), which states that the two are one concept, that neither lens is primary, and what each lens owes.
+- The paragraph that left the module and graph-node framings unreconciled, and this document's refusal to take a position on them, is replaced by a link to [Rule → One Concept, Two Lenses](../../process/rule/rule.md#one-concept-two-lenses), which states that the two are one concept, that neither lens is primary, and what each lens owes.
 - `modularity.handoff.md` no longer carries the final-terminology question, and its first anticipated-work bullet names Rule rather than a provisional Rule concept.
 
 #### Considered and not done
@@ -447,7 +447,7 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - `modularity.handoff.md`, first item under *The category layout of this repository*: the sentence said `modules/README.md` and `modules/lib/lib.md` both place the runtime under `computer/runtime/`. Only `lib.md` does; `modules/README.md` lists `runtime/` as a category of its own. Corrected to say so, since that disagreement is part of the question.
 
 #### Considered and not done
-- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](../modules/content/documentation/documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.
+- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](../documentation/documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.
 
 ---
 
@@ -455,7 +455,7 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - Time: 2026-10-12T11:30:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Citation Direction](../modules/content/documentation/documentation.md#citation-direction) — `Depends_on`: a base document links to its own layer or a lower one, and names a higher place in plain text
+  - [Documentation → Citation Direction](../documentation/documentation.md#citation-direction) — `Depends_on`: a base document links to its own layer or a lower one, and names a higher place in plain text
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied
@@ -483,6 +483,44 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 
 #### Considered and not done
 - **Keeping the section as a record of the old layout.** Not done: a README states the rule as it now is and keeps no history, and this entry is where the history of the decision lives.
+
+---
+
+### Categories are re-read: `knowledge` and `classification` are added and `lib` is dissolved
+- Time: 2026-10-17T10:41:00Z
+- Type: Changed
+- Cited:
+  - [Modularity → Pluggable Behavior](./modularity.md#pluggable-behavior) — `Depends_on`: the placement under `modules-plugable/` applies it
+  - [Modularity → What Earns Foundational Status](./modularity.md#what-earns-foundational-status) — `Depends_on`: the test for the kernel placement
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- The category layout of `modules/` was re-read under the owner's position that the categories themselves are open to critique, and the open questions of *The category layout of this repository* moved to Classification's handoff (`modules/knowledge/modularity/placements.handoff.md`). Settled by the ruling of 2026-10-17: `runtime/` merged into `computer/runtime/`; `hardware/`, `identifier/` and the media types moved under `computer/`; `content/` and `documentation/` stand under a new `knowledge/` category, documentation directly and not under content; `time/` is not subdivided; `lib/` is dissolved into `modules-plugable/`, each module carrying the label `guest` in a manifest; and the placements kernel, pluggable and bundle, first worked out in the `organization` repository, became Memar's own as the new Classification (`modules/knowledge/modularity/placements.md`) module, with Label (`modules/knowledge/label/label.md`) beside it for what a label is.
+- `docs/content.md` and `docs/rule.md` with their companions left `docs/` for `modules/knowledge/content/` and `modules/process/rule/`, on the principle that a document that needs code to state itself does not stay in `docs/`. `time/mars` became a pluggable module. Every link and `in` address naming a moved place was rewritten in one pass.
+- The entries of the handoff section that are settled were removed or reduced to a pointer; the entries on `memory/`, the four declarations of `UUID` and the further pluggable candidates were carried to Classification's handoff, not decided.
+
+#### Considered and not done
+- **Merging `memory/` into `computer/`.** Not done: the owner's example was `storage` in `organization`, and `memory/` holds address, block, page, file and index, which is a larger question; it is recorded as open.
+- **Giving documentation's facets `documentation-` prefixes as sibling modules.** Not done: a prefix makes a category of a word, and the facets are parts of one concept, so they stay inside the module.
+
+---
+
+### Codecs, cryptography and memory join `computer`; the knowledge and process concept documents move into their categories
+- Time: 2026-10-17T12:30:00Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- `modules/codec/`, `modules/crypto/` and `modules/memory/` moved under `modules/computer/`; the guest modules attached to them (JSON, Brotli, string, filesystem) stand under `modules-plugable/computer/`. The minify abstraction, which had come from the dissolved `lib` shelf, moved to `modules/computer/codec/minify/` as a kernel module without the `guest` label: it is Memar's own abstraction, and where its CSS and HTML implementations belong is decided per format.
+- `docs/knowledge.md` and `docs/process.md` with their companions moved to `modules/knowledge/` and `modules/process/`, and each category's `README.md` is a link to its concept document. Every link and path naming a moved place was rewritten in one pass.
+- The question of whether `docs/` keeps any base document was recorded in Classification's handoff (`modules/knowledge/modularity/placements.handoff.md#do-the-base-documents-of-docs-move-to-their-modules`) and given to a research session.
+
+#### Considered and not done
+- **Moving `crypto/` under `math/`.** Not done: the owner's reading is that it could go either way, and it is recorded as open.
 
 ---
 

@@ -6,7 +6,7 @@
 - Time: 2026-06-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](../modules/process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../../modules/process/control-flow/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
   - [Framework](../framework.md) — Depends_on.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
@@ -27,7 +27,7 @@
 - Type: refactor
 - Cited:
   - [Agency](../agency.md) — Depends_on: this document's central new claim — that a Worker/Actor-style representation should not be hard-coded into a language's grammar — is stated in Agency's own terms (Execution Agent as a representation, not a primitive) rather than reconstructed independently here.
-  - [Process](../process.md) — Depends_on: the Concurrency topic's escalating decision chain (shared state → ... → synchronization → locking) is cited directly as the reasoning a `go`-style keyword would bypass.
+  - [Process](../../modules/process/process.md) — Depends_on: the Concurrency topic's escalating decision chain (shared state → ... → synchronization → locking) is cited directly as the reasoning a `go`-style keyword would bypass.
 - Propagates to:
   - khayyam-control_flow.md: Reference only — this document's citation of Control Flow's own general syntax-minimalism argument was checked against the current file and found accurate; no change needed there.
 - Contributors:
@@ -224,13 +224,13 @@
 - Time: 2026-10-03T11:16:28Z
 - Type: Changed
 - Propagates to:
-  - [Computer — Runtime → Concurrency is hosted, not defined, here](../modules/computer/runtime.md#concurrency-is-hosted-not-defined-here): Pending - the green-thread scheduling account removed here is the runtime's and Concurrency protocol's to state; this document now points at both.
+  - [Computer — Runtime → Concurrency is hosted, not defined, here](../../modules/computer/runtime/runtime.md#concurrency-is-hosted-not-defined-here): Pending - the green-thread scheduling account removed here is the runtime's and Concurrency protocol's to state; this document now points at both.
   - asynchrony rule (`bundles/khayyam/rules/README.md`): Pending - the linter verification of an asynchrony tag, and the reconstruction of blocking-call guarantees by linter rules, are governance rules; the catalog does not carry them.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
-- [Abstract](./agency.md): the execution claim became a boundary statement — "execution is scheduled in user-space by framework-level schedulers, aligned with Unikernel/Exokernel architecture" became a statement that scheduling belongs to the framework and runtime above the language, cited to [Runtime](../modules/computer/runtime.md). The closing parenthetical "(avoiding the function-coloring problem, keeping the compiler minimal)" became "(avoiding the function-coloring problem)".
+- [Abstract](./agency.md): the execution claim became a boundary statement — "execution is scheduled in user-space by framework-level schedulers, aligned with Unikernel/Exokernel architecture" became a statement that scheduling belongs to the framework and runtime above the language, cited to [Runtime](../../modules/computer/runtime/runtime.md). The closing parenthetical "(avoiding the function-coloring problem, keeping the compiler minimal)" became "(avoiding the function-coloring problem)".
 - [Definition-Site Over Call-Site](./agency.md#definition-site-over-call-site): the implementation example was removed — "What the tag changes is how the owning library and its scheduler realize the method underneath (for example, suspending a green thread rather than blocking a kernel thread)" became "What the tag changes is what the owning library does with the method underneath it".
 - [User-Space Scheduling (Unikernel Synergy)](./agency.md#user-space-scheduling-unikernel-synergy): the topic no longer states a scheduling substrate — "Underlying execution runs on user-space (green) threads managed by library-level schedulers (e.g. the Memar framework's scheduler) — the language syntax itself remains entirely unaware of OS kernel threads. The default architectural stance favors green threads managed by library-level schedulers, for zero-overhead context switching". It now states that the grammar says nothing about how execution is scheduled or what substrate it runs on, and points at the runtime and concurrency contracts.
 - [Avoiding Function Coloring](./agency.md#avoiding-function-coloring): the linter attribution and the AST claim were removed — "Because asynchronous behavior is a Linter-verified abstraction (`ab`) rather than a compiler keyword, the function-coloring problem that plagues `async`/`await` languages does not arise, keeping the core AST clean and orthogonal." became "Asynchronous behavior is declared as an abstraction the method composes, not as a keyword, so the function-coloring problem that plagues `async`/`await` languages does not arise: nothing in the source distinguishes a call that may suspend from one that may not, because no declaration makes that distinction at a call site."
@@ -270,12 +270,12 @@
 - Cited:
   - [Abstraction in Khayyam → Deliberate Satisfaction Is Composed, Not Declared](./abstraction.md#deliberate-satisfaction-is-composed-not-declared) — Depends_on: the settled position this section now states — the language does not intervene in satisfaction, and a capsule composes an intent abstraction and explicitly delegates the required methods — instead of the open question it previously narrated.
   - [Abstraction in Khayyam → Sharing Behavior Across Implementations](./abstraction.md#sharing-behavior-across-implementations) — Premise: delegation is the ordinary route by which an implementing capsule discharges a required method to a capsule that owns the behavior.
-  - [abstraction_p.Implements → Declaring and discovering intent](../modules/computer/abstraction-implements.md#declaring-and-discovering-intent) — Premise: an intent to implement an abstraction is itself an abstraction a capsule composes, the protocol-level precedent for the composed undertaking the section now describes.
+  - [abstraction_p.Implements → Declaring and discovering intent](../../modules/computer/abstraction/implements.md#declaring-and-discovering-intent) — Premise: an intent to implement an abstraction is itself an abstraction a capsule composes, the protocol-level precedent for the composed undertaking the section now describes.
   - [Agency → The `agent_for` Relationship](../agency.md#the-agent_for-relationship) — Premise: an Agent relationship is constituted by an undertaking of responsibility, not by two parties having compatible shapes.
   - [Agency → Delegation](../agency.md#delegation) — Premise: responsibility is placed with the Agent that acts, which is why a declaration recognized by the compiler is a different kind of thing from an undertaking written in the capsule's own source.
 - Propagates to:
   - [Abstraction in Khayyam Changelog → Deliberate satisfaction is composed and delegated; the language does not intervene](./abstraction.changelog.md#deliberate-satisfaction-is-composed-and-delegated-the-language-does-not-intervene): Done — the `Not done` line that entry recorded for `agency.md` is discharged. The section no longer presents the question as `abstraction.md`'s own unresolved one and no longer takes no position on it: it now states that the composed, delegated undertaking is the settled answer, that Agency's vocabulary is why that form is the right one (an undertaking is the Agent's own act, so nothing needs to be added to the grammar), and that the intent abstraction is judged by the ordinary structural rule with no exemption and no check of its own.
-  - [Agency in Khayyam Handoff](./agency.handoff.md): Done — the section's own remaining question has no entry there: whether the receiving side of an abstraction-typed position needs anything — a rule or a tool's check — to surface which satisfiers undertook and which merely resemble. Open questions belong to the handoff, and that file was outside this session's ownership. (Marked `Done` in the entry "The receiving-side question left the section's body for the handoff", which added that entry to the handoff.)
+  - [Agency in Khayyam Handoff](./agency.handoff.md): Done — the section's own remaining question has no entry there: whether the receiving side of an abstraction-typed position needs anything — a rule or a tool's check — to surface which satisfiers undertook and which merely resemble. Open questions belong to the handoff, and that file was outside this chat's ownership. (Marked `Done` in the entry "The receiving-side question left the section's body for the handoff", which added that entry to the handoff.)
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 

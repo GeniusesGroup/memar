@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/claims.py — the N queued sessions first in line, made one agent's.
+"""modules/management/task/services/claims.py — the N queued tasks first in line, made one agent's.
 
 Why through `try_claim`. Taking the N first in line is the act `claim`
-does — the exclusive create, the status moved — tried on several sessions in
-turn, so each is taken by `session_claim.try_claim` and by nothing here: one
-place takes a session, not two that could take it two ways. `claims` tries the
-queued sessions in line order and skips any another caller won meanwhile, so
-two callers asking at once each get sessions, never the same one.
+does — the exclusive create, the status moved — tried on several tasks in
+turn, so each is taken by `task_claim.try_claim` and by nothing here: one
+place takes a task, not two that could take it two ways. `claims` tries the
+queued tasks in line order and skips any another caller won meanwhile, so
+two callers asking at once each get tasks, never the same one.
 
-Why that line. The plan's priority first, the higher sooner (`session_plan`),
+Why that line. The plan's priority first, the higher sooner (`task_plan`),
 then the oldest opened, so among equals what has waited longest goes first;
 the id breaks a tie in time. A queued plan whose Request is still empty has
-not been written yet — its session was opened queued before its task was —
+not been written yet — its task was opened queued before its task was —
 and is passed over until it is. N is the caller's: the owner says how much
 work a night holds ("do five tonight"), the agent passes 5, and nothing here
 defaults or caps it, since a cap here would be a policy no one chose.
@@ -22,7 +22,7 @@ Why the first task's topic pulls the batch. An agent given several tasks of one
 subject keeps its context on that subject, so the batch is one subject when the
 queue allows, which accepts that strict
 priority is disturbed for it. The first task is the first in line, as ever,
-and is never displaced; its first `Topic` label (`session_plan_labels`) is the
+and is never displaced; its first `Topic` label (`task_plan_labels`) is the
 batch's, and the rest of the N are the queued tasks that carry that label, in
 line order; a task either carries it or does not, whatever other topics it has. Other tasks do not
 fill the remainder, since the owner's reason, focus, argues against it, unless
@@ -37,12 +37,12 @@ owner can ask for one if displacement is seen in use.
 
 Why Memar starts no agent. How an agent runtime starts a sub-agent is the
 runtime's, known to the agent already in a conversation and to nothing else;
-so `claims` prints, for each session it took, the brief that hands it over
+so `claims` prints, for each task it took, the brief that hands it over
 (`plan_brief`), and the agent that called it delegates each one the way its
 runtime does.
 
 Why the project is named, never defaulted. One run of `claims` serves one
-project: the sessions it takes become one coordinator's work, landing in that
+project: the tasks it takes become one agent's work, landing in that
 project. A default — Memar's own folder, every project's, or the current
 folder's guessed — would hide which project the work lands in, and taking from
 two projects at once would mix their work in one run. So the caller names the
@@ -63,8 +63,8 @@ from modules.management.task.services.dependency import DependsOn, Reader
 from modules.management.task.services.depends import problems, reconcile_all
 from modules.process.project.services.find import add_project_flags, project_from_args
 from modules.management.task.services.get_decisions_digest import DIGEST_COMMAND
-from modules.management.task.services.list import LIST_COMMAND, find_sessions, project_of
-from modules.management.task.services.folder import Session
+from modules.management.task.services.list import LIST_COMMAND, find_tasks, project_of
+from modules.management.task.services.folder import Task
 from modules.management.task.services.temp import TEMP_SENTENCE
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, part_text
 from modules.knowledge.documentation.plan.primitive.priority import Priority
@@ -78,94 +78,94 @@ from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
 CLAIMS_COMMAND = 'claims'
 PROJECT_REQUIRED = f'{CLAIMS_COMMAND} needs {ProjectName.either_words()}: one run serves one project, and naming it keeps the work from landing in a project no one chose; if you do not know which project the tasks are for, ask the owner'
 
-def in_line(project: str) -> list[Session]:
-    """The queued sessions of PROJECT in the order `claims` takes them: highest priority, then oldest opened, then id.
+def in_line(project: str) -> list[Task]:
+    """The queued tasks of PROJECT in the order `claims` takes them: highest priority, then oldest opened, then id.
 
     That project's wherever they lie, as `list --project` finds them
-    (`session_find`); PROJECT is a name or a folder, and an empty one is refused.
+    (`task_find`); PROJECT is a name or a folder, and an empty one is refused.
     Their Status is first brought up to date with their dependencies, so a
-    session that waits for another is Blocked and not in line, and one whose
-    dependencies are all Complete is queued and in it (`session_depends`).
+    task that waits for another is Blocked and not in line, and one whose
+    dependencies are all Complete is queued and in it (`task_depends`).
     """
-    reconcile_all(find_sessions(project=project_of(project)))
-    queued = find_sessions(status=Status.QUEUED.key, project=project_of(project))
-    return sorted(queued, key=lambda session: (-Priority.of(session.front), (session.front or {}).get(PlanKey.START_DATE.key, ''), session.id))
+    reconcile_all(find_tasks(project=project_of(project)))
+    queued = find_tasks(status=Status.QUEUED.key, project=project_of(project))
+    return sorted(queued, key=lambda task: (-Priority.of(task.front), (task.front or {}).get(PlanKey.START_DATE.key, ''), task.id))
 
 def held_back(project: str) -> None:
-    """Say, for each Blocked session of PROJECT waiting for its dependencies, that it is passed over and for which."""
+    """Say, for each Blocked task of PROJECT waiting for its dependencies, that it is passed over and for which."""
     reader = Reader(None)
-    for session in find_sessions(status=Status.BLOCKED.key, project=project_of(project)):
-        if DependsOn.of(session.front) and (unmet := problems(session, reader)):
-            print(f"{session.id}  waiting: {', '.join(unmet)}")
+    for task in find_tasks(status=Status.BLOCKED.key, project=project_of(project)):
+        if DependsOn.of(task.front) and (unmet := problems(task, reader)):
+            print(f"{task.id}  waiting: {', '.join(unmet)}")
 
-def first_topic(session: Session) -> str:
-    """The first topic SESSION carries; empty when it has none."""
-    return next(iter(topics_of(session.front)), '')
+def first_topic(task: Task) -> str:
+    """The first topic TASK carries; empty when it has none."""
+    return next(iter(topics_of(task.front)), '')
 
-def take(count: int, project: str, topic: str | None=None, fill: bool=False) -> list[Session]:
-    """Claim up to COUNT queued sessions of PROJECT in line order, by topic; the ones taken.
+def take(count: int, project: str, topic: str | None=None, fill: bool=False) -> list[Task]:
+    """Claim up to COUNT queued tasks of PROJECT in line order, by topic; the ones taken.
 
     TOPIC, when named, is the batch's topic from the start. Otherwise the first
-    session taken sets it: when it has one, only that topic's sessions are
+    task taken sets it: when it has one, only that topic's tasks are
     taken after it; with none, the line is followed as it is. With FILL, the
-    sessions not of the topic are taken once its own are used up. A session
+    tasks not of the topic are taken once its own are used up. A task
     passed over as not ready or not taken is said once.
     """
-    taken: list[Session] = []
+    taken: list[Task] = []
     tried: set[str] = set()
     batch: str | None = Topic.checked(topic) if topic is not None else None
 
-    def attempt(session: Session) -> None:
-        tried.add(session.id)
-        if not part_text(session.path / PLAN_NAME, PlanPart.REQUEST.heading):
-            print(f'{session.id}  not ready: its Request is empty')
+    def attempt(task: Task) -> None:
+        tried.add(task.id)
+        if not part_text(task.path / PLAN_NAME, PlanPart.REQUEST.heading):
+            print(f'{task.id}  not ready: its Request is empty')
             return
-        why = try_claim(session.path)
+        why = try_claim(task.path)
         if why:
-            print(f'{session.id}  not taken: {why}')
+            print(f'{task.id}  not taken: {why}')
             return
-        taken.append(session)
+        taken.append(task)
     line = in_line(project)
     held_back(project)
-    for session in line:
+    for task in line:
         if len(taken) >= count:
             break
-        if batch and batch not in topics_of(session.front):
+        if batch and batch not in topics_of(task.front):
             continue
-        attempt(session)
+        attempt(task)
         if batch is None and taken:
             batch = first_topic(taken[0])
     if fill:
-        for session in line:
+        for task in line:
             if len(taken) >= count:
                 break
-            if session.id not in tried:
-                attempt(session)
+            if task.id not in tried:
+                attempt(task)
     return taken
 
-def batch_report(taken: list[Session], count: int, project: str, topic: str | None) -> list[str]:
+def batch_report(taken: list[Task], count: int, project: str, topic: str | None) -> list[str]:
     """The lines saying the batch's topic, what waits under it, and what it passed over; none when the batch has no topic."""
     batch = Topic.checked(topic) if topic else first_topic(taken[0])
     if not batch:
         return []
-    own = sum((1 for session in taken if batch in topics_of(session.front)))
-    waiting = [session for session in in_line(project) if part_text(session.path / PLAN_NAME, PlanPart.REQUEST.heading)]
-    under = sum((1 for session in waiting if batch in topics_of(session.front)))
+    own = sum((1 for task in taken if batch in topics_of(task.front)))
+    waiting = [task for task in in_line(project) if part_text(task.path / PLAN_NAME, PlanPart.REQUEST.heading)]
+    under = sum((1 for task in waiting if batch in topics_of(task.front)))
     said = f'batch topic: {batch} ({own} of {count} asked'
     if own < len(taken):
         said += f'; {len(taken) - own} more filled from other topics'
     if under:
         said += f'; {under} more queued under it are not taken only because N was reached'
     lines = [said + ')']
-    lowest = min((Priority.of(session.front) for session in taken))
-    passed = [session for session in waiting if batch not in topics_of(session.front) and Priority.of(session.front) > lowest]
+    lowest = min((Priority.of(task.front) for task in taken))
+    passed = [task for task in waiting if batch not in topics_of(task.front) and Priority.of(task.front) > lowest]
     if passed:
-        listed = ', '.join((f'{session.id} (priority {Priority.of(session.front)})' for session in passed))
+        listed = ', '.join((f'{task.id} (priority {Priority.of(task.front)})' for task in passed))
         lines.append(f'passed over for topic: {listed}')
     return lines
 
 def claims(count: int, project: str | None, topic: str | None=None, fill: bool=False) -> list[str]:
-    """`claims`: claim the COUNT queued sessions of PROJECT first in line, and print what hands each over; their ids.
+    """`claims`: claim the COUNT queued tasks of PROJECT first in line, and print what hands each over; their ids.
 
     PROJECT None — no project named — is refused (`PROJECT_REQUIRED`). The
     batch follows the first task's topic, or TOPIC when named; FILL takes the
@@ -174,32 +174,32 @@ def claims(count: int, project: str | None, topic: str | None=None, fill: bool=F
     if project is None:
         fail(PROJECT_REQUIRED)
     if count < 1:
-        fail(f'{CLAIMS_COMMAND} N counts the sessions to take; N is at least 1')
+        fail(f'{CLAIMS_COMMAND} N counts the tasks to take; N is at least 1')
     taken = take(count, project, topic, fill)
     if not taken:
-        note('no queued session to claim' + (f' under topic {Topic.checked(topic)}' if topic else ''))
+        note('no queued task to claim' + (f' under topic {Topic.checked(topic)}' if topic else ''))
         return []
     print(f'claimed {len(taken)} of {count}')
     note(TEMP_SENTENCE)
     for line in batch_report(taken, count, project, topic):
         print(line)
-    for session in taken:
+    for task in taken:
         print()
-        print(f"{session.id}  {(session.front or {}).get('title', '')}")
-        note(f'priority: {Priority.of(session.front)}')
-        if topics_of(session.front):
-            note(f"topics: {', '.join(topics_of(session.front))}")
-        note(f'plan: {session.path / PLAN_NAME}')
-        note(f'brief: {brief_text(session.id)}')
-    return [session.id for session in taken]
+        print(f"{task.id}  {(task.front or {}).get('title', '')}")
+        note(f'priority: {Priority.of(task.front)}')
+        if topics_of(task.front):
+            note(f"topics: {', '.join(topics_of(task.front))}")
+        note(f'plan: {task.path / PLAN_NAME}')
+        note(f'brief: {brief_text(task.id)}')
+    return [task.id for task in taken]
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar task claims`."""
-    taker = verbs.add_parser(CLAIMS_COMMAND, help='take the N queued sessions first in line, and print the brief for each', description=f"""Take the N queued sessions first in line — the highest priority first,\nthe oldest opened first among equals — and claim each for yourself, as\n`claim` does. The first is the first in line; when it has a topic\n(a `Topic` label, `memar label add`), the rest are the queued sessions\nthat carry that topic, in\nline order, so one agent works one subject, even where that takes\nlower-priority sessions ahead of unrelated ones that rank above them.\nOther sessions do not fill what is left, unless --fill. --label Topic=T names\nthe topic instead of the first session's. A first session with no topic\nkeeps the plain line. The output states the batch topic and lists the\nhigher-priority sessions passed over. For each session taken it prints\nits id and title, its priority and topic, its plan, and the brief to\nhand one fresh sub-agent per batch of one topic. N is\nyours to choose, from what you were asked: there is no default and no\ncap. Fewer queued than N is not an error: you get what there is. A\nqueued plan whose Request is empty is not ready and is passed over,\nand so, saying why, is one another agent took meanwhile.\n{ProjectName.either_words()} is required: one run serves one project, so it takes only\nthat project's queued sessions, wherever they lie, and never mixes two\nprojects'; there is no default project and no way to take from all.\n"Do 5 tasks of X" means `claims 5 {ProjectName.FLAG} X` (or `{ProjectPath.FLAG}` with its folder); if you do not know\nwhich project the tasks are for, ask the owner rather than guess.\nTwo agents asking at once never get the same session.\n\nWhen you are asked to do some of the queued tasks — "do some of the\nqueued tasks", "do 5 tasks of project X" — work them this way, as the\ncoordinator:\n\n  1. `memar task {LIST_COMMAND} --status queued` shows what waits, each with\n     its priority; add {ProjectName.FLAG} {ProjectName.METAVAR} (or {ProjectPath.FLAG} {ProjectPath.METAVAR}) for one\n     project's.\n  2. `claims N {ProjectName.FLAG} X` takes them and prints a brief for each;\n     `memar task {CLAIM_COMMAND} ID` takes one named task instead.\n  3. Hand the batch of one topic to one fresh sub-agent, as your runtime\n     starts one, each session keeping its own {PLAN_NAME} and {REPORT_NAME} and\n     the sub-agent working them one after another; a batch of another\n     topic goes to another sub-agent: never in your own context, and\n     never one sub-agent for sessions of different topics. Memar starts\n     no agent: you do.\n  4. When each ends, read its {REPORT_NAME}: its Status and its\n     {REPORT.hand_back_part}. Its Status must equal its plan's: a sub-agent that\n     could only return text hands back the report, and you write it as\n     its {REPORT_NAME} and set its Status. A report with no Status, more\n     lines than allowed, or a Status that disagrees with its plan, is a\n     failed hand-back: say so, and do not count that task done.\n  5. Last, run `memar task {DIGEST_COMMAND} --conversation ID`, ID your own\n     session's, and give the owner that one digest rather than a\n     question per task.""")
-    taker.add_argument('count', type=int, metavar='N', help='how many queued sessions to take, at least 1')
-    add_project_flags(taker, 'the project whose queued sessions to take, as `list` finds them', required=True)
-    taker.add_argument('--label', default=None, metavar='Topic=T', help="take the queued sessions that carry the topic T instead of those of the first session's topic")
-    taker.add_argument('--fill', action='store_true', help="when the topic's sessions are used up before N, take the next in line, whatever its topic")
+    taker = verbs.add_parser(CLAIMS_COMMAND, help='take the N queued tasks first in line, and print the brief for each', description=f"""Take the N queued tasks first in line — the highest priority first,\nthe oldest opened first among equals — and claim each for yourself, as\n`claim` does. The first is the first in line; when it has a topic\n(a `Topic` label, `memar label add`), the rest are the queued tasks\nthat carry that topic, in\nline order, so one agent works one subject, even where that takes\nlower-priority tasks ahead of unrelated ones that rank above them.\nOther tasks do not fill what is left, unless --fill. --label Topic=T names\nthe topic instead of the first task's. A first task with no topic\nkeeps the plain line. The output states the batch topic and lists the\nhigher-priority tasks passed over. For each task taken it prints\nits id and title, its priority and topic, its plan, and the brief to\nhand one fresh sub-agent per batch of one topic. N is\nyours to choose, from what you were asked: there is no default and no\ncap. Fewer queued than N is not an error: you get what there is. A\nqueued plan whose Request is empty is not ready and is passed over,\nand so, saying why, is one another agent took meanwhile.\n{ProjectName.either_words()} is required: one run serves one project, so it takes only\nthat project's queued tasks, wherever they lie, and never mixes two\nprojects'; there is no default project and no way to take from all.\n"Do 5 tasks of X" means `claims 5 {ProjectName.FLAG} X` (or `{ProjectPath.FLAG}` with its folder); if you do not know\nwhich project the tasks are for, ask the owner rather than guess.\nTwo agents asking at once never get the same task.\n\nWhen you are asked to do some of the queued tasks — "do some of the\nqueued tasks", "do 5 tasks of project X" — work them this way, as the\nagent that takes them:\n\n  1. `memar task {LIST_COMMAND} --status queued` shows what waits, each with\n     its priority; add {ProjectName.FLAG} {ProjectName.METAVAR} (or {ProjectPath.FLAG} {ProjectPath.METAVAR}) for one\n     project's.\n  2. `claims N {ProjectName.FLAG} X` takes them and prints a brief for each;\n     `memar task {CLAIM_COMMAND} ID` takes one named task instead.\n  3. Hand the batch of one topic to one fresh sub-agent, as your runtime\n     starts one, each task keeping its own {PLAN_NAME} and {REPORT_NAME} and\n     the sub-agent working them one after another; a batch of another\n     topic goes to another sub-agent: never in your own context, and\n     never one sub-agent for tasks of different topics. Memar starts\n     no agent: you do.\n  4. When each ends, read its {REPORT_NAME}: its Status and its\n     {REPORT.hand_back_part}. Its Status must equal its plan's: a sub-agent that\n     could only return text hands back the report, and you write it as\n     its {REPORT_NAME} and set its Status. A report with no Status, more\n     lines than allowed, or a Status that disagrees with its plan, is a\n     failed hand-back: say so, and do not count that task done.\n  5. Last, run `memar task {DIGEST_COMMAND} --conversation ID`, ID your own\n     task's, and give the owner that one digest rather than a\n     question per task.""")
+    taker.add_argument('count', type=int, metavar='N', help='how many queued tasks to take, at least 1')
+    add_project_flags(taker, 'the project whose queued tasks to take, as `list` finds them', required=True)
+    taker.add_argument('--label', default=None, metavar='Topic=T', help="take the queued tasks that carry the topic T instead of those of the first task's topic")
+    taker.add_argument('--fill', action='store_true', help="when the topic's tasks are used up before N, take the next in line, whatever its topic")
     return run
 
 def batch_topic(text: str | None) -> str | None:

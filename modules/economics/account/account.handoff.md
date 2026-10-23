@@ -1,7 +1,7 @@
 # Account Handoff
 
 ## Topic & Purpose
-Load-bearing decisions for the Account domain: quantity-general bookkeeping holder (not money), unit ownership, balance vs availability, and naming. Consolidated from Account & Transaction modeling sessions (2026-08) and the Organization ideas backlog (2026-09-16 migration).
+Load-bearing decisions for the Account domain: quantity-general bookkeeping holder (not money), unit ownership, balance vs availability, and naming. Consolidated from Account & Transaction modeling chats (2026-08) and the Organization ideas backlog (2026-09-16 migration).
 
 ## Status
 Active — kernel practiced in README; naming and AvailableBalance trust still open.

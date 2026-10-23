@@ -26,9 +26,9 @@
 - Type: refactor
 - Cited:
   - [Modularity](../../modules/knowledge/modularity/modularity.md) — Depends_on: the authoritative definition of Module and Modularity; this document now retains only Khayyam-specific language and ecosystem consequences.
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: defines the current Explanation-facet structure.
-  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
-  - [How to make a new explanation document](../documentation-explanation.practice.md) — Reference: supplies the migration procedure.
+  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: defines the current Explanation-facet structure.
+  - [Documentation — Changelog](../../modules/knowledge/documentation/changelog/changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
+  - [How to make a new explanation document](../../modules/knowledge/documentation/explanation/explanation.practice.md) — Reference: supplies the migration procedure.
 - Propagates to:
   - [Modularity](../../modules/knowledge/modularity/modularity.md): Done — the general document links to this document for the Khayyam language and ecosystem realization.
 - Contributors:
@@ -119,7 +119,7 @@
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../modules/computer/linter.md) — Consumed contract: the check is governance; this document owns the modularity claim.
+  - [Linter](../../modules/computer/linter/linter.md) — Consumed contract: the check is governance; this document owns the modularity claim.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
@@ -165,12 +165,12 @@
 - **Rewriting the `memar/` references in the non-Khayyam files that carry them**: `modules/khayyam/targets/go/abstraction_bridge.py`, several `modules/**/*.go` files, and the `//memar:impl` annotations in about twenty `.kh` files carry `memar/`-rooted references. None is an `in` URI, so none is in the sources this change governs, and each needs its own decision about what it means — an annotation naming a symbolic `memar:impl` target is not a URI at all. Reported, not touched.
 - **Fixing the `modules/process/error/error.kh` address in `if.kh`**: the rewrite carried the address across faithfully, and choosing the correct target is a fact about the sources that this change does not establish.
 - **Naming the resolution base in the grammar**: a resolver whose base is the repository's `modules/` directory and a URI rooted at `modules/` collide — the same string means two things. The collision is a real argument for the manifest to name its base rather than the grammar to imply it, which is why the handoff records it as load-bearing manifest work; the base this repository's toolchain resolves from is recorded as a property of the rule in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`).
-- **Restating the address's spelling rule in this document**: the rule is recorded once, in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`). This document states the boundary and links the rest, per [Documentation → Content Rule: No Fabricated or Redundant Provenance](../documentation.md#content-rule-no-fabricated-or-redundant-provenance).
+- **Restating the address's spelling rule in this document**: the rule is recorded once, in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`). This document states the boundary and links the rest, per [Documentation → Content Rule: No Fabricated or Redundant Provenance](../../modules/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance).
 
 #### Deliberation
 - `.kh` is this repository's naming convention for its own files, and the address in an `in` declaration is not required to be a repository file path — it is a URI whose scheme the manifest declares. Once the manifest is the thing that says how an address resolves, a rule about suffixes in the grammar is a rule about one resolver's key (OpenCode, argued; Omid Hekayati, decided).
 - A related point decided the source root rather than taste: the owner accepted a git-root-relative path for this repository because it is readable and deterministic, and stated that a UUID scheme would be equally acceptable in a project that preferred one. That is why the rewrite re-roots to `modules/` rather than to a UUID, and why the grammar gains no rule either way (Omid Hekayati, decided).
-- The base collision named above is the consequence the rewrite surfaced: the verification harness specified for this session resolved addresses against `modules/`, which turns every re-rooted address into `modules/modules/…` and refuses 207 of 300 files. Resolving against the repository root — which is what the rewritten sources and the one pre-existing `modules/`-rooted address both assume — accepts 292. Both tallies are reported rather than one being chosen silently, because the base is manifest work (OpenCode, found and reported).
+- The base collision named above is the consequence the rewrite surfaced: the verification harness specified for this chat resolved addresses against `modules/`, which turns every re-rooted address into `modules/modules/…` and refuses 207 of 300 files. Resolving against the repository root — which is what the rewritten sources and the one pre-existing `modules/`-rooted address both assume — accepts 292. Both tallies are reported rather than one being chosen silently, because the base is manifest work (OpenCode, found and reported).
 
 ---
 
@@ -220,7 +220,7 @@
 - Time: 2026-10-04T21:13:00Z
 - Type: Fixed
 - Propagates to:
-  - [Dependency management](../modules/computer/module-dependency.md): Done — the manifest's four obligations, its file name, the base an address resolves from, and the collision with that document's stated position are recorded there; the language owes nothing further.
+  - [Dependency management](../../modules/computer/module/dependency/dependency.md): Done — the manifest's four obligations, its file name, the base an address resolves from, and the collision with that document's stated position are recorded there; the language owes nothing further.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
@@ -271,5 +271,33 @@
   - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5 via Claude Code) - judged, recorded
 
 #### What changed
-- The `## Anticipated Work` entry "Both anticipated items below were overtaken on 2026-09-30" is removed from [Modularity in Khayyam Handoff](./modularity.handoff.md), and with it the section heading, which held nothing else. It scheduled no work: it said itself that nothing is pending. Both items it recorded are settled where it pointed: the dedicated document exists, [Dependency management](../modules/computer/module-dependency.md), and the 2026-10-04 entry above ("The manifest and address-shape entries leave Open Questions") records that the language owes it nothing further; [Modularity in Khayyam](./modularity.md) states that dependency resolution and versioning belong to the framework and tooling layer, not the grammar. The residue it named, whether an answer on the dependency side ever affects the grammar, is the test that entry already records for a question returning, not open work.
+- The `## Anticipated Work` entry "Both anticipated items below were overtaken on 2026-09-30" is removed from [Modularity in Khayyam Handoff](./modularity.handoff.md), and with it the section heading, which held nothing else. It scheduled no work: it said itself that nothing is pending. Both items it recorded are settled where it pointed: the dedicated document exists, [Dependency management](../../modules/computer/module/dependency/dependency.md), and the 2026-10-04 entry above ("The manifest and address-shape entries leave Open Questions") records that the language owes it nothing further; [Modularity in Khayyam](./modularity.md) states that dependency resolution and versioning belong to the framework and tooling layer, not the grammar. The residue it named, whether an answer on the dependency side ever affects the grammar, is the test that entry already records for a question returning, not open work.
 - Kept open: "Naming Without Package Context" (whole-file inclusion beyond `in`) and "Cyclic Module Dependencies".
+
+---
+
+### Where a type's methods are written points to this repository's rule
+- Time: 2026-10-15T12:00:00Z
+- Type: Changed
+- Cited:
+  - The owner's request of 2026-10-14 (task 20261014T113224Z-23972-0 on the records branch dev-knowledge, `.agents/tasks/20261014T113224Z-23972-0/`) - Evidence: all methods of a type are in its one file, except where a rule names a case.
+- Propagates to:
+  - Khayyam Rule — Orphan Extension (`bundles/khayyam/rules/orphan-extension/orphan-extension.md`): Done
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - requested
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5 via Claude Code) - applied
+
+#### What changed
+- Inclusion Is Not Module Definition: the old sentence said a type included with `in` "may have further methods (`mt`) attached in another file of the same local directory — that is how a capsule splits across files without a `package` keyword". It is replaced by a statement that the grammar fixes no file for a method and that where a type's methods may be written is a tool's or an organization's rule. This repository's rule is that all of a type's methods are in its one file unless another rule names an exception, and the section links the rule. The old sentence contradicted that rule.
+
+---
+
+### A name collision's note no longer says "file URI"
+- Time: 2026-10-18T10:35:39Z
+- Type: Fixed
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5.5 via Claude Code) — applied
+
+#### What changed
+- When Two Included Names Collide: "Which file URI resolves to which version" now reads "Which URI resolves to which version", agreeing with this document's statement that the language fixes no scheme for the URI an `in` declaration carries (owner's decision of 2026-10-12 that the import path is a URI, not only a file URI).

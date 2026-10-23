@@ -21,7 +21,7 @@
 
 Active
 
-Reopened on 2026-10-07. It was recorded as Complete, which the facet reserves for an inquiry whose every question carries a final per-question status and which then carries a Conclusion. This file has no Conclusion, and items 2, 3, and 6 under `Questions for Omid` were left open. He has said the adjudication questions this research covers are settled in a later session, so the inquiry is not finished.
+Reopened on 2026-10-07. It was recorded as Complete, which the facet reserves for an inquiry whose every question carries a final per-question status and which then carries a Conclusion. This file has no Conclusion, and items 2, 3, and 6 under `Questions for Omid` were left open. He has said the adjudication questions this research covers are settled in a later chat, so the inquiry is not finished.
 
 ## Question and Goals
 

@@ -36,9 +36,9 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: defines the current front matter, top-level body sections, and topic-first organization.
-  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: defines this companion file as the home for migrated provenance and change history.
-  - [How to make a new explanation document](../documentation-explanation.practice.md) — Reference: supplies the revision procedure applied in this migration.
+  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: defines the current front matter, top-level body sections, and topic-first organization.
+  - [Documentation — Changelog](../../modules/knowledge/documentation/changelog/changelog.md) — Depends_on: defines this companion file as the home for migrated provenance and change history.
+  - [How to make a new explanation document](../../modules/knowledge/documentation/explanation/explanation.practice.md) — Reference: supplies the revision procedure applied in this migration.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
@@ -77,7 +77,7 @@ Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase conventio
 #### What changed
 - The "Dynamic Dispatch Reducibility" topic is resolved in the affirmative for Memar from the base layer's own principle — Structure Is Fixed by Definition (type.md): dispatch may defer selection to runtime, but the candidate set and every candidate's implementation must already be spelled out in source (Explicit Behavior Ownership), and a genuinely runtime-only type selection — target set or implementation arriving while the system runs — would mint structure in execution, which the principle excludes outright.
 - The topic title drops the "Under Immutable Infrastructure" suffix; the pending-finalization caveat is gone because the derivation no longer depends on the Draft protocol document. The runtime-logic-entry question is named without citation as a separate, convergent concern owned by the framework's protocol documents.
-- The change is strictly a strengthening of grounding: the dispute had been held open pending the protocol document's dedicated session; it is now closed on grounds already adopted at the base layer.
+- The change is strictly a strengthening of grounding: the dispute had been held open pending the protocol document's dedicated chat; it is now closed on grounds already adopted at the base layer.
 
 ---
 
@@ -85,8 +85,8 @@ Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase conventio
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../modules/knowledge/documentation/handoff/handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
@@ -103,7 +103,7 @@ Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase conventio
 #### Considered and not done (migrated from the retired document-level Rationale and alternatives)
 
 ##### Why Khayyam Achieves Parametric Polymorphism Through Inclusion Rather Than Type-Parameter Syntax
-**The core argument:** Khayyam does not lack parametric polymorphism — it achieves the same universally-quantified code reuse through a different mechanism. When a method accepts an abstraction type, it is, in effect, parametric over all types satisfying that abstraction. The compiler's Smart Compilation strategy (its dispatch-strategy section was removed from [polymorphism.md](./polymorphism.md) on 2026-10-03; the compiler now states the matter in [Compiler → How a call against a declared specification may be served](../modules/computer/compiler.md#how-a-call-against-a-declared-specification-may-be-served)) determines the optimal dispatch mechanism (monomorphization or dynamic dispatch) from the dependency graph, without the developer needing to annotate type parameters, specify constraints, or manage variance.
+**The core argument:** Khayyam does not lack parametric polymorphism — it achieves the same universally-quantified code reuse through a different mechanism. When a method accepts an abstraction type, it is, in effect, parametric over all types satisfying that abstraction. The compiler's Smart Compilation strategy (its dispatch-strategy section was removed from [polymorphism.md](./polymorphism.md) on 2026-10-03; the compiler now states the matter in [Compiler → How a call against a declared specification may be served](../../modules/computer/compiler/compiler.md#how-a-call-against-a-declared-specification-may-be-served)) determines the optimal dispatch mechanism (monomorphization or dynamic dispatch) from the dependency graph, without the developer needing to annotate type parameters, specify constraints, or manage variance.
 
 Explicit type-parameter syntax (`<T>`) makes the developer explicitly manage these concerns. This is valuable when the type system is the primary mechanism for achieving polymorphism. But when a language already has a robust abstraction mechanism that the compiler can analyze for dispatch optimization, explicit type parameters become redundant syntax — they expose implementation details that the compiler can determine on its own, and they add grammar complexity for no gain in expressive power.
 
@@ -311,8 +311,8 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 - Time: 2026-10-03T11:16:28Z
 - Type: Changed
 - Propagates to:
-  - [Computer — Compiler](../modules/computer/compiler.md): Done - the whole dispatch-strategy account (closed/open sets, VTable generation, monomorphization, inlining, devirtualization) removed here is the compiler's to state, and no statement there carries it. [see compiler.md:45-47]
-  - [Computer — Linter](../modules/computer/linter.md): Pending - the container type-safety topic removed here claimed a linter check for what is a signature constraint.
+  - [Computer — Compiler](../../modules/computer/compiler/compiler.md): Done - the whole dispatch-strategy account (closed/open sets, VTable generation, monomorphization, inlining, devirtualization) removed here is the compiler's to state, and no statement there carries it. [see compiler.md:45-47]
+  - [Computer — Linter](../../modules/computer/linter/linter.md): Pending - the container type-safety topic removed here claimed a linter check for what is a signature constraint.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
@@ -339,7 +339,7 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 - Time: 2026-10-04T21:13:00Z
 - Type: Fixed
 - Propagates to:
-  - [Computer — Compiler → How a call against a declared specification may be served](../modules/computer/compiler.md#how-a-call-against-a-declared-specification-may-be-served): Done — devirtualization is stated there as a further step of the compiler's own freedom, prescribed by nothing and forbidden by nothing; no action remains.
+  - [Computer — Compiler → How a call against a declared specification may be served](../../modules/computer/compiler/compiler.md#how-a-call-against-a-declared-specification-may-be-served): Done — devirtualization is stated there as a further step of the compiler's own freedom, prescribed by nothing and forbidden by nothing; no action remains.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
@@ -372,10 +372,10 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
   - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
-- Reviewed the uncommitted change to [polymorphism.md](./polymorphism.md), this changelog, and [the handoff](./polymorphism.handoff.md) against HEAD: the removal of the compiler and linter prescriptions (dispatch strategy, Smart Compilation, linter-enforced container type safety), the retitled and reworded topics, the devirtualization handoff entry's removal, and the `compiler.md` link repair. The changes hold: each removal is recorded with the removed text quoted in the two new entries above, the devirtualization question is answered where its subject lives ([Compiler → How a call against a declared specification may be served](../modules/computer/compiler.md#how-a-call-against-a-declared-specification-may-be-served), checked to carry the quoted sentence), the closed/open-set definitions are stated there too, and the claim that no runtime type query exists agrees with [Variable → Explicit Types](./variable.md). `memar content check` reports no problem.
+- Reviewed the uncommitted change to [polymorphism.md](./polymorphism.md), this changelog, and [the handoff](./polymorphism.handoff.md) against HEAD: the removal of the compiler and linter prescriptions (dispatch strategy, Smart Compilation, linter-enforced container type safety), the retitled and reworded topics, the devirtualization handoff entry's removal, and the `compiler.md` link repair. The changes hold: each removal is recorded with the removed text quoted in the two new entries above, the devirtualization question is answered where its subject lives ([Compiler → How a call against a declared specification may be served](../../modules/computer/compiler/compiler.md#how-a-call-against-a-declared-specification-may-be-served), checked to carry the quoted sentence), the closed/open-set definitions are stated there too, and the claim that no runtime type query exists agrees with [Variable → Explicit Types](./variable.md). `memar content check` reports no problem.
 - [The handoff](./polymorphism.handoff.md): the entry "Dedicated compiler-facing abstractions document" quoted a closing sentence of the Matrix topic ("a dedicated document on compiler-facing abstractions") that no longer exists in polymorphism.md, so its State was false. It is retitled "Where compile-time facts are stated, if anywhere" and restated: the Matrix topic now leaves the question open to "whichever document owns the question", none is named, and the retired assignment is recorded. The entry is kept, not removed, because the question it tracks is still open.
 - [Considered and not done, parametric polymorphism entry](#why-khayyam-achieves-parametric-polymorphism-through-inclusion-rather-than-type-parameter-syntax): the link-fix wording "described in that document's Dispatch Strategy topic" had no antecedent; it now says the section was removed on 2026-10-03 and links the compiler topic that states the matter. The original text is otherwise unchanged.
 
 #### Considered and not done
 - The handoff entry "Cross-Language Polymorphism Mapping" still names "Smart Compilation monomorphization" as a mapping source. It is a record of a future note's content, from the retired Discussion, and was left as written; it needs a decision by the owner on whether the cross-language mapping belongs to the compiler's documents now.
-- The 2026-10-03 entry's propagation reference `compiler.md:45-47` is a line reference to a document under change in the same working tree; the section starts at line 42. Not edited: it is another session's record and the line numbers will move.
+- The 2026-10-03 entry's propagation reference `compiler.md:45-47` is a line reference to a document under change in the same working tree; the section starts at line 42. Not edited: it is another task's record and the line numbers will move.

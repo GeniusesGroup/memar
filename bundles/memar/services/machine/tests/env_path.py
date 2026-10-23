@@ -98,7 +98,7 @@ class RecordPutsTheCommandOnPath(unittest.TestCase):
         self.assertTrue(self.asked or True, 'the stub recorded nothing, so the call site is what is under test')
 
 class PathStaysIdempotent(unittest.TestCase):
-    """PATH is read from the record and the session, and never doubled."""
+    """PATH is read from the record and the task, and never doubled."""
 
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
@@ -120,15 +120,15 @@ class PathStaysIdempotent(unittest.TestCase):
     def tearDown(self) -> None:
         os.environ['PATH'] = self.saved_environ
 
-    def hold(self, persisted: str, session: str) -> bool:
+    def hold(self, persisted: str, task: str) -> bool:
         env_path.persisted_user_path = lambda: persisted
-        os.environ['PATH'] = session
+        os.environ['PATH'] = task
         return env_path.holds(self.directory)
 
-    def test_a_persisted_entry_counts_even_when_the_session_copy_is_empty(self):
+    def test_a_persisted_entry_counts_even_when_the_task_copy_is_empty(self):
         self.assertTrue(self.hold(str(self.directory), ''))
 
-    def test_a_session_entry_counts_even_when_the_persisted_record_is_empty(self):
+    def test_a_task_entry_counts_even_when_the_persisted_record_is_empty(self):
         self.assertTrue(self.hold('', str(self.directory)))
 
     def test_duplicate_and_empty_parts_do_not_double_the_entry(self):

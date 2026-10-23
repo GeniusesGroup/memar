@@ -8,7 +8,7 @@
 The subject is Memar's record of the projects it is told about: temp/projects.log
 at the root of Memar's temp, one project a line, naming its folder and an array
 of names, so that a verb is given a name and never a guessed folder. The rulings
-it holds are the owner's of 2026-10-13, recorded in session
+it holds are the owner's of 2026-10-13, recorded in task
 20261013T085819Z-27156-0: aliases are an array per project and may be in several
 languages; Memar itself is an entry; names are unique without case; a missing
 temp folder is made, never a block; an unreadable or missing file reads as
@@ -105,7 +105,7 @@ class Location(Fixture):
         registry.add_project('alpha', self.folder('alpha'))
         self.assertTrue(memar_fs.projects_log().is_file())
 
-    def test_the_log_is_not_inside_the_sessions_folder(self) -> None:
+    def test_the_log_is_not_inside_the_tasks_folder(self) -> None:
         self.assertEqual(memar_fs.projects_log().parent, memar_fs.scratch_root())
 
 class Reading(Fixture):

@@ -149,7 +149,7 @@ The practice file had been missed when the Changelog-facet migration was applied
   - documentation-handoff.md: Done - Open Questions / Anticipated Work structure added; open-question residence rule stated in the same pass.
   - documentation-handoff.practice.md: Done - no changes needed (verified clean).
   - documentation-explanation.practice.md: Done - template and steps rewritten to follow the finalized body structure.
-  - All documents reformed under the new pattern: process.md, error.md, memory.md, concurrency.md, dependency-management.md, time.md, networking.md, networking-connection.md, sRPC.md, modeling.md, type.md (in this session's scope; others migrate progressively).
+  - All documents reformed under the new pattern: process.md, error.md, memory.md, concurrency.md, dependency-management.md, time.md, networking.md, networking-connection.md, sRPC.md, modeling.md, type.md (in this chat's scope; others migrate progressively).
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - claimed, decided
   - [Super Z](../../../../CONTRIBUTORS.md#super-z) - reviewed, argued, rewrote, moved
@@ -158,7 +158,7 @@ The practice file had been missed when the Changelog-facet migration was applied
 - The `Discussion` wrapper is dissolved entirely, and `Drawbacks` with it (Omid Hekayati - the wrapper's content, on inspection, was questions in declarative clothing and evaluations the current-state reader does not need; an explanatory document is not a place for doubt, and an AI-assisted reader cannot reliably separate a negated position from an affirmed one when loading a body into context).
 - The body's fixed top-level sections are reduced to `Abstract`, `Introduction`, `Explanation`, `Results` (Omid Hekayati - the four-section skeleton with an open catalog is clearer than a five-section skeleton carrying a doubt-shaped wrapper; Super Z - applied).
 - `Rationale and alternatives` leaves the body: rejected-alternative reasoning is decision-shaping context and lives in the changelog entry's `Considered and not done` section (Omid Hekayati - directed; Super Z - named the section).
-- `Future possibilities` leaves the body for the handoff's `Anticipated Work` section (Omid Hekayati - decided; Super Z - had flagged it as an open question in the same session and recorded it rather than deciding).
+- `Future possibilities` leaves the body for the handoff's `Anticipated Work` section (Omid Hekayati - decided; Super Z - had flagged it as an open question in the same chat and recorded it rather than deciding).
 - `Prior art` is retired as a title and its two functions split (Omid Hekayati - identified the title as wrong from the start, citing the patent-law sense of the term; Super Z - proposed the split): premise evidence stays inline at the claim it supports; comparative surveys become the changelog entry's `Related work` section.
 - `Unresolved questions` are retired as a title; open questions live in the handoff as `Open Questions`, distinct in name from anything in a base document (Omid Hekayati - no two documentation types should carry identical titles; Super Z - applied).
 - Changelog entries restructured: `Summary` becomes `What changed`; `Considered and not done`, `Related work`, and `Decision` added as optional entry sections (Omid Hekayati - demanded structured sections instead of prose Summary after seeing migrated content flattened into narrative; Super Z - written).
@@ -216,7 +216,7 @@ All retired wrapper titles are removed from the pattern; documents written under
   - README.md, .agents/skills/memar/SKILL.md: Done - stale structure lines corrected (trivial; no paired changelogs).
   - 45 base documents, Results section removed same-session under the owner's directive, applied through sub-agents; per the owner's ruling a removal this mechanical carries no per-document changelog entry - this consolidated list is the record. Top-level (17): documentation-handoff.md, documentation-changelog.md, documentation-research.md, documentation-practice.md, framework.md, knowledge.md, process.md, protocol.md, software.md, system.md, thinking.md, terminology.md, modularity.md, modeling.md, type.md, content.md, agency.md. Protocols (15): lexer.md, giti.md, chapar.md, sdk.md, concurrency.md, dependency-management.md, networking.md, networking-connection.md, os.md, time.md, abstraction-implements.md, error.md, memory.md, filesystem.md, immutable_infrastructure.md. Khayyam (13, under docs/khayyam/): abstraction.md, agency.md, compiler.md, encapsulation.md, inheritance.md, khayyam.md, linter.md, metaprogramming.md, method.md, modularity.md, polymorphism.md, runtime.md, variable.md.
   - Four carried non-placeholder content and were routed, not deleted: agency.md (watch-items to the handoff's Open Questions), filesystem.md (external literature evidence inline at the claims it supports), immutable_infrastructure.md (deferral note to the handoff's Anticipated Work), error.md (validation note inline at the Boundary translation claim). The paired handoffs and filesystem.md's inline evidence carry their own provenance lines; the 26 per-document changelog entries first appended for this pass were removed on the same ruling.
-  - protocols/process/control-flow.md: Done through the concurrent session's own commit (be9c260), which dropped its Results placeholder under this decision; docs/khayyam/control_flow.md was retired and deleted outright with that session, needing no migration. content.md's earlier blocker (its changelog being off-limits) dissolved with the no-entry ruling.
+  - protocols/process/control-flow.md: Done through the concurrent session's own commit (be9c260), which dropped its Results placeholder under this decision; docs/khayyam/control_flow.md was retired and deleted outright with that chat, needing no migration. content.md's earlier blocker (its changelog being off-limits) dissolved with the no-entry ruling.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - argued, directed
   - [Super Z](../../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - researched, argued, wrote
@@ -238,7 +238,7 @@ All retired wrapper titles are removed from the pattern; documents written under
 - **Demote Results to an Optional Sections entry, present only when populated (rejected)**: the content type remains excluded by Relevance discipline; claim-supporting observations already route inline as Evidence; and presence-as-maturity-signal would track use-maturity, which the Status rules deliberately refuse to do.
 - **Rename the section to Observed results (rejected)**: the same content under a truer name fixes neither the hollowness nor the misrouting.
 - **A separate Research-facet record for the literature evidence (rejected for now)**: this entry carries the full quote set at equal durability; a record can be promoted later if re-examination demand appears.
-- **Progressive-only migration (superseded)**: the owner directed same-session migration of all documents in this session.
+- **Progressive-only migration (superseded)**: the owner directed same-session migration of all documents in this chat.
 
 #### Related work
 - ICMJE: "Present your results in logical sequence in the text, tables, and figures, giving the main or most important findings first"; Discussion is where findings are put "in the context of the totality of the relevant evidence", and conclusions must not go beyond what the data support.
@@ -300,7 +300,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - [Status](./explanation.md#status) gains one bullet under its Additional rules, immediately after the rule that moves a document to `Final`. It states which party decides each of the section's conditions: `memar-documentation.py content check` decides the mechanical ones — encoding, newlines, written surface — while whether discussion has converged and whether a document is reflected in canonical documentation are decided by a reader against the governing documents, and a reader who disagrees records the disagreement rather than moving the field.
 
 #### Deliberation
-- The edit was proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a specification this load-bearing states conditions on itself and names no deciding party for any of them, which leaves a reader unable to tell which conditions are enforceable and which are read (Space Bunny Alpha).
+- The edit was proposed in this chat's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a specification this load-bearing states conditions on itself and names no deciding party for any of them, which leaves a reader unable to tell which conditions are enforceable and which are read (Space Bunny Alpha).
 - No reviewer role was added. The Documentation Changelog facet already owns approval and its discipline is about an entry's own correctness; naming a reviewer here would have invented a role this facet does not have, so the bullet says only what this facet can say — which conditions a command decides and which a reader does (Space Bunny Alpha).
 
 #### Considered and not done
@@ -346,8 +346,8 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 #### What changed
 - `documentation-explanation.practice.md`'s front-matter `name` was `document-explanation-creator`; it is now `documentation-explanation`, the file's base name, as [Documentation — Practice → Frontmatter](../practice/practice.md#frontmatter) now states. No other document referred to the old name.
 - `documentation-explanation.practice.md`'s `description` now states what it is not for — a practice, a changelog entry, a handoff, and the meaning of the specification's fields, which [Documentation — Practice → Description quality criteria](../practice/practice.md#description-quality-criteria) requires.
-- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
-- Made in session 20261015-T110002Z-23000.
+- Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in task 20261015-T110002Z-23000.
 
 ---
 
@@ -355,7 +355,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 - Time: 2026-10-16T18:06:00Z
 - Type: Changed
 - Propagates to:
-  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+  - modules/content/documentation/documentation.md: Done (task `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
@@ -363,7 +363,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 #### What changed
 - [Reader relationship](./explanation.md#reader-relationship): the definition `documentation.md` held under `Facets currently defined` for this facet moved here — the content studied to understand a subject, whose one structure serves every subject. The note on where the structure's conventions come from stays in [Methodology](./explanation.md#methodology) and the provenance statement in [Abstract](./explanation.md#abstract); nothing of it was lost.
 - The sentence that named Practice's relationship now points at Practice's own section.
-- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+- Made in task 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
 
 #### Considered and not done
 - **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
@@ -380,7 +380,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 #### What changed
 - [./explanation.md#status]: the sentence no longer lists the Status values this kind may take; it names the type `Status` and the way a script asks it (`Status.for_kind`), and keeps its rules.
 - Why: the closed set is code in `.agents/scripts/services/status.py`, and a prose list of a closed set is a copy ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); [documentation.md → Status](../documentation.md#status) had already dropped its table under the same ruling.
-- Made in session 20261016-T194830Z-21416.
+- Made in task 20261016-T194830Z-21416.
 
 ---
 
@@ -394,7 +394,7 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 #### What changed
 - The fixed body sections are no longer listed by name in [Body sections](./explanation.md#body-sections); the type `BodySection` gives them and their order, and the bullets below keep what each is for. The front-matter keys (`ExplanationKey`) and the catalog of optional sections (`OptionalSection`) are typed; their prose is unchanged.
 - Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
-- Made in session 20261016-T194831Z-4504.
+- Made in task 20261016-T194831Z-4504.
 
 ---
 
@@ -407,4 +407,4 @@ The skeleton is three fixed sections; an Explanation-facet document carries no `
 
 #### What changed
 - The Field Naming Convention no longer says every front-matter field is PascalCase; each facet's key type declares its keys' written form.
-- Why: session 20261016-T095101Z-22960 found the text contradicted the documents and types in use; the owner approved the correction on 2026-10-17.
+- Why: task 20261016-T095101Z-22960 found the text contradicted the documents and types in use; the owner approved the correction on 2026-10-17.

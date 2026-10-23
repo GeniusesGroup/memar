@@ -1,6 +1,6 @@
 # Case — pilot context
 
-Copy of the justice-pilot project context, placed beside the case draft so a later session can load the dated decisions without the Cursor store. The dated user-input sections below are unchanged. The development plan is not in this package. The review trail was critique v1-v4, model v1-v6, and the synthesis. What each record was is in the last entry of [case.changelog.md](case.changelog.md).
+Copy of the justice-pilot project context, placed beside the case draft so a later chat can load the dated decisions without the Cursor store. The dated user-input sections below are unchanged. The development plan is not in this package. The review trail was critique v1-v4, model v1-v6, and the synthesis. What each record was is in the last entry of [case.changelog.md](case.changelog.md).
 
 # Project context
 

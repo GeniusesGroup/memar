@@ -8,8 +8,8 @@
 - Cited:
   - [Designing Distributed Systems (Brendan Burns)](https://www.oreilly.com/library/view/designing-distributed-systems/9781491983638/) — Reference: distinguishing a lock as a permanent grant from a lease that must be renewed and can silently expire, used to support the concurrency/locking separation.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — claimed, argued
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — claimed, argued
 
 #### What changed
 - Drafted from two public discussions on concurrency and distributed transactions (Saga patterns, distributed locking).
@@ -29,8 +29,8 @@
 - Propagates to:
   - system.md: Done — `### Process` section shortened to a pointer to this document; its Rationale and Alternatives entry updated to record the reversal explicitly instead of silently.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed, approved
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, approved
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - The document was reorganized into the current Explanation-facet template (`Abstract → Introduction → Explanation → Results → Discussion`) (Claude).
@@ -53,9 +53,9 @@
 - Time: 2026-08-15T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, approved
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued, reviewed
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued, approved
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — argued, reviewed
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - A three-way review round was applied to the document.
@@ -87,8 +87,8 @@
   - system.md: Done — new Responsibility section added there and cross-referenced from here in the same pass.
   - modularity.md: Done — Module Identity and Responsibility section now cites this topic instead of asserting "coherent responsibility" independently.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — corrected, argued
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — corrected, argued
+  - [Claude](../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - Observation was reworked to state, rather than only imply, that modeling and observation form a repeating cycle rather than a one-time handoff, and to state the specific, corrected version of the development-time/observation-time distinction Omid actually argued in the source discussion, replacing an earlier internal draft that had it backwards (Claude).
@@ -111,8 +111,8 @@
 - Time: 2026-08-16T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - The Concurrency topic already contained the core conclusion (concurrency does not imply shared state; a process can sometimes be redesigned by partitioning ownership or responsibility instead of adding a lock); the explicit step-by-step chain that motivated it was added as a code block immediately following the existing prose — shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking, each step skipped if an earlier one already resolves the concern — changing nothing about the existing conclusions (Claude).
@@ -134,8 +134,8 @@
 - Cited:
   - [Omid's LinkedIn comment](https://www.linkedin.com/feed/update/urn:li:activity:7493294839263051777/?dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287493323440364531712%2Curn%3Ali%3Aactivity%3A7493294839263051777%29) — Reference: the source disagreement this addition is grounded in; requires LinkedIn authentication and could not be fetched directly, so this document relies on Omid's own paraphrase of it rather than the primary text.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, claimed
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — argued, claimed
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - Concurrency and Parallelism are not treated as two concepts in this document. The class of hazard usually attributed only to multi-core execution — two activities corrupting shared state because each assumes it is the only one acting on it — occurs identically on a single core whenever activities can interleave, so splitting the two terms hides rather than clarifies the hazard. What does vary is how many Workers a process's activities are distributed across and how those Workers relate to physical cores; that relationship, including deliberately pinning work to a fixed Worker, is a modeling decision available regardless of core count. Go's scheduler is used as a concrete illustration of a mechanism that is pleasant to use without thereby proving the underlying concurrency has been modeled.
@@ -154,8 +154,8 @@
 - Time: 2026-08-17
 - Type: Expanded
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — clarified
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — integrated
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — clarified
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — integrated
 
 #### What changed
 - `Agency and Execution Responsibility` was added to make explicit that Process may involve many execution Agents whose set can change without changing the conceptual Process (Omid Hekayati — clarified that Process execution may be distributed among many Agents independently of domain-entity boundaries; ChatGPT — integrated the resulting model into `process.md`).
@@ -173,14 +173,14 @@
 - Propagates to:
   - agency.md: Done — reciprocal links and a Process entry in its "Relation to Memar" diagram were added there in the same pass; see agency.changelog.md's corresponding entry.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote, corrected
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../CONTRIBUTORS.md#claude) — rewrote, corrected
 
 #### What changed
 - The previous entry's "Agency and Execution Responsibility" topic, agency.md's own "Agency in Process Execution" topic, and Concurrency's own prose were independently saying the same thing three times within two documents; the content was reduced to one authoritative copy in agency.md, with this document keeping only short pointers and the residue specific to Process. No conceptual content was changed — only where each piece of it lives.
 - "Agency and Execution Responsibility" was shrunk to a pointer at agency.md plus only the Process-specific residue; Concurrency's redundant paragraph was trimmed to a one-line pointer at the (now-shrunk) topic above; the three Agency-related Common Modeling Errors bullets were trimmed to shorter versions pointing at Agency's own fuller catalog (Claude).
 - The oddly-named "#### Others" heading under Concurrency was renamed to "Go's Scheduler as an Illustration" (Claude).
-- The link from Concurrency's Worker/CPU-core paragraph to [Agency → Execution Agent](./agency.md#execution-agent), lost when the prior pass was accidentally based on a stale file, was re-added (Claude).
+- The link from Concurrency's Worker/CPU-core paragraph to [Agency → Execution Agent](../../docs/agency.md#execution-agent), lost when the prior pass was accidentally based on a stale file, was re-added (Claude).
 - The existing Agency bullet under Relationship to Other Concepts and the existing scheduling Unresolved question were left as ChatGPT had written them, since both were already accurate and did not need correction (Claude).
 
 #### Deliberation
@@ -199,8 +199,8 @@
 - Propagates to:
   - protocols/net/sRPC.md: Done — Open Questions section added there in the same pass, asking for the wire-level cancellation contract and pointing back here.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
-  - [Super Z](../CONTRIBUTORS.md#super-z) — reviewed, argued, rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
+  - [Super Z](../../CONTRIBUTORS.md#super-z) — reviewed, argued, rewrote
 
 #### What changed
 - The *Requests, Cancellation, and Timeout* topic was added: the request-scoped context mechanism (Go `context` and its C#/JS/Python equivalents) examined in the three roles it is commonly cast in — process identity, cancellation/deadline carrier, cross-layer data channel — and each rejected on process-model grounds: cancellation validity and timeout budgets are properties of the executing module, data carriage past intermediate layers is a layering violation that hides missing access.
@@ -227,8 +227,8 @@
 - Propagates to:
   - process.handoff.md: Created — all seven topic-level unresolved-question lists and the document-level pointer moved there, organized by topic.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
 
 #### What changed
 - The document-level Prior art's premise evidence (Whitehead's process philosophy and CSP/π-calculus as the lineage of process-distinct-from-sequence; Burns's lock-versus-lease distinction as the direct basis of the distributed-systems argument) was folded into the Definition topic's Rationale entry it supports.
@@ -248,8 +248,8 @@
 - Propagates to:
   - process.handoff.md: Done - the anticipated work recorded there under `Anticipated Work`.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved, folded
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Omid Hekayati - decided; Super Z - applied).
@@ -276,8 +276,8 @@
 - Propagates to:
   - process.handoff.md: Done — Development's graduation criterion rewritten around the umbrella rule.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — reviewed, argued, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../CONTRIBUTORS.md#buffy)) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, argued, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
 
 #### What changed
 - The Motivation section had grown into a revision history rather than a statement of why the document exists: the paragraph announcing the later addition of the `context` discussion, and the paragraph reporting the later addition of the *Expectations and Checks* and *Development as a Process* topics, were removed. Both are already recorded in this changelog's own entries below, so nothing was lost; Motivation now states only the document's origin and purpose — the recurring mechanism-first pattern across the source discussions, and the discipline of separating process from mechanism. The Failure paragraph's self-referential framing ("this document also absorbs…") was rewritten as a timeless statement of the document's scope boundary with the future Error documentation (Super Z — applied; Omid Hekayati — the review).
@@ -303,8 +303,8 @@
   - protocols/process/test.changelog.md (recorded then as protocols/tdd.changelog.md): Done — relocation entry recorded there.
   - process.handoff.md: Done — open questions and the Development graduation criterion recorded there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, approved
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../CONTRIBUTORS.md#buffy)) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued, approved
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
 
 #### What changed
 - **Expectations and Checks** (placed after Outcomes): the process-level concept beneath every domain's testing practices. A process model states its expected input and output before enactment; expectations held tacitly in temporary memory are invisible to other participants and exempt from checking, so the discipline is writing them first; a check is the comparison of a process instance against the model's stated expectations; software's *test* is named as one domain's word for check; the realization of a check is a mechanism under *Process Before Mechanism*; boundary cases (inquiry processes, post-hoc verification) are delimited. The concept's dependence on Process is now stated in Process's own document — without the process model, testing has no subject (Omid Hekayati).
@@ -326,8 +326,8 @@
   - protocols/process/test.changelog.md (recorded then as protocols/tdd.changelog.md): Done — the retarget recorded in its session entry.
   - process.handoff.md: Done — the topic's open questions and its protocol-layer graduation criterion recorded there.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../CONTRIBUTORS.md#buffy)) — drafted
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [Buffy](../../CONTRIBUTORS.md#buffy)) — drafted
 
 #### What changed
 - A new topic, **Defect Resolution as an Inquiry** (placed after *Failure*, before *Continuation and Retry*): a defect is defined as a failure observed against an expectation, so the concept presupposes the expectation and unrecorded expectations are stated first; resolving a defect of unknown cause is classified as an **inquiry** process whose expectations are stated for the inquiry itself (evidence, decision, record) per *Expectations and Checks*'s already-stated boundary; the ecosystem's single word *debugging* is named as hiding the seam between the inquiry and the correction that follows it; the inquiry runs on Cognition's operations and awareness disciplines — the characteristic failure being confirmation — and is recorded per the Research facet where it deserves to survive; and the concluding correction is an ordinary development step under *Expectations and Checks*, with the model-caused case routed to Modeling's discipline.
@@ -353,8 +353,8 @@
   - protocols/process/test.changelog.md (recorded then as protocols/tdd.changelog.md): Done — paired review entry recorded there.
   - process.handoff.md: Done — Expectations and Checks Q2 updated; defect definition note and vocabulary Q3 added.
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via [Cursor](../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
+  - [Claude](../../CONTRIBUTORS.md#claude) (Opus-5 via [Cursor](../../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6-terra via [Cursor](../../CONTRIBUTORS.md#cursor)) — claimed, argued (independent critique)
   - Cursor/Composer — reviewed, drafted, integrated
 
 #### What changed
@@ -374,21 +374,21 @@
   - [Process Research 001 " + chr(0x2014) + " Decomposing a Development](./process.research.001.md) - **Reference**: the inquiry this entry records. Two questions, both answered.
 - Propagates to:
   - [process.md](./process.md): Prepared and held back - the promotion the inquiry recommends touches a document this one and others reference, so it is the owner's to authorize.
-  - [software.md](./software.md): Prepared and held back - the IEEE 1058 row's "owed" is right for project management as an activity and misleading read as a concept in waiting; no change has been made to that table.
-  - [terminology.md](./terminology.md): None needed from this entry - the word *Task*, which the inquiry found undefined and weighted, was settled there by the owner's decision, recorded in that document's own changelog.
-  - [documentation-handoff.md](./documentation-handoff.md): None needed from this entry - the question of identifying a session became [Handoff Research 001](./documentation-handoff.research.001.md) and is recorded beside its own facet.
+  - [software.md](software/software.md): Prepared and held back - the IEEE 1058 row's "owed" is right for project management as an activity and misleading read as a concept in waiting; no change has been made to that table.
+  - [terminology.md](../../docs/terminology.md): None needed from this entry - the word *Task*, which the inquiry found undefined and weighted, was settled there by the owner's decision, recorded in that document's own changelog.
+  - [documentation-handoff.md](../knowledge/documentation/handoff/handoff.md): None needed from this entry - the question of identifying a session became [Handoff Research 001](../knowledge/documentation/handoff/handoff.research.001.md) and is recorded beside its own facet.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioned, decided the scoping framing
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - researched, drafted, wrote the record
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - questioned, decided the scoping framing
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - researched, drafted, wrote the record
 
 #### What changed
 - [Process Research 001](./process.research.001.md) is opened against this document, on whether Memar owns work decomposition and whether the absence of a per-feature artifact set is scoping or omission. Both questions are answered.
 - **Decomposition is already true of Memar and is filed where nothing cites it.** Test Practice " + chr(0x2192) + " Scaling (`docs/modules/process/test.practice.md`) defines *one development step* as the unit whose expectations can be stated in one pass, and lists a function, a defect fix, a document section, a feature, a protocol contract, and a piece of store equipment in one breath " + chr(0x2014) + " the evidence that the unit is already domain-independent. Since [Development as a Process](./process.md#development-as-a-process) holds that a development's content is exactly the Process topics above and adds no structure of its own, every attribute a decomposed unit needs is already carried at both scales. The recommendation is therefore a promotion: one paragraph in Process citing the practice rather than restating it. Not applied " + chr(0x2014) + " it changes a document many others reference.
-- **The absence is a scoping decision, not a gap.** [Process and Workflow](./process.md#process-and-workflow) separates a process from a representation of it; [Modeling](./modeling.md) makes the model the artifact; [Documentation Explanation](./documentation-explanation.md) declines a template per purpose for the whole document system. Memar states the path and declines only the finished delivery, which is where [Enterprise](../README.md#enterprise) begins.
-- **The inquiry narrowed as it ran.** It began as three questions and ended as two here: the word *Task* was answered by the owner into [Terminology](./terminology.md), and identifying a session proved to be a question about a record rather than about this concept, and became [Handoff Research 001](./documentation-handoff.research.001.md). A research is paired to the artifact whose subject it is, and leaving either here would have made a concept document answer for a subject it does not own.
+- **The absence is a scoping decision, not a gap.** [Process and Workflow](./process.md#process-and-workflow) separates a process from a representation of it; [Modeling](../../docs/modeling.md) makes the model the artifact; [Documentation Explanation](../knowledge/documentation/explanation/explanation.md) declines a template per purpose for the whole document system. Memar states the path and declines only the finished delivery, which is where [Enterprise](https://github.com/GeniusesGroup/memar/blob/dc3d1433/README.md#enterprise) begins.
+- **The inquiry narrowed as it ran.** It began as three questions and ended as two here: the word *Task* was answered by the owner into [Terminology](../../docs/terminology.md), and identifying a session proved to be a question about a record rather than about this concept, and became [Handoff Research 001](../knowledge/documentation/handoff/handoff.research.001.md). A research is paired to the artifact whose subject it is, and leaving either here would have made a concept document answer for a subject it does not own.
 
 #### Considered and not done
-- **Promoting the decomposition into `process.md` in this session (held back):** it changes a document many others reference, and the finding that it needs no new concept is an argument for its safety, not an authorization.
+- **Promoting the decomposition into `process.md` in this chat (held back):** it changes a document many others reference, and the finding that it needs no new concept is an argument for its safety, not an authorization.
 - **Rewriting the IEEE 1058 row in `software.md` (held back):** the row's content is defensible read one way and misleading read the other, and which reading the project means is the owner's to say.
 - **Keeping the session and Task questions in this record (rejected):** both have subjects this document does not own, and a research that sprawls teaches a reader that the base artifact governs things it does not.
 
@@ -401,8 +401,8 @@
 - Propagates to:
   - process.handoff.md: Done - two open questions added under *Defect Resolution as an Inquiry* and one under *Expectations and Checks*
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - claimed, argued
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - claimed, argued
 
 #### What changed
 - *Defect Resolution as an Inquiry* gained a paragraph stating two properties of an inquiry's evidence: its candidate causes are held in the plural, and every candidate names the observation that would refute it.
@@ -429,7 +429,7 @@ The change was first proposed as a wider import — the causal decomposition, th
   - protocols/process/error.md: Done — *Immutability* already states the boundary an event envelope would have to respect; no edit was needed.
   - protocols/net/sRPC.md: Done — *Requests, Cancellation, and Timeout* and *Position on Message Brokers* already hold the deferred wire contract and the settled delivery position; no edit was needed.
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - Under *Definition*, two questions left the handoff: whether temporal progression is intrinsic to the definition, and whether a Process can exist conceptually without an enactment. Both answers are already carried by [process.md → *Definition*](./process.md#definition) and [process.md → *Process Definition and Process Instance*](./process.md#process-definition-and-process-instance), and no body text changed.
@@ -454,16 +454,16 @@ The change was first proposed as a wider import — the causal decomposition, th
 - Propagates to:
   - process.handoff.md: Done — the Check-document, Defect-document, and State/Transition questions left the handoff, each already answered by a recorded criterion or by the body they belong to (handoff: no entry of its own).
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - Three entries left [process.handoff.md](./process.handoff.md)'s Open Questions; each was already decided by text the record carries, so no body edit was made.
-- *Whether **Check** warrants its own concept document* — answered by the self-standing test recorded in [agency.changelog.md → Considered and not done](./agency.changelog.md#considered-and-not-done): "volume is not the criterion Memar uses for whether something is an independent Concept", the relevant question being whether the concept can be defined without first defining its parent. [Expectations and Checks](./process.md#expectations-and-checks) answers that question for Check — "a check presupposes a process — a model whose expectations precede its instances" — and the entry's own worry, recurrence across testing, inspection, review, and auditing, is volume, which that criterion excludes.
+- *Whether **Check** warrants its own concept document* — answered by the self-standing test recorded in [agency.changelog.md → Considered and not done](../../docs/agency.changelog.md#considered-and-not-done): "volume is not the criterion Memar uses for whether something is an independent Concept", the relevant question being whether the concept can be defined without first defining its parent. [Expectations and Checks](./process.md#expectations-and-checks) answers that question for Check — "a check presupposes a process — a model whose expectations precede its instances" — and the entry's own worry, recurrence across testing, inspection, review, and auditing, is volume, which that criterion excludes.
 - *Whether **Defect** warrants its own concept document* — the same recorded test, applied to [Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry): "The concept presupposes the expectation — behavior can be contrary only to something stated". Defect is a negative check verdict, so its definition is available only where a stated expectation and the check that returns a verdict are already defined.
 - *Whether State and Transition are intrinsic concepts of Process or useful modeling dimensions that apply only to some processes* — answered by [Process Modeling](./process.md#process-modeling): a useful model *may* identify "relevant state, meaningful transitions", and "Not every process requires all of these elements", so neither is required of a process rather than intrinsic to it.
 
 #### Considered and not done
-- **Closing the Request, Process/Protocol, Workflow, and Observation questions on the passages named for them** — [Process Is Not a Mechanism](./process.md#process-is-not-a-mechanism), [Protocol, Process, and System](./protocol.md#protocol-process-and-system), [Process and Workflow](./process.md#process-and-workflow), and [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) each state something true beside those four questions: that a request is an interaction and not a process, that the general System/Process theory is covered in full elsewhere, that a workflow is one possible representation of a process, and where the general observed-property relationship is stated. None of them states whether the concept in question can be defined without first defining Process, and none says whether further documentation of it is or is not required; restating them as answers would be answering a weaker question than the handoff asks, so the entries stay open.
+- **Closing the Request, Process/Protocol, Workflow, and Observation questions on the passages named for them** — [Process Is Not a Mechanism](./process.md#process-is-not-a-mechanism), [Protocol, Process, and System](../../docs/protocol.md#protocol-process-and-system), [Process and Workflow](./process.md#process-and-workflow), and [System → When Is a Responsibility Coherent?](../../docs/system.md#when-is-a-responsibility-coherent) each state something true beside those four questions: that a request is an interaction and not a process, that the general System/Process theory is covered in full elsewhere, that a workflow is one possible representation of a process, and where the general observed-property relationship is stated. None of them states whether the concept in question can be defined without first defining Process, and none says whether further documentation of it is or is not required; restating them as answers would be answering a weaker question than the handoff asks, so the entries stay open.
 
 ---
 
@@ -472,12 +472,12 @@ The change was first proposed as a wider import — the causal decomposition, th
 - Type: Added
 - Cited:
   - [Process Research 001](./process.research.001.md) - **Reference**: the inquiry that found decomposition already owned in Test Practice Scaling and recommended promotion by citation rather than restatement.
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - **Reference**: the second-opinion footprint that showed `decompos*` naming four concepts across 50 files, of which only work-decomposition was disputed.
+  - [Comparison: Memar and GitHub Spec Kit](../../docs/comparisons/spec-kit.001.md) - **Reference**: the second-opinion footprint that showed `decompos*` naming four concepts across 50 files, of which only work-decomposition was disputed.
 - Propagates to:
   - [process.md](./process.md): Done - new `Development decomposition` subsection under Development as a Process.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Meta AI](../CONTRIBUTORS.md#meta-ai) (muse-spark via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Meta AI](../../CONTRIBUTORS.md#meta-ai) (muse-spark via [OpenCode](../../CONTRIBUTORS.md#opencode)) - argued, applied
 
 #### What changed
 - `process.md` now states work-decomposition once: a development decomposes into developments each with its own intent, participants, state, and written expectations; composition is containment without loss of identity, explicitly not a tree; scale changes how much an expectation states, never whether first. It cites Test Practice Scaling for the operational unit and Composition, Workflow, and Documentation Explanation for the exclusions (no phase sequence, no per-artifact templates, no progress in artifact). Memar owns how a development decomposes; the concrete per-feature set belongs to consuming projects, finished delivery to Enterprise.
@@ -496,7 +496,7 @@ The change was first proposed as a wider import — the causal decomposition, th
   - process.handoff.md: Done — four entries left Open Questions (under Definition, Expectations and Checks, Defect Resolution as an Inquiry, and Requests, Cancellation, and Timeout); one was already answered by the record and three were derived from held principles.
   - protocols/net/sRPC.md: Partial — the conceptual half of its open wire-level cancellation contract is now stated in Process (a caller that stops waiting decides nothing; the process decides, in its own state); the wire-level contract itself is sRPC's to state.
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - [Definition](./process.md#definition) now states that no ordering property belongs to the definition in any strength: a process may impose order on some activities and none on others and is a process either way, so such a property narrows nothing about what a process is, and what a process does constrain about ordering is stated with the conditions that constrain it.
@@ -519,11 +519,11 @@ The change was first proposed as a wider import — the causal decomposition, th
   - [process.handoff.md](./process.handoff.md): Done — the *Expectations and Checks* question on whether a check's expectations must carry a baseline and a declared limit on what may get worse left the handoff; the ruling decides it, and the four-roles entry beside it stays open.
   - protocols/process/test.md (`docs/modules/process/test.md`): Done — the same obligation stated where the protocol layer states it, per its companion entry.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- [Expectations and Checks](./process.md#expectations-and-checks) now states that evaluating a process instance is a cognitive act performed with Test's discipline as written, by every party in its own mind — author, reviewer, auditor, a later session's agent — and that no party holds a laxer version than another. A tool's green run is evidence the party weighs, never a substitute for the act, and the absence of a mechanical comparison is no ground for a lighter standard: where no runner exists the comparison is made anyway, by the party that owes it.
+- [Expectations and Checks](./process.md#expectations-and-checks) now states that evaluating a process instance is a cognitive act performed with Test's discipline as written, by every party in its own mind — author, reviewer, auditor, a later chat's agent — and that no party holds a laxer version than another. A tool's green run is evidence the party weighs, never a substitute for the act, and the absence of a mechanical comparison is no ground for a lighter standard: where no runner exists the comparison is made anyway, by the party that owes it.
 - The same topic now states the consequence for how an expectation is written: an expectation whose form does not reach what the discipline needs in order to reach a verdict cannot yield one, so an expectation states the model it is judged against, the instance it is judged on, and, for a check whose subject can degrade, the limit on how much worse that instance may be on the way. Where the subject cannot degrade, the expectation states the state that must hold at the end, which is the state the instance is measured against — the discipline's own requirement of such a domain, not a release from it.
 - What the discipline fixes is what an expectation must reach, not the shape it takes: the form remains the domain's, and the topic says so rather than introducing a record schema.
 - The handoff's baseline-and-declared-limit entry is deleted, heading line included, with no marker left behind. Its numbering does not shift, since the surviving entry keeps the number it was tracked under.
@@ -544,8 +544,8 @@ The change was first proposed as a wider import — the causal decomposition, th
 - Time: 2026-10-05T17:20:58Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - [Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry) now judges a candidate cause against the defect's expectations as *Expectations and Checks* states them — the model, the instance, and the limit on how much worse it may be — rather than against the stated model alone. A cause supported only by consistency with the observations available still has no verdict; what changed is that a comparison reaching the model and nothing else could not have produced one either.
@@ -563,7 +563,7 @@ The change was first proposed as a wider import — the causal decomposition, th
   - Test → The Expectation Is Written Before the Work (`docs/modules/process/test.md#the-expectation-is-written-before-the-work`) - Evidence: "a process that cannot be re-enacted is not thereby exempt: it states its expectations before it runs, and the fact that the check afterward may be unavailable limits the check's availability, not the ordering"
   - Test → The Form the Expectation Takes Is the Domain's (`docs/modules/process/test.md#the-form-the-expectation-takes-is-the-domains`) - Evidence: varying the form does not vary what a Test must reach, so what scale may reduce is how much an expectation states and never whether it states what the discipline needs in order to decide
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - argued, drafted, applied
 
 #### What changed
 - *Expectations and Checks*'s third boundary no longer says that a process which cannot be re-enacted "still benefits from written expectations before it runs". Such a process now "states its expectations before it runs, like any other; that the check after enactment may be unavailable or only partially available limits the check's availability, not the ordering, and does not exempt the process from stating what it was meant to receive and produce" — the disposition Test → The Expectation Is Written Before the Work (`docs/modules/process/test.md#the-expectation-is-written-before-the-work`) states for the same case, in this document's own vocabulary of the check, the model, and the instance. The boundary's other two cases, an enactment that is itself the means of discovery, and verification, are untouched.
@@ -581,28 +581,28 @@ The change was first proposed as a wider import — the causal decomposition, th
 - Time: 2026-10-07T06:25:00Z
 - Type: Added
 - Cited:
-  - [Comparison: Memar and GitHub Spec Kit](./comparisons/spec-kit.001.md) - Evidence: the coverage-survey practice this entry's `Surveyed` section is the first use of.
+  - [Comparison: Memar and GitHub Spec Kit](../../docs/comparisons/spec-kit.001.md) - Evidence: the coverage-survey practice this entry's `Surveyed` section is the first use of.
 - Propagates to:
   - process.handoff.md: Done - the threads not already carried there are added.
   - rule.handoff.md: Reference - already carries the retirement question this survey raised.
   - modeling.practice.md, process.md: Reference - the two changes this survey produced are recorded in their own entries.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - questioner, goal-setter, decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - researcher, argued
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - questioner, goal-setter, decided
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - researcher, argued
 
 #### What changed
-- No document changed in this entry. Two changes this survey produced are recorded where they landed: the three step-back questions and the two-layer answer in [Modeling Practice → Stepping back from the requirement](./modeling.practice.md#stepping-back-from-the-requirement), and the inquiry's evidence conditions in [Process → Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry).
+- No document changed in this entry. Two changes this survey produced are recorded where they landed: the three step-back questions and the two-layer answer in [Modeling Practice → Stepping back from the requirement](../../docs/modeling.practice.md#stepping-back-from-the-requirement), and the inquiry's evidence conditions in [Process → Defect Resolution as an Inquiry](./process.md#defect-resolution-as-an-inquiry).
 
 #### Surveyed
-- **Mechanism-first reasoning is already owned**, in principle by [Process → Mechanism-First Reasoning](./process.md#mechanism-first-reasoning) and in practice by [Modeling → Assumptions Are Modeling Targets](./modeling.md#assumptions-are-modeling-targets): a requester's wording is evidence to investigate, not an authoritative model boundary. The gap was that the entry-point questions existed nowhere, and it was scoped out on purpose - [Modeling](./modeling.md) twice declines them as execution practice.
+- **Mechanism-first reasoning is already owned**, in principle by [Process → Mechanism-First Reasoning](./process.md#mechanism-first-reasoning) and in practice by [Modeling → Assumptions Are Modeling Targets](../../docs/modeling.md#assumptions-are-modeling-targets): a requester's wording is evidence to investigate, not an authoritative model boundary. The gap was that the entry-point questions existed nowhere, and it was scoped out on purpose - [Modeling](../../docs/modeling.md) twice declines them as execution practice.
 - **The epistemic half of defect inquiry was owned and under-specified.** The inquiry's confirmation failure was already named; what was missing was that one candidate cause was structurally permitted, so a tidy linear account passed every test Memar states. The two properties now stated follow from positions the document already held.
-- **Retiring a constraint is owned by nothing.** The nearest statements are three habits - [Agency → Historical Continuity](./agency.md), [Knowledge → Definition](./knowledge.md#definition)'s canonical "why was this architecture chosen?" question, and [Modularity](./modularity.md)'s judgment of a Module's removal by its consequence - and none of them obliges anyone to answer before deleting. The three fates a retiring party can already distinguish are distinguishable; the obligation is what is missing. This is a fact worth having rather than a gap to fill, and the question of whose practice companion would own the procedure is now in [Rule Handoff](./rule.handoff.md).
+- **Retiring a constraint is owned by nothing.** The nearest statements are three habits - [Agency → Historical Continuity](../../docs/agency.md), [Knowledge → Definition](../knowledge/knowledge.md#definition)'s canonical "why was this architecture chosen?" question, and [Modularity](../knowledge/modularity/modularity.md)'s judgment of a Module's removal by its consequence - and none of them obliges anyone to answer before deleting. The three fates a retiring party can already distinguish are distinguishable; the obligation is what is missing. This is a fact worth having rather than a gap to fill, and the question of whose practice companion would own the procedure is now in [Rule Handoff](rule/rule.handoff.md).
 - **A pattern worth recording, because it is the failure mode a framework is most likely to have**: this survey and the one before it both ended in the same place - the concept was already owned, and what was missing was a home for conduct or a condition implied by a rule already written. Reading a technique as a missing document.
 
 #### Considered and not done
 - **Organizing an inquiry's causes as a tree across separately asked questions** (not taken; held in [Process Handoff](./process.handoff.md)): a concept document states what an inquiry is, not the procedure a team follows while running one.
 - **The intervention point as a decision the inquiry returns** (not taken): whether a single generating cause is the right outcome is a question about the topic's definition, not an application of it.
-- **The informal notes that prompted the four disciplines are named nowhere in this entry**, which is the rule the survey produced, applied to itself: [Documentation → Citations](./documentation.md#citations) requires both a rights test and a standing test before a source is recorded, and these notes are the strongest case for why - a source of no standing can be the right thing to have read and still the wrong thing to have written down.
+- **The informal notes that prompted the four disciplines are named nowhere in this entry**, which is the rule the survey produced, applied to itself: [Documentation → Citations](../knowledge/documentation/documentation.md#citations) requires both a rights test and a standing test before a source is recorded, and these notes are the strongest case for why - a source of no standing can be the right thing to have read and still the wrong thing to have written down.
 
 ---
 
@@ -610,11 +610,26 @@ The change was first proposed as a wider import — the causal decomposition, th
 - Time: 2026-10-12T09:45:29Z
 - Type: Changed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the working tree against HEAD for `process.md`, `process.handoff.md`, `process.changelog.md` and `process.research.001.md`. The changelog and research diffs are link-path changes only (`protocols/` to `modules/`) and resolve; no changelog entry was removed. The body additions in `process.md` (no ordering property in the Definition; the evaluation of an instance as Test's discipline unsoftened and the decidability of an expectation; the cause checked against the model, instance and limit; the defect lifecycle not a model of its own; the caller that stops waiting; *Development decomposition*; the one-shot and scaled-expectation wording) are each recorded by the entries of 2026-10-05 above and by 2026-10-05T17:39:20Z, and their cross-references resolve.
-- `process.handoff.md` no longer carries the Anticipated Work entry "Decomposition promotion (held back for the owner)". It was stale: it said the one-paragraph promotion was not applied and awaited the owner, while the 2026-10-05T05:30:00Z entry records it applied as [Development decomposition](./process.md#development-decomposition) on the owner's decision (Omid Hekayati — directed, decided), and the subsection exists. The scoping decision it also held, that the absence of a per-feature artifact set is scoping and finished delivery is Enterprise, is stated in that subsection and in [Software](./software.md), so nothing it carried is lost. [Process Research 001](./process.research.001.md) is a point-in-time record and is left as written.
+- `process.handoff.md` no longer carries the Anticipated Work entry "Decomposition promotion (held back for the owner)". It was stale: it said the one-paragraph promotion was not applied and awaited the owner, while the 2026-10-05T05:30:00Z entry records it applied as [Development decomposition](./process.md#development-decomposition) on the owner's decision (Omid Hekayati — directed, decided), and the subsection exists. The scoping decision it also held, that the absence of a per-feature artifact set is scoping and finished delivery is Enterprise, is stated in that subsection and in [Software](software/software.md), so nothing it carried is lost. [Process Research 001](./process.research.001.md) is a point-in-time record and is left as written.
 
 #### Considered and not done
 - Rewriting the `" + chr(0x2192) + "` and `" + chr(0x2014) + "` strings in the 2026-10-04 entry and in `process.research.001.md`: these are encoding residue already in HEAD, not part of the change under review, and entries here are not rewritten. Reported to the delegating session.
+
+---
+
+### The document moves to `modules/process/`
+- Time: 2026-10-17T12:30:00Z
+- Type: Changed
+- Cited:
+  - [Modules → What does not belong here](../README.md#what-does-not-belong-here) — `Depends_on`: a concept document stands beside the module or category of its subject
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — applied
+
+#### What changed
+- `docs/process.md` and its companions (changelog, handoff, research) moved to `modules/process/`, so the concept stands in the category it belongs to and the category's `README.md` is a link to it. Links to the documents were rewritten and nothing else in them changed; a closing section naming the category's modules was added to the document.
+- Occasion: the owner's ruling of 2026-10-17 that a category without its concept document invites a misreading of the concept.

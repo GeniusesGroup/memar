@@ -6,7 +6,7 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [Control Flow in Khayyam](../process/control-flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
+  - [Control Flow in Khayyam](../../process/control-flow/control-flow.md) — Depends_on: `sc` and event abstraction that the compiler exposes
   - Variable in Khayyam (`docs/khayyam/variable.md`) — Reference: domain-driven arithmetic and `FromString` human-readable text concerns
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
@@ -33,7 +33,7 @@
 - Time: 2026-08-27T00:00:00Z
 - Type: Changed
 - Cited:
-  - [Khayyam Runtime Specification](runtime.md) — Reference: the same `unsafe` runtime-patching description
+  - [Khayyam Runtime Specification](../runtime/runtime.md) — Reference: the same `unsafe` runtime-patching description
   - Polymorphism in Khayyam (`docs/khayyam/polymorphism.md`) — Reference: the Dynamic Dispatch Reducibility note that expects reducibility under Immutable Infrastructure
 - Contributors:
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
@@ -47,7 +47,7 @@
 - Time: 2026-08-30T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
+  - [Documentation — Explanation](../../knowledge/documentation/explanation/explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
   - Khayyam - Programming Language (`docs/khayyam/khayyam.md`) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
@@ -73,7 +73,7 @@
 - Time: 2026-09-06T10:30:00Z
 - Type: Added
 - Cited:
-  - [protocols/computer/lexer.md](./lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
+  - [protocols/computer/lexer.md](../lexer/lexer.md) — Reference: the first Future-possibilities item pointing at the lexer protocol is now satisfied by a real document; the readiness-review item below generalizes the same gate to the whole compiler effort.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed, reviewed
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
@@ -118,7 +118,7 @@
 - **Evaluate nothing at compile time (rejected; migrated from the same topic)**: loses the pre-compilation guarantee and pushes genuinely static configuration cost into every runtime startup.
 - **Make runtime module replacement a first-class, always-available capability (rejected; migrated from the `Change Logic in Runtime (Unsafe)` topic's retired Rationale and alternatives)**: contradicts Immutable Infrastructure as the default deployment model — no runtime addition of capability without recompilation — and would normalize the uncontrolled capability evolution that principle exists to prevent.
 - **Omit the capability entirely (rejected; migrated from the same topic)**: microservice-style module turnover has genuine uses; removing it entirely would push adopters toward out-of-band binary manipulation with no audit story at all.
-- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](./runtime.md#mutating-a-running-artifact-is-unsafe) of this topic.
+- **Keep it opt-in and tagged `unsafe` (chosen; migrated from the same topic as the recorded decision)**: the capability exists, is visibly dangerous at the call site, and sits outside the normal path — the same shape as the [runtime-side resolution](../runtime/runtime.md#mutating-a-running-artifact-is-unsafe) of this topic.
 - **Fold compiler decisions into Khayyam (`docs/khayyam/khayyam.md`) (rejected; migrated from the retired document-level Rationale and alternatives)**: Khayyam's own Methodology keeps that document a short overview that links outward; implementation directives there would couple language evolution to implementation detail and grow exactly the document the language spec deliberately keeps small.
 - **Leave compiler behavior unspecified (rejected; migrated from the same block)**: the handoff from language to implementation is Khayyam's central architectural move; leaving the receiving side undocumented means each compiler team re-derives — or silently ignores — the philosophy the handoff exists to preserve, reproducing the convenience-pressure failure mode the separation was designed to prevent.
 
@@ -206,8 +206,8 @@
 - Time: 2026-10-03T11:40:44Z
 - Type: Added
 - Cited:
-  - [Control Flow](../process/control-flow.md) - Depends_on: its Library-Defined Control Flow and Structured and Unstructured Flow as Libraries sections are what the guarantee list and the guarantee-versus-freedom line are written against, and its Error Propagation section is where a mid-scope return is named without saying what it returns from.
-  - [Type](../../type.md) - Depends_on: the Scope category is what makes visibility a property of a boundary's own rules, which is the rule the seventh and sixth guarantees state for a branch body.
+  - [Control Flow](../../process/control-flow/control-flow.md) - Depends_on: its Library-Defined Control Flow and Structured and Unstructured Flow as Libraries sections are what the guarantee list and the guarantee-versus-freedom line are written against, and its Error Propagation section is where a mid-scope return is named without saying what it returns from.
+  - [Type](../../../docs/type.md) - Depends_on: the Scope category is what makes visibility a property of a boundary's own rules, which is the rule the seventh and sixth guarantees state for a branch body.
   - [Memory](../memory/memory.md) - Depends_for: the refusal of an uninitialized read is what makes deciding which paths reach a use a compiler obligation rather than a library's.
   - Khayyam (`docs/khayyam/khayyam.md`) - Reference: the Scope section's inertness statement is the primitive every guarantee is about, and the Method section's body-less-method form is what the first finding quotes.
   - The JavaScript target's emitter (`bundles/khayyam/targets/js/src/emit.ts`) - Evidence: the scope-to-nested-function lowering, the call-to-call lowering, the `return` emitted inside that function, and the refusal of a scope as a receiver, measured as facts about one realization.
@@ -254,9 +254,9 @@
 - Type: Removed
 - Propagates to:
   - Khayyam → Scope (`docs/khayyam/khayyam.md#scope`): Done — the language document now states that the grammar has no keyword for leaving a method early.
-  - Control Flow Model → `return` is a command, not a method (`modules/process/control-flow/control-flow.md`): Pending — that section's reason for keeping the exit out of the library is a reason the library no longer needs. Not this session's file to write.
-  - Control Flow Rule — Method Exit (`modules/process/control-flow/rules/method-exit/method-exit.md`): Done — its third bullet cites `:72` and `:81` for the question this entry removes. Not this session's file to write. [see method-exit.md:28]
-  - The Construction model (`modules/process/construction/construction.md`): Pending — it states a body may hold four commands and counts two of them as the substrate its construction library needs. Not this session's file to write.
+  - Control Flow Model → `return` is a command, not a method (`modules/process/control-flow/control-flow.md`): Pending — that section's reason for keeping the exit out of the library is a reason the library no longer needs. Not this chat's file to write.
+  - Control Flow Rule — Method Exit (`modules/process/control-flow/rules/method-exit/method-exit.md`): Done — its third bullet cites `:72` and `:81` for the question this entry removes. Not this chat's file to write. [see method-exit.md:28]
+  - The Construction model (`modules/process/construction/construction.md`): Pending — it states a body may hold four commands and counts two of them as the substrate its construction library needs. Not this chat's file to write.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied
@@ -266,7 +266,7 @@
 - The **A call** option no longer commits the compiler to the fate of a `return`, since that fate was a property of a command the language does not have.
 - [What no option delivers](./compiler.md#what-no-option-delivers) states one finding rather than two, and the finding is now that what leaves a method early is a library's business: a language may realize it as a command of the grammar and the language this repository develops does not, so the question becomes one a library answers by declaring it. The seven guarantees are unchanged and no option states it.
 - [The implementation in this repository is not this protocol](./compiler.md#the-implementation-in-this-repository-is-not-this-protocol) is re-measured against the toolchain as it now stands: the JavaScript target lowers a scope to a nested function (`emit.ts:423-428`) and a call to a call (`emit.ts:464`), refuses a scope used as a receiver, holds an empty link map, and its frontend carries three commands for a body — declare, scope, invoke — with no jump among them (`core/src/body.ts:15-24`). It no longer emits a `return` inside the function it lowers a scope to.
-- What is untouched. Guarantee 7 — what happens to a body when the enclosing method returns — still holds on its own terms: a body's meaning ends with the execution that declared it. The **A jump** option's reference to [Control Flow → Error Propagation](../process/control-flow.md#error-propagation) naming a mid-scope return as ordinary control flow is about that protocol's own operation, not about a command of a grammar.
+- What is untouched. Guarantee 7 — what happens to a body when the enclosing method returns — still holds on its own terms: a body's meaning ends with the execution that declared it. The **A jump** option's reference to [Control Flow → Error Propagation](../../process/control-flow/control-flow.md#error-propagation) naming a mid-scope return as ordinary control flow is about that protocol's own operation, not about a command of a grammar.
 
 #### Considered and not done
 - **Restating the question as "what does the exit method mean".** The removal could have been followed by a replacement question naming the library's method. Not done: the guarantee-versus-freedom test this document states applies to it too, and what such a method would mean is a fact about the library's declaration rather than about how a compiler serves a drive. Where a reader needs it, the method-exit Rule (`modules/process/control-flow/rules/method-exit/method-exit.md`) already says the exit operation's target is specified by where its own declaration says it lands (Omid Hekayati — decided).
@@ -289,7 +289,7 @@
 - Propagates to:
   - Khayyam → Abstraction (`docs/khayyam/abstraction.md`), Polymorphism (`docs/khayyam/polymorphism.md`), Inheritance (`docs/khayyam/inheritance.md`), Encapsulation (`docs/khayyam/encapsulation.md`), Variable (`docs/khayyam/variable.md`), Method (`docs/khayyam/method.md`): Rejected — restoring the sentences in the language documents was the position the owner's ruling removed them from; they are stated here instead, in a language that does not name one language's constructs.
   - The JavaScript target (`bundles/khayyam/targets/js/target.md`): Reference — it already states the realization's own mechanism, which this document points at rather than restates.
-  - [modules/knowledge/modularity/modularity.md](../../modularity.md): Done — the name-collision reasoning the same audit removed, which is not this document's subject.
+  - [modules/knowledge/modularity/modularity.md](../../knowledge/modularity/modularity.md): Done — the name-collision reasoning the same audit removed, which is not this document's subject.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, ruled
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied, classified
@@ -301,18 +301,18 @@
 - [Entry and lifecycle are not grammar](compiler.md#entry-and-lifecycle-are-not-grammar) gained the **freedom** the variable document's removal left open: where a declaration standing outside any operation's body receives its first instance, and from what source, is the realization's — guaranteed none, forbidden none, and never a feature of the grammar.
 - [The implementation in this repository is not this protocol](compiler.md#the-implementation-in-this-repository-is-not-this-protocol) now points at the target's own statement that it resolves a call by the receiver's declared type and refuses a call whose receiver is typed as an abstraction, so the realization's mechanism is cited where the realization keeps it.
 - The Abstract states both new topics and the new freedom, so the enumeration a reader gets from it matches the body.
-- **The eighth removal was found by reading the audit's own propagation ledgers, not from the summary this session began with.** The seven items named in the request account for the compiler destinations recorded at `abstraction.changelog.md:216` (`docs/khayyam/abstraction.changelog.md`), `inheritance.changelog.md:175` (`docs/khayyam/inheritance.changelog.md`), `polymorphism.changelog.md:314` (`docs/khayyam/polymorphism.changelog.md`), and `khayyam.changelog.md:629` (`docs/khayyam/khayyam.changelog.md`). The eighth is `variable.changelog.md:216` (`docs/khayyam/variable.changelog.md`) — "where a file-level variable's first instance is established, and from what source" — recorded there as pending against this document's entry-and-lifecycle topic and discharged nowhere until now.
+- **The eighth removal was found by reading the audit's own propagation ledgers, not from the summary this chat began with.** The seven items named in the request account for the compiler destinations recorded at `abstraction.changelog.md:216` (`docs/khayyam/abstraction.changelog.md`), `inheritance.changelog.md:175` (`docs/khayyam/inheritance.changelog.md`), `polymorphism.changelog.md:314` (`docs/khayyam/polymorphism.changelog.md`), and `khayyam.changelog.md:629` (`docs/khayyam/khayyam.changelog.md`). The eighth is `variable.changelog.md:216` (`docs/khayyam/variable.changelog.md`) — "where a file-level variable's first instance is established, and from what source" — recorded there as pending against this document's entry-and-lifecycle topic and discharged nowhere until now.
 - **The inheritance removal is the one record that is incomplete, and its text was re-derived rather than reconstructed from the summary.** Its changelog quote elides two passages with `[...]` (`inheritance.changelog.md:186`), so the optimization claims it named — perfectly linear escape analysis, devirtualization, inlining — were taken from the two places the same audit recorded them whole: the Motivation arguments at `inheritance.changelog.md:182`, which carry the escape-analysis substance verbatim, and the polymorphism handoff at `polymorphism.handoff.md:18`, which defines devirtualization. What the elisions hid and no document in the repository now holds is the wording of the introduction to that optimization list; the three named items are what survived into the protocol, and nothing was invented to fill the gaps.
 
 #### Considered and not done
-- **The method-ownership expectation.** The removed claim that "abstraction composition in particular is central to Memar-style design, so methods attached to abstractions should be plentiful" (`method.changelog.md:225`) was not placed here. It is not a guarantee, a freedom, or a rationale of this protocol's subject: it is an expectation about how much of a language's method surface attaches to specifications rather than to concrete kinds, which is a fact about a language and its use. Its facet is a Practice companion — `docs/khayyam/khayyam.practice.md`, whose reader is an agent writing code in that language — and that file was not this session's to write. It is recorded here so that the second search for it finds the judgment rather than only the removal.
+- **The method-ownership expectation.** The removed claim that "abstraction composition in particular is central to Memar-style design, so methods attached to abstractions should be plentiful" (`method.changelog.md:225`) was not placed here. It is not a guarantee, a freedom, or a rationale of this protocol's subject: it is an expectation about how much of a language's method surface attaches to specifications rather than to concrete kinds, which is a fact about a language and its use. Its facet is a Practice companion — `docs/khayyam/khayyam.practice.md`, whose reader is an agent writing code in that language — and that file was not this chat's to write. It is recorded here so that the second search for it finds the judgment rather than only the removal.
 - **Restoring the removed sentences as they stood.** Each was rewritten into a language that names no construct of one language, because a protocol states what must hold for every compiler rather than what Khayyam's compiler does. The removed wording is quoted in the body where the claim is load-bearing (zero-cost abstraction, the clouds-optimization clause) and lives in full in the language documents' changelogs.
 - **Naming a mechanism.** The freedom states what a compiler may do and not what it should do, and the closed/open distinction is stated as a criterion rather than as a rule that a site be closed. Stating it as a rule would have been a mechanism in a guarantee's clothes, which is the third discipline under [The implementation in this repository is not this protocol](compiler.md#the-implementation-in-this-repository-is-not-this-protocol).
-- **The rest of the same audit's unplaced removals.** Reading all nine of its entries turned up four more removals recorded with no destination, none of them this document's subject and none of them placed here: the green-thread scheduling account removed from the agency document (pending against [Runtime → Concurrency is hosted, not defined, here](runtime.md#concurrency-is-hosted-not-defined-here)), the method-naming bullet removed from the encapsulation document (pending against this repository's identifier-naming rule), the compile-time evaluation of string formulas removed from the variable document (already answered by [Designated pure operations may run at compile time](compiler.md#designated-pure-operations-may-run-at-compile-time)), and the container type-safety check removed from the polymorphism document (pending against [Linter](linter.md)). Each keeps its own recorded owner; none is restated here, and none is closed by this entry.
+- **The rest of the same audit's unplaced removals.** Reading all nine of its entries turned up four more removals recorded with no destination, none of them this document's subject and none of them placed here: the green-thread scheduling account removed from the agency document (pending against [Runtime → Concurrency is hosted, not defined, here](../runtime/runtime.md#concurrency-is-hosted-not-defined-here)), the method-naming bullet removed from the encapsulation document (pending against this repository's identifier-naming rule), the compile-time evaluation of string formulas removed from the variable document (already answered by [Designated pure operations may run at compile time](compiler.md#designated-pure-operations-may-run-at-compile-time)), and the container type-safety check removed from the polymorphism document (pending against [Linter](../linter/linter.md)). Each keeps its own recorded owner; none is restated here, and none is closed by this entry.
 
 #### Decision
 - A language document states what a construct is and not how a compiler lowers it, and the compiler protocol owns what a compiler is; these eight claims are therefore stated there, each marked as the guarantee, freedom, or rationale the protocol's own test requires (Omid Hekayati — decided).
-- Base documents take none of them. The name-collision reasoning went to [`modules/knowledge/modularity/modularity.md`](../../modularity.md) instead, stated in terms of Responsibility and identity that hold for any kind of development, because the audit's own removal record named that document as its destination (`khayyam.changelog.md:630`) and `khayyam.md`'s Import Mechanism still points there (`khayyam.md:62`).
+- Base documents take none of them. The name-collision reasoning went to [`modules/knowledge/modularity/modularity.md`](../../knowledge/modularity/modularity.md) instead, stated in terms of Responsibility and identity that hold for any kind of development, because the audit's own removal record named that document as its destination (`khayyam.changelog.md:630`) and `khayyam.md`'s Import Mechanism still points there (`khayyam.md:62`).
 
 ---
 
@@ -327,12 +327,12 @@
 - The last sentence of [Methodology](./compiler.md#methodology) no longer says the directives are "currently enforced by review against this document — there is no conformance suite yet". It now says the directives are stated so that a party that did not write them can decide each against a named input, and that no suite running today is a gap in this project's checking rather than a limit on what the protocol decides.
 
 #### Deliberation
-- The edit was proposed in this session's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a Protocol is meaningful only where a procedure settles its conformance, and a sentence presenting review as the standing form of enforcement described the private-reading case the ruling names as the failure (Space Bunny Alpha).
+- The edit was proposed in this chat's earlier read-only sweep of `docs/` against the ruling and applied once it landed here. The sweep's reasoning is the record's: a Protocol is meaningful only where a procedure settles its conformance, and a sentence presenting review as the standing form of enforcement described the private-reading case the ruling names as the failure (Space Bunny Alpha).
 - The distinction the replacement draws is between what the document decides and what this project has built to check it, and it is drawn without claiming a suite exists: the conformance suite remains Anticipated Work in `compiler.handoff.md`, and nothing here moved it (Space Bunny Alpha).
 
 #### Considered and not done
 - **Deleting the sentence outright (rejected)**: the fact that no suite runs is current state a reader needs, and the Relevance discipline keeps current state in the body. What changed is the shape of the fact, not its presence.
-- **Also reframing the matching sentences in `runtime.md` and its changelog (rejected)**: that document carries the same shape and is not this session's to write. It is named here so the residue is visible rather than lost.
+- **Also reframing the matching sentences in `runtime.md` and its changelog (rejected)**: that document carries the same shape and is not this chat's to write. It is named here so the residue is visible rather than lost.
 
 ---
 

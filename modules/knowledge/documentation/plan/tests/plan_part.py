@@ -5,7 +5,7 @@
 
     python modules/knowledge/documentation/plan/tests/plan_part.py
 
-The subject is the parts under a session plan's front matter, in order. Named for the file that holds it per
+The subject is the parts under a task plan's front matter, in order. Named for the file that holds it per
 [Test Naming](../../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
 [Test Placement](../../../../process/test/rules/test-placement/test-placement.md).
 

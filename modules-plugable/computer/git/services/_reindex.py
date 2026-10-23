@@ -33,7 +33,7 @@ def cmd_reindex(repository: Path, paths: list[Path], source: str, was: str, undo
     staged = set() if uncommitted else staged_moves(named, root, old)
     for path in sorted({*have, *want, *then} - staged):
         if have.get(path) not in (want.get(path), then.get(path)):
-            sys.exit(f"error: {path} is staged as neither {rev[:12]} nor {old[:12]} has it — another session's, or yours from host git. Nothing was changed. Commit or unstage it first; this verb will not decide whose it is.")
+            sys.exit(f"error: {path} is staged as neither {rev[:12]} nor {old[:12]} has it — another task's, or yours from host git. Nothing was changed. Commit or unstage it first; this verb will not decide whose it is.")
     head = plumb(['rev-parse', 'HEAD'], root)
     if undo:
         if head != rev:

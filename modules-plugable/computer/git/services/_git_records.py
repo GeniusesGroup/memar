@@ -3,14 +3,14 @@
 
 """modules-plugable/computer/git/services/_git_records.py — a project's records branch, read: what it holds, by whom it is cited, and the bytes of its files.
 
-A project's sessions' records are kept on the branch `fs_memar.RECORDS_BRANCH` of
-the project's own repository, each session at `RECORDS_RELATIVE/<id>/` in the branch's tree,
+A project's tasks' records are kept on the branch `fs_memar.RECORDS_BRANCH` of
+the project's own repository, each task at `RECORDS_RELATIVE/<id>/` in the branch's tree,
 by `memar git archive-task-records` (`modules-plugable/computer/git/services/archive_task_records.py`). Two modules read
-that branch: the session module, which prints one session by its id, and the content module,
-whose `find` and `search` read every session's records when they are asked to. The content
-module may not import the session module, which imports it, so what both need is here, on the
-shelf below both: how a session's records are cited, and git's read-only commands on the
-branch. Nothing here writes; writing is `_host_git_cli.py record`'s, through the session module.
+that branch: the task module, which prints one task by its id, and the content module,
+whose `find` and `search` read every task's records when they are asked to. The content
+module may not import the task module, which imports it, so what both need is here, on the
+shelf below both: how a task's records are cited, and git's read-only commands on the
+branch. Nothing here writes; writing is `_host_git_cli.py record`'s, through the task module.
 
 Every function is told the repository and never reads the folder the process runs in. Each
 asks git with `-C PROJECT`, so a folder inside another repository is not taken for that
@@ -36,11 +36,11 @@ def git(project: Path, args: list[str], data: bytes | None=None) -> subprocess.C
     return subprocess.run([found, '-C', str(project), *args], input=data, capture_output=True)
 
 def folder_on_branch(task_id: str) -> str:
-    """The path of a session's folder in the branch's tree, without a trailing slash."""
+    """The path of a task's folder in the branch's tree, without a trailing slash."""
     return f'{RECORDS_RELATIVE.as_posix()}/{task_id}'
 
 def reference(task_id: str) -> str:
-    """How a session's records are named wherever they are cited: the branch, a colon, the session's folder on it."""
+    """How a task's records are named wherever they are cited: the branch, a colon, the task's folder on it."""
     return f'{RECORDS_BRANCH}:{folder_on_branch(task_id)}/'
 
 def is_top(project: Path) -> bool:
@@ -58,7 +58,7 @@ def exists(project: Path) -> bool:
     return git(project, ['rev-parse', '--verify', '-q', f'refs/heads/{RECORDS_BRANCH}']).returncode == 0
 
 def every_file(project: Path) -> list[tuple[str, str, str]]:
-    """Each file the branch holds under its sessions' folder, as (session id, path from the session's folder, blob id), in the branch's order; none without the branch."""
+    """Each file the branch holds under its tasks' folder, as (task id, path from the task's folder, blob id), in the branch's order; none without the branch."""
     prefix = RECORDS_RELATIVE.as_posix() + '/'
     listed = git(project, ['ls-tree', '-r', '-z', f'refs/heads/{RECORDS_BRANCH}', '--', prefix])
     if listed.returncode != 0:
@@ -67,9 +67,9 @@ def every_file(project: Path) -> list[tuple[str, str, str]]:
     for record in filter(None, listed.stdout.decode('utf-8', 'replace').split('\x00')):
         meta, _, path = record.partition('\t')
         kind, blob = meta.split()[1:3]
-        session, _, relative = path.removeprefix(prefix).partition('/')
+        task, _, relative = path.removeprefix(prefix).partition('/')
         if kind == 'blob' and relative:
-            found.append((session, relative, blob))
+            found.append((task, relative, blob))
     return found
 
 def blobs(project: Path, ids: list[str]) -> dict[str, bytes]:

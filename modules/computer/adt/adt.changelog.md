@@ -6,7 +6,7 @@
 - Time: 2026-09-29T11:17:00Z
 - Type: Added
 - Cited:
-  - [Modularity Handoff](../../modularity.handoff.md) - Premise: ADT module-placement question belonged with the ADT protocol, not modularity alone.
+  - [Modularity Handoff](../../knowledge/modularity/modularity.handoff.md) - Premise: ADT module-placement question belonged with the ADT protocol, not modularity alone.
   - `modules/computer/adt/` - Evidence: existing protocol declarations.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided: state only what the sources already establishes
@@ -23,7 +23,7 @@
 - Time: 2026-09-29T21:00:00Z
 - Type: Changed
 - Cited:
-  - [Rule → Where Rules Live: rules/ Beside protocol/](../../rule.md#where-rules-live-rules-beside-protocol) - Premise: ADT module owns observer/mutator governance.
+  - [Rule → Where Rules Live: rules/ Beside protocol/](../../process/rule/rule.md#where-rules-live-rules-beside-protocol) - Premise: ADT module owns observer/mutator governance.
   - `modules/computer/adt/rules/observer-mutator/observer-mutator.handoff.md` - Premise: owner decisions on method naming and side files.
 - Contributors:
   - Auto (model not recorded) via [Cursor](../../../CONTRIBUTORS.md#cursor) - applied

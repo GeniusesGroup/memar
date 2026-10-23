@@ -50,7 +50,7 @@ class CorpusIsTheCheckout(unittest.TestCase):
     `docs/` is where the model is argued, not where the repository's content
     ends: the model definitions, the rule catalog, the protocol implementations
     and the sources all live under `modules/`, what runs or aggregates them
-    under `bundles/`, and the configuration a session is driven by lives under
+    under `bundles/`, and the configuration a task is driven by lives under
     `.agents/`. A tool named for content that could not reach them reported a
     narrower world under the wider name.
     """
@@ -92,7 +92,7 @@ class CorpusIsTheCheckout(unittest.TestCase):
         self.assertNotIn('temp/s-1/scratch.md', found)
         self.assertNotIn('.agents/tasks/s-2/plan.md', found)
 
-    def test_a_sessions_folder_under_agents_is_no_longer_left_out(self) -> None:
+    def test_a_tasks_folder_under_agents_is_no_longer_left_out(self) -> None:
         root = self.a_checkout()
         self.write('.agents/tasks/s-3/report.md', '# Report\n')
         self.write('.agents/tasks/s-3/docs/entry.changelog.md', '# Changelog\n')

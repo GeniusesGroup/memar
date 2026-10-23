@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the source `sessions` of `memar content find` and `memar content search`, in `modules/knowledge/content/services/session_records.py`, `modules/knowledge/content/primitive/corpus_source.py` and `modules-plugable/computer/git/services/_git_records.py`.
+"""Tests for the source `tasks` of `memar content find` and `memar content search`, in `modules/knowledge/content/services/task_records.py`, `modules/knowledge/content/primitive/corpus_source.py` and `modules-plugable/computer/git/services/_git_records.py`.
 
-    python modules/knowledge/content/tests/session_records.py
+    python modules/knowledge/content/tests/task_records.py
 
-The subject is the owner's ruling of 2026-10-19, carried out by session 20261019-T170853Z-4740:
-archived session records are reached by content through `memar content`, with a filter `--from`
+The subject is the owner's ruling of 2026-10-19, carried out by task 20261019-T170853Z-4740:
+archived task records are reached by content through `memar content`, with a filter `--from`
 by which the agent says where the content is read from, and no new verb. Named for the file that
 holds it per [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md), in
 the `tests/` folder of the shelf that owns it per
@@ -16,13 +16,13 @@ Pinned on a scratch project of the suite's own, a git repository with a records 
 it, so no pin depends on this checkout's records. What is pinned, and what each pin is for:
 
   Archived   A term found only in an archived record is found by `search` and by `find` with
-             `--from sessions`, and its hit names the records branch, the session and the file
+             `--from tasks`, and its hit names the records branch, the task and the file
              (`dev-knowledge:.agents/tasks/<id>/<file>`); the branch is read without moving
              HEAD, index or working tree.
   Filter     The same term is not found without `--from`, nor with `--from documents`; with
-             `--from sessions` alone no document is read.
-  Live       A live session folder in the project's sessions folder is read, its own temp/ is
-             not, and a session with a live folder is read from it and not from the branch.
+             `--from tasks` alone no document is read.
+  Live       A live task folder in the project's tasks folder is read, its own temp/ is
+             not, and a task with a live folder is read from it and not from the branch.
   None       A project whose preferences say `records: off`, one whose repository has no records
              branch, and a folder that is not a repository's top are each said in a note, and
              nothing archived is read.
@@ -68,7 +68,7 @@ def write(path: Path, text: str) -> None:
     path.write_text(text, encoding='utf-8', newline='\n')
 
 class Project(unittest.TestCase):
-    """A project with a document, a `.kh` file, and a records branch holding one session that alone mentions TERM."""
+    """A project with a document, a `.kh` file, and a records branch holding one task that alone mentions TERM."""
 
     def setUp(self) -> None:
         scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
@@ -103,24 +103,24 @@ class Project(unittest.TestCase):
 
 class Archived(Project):
 
-    def test_search_finds_a_term_only_an_archived_record_holds_and_names_the_session_and_file(self) -> None:
-        lines, notes = self.search(TERM, sources=(CorpusSource.SESSIONS,))
+    def test_search_finds_a_term_only_an_archived_record_holds_and_names_the_task_and_file(self) -> None:
+        lines, notes = self.search(TERM, sources=(CorpusSource.TASKS,))
         self.assertIn(f'{RECORDS_BRANCH}:.agents/tasks/{ARCHIVED}/plan.md:5:Count the {TERM} burrows.', lines)
         self.assertIn(f'{RECORDS_BRANCH}:.agents/tasks/{ARCHIVED}/docs/notes.txt:1:one {TERM} seen', lines)
         self.assertEqual(notes, '')
 
-    def test_a_sessions_own_temp_folder_is_not_read(self) -> None:
-        lines, _ = self.search(TERM, sources=(CorpusSource.SESSIONS,))
+    def test_a_tasks_own_temp_folder_is_not_read(self) -> None:
+        lines, _ = self.search(TERM, sources=(CorpusSource.TASKS,))
         self.assertFalse(any(('/temp/' in line for line in lines)), lines)
 
     def test_find_ranks_the_sections_of_an_archived_record_like_a_documents(self) -> None:
-        hits, _ = self.find(f'{TERM} burrows', sources=(CorpusSource.SESSIONS,))
+        hits, _ = self.find(f'{TERM} burrows', sources=(CorpusSource.TASKS,))
         self.assertTrue(hits, hits)
         self.assertTrue(hits[0].startswith(f'orchard:{RECORDS_BRANCH}:.agents/tasks/{ARCHIVED}/plan.md#request | Request | '), hits)
 
     def test_the_branch_is_read_without_moving_head_index_or_working_tree(self) -> None:
         before = (git(self.root, 'symbolic-ref', 'HEAD'), git(self.root, 'rev-parse', 'HEAD'), git(self.root, 'status', '--porcelain'))
-        self.search(TERM, sources=(CorpusSource.SESSIONS,))
+        self.search(TERM, sources=(CorpusSource.TASKS,))
         after = (git(self.root, 'symbolic-ref', 'HEAD'), git(self.root, 'rev-parse', 'HEAD'), git(self.root, 'status', '--porcelain'))
         self.assertEqual(before, after)
 
@@ -134,12 +134,12 @@ class Filter(Project):
         self.assertEqual(self.search(TERM, sources=(CorpusSource.DOCUMENTS,))[0], [])
         self.assertEqual(self.find(TERM, sources=(CorpusSource.DOCUMENTS,))[0], [])
 
-    def test_with_sessions_alone_no_document_is_read(self) -> None:
-        lines, _ = self.search('pear', sources=(CorpusSource.SESSIONS,))
+    def test_with_tasks_alone_no_document_is_read(self) -> None:
+        lines, _ = self.search('pear', sources=(CorpusSource.TASKS,))
         self.assertEqual(lines, [])
 
-    def test_sessions_and_documents_together_read_both(self) -> None:
-        lines, _ = self.search(f'pears|{TERM}', sources=(CorpusSource.DOCUMENTS, CorpusSource.SESSIONS))
+    def test_tasks_and_documents_together_read_both(self) -> None:
+        lines, _ = self.search(f'pears|{TERM}', sources=(CorpusSource.DOCUMENTS, CorpusSource.TASKS))
         self.assertTrue(any((line.startswith(str(Path('docs/pears.md'))) for line in lines)), lines)
         self.assertTrue(any((line.startswith(RECORDS_BRANCH) for line in lines)), lines)
 
@@ -152,27 +152,27 @@ class Live(Project):
         write(self.folder / 'temp' / 'scratch.txt', f'{TERM} scratch\n')
 
     def test_a_live_folder_is_read_and_its_own_temp_is_not(self) -> None:
-        lines, _ = self.search(TERM, sources=(CorpusSource.SESSIONS,))
+        lines, _ = self.search(TERM, sources=(CorpusSource.TASKS,))
         self.assertIn(f'.agents/tasks/{LIVE}/plan.md:5:Feed the {TERM}.', lines)
         self.assertFalse(any((f'{LIVE}/temp/' in line for line in lines)), lines)
 
-    def test_a_session_with_a_live_folder_is_read_from_it_and_not_from_the_branch(self) -> None:
+    def test_a_task_with_a_live_folder_is_read_from_it_and_not_from_the_branch(self) -> None:
         write(self.root / '.agents' / 'tasks' / ARCHIVED / 'plan.md', '# Plan\n\n## Request\n\nCount the burrows again.\n')
-        lines, _ = self.search(TERM, sources=(CorpusSource.SESSIONS,))
-        self.assertFalse(any((f'sessions/{ARCHIVED}/' in line for line in lines)), lines)
+        lines, _ = self.search(TERM, sources=(CorpusSource.TASKS,))
+        self.assertFalse(any((f'tasks/{ARCHIVED}/' in line for line in lines)), lines)
 
 class Nothing(Project):
 
     def test_records_off_is_said_and_nothing_archived_is_read(self) -> None:
         write(preferences_path(self.root), preferences_text({'records': 'off'}))
-        lines, notes = self.search(TERM, sources=(CorpusSource.SESSIONS,))
+        lines, notes = self.search(TERM, sources=(CorpusSource.TASKS,))
         self.assertEqual(lines, [])
         self.assertIn('records: off', notes)
-        self.assertTrue(any(('records: off' in note for note in self.find(TERM, sources=(CorpusSource.SESSIONS,))[1])))
+        self.assertTrue(any(('records: off' in note for note in self.find(TERM, sources=(CorpusSource.TASKS,))[1])))
 
     def test_a_repository_with_no_records_branch_is_said(self) -> None:
         git(self.root, 'branch', '-q', '-D', RECORDS_BRANCH)
-        lines, notes = self.search(TERM, sources=(CorpusSource.SESSIONS,))
+        lines, notes = self.search(TERM, sources=(CorpusSource.TASKS,))
         self.assertEqual(lines, [])
         self.assertIn(f'no branch {RECORDS_BRANCH}', notes)
 
@@ -185,7 +185,7 @@ class Nothing(Project):
 def content_search_in(root: Path, pattern: str) -> tuple[list[str], str]:
     out, err = (io.StringIO(), io.StringIO())
     with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-        content_search.cmd_search(argparse.Namespace(patterns=[pattern]), root, (CorpusSource.SESSIONS,))
+        content_search.cmd_search(argparse.Namespace(patterns=[pattern]), root, (CorpusSource.TASKS,))
     return (out.getvalue().splitlines(), err.getvalue())
 
 class Default(Project):
@@ -199,9 +199,9 @@ class Default(Project):
     def test_each_source_takes_its_own_files(self) -> None:
         self.assertEqual([path.name for path in content_files(self.root, (CorpusSource.CODE,))], ['model.kh'])
         self.assertEqual([path.name for path in content_files(self.root, (CorpusSource.DOCUMENTS,))], ['pears.md'])
-        self.assertEqual(content_files(self.root, (CorpusSource.SESSIONS,)), [])
+        self.assertEqual(content_files(self.root, (CorpusSource.TASKS,)), [])
 
-    def test_no_note_is_printed_without_the_sessions(self) -> None:
+    def test_no_note_is_printed_without_the_tasks(self) -> None:
         _, notes = self.search('pear')
         self.assertEqual(notes, '')
 
@@ -235,8 +235,8 @@ class HelpAndTools(unittest.TestCase):
             key, = [key for key, schema in properties.items() if schema.get('description', '').startswith('--from')]
             self.assertEqual(properties[key]['type'], 'array')
             self.assertEqual(properties[key]['items']['enum'], [each.value for each in CorpusSource])
-        typed, _ = argv(made['content_search'], {'patterns': [TERM], key: ['sessions', 'documents']})
-        self.assertIn('--from=sessions', typed)
+        typed, _ = argv(made['content_search'], {'patterns': [TERM], key: ['tasks', 'documents']})
+        self.assertIn('--from=tasks', typed)
         self.assertIn('--from=documents', typed)
 if __name__ == '__main__':
     unittest.main(verbosity=2)

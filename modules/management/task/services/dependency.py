@@ -1,38 +1,38 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/dependency.py — a plan's dependencies, declared once: the sessions that must be Complete before it can start.
+"""modules/management/task/services/dependency.py — a plan's dependencies, declared once: the tasks that must be Complete before it can start.
 
-A plan's `Depends_on` is the sessions it cannot start without, as
+A plan's `Depends_on` is the tasks it cannot start without, as
 [Documentation → Citations](../../../modules/knowledge/documentation/documentation.md#citations)
 uses the word for documents ("cannot be implemented or understood without the
-cited work"), stronger in time for a session: it cannot start until each cited
-session is Complete. The key is declared once, as `PlanKey.DEPENDS_ON`
+cited work"), stronger in time for a task: it cannot start until each cited
+task is Complete. The key is declared once, as `PlanKey.DEPENDS_ON`
 (`plan_key`); its inverse, `Depends_for`, is declared here once and is
-derived from the plans that cite a session, never written. Renaming either is
+derived from the plans that cite a task, never written. Renaming either is
 one edit.
 
 What the type holds. The value is ids, comma-separated, on one line, each `ID`
-for a session of the plan's own project or `project/ID` for one of another
+for a task of the plan's own project or `project/ID` for one of another
 project the owner works on beside it. A project is resolved the way
 `memar project find` resolves a name and never guessed from a path; one that
-does not resolve is refused, with why. Why a session waits goes in the plan's
+does not resolve is refused, with why. Why a task waits goes in the plan's
 Next, as before: the key holds ids alone.
 
-When a dependency is met. The cited session's plan and its report both state
+When a dependency is met. The cited task's plan and its report both state
 Complete ([Status](../../../modules/knowledge/documentation/documentation.md#status):
 only Complete is safe to depend on, and a plan and its report must agree). A
-session that no longer resolves (deleted, or archived and gone from the
+task that no longer resolves (deleted, or archived and gone from the
 project's records branch) is not met, and says so: it stays unmet until the key
-is dropped. A closed session is read from its project's records branch, where
-`archive` kept it (`session_branch`).
+is dropped. A closed task is read from its project's records branch, where
+`archive` kept it (`task_branch`).
 
 Cycles. A plan is refused a dependency that would let it be reached from
 itself, at any length, and the refusal names the path. A cycle written by hand
-is met when read: each session in it is unmet and the path is named.
+is met when read: each task in it is unmet and the path is named.
 
-This file only reads and checks. Writing the key is `session_plan_depends`,
-the Status a dependency gives a session is `session_depends`.
+This file only reads and checks. Writing the key is `task_plan_depends`,
+the Status a dependency gives a task is `task_depends`.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
@@ -44,6 +44,7 @@ from modules.process.project.services.find import project_by_name
 from modules.process.project.primitive.project_path import ProjectPath
 _m_branch = plugable_load('computer.git.services.branch')
 read_from_branch = _m_branch.read
+read_many_from_branch = _m_branch.read_many
 from modules.management.task.services.folder import folder_of
 from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, front_key, front_matter, read_plan, status_word
 from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
@@ -57,7 +58,7 @@ ARROW = ' → '
 _ID = re.compile('^[\\w.-]+$')
 
 class Ref(NamedTuple):
-    """One cited session: its id, and the name of its project when it is not the citing plan's own."""
+    """One cited task: its id, and the name of its project when it is not the citing plan's own."""
     id: str
     project: str = ''
 
@@ -79,7 +80,7 @@ class Ref(NamedTuple):
         """TEXT as a reference; refused when it is none."""
         found = cls.read(text)
         if found is None:
-            fail(f'{text!r} is not a session to depend on: write an id, or project{PROJECT_SEPARATOR}id for a session of another project')
+            fail(f'{text!r} is not a task to depend on: write an id, or project{PROJECT_SEPARATOR}id for a task of another project')
         return found
 
 class DependsOn(tuple):
@@ -113,7 +114,7 @@ class DependsOn(tuple):
         return [ref.id for ref in self]
 
 class Found(NamedTuple):
-    """A cited session that resolved: what its plan and report say."""
+    """A cited task that resolved: what its plan and report say."""
     id: str
     front: dict[str, str] | None
     plan_status: str
@@ -141,7 +142,7 @@ def _front_status(data: bytes, key: PlanKey | ReportKey) -> tuple[dict[str, str]
     return (front, status_word((front or {}).get(key.STATUS.key, '')))
 
 class Reader:
-    """Resolves references and reads what the cited sessions say; remembers what it read, so one run reads each only once.
+    """Resolves references and reads what the cited tasks say; remembers what it read, so one run reads each only once.
 
     HOME is the project of the plan being checked, where a reference without a
     project is looked for on the records branch once its folder is gone.
@@ -162,7 +163,7 @@ class Reader:
         return self._projects[name]
 
     def find(self, ref: Ref, home: Path | None=None) -> Found | str:
-        """The session REF cites, else why it cannot be found; a local reference is looked for from HOME, else from the reader's."""
+        """The task REF cites, else why it cannot be found; a local reference is looked for from HOME, else from the reader's."""
         home = home or self.home
         where: Path | str | None = self.project(ref.project) if ref.project else home
         key = (str(ref), where if isinstance(where, Path) else None)
@@ -182,13 +183,15 @@ class Reader:
             named = (plan.front or {}).get(PlanKey.PROJECT.key, '').strip()
             return Found(ref.id, plan.front, plan.status, read_report_status(folder), Path(named) if named else where)
         if where is not None:
-            kept = read_from_branch(where, ref.id, PLAN_NAME)
+            # TODO(memory-port): one git start per cited task is still one start per record; read all cited tasks in one batch (task 20261023-T074643Z-5420).
+            held = read_many_from_branch(where, ref.id, [PLAN_NAME, REPORT_NAME])
+            kept = held.get(PLAN_NAME)
             if kept is not None:
                 front, status = _front_status(kept, PlanKey)
-                report = read_from_branch(where, ref.id, REPORT_NAME)
+                report = held.get(REPORT_NAME)
                 report_status = _front_status(report, ReportKey)[1] if report is not None else ''
                 return Found(ref.id, front, status, report_status, where)
-        return "cannot be found: it has no session folder, and the project's records branch holds nothing for it"
+        return "cannot be found: it has no task folder, and the project's records branch holds nothing for it"
 
     def unmet(self, refs: Iterable[Ref], home: Path | None=None) -> list[str]:
         """Each of REFS that is not met, as `ref (how it stands)`; none when every one is."""
@@ -224,21 +227,21 @@ class Reader:
 def refused_for_writing(task_id: str, refs: DependsOn, reader: Reader, added: DependsOn | None=None) -> None:
     """Refuse REFS as the dependencies of TASK_ID unless each of ADDED (all of REFS when not given) resolves and none makes a cycle.
 
-    Written once, when the key is written: a session that depends on itself,
+    Written once, when the key is written: a task that depends on itself,
     one that cannot be found, a project that does not resolve, and a cycle of
     any length through all of REFS. A dependency already in the key that no
     longer resolves is not refused again when another is added: it is dropped.
     """
     for ref in refs if added is None else added:
         if ref.id == task_id:
-            fail(f'session {task_id} cannot depend on itself')
+            fail(f'task {task_id} cannot depend on itself')
         found = reader.find(ref)
         if isinstance(found, str):
-            fail(f'{DependsOn.KEY.written} {ref}: {found}; a dependency is written only for a session that is there')
+            fail(f'{DependsOn.KEY.written} {ref}: {found}; a dependency is written only for a task that is there')
     path = reader.cycle(task_id, refs)
     if path:
         fail(f'{DependsOn.KEY.written} would make a cycle: {ARROW.join(path)}')
 
-def dependents(task_id: str, sessions: Iterable) -> list[str]:
-    """The ids of SESSIONS whose plan cites TASK_ID: the `Depends_for` of that session, derived and never written."""
-    return [session.id for session in sessions if task_id in DependsOn.of(session.front).ids()]
+def dependents(task_id: str, tasks: Iterable) -> list[str]:
+    """The ids of TASKS whose plan cites TASK_ID: the `Depends_for` of that task, derived and never written."""
+    return [task.id for task in tasks if task_id in DependsOn.of(task.front).ids()]

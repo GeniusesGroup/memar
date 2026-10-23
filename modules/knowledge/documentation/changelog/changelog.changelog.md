@@ -114,7 +114,7 @@ This document records why and how `documentation-changelog.md` changed over time
   - [Super Z](../../../../CONTRIBUTORS.md#super-z) - rewrote, moved
 
 #### What changed
-- The Session consolidation topic added: one working session touching one base artifact produces one entry, not one per edit; a new entry only when the kind of work changes (Omid Hekayati - the rule, after observing the session itself produce five redundant entries in one changelog; Super Z - written).
+- The Session consolidation topic added: one working chat touching one base artifact produces one entry, not one per edit; a new entry only when the kind of work changes (Omid Hekayati - the rule, after observing the session itself produce five redundant entries in one changelog; Super Z - written).
 - The Abstract gained a second paragraph naming decision-shaping context and comparative prior-art surveys as this facet's content classes (Omid Hekayati - decided; Super Z - written).
 - The entry template is restructured: `Summary` becomes `What changed`; `Considered and not done`, `Related work`, and `Decision` are added as optional entry sections (Omid Hekayati - demanded structured sections instead of prose Summary after seeing migrated content flattened into narrative; Super Z - written).
 - The Contributors bullet is shortened to presence plus role tags; every substantive claim in an entry carries its attribution inline in parentheses (Omid Hekayati - the role prose had grown and scattered attribution; Super Z - wrote the rule).
@@ -157,7 +157,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Counter-arguments were recorded in the same discussion: fixed titles re-import the per-purpose-template model both facets rejected, tax small single-contributor changes with empty structure, and contradict the open-catalog principle adopted in the 2026-09-06 finalization (Qwen - argued).
 - The root was then diagnosed one level up: the Abstract already promises decision-shaping context a home in the changelog, but the catalog held only outcome-shaped sections - the defect was a missing catalog section, not the `What changed` section itself (Qwen - the diagnosis; Omid Hekayati - accepted).
 - What tipped the balance: the root diagnosis made a named process section both necessary and sufficient, so the catalog extension was chosen over the alternatives recorded below (Qwen - argued; Omid Hekayati - decided).
-- In the same session the owner asked whether `Deliberation` should be mandatory even for single-participant changes, to close every duplication route; the variant was argued against - a forced section for an exchange that never happened gets padded with re-narrated outcomes, the same per-purpose-template failure that killed the fixed-entry-titles proposal above, while the varying-authorship rule already leaves solo entries with zero names in `What changed` - and the owner directed proceeding with the narrower rule (Omid Hekayati - the question, decided; Qwen - argued).
+- In the same chat the owner asked whether `Deliberation` should be mandatory even for single-participant changes, to close every duplication route; the variant was argued against - a forced section for an exchange that never happened gets padded with re-narrated outcomes, the same per-purpose-template failure that killed the fixed-entry-titles proposal above, while the varying-authorship rule already leaves solo entries with zero names in `What changed` - and the owner directed proceeding with the narrower rule (Omid Hekayati - the question, decided; Qwen - argued).
 
 #### Considered and not done
 - Fixed person/topic-centric entry titles ("what was the problem and who raised it", "who raised critiques") (rejected): re-imports the per-purpose-template model both facets rejected, taxes small single-contributor changes with empty structure, and contradicts the open-catalog principle adopted in the 2026-09-06 method finalization. (Omid Hekayati - the proposal; Qwen - the counter-arguments; Omid Hekayati - decided)
@@ -178,7 +178,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - [Super Z](../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../../CONTRIBUTORS.md#zcode)) — recorded
 
 #### What changed
-- The specification gained `Trivial changes`: a change with nothing to audit — broken-link repair, typo fix, cosmetic correction — receives no entry; the diff is the whole record. Two boundaries accompany it: a change that starts disclosing something worth auditing is no longer trivial and earns an entry; and a trivial fix made alongside a substantive change rides inside that session's consolidated entry instead of earning its own.
+- The specification gained `Trivial changes`: a change with nothing to audit — broken-link repair, typo fix, cosmetic correction — receives no entry; the diff is the whole record. Two boundaries accompany it: a change that starts disclosing something worth auditing is no longer trivial and earns an entry; and a trivial fix made alongside a substantive change rides inside that chat's consolidated entry instead of earning its own.
 - The specification also gained `Commit economy`, immediately after: the same rule one level up — a trivial change does not earn its own commit and waits to ride with the repository's next substantive commit — with the boundary that batching is a delay in recording, not a substitute: at session end the working state is committed; uncommitted working state is not a storage medium.
 
 #### Deliberation
@@ -186,7 +186,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - The exception's discretionary nature was acknowledged in the request itself — an agent could read it otherwise — so the rule was made structural: the test is the facet's own audit reader, with the two boundaries stated in the specification rather than left to each writer's judgment (Super Z — recorded; Omid Hekayati — decided).
 - The same discussion then extended the economy to commits: fast-committing small changes costs a permanent history entry, review weight, and attention that a trivial change cannot justify (Omid Hekayati — claimed).
 - One accumulation risk was raised and answered inside the rule rather than as a separate section: batching could become hoarding if trivial changes never catch a ride, so the rule states the session-end boundary explicitly — batching is a delay in recording, not a substitute for recording (Super Z — recorded; Omid Hekayati — accepted).
-- The two rules were added in one consolidated entry the same session, per the Session consolidation rule (Super Z — recorded).
+- The two rules were added in one consolidated entry the same chat, per the Session consolidation rule (Super Z — recorded).
 
 ---
 
@@ -197,7 +197,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - Owner session — Evidence: agents repeatedly prepended changelog entries, forcing a full-file read; the Structure rule already said oldest-first but lacked an agent-facing append path.
 - Propagates to:
   - .agents/skills/memar/scripts/memar-doc.py: Done — changelog-append subcommand.
-  - .agents/commands/: Done — paste catalog removed; executable helpers under commands/ (same session correction).
+  - .agents/commands/: Done — paste catalog removed; executable helpers under commands/ (same chat correction).
   - .agents/skills/memar/SKILL.md: Done — navigation step 5.
   - CONTRIBUTORS.md: Done — Composer identity added; Cursor remains under Tools.
 - Contributors:
@@ -300,7 +300,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Seven bullets in the Khayyam folder carried `[OpenCode] (qwen3.8-flash)`, one research record's Researcher line carried `[OpenCode]` with `mimo-v2.6-flash`, and a second research record's Researcher line named the host tool with no model at all; each now names its model.
 - Twenty-four bullets across eleven files left the host tool in the `via` field as plain text where this specification states the label stays the tool's own name linked to its `###` section; each now carries that link, and one `[Qwen]` bullet that recorded no host at all gained the field.
 - Six files carried every em dash, arrow, and curly quotation mark as the two- and three-character sequence a byte-level decode produces. Each was restored from that sequence back to the character it stands for, and the repository now holds no sequence of that shape outside build output.
-- docs/protocols/token.changelog.md's propagation for the contributor entry this session's work needed was `Pending`; it is `Done`.
+- docs/protocols/token.changelog.md's propagation for the contributor entry this chat's work needed was `Pending`; it is `Done`.
 
 #### Considered and not done
 - A `Full Legal Name` bullet for Stealth Models — rejected: the site describes itself as an independent field guide from the team behind Demodokos and names no person or company, so any entry would be invented.
@@ -332,7 +332,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - [Documentation Changelog Practice → Recording an approval](./changelog.practice.md#recording-an-approval) states how the rule is satisfied: which changes are worth reviewing at all, the four things a review request carries (the claim quoted from `What changed`, the evidence as a command to be run, the boundaries, and the verdict asked for), the three outcomes and what each does to the entry, and why a changed claim goes to a different reviewer rather than back to the same one. It also states who reviews: independence from the work is the requirement, not a roster, so where a runtime offers no second cognitive system the honest outcome is no `approved`.
 
 #### Considered and not done
-- **Letting the session's own agent approve from its session report (rejected by the owner):** the session report is written by the party the approval would judge, so it is the unverified claim wearing a verified one's name. This is the point Spec Kit's `/converge` makes about its own checkboxes, applied to the party rather than to the marker.
+- **Letting the session's own agent approve from its task report (rejected by the owner):** the task report is written by the party the approval would judge, so it is the unverified claim wearing a verified one's name. This is the point Spec Kit's `/converge` makes about its own checkboxes, applied to the party rather than to the marker.
 - **Adding a third role - an owner who issues the certificate after the internal audit (not added):** the two-role form the owner described is what is implemented. Whether an outside signature is wanted on top of it is a separate question and would be a change to [Terminology " + chr(0x2192) + " On Independent Verification, Today](../../../../docs/terminology.md#on-independent-verification-today), not to this field.
 - **A closed role taxonomy for the vocabulary (rejected for now, unchanged):** the section still says the vocabulary is open. Fixing it is a separate decision, and the approval rule does not depend on it.
 - **Requiring the reviewer to be a different *kind* of participant (a human, or a specific model) (rejected):** what the rule needs is independence from the work, not a roster. Naming a roster would make the tag unavailable whenever the roster is unavailable, which is most of the time.
@@ -395,7 +395,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 
 #### What changed
 - Every changelog in `docs/` and in the Khayyam bundle was audited entry by entry against the routing rule: roughly 560 entries across 77 files, each judged once. Three entries were found misplaced with an unambiguous destination and moved, each keeping its text and gaining one clause recording the file it was first written on: an entry recording a change to `docs/khayyam/modularity.md` from `import-address.changelog.md`; an entry recording where the `Field_UserUUID` procedure lives from `encapsulation.changelog.md` to `khayyam.changelog.md`; and *Added Edge computing as a Networking-level architectural principle* from `giti.changelog.md` to `networking.changelog.md`. An entry recording a rename inside the `modules/` tree left `modularity.changelog.md` for the tree's own README ledger.
-- Five entries were deleted as trivial under *Trivial changes*: a link repair that the entry itself calls mechanical with no change to any claim; an anchor repair inside a frozen audit record whose `Action` reads `None`; a correction of three statements the specification's own rule already required; a verbatim duplicate sentence; and a same-session migration that was undone the same session, leaving its document byte-identical to before.
+- Five entries were deleted as trivial under *Trivial changes*: a link repair that the entry itself calls mechanical with no change to any claim; an anchor repair inside a frozen audit record whose `Action` reads `None`; a correction of three statements the specification's own rule already required; a verbatim duplicate sentence; and a same-session migration that was undone the same chat, leaving its document byte-identical to before.
 - Four entries whose subject is genuinely more than one artifact were left where they stand and are now open questions rather than silent judgement calls: they are listed by title in the handoff.
 - The owner's report that `cognition.changelog.md` had recently received records about other artifacts was checked and not supported: no entry in that file records a change to another artifact, and the file is byte-identical to HEAD.
 
@@ -452,8 +452,8 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 
 #### What changed
 - `documentation-changelog.practice.md`'s `description` now states what it is not: the field shapes, state vocabulary, and approval rule, and where an unfinished withheld verdict goes, which [Documentation — Practice → Description quality criteria](../practice/practice.md#description-quality-criteria) requires.
-- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
-- Made in session 20261015-T110002Z-23000.
+- Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in task 20261015-T110002Z-23000.
 
 ---
 
@@ -461,7 +461,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 - Time: 2026-10-16T18:06:00Z
 - Type: Changed
 - Propagates to:
-  - modules/content/documentation/documentation.md: Done (session `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
+  - modules/content/documentation/documentation.md: Done (task `20261016-T150928Z-4276`) - the passage this entry moved here no longer stands there.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — ruled (2026-10-16)
   - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — applied
@@ -469,7 +469,7 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 #### What changed
 - [Reader relationship](./changelog.md#reader-relationship): the definition `documentation.md` held for this facet moved here — the content consulted to audit history, an append-only record of one paired artifact. The note that the facet absorbs what base documents' front matter and `Change Rationale` once held, and the exception that a Changelog-facet file gets no companion of its own while this specification does, were already stated in this specification and were merged, not repeated.
 - The sentence that named the Handoff and Research relationships now points at their own sections.
-- Made in session 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
+- Made in task 20261016-T150928Z-4276, finishing answer 6 of the owner's rulings of 2026-10-16: a new facet edits only its own module.
 
 #### Considered and not done
 - **Restating the other facets' reader relationships here to contrast this one with them**: each facet's own specification states its relationship, and a restatement is a second place to edit when one changes; this specification points at the other's section instead.
@@ -486,4 +486,4 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
 #### What changed
 - The three relations of a task reference are no longer listed in [Tasks](./changelog.md#tasks) (`TaskRelation`). The propagation states (`PropagationState`), the entry sections (`EntrySection`) and the role tags code reads (`ContributorRole`, an open vocabulary) are typed; their prose is unchanged.
 - Why: the owner ruled on 2026-10-16 that every field a facet declares is a type, and that once typed the prose restating it leaves the document, keeping the reason ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)); the types are in this facet's `primitive/`.
-- Made in session 20261016-T194831Z-4504.
+- Made in task 20261016-T194831Z-4504.

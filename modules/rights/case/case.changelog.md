@@ -39,7 +39,7 @@ A falsifier is a test, not a second decision. Every ratified point was written w
 - **The arbitrator as an expert the contract parties named, with the judge ruling from their aggregate** (his morning view, recorded as not concluded): replaced the same afternoon. In the doctrines he looked at, an arbitrator is a judge, and the difference is who names them.
 
 #### Decision
-Nothing in this entry ratifies a graph. It records which points were closed and which stayed premises, so a later session does not re-open a settled point by reading it as still open.
+Nothing in this entry ratifies a graph. It records which points were closed and which stayed premises, so a later chat does not re-open a settled point by reading it as still open.
 
 ### The afternoon of 2026-09-27 settled sixteen points and blocked one
 - Time: 2026-09-27
@@ -86,7 +86,7 @@ The evening dropped the justice-domain judge alias and the separate competence c
 #### Deliberation
 Critique v3 tested the evening proposal that a judge may conditionally accept and that the claimant may chain a consensus claim, and found it not internally usable as stated: the proposal describes a judge who wants a different execution without requiring a reject, which reads as a positive disposition rather than a plain reject with a structured counter-request. Critique v4 found the surviving reading of consensus to be that the claimant files one service and each judge votes on that filing, and found the rejection of a party score and of a system average to be the reasons those are not the mechanism. Where an evening sentence conflicts with the afternoon, the evening governs except on the four blocked forks, where the afternoon ballot stands.
 
-The adjudication questions are to be settled in a separate session, and the civil-versus-criminal subtlety is open again on [claim labels](../../../modules-plugable/rights/claim-labels/claim-labels.handoff.md) rather than closed here.
+The adjudication questions are to be settled in a separate session, and the civil-versus-criminal subtlety is open again on [claim labels](../../../modules-plugable/rights/claims/labels/labels.handoff.md) rather than closed here.
 
 #### Decision
 Nothing in this entry ratifies the described proposal. The four forks are open questions on [case.handoff.md](case.handoff.md), numbered 1 to 5 with the rest of the ledger.

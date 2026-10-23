@@ -5,13 +5,13 @@
 
     python modules/management/task/tests/dependency.py
 
-The subject is the process a plan's `Depends_on` names: the sessions it cannot
-start without, each an id or `project/id`, met when the cited session's plan
+The subject is the process a plan's `Depends_on` names: the tasks it cannot
+start without, each an id or `project/id`, met when the cited task's plan
 and report both state Complete, read from its folder or from its project's
 records branch once the folder is gone, and refused when written for itself,
-for a session or a project that does not resolve, or in a cycle. The design is
-session 20261016-T122241Z-23960's, with the owner's rulings of 2026-10-16
-(session 20261016-T191644Z-14044). Named for the file that holds it per
+for a task or a project that does not resolve, or in a cycle. The design is
+task 20261016-T122241Z-23960's, with the owner's rulings of 2026-10-16
+(task 20261016-T191644Z-14044). Named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
@@ -24,9 +24,9 @@ What is pinned, and what each pin is for:
 
   Writing    A reference is an id or project/id; a list is one line, in order,
              none twice; reading never refuses.
-  Met        Only a cited session whose plan and report both say Complete is
+  Met        Only a cited task whose plan and report both say Complete is
              met; one that is not found, or whose project does not resolve,
-             says why; a closed session is read from the branch.
+             says why; a closed task is read from the branch.
   Refusing   A plan is refused a dependency on itself, on what cannot be found,
              and one that makes a cycle of any length, naming the path.
 """
@@ -68,11 +68,11 @@ class Fixture(unittest.TestCase):
         patched.start()
         self.addCleanup(patched.stop)
         self.branch: dict[tuple[str, str], bytes] = {}
-        read = unittest.mock.patch.object(depends_on, 'read_from_branch', side_effect=lambda project, sid, name: self.branch.get((sid, name)))
+        read = unittest.mock.patch.object(depends_on, 'read_many_from_branch', side_effect=lambda project, sid, names: {name: self.branch[(sid, name)] for name in names if (sid, name) in self.branch})
         read.start()
         self.addCleanup(read.stop)
 
-    def session(self, sid: str, status: str, report: str | None=None, depends: str | None=None) -> Path:
+    def task(self, sid: str, status: str, report: str | None=None, depends: str | None=None) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
         (folder / 'plan.md').write_text(plan_text(status, depends, str(self.fake_root)), encoding='utf-8', newline='\n')
@@ -126,37 +126,37 @@ class Met(Fixture):
         return Reader(home or self.fake_root).unmet([Ref.parse(ref)])
 
     def test_only_a_plan_and_a_report_both_complete_are_met(self) -> None:
-        self.session('done', 'complete', 'complete')
-        self.session('running', 'active')
-        self.session('report-lags', 'complete', 'active')
-        self.session('no-report', 'complete')
+        self.task('done', 'complete', 'complete')
+        self.task('running', 'active')
+        self.task('report-lags', 'complete', 'active')
+        self.task('no-report', 'complete')
         self.assertEqual(self.reason('done'), [])
         self.assertEqual(self.reason('running'), ['running (active)'])
         self.assertEqual(self.reason('report-lags'), ['report-lags (plan complete, report active)'])
         self.assertEqual(self.reason('no-report'), ['no-report (plan complete, report without a status)'])
 
-    def test_a_session_that_is_nowhere_says_it_cannot_be_found(self) -> None:
+    def test_a_task_that_is_nowhere_says_it_cannot_be_found(self) -> None:
         [why] = self.reason('gone')
         self.assertTrue(why.startswith('gone (cannot be found'), why)
 
-    def test_a_closed_session_is_read_from_the_records_branch(self) -> None:
+    def test_a_closed_task_is_read_from_the_records_branch(self) -> None:
         self.branch['kept', 'plan.md'] = plan_text('complete').encode()
         self.branch['kept', 'report.md'] = report_text('complete').encode()
         self.branch['half', 'plan.md'] = plan_text('complete').encode()
         self.assertEqual(self.reason('kept'), [])
         self.assertEqual(self.reason('half'), ['half (plan complete, report without a status)'])
 
-    def test_a_session_of_another_project_is_found_through_that_project_by_name(self) -> None:
+    def test_a_task_of_another_project_is_found_through_that_project_by_name(self) -> None:
         other = self.fake_root / 'other-project'
         other.mkdir()
         registry.add_project('other-project', other, [])
-        self.session('theirs', 'complete', 'complete')
+        self.task('theirs', 'complete', 'complete')
         self.assertEqual(self.reason('other-project/theirs'), [])
         [why] = self.reason('nobody-knows-this/theirs')
         self.assertIn('project nobody-knows-this does not resolve', why)
 
-    def test_a_cited_session_is_read_once_for_a_run(self) -> None:
-        self.session('done', 'complete', 'complete')
+    def test_a_cited_task_is_read_once_for_a_run(self) -> None:
+        self.task('done', 'complete', 'complete')
         reader = Reader(self.fake_root)
         with unittest.mock.patch.object(depends_on, 'read_report_status', wraps=depends_on.read_report_status) as read:
             reader.unmet([Ref('done')])
@@ -169,39 +169,39 @@ class Refusing(Fixture):
         refs = DependsOn.checked(text)
         refused_for_writing(sid, refs, Reader(self.fake_root))
 
-    def test_a_session_cannot_depend_on_itself(self) -> None:
-        self.session('a', 'queued')
+    def test_a_task_cannot_depend_on_itself(self) -> None:
+        self.task('a', 'queued')
         self.assertIn('cannot depend on itself', self.refused(self.check, 'a', 'a'))
 
     def test_what_cannot_be_found_is_refused_with_why(self) -> None:
-        self.session('a', 'queued')
+        self.task('a', 'queued')
         why = self.refused(self.check, 'a', 'ghost')
         self.assertIn('Depends_on ghost: cannot be found', why)
 
     def test_a_cycle_of_any_length_is_refused_naming_the_path(self) -> None:
-        self.session('a', 'queued')
-        self.session('b', 'queued', depends='a')
-        self.session('c', 'queued', depends='b')
+        self.task('a', 'queued')
+        self.task('b', 'queued', depends='a')
+        self.task('c', 'queued', depends='b')
         why = self.refused(self.check, 'a', 'c')
         self.assertIn('a → c → b → a', why)
         self.assertIn('cycle', why)
 
     def test_a_chain_that_is_not_a_cycle_is_accepted(self) -> None:
-        self.session('a', 'queued')
-        self.session('b', 'queued', depends='a')
-        self.session('c', 'queued')
+        self.task('a', 'queued')
+        self.task('b', 'queued', depends='a')
+        self.task('c', 'queued')
         self.check('c', 'b')
 
     def test_a_dependency_already_written_that_no_longer_resolves_is_not_refused_when_another_is_added(self) -> None:
-        self.session('a', 'queued')
-        self.session('b', 'complete', 'complete')
+        self.task('a', 'queued')
+        self.task('b', 'complete', 'complete')
         whole = DependsOn.checked('ghost, b')
         refused_for_writing('a', whole, Reader(self.fake_root), DependsOn.checked('b'))
         self.assertIn('ghost', self.refused(refused_for_writing, 'a', whole, Reader(self.fake_root)))
 
     def test_a_cycle_already_written_is_met_when_read_and_does_not_loop_for_ever(self) -> None:
-        self.session('a', 'queued', depends='b')
-        self.session('b', 'queued', depends='a')
+        self.task('a', 'queued', depends='b')
+        self.task('b', 'queued', depends='a')
         reader = Reader(self.fake_root)
         self.assertEqual(reader.cycle('a', [Ref('b')]), ['a', 'b', 'a'])
         self.assertIsNone(Reader(self.fake_root).cycle('zzz', [Ref('a')]))

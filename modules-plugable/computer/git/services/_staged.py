@@ -28,7 +28,7 @@ def staged_moves(paths: list[str], root: Path, against: str='HEAD', prepared: di
     whose source and destination the caller both names is claimed by that
     naming, and so is an edit staged into its destination — any edit that
     keeps the file above git's rename threshold, which folds into the task's
-    commit with the move even when another session staged it — so it is not the someone-else's staging
+    commit with the move even when another task staged it — so it is not the someone-else's staging
     `refuse_staged` guards against. What still makes it a move is git's own
     rename detection at its default threshold, here and, through
     `renames_lost`, in the tree the commit writes. Nor is a staged removal of
@@ -94,4 +94,4 @@ def refuse_staged(paths: list[str], root: Path, outcome: str) -> None:
     """Stop when any of PATHS holds a staged change HEAD does not: it is someone's, not this verb's."""
     for path in paths:
         if run_captured(['diff', '--cached', '--quiet', 'HEAD', '--', path], cwd=root).returncode:
-            sys.exit(f"error: {path} has a staged change that HEAD does not hold — another session's, or yours from host git. {outcome} Commit or unstage it first; this verb will not decide whose it is.")
+            sys.exit(f"error: {path} has a staged change that HEAD does not hold — another task's, or yours from host git. {outcome} Commit or unstage it first; this verb will not decide whose it is.")

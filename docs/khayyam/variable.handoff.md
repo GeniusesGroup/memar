@@ -1,5 +1,5 @@
 # Variable in Khayyam Handoff
-Open work for `variable.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `variable.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -8,6 +8,7 @@ Open work for `variable.md`. Entries are mutable current state — revised as ea
 
 ### How does the compiler obtain the first instance's values from source?
 - State: open (review 2026-09-22). `vr` declaration separates name/type from initialization; creation goes through capsule behavior — but how the *first* instance a capsule bootstrap needs is populated from source literals is not settled. The lexer reads a literal token (e.g. `42`) as a token without requiring string semantics on it; whether/how the compiler or an early library interprets that token into an instance of a named capsule (no primitive types exist to fall back on) is undecided, and is entangled with the stdlib first-capsule ordering question in [Khayyam's handoff](./khayyam.handoff.md#stdlib-bootstrap-ordering-under-the-no-hidden-primitive-rule).
+- Pending (2026-10-17): the owner judges this question compiler depth rather than language and authorised its removal once its subject is recorded where it belongs. It is restored because that record is not yet written: task 20261014T113225Z-24048-0 is first checking that a quoted text in code has no syntactic ambiguity, and only then will its home in the compiler's documents be written. Not every claim above still holds: the scanner has no number token, so `42` is not a token today (`bundles/khayyam/core/src/scan.ts:14`); the only literal is the quoted form.
 
 ### Can a file export a variable under an alias?
 - State: Whether a file can export a variable under a different name than its declaration name (aliasing) is not currently addressed. (From the Variable-Scope-and-Visibility topic.)

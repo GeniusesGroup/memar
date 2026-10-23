@@ -4,8 +4,8 @@
 """modules/knowledge/documentation/plan/services/depends.py — a plan's Depends_on written in place: one key rewritten, removed when empty, every other line kept.
 
 What the key holds and how text becomes it is the type's (`modules/management/task/services/dependency.py`);
-this file only writes the key, as `session_plan_labels` writes a label. The
-Status a changed key gives the session is `session_depends`'s, after this.
+this file only writes the key, as `task_plan_labels` writes a label. The
+Status a changed key gives the task is `task_depends`'s, after this.
 """
 from __future__ import annotations
 from pathlib import Path

@@ -4,7 +4,7 @@ Open work for [test.md](./test.md). Entries are mutable current state, revised a
 ## Open Questions
 
 ### The module's own protocol surface
-1. What the Test module under `modules/process/test/` exposes — whether a runner, a discovery service, a report format, or only Rules — is undesigned, and the folder is a carrier of thinking rather than a container awaiting code (modules → Why a folder may exist before it holds code (`modules/README.md#why-a-folder-may-exist-before-it-holds-code`)). Deciding it needs a design session the way [SDK](../service/rules/sdk/sdk.md) records its own.
+1. What the Test module under `modules/process/test/` exposes — whether a runner, a discovery service, a report format, or only Rules — is undesigned, and the folder is a carrier of thinking rather than a container awaiting code (modules → Why a folder may exist before it holds code (`modules/README.md#why-a-folder-may-exist-before-it-holds-code`)). Deciding it needs a design chat the way [SDK](../service/rules/sdk/sdk.md) records its own.
 
 ### The Rules and their enforcement
 1. Whether test-placement (`modules/process/test/rules/test-placement/test-placement.md`) and test-naming (`modules/process/test/rules/test-naming/test-naming.md`) are checkable by anything this repository runs, or are governance-tier Rules an organization adopts by choice. The toolchain enforces governance Rules for Khayyam source (Khayyam rules → The rules (`bundles/khayyam/rules/README.md#the-rules`)); a condition over a folder tree is a different check, and no such check exists yet.
@@ -20,7 +20,7 @@ Open work for [test.md](./test.md). Entries are mutable current state, revised a
 - Options: (1) one shared body of Tests per specification, and a divergence recorded beside the realization with a reason drawn from the three kinds above, run-related reasons kept out of the record (recommended; cost is a record per divergence); (2) shared body, divergence recorded as a pending Test with its `Owed:` identifier; (3) each realization writes its own Tests and nothing is shared.
 - Anchor: docs/modules/process/test.md, A Test Is Part of the System That Owes It; docs/modules/process/test.practice.md; docs/protocol.md, conformance. The answer lands in test.md.
 - Blocks: nothing is blocked while one realization exists per specification. Assumption meanwhile: no shared body is required (Tentative).
-- Asked: 2026-10-13, Claude (queued as session `20261013-T035748Z-8848`, written by session `20261015-T103826Z-18580`), for Omid Hekayati.
+- Asked: 2026-10-13, Claude (queued as task `20261013-T035748Z-8848`, written by task `20261015-T103826Z-18580`), for Omid Hekayati.
 
 ## Anticipated Work
 - The Rules this document points to may grow a third, for what a Test may assume of its own subject's internals once a real case forces the question [test.md → What a Test May Assume](./test.md#what-a-test-may-assume) cannot answer.

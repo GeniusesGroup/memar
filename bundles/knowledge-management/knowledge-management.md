@@ -16,7 +16,7 @@ Three layers in this repository:
 
 Memar owns the *concept* of knowledge and its modeling principles (`docs/knowledge.md`, resolve via Memar skill / local checkout). This bundle owns the *organizational practice* that consumes those principles against this repository's real modules.
 
-## Composed modules (index — grow as design sessions land)
+## Composed modules (index — grow as design chats land)
 
 Structural / holding:
 
@@ -43,4 +43,4 @@ Also composed / related (seed mapping — grow as sessions land):
 
 ## Active design state
 
-See [knowledge-management.handoff.md](knowledge-management.handoff.md) — migrated seed + brainstorm material awaiting dedicated design sessions. Design dialectic lives in that handoff's Discussion sections. Nothing in that handoff is fully ratified as a finished Explanation-facet document yet.
+See [knowledge-management.handoff.md](knowledge-management.handoff.md) — migrated seed + brainstorm material awaiting dedicated design chats. Design dialectic lives in that handoff's Discussion sections. Nothing in that handoff is fully ratified as a finished Explanation-facet document yet.

@@ -34,9 +34,9 @@
 - Time: 2026-08-26T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation](../documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog and the cross-cutting URI and citation rules.
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: governing structure the base document was migrated to.
-  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: entry structure used for this companion file.
+  - [Documentation](../../modules/knowledge/documentation/documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog and the cross-cutting URI and citation rules.
+  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: governing structure the base document was migrated to.
+  - [Documentation — Changelog](../../modules/knowledge/documentation/changelog/changelog.md) — Depends_on: entry structure used for this companion file.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — migrated
@@ -170,10 +170,10 @@
 - Time: 2026-10-03T11:16:28Z
 - Type: Changed
 - Propagates to:
-  - anti-lazy-inheritance rule (`bundles/khayyam/rules/README.md`): Pending - the linter check removed here is a governance rule of this repository; [rule.handoff.md](../rule.handoff.md) already records it as destined for that folder, and no agent owns that folder this session.
+  - anti-lazy-inheritance rule (`bundles/khayyam/rules/README.md`): Pending - the linter check removed here is a governance rule of this repository; [rule.handoff.md](../../modules/process/rule/rule.handoff.md) already records it as destined for that folder, and no agent owns that folder this chat.
   - abstraction scaffolding (`bundles/khayyam/rules/abstraction-scaffolding/abstraction-scaffolding.md`): Done - the remediation this document used to promise ("suggests the exact explicit delegation needed") is stated there. [see abstraction-scaffolding.md:23]
-  - [Computer — Compiler](../modules/computer/compiler.md): Done - the optimization material removed from the document's last section is stated there as rationale, not obligation. [see compiler.md:54]
-  - [rule.handoff.md](../rule.handoff.md): Pending - the table quotes this document's delegation rule as "the developer must explicitly define a method on the host capsule and transparently delegate"; that wording changed.
+  - [Computer — Compiler](../../modules/computer/compiler/compiler.md): Done - the optimization material removed from the document's last section is stated there as rationale, not obligation. [see compiler.md:54]
+  - [rule.handoff.md](../../modules/process/rule/rule.handoff.md): Pending - the table quotes this document's delegation rule as "the developer must explicitly define a method on the host capsule and transparently delegate"; that wording changed.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 

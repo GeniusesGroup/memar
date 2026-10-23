@@ -150,5 +150,5 @@ Literature supports **verb-phrase method names** and **query/command distinction
 | [Documentation — Research](../../../../docs/documentation-research.md) | Governs this artifact |
 
 ## Notes
-- A prior draft of this record was written in the same session (2026-09-29); its file was not kept in the repository. Superseded by this file.
+- A prior draft of this record was written in the same chat (2026-09-29); its file was not kept in the repository. Superseded by this file.
 - Butler et al. (2015): the ICPC paper surveys reference-name **forms**; the ICSME paper presents **NOMINAL** adherence checking — previously conflated under one venue in the draft table.
