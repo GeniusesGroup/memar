@@ -1,1 +1,1 @@
-claim-labels.md
+labels.md

@@ -9,7 +9,7 @@ ID: 497269
 An organization may let a law take the place of a contract.
 
 ## Abstract
-This statute is an instance of the [law](../../../../modules/rights/law/law.md) type. An organization that adopts it allows a law to [supersede](../../../../modules/identity/thing/edges/supersedes/supersedes.md) a [contract](../../../../modules/rights/contract/contract.md). An organization that does not adopt it does not. The type does not decide.
+This statute is an instance of the [law](../../../../../modules/rights/law/law.md) type. An organization that adopts it allows a law to [supersede](../../../../../modules/identity/thing/edges/supersedes/supersedes.md) a [contract](../../../../../modules/rights/contract/contract.md). An organization that does not adopt it does not. The type does not decide.
 
 ## Introduction
 

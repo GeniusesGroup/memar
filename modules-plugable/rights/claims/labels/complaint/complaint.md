@@ -9,7 +9,7 @@ ID: 497368
 A claim-type label that groups claim types.
 
 ## Abstract
-Complaint (shekvaieh) is one word a person may attach as a [label](../../../../modules/knowledge/label/label.md). It groups claim types, together with the text explanation a type already carries. It is not the [case](../../../../modules/rights/case/case.md), and it is not an edge.
+Complaint (shekvaieh) is one word a person may attach as a [label](../../../../../modules/knowledge/label/label.md). It groups claim types, together with the text explanation a type already carries. It is not the [case](../../../../../modules/rights/case/case.md), and it is not an edge.
 
 ## Explanation
 

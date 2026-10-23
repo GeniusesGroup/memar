@@ -16,4 +16,4 @@ Extortion is one word a person may attach beside a comment. It can sit on the sa
 ### Definition
 The commenter means: they read the instrument as a taking that the human code requires.
 
-The label does not rewrite that sentence and does not repeal the instrument. Repeal is a new law node, or a [claim](../../claims/claims.md) the organization has included. The two labels can both be true as comments and false as identities.
+The label does not rewrite that sentence and does not repeal the instrument. Repeal is a new law node, or a [claim](../../../claims/claims.md) the organization has included. The two labels can both be true as comments and false as identities.

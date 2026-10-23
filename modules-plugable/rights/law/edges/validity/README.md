@@ -1,1 +1,1 @@
-law-validity.md
+validity.md

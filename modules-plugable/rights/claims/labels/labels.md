@@ -9,7 +9,7 @@ ID: 497367
 Registered meanings of the words people attach when they name a kind of claim.
 
 ## Abstract
-A name such as complaint (shekvaieh) is a [label](../../../modules/knowledge/label/label.md) on a claim type. It is not a field of the [case](../../../modules/rights/case/case.md) node and not a second kind of case. This module is where those words are written down. The attachment edge stays the label domain's `(thing)-[:label]`. This module does not add another one.
+A name such as complaint (shekvaieh) is a [label](../../../../modules/knowledge/label/label.md) on a claim type. It is not a field of the [case](../../../../modules/rights/case/case.md) node and not a second kind of case. This module is where those words are written down. The attachment edge stays the label domain's `(thing)-[:label]`. This module does not add another one.
 
 ## Introduction
 
@@ -32,7 +32,7 @@ Attaching a label is a commenter's act. Registration does not choose who may att
 
 ### Edge cases
 - **Complaint.** Registered below. A label that groups claim types, plus the text explanation a type already carries.
-- **Civil and criminal.** Not registered here. The label decision stands. Execution stays one compelled service. Whether a numeric constraint belongs on the split is open, on [claim-labels.handoff.md](claim-labels.handoff.md).
+- **Civil and criminal.** Not registered here. The label decision stands. Execution stays one compelled service. Whether a numeric constraint belongs on the split is open, on [labels.handoff.md](labels.handoff.md).
 - **Theft, kidnap, stolen, illegal.** Those stay edges of a kind of claim. A label does not redraw them.
 - **Label as a title field.** Refused. A title on the case would be an identity. Identity is the node.
 

@@ -9,7 +9,7 @@ ID: 497284
 Registered meanings of words a person may attach to an account.
 
 ## Abstract
-Real and Personal are [labels](../../../modules/knowledge/label/label.md) on an account. They are not kinds of account, and they are not fields of the account kernel. The kernel stays the [bookkeeping](../../../modules/economics/account/edges/bookkeeping/bookkeeping.md) edge. Attaching a word uses that label domain's `(thing)-[:label]`. This module does not add another edge.
+Real and Personal are [labels](../../../../modules/knowledge/label/label.md) on an account. They are not kinds of account, and they are not fields of the account kernel. The kernel stays the [bookkeeping](../../../../modules/economics/account/edges/bookkeeping/bookkeeping.md) edge. Attaching a word uses that label domain's `(thing)-[:label]`. This module does not add another edge.
 
 ## Explanation
 

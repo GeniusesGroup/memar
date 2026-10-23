@@ -1,1 +1,1 @@
-product-label.md
+labels.md

@@ -1,1 +1,1 @@
-law-labels.md
+labels.md

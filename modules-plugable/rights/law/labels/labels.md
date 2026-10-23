@@ -9,7 +9,7 @@ ID: 497270
 Registered meanings of the words people attach when they comment on a law.
 
 ## Abstract
-A name such as constitution, articles, tax, or extortion is a [label](../../../modules/knowledge/label/label.md) beside a comment. It is not a field of the [law](../../../modules/rights/law/law.md) node and not a second kind of law. This module is where those words are written down. The attachment edge stays the label domain's `(thing)-[:label]`. This module does not add another one.
+A name such as constitution, articles, tax, or extortion is a [label](../../../../modules/knowledge/label/label.md) beside a comment. It is not a field of the [law](../../../../modules/rights/law/law.md) node and not a second kind of law. This module is where those words are written down. The attachment edge stays the label domain's `(thing)-[:label]`. This module does not add another one.
 
 ## Introduction
 

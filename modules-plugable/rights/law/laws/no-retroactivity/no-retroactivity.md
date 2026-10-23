@@ -9,7 +9,7 @@ ID: 497265
 A law applies to acts done after it is in force.
 
 ## Abstract
-This statute is an instance of the [law](../../../../modules/rights/law/law.md) type. An organization that adopts it does not let a law reach acts done before that law is in force.
+This statute is an instance of the [law](../../../../../modules/rights/law/law.md) type. An organization that adopts it does not let a law reach acts done before that law is in force.
 
 ## Explanation
 

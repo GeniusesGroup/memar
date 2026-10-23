@@ -9,7 +9,7 @@ ID: 497271
 A comment label for a law the commenter treats as foundational.
 
 ## Abstract
-Constitution is a word a person may attach beside a comment on a [law](../../../../modules/rights/law/law.md). It is not a kind of law, not a rank, and not a harder path for change.
+Constitution is a word a person may attach beside a comment on a [law](../../../../../modules/rights/law/law.md). It is not a kind of law, not a rank, and not a harder path for change.
 
 ## Explanation
 

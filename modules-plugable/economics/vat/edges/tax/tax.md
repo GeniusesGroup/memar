@@ -13,7 +13,7 @@
 ## Placement
 
 - **Correct here — the tax module owns its own label catalog**.
-- **Not core rights/law or law-labels:** [law-labels tax](../../../../../modules-plugable/rights/law-labels/tax/tax.md) is a *comment* label for laws — different subject (legal commentary vs fiscal rate labels); no overlap, no move (cross-reference only).
+- **Not core rights/law or law labels:** [law labels tax](../../../../rights/law/labels/tax/tax.md) is a *comment* label for laws — different subject (legal commentary vs fiscal rate labels); no overlap, no move (cross-reference only).
 - **Not a new "catalog" module:** an enumerable label set with rates is tax configuration, not independent processing semantics.
 - Blank-label exemption ties to tax rates — travels with this module (edge + rate semantics complete together).
 

@@ -9,7 +9,7 @@ ID: 497262
 Basic statutes an organization may adopt. Not the law type.
 
 ## Abstract
-This module holds statutes written on the [law](../../../modules/rights/law/law.md) type. A bundle includes the ones that organization wants. The type stays what a law node is. These documents are instances.
+This module holds statutes written on the [law](../../../../modules/rights/law/law.md) type. A bundle includes the ones that organization wants. The type stays what a law node is. These documents are instances.
 
 ## Introduction
 
@@ -26,4 +26,4 @@ A document in this module is a statute the organization adopts, edits, or passes
 - [Contract within law](contract-within-law/contract-within-law.md) — a contract binds the people who made it, unless it explicitly contradicts a law in force.
 - [Law supersedes contract](law-supersedes-contract/law-supersedes-contract.md) — a law may take the place of a contract.
 
-What a successful dispute does about a law is an optional edge in [claims](../claims/claims.md), not a clause of these statutes.
+What a successful dispute does about a law is an optional edge in [claims](../../claims/claims.md), not a clause of these statutes.

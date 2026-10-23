@@ -9,7 +9,7 @@ ID: 497272
 A comment label for a law of an organization.
 
 ## Abstract
-Articles, in the sense of an organization's articles of association, names a [law](../../../../modules/rights/law/law.md) the commenter treats as that organization's own instrument. The instrument is not a different type because the organization is not a government.
+Articles, in the sense of an organization's articles of association, names a [law](../../../../../modules/rights/law/law.md) the commenter treats as that organization's own instrument. The instrument is not a different type because the organization is not a government.
 
 ## Explanation
 

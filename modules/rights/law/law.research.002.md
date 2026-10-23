@@ -46,7 +46,7 @@ OASIS, *LegalRuleML Core Specification Version 1.0*, https://docs.oasis-open.org
 
 Placement was then put to Gemini. Where that critique narrowed a judgment, the finding says so. Books named above were not opened. No count in this file is a measurement.
 
-The owner's placement rule, already recorded on [law-validity](../../../modules-plugable/rights/law-validity/law-validity.changelog.md), is the one used here. The kernel is what a law node is. Plugable is an optional capability many organisations need. A statute instance belongs to the bundle that enforces it. Freeze-at-signature, the four companions, executive guarantee as how the law takes effect, and duration's home in law-validity are owner decisions. This inquiry does not reopen them.
+The owner's placement rule, already recorded on [law-validity](../../../modules-plugable/rights/law/edges/validity/validity.changelog.md), is the one used here. The kernel is what a law node is. Plugable is an optional capability many organisations need. A statute instance belongs to the bundle that enforces it. Freeze-at-signature, the four companions, executive guarantee as how the law takes effect, and duration's home in law-validity are owner decisions. This inquiry does not reopen them.
 
 ## Findings
 
@@ -120,7 +120,7 @@ The retroactivity row was refused as a module, and also refused as the nature of
 
 The cancellation link is the relation this inquiry called `supersedes`. The override relation, and the plugable module `law-priority`, are not. No edge was added in the review.
 
-A later review placed the effect of a vote on another law as an optional edge in [claims](../../../modules-plugable/rights/claims/claims.md), not as part of the case type and not as a claim node. [Annul law for conflict](../../../modules-plugable/rights/claims/edges/annul-law-for-conflict/annul-law-for-conflict.md) annuls the second law. [Annul law for update](../../../modules-plugable/rights/claims/edges/annul-law-for-update/annul-law-for-update.md) writes [supersedes](../../identity/thing/edges/supersedes/supersedes.md). Supersedes is on thing, because a contract and an estate need the same relation. The prohibitions live as statutes under [laws](../../../modules-plugable/rights/laws/laws.md).
+A later review placed the effect of a vote on another law as an optional edge in [claims](../../../modules-plugable/rights/claims/claims.md), not as part of the case type and not as a claim node. [Annul law for conflict](../../../modules-plugable/rights/claims/edges/annul-law-for-conflict/annul-law-for-conflict.md) annuls the second law. [Annul law for update](../../../modules-plugable/rights/claims/edges/annul-law-for-update/annul-law-for-update.md) writes [supersedes](../../identity/thing/edges/supersedes/supersedes.md). Supersedes is on thing, because a contract and an estate need the same relation. The prohibitions live as statutes under [laws](../../../modules-plugable/rights/law/laws/laws.md).
 
 ## Open Questions
 The priority module and the separate retroactivity module are answered in [Owner review](#owner-review). The following were written into [law.md](law.md) after the inquiry.
@@ -154,7 +154,7 @@ Law-validity stays duration. It does not receive prospectivity or publicity. The
 - [law.md](law.md) — pointer added; wording of the type not revised (Review)
 - [law.handoff.md](law.handoff.md) — the questions above (Update)
 - [law.research.001.md](law.research.001.md) — internal critique; not superseded (Related)
-- [law-validity.md](../../../modules-plugable/rights/law-validity/law-validity.md) — duration; not the home for priority, prospectivity, or publicity (Related)
+- [law-validity.md](../../../modules-plugable/rights/law/edges/validity/validity.md) — duration; not the home for priority, prospectivity, or publicity (Related)
 - [normative-bootstrap.handoff.md](../normative-bootstrap.handoff.md) — authorization and authority; not this node's shape (Related)
 - [Law](https://en.wikipedia.org/wiki/Law), [Wesley Hohfeld](https://en.wikipedia.org/wiki/Wesley_Hohfeld), [The Nature of Law](https://plato.stanford.edu/entries/lawphil-nature/), [The Pure Theory of Law](https://plato.stanford.edu/entries/lawphil-theory/), [Legal Positivism](https://plato.stanford.edu/entries/legal-positivism/), [The Rule of Law](https://plato.stanford.edu/entries/rule-of-law/) (Related)
 - Kramer, *American Journal of Jurisprudence* (2026), https://doi.org/10.1093/ajj/auag006 (Evidence)
