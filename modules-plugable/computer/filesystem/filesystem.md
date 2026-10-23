@@ -74,6 +74,13 @@ Tools like Git are often lauded as independent innovations. Architecturally, the
 
 Git did not invent a new knowledge model; it built a sophisticated workaround layer to compensate for the fact that files and directories cannot natively represent context, concurrency, or history.
 
+### Many Small Files Under a Malware Scanner
+On a development machine whose operating system scans files as they are created, edited and read, the cost of keeping knowledge as many small files is real and paid by the scanner, not by the program that writes them. Measured on one Windows 11 machine with Microsoft Defender and no exclusions (task 20261020-T131910Z-22300, median of 5): creating and committing 200 small files cost the commands 0.42 s of CPU and Defender's engine 1.69 s; editing and committing them, 0.61 s and 2.01 s; a content check of a documents folder, 0.03 s and 1.20 s. The scanner's cost was about four times the work it watched, it ran on other cores so wall time (1.3 s for the 200 files) hid it, and reads cost as well as writes. Starting a process was small beside it (0.07 s for `git`, 0.18 s for `python`).
+
+Excluding the whole working-tree folder from the scanner (an act of the machine's owner, undone by removing the exclusion) cut the scanner's cost to 0.52 s, 0.32 s and 0.22 s for the same three cases, a reduction of 69 % to 84 %, with wall time unchanged. Git's own settings did not reach this: `core.fsmonitor` halved `git status`, while `core.untrackedCache` and `feature.manyFiles` changed nothing measurable. Excluding the `git` and `python` processes was not needed once the folder was excluded, and it widens the exclusion to every file those processes open anywhere, so it is not recommended.
+
+Two readings follow. The cost scales with the number of files written, so a system that stores its records as thousands of files pays it per record; moving the records into a few large files (the [memory port](../../../modules/computer/memory/memory.md)) removes the cost, where a database file kept inside the same folder only moves it. And a developer who owns the machine and trusts the folder can remove most of the cost today by excluding the folder, at the price of that folder no longer being scanned.
+
 ### The Repository State (Snapshot) Fallacy
 Git models history around "Snapshots" (the state of all files at a given commit). This assumes `Repository State` is the primary historical unit.
 But a critical question arises: How often do we genuinely need to know the exact state of *all* files at a specific timestamp? 

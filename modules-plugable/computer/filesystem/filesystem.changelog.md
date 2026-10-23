@@ -224,3 +224,16 @@
 - `filesystem.practice.md`'s `description` now states when the check is run, from its *When to Run the Check* section, and what it is not: the argument against the default, and the design of the storage chosen, which [Documentation — Practice → Description quality criteria](../../../modules/knowledge/documentation/practice/practice.md#description-quality-criteria) requires.
 - Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
 - Made in session 20261015-T110002Z-23000.
+
+---
+
+### Added the measured cost of many small files under a malware scanner
+- Time: 2026-10-23T09:12:00Z
+- Type: Added
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — asked for the lesson to be recorded where it fits
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — measured and wrote
+
+#### What changed
+- `filesystem.md` gained the section *Many Small Files Under a Malware Scanner*: the scanner's CPU against the work it watches for creating, editing and reading small files, the effect of excluding the working-tree folder, and what git's own settings did not change.
+- Why: the study of task 20261020-T131910Z-22300 measured it on the owner's machine; it supports the document's claim that the file-per-record default has a cost, so it is cited at that claim as evidence.
