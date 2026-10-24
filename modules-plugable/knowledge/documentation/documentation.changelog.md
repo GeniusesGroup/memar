@@ -293,9 +293,9 @@ Owner: an executing agent does not need to read the explanatory document to carr
 - Cited:
   - [Comparison: Memar and GitHub Spec Kit](../../../docs/comparisons/spec-kit.001.md) - **Reference**: the comparison whose adoption filter produced these changes. GitHub Spec Kit's `/converge` requires that a converged run leave `tasks.md` byte-for-byte unchanged with no empty Convergence header and report a fixed string; its `check_extension_version_bump.py` turns "please remember to bump" into a merge requirement, with the rationale recorded as a shipped bug class.
 - Propagates to:
-  - [.agents/scripts/memar-documentation.py](../content/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
+  - [.agents/scripts/memar-documentation.py](../../../modules/knowledge/content/content.py): Done - the propagation report and the newline fix below. That file carries no changelog of its own.
   - [.agents/scripts/README.md](../../../.agents/scripts/README.md): Done - what `check` reports on a folder run, the one question it pointedly does not judge, and the `memar` launcher that reaches it by one word. That file carries no changelog of its own.
-  - [.agents/scripts/tests/memar-documentation.py](../content/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
+  - [.agents/scripts/tests/memar-documentation.py](../../../modules/knowledge/content/tests/content.py): Done - five classes of tests for the report, plus five for the append convention. A Test belongs in the folder of the module that owns what it tests, per Test Placement (`modules/process/test/rules/test-placement/test-placement.md`).
   - [documentation.practice.md](./documentation.practice.md): None needed - [Trivial changes](./changelog/changelog.md#trivial-changes) already covers the changelog-entry case, and the new rule is the same economy stated at the level of the artifact rather than the entry; the practice's own step 4 already sends a session with no lasting design change to no entry at all.
   - [documentation-explanation.md](./explanation/explanation.md): None needed - the rule concerns what a check writes, not what a document is.
   - [cognition.changelog.md](../../../docs/cognition.changelog.md): None needed - the norm change in that entry does not rest on this one.
@@ -436,7 +436,7 @@ The owner proposed the rule as a prohibition on citing informal sources (Omid He
 
 #### What changed
 - [Folder READMEs](./documentation.practice.md#folder-readmes) gains a sixth step: a README has no `README.changelog.md` and no `README.handoff.md`. A decision about a folder is written into the README as the rule it now is; open work about a folder goes to the handoff of the module or document whose subject it is.
-- Applied to the two READMEs that had companions. `docs/modules/README.md` took the one reason worth keeping into its body — why specification and realization are two trees — and that categories are not final. The open state of `modules/README.handoff.md` moved to the handoffs that own each subject: the category layout to [Modularity Handoff](../modularity/modularity.handoff.md#the-category-layout-of-this-repository), the archive findings to `modules/go-port/go-port.handoff.md`, `lib/`'s findings to `modules/lib/lib.handoff.md`, and the end-of-file convention to `modules/khayyam/rules/file-layout/file-layout.handoff.md`.
+- Applied to the two READMEs that had companions. `docs/modules/README.md` took the one reason worth keeping into its body — why specification and realization are two trees — and that categories are not final. The open state of `modules/README.handoff.md` moved to the handoffs that own each subject: the category layout to [Modularity Handoff](../../../modules/knowledge/modularity/modularity.handoff.md#the-category-layout-of-this-repository), the archive findings to `modules/go-port/go-port.handoff.md`, `lib/`'s findings to `modules/lib/lib.handoff.md`, and the end-of-file convention to `modules/khayyam/rules/file-layout/file-layout.handoff.md`.
 
 #### Considered and not done
 - **Keeping a handoff beside a README that holds real open work** (rejected by the owner): the open work was always about some module's subject, and filed under the folder's index it had no owner to answer it.
@@ -788,3 +788,24 @@ The facet count and the facet enumeration this document held are gone, so that p
 
 #### What changed
 - [Folder READMEs](./documentation.practice.md#folder-readmes), step 4, gains one sentence: on a host without symbolic links a README link is a text file with no final newline, and a bulk pass skips every mode-`120000` path. A "final newline" pass in organization changed 89 such links and the owner called the result sloppy; the lesson was kept only in an agent's private memory and is recorded here so that it binds every session.
+
+---
+
+### Documentation is a pluggable module
+- Time: 2026-10-24T09:20:00Z
+- Type: Changed
+- Cited:
+  - [Pluggable](../../../modules/knowledge/modularity/labels/pluggable.md) - Reference: the test of a pluggable module
+- Tasks:
+  - main:.agents/tasks/20261018-T133018Z-26648/: Partial - the placement; the owner ruled it (2026-10-24)
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled that documentation was always a structure laid over content and text
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — moved it and repaired the references
+
+#### What changed
+- The module moved from `modules/knowledge/documentation/` to `modules-plugable/knowledge/documentation/`, with every link, import and path that named it. Before the move the facets the task module reads left it: the Plan and Report records went to the task module, the Status type to the Status module, the Label types to the Label module, and the closed-vocabulary bases (`Word`, `Section`, `RecordKey`) to the content module's `primitive/`; nothing in `modules/` imports it now.
+- It received the services of the documentation discipline that were in the content module (`services/`): the changelog record and append, the questions, the propagations, the owed marks, the normative-references lists and their check, the document ID, and `memar content check` as the composer of the domains' checks.
+- Marks of the lists of normative references whose section only changed in its links were re-marked (11 entries, each shown to differ only in references).
+
+#### Considered and not done
+- Keeping the kernel facets that the task module reads: a kernel module may not import a pluggable one, and an allowance was not needed once they moved.

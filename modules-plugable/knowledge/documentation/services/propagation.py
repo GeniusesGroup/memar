@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/propagation.py — the `Propagates to` entries a changelog still owes: obligations, not defects.
+"""modules-plugable/knowledge/documentation/services/propagation.py — the `Propagates to` entries a changelog still owes: obligations, not defects.
 
 Shared by `obligations`, which prints the work-list, and by `check`, which
 prints it apart from the problems it counts. One reading of the field, so the
@@ -15,43 +15,17 @@ their content is history rather than current truth, which is right for concept
 search and would leave the work-list with no surface at all.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import re
 from pathlib import Path
+_m_propagation_state = import_module('modules-plugable.knowledge.documentation.changelog.primitive.propagation_state')
+PropagationState = _m_propagation_state.PropagationState
+_m_markdown = import_module('modules-plugable.computer.codec.markdown.services.markdown')
+without_code = _m_markdown.without_code
+_PROPAGATION_OPEN = re.compile('(?m)^[ \\t]*[-*][ \\t]+\\S.*?:[ \\t]*' + PropagationState.PENDING.word + '(?![A-Za-z])')
 
-from modules.knowledge.documentation.changelog.primitive.propagation_state import PropagationState
-from modules.knowledge.content.services.markdown import without_code
-
-# The state is read from the entry's own field — the first segment after the
-# artifact's colon — so a sentence that mentions `Pending` while describing
-# something else is not read as an obligation. `Pending deletion` and `Pending
-# at absorb time` are how the sources write the same state, and both are open.
-_PROPAGATION_OPEN = re.compile(
-    r"(?m)^[ \t]*[-*][ \t]+\S.*?:[ \t]*" + PropagationState.PENDING.word + r"(?![A-Za-z])"
-)
-
-
-# A ledger is named `<base>.changelog.md`, so its stem ends in `.changelog`. The
-# document that *specifies* the facet is named `changelog.md` and
-# shows the same section headings, the same `Propagates to` example, and the
-# same field names — testing on `endswith(".changelog.md")` reads that
-# specification as a ledger full of obligations.
 def _is_changelog_ledger(path: Path) -> bool:
-    return path.stem.endswith(".changelog")
-
-# A rejected alternative's home is the `Considered and not done` section of a
-# changelog entry, and whether a body holds such a record is deliberately not
-# checked here. It is not a question about text: `changelog.md` is
-# the document that specifies the field, so it carries a section by that name in
-# its own body, and the specification of where records go differs from a record
-# only in what the text is for. Any threshold that separates them — heading
-# depth, a bullet beside the heading, the file's name — fires on the project's
-# own governing document or misses a record written the other way, and a check
-# that stands permanently red on a correct file is one a reader learns to skip.
-# The hazard the rule addresses is real and named at
-# explanation.md -> Relevance discipline; it is answered by
-# writing the record in the changelog, not by a pattern.
-
+    return path.stem.endswith('.changelog')
 
 def undischarged_propagations(paths: list[Path]) -> list[tuple[Path, int, str]]:
     """Every `Propagates to` entry left `Pending`, as (file, line, report).
@@ -63,15 +37,15 @@ def undischarged_propagations(paths: list[Path]) -> list[tuple[Path, int, str]]:
     """
     found: list[tuple[Path, int, str]] = []
     for path in paths:
-        if path.suffix.lower() != ".md" or not _is_changelog_ledger(path):
+        if path.suffix.lower() != '.md' or not _is_changelog_ledger(path):
             continue
         try:
-            text = path.read_text(encoding="utf-8")
+            text = path.read_text(encoding='utf-8')
         except (OSError, UnicodeDecodeError):
             continue
         visible = without_code(text)
         for match in _PROPAGATION_OPEN.finditer(visible):
-            line = visible[: match.start()].count("\n") + 1
-            artifact = match.group(0).lstrip(" \t-*").rstrip()
-            found.append((path, line, f"{path.name} {line}: {artifact} — not yet done"))
+            line = visible[:match.start()].count('\n') + 1
+            artifact = match.group(0).lstrip(' \t-*').rstrip()
+            found.append((path, line, f'{path.name} {line}: {artifact} — not yet done'))
     return found

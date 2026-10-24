@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar content check` in `modules/knowledge/content/services/check.py`: its judgement of links, its walk, and its rule sets.
+"""Tests for `memar content check` in `modules-plugable/knowledge/documentation/services/content_check.py`: its judgement of links, its walk, and its rule sets.
 
-    python modules/knowledge/content/tests/check.py
+    python modules-plugable/knowledge/documentation/tests/content_check.py
 
 The subject is the checker, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -77,6 +77,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -94,7 +95,7 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.knowledge.content.services.check as content_check
+content_check = import_module('modules-plugable.knowledge.documentation.services.content_check')
 
 class LinkFixture(unittest.TestCase):
     """A scratch tree to write documents into, cleaned up however the run ends."""
@@ -334,7 +335,7 @@ class RejectedInABodyIsNotJudged(LinkFixture):
     """
 
     def test_the_facet_specification_carries_the_heading_and_is_clean(self) -> None:
-        path = self.write('modules/knowledge/documentation/changelog/changelog.md', '# Documentation Changelog\n## Optional Sections\n#### Considered and not done\n- alternatives examined and rejected\n')
+        path = self.write('modules-plugable/knowledge/documentation/changelog/changelog.md', '# Documentation Changelog\n## Optional Sections\n#### Considered and not done\n- alternatives examined and rejected\n')
         self.assertEqual(self.problems(path), [])
 
     def test_a_body_naming_the_fields_home_is_clean(self) -> None:

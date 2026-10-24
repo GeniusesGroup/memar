@@ -8,12 +8,10 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-
-from modules.knowledge.documentation.primitive.word import Word
-
+from modules.knowledge.content.primitive.word import Word
 
 class GoalStatus(Word):
-    MET = ("Met", "the inquiry delivered it")
-    PARTIALLY_MET = ("Partially met", "the inquiry delivered part of it")
-    UNMET = ("Unmet", "the inquiry did not deliver it")
-    DROPPED = ("Dropped", "no longer sought")
+    MET = ('Met', 'the inquiry delivered it')
+    PARTIALLY_MET = ('Partially met', 'the inquiry delivered part of it')
+    UNMET = ('Unmet', 'the inquiry did not deliver it')
+    DROPPED = ('Dropped', 'no longer sought')

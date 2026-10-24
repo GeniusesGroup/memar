@@ -3,32 +3,30 @@
 
 """Tests for `QuestionStatus` in `primitive/question_status.py`.
 
-    python modules/knowledge/documentation/research/tests/question_status.py
+    python modules-plugable/knowledge/documentation/research/tests/question_status.py
 
 The subject is the standing of one question of a research. Named for the file that holds it per
-[Test Naming](../../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../process/test/rules/test-placement/test-placement.md).
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 What is pinned: the words are those the specification names, in its order, each with a meaning; each is read back from its text in any case; any other text is no member.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
 TOP = TESTS.parents[4]
-sys.path.insert(0, str(TOP / ".agents" / "scripts"))
+sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-
-from modules.knowledge.documentation.research.primitive.question_status import QuestionStatus
-
+_m_question_status = import_module('modules-plugable.knowledge.documentation.research.primitive.question_status')
+QuestionStatus = _m_question_status.QuestionStatus
 WORDS = ('Open', 'Answered', 'Withdrawn')
 
-
 class QuestionStatusPins(unittest.TestCase):
+
     def test_the_words_are_the_specifications_in_its_order(self) -> None:
         self.assertEqual(QuestionStatus.words(), WORDS)
 
@@ -39,13 +37,9 @@ class QuestionStatusPins(unittest.TestCase):
 
     def test_each_is_read_back_in_any_case(self) -> None:
         for member in QuestionStatus:
-            self.assertIs(QuestionStatus.read(" " + member.word.upper() + " "), member)
+            self.assertIs(QuestionStatus.read(' ' + member.word.upper() + ' '), member)
 
     def test_any_other_text_is_no_member(self) -> None:
-        self.assertIsNone(QuestionStatus.read("no such word"))
-
-
-
-
-if __name__ == "__main__":
+        self.assertIsNone(QuestionStatus.read('no such word'))
+if __name__ == '__main__':
     unittest.main(verbosity=2)

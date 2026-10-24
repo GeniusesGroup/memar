@@ -8,7 +8,7 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-from modules.knowledge.documentation.primitive.section import Section
+from modules.knowledge.content.primitive.section import Section
 
 class EntrySection(Section):
     WHAT_CHANGED = ('What changed', 'the change itself, as structured statements')

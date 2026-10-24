@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/changelog_record.py — a changelog record and its contributors, read as changelog.md defines them.
+"""modules-plugable/knowledge/documentation/services/changelog_record.py — a changelog record and its contributors, read as changelog.md defines them.
 
 Shared by `list-ai-only-changelog-records`, which lists the records no person
 contributed to, and by `add-human-approval-to-changelog-record`, which adds a
@@ -34,43 +34,37 @@ project with its own CONTRIBUTORS.md is read with its own, and the approval
 line reuses the very path the record's links already use.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
-
-from modules.knowledge.documentation.changelog.primitive.contributor_role import ContributorRole
-from modules.knowledge.content.services.markdown import without_code
-
-NATURAL_PERSON = "natural person"
-LEGAL_ENTITY = "legal entity"
-BRAND_OR_TOOL = "brand or tool"
-
-CHANGELOG_HEADING = "## Changelog"
-TEMPLATE_ANCHOR = "template"
+_m_contributor_role = import_module('modules-plugable.knowledge.documentation.changelog.primitive.contributor_role')
+ContributorRole = _m_contributor_role.ContributorRole
+_m_markdown = import_module('modules-plugable.computer.codec.markdown.services.markdown')
+without_code = _m_markdown.without_code
+NATURAL_PERSON = 'natural person'
+LEGAL_ENTITY = 'legal entity'
+BRAND_OR_TOOL = 'brand or tool'
+CHANGELOG_HEADING = '## Changelog'
+TEMPLATE_ANCHOR = 'template'
 APPROVED = ContributorRole.APPROVED.word
-
-_FIELD = re.compile(r"^- Contributors:[ \t]*(.*)$")
-_SUB_BULLET = re.compile(r"^([ \t]+)[-*][ \t]+(.*)$")
-_LINK = re.compile(r"\[([^\]]+)\]\(([^)#\s]*)#([^)\s]+)\)")
-_HEADING = re.compile(r"^(#{2,3})[ \t]+(.+?)[ \t]*$")
-_LEGAL_NAME = re.compile(r"^[-*][ \t]+(?:\*\*)?Full Legal Name(?:\*\*)?:")
-
+_FIELD = re.compile('^- Contributors:[ \\t]*(.*)$')
+_SUB_BULLET = re.compile('^([ \\t]+)[-*][ \\t]+(.*)$')
+_LINK = re.compile('\\[([^\\]]+)\\]\\(([^)#\\s]*)#([^)\\s]+)\\)')
+_HEADING = re.compile('^(#{2,3})[ \\t]+(.+?)[ \\t]*$')
+_LEGAL_NAME = re.compile('^[-*][ \\t]+(?:\\*\\*)?Full Legal Name(?:\\*\\*)?:')
 
 @dataclass(frozen=True)
 class Contributor:
     """One sub-bullet of a record's `Contributors`: the first link's label, path, and anchor."""
-
     name: str
     target: str
     anchor: str
     line: int
 
-
 @dataclass(frozen=True)
 class ChangelogRecord:
     """One `###` entry of a ledger; lines are 0-based indexes into the ledger's lines."""
-
     number: int
     title: str
     line: int
@@ -78,41 +72,35 @@ class ChangelogRecord:
     insert_at: int | None
     indent: str
 
-
 @dataclass(frozen=True)
 class ContributorSection:
     """One heading of CONTRIBUTORS.md and the kind of contributor it is."""
-
     name: str
     anchor: str
     kind: str
 
-
 @dataclass
 class LedgerReading:
     """A ledger's records sorted by what a human reviewer may do with them."""
-
     total: int = 0
     listed: list[ChangelogRecord] = field(default_factory=list)
     unknown: list[ChangelogRecord] = field(default_factory=list)
 
-
 def lines_of(text: str) -> list[str]:
-    return text.replace("\r\n", "\n").replace("\r", "\n").split("\n")
-
+    return text.replace('\r\n', '\n').replace('\r', '\n').split('\n')
 
 def changelog_records(text: str) -> list[ChangelogRecord]:
     """Every record under `## Changelog`, in the ledger's order, numbered from 1."""
     lines = lines_of(text)
-    visible = lines_of(without_code(text.replace("\r\n", "\n").replace("\r", "\n")))
+    visible = lines_of(without_code(text.replace('\r\n', '\n').replace('\r', '\n')))
     starts: list[int] = []
     inside = False
     for index, line in enumerate(visible):
         if line.rstrip() == CHANGELOG_HEADING:
             inside = True
-        elif inside and line.startswith("## "):
+        elif inside and line.startswith('## '):
             inside = False
-        elif inside and line.startswith("### "):
+        elif inside and line.startswith('### '):
             starts.append(index)
     records = []
     for number, start in enumerate(starts, 1):
@@ -120,13 +108,12 @@ def changelog_records(text: str) -> list[ChangelogRecord]:
         records.append(_record(number, lines, visible, start, end))
     return records
 
-
 def _record(number: int, lines: list[str], visible: list[str], start: int, end: int) -> ChangelogRecord:
     contributors: list[Contributor | None] = []
     insert_at = None
-    indent = "  "
+    indent = '  '
     for index in range(start + 1, end):
-        if visible[index].startswith("#"):
+        if visible[index].startswith('#'):
             break
         if not _FIELD.match(visible[index]):
             continue
@@ -142,27 +129,24 @@ def _record(number: int, lines: list[str], visible: list[str], start: int, end: 
         break
     return ChangelogRecord(number, lines[start][4:].strip(), start, tuple(contributors), insert_at, indent)
 
-
 def _contributor(text: str, line: int) -> Contributor | None:
     link = _LINK.search(text)
     return Contributor(link.group(1), link.group(2), link.group(3), line) if link else None
 
-
 def heading_anchor(heading: str) -> str:
     """The anchor a Markdown renderer gives a heading: lower case, punctuation gone, spaces to hyphens."""
-    kept = re.sub(r"[^\w\- ]", "", heading.strip().lower())
-    return kept.replace(" ", "-")
-
+    kept = re.sub('[^\\w\\- ]', '', heading.strip().lower())
+    return kept.replace(' ', '-')
 
 def contributor_sections(path: Path) -> dict[str, ContributorSection]:
     """The headings of a CONTRIBUTORS.md by anchor, the Template and what it holds left out."""
     sections: dict[str, ContributorSection] = {}
     current: list = []
     in_template = False
-    for line in lines_of(without_code(path.read_text(encoding="utf-8"))):
+    for line in lines_of(without_code(path.read_text(encoding='utf-8'))):
         heading = _HEADING.match(line)
         if heading:
-            level, name = len(heading.group(1)), heading.group(2)
+            level, name = (len(heading.group(1)), heading.group(2))
             anchor = heading_anchor(name)
             if level == 2:
                 in_template = anchor == TEMPLATE_ANCHOR
@@ -175,7 +159,6 @@ def contributor_sections(path: Path) -> dict[str, ContributorSection]:
             current[2] = LEGAL_ENTITY
             sections[current[1]] = ContributorSection(*current)
     return sections
-
 
 class Directory:
     """CONTRIBUTORS.md files read once each, resolved from the ledger that links to them."""
@@ -192,7 +175,6 @@ class Directory:
             self.read[path] = contributor_sections(path) if path.is_file() else {}
         return self.read[path].get(contributor.anchor)
 
-
 def classify(records: list[ChangelogRecord], directory: Directory) -> LedgerReading:
     """Records whose every contributor is a brand or tool, and records naming someone unknown."""
     reading = LedgerReading(total=len(records))
@@ -200,14 +182,13 @@ def classify(records: list[ChangelogRecord], directory: Directory) -> LedgerRead
         if not item.contributors:
             continue
         sections = [directory.section(contributor) for contributor in item.contributors]
-        if any(section is not None and section.kind == NATURAL_PERSON for section in sections):
+        if any((section is not None and section.kind == NATURAL_PERSON for section in sections)):
             continue
-        if any(section is None for section in sections):
+        if any((section is None for section in sections)):
             reading.unknown.append(item)
-        elif all(section.kind == BRAND_OR_TOOL for section in sections):
+        elif all((section.kind == BRAND_OR_TOOL for section in sections)):
             reading.listed.append(item)
     return reading
 
-
 def ai_only_records(ledger: Path) -> LedgerReading:
-    return classify(changelog_records(ledger.read_text(encoding="utf-8")), Directory(ledger))
+    return classify(changelog_records(ledger.read_text(encoding='utf-8')), Directory(ledger))

@@ -8,12 +8,10 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-
-from modules.knowledge.documentation.primitive.word import Word
-
+from modules.knowledge.content.primitive.word import Word
 
 class Confidence(Word):
-    DECIDED = ("Decided", "settled, with its reasoning")
-    TENTATIVE = ("Tentative", "assumed meanwhile, to firm up or be dropped")
-    EXPLORED_BUT_UNRESOLVED = ("Explored-but-unresolved", "looked into and not settled")
-    DEFERRED = ("Deferred", "set aside on purpose")
+    DECIDED = ('Decided', 'settled, with its reasoning')
+    TENTATIVE = ('Tentative', 'assumed meanwhile, to firm up or be dropped')
+    EXPLORED_BUT_UNRESOLVED = ('Explored-but-unresolved', 'looked into and not settled')
+    DEFERRED = ('Deferred', 'set aside on purpose')

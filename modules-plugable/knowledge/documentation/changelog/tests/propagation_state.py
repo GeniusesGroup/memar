@@ -3,32 +3,30 @@
 
 """Tests for `PropagationState` in `primitive/propagation_state.py`.
 
-    python modules/knowledge/documentation/changelog/tests/propagation_state.py
+    python modules-plugable/knowledge/documentation/changelog/tests/propagation_state.py
 
 The subject is where a change's propagation to another artifact stands. Named for the file that holds it per
-[Test Naming](../../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../process/test/rules/test-placement/test-placement.md).
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 What is pinned: the words are those the specification names, in its order, each with a meaning; each is read back from its text in any case; any other text is no member.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
 TOP = TESTS.parents[4]
-sys.path.insert(0, str(TOP / ".agents" / "scripts"))
+sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-
-from modules.knowledge.documentation.changelog.primitive.propagation_state import PropagationState
-
+_m_propagation_state = import_module('modules-plugable.knowledge.documentation.changelog.primitive.propagation_state')
+PropagationState = _m_propagation_state.PropagationState
 WORDS = ('Pending', 'Done', 'Rejected')
 
-
 class PropagationStatePins(unittest.TestCase):
+
     def test_the_words_are_the_specifications_in_its_order(self) -> None:
         self.assertEqual(PropagationState.words(), WORDS)
 
@@ -39,16 +37,12 @@ class PropagationStatePins(unittest.TestCase):
 
     def test_each_is_read_back_in_any_case(self) -> None:
         for member in PropagationState:
-            self.assertIs(PropagationState.read(" " + member.word.upper() + " "), member)
+            self.assertIs(PropagationState.read(' ' + member.word.upper() + ' '), member)
 
     def test_any_other_text_is_no_member(self) -> None:
-        self.assertIsNone(PropagationState.read("no such word"))
+        self.assertIsNone(PropagationState.read('no such word'))
 
     def test_only_pending_is_open(self) -> None:
-        self.assertEqual([m.name for m in PropagationState if m.open], ["PENDING"])
-
-
-
-
-if __name__ == "__main__":
+        self.assertEqual([m.name for m in PropagationState if m.open], ['PENDING'])
+if __name__ == '__main__':
     unittest.main(verbosity=2)

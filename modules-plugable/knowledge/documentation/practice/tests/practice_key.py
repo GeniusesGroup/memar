@@ -3,30 +3,29 @@
 
 """Tests for `PracticeKey` in `primitive/practice_key.py`.
 
-    python modules/knowledge/documentation/practice/tests/practice_key.py
+    python modules-plugable/knowledge/documentation/practice/tests/practice_key.py
 
 The subject is the front-matter keys a Practice-facet document carries. Named for the file that holds it per
-[Test Naming](../../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../process/test/rules/test-placement/test-placement.md).
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 What is pinned: the keys are the specification's, in its order, each with a description and a written form.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
 TOP = TESTS.parents[4]
-sys.path.insert(0, str(TOP / ".agents" / "scripts"))
+sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-
-from modules.knowledge.documentation.practice.primitive.practice_key import PracticeKey
-
+_m_practice_key = import_module('modules-plugable.knowledge.documentation.practice.primitive.practice_key')
+PracticeKey = _m_practice_key.PracticeKey
 
 class PracticeKeyPins(unittest.TestCase):
+
     def test_the_keys_are_the_specifications_in_its_order(self) -> None:
         self.assertEqual([key.key for key in PracticeKey], ['name', 'description'])
 
@@ -36,8 +35,6 @@ class PracticeKeyPins(unittest.TestCase):
             self.assertTrue(key.written)
 
     def test_practice_keys_are_written_in_lower_case(self) -> None:
-        self.assertEqual([key.written for key in PracticeKey], ["name", "description"])
-
-
-if __name__ == "__main__":
+        self.assertEqual([key.written for key in PracticeKey], ['name', 'description'])
+if __name__ == '__main__':
     unittest.main(verbosity=2)

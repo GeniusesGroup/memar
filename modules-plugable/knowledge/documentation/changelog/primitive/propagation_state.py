@@ -8,14 +8,12 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-
-from modules.knowledge.documentation.primitive.word import Word
-
+from modules.knowledge.content.primitive.word import Word
 
 class PropagationState(Word):
-    PENDING = ("Pending", "the open state: undone propagation work a future contributor should search for")
-    DONE = ("Done", "closed: the propagation was carried out")
-    REJECTED = ("Rejected", "closed: considered and deliberately not done, with the reason recorded")
+    PENDING = ('Pending', 'the open state: undone propagation work a future contributor should search for')
+    DONE = ('Done', 'closed: the propagation was carried out')
+    REJECTED = ('Rejected', 'closed: considered and deliberately not done, with the reason recorded')
 
     @property
     def open(self) -> bool:

@@ -10,7 +10,7 @@ never errors, on an entry missing one of the four it looks for, because entries
 written before the rule are still valid (`warned`).
 """
 from __future__ import annotations
-from modules.knowledge.documentation.primitive.word import Word
+from modules.knowledge.content.primitive.word import Word
 
 class QuestionField(Word):
     HEADING = ('Heading', 'the question itself, in one line')

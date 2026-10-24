@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the entry lint in `modules/knowledge/content/services/questions_lint.py`.
+"""Tests for the entry lint in `modules-plugable/knowledge/documentation/services/questions_lint.py`.
 
-    python modules/knowledge/content/tests/questions_lint.py
+    python modules-plugable/knowledge/documentation/tests/questions_lint.py
 
 The subject is the check that an Open Questions entry carries the fields
-[Open Questions](../../../../modules/knowledge/documentation/handoff/handoff.md#open-questions) names
+[Open Questions](../handoff/handoff.md#open-questions) names
 for an entry written during a task: State, Options, Anchor and Blocks. A missing
 one is a warning, never an error: the entries written before the rule stay valid.
 
@@ -21,81 +21,61 @@ What is pinned:
                       with no such section give no warning.
 """
 from __future__ import annotations
-
+from importlib import import_module
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import sys
 import tempfile
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import modules.knowledge.content.services.questions_lint as lint
-
-COMPLETE = """# T handoff
-
-## Open Questions
-### Whole?
-- **State**: x
-- **Options**: a, b
-- **Anchor**: f.md:1
-- **Blocks**: nothing
-- **Asked**: 2026-10-13, Claude
-"""
-
+lint = import_module('modules-plugable.knowledge.documentation.services.questions_lint')
+COMPLETE = '# T handoff\n\n## Open Questions\n### Whole?\n- **State**: x\n- **Options**: a, b\n- **Anchor**: f.md:1\n- **Blocks**: nothing\n- **Asked**: 2026-10-13, Claude\n'
 
 class Fixture(unittest.TestCase):
+
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
 
     def write(self, text: str) -> Path:
-        path = Path(self.scratch.name) / "t.handoff.md"
-        path.write_text(text, encoding="utf-8", newline="\n")
+        path = Path(self.scratch.name) / 't.handoff.md'
+        path.write_text(text, encoding='utf-8', newline='\n')
         return path
 
-
 class FieldsAreRequired(Fixture):
+
     def test_a_complete_entry_is_clean(self) -> None:
         self.assertEqual(lint.entry_warnings(self.write(COMPLETE)), [])
 
     def test_a_missing_field_is_named_with_line_and_heading(self) -> None:
-        text = COMPLETE.replace("- **Options**: a, b\n", "").replace("- **Anchor**: f.md:1\n", "")
-        self.assertEqual(
-            lint.entry_warnings(self.write(text)),
-            ["line 4: entry 'Whole?' lacks Options, Anchor"],
-        )
+        text = COMPLETE.replace('- **Options**: a, b\n', '').replace('- **Anchor**: f.md:1\n', '')
+        self.assertEqual(lint.entry_warnings(self.write(text)), ["line 4: entry 'Whole?' lacks Options, Anchor"])
 
     def test_plain_markers_and_the_older_blocks_name_count(self) -> None:
-        text = "## Open Questions\n### Q?\n- State: x\n- Options: a\n- Anchor: y\n- Blocks continuation: no\n"
+        text = '## Open Questions\n### Q?\n- State: x\n- Options: a\n- Anchor: y\n- Blocks continuation: no\n'
         self.assertEqual(lint.entry_warnings(self.write(text)), [])
 
     def test_a_colon_inside_the_bold_counts(self) -> None:
-        text = "## Open Questions\n### Q?\n- **State:** x\n- **Options:** a\n- **Anchor:** y\n- **Blocks:** no\n"
+        text = '## Open Questions\n### Q?\n- **State:** x\n- **Options:** a\n- **Anchor:** y\n- **Blocks:** no\n'
         self.assertEqual(lint.entry_warnings(self.write(text)), [])
 
     def test_a_bare_entry_lacks_all_four(self) -> None:
-        text = "## Open Questions\n### Q?\nJust a paragraph.\n"
-        self.assertEqual(
-            lint.entry_warnings(self.write(text)),
-            ["line 2: entry 'Q?' lacks State, Options, Anchor, Blocks"],
-        )
-
+        text = '## Open Questions\n### Q?\nJust a paragraph.\n'
+        self.assertEqual(lint.entry_warnings(self.write(text)), ["line 2: entry 'Q?' lacks State, Options, Anchor, Blocks"])
 
 class OnlyEntriesCount(Fixture):
+
     def test_text_outside_the_section_and_fenced_headings_give_nothing(self) -> None:
-        text = ("# T\n\n### Not an entry\n\n## Open Questions\n```\n### fenced\n```\n"
-                "### Whole?\n- State: x\n- Options: a\n- Anchor: y\n- Blocks: no\n\n## Notes\n### Other\n")
+        text = '# T\n\n### Not an entry\n\n## Open Questions\n```\n### fenced\n```\n### Whole?\n- State: x\n- Options: a\n- Anchor: y\n- Blocks: no\n\n## Notes\n### Other\n'
         self.assertEqual(lint.entry_warnings(self.write(text)), [])
 
     def test_a_file_with_no_section_gives_nothing(self) -> None:
-        self.assertEqual(lint.entry_warnings(self.write("# T\n\nBody\n")), [])
-
-
-if __name__ == "__main__":
+        self.assertEqual(lint.entry_warnings(self.write('# T\n\nBody\n')), [])
+if __name__ == '__main__':
     unittest.main(verbosity=2)

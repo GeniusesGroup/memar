@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/add_human_approval_to_changelog_record.py — `memar content add-human-approval-to-changelog-record`: a person's `approved` added to one record.
+"""modules-plugable/knowledge/documentation/services/content_add_human_approval_to_changelog_record.py — `memar content add-human-approval-to-changelog-record`: a person's `approved` added to one record.
 
 changelog.md → Approval Requires a Reviewer Who Did Not Do the Work: the
 approval names the reviewer alongside the other contributors, as one more
@@ -23,6 +23,7 @@ written to; the text goes through `content_text`, keeping the ledger's own line
 endings. The link path is the one the record's own contributor links use.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_lock = plugable_load('computer.filesystem.services.fs_lock')
 edit_task = _m_fs_lock.edit_task
@@ -37,8 +38,14 @@ def describe(verbs):
     return run
 
 def run(args: argparse.Namespace) -> None:
-    from modules.knowledge.content.services.changelog_record import APPROVED, NATURAL_PERSON, Directory, changelog_records, classify, lines_of
-    from modules.knowledge.content.services.text import detect_newline, plain_path, read_utf8_strict, write_utf8, writer_id
+    _m_changelog_record = import_module('modules-plugable.knowledge.documentation.services.changelog_record')
+    APPROVED = _m_changelog_record.APPROVED
+    NATURAL_PERSON = _m_changelog_record.NATURAL_PERSON
+    Directory = _m_changelog_record.Directory
+    changelog_records = _m_changelog_record.changelog_records
+    classify = _m_changelog_record.classify
+    lines_of = _m_changelog_record.lines_of
+    from modules.knowledge.text.services.file_text import detect_newline, plain_path, read_utf8_strict, write_utf8, writer_id
     ledger = plain_path(args.file)
     if not ledger.is_file() or not ledger.name.endswith('.changelog.md'):
         sys.exit(f'error: not a *.changelog.md file: {ledger}')
@@ -64,5 +71,6 @@ def run(args: argparse.Namespace) -> None:
     print(f'approved record {chosen.number} ({chosen.title}) of {ledger} as {reviewer.name}')
 
 def _named(target: str, anchor: str):
-    from modules.knowledge.content.services.changelog_record import Contributor
+    _m_changelog_record = import_module('modules-plugable.knowledge.documentation.services.changelog_record')
+    Contributor = _m_changelog_record.Contributor
     return Contributor(anchor, target, anchor, -1)

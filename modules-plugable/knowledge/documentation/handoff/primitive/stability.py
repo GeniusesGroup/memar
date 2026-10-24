@@ -8,11 +8,9 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-
-from modules.knowledge.documentation.primitive.word import Word
-
+from modules.knowledge.content.primitive.word import Word
 
 class Stability(Word):
-    STRONG = ("Strong", "unlikely to change")
-    WEAK = ("Weak", "may well change")
-    UNEXAMINED = ("Unexamined", "taken as given and not looked at")
+    STRONG = ('Strong', 'unlikely to change')
+    WEAK = ('Weak', 'may well change')
+    UNEXAMINED = ('Unexamined', 'taken as given and not looked at')

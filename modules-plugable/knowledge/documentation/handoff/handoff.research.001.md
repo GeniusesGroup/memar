@@ -16,7 +16,7 @@ Active
 - **Question 1:** Should Memar identify a working chat, so that every artifact it produces is traceable to it and a later chat can resume from the repository alone? — **Answered**
 - **Question 2:** If so, is a Unix-epoch timestamp at minute or nanosecond granularity a sound identifier? — **Answered**
 - **Goal 1:** settle session identity on a defensible basis, consulting the standards and the published record rather than the nearest convenient scheme — **Met**
-- **Scope:** what may identify a working chat, and where that identity is recorded. Excludes the content of any feature pipeline, task-tracking tooling, estimation and scheduling, and any change to how a tool resolves the repository it reads. This is the half of [Process Research 001](../../../process/process.research.001.md) that concerns the record rather than the concept: a session is an exchange between cognitive systems, and what outlives it here is a Handoff, so the question belongs to the facet that owns the record and not to the one that owns the concept.
+- **Scope:** what may identify a working chat, and where that identity is recorded. Excludes the content of any feature pipeline, task-tracking tooling, estimation and scheduling, and any change to how a tool resolves the repository it reads. This is the half of [Process Research 001](../../../../modules/process/process.research.001.md) that concerns the record rather than the concept: a session is an exchange between cognitive systems, and what outlives it here is a Handoff, so the question belongs to the facet that owns the record and not to the one that owns the concept.
 
 ## Participants
 - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) → `Questioner`, `Goal-setter`
@@ -73,10 +73,10 @@ A pass over the primary sources on 2026-10-04: RFC 9562 (UUID versions 1, 6, 7, 
 ## Related Artifacts
 - [Documentation Handoff](./handoff.md): the facet whose record this identity would annotate. No change made.
 - [Documentation](../documentation.md): where a session field's facet ownership would be stated if the owner adopts one. No change made.
-- [Process Research 001](../../../process/process.research.001.md): the inquiry this half was split out of, and the reason for the split.
+- [Process Research 001](../../../../modules/process/process.research.001.md): the inquiry this half was split out of, and the reason for the split.
 - [Comparison: Memar and GitHub Spec Kit](../../../../docs/comparisons/spec-kit.001.md): recorded the absence this research answers.
 
 ## Notes
-This research was split out of [Process Research 001](../../../process/process.research.001.md) after its first two questions were answered. A research is paired to the base artifact whose subject it is, and the two halves of the original inquiry did not share one: decomposition is a question about the Process concept, while identifying a session is a question about the record that survives one. Keeping both under `process.md` would have made a concept document answer for a records mechanism it does not own.
+This research was split out of [Process Research 001](../../../../modules/process/process.research.001.md) after its first two questions were answered. A research is paired to the base artifact whose subject it is, and the two halves of the original inquiry did not share one: decomposition is a question about the Process concept, while identifying a session is a question about the record that survives one. Keeping both under `process.md` would have made a concept document answer for a records mechanism it does not own.
 
 The original proposal → a Unix-epoch timestamp at finer granularity than Memar's hourly document `ID` → is answered by the standards rather than adopted. A timestamp is a sort key and never a name: clock resolution is independent of the field's width, nothing coordinates two concurrent processes or two machines reading the clock at once, and every scheme surveyed appends a non-temporal component for exactly that reason. What survives the proposal is the part that was right, because it sorts and because it is legible.

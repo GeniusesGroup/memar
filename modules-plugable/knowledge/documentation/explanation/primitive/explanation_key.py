@@ -11,7 +11,7 @@ set, so they are code and are written here and nowhere else
 specification's (an hour-count integer, a calendar date).
 """
 from __future__ import annotations
-from modules.knowledge.documentation.primitive.record_key import ID_FIELD, START_DATE_FIELD, RecordKey
+from modules.knowledge.content.primitive.record_key import ID_FIELD, START_DATE_FIELD, RecordKey
 
 class ExplanationKey(RecordKey):
     TITLE = ('title', 'a short, unique, human-readable name for the document, in double quotes', 'Title')

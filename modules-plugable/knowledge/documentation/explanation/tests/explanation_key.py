@@ -3,15 +3,16 @@
 
 """Tests for `ExplanationKey` in `primitive/explanation_key.py`.
 
-    python modules/knowledge/documentation/explanation/tests/explanation_key.py
+    python modules-plugable/knowledge/documentation/explanation/tests/explanation_key.py
 
 The subject is the front-matter keys a Explanation-facet document carries. Named for the file that holds it per
-[Test Naming](../../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../process/test/rules/test-placement/test-placement.md).
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 What is pinned: the keys are the specification's, in its order, each with a description and a written form.
 """
 from __future__ import annotations
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
@@ -20,7 +21,8 @@ TOP = TESTS.parents[4]
 sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-from modules.knowledge.documentation.explanation.primitive.explanation_key import ExplanationKey
+_m_explanation_key = import_module('modules-plugable.knowledge.documentation.explanation.primitive.explanation_key')
+ExplanationKey = _m_explanation_key.ExplanationKey
 
 class ExplanationKeyPins(unittest.TestCase):
 
@@ -33,7 +35,7 @@ class ExplanationKeyPins(unittest.TestCase):
             self.assertTrue(key.written)
 
     def test_id_and_start_date_are_the_fields_a_task_record_shares(self) -> None:
-        from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+        from modules.management.task.plan.primitive.plan_key import PlanKey
         self.assertEqual(ExplanationKey.ID.value, PlanKey.ID.value)
         self.assertEqual(ExplanationKey.START_DATE.value, PlanKey.START_DATE.value)
 if __name__ == '__main__':

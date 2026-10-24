@@ -8,11 +8,9 @@ nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-
-from modules.knowledge.documentation.primitive.section import Section
-
+from modules.knowledge.content.primitive.section import Section
 
 class BodySection(Section):
-    ABSTRACT = ("Abstract", "one self-contained paragraph stating the document's actual claim or decision")
-    INTRODUCTION = ("Introduction", "document-wide context needed before the technical content; carries no direct content itself")
-    EXPLANATION = ("Explanation", "the document's actual content, as topic subsections in the order the author judges most useful")
+    ABSTRACT = ('Abstract', "one self-contained paragraph stating the document's actual claim or decision")
+    INTRODUCTION = ('Introduction', 'document-wide context needed before the technical content; carries no direct content itself')
+    EXPLANATION = ('Explanation', "the document's actual content, as topic subsections in the order the author judges most useful")

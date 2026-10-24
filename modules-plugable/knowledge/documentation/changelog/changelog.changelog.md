@@ -384,14 +384,14 @@ Open questions (dot-boundary criterion, entry-title uniqueness, historical-entry
   - `docs/khayyam/modularity.changelog.md`: Done — holds that entry.
   - `docs/khayyam/khayyam.changelog.md`: Done — holds an entry recording a change to `khayyam.practice.md`, misplaced from `encapsulation.changelog.md`.
   - `docs/modules/net/networking.changelog.md`: Done — holds an entry recording a change to `networking.md`, misplaced from `giti.changelog.md`.
-  - [modularity.changelog.md](../../modularity/modularity.changelog.md): Done — no longer holds the entry recording a rename inside the `modules/` tree, which moved to that tree's own ledger.
+  - [modularity.changelog.md](../../../../modules/knowledge/modularity/modularity.changelog.md): Done — no longer holds the entry recording a rename inside the `modules/` tree, which moved to that tree's own ledger.
 - Contributors:
   - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) — asked for the audit, reported misplaced records in `cognition.changelog.md`
   - [Space Bunny Alpha](../../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../../CONTRIBUTORS.md#opencode)) — delegated, audited, applied
 - Related work:
   - [Documentation Practice](../documentation.practice.md) → *Results and companions* — the routing rule the audit judged every entry against
   - [Documentation — Changelog](./changelog.md) → *Changelog scope*, *Changelog membership*, *Trivial changes*, *Session consolidation* — the four rules that decide scope, admission, deletion, and how many entries one session writes
-  - [Content](../../content/content.md), [Modeling](../../../../docs/modeling.md), [Process](../../../process/process.md), [System](../../../../docs/system.md), [Knowledge](../../knowledge.md), [Cognition](../../../../docs/cognition.md), [Framework](../../../../docs/framework.md) — the base artifacts whose ledgers were audited
+  - [Content](../../../../modules/knowledge/content/content.md), [Modeling](../../../../docs/modeling.md), [Process](../../../../modules/process/process.md), [System](../../../../docs/system.md), [Knowledge](../../../../modules/knowledge/knowledge.md), [Cognition](../../../../docs/cognition.md), [Framework](../../../../docs/framework.md) — the base artifacts whose ledgers were audited
 
 #### What changed
 - Every changelog in `docs/` and in the Khayyam bundle was audited entry by entry against the routing rule: roughly 560 entries across 77 files, each judged once. Three entries were found misplaced with an unambiguous destination and moved, each keeping its text and gaining one clause recording the file it was first written on: an entry recording a change to `docs/khayyam/modularity.md` from `import-address.changelog.md`; an entry recording where the `Field_UserUUID` procedure lives from `encapsulation.changelog.md` to `khayyam.changelog.md`; and *Added Edge computing as a Networking-level architectural principle* from `giti.changelog.md` to `networking.changelog.md`. An entry recording a rename inside the `modules/` tree left `modularity.changelog.md` for the tree's own README ledger.
