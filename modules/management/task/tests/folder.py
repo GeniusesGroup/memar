@@ -50,7 +50,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.management.task.services.folder as task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
 OLDEST = '20261001-T000000Z-1'
 NEWEST = '20261003-T000000Z-1'
 EARLIER_FORM = '1111-18dc000000000001-0'

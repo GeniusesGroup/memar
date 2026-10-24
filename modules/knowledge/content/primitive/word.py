@@ -6,14 +6,12 @@
 A facet's specification fixes some vocabularies (the confidence a decision
 carries, the state of a propagation); each is a closed set a program may read,
 so each is code, written once in a facet's own `primitive/` as a subclass of
-`Word` ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)).
+`Word` ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 The specification keeps why the vocabulary is fixed; the type holds the words
 and what each means.
 """
 from __future__ import annotations
-
 from enum import Enum
-
 
 class Word(Enum):
     """A word as written, and what it means."""
@@ -25,7 +23,7 @@ class Word(Enum):
     @classmethod
     def words(cls) -> tuple[str, ...]:
         """Every word, in the order declared."""
-        return tuple(member.word for member in cls)
+        return tuple((member.word for member in cls))
 
     @classmethod
     def read(cls, text: str):

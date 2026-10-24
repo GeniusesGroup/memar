@@ -12,7 +12,7 @@ comparing them could not match.
 The flag that carries an id (`FLAG`), its metavar, the attribute a parser gives it
 and the way a verb declares it (`add_flag`, `add_positional`) are the type's too:
 no verb writes `--task-id` or its help by hand
-([A Fact in Code Is Written Once](../../../knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 
 The form is the UTC date, a dash, the time, and the process id, e.g.
 `20261013-T190845Z-23368`: the dash between date and time

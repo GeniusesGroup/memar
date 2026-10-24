@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/services/depends.py — a plan's Depends_on written in place: one key rewritten, removed when empty, every other line kept.
+"""modules/management/task/services/plan_depends.py — a plan's Depends_on written in place: one key rewritten, removed when empty, every other line kept.
 
 What the key holds and how text becomes it is the type's (`modules/management/task/services/dependency.py`);
 this file only writes the key, as `task_plan_labels` writes a label. The
@@ -12,9 +12,9 @@ from pathlib import Path
 from machine.console import fail
 from machine.modules_import import load as modules_load
 DependsOn = modules_load('management', 'task', 'services', 'dependency').DependsOn
-from modules.knowledge.documentation.plan.services.plan import front_matter
-from modules.knowledge.documentation.plan.services.rewrite import key_of, line_end, rewrite
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.services.plan_file import front_matter
+from modules.management.task.services.plan_rewrite import key_of, line_end, rewrite
+from modules.management.task.plan.primitive.plan_key import PlanKey
 
 def set_depends_on(path: Path, depends_on: DependsOn) -> None:
     """Write DEPENDS_ON as PATH's `Depends_on`, replacing the key or adding it last in the front matter; empty removes the key.

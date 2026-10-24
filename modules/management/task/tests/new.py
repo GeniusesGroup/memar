@@ -74,7 +74,7 @@ What is pinned, and what each pin is for:
                      into a new plan and adds it to one that is there; a word outside the
                      closed list, or a kind no plan carries, is refused and
                      makes nothing; the help lists the kinds from
-                     `modules/knowledge/documentation/plan/labels/task_kind.py`.
+                     `modules/management/task/labels/task_kind.py`.
   BriefPrinted       A task made with --parent ends with the brief that
                      hands it to a sub-agent, its id filled in; one without
                      a parent prints none.
@@ -126,15 +126,15 @@ from modules.management.task.services.folder import read_task
 from modules.management.task.primitive.task_id import TaskId
 _m_plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.labels.task_kind import TaskKind
 import modules.process.project.services.task_location as task_location
 import modules.process.project.services.registry as project_registry
 from modules.process.project.services.task_location import prune_registry, registered_locations
 _m_log = import_module('modules-plugable.computer.git.services.log')
 TASK_LOG_NAME = _m_log.TASK_LOG_NAME
 log_path = _m_log.log_path
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.services.report_file import REPORT_NAME
 TITLE = 'Test the task services'
 REPORT = f'---\nID: s-report\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n'
 OPENED = '\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z'

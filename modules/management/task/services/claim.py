@@ -41,11 +41,11 @@ from pathlib import Path
 from typing import Callable
 from machine.console import fail, note
 from modules.management.task.primitive.claim import Claim
-from modules.knowledge.documentation.primitive.status import Status
+from modules.knowledge.status.primitive.status import Status
 from modules.management.task.services.folder import folder_of, is_task_folder
 from modules.management.task.services.temp import TEMP_SENTENCE
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_file_problem, read_plan
-from modules.knowledge.documentation.plan.services.status import set_status
+from modules.management.task.services.plan_file import PLAN_NAME, plan_file_problem, read_plan
+from modules.management.task.services.plan_status import set_status
 from modules.management.task.services.depends import refusal as dependency_refusal
 from modules.management.task.primitive.task_id import TaskId
 CLAIM_COMMAND = 'claim'

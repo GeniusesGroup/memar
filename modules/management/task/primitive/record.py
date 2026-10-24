@@ -5,24 +5,24 @@
 
 A plan and a report are records: a file name, a fixed set of front-matter keys,
 the parts under the front matter in order, and the Status values the file may
-carry ([Status](./primitive/status.py), [Status](./documentation.md#status)).
+carry ([Status](../../../knowledge/status/primitive/status.py), [Status](../../../../modules-plugable/knowledge/documentation/documentation.md#status)).
 That shape is a closed set, so it is code and is written here and nowhere else
-([A Fact in Code Is Written Once](./documentation.md#a-fact-in-code-is-written-once)):
+([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
 `task_plan` and `task_report` read and write by it, and `task_new`
 prints it in its help by calling `Record.outline`.
 
-The keys are the facets' own ([PlanKey](./plan/primitive/plan_key.py),
-[ReportKey](./report/primitive/report_key.py)). A record is built from them and
+The keys are the facets' own ([PlanKey](../plan/primitive/plan_key.py),
+[ReportKey](../report/primitive/report_key.py)). A record is built from them and
 from `Status`, so it stands here in the module's root and not in `primitive/`.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
-from modules.knowledge.documentation.primitive.record_key import RecordKey
-from modules.knowledge.documentation.primitive.status import DocumentKind, Status
-from modules.knowledge.documentation.report.primitive.report_key import ReportKey
-from modules.knowledge.documentation.report.primitive.report_part import HAND_BACK_MAX_LINES, ReportPart
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_part import PlanPart
+from modules.knowledge.content.primitive.record_key import RecordKey
+from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.management.task.report.primitive.report_key import ReportKey
+from modules.management.task.report.primitive.report_part import HAND_BACK_MAX_LINES, ReportPart
 
 @dataclass(frozen=True)
 class Record:

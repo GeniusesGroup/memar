@@ -23,11 +23,11 @@ the earlier sectioned form is not judged by a Request or by steps it never had.
 """
 from __future__ import annotations
 import re
-from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.plan.primitive.plan_part import PlanPart
+from modules.knowledge.status.primitive.status import Status
 from modules.management.task.services.folder import Task, measured_idle
-from modules.knowledge.documentation.plan.services.plan import is_complete, part_text
-from modules.knowledge.documentation.report.services.report import report_shape_problem
+from modules.management.task.services.plan_file import is_complete, part_text
+from modules.management.task.services.report_file import report_shape_problem
 EMPTY_REQUEST_IDLE_DAYS = 1
 _CHECKBOX = re.compile('^\\s*[-*]\\s+\\[([ xX])\\]')
 

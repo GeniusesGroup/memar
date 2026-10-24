@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/label/services/add.py — a task's label added or removed.
+"""modules/management/task/services/label_add.py — a task's label added or removed.
 
 Why a verb of its own, as `priority` is. What a task is about is known when it
 is queued, but is also seen later: the owner reads the labels in use
@@ -12,7 +12,7 @@ and which words a plan may take are `plan_labels.py`'s; this file finds the
 task and says what changed.
 
 Why an undeclared topic is refused and not written. A topic is declared as
-code by the domain whose it is ([Label → Where labels are declared](../label.md#where-labels-are-declared)),
+code by the domain whose it is ([Label → Where labels are declared](../../../knowledge/label/label.md#where-labels-are-declared)),
 with the sentence that says what it means, so a new subject is that
 declaration, written where it belongs; a word written here first would be a
 label nobody defined, and a typo would split one subject in two for `claims`.
@@ -33,8 +33,8 @@ from machine.modules_import import load as modules_load
 _task_folder = modules_load('management', 'task', 'services', 'folder')
 folder_of = _task_folder.folder_of
 is_task_folder = _task_folder.is_task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, read_plan
-from modules.knowledge.label.services.plan_labels import add_label, checked_label, kinds_listing, label_to_remove, labels_of, project_of, remove_label
+from modules.management.task.services.plan_file import PLAN_NAME, read_plan
+from modules.management.task.services.plan_labels import add_label, checked_label, kinds_listing, label_to_remove, labels_of, project_of, remove_label
 from modules.management.task.primitive.task_id import TaskId
 LABEL_COMMAND = 'add'
 

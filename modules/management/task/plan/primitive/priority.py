@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/primitive/priority.py — a plan's priority, declared once: how soon a queued task is taken.
+"""modules/management/task/plan/primitive/priority.py — a plan's priority, declared once: how soon a queued task is taken.
 
 A whole number from 1 to 10, the higher sooner. It is a type so that the
 bounds, the default and the words a help prints about them are written here and
-nowhere else ([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
+nowhere else ([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
 `task_plan_priority` reads and writes the key by it, `task_claims` ranks
 by it, and the help of `ensure` and `priority` call `range_words` and
 `default_words`.
@@ -19,7 +19,7 @@ is another matter and is refused (`checked`).
 from __future__ import annotations
 from typing import ClassVar
 from machine.console import fail
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_key import PlanKey
 
 class Priority(int):
     """A plan's priority: a whole number from `LOWEST` to `HIGHEST`, the higher sooner."""

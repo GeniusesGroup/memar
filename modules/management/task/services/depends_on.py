@@ -16,10 +16,10 @@ from modules.management.task.services.dependency import DEPENDS_FOR, DependsOn, 
 from modules.management.task.services.depends import DEPENDS_COMMAND, concerns_for, home_of, notes_for, problems, reconcile
 from modules.management.task.services.list import find_tasks
 from modules.management.task.services.folder import folder_of, is_task_folder, read_task
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.plan.services.depends import set_depends_on
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.services.plan_depends import set_depends_on
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.knowledge.status.primitive.status import Status
 from modules.management.task.primitive.task_id import TaskId
 
 def change(task_id: str, add: list[str], drop: list[str]) -> None:

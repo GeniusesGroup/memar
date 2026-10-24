@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/services/status.py — a plan's Status line rewritten: queued or claimed, and nothing else touched.
+"""modules/management/task/services/plan_status.py — a plan's Status line rewritten: queued or claimed, and nothing else touched.
 """
 from __future__ import annotations
 from pathlib import Path
 from machine.console import fail
-from modules.knowledge.documentation.plan.services.plan import front_matter, status_word
-from modules.knowledge.documentation.plan.services.rewrite import key_of, line_end, rewrite
-from modules.knowledge.documentation.record import PLAN
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import front_matter, status_word
+from modules.management.task.services.plan_rewrite import key_of, line_end, rewrite
+from modules.management.task.primitive.record import PLAN
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.knowledge.status.primitive.status import Status
 
 def set_status(path: Path, status: str, expected: tuple[str, ...] | None=None) -> None:
     """Set PATH's front matter Status to STATUS, keeping every other line and its newlines as written.

@@ -69,11 +69,11 @@ import modules.management.task.services.claim as task_claim
 import modules.management.task.services.claims as task_claims
 import modules.management.task.services.depends as task_depends
 import modules.management.task.services.depends_on as task_depends_on
-import modules.management.task.services.get_decisions_digest as task_digest
+task_digest = plugable_load('ai.services.task_get_decisions_digest')
 import modules.management.task.services.ensure as task_ensure
 import modules.management.task.services.list as task_find
 task_log = import_module('modules-plugable.computer.git.services.log')
-import modules.knowledge.documentation.plan.services.plan as task_plan
+import modules.management.task.services.plan_file as task_plan
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
 from modules.management.task.services.folder import read_task

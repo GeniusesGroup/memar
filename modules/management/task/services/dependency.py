@@ -4,7 +4,7 @@
 """modules/management/task/services/dependency.py — a plan's dependencies, declared once: the tasks that must be Complete before it can start.
 
 A plan's `Depends_on` is the tasks it cannot start without, as
-[Documentation → Citations](../../../modules/knowledge/documentation/documentation.md#citations)
+[Documentation → Citations](../../../modules-plugable/knowledge/documentation/documentation.md#citations)
 uses the word for documents ("cannot be implemented or understood without the
 cited work"), stronger in time for a task: it cannot start until each cited
 task is Complete. The key is declared once, as `PlanKey.DEPENDS_ON`
@@ -20,7 +20,7 @@ does not resolve is refused, with why. Why a task waits goes in the plan's
 Next, as before: the key holds ids alone.
 
 When a dependency is met. The cited task's plan and its report both state
-Complete ([Status](../../../modules/knowledge/documentation/documentation.md#status):
+Complete ([Status](../../../modules-plugable/knowledge/documentation/documentation.md#status):
 only Complete is safe to depend on, and a plan and its report must agree). A
 task that no longer resolves (deleted, or archived and gone from the
 project's records branch) is not met, and says so: it stays unmet until the key
@@ -46,11 +46,11 @@ _m_branch = plugable_load('computer.git.services.branch')
 read_from_branch = _m_branch.read
 read_many_from_branch = _m_branch.read_many
 from modules.management.task.services.folder import folder_of
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, front_key, front_matter, read_plan, status_word
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.report.primitive.report_key import ReportKey
-from modules.knowledge.documentation.report.services.report import REPORT_NAME, read_report_status
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import PLAN_NAME, front_key, front_matter, read_plan, status_word
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.report.primitive.report_key import ReportKey
+from modules.management.task.services.report_file import REPORT_NAME, read_report_status
+from modules.knowledge.status.primitive.status import Status
 DEPENDS_FOR = 'Depends_for'
 SEPARATOR = ','
 PROJECT_SEPARATOR = '/'

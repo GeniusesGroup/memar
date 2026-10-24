@@ -5,12 +5,12 @@
 
 [Documentation — Plan](../plan.md) names the keys a plan's front matter holds;
 they are a closed set, so they are code and are written here and nowhere else
-([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 `record.PLAN` is the plan's record built from them, and `task_plan` reads
 and writes by them.
 """
 from __future__ import annotations
-from modules.knowledge.documentation.primitive.record_key import ID_FIELD, START_DATE_FIELD, RecordKey
+from modules.knowledge.content.primitive.record_key import ID_FIELD, START_DATE_FIELD, RecordKey
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 

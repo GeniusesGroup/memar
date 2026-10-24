@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/services/write.py — a new plan.md written, and an existing one queued.
+"""modules/management/task/services/plan_write.py — a new plan.md written, and an existing one queued.
 
 The two acts on a plan that `task_ensure` asks of a task folder. A plan that is there is never
 written over; a plan is queued only while it is active and no agent has claimed it, so a task
@@ -13,10 +13,10 @@ from pathlib import Path
 from machine.console import fail
 from machine.modules_import import load as modules_load
 is_claimed = modules_load('management', 'task', 'services', 'claim').is_claimed
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_file_problem, plan_skeleton, read_plan
-from modules.knowledge.documentation.plan.services.status import set_status
-from modules.knowledge.documentation.primitive.label import Labels
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import PLAN_NAME, plan_file_problem, plan_skeleton, read_plan
+from modules.management.task.services.plan_status import set_status
+from modules.knowledge.label.primitive.label import Labels
+from modules.knowledge.status.primitive.status import Status
 
 def write_plan(folder: Path, task: str, title: str, parent: str | None, conversation: str | None, project: Path, status: str=Status.ACTIVE.key, priority: int | None=None, labels: Labels | None=None, depends_on: str | None=None) -> None:
     """Create FOLDER's plan.md unless one is there; an existing plan is never touched.

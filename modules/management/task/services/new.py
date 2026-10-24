@@ -98,16 +98,16 @@ from modules.management.task.services.ensure import ENSURE_COMMAND, ensure_task,
 from modules.management.task.services.depends import DEPENDS_COMMAND
 from modules.management.task.services.list import LIST_COMMAND
 from modules.process.project.services.task_location import in_project_location, memar_own_note, project_location_note, unignored_note
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.label.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KIND, TASK_KINDS, TOPIC, kinds_listing
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-from modules.knowledge.documentation.record import REPORT
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KIND, TASK_KINDS, TOPIC, kinds_listing
+from modules.management.task.labels.task_kind import TaskKind
+from modules.management.task.plan.primitive.priority import Priority
+from modules.management.task.primitive.record import REPORT
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.services.report_file import REPORT_NAME
 from modules.management.task.services.temp import TEMP_SENTENCE
-from modules.knowledge.label.services.add import LABEL_COMMAND
-from modules.knowledge.label.services.list import LABELS_COMMAND
+from modules.management.task.services.label_add import LABEL_COMMAND
+from modules.management.task.services.label_list import LABELS_COMMAND
 from modules.management.task.primitive.task_id import TaskId
 _m_new_chats = plugable_load('ai.services.get_new_chats_ask')
 NEW_CHATS_COMMAND = _m_new_chats.NEW_CHATS_COMMAND

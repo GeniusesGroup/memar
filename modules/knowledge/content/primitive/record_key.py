@@ -3,11 +3,11 @@
 
 """primitive/record_key.py — a front-matter key of a documentation record, declared once.
 
-A record's keys are a closed set, so each is code ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)):
+A record's keys are a closed set, so each is code ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
 a key is stored lower case, which is how callers ask for it, and written in
 PascalCase, which for the one-word keys of the records is a capital. The facets
 that declare a record's keys subclass `RecordKey` in their own `primitive/`
-([PlanKey](../plan/primitive/plan_key.py), [ReportKey](../report/primitive/report_key.py)).
+([PlanKey](../../../management/task/plan/primitive/plan_key.py), [ReportKey](../../../management/task/report/primitive/report_key.py)).
 """
 from __future__ import annotations
 from enum import Enum

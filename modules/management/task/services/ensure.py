@@ -21,7 +21,7 @@ task_dir = _m_fs_memar.task_dir
 from pathlib import Path
 from machine.console import fail
 from modules.management.task.services.dependency import DependsOn, Reader, Ref, refused_for_writing
-from modules.knowledge.documentation.plan.primitive.priority import Priority
+from modules.management.task.plan.primitive.priority import Priority
 from modules.process.project.services.find import project_by_path
 from modules.process.project.services.preferences import TASKS_KEY, preferences_path
 from modules.management.task.services.folder import folder_of, project_folder_of, read_task
@@ -32,17 +32,17 @@ from modules.management.task.primitive.task_id import TaskId
 from modules.process.project.services.task_location import in_project_location, project_location, project_root, register
 _m_log = plugable_load('computer.git.services.log')
 record = _m_log.record
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, checked_title
+from modules.management.task.services.plan_file import PLAN_NAME, checked_title
 from modules.management.task.services.depends import BLOCKED_EVENT, reconcile
-from modules.knowledge.documentation.plan.services.depends import set_depends_on
-from modules.knowledge.label.services.plan_labels import add_label, checked_label, registry_for
-from modules.knowledge.documentation.plan.services.priority import set_priority
-from modules.knowledge.documentation.plan.services.write import queue_plan, write_plan
-from modules.knowledge.documentation.report.services.report import write_report
-from modules.knowledge.documentation.primitive.label import Labels
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_depends import set_depends_on
+from modules.management.task.services.plan_labels import add_label, checked_label, registry_for
+from modules.management.task.services.plan_priority import set_priority
+from modules.management.task.services.plan_write import queue_plan, write_plan
+from modules.management.task.services.report_file import write_report
+from modules.knowledge.label.primitive.label import Labels
+from modules.knowledge.status.primitive.status import Status
 from modules.process.project.primitive.project_name import ProjectName
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_key import PlanKey
 ENSURE_COMMAND = 'ensure'
 PROJECT_REQUIRED = f'{ENSURE_COMMAND} needs {ProjectName.either_words()} to make a task folder: the project is always named, by a name `memar project find` resolves or by a folder, and the folder this runs in is never read; a task that is already there is continued without it'
 

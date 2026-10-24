@@ -4,12 +4,12 @@
 """services/status.py — the one vocabulary of Status, declared once.
 
 Status names where a document, or a piece of work, stands in its life. One
-vocabulary serves every kind that carries a Status; [Status](../documentation.md#status)
+vocabulary serves every kind that carries a Status; [Status](../../../../modules-plugable/knowledge/documentation/documentation.md#status)
 states the rule and the reasons, and this file is the closed set itself: each
 value, its meaning, the kinds that may use it, and what is safe to depend on.
 It is code because a program reads it (a plan is queued, claimed, swept; a
 report is checked against its plan) and because a closed set written as a
-prose table is a copy ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)).
+prose table is a copy ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 That document lists none of the values: they are here alone.
 
 Every reader obtains values from here by calling the type: a script asks
@@ -29,7 +29,7 @@ this file.
 """
 from __future__ import annotations
 from enum import Enum
-from modules.knowledge.documentation.primitive.label import Label, LabelDefinition
+from modules.knowledge.label.primitive.label import Label, LabelDefinition
 STATUS_LABEL = Label('Status', '01a14a04-6522-7d19-9796-04f8a30e831f')
 'The label every Status value takes: Status is a field of its own, and its values are labels of this one (owner, 2026-10-16).'
 _IDS = {'Draft': '01a14a04-6523-7916-969a-cedf7ef62566', 'Proposed': '01a14a04-6524-7dda-8f7d-d0005f0d99d4', 'Final': '01a14a04-6525-7362-b4b2-3654fb2c06a6', 'Superseded': '01a14a04-6526-7818-93c4-ad6502671d9b', 'Rejected': '01a14a04-6527-7b35-8b8c-8438070c1c38', 'Queued': '01a14a04-6528-796c-8a26-e8132b15f166', 'Active': '01a14a04-6529-77f7-9f29-c657a634a824', 'Paused': '01a14a04-652a-76eb-beb2-33541b611374', 'Blocked': '01a14a04-652b-7a44-a88d-5f132d3b675d', 'Complete': '01a14a04-652c-7844-bfc5-b73cdd4f4bef', 'Withdrawn': '01a14a04-652d-7d1c-963b-a0fd21c182dd'}

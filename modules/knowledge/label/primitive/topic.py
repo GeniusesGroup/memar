@@ -1,29 +1,29 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/labels/topic.py — the kind of label `Topic`, declared once: the subjects `claims` batches by.
+"""modules/knowledge/label/primitive/topic.py — the kind of label `Topic`, declared once: the subjects `claims` batches by.
 
 A topic is a label whose definition takes the label `Topic`
-(`modules/knowledge/documentation/primitive/label.py`): a plan takes as many as
+(`modules/knowledge/label/primitive/label.py`): a plan takes as many as
 it needs, and `claims` batches the queued tasks that carry one. A task with two
 subjects may carry two, but a topic is not assigned needlessly: it is added when
 another task is to be found by it. Its word is normalized when written (lower
 case, runs of white space as one hyphen). The kind lists no word: a topic is
 declared, with `topic()` below, by the domain whose it is — a stream of work by
 the task domain, and a topic that names a module by that module
-([Label → Where labels are declared](../../../label/label.md#where-labels-are-declared)) —
+([Label → Where labels are declared](../label.md#where-labels-are-declared)) —
 so a new subject is a declaration written where it belongs, with the sentence
 that says what it means, and a word nobody declared is refused naming the
-declared ones near it (`modules/knowledge/label/services/plan_labels.py`). A plan
+declared ones near it (`modules/management/task/services/plan_labels.py`). A plan
 without a topic has none.
 
 It is a type so that the rule of normalizing and the check of a one-line value
 are written here and nowhere else
-([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
 from machine.console import fail
-from modules.knowledge.documentation.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
+from modules.knowledge.label.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
 LABEL_KIND_NAME = 'Topic'
 TOPIC_LABEL = Label(LABEL_KIND_NAME, '01a14a04-6536-7c2e-8cc6-276de9a45ba5')
 

@@ -64,10 +64,10 @@ from modules.management.task.primitive.claim import Claim
 import modules.management.task.services.list as task_find
 import modules.management.task.services.temp as task_temp
 import modules.management.task.services.ensure as task_ensure
-import modules.knowledge.documentation.plan.services.plan as task_plan
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-import modules.knowledge.documentation.report.services.report as task_report
-from modules.knowledge.documentation.primitive.status import DocumentKind, Status
+import modules.management.task.services.plan_file as task_plan
+from modules.management.task.plan.primitive.priority import Priority
+import modules.management.task.services.report_file as task_report
+from modules.knowledge.status.primitive.status import DocumentKind, Status
 
 def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None) -> str:
     ranked = f'Priority: {priority}\n' if priority is not None else ''

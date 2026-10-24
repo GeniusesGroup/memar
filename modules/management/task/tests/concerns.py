@@ -53,8 +53,8 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.management.task.services.concerns as task_concerns
 from modules.management.task.services.folder import read_task
-import modules.knowledge.documentation.plan.services.plan as task_plan
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
+import modules.management.task.services.plan_file as task_plan
+from modules.management.task.services.plan_file import PLAN_NAME
 DAY = 24 * 60 * 60
 
 def plan_text(status: str | None='active', request: str='Do the thing.', steps: str='- [ ] 1. a') -> str:

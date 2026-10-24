@@ -36,11 +36,11 @@ from pathlib import Path
 from typing import NamedTuple
 from modules.management.task.primitive.task_id import TaskId
 from modules.process.project.services.task_location import registered_locations
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_file_problem, read_plan
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.report.primitive.report_key import ReportKey
-from modules.knowledge.documentation.report.services.report import REPORT_NAME, read_report_status
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import PLAN_NAME, plan_file_problem, read_plan
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.report.primitive.report_key import ReportKey
+from modules.management.task.services.report_file import REPORT_NAME, read_report_status
+from modules.knowledge.status.primitive.status import Status
 DAY_SECONDS = 24 * 60 * 60
 
 class Task(NamedTuple):

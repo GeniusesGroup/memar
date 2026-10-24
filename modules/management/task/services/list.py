@@ -44,14 +44,14 @@ from modules.management.task.services.depends import DEPENDS_COMMAND, concerns_f
 from modules.management.task.services.folder import Task, folder_of, measured_idle, read_task, task_folders
 from modules.process.project.services.find import add_project_flags, project_by_path, project_from_args
 from modules.process.project.services.task_location import locations_of, project_root, same_path
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, status_word
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-from modules.knowledge.label.services.plan_labels import labels_of
-from modules.knowledge.documentation.record import PLAN
-from modules.knowledge.documentation.primitive.status import Status
-from modules.knowledge.documentation.report.services.report import REPORT_NAME, disagreement, read_report_status
+from modules.management.task.services.plan_file import PLAN_NAME, status_word
+from modules.management.task.plan.primitive.priority import Priority
+from modules.management.task.services.plan_labels import labels_of
+from modules.management.task.primitive.record import PLAN
+from modules.knowledge.status.primitive.status import Status
+from modules.management.task.services.report_file import REPORT_NAME, disagreement, read_report_status
 from modules.process.project.primitive.project_name import ProjectName
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_key import PlanKey
 LIST_COMMAND = 'list'
 NO_PLAN = f'(no {PLAN_NAME})'
 NO_FRONT_MATTER = f'({PLAN_NAME} has no front matter)'

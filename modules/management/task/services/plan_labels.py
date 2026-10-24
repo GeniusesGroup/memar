@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/label/services/plan_labels.py — a plan's labels: the kinds a plan carries, the project's label registry, and writing one label in place.
+"""modules/management/task/services/plan_labels.py — a plan's labels: the kinds a plan carries, the project's label registry, and writing one label in place.
 
 A plan's `Labels` are the words that link it to other tasks outside the
-structure of their ids (`modules/knowledge/documentation/primitive/label.py`),
+structure of their ids (`modules/knowledge/label/primitive/label.py`),
 each written with its identifier, `design(01a14a04-...)`. A label is defined
 once and its definition takes labels: `design` takes `TaskKind`, a topic takes
-`Topic`. The closed kinds (`TaskKind`, in `modules/knowledge/documentation/plan/labels/task_kind.py`) define their
-words in code; the free kind (`Topic`, in `modules/knowledge/documentation/plan/labels/topic.py`) lists none, and
+`Topic`. The closed kinds (`TaskKind`, in `modules/management/task/labels/task_kind.py`) define their
+words in code; the free kind (`Topic`, in `modules/knowledge/label/primitive/topic.py`) lists none, and
 each of its words is declared as code by the domain whose it is, found in the
 project's tree (`declarations.py`), so every clone reads one identifier for
 one label and a plain search for the identifier finds every plan that took it.
@@ -31,12 +31,13 @@ from __future__ import annotations
 import time
 from pathlib import Path
 from machine.console import fail
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.primitive.label import FLAG_SEPARATOR, Label, LabelDefinition, LabelProblem, LabelRegistry, Labels
-from modules.knowledge.documentation.plan.labels import task_kind, topic
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
-from modules.knowledge.documentation.plan.services.plan import front_matter
-from modules.knowledge.documentation.plan.services.rewrite import key_of, line_end, rewrite
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.knowledge.label.primitive.label import FLAG_SEPARATOR, Label, LabelDefinition, LabelProblem, LabelRegistry, Labels
+from modules.management.task.labels import task_kind
+from modules.knowledge.label.primitive import topic
+from modules.management.task.labels.task_kind import TaskKind
+from modules.management.task.services.plan_file import front_matter
+from modules.management.task.services.plan_rewrite import key_of, line_end, rewrite
 from modules.knowledge.label.services.declarations import FOLDER, NAME, Declared, declared, declaring_files
 KINDS = (task_kind.LABEL_KIND, topic.LABEL_KIND)
 TASK_KIND = task_kind.LABEL_KIND_NAME

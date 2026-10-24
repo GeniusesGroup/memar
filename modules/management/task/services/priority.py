@@ -22,9 +22,9 @@ import argparse
 from typing import Callable
 from machine.console import fail
 from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, read_plan
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-from modules.knowledge.documentation.plan.services.priority import set_priority
+from modules.management.task.services.plan_file import PLAN_NAME, read_plan
+from modules.management.task.plan.primitive.priority import Priority
+from modules.management.task.services.plan_priority import set_priority
 from modules.management.task.primitive.task_id import TaskId
 PRIORITY_COMMAND = 'priority'
 

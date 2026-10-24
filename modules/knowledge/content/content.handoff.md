@@ -6,10 +6,10 @@ Open questions, decisions not yet recorded in a governing document, and anticipa
 ## Status
 Active — for the Content model document, the open work below; for the content domain, most Content and Timeline, relations and Code-as-Content decisions are decided, while the Content definition, Timeline primitivity, the content-identity mechanism and concurrency semantics remain open.
 
-Open work for `content.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation/handoff/handoff.md) for what a handoff is.
+Open work for `content.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Decisions
-The entries below were carried from the organization repository's handoff as they stood on 2026-10-19; none has landed in a governing document, so each stays here ([Decisions](../documentation/handoff/handoff.md#decisions)). The tag at the end of an entry is the confidence the source gave it; the source did not record each entry's rejected alternatives, and none is invented here. An entry tagged `open`, `problem` or `observation` is not a decision and is kept where the source put it.
+The entries below were carried from the organization repository's handoff as they stood on 2026-10-19; none has landed in a governing document, so each stays here ([Decisions](../../../modules-plugable/knowledge/documentation/handoff/handoff.md#decisions)). The tag at the end of an entry is the confidence the source gave it; the source did not record each entry's rejected alternatives, and none is invented here. An entry tagged `open`, `problem` or `observation` is not a decision and is kept where the source put it.
 
 ### Content & Timeline
 
@@ -220,6 +220,16 @@ Carried from the organization's `content.md`, where it stood as a section of the
 - **Review questions**: same-UUID requirement = the comment node taking the text identity simultaneously (content multi-typing / reference-not-embed — the precedent recorded in [product.md](../../economics/product/product.md): a node can take Product and Content identities at once) vs a stored edge to a text node — which is it, and does it converge with the text-only ownership decision in [text.handoff.md](../text/text.handoff.md)? Emoji sizing is presentation → pluggable GUI only — confirm nothing to model?
 - **Idea**: three reads of content — by type, by time, and by user plus type — returning content ids with offset and limit.
 - **Review questions**: these reads are content's own lookup, not a GUI page. Does each read earn a module (analytics is always pluggable; a query with its own storage is a module), or are they one content read with parameters?
+
+### The check dispatcher
+- State: `memar content check` becomes a dispatcher over the domains a node belongs to, as [Checking text](content.md#checking-text) states; the code that builds it asks each owning domain for its rules (text, documentation, an authoring syntax). Which module holds the Markdown conventions is open: the Authoring Syntax topic of the content document names none.
+- Next: build it in the task that re-bases the task verbs on the record contract; until then the verb stays as it is.
+- State (2026-10-24): the code was split before the dispatcher: the bytes half is `text/services/text_check.py`, and `content_check.py` in the documentation module composes it with the Markdown and documentation rules. The dispatcher proper (asking each domain a node belongs to by its label) is still owed.
+
+### The services left, and the names they keep
+- State (2026-10-24): the Python services of this module were placed by subject (see the changelog record of that date). What stays is the reference and the two verbs that resolve it. Every verb kept its word under `memar content`, because a file named `content_<verb>.py` outside the domain's folder is the domain's verb by the router's rule.
+- Next, a task of its own: drop the category word from the verbs so that each service has a complete name of its own (owner, 2026-10-24). It renames every MCP tool (`content_search` and the rest), `AGENTS.md`, the skill and the installed launcher (`content path`), and needs the router to accept a service that belongs to no group. The four verbs that exist under two names (`meta`/`get-meta`, `section`/`get-section`, `path`/`resolve-path`, `obligations`/`list-undischarged-propagations`) are another chat's rename in progress and end with it.
+- Open: `write` and `edit` are in the filesystem module and the services that read the checkout (`reference`, `corpus`, `task_records`) still reach files and git through `plugable_load`; they are the seam the memory port programme (task 20261022-T185903Z-15504) replaces, and its plans name the old paths.
 
 ## Related Artifacts
 - [`content.md`](content.md) — the interface-semantics Content model this handoff's first reading serves

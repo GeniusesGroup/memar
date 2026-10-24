@@ -6,7 +6,7 @@
 Each domain declares its own labels ([Label → Where labels are declared](../label.md#where-labels-are-declared)):
 a module writes them in a Python file of its `labels/` folder, as a
 module-level `LABELS`, a tuple of `LabelDefinition`s
-(`modules/knowledge/documentation/primitive/label.py`). The file only returns
+(`modules/knowledge/label/primitive/label.py`). The file only returns
 the values; where they are registered is not its choice, and here they are
 registered in a `LabelRegistry` held for the run and kept in no store.
 
@@ -31,7 +31,7 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 from machine.console import fail
-from modules.knowledge.documentation.primitive.label import LabelDefinition
+from modules.knowledge.label.primitive.label import LabelDefinition
 FOLDER = 'labels'
 NAME = 'LABELS'
 SKIPPED = frozenset({'node_modules', '__pycache__', 'temp'})

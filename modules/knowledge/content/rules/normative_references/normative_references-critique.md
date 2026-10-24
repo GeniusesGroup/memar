@@ -1,7 +1,7 @@
 # Normative References — Critique
 A critique judges work it did not make, so it reads what a design of that work owed, and then the procedure, the bar and the form of a verdict.
 
-- [Modeling → Abstract](../../../../../docs/modeling.md#abstract) — the account of modeling a design is judged against. `reviewed 0bfa26650374`
+- [Modeling → Abstract](../../../../../docs/modeling.md#abstract) — the account of modeling a design is judged against. `reviewed 281779cf590d`
 - [Modeling Practice → Model Reading](../../../../../docs/modeling.practice.md#model-reading) — what a critique reads of a model before it says anything of it. `reviewed 24a9b359805c`
 - [Modeling Practice → Stepping Back From the Requirement](../../../../../docs/modeling.practice.md#stepping-back-from-the-requirement) — whether the work answers the right problem is judged before its decomposition is. `reviewed 408975e950b5`
 - [Modeling Practice → Starting a New Requirement](../../../../../docs/modeling.practice.md#starting-a-new-requirement) — the questions a design with no prior model owed, which a critique checks were asked. `reviewed 57a7e845f0e8`

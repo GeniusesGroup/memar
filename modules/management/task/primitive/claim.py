@@ -8,7 +8,7 @@ agents taking one task wins (`task_claim` does the taking). What the
 claim is — the file's name, the name of the guard held while a stale claim is
 replaced, how long a claim lives, and what the file says — is the type's, and
 every service that takes, keeps, lays out or describes a claim calls it
-([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 
 Why a claim lapses. Nothing keeps a claim fresh: no process of Memar's watches
 the sub-agent, so a claim's age is only the time since it was taken. A dead

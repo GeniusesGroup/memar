@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the kinds of task, in `modules/knowledge/documentation/plan/labels/task_kind.py`.
+"""Tests for the kinds of task, in `modules/management/task/labels/task_kind.py`.
 
-    python modules/knowledge/documentation/plan/tests/task_kind.py
+    python modules/management/task/tests/task_kind.py
 
 The subject is the one declaration of the kind words, named for the file that
 holds it per
@@ -11,7 +11,7 @@ holds it per
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 What each kind reads is the normative-references lists', pinned in
-`modules/knowledge/content/tests/normative_references.py` and `modules/knowledge/content/tests/task_context.py`.
+`modules-plugable/knowledge/documentation/tests/normative_references.py` and `modules-plugable/ai/tests/task_context.py`.
 
 Nothing here writes; the source files read are the scripts' own.
 
@@ -42,13 +42,13 @@ import sys
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[4] / 'bundles' / 'memar'
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
-DECLARATION = SCRIPTS.parent.parent / 'modules/knowledge/documentation/plan/labels/task_kind.py'
-READER = SCRIPTS.parent.parent / 'modules/knowledge/documentation/plan/primitive/task_plan_kind.py'
+from modules.management.task.labels.task_kind import TaskKind
+DECLARATION = SCRIPTS.parent.parent / 'modules/management/task/labels/task_kind.py'
+READER = SCRIPTS.parent.parent / 'modules/management/task/plan/primitive/task_plan_kind.py'
 RETIRED = ('ideation', 'modeling')
 WHO_RUNS = re.compile('\\b(models?|tiers?|strong|stronger|strongest|cheap|cheaper|small|smaller|claude|opus|sonnet|haiku|fable|gpt)\\b', re.IGNORECASE)
 
@@ -110,7 +110,7 @@ def sources() -> list[Path]:
     skipped = {DECLARATION.resolve(), READER.resolve()}
     top = SCRIPTS.parent.parent
     found = [path for path in sorted(SCRIPTS.rglob('*.py')) if 'tests' not in path.relative_to(SCRIPTS).parts[:-1] and path.resolve() not in skipped]
-    for module in ('modules/knowledge/content', 'modules/process', 'modules/computer/module', 'modules/knowledge/documentation/plan/primitive', 'modules/knowledge/documentation/plan/labels', 'modules/knowledge/label', 'modules/management/task', 'modules-plugable/ai', 'bundles/memar'):
+    for module in ('modules/knowledge/content', 'modules/process', 'modules/computer/module', 'modules/management/task/plan/primitive', 'modules/knowledge/label', 'modules/management/task', 'modules-plugable/ai', 'bundles/memar'):
         found.extend((path for path in sorted((top / module).rglob('*.py')) if 'tests' not in path.relative_to(top).parts and '__pycache__' not in path.parts and (path.resolve() not in skipped)))
     return found
 
@@ -124,28 +124,28 @@ class WrittenOnce(unittest.TestCase):
             for node in ast.walk(tree):
                 if isinstance(node, ast.Constant) and isinstance(node.value, str) and (node.value.strip().lower() in words):
                     spelt.append(f'{path.relative_to(SCRIPTS.parent.parent).as_posix()}:{node.lineno} {node.value!r}')
-        self.assertEqual(spelt, [], 'name the kind through `modules/knowledge/documentation/plan/labels/task_kind.py`')
+        self.assertEqual(spelt, [], 'name the kind through `modules/management/task/labels/task_kind.py`')
 
     def test_the_scan_reads_the_shelves(self) -> None:
         top = SCRIPTS.parent.parent
         names = {path.relative_to(top).as_posix() for path in sources()}
         self.assertIn('modules/management/task/services/ensure.py', names)
         self.assertIn('modules-plugable/ai/services/get_task_init_context.py', names)
-        self.assertNotIn('modules/knowledge/documentation/plan/labels/task_kind.py', names)
+        self.assertNotIn('modules/management/task/labels/task_kind.py', names)
 
 class WordsAreLabels(unittest.TestCase):
     """TaskKind is a closed kind: each word a plan may carry is a label whose definition takes the label TaskKind."""
 
     def test_each_carried_word_is_defined_once_taking_the_task_kind_label(self) -> None:
-        from modules.knowledge.documentation.plan.labels.task_kind import LABEL_KIND, TASK_KIND_LABEL
+        from modules.management.task.labels.task_kind import LABEL_KIND, TASK_KIND_LABEL
         self.assertEqual([d.label.word for d in LABEL_KIND.closed], list(TaskKind.words(carried=True)))
         for definition in LABEL_KIND.closed:
             self.assertTrue(definition.is_a(TASK_KIND_LABEL))
         self.assertEqual(len({d.label.id for d in LABEL_KIND.closed}), len(LABEL_KIND.closed))
 
     def test_a_word_no_plan_carries_has_no_label(self) -> None:
-        from modules.knowledge.documentation.primitive.label import LabelProblem
-        from modules.knowledge.documentation.plan.labels.task_kind import LABEL_KIND
+        from modules.knowledge.label.primitive.label import LabelProblem
+        from modules.management.task.labels.task_kind import LABEL_KIND
         with self.assertRaises(LabelProblem):
             LABEL_KIND.normalize(TaskKind.ANSWER.word)
 if __name__ == '__main__':

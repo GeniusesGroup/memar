@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/report/services/report.py — a task's report.md: what a report is, and when it disagrees with the plan.
+"""modules/management/task/services/report_file.py — a task's report.md: what a report is, and when it disagrees with the plan.
 
 plan.md says what a task is and where it stands while it is worked; report.md
 says how the work on it ended — the Status it reached, what ran, the check
@@ -12,8 +12,8 @@ skeleton, and the Statuses a report may state, so the task that writes a report 
 read it one way.
 
 A report states a Status of the one vocabulary
-[Status](../../../modules/knowledge/documentation/documentation.md#status) defines, held in
-`modules/knowledge/documentation/primitive/status.py`, and no second field for how the run ended: each Status a
+[Status](../../../modules-plugable/knowledge/documentation/documentation.md#status) defines, held in
+`modules/knowledge/status/primitive/status.py`, and no second field for how the run ended: each Status a
 report may state says in the type how a run that stated it ended
 (`Status.report_ending`). A report whose Status is empty says nothing yet and is not checked; a Status the
 table does not give a report cannot be checked either, and is marked as such
@@ -37,10 +37,10 @@ is routed by closing by type.
 """
 from __future__ import annotations
 from pathlib import Path
-from modules.knowledge.documentation.plan.services.plan import EARLIER_SHAPE_REMEDY, EARLIER_STATUS_WORDS, front_key, front_matter, status_word
-from modules.knowledge.documentation.record import PLAN, REPORT
-from modules.knowledge.documentation.report.primitive.report_key import ReportKey
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import EARLIER_SHAPE_REMEDY, EARLIER_STATUS_WORDS, front_key, front_matter, status_word
+from modules.management.task.primitive.record import PLAN, REPORT
+from modules.management.task.report.primitive.report_key import ReportKey
+from modules.knowledge.status.primitive.status import Status
 REPORT_NAME = REPORT.file_name
 EARLIER_OUTCOME_KEY = 'Outcome'
 EARLIER_STOP_PREFIX = 'Stop:'
@@ -51,7 +51,7 @@ def report_skeleton(task: str, title: str | None=None) -> str:
     TASK is the id of the task the report belongs to, written into the
     record so that a reader finds it inside the document rather than by
     reading the name of the folder the record sits in
-    ([Documentation — Report](../../../modules/knowledge/documentation/report/report.md)).
+    ([Documentation — Report](../../../modules/management/task/report/report.md)).
     An empty Status is left for the task to fill when it ends; until it
     does, the report says nothing and is not checked.
     """

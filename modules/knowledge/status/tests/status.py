@@ -3,7 +3,7 @@
 
 """Tests for the Status type in `primitive/status.py`.
 
-    python modules/knowledge/documentation/tests/status.py
+    python modules/knowledge/status/tests/status.py
 
 The subject is the one vocabulary of Status every Memar document and record
 draws on, named for the file that holds it per
@@ -39,7 +39,7 @@ SCRIPTS = TOP / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-from modules.knowledge.documentation.primitive.status import DocumentKind, Status
+from modules.knowledge.status.primitive.status import DocumentKind, Status
 
 class Values(unittest.TestCase):
 
@@ -69,7 +69,7 @@ class StatusIsALabel(unittest.TestCase):
     """Status is a field of its own, and its values are labels of the Status label (owner, 2026-10-16)."""
 
     def test_every_value_is_a_label_whose_definition_takes_the_status_label(self) -> None:
-        from modules.knowledge.documentation.primitive.status import STATUS_LABEL
+        from modules.knowledge.status.primitive.status import STATUS_LABEL
         definitions = Status.definitions()
         self.assertEqual([d.label.word for d in definitions], [s.word for s in Status])
         for definition in definitions:
@@ -84,8 +84,8 @@ class StatusIsALabel(unittest.TestCase):
             self.assertRegex(one, '^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')
 
     def test_the_registry_knows_them_as_statuses(self) -> None:
-        from modules.knowledge.documentation.primitive.label import LabelKind, LabelRegistry, Labels
-        from modules.knowledge.documentation.primitive.status import STATUS_LABEL
+        from modules.knowledge.label.primitive.label import LabelKind, LabelRegistry, Labels
+        from modules.knowledge.status.primitive.status import STATUS_LABEL
         kind = LabelKind(STATUS_LABEL, 'where a document stands', 'everything that reads a Status', str, Status.definitions())
         registry = LabelRegistry([kind])
         self.assertEqual(registry.words(Labels((Status.QUEUED.label, Status.DONE.label if hasattr(Status, 'DONE') else Status.COMPLETE.label)), 'Status'), ('Queued', 'Complete'))
@@ -93,7 +93,7 @@ class StatusIsALabel(unittest.TestCase):
 class Kinds(unittest.TestCase):
 
     def test_the_kind_of_document_is_not_named_kind(self) -> None:
-        import modules.knowledge.documentation.primitive.status as declared
+        import modules.knowledge.status.primitive.status as declared
         self.assertFalse(hasattr(declared, 'Kind'))
 
     def test_a_task_plan_may_be_queued_active_blocked_or_complete(self) -> None:

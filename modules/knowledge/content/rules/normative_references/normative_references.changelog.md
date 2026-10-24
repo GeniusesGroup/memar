@@ -7,7 +7,7 @@
 - Type: Added
 - Cited:
   - Proposal, version 3, of task 20261016-T123037Z-21048 (on the records branch dev-knowledge, `.agents/tasks/20261016-T123037Z-21048/`, file `docs/proposal.md`), sections 4 and 12 - Depends_on: the rule's name, its home, the shape of a list and of an entry, the declared places, the format and its conditions, and the migration; approved by the owner on 2026-10-16, its names and its format provisionally.
-  - [`task_kind.py`](../../../documentation/plan/labels/task_kind.py) - Evidence: the passages each kind required, which the lists carry over.
+  - [`task_kind.py`](../../../../management/task/labels/task_kind.py) - Evidence: the passages each kind required, which the lists carry over.
 - Propagates to:
   - `.agents/scripts/services/task_kind.py`: Done (task 20261016-T135247Z-13740) - its passages are deleted; the composer reads these lists, and the faithful-migration test passed before the deletion.
   - `.agents/skills/memar/SKILL.md`: Done (task 20261016-T135247Z-13740) - its "Consult the governing document before each act" section links `normative_references.md` as the owner of the claim.
@@ -55,7 +55,7 @@
   - [Claude](../../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5 via Claude Code) - applied
 
 #### What changed
-- Nine `reviewed` marks in the lists were renewed, over seven sections. Six changed only in link targets, because documents they link moved (`docs/content.md`, `docs/rule.md` and the media types, among others), and each was re-read at its new text; the seventh, [Documentation → File Naming](../../../../../modules/knowledge/documentation/documentation.md#file-naming), gained one sentence pointing to [Label](../../../../../modules/knowledge/label/label.md), read as part of the same renewal. Every link in the lists was rewritten to the moved path.
+- Nine `reviewed` marks in the lists were renewed, over seven sections. Six changed only in link targets, because documents they link moved (`docs/content.md`, `docs/rule.md` and the media types, among others), and each was re-read at its new text; the seventh, [Documentation → File Naming](../../../../../modules-plugable/knowledge/documentation/documentation.md#file-naming), gained one sentence pointing to [Label](../../../../../modules/knowledge/label/label.md), read as part of the same renewal. Every link in the lists was rewritten to the moved path.
 
 ---
 
@@ -127,7 +127,7 @@
   - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
 
 #### What changed
-- The plan list's `reviewed` marks of [Handoff Practice → Queued Work and Its Hand-Back](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back) and [Questions Found During a Task](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) were renewed. Queued Work now sends a runtime that cannot open a chat to `memar ai get-new-chats-ask --help`, where that text moved from the skill, and keeps "unless its own work meets a problem with one" on consuming decisions. Both sections otherwise changed only by the renames of the task verbs to task verbs. Each was re-read at its new text, and the list's reasons for reading them still hold.
+- The plan list's `reviewed` marks of [Handoff Practice → Queued Work and Its Hand-Back](../../../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back) and [Questions Found During a Task](../../../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) were renewed. Queued Work now sends a runtime that cannot open a chat to `memar ai get-new-chats-ask --help`, where that text moved from the skill, and keeps "unless its own work meets a problem with one" on consuming decisions. Both sections otherwise changed only by the renames of the task verbs to task verbs. Each was re-read at its new text, and the list's reasons for reading them still hold.
 - Two links to Scripts → Deleting, moving, restoring, and committing, whose README is gone, now point to [Content → Deleting, moving, restoring, and committing](../../../../../modules/knowledge/content/content.md#deleting-moving-restoring-and-committing), which took its place in the lists.
 
 ---
@@ -144,4 +144,4 @@
   - [Claude](../../../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
 
 #### What changed
-- The plan list's `reviewed` mark of [Handoff Practice → Sizing a Task and Recording Follow-Ups](../../../../../modules/knowledge/documentation/handoff/handoff.practice.md#sizing-a-task-and-recording-follow-ups) was renewed. Its subsection "A session is for work" now tells an inquiry, which is a step of the task it serves with its findings in that task's `docs/`, from a research that gathers and concludes what many other tasks build on, which is a task of its own recorded as a Research document. It was re-read at its new text, and the list's reason for reading it still holds.
+- The plan list's `reviewed` mark of [Handoff Practice → Sizing a Task and Recording Follow-Ups](../../../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#sizing-a-task-and-recording-follow-ups) was renewed. Its subsection "A session is for work" now tells an inquiry, which is a step of the task it serves with its findings in that task's `docs/`, from a research that gathers and concludes what many other tasks build on, which is a task of its own recorded as a Research document. It was re-read at its new text, and the list's reason for reading it still holds.

@@ -4,11 +4,11 @@
 """primitive/plan_part.py — the parts under a task plan's front matter, in order, declared once.
 
 [Documentation — Plan](../plan.md) names these; they are code and are written here and
-nowhere else ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-code-is-written-once)).
+nowhere else ([A Fact in Code Is Written Once](../../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 The specification keeps the reasons and how each is used.
 """
 from __future__ import annotations
-from modules.knowledge.documentation.primitive.section import Section
+from modules.knowledge.content.primitive.section import Section
 
 class PlanPart(Section):
     REQUEST = ('Request', 'what was asked, and what checks it is done')

@@ -4,7 +4,7 @@
 """primitive/label.py — the `Labels` field of a documentation record, declared once.
 
 A **label** is a word that links a record to others outside the structure of
-their ids ([Label](../../label/label.md)). It is written with its identifier,
+their ids ([Label](../label.md)). It is written with its identifier,
 `design(01a14a04-6531-73d5-8eeb-6e37ddce016d)`, because the word alone is no
 identity (a topic `design` and the task kind `design` are two labels): the
 identifier is what a search finds every record that took one label by, and the
@@ -30,7 +30,7 @@ front matter the field is a block, one `- word(id)` line a label:
       - memar-scripts(01a14a07-1a2b-7c3d-8e4f-5a6b7c8d9e0f)
 
 This file holds no kind and no definition: they are declared with the types
-they belong to ([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)).
+they belong to ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
 import os

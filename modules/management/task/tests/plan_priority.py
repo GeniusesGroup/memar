@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the priority type in `modules/knowledge/documentation/plan/primitive/priority.py`.
+"""Tests for the priority type in `modules/management/task/plan/primitive/priority.py`.
 
-    python modules/knowledge/documentation/plan/tests/priority.py
+    python modules/management/task/tests/plan_priority.py
 
 The subject is a plan's priority, declared once: how soon a queued task is
 taken, a whole number from 1 to 10, the higher sooner, the middle value when a
@@ -12,7 +12,7 @@ that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-The fact is written once ([A Fact in Code Is Written Once](../../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
+The fact is written once ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
 the services that rank, check and describe a priority call the type, and the
 words a help prints come from it.
 
@@ -33,12 +33,12 @@ import sys
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[4] / 'bundles' / 'memar'
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.priority import Priority
+from modules.management.task.plan.primitive.plan_key import PlanKey
 
 class Bounds(unittest.TestCase):
 

@@ -52,29 +52,30 @@ not know the project asks the owner rather than guessing.
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
 import argparse
-from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
+from modules.management.task.plan.primitive.plan_part import PlanPart
 from typing import Callable
 from machine.console import fail, note
-from modules.knowledge.documentation.primitive.status import Status
+from modules.knowledge.status.primitive.status import Status
 _m_plan_brief = plugable_load('ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
 from modules.management.task.services.claim import CLAIM_COMMAND, try_claim
 from modules.management.task.services.dependency import DependsOn, Reader
 from modules.management.task.services.depends import problems, reconcile_all
 from modules.process.project.services.find import add_project_flags, project_from_args
-from modules.management.task.services.get_decisions_digest import DIGEST_COMMAND
+_m_task_get_decisions_digest = plugable_load('ai.services.task_get_decisions_digest')
+DIGEST_COMMAND = _m_task_get_decisions_digest.DIGEST_COMMAND
 from modules.management.task.services.list import LIST_COMMAND, find_tasks, project_of
 from modules.management.task.services.folder import Task
 from modules.management.task.services.temp import TEMP_SENTENCE
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, part_text
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-from modules.knowledge.documentation.plan.labels.topic import Topic
-from modules.knowledge.label.services.plan_labels import TOPIC, topics_of
-from modules.knowledge.documentation.record import REPORT
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME, part_text
+from modules.management.task.plan.primitive.priority import Priority
+from modules.knowledge.label.primitive.topic import Topic
+from modules.management.task.services.plan_labels import TOPIC, topics_of
+from modules.management.task.primitive.record import REPORT
+from modules.management.task.services.report_file import REPORT_NAME
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_key import PlanKey
 CLAIMS_COMMAND = 'claims'
 PROJECT_REQUIRED = f'{CLAIMS_COMMAND} needs {ProjectName.either_words()}: one run serves one project, and naming it keeps the work from landing in a project no one chose; if you do not know which project the tasks are for, ask the owner'
 

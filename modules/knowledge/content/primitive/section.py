@@ -6,14 +6,12 @@
 A facet's specification names the sections its documents carry; the names are a
 closed or an open catalog, so each is code and is written once, in a facet's own
 `primitive/` as a subclass of `Section`
-([A Fact in Code Is Written Once](../documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 The specification keeps the reason a section exists and how it is used; the type
 holds its heading and what it is for, and a help text or a check asks it.
 """
 from __future__ import annotations
-
 from enum import Enum
-
 
 class Section(Enum):
     """A section: the heading as written, and what it is for."""
@@ -25,7 +23,7 @@ class Section(Enum):
     @classmethod
     def headings(cls) -> tuple[str, ...]:
         """Every heading, in the order declared."""
-        return tuple(member.heading for member in cls)
+        return tuple((member.heading for member in cls))
 
     @classmethod
     def read(cls, text: str):

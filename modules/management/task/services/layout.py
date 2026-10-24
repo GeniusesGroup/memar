@@ -27,8 +27,8 @@ TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
 from pathlib import Path
 from typing import NamedTuple
 from modules.management.task.primitive.claim import Claim
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.services.report_file import REPORT_NAME
 TOP_NAMES = (PLAN_NAME, REPORT_NAME, *Claim.NAMES)
 "The files a task folder's top holds besides its folders: the plan, the report, and Memar's claim."
 

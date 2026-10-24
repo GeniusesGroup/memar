@@ -45,10 +45,10 @@ from modules.management.task.services.folder import Task, read_task
 _m_log = plugable_load('computer.git.services.log')
 log_path = _m_log.log_path
 record = _m_log.record
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.plan.services.status import set_status
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.primitive.status import Status
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.services.plan_status import set_status
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.knowledge.status.primitive.status import Status
 DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace('_', '-')
 BLOCKED_EVENT = 'blocked-by-dependency'
 RELEASED_EVENT = 'released-by-dependency'

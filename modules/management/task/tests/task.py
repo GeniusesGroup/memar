@@ -101,7 +101,7 @@ import modules.management.task.services.claim as task_claim
 from modules.management.task.primitive.claim import Claim
 import modules.management.task.services.claims as task_claims
 task_close = import_module('modules-plugable.computer.git.services.trash_task_folder')
-import modules.management.task.services.get_decisions_digest as task_digest
+task_digest = plugable_load('ai.services.task_get_decisions_digest')
 import modules.management.task.services.list as task_find
 import modules.management.task.services.folder as task_folder
 task_gc = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
@@ -110,12 +110,12 @@ import modules.process.project.services.task_location as task_location
 task_log = import_module('modules-plugable.computer.git.services.log')
 import modules.management.task.services.ensure as task_ensure
 import modules.management.task.services.new as task_new
-import modules.knowledge.documentation.plan.services.plan as task_plan
+import modules.management.task.services.plan_file as task_plan
 import modules.management.task.services.priority as task_priority
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
-import modules.knowledge.label.services.add as task_label
-import modules.knowledge.label.services.list as task_labels
-import modules.knowledge.documentation.report.services.report as task_report
+import modules.management.task.services.label_add as task_label
+import modules.management.task.services.label_list as task_labels
+import modules.management.task.services.report_file as task_report
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 LAUNCHER = SCRIPTS / 'memar'
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))

@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/documentation/plan/labels/task_kind.py — the kinds of task, declared once.
+"""modules/management/task/labels/task_kind.py — the kinds of task, declared once.
 
 A kind says what act a task is (the label kind `TaskKind` of a plan's `Labels`, `LABEL_KIND` below), so that the agent doing it has read, in its
 own context, the sections of Memar's documents that govern that act. This file
 declares the closed set of act words and nothing about what each reads: which
 sections an act reads is the lists of the rule
-[Normative References](../../../content/rules/normative_references/normative_references.md),
+[Normative References](../../../knowledge/content/rules/normative_references/normative_references.md),
 one per kind, named `normative_references-<word>.md` after the word declared
-here, and read by `modules/knowledge/content/services/normative_references.py`. It is code and not a
+here, and read by `modules-plugable/knowledge/documentation/services/normative_references.py`. It is code and not a
 section of a document because programs read it — the kind a plan carries is
 checked against it, the help of `memar task ensure` lists it, and a kind's
 list is found by its word — and a closed set a program reads, written as prose,
-is a copy no check keeps true ([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+is a copy no check keeps true ([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 
 Per kind it holds: the word; one sentence on when the kind applies, which says
 when to choose it and does not restate what a Practice's own `description`
@@ -36,7 +36,7 @@ into modules is its own task (20261015-T123046Z-17544).
 """
 from __future__ import annotations
 from enum import Enum
-from modules.knowledge.documentation.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
+from modules.knowledge.label.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
 
 class TaskKind(Enum):
     """One kind, in the order a task usually meets them: (word, when it applies, whether a plan may carry it)."""

@@ -44,10 +44,10 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.knowledge.documentation.plan.services.plan as task_plan
-import modules.knowledge.documentation.plan.services.priority as task_plan_priority
+import modules.management.task.services.plan_file as task_plan
+import modules.management.task.services.plan_priority as task_plan_priority
 import modules.management.task.services.priority as task_priority
-from modules.knowledge.documentation.plan.primitive.priority import Priority
+from modules.management.task.plan.primitive.priority import Priority
 
 class SetPriority(unittest.TestCase):
 

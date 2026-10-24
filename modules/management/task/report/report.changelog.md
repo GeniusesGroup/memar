@@ -6,10 +6,10 @@
 - Time: 2026-10-16T15:15:30Z
 - Type: Added
 - Cited:
-  - [Documentation](../documentation.md) - Depends_on: defines the Facet system this specification joins, and states once what it says about a task's plan and report, which is not restated here.
-  - [Documentation — Handoff](../handoff/handoff.md) - Reference: the reader-relationship discipline and the recursion stop a Changelog-facet file applies to itself, which this specification extends to the report artifact.
-  - [Documentation — Research](../research/research.md) - Reference: a record that receives neither companion and the reason it gives for that, which is the pattern this specification follows.
-  - [Documentation — Changelog](../changelog/changelog.md) - Reference: the companion-file pairing and naming rules this specification follows for its own folder.
+  - [Documentation](../../../../modules-plugable/knowledge/documentation/documentation.md) - Depends_on: defines the Facet system this specification joins, and states once what it says about a task's plan and report, which is not restated here.
+  - [Documentation — Handoff](../../../../modules-plugable/knowledge/documentation/handoff/handoff.md) - Reference: the reader-relationship discipline and the recursion stop a Changelog-facet file applies to itself, which this specification extends to the report artifact.
+  - [Documentation — Research](../../../../modules-plugable/knowledge/documentation/research/research.md) - Reference: a record that receives neither companion and the reason it gives for that, which is the pattern this specification follows.
+  - [Documentation — Changelog](../../../../modules-plugable/knowledge/documentation/changelog/changelog.md) - Reference: the companion-file pairing and naming rules this specification follows for its own folder.
 - Propagates to:
   - .agents/scripts/services/session_record.py and the services beside it: Done (task `20261016-T141543Z-22844`) - the shape they enforce now carries the session's identifier, as the sixth requirement of this specification states.
 - Contributors:
@@ -19,7 +19,7 @@
 #### What changed
 - Created `report.md` (ID 497823) as the governing specification for the Report facet: a task's report is the record one pass of work is accounted for in when it ends, held to a stated agreement about which of its contents a reader gets. It states the reader relationship, what each part of a report is for, who writes one and who reads one, the exemption from the companion convention, and six requirements a party that did not write it can decide from a stated input (Omid Hekayati - ruled the facet and its requirements; Space Bunny Alpha - drafted and applied).
 - The specification writes no front-matter key, no part name, no Status value and no count as text: the line limit on a hand-back is the declaration's, reached by calling it, and the words are kept nowhere else (Space Bunny Alpha - drafted).
-- The rule that a plan and its report agree when their Statuses are equal is not restated here; the specification points at [Documentation → Status](../documentation.md#status), which states it once for the pair (Space Bunny Alpha - drafted).
+- The rule that a plan and its report agree when their Statuses are equal is not restated here; the specification points at [Documentation → Status](../../../../modules-plugable/knowledge/documentation/documentation.md#status), which states it once for the pair (Space Bunny Alpha - drafted).
 - Created this changelog and the paired handoff, which carries what is still open (Space Bunny Alpha - drafted).
 
 #### Considered and not done

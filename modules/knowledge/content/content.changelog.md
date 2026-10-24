@@ -6,12 +6,12 @@
 - Time: 2026-07-27T00:00:00Z
 - Type: Added
 - Cited:
-  - [Documentation — Explanation](../documentation/explanation/explanation.md) — Depends_on: this document follows the Explanation facet structure (Abstract, Introduction, Explanation, Results, Discussion).
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: this document follows the Explanation facet structure (Abstract, Introduction, Explanation, Results, Discussion).
   - [Modeling](../../../docs/modeling.md) — Depends_on: builds on foundational principles — Behavior Before Structure, Code vs Rule, graph-based conceptual modeling, Discovery Before Design.
   - [Terminology](../../../docs/terminology.md) — Depends_on: definitions in this document must not contradict established project terminology conventions.
   - [HTML5 Specification](https://html.spec.whatwg.org/) — Reference: observational corpus for discovery — one of several existing languages studied, not an architectural authority.
   - [ARIA Specification](https://www.w3.org/TR/wai-aria/) — Reference: observational corpus — demonstrates gaps HTML alone does not cover, particularly around state and role semantics.
-  - Related Work Survey (AI-generated research; source file deleted 2026-09-23 after its final transfer audit) — Reference: background survey of prior art (RDF, RDFa, JSON-LD, Topic Maps, XForms, etc.). Treat as exploratory research, not architectural authority — see [Documentation — Research → Relationship to the Other Facets](../documentation/research/research.md#relationship-to-the-other-facets) for the distinction between research findings and adopted understanding.
+  - Related Work Survey (AI-generated research; source file deleted 2026-09-23 after its final transfer audit) — Reference: background survey of prior art (RDF, RDFa, JSON-LD, Topic Maps, XForms, etc.). Treat as exploratory research, not architectural authority — see [Documentation — Research → Relationship to the Other Facets](../../../modules-plugable/knowledge/documentation/research/research.md#relationship-to-the-other-facets) for the distinction between research findings and adopted understanding.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed, reviewed: original concept formulation; 10+ years of iterative idea development; Design Languages project (prior art/prototype); critical review and direction-setting across all discovery sessions.
   - [Claude](../../../CONTRIBUTORS.md#claude) (claude-sonnet-5) — argued, rewrote: process critique; Concept/Implementation boundary analysis; Composition vs Aggregate distinction; Addressability and Reference-as-edge critique; document synthesis.
@@ -58,8 +58,8 @@ Brought `content.md` in line with the current Explanation-facet specification:
 - Time: 2026-09-11T08:11:30Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../documentation/handoff/handoff.md) — Depends_on: the Open Questions / Anticipated Work record created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) — Depends_on: the Open Questions / Anticipated Work record created by this migration follows the Handoff facet's specification.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
@@ -67,7 +67,7 @@ Brought `content.md` in line with the current Explanation-facet specification:
 #### What changed
 - All ten topic-level `#### Discussion` / `##### Unresolved questions` wrappers were dissolved; their questions (ten topic-level, plus the document-wide cross-cutting media question) moved to the newly created [content.handoff.md](./content.handoff.md) as Open Questions, per the Relevance-discipline routing — open questions are working state, not current design.
 - The document-level `## Discussion` section was retired: its Drawbacks record and Prior-art surveys are preserved in this entry below; its Rationale-and-alternatives items are recorded under Considered and not done; its Future possibilities became the handoff's Anticipated Work. The `---` separator preceding the section went with it.
-- This was the last remaining second-wave document besides polymorphism, abstraction-implements, giti, and lexer (see [documentation-explanation.handoff.md](../documentation/explanation/explanation.handoff.md)); the earlier hesitation about appending to this file is resolved by the owner's direction to run this migration in the same round — the remediation item for the Initial revision entry above (see [documentation-changelog.handoff.md](../documentation/changelog/changelog.handoff.md)) remains open and this entry does not touch that entry.
+- This was the last remaining second-wave document besides polymorphism, abstraction-implements, giti, and lexer (see [documentation-explanation.handoff.md](../../../modules-plugable/knowledge/documentation/explanation/explanation.handoff.md)); the earlier hesitation about appending to this file is resolved by the owner's direction to run this migration in the same round — the remediation item for the Initial revision entry above (see [documentation-changelog.handoff.md](../../../modules-plugable/knowledge/documentation/changelog/changelog.handoff.md)) remains open and this entry does not touch that entry.
 
 #### Considered and not done (migrated from the retired document-level Rationale and alternatives)
 - **Extending RDFa/Microdata in place (rejected)**: embedding structured metadata as attributes inside content tags reproduces, by construction, the exact dual-source/scattered-metadata problem the Type Reference and Authoring Syntax vs. Semantic Graph topics were built to eliminate — regardless of how syntactically convenient any single attribute looks in isolation.
@@ -76,7 +76,7 @@ Brought `content.md` in line with the current Explanation-facet specification:
 - **Simply extending HTML's element/attribute vocabulary (rejected; the original approach of the early research)**: HTML's ~30 years of gradual, historically-motivated accretion means many of its elements are compositions of more fundamental concepts rather than fundamental concepts themselves (e.g., `h1`–`h6` as `Text` + an `Importance` level, rather than six independent concepts) — extending such a vocabulary risks perpetuating its historical accidents rather than correcting them.
 
 #### Related work (from the retired Prior art)
-- A detailed survey of prior art (HTML, ARIA, RDF, RDFa, JSON-LD, Topic Maps, Semantic Web stack, Hypermedia/REST, Microformats, Microdata, OWL, SKOS, XForms, UML, HCI pattern languages, Web Components, Design Tokens, VUI grammars, Accessibility Tree) was recorded in an AI-generated related-work survey (source file deleted 2026-09-23 after its final transfer audit; substance and caveats preserved here). That survey **carries no architectural authority** — see [Documentation — Research → Relationship to the Other Facets](../documentation/research/research.md#relationship-to-the-other-facets) for the distinction between research findings and adopted understanding; one entry in that survey (CKML) could not be independently verified and should be treated as unconfirmed pending primary-source review, not as an established finding.
+- A detailed survey of prior art (HTML, ARIA, RDF, RDFa, JSON-LD, Topic Maps, Semantic Web stack, Hypermedia/REST, Microformats, Microdata, OWL, SKOS, XForms, UML, HCI pattern languages, Web Components, Design Tokens, VUI grammars, Accessibility Tree) was recorded in an AI-generated related-work survey (source file deleted 2026-09-23 after its final transfer audit; substance and caveats preserved here). That survey **carries no architectural authority** — see [Documentation — Research → Relationship to the Other Facets](../../../modules-plugable/knowledge/documentation/research/research.md#relationship-to-the-other-facets) for the distinction between research findings and adopted understanding; one entry in that survey (CKML) could not be independently verified and should be treated as unconfirmed pending primary-source review, not as an established finding.
 - **XForms'** model/view separation via `<xforms:bind>` is the closest existing precedent to the Authoring Model / Semantic Graph split, though XForms never achieved broad adoption and offers no general-purpose (non-form) interface vocabulary.
 - **Hypermedia/REST's** link-relation model (`rel="edit"`, `rel="cancel"`) is the closest existing precedent for expressing behavioral/action intent through typed relations rather than dedicated element types — directly relevant to the Reference-as-relation position.
 
@@ -166,12 +166,12 @@ Brought `content.md` in line with the current Explanation-facet specification:
 
 #### Considered and not done
 - **A rule setting a tolerance for a partly-reliable aid**: not taken, and the section's argument is a classification rather than a tolerance. The objection answered here held that an aid helping ninety percent of the time with a ten percent error rate is worth using; nothing in the section disputes that, and nothing in it depends on it. What the section distinguishes is not how often a rendering is right but what a reader does with it — an aid a reader actively compares tests something, while a check a reader trusts silently reports — and a tolerance figure would say nothing about which of the two a given artifact is, while a number without an inspectable method is a qualitative judgment ([Content → Methodology](./content.md#methodology)).
-- **A rule enumerating which notations a governing document may use, and a rule requiring every generated diagram to ship beside the prose it was drawn from**: neither taken. [Documentation → Written surface](../documentation/documentation.md#written-surface) states the first, and restating it here would be the redundant restatement [Documentation → Content Rule](../documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids; the second is a rule about a class of artifact the record does not admit, and stating it would imply the record admits them.
+- **A rule enumerating which notations a governing document may use, and a rule requiring every generated diagram to ship beside the prose it was drawn from**: neither taken. [Documentation → Written surface](../../../modules-plugable/knowledge/documentation/documentation.md#written-surface) states the first, and restating it here would be the redundant restatement [Documentation → Content Rule](../../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids; the second is a rule about a class of artifact the record does not admit, and stating it would imply the record admits them.
 - **A rule stating that a comprehension aid must never be promoted into the record**: not added as its own rule. [UI Projection ≠ Domain Model](../knowledge.md#ui-projection--domain-model) already names a projection becoming the source of truth as the error, and [Knowledge → Write for the Structure of the Subject](../knowledge.md#write-for-the-structure-of-the-subject-not-for-todays-reader-limits) now states what the record owes a reader; a third statement of the prohibition would be the redundant restatement that section forbids.
 - **A statement in [Cognition](../../../docs/cognition.md) about the capacity of a medium to carry meaning**: not taken. Cognition already holds that the medium shapes the exchange without defining it and that a text interface compresses bandwidth and flattens thinking material into prose; what it lacked was not the observation but its application to renderings, which is what this entry supplies.
 - **Recording the recommendation that diagrams be requested from a model as a rejected option, and opening a second research for this exchange**: neither done. A negative finding has its home in a Research record, and that record exists and is cited here; the exchange added consequences and a classification to findings it had already reached without altering a conclusion or leaving a question open, so its own questions stand.
 - **The practice as a Practice document**: not taken. The practice in question — asking for a diagram beside a plan to see whether the plan's path is right — is a way of working inside a session, and the record already states its standing: [Modeling → Graphs Are Not Documentation Artifacts](../../../docs/modeling.md#graphs-are-not-documentation-artifacts) gives a graph the status of a working tool rather than a deliverable. Naming it again in a Practice would duplicate that.
-- **The objection that a chain of delegated stages leaves nobody who chose**: out of scope here, and not recorded in this section. It concerns who may decide rather than how meaning is carried, and it was examined against [Agency → Agency and Knowledge Management](../../../docs/agency.md#agency-and-knowledge-management), [Cognition → Discourse Norms](../../../docs/cognition.md#discourse-norms-derived-from-this-model), and [Modeling → Expected Output of a Modeling Chat](../../../docs/modeling.md#expected-output-of-a-modeling-session), each of which already states the rule such a chain would violate.
+- **The objection that a chain of delegated stages leaves nobody who chose**: out of scope here, and not recorded in this section. It concerns who may decide rather than how meaning is carried, and it was examined against [Agency → Agency and Knowledge Management](../../../docs/agency.md#agency-and-knowledge-management), [Cognition → Discourse Norms](../../../docs/cognition.md#discourse-norms-derived-from-this-model), and [Modeling → Expected Output of a Modeling Chat](../../../docs/modeling.md#expected-output-of-a-modeling-chat), each of which already states the rule such a chain would violate.
 
 ---
 
@@ -182,7 +182,7 @@ Brought `content.md` in line with the current Explanation-facet specification:
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
 
 #### What changed
-No entry above is edited. This entry states the relation one of them recorded, under [Documentation → Citations → Source standing](../documentation/documentation.md#citations) as that rule now reads.
+No entry above is edited. This entry states the relation one of them recorded, under [Documentation → Citations → Source standing](../../../modules-plugable/knowledge/documentation/documentation.md#citations) as that rule now reads.
 - The social-media post cited in *A rendering is checked by eye, and names the reader it is for* is recorded with the `Reference` relation, not `Evidence`. A post of that kind is admitted as the claim being weighed and as the occasion for the question, which is what that entry already said in its own words; the conclusion rests on the notation examined in the section itself, and the entry said so too.
 
 #### Considered and not done
@@ -190,7 +190,7 @@ No entry above is edited. This entry states the relation one of them recorded, u
 - Removing the post from the record was rejected (Space Bunny Alpha — argued). Recording where a question came from is legitimate and the entry records it honestly; what was wrong was the relation, not the record.
 
 #### Deliberation
-The rule added in [Documentation → Citations](../documentation/documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and this citation was among the four it does not accept (Space Bunny Alpha — argued). An entry of an earlier chat cannot be rewritten, so the correction is recorded here (Omid Hekayati — decided).
+The rule added in [Documentation → Citations](../../../modules-plugable/knowledge/documentation/documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and this citation was among the four it does not accept (Space Bunny Alpha — argued). An entry of an earlier chat cannot be rewritten, so the correction is recorded here (Omid Hekayati — decided).
 
 ---
 
@@ -208,7 +208,7 @@ The rule added in [Documentation → Citations](../documentation/documentation.m
 - [content.md](./content.md) is unchanged: both answers were already in its body, and the graduation is a matter of the handoff stopping restating them.
 
 #### Considered and not done
-- Editing `content.md` to state the two answers more sharply, or to add the empirical-framing question as work worth pursuing — not taken. The body already says the circularity is unresolved and names the empirical framing as future work; a sharper restatement would be the redundant restatement [Documentation → Content Rule](../documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids.
+- Editing `content.md` to state the two answers more sharply, or to add the empirical-framing question as work worth pursuing — not taken. The body already says the circularity is unresolved and names the empirical framing as future work; a sharper restatement would be the redundant restatement [Documentation → Content Rule](../../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids.
 - Carrying the empirical-framing direction over into the handoff's Anticipated Work — not taken. The body holds it as a framing worth pursuing in future work, not as committed anticipated work, and inventing a handoff entry for it would schedule work nobody committed to.
 - Marking the two entries Answered rather than deleting them — not taken. A handoff records where a discussion stands, and a resolved question is state the base document now carries; leaving a resolved question here duplicates the answer and guarantees drift.
 
@@ -307,7 +307,7 @@ The tension was not the category but the exemption. Read against a document decl
 #### What changed
 - Reviewed the uncommitted change to `content.md`, `content.handoff.md` and this file against HEAD. The settled handoff questions (navigate/embed/execute, Lexical Token uniqueness, Addressable Entity a-priori test, Composition `contains`, media coverage) each have their answer in `content.md` and an entry above; the Timeline entry's narrowing, the Abstract and Khayyam-manner rewording, and the `../modules/khayyam` to `../bundles/khayyam` link repairs hold, and `memar content check` reports no problem.
 - `content.handoff.md`, the *Can one Content participate in multiple Timelines* entry: removed the clause "originally moved 2026-09-11 from the Layout topic's retired Discussion wrapper". The committed entry records the knowledge-management session as its origin and nothing ties it to the Layout wrapper (that wrapper's question is the separate arrangement-primitive entry), so the clause was provenance the project does not record.
-- Removed the uncommitted entry "An anticipated-work entry about a command left this handoff, unrecorded here" (dated 2026-10-06T00:00:00Z). HEAD holds no *A content-grouped documentation command* entry in `content.handoff.md` or `documentation.changelog.md`, so the entry recorded a state no reader ever saw, which [Documentation Changelog → Trivial changes](../documentation/changelog/changelog.md#trivial-changes) says gets no entry.
+- Removed the uncommitted entry "An anticipated-work entry about a command left this handoff, unrecorded here" (dated 2026-10-06T00:00:00Z). HEAD holds no *A content-grouped documentation command* entry in `content.handoff.md` or `documentation.changelog.md`, so the entry recorded a state no reader ever saw, which [Documentation Changelog → Trivial changes](../../../modules-plugable/knowledge/documentation/changelog/changelog.md#trivial-changes) says gets no entry.
 - The one-word change in the 2026-10-04T13:27:43Z entry's contributor line ("space-bunny-free" to "space-bunny") was left: it matches the label every other entry uses.
 
 ---
@@ -344,7 +344,7 @@ The tension was not the category but the exemption. Read against a document decl
 - Time: 2026-10-19T11:00:00Z
 - Type: Changed
 - Cited:
-  - [Handoff → Decisions](../documentation/handoff/handoff.md#decisions) - `Depends_on`: a decision stays in a handoff while no governing document carries it, which is why the organization's decisions are kept there and not written into this document
+  - [Handoff → Decisions](../../../modules-plugable/knowledge/documentation/handoff/handoff.md#decisions) - `Depends_on`: a decision stays in a handoff while no governing document carries it, which is why the organization's decisions are kept there and not written into this document
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — directed (2026-10-19)
   - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — carried the text by hand
@@ -366,10 +366,10 @@ The tension was not the category but the exemption. Read against a document decl
 - Time: 2026-10-19T18:30:00Z
 - Type: Added
 - Cited:
-  - [Handoff → Where a finished task's records are kept](../documentation/handoff/handoff.handoff.md#where-a-finished-tasks-records-are-kept) - Evidence: said the corpus "no longer leaves `.agents/tasks/` out", which reached only a checkout holding that folder and never the records branch, where the records are.
+  - [Handoff → Where a finished task's records are kept](../../../modules-plugable/knowledge/documentation/handoff/handoff.handoff.md#where-a-finished-tasks-records-are-kept) - Evidence: said the corpus "no longer leaves `.agents/tasks/` out", which reached only a checkout holding that folder and never the records branch, where the records are.
   - `docs/comparisons/context-mode.001.md`, sections 1, 6 and 7 - Motivation: Memar keeps its task records and no verb could find anything in them.
 - Propagates to:
-  - modules/knowledge/documentation/handoff/handoff.handoff.md: Done - the entry "Where a finished task's records are kept" says what the corpus reaches now and since which session.
+  - modules-plugable/knowledge/documentation/handoff/handoff.handoff.md: Done - the entry "Where a finished task's records are kept" says what the corpus reaches now and since which session.
   - bundles/memar/memar.handoff.md: Done - the bullet on the kept index says how the sessions' files are kept in the MCP worker.
   - docs/comparisons/context-mode.001.md: Done - its finding was checked again against the fixed verbs on 2026-10-19 by two reviewers that had not drafted it, and the essay now states the state before the fix as history and the state after it as fact.
 - Tasks:
@@ -395,3 +395,43 @@ The tension was not the category but the exemption. Read against a document decl
 - Making `sessions` part of the default: a hit from a session is a claim, and a reader who did not ask for claims would read them beside the rulings.
 - A source for each of the two places, archived and live: one session has one record, read from the place `memar git show-task-records` reads it.
 - Reading the sessions in `backlinks`, `obligations` and the other verbs that read the corpus: they answer about the documents' links and ledgers, which a task's records are not.
+
+---
+
+### Checking text: the dispatcher over the domains a node belongs to
+- Time: 2026-10-23T17:30:00Z
+- Type: Added
+- Cited:
+  - [Memory Record](../../computer/memory/record/record.md) - Reference: the port stays blind to encodings
+- Tasks:
+  - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme; the build tasks are queued after it
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-22/23), ruled the premises it rests on
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted
+  - Three sub-agents (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed; their findings are applied, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- [content.md](content.md) gains the section Checking text: content as the dispatcher, the domains asked (text, an authoring syntax, documentation), a finding, the two moments (when a text node is written, and as a query), the legacy mode of the migration, the label that attaches a domain's check, and the state of the verb until the dispatcher is built. It marks `Owed: content.check-dispatcher`.
+- [content.handoff.md](content.handoff.md), [text.handoff.md](../text/text.handoff.md) and [documentation.handoff.md](../../../modules-plugable/knowledge/documentation/documentation.handoff.md) gain the entry that each domain owes its part of the check.
+
+---
+
+### The Python services leave the content module
+- Time: 2026-10-24T09:10:00Z
+- Type: Changed
+- Cited:
+  - [Knowledge](../knowledge.md#the-modules-of-this-category) - Reference: where the neighbouring modules stand
+- Tasks:
+  - main:.agents/tasks/20261018-T133018Z-26648/: Partial - the split by subject; the owner agreed the placements per subject
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-18) and ruled each placement (2026-10-24)
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — proposed and applied
+
+#### What changed
+- The 35 service files of `services/` are no longer here except `reference.py`, `resolve_path.py` and `path.py`, with the primitives `word`, `section` and `record_key` the task module and the documentation module both draw on. Search, ranking and the corpus went to [Text](../text/text.md); the reading of Markdown to [Markdown](../../../modules-plugable/computer/codec/markdown/markdown.md); the changelog, the questions, the propagations, the normative-references lists and the check to [Documentation](../../../modules-plugable/knowledge/documentation/documentation.md); writing and editing a file to the filesystem module; the context of an act to the `ai` module; the task records to the task module. Each verb keeps its word under `memar content`, by the router's rule of a file named `content_<verb>.py`.
+- `memar content check` is now composed: its bytes half is `text/services/text_check.py`, the rest stays in the documentation module's `content_check.py` as the composer.
+- No kernel module reaches a pluggable one by an import any more, and the module-graph test passes with no allowance.
+
+#### Considered and not done
+- Removing the word `content` from the verbs: it changes every MCP tool name, the skill and `AGENTS.md`, so it is a task of its own (owner, 2026-10-24: a service is an independent identity with a complete name, and the category in front of it is to go).
+- Removing `meta`, `section`, `path` and `obligations` as duplicates of `get-meta`, `get-section`, `resolve-path` and `list-undischarged-propagations`: they are a rename in progress by another chat, and the installed launcher still calls `content path`.

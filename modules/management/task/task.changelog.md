@@ -106,3 +106,42 @@
 - Twelve Task rules are added under [modules-plugable/management/task/rules](../../../modules-plugable/management/task/rules/README.md), each citing the owner's word and changeable at any time.
 - No edge document or `.kh` file was changed.
 
+---
+
+### How a Task is stored; a change of Status is a Request
+- Time: 2026-10-23T17:30:00Z
+- Type: Added
+- Cited:
+  - [Request → Recording a change of state](../../computer/request/request.md#recording-a-change-of-state) - Reference: the rule the Status bullet now cites
+- Tasks:
+  - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme; the build tasks are queued after it
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-22/23), ruled the premises it rests on
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted
+  - Three sub-agents (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed; their findings are applied, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- [task.md](task.md) gains the section How a Task is stored: the encoding of a part, the parts of a Task's node and their issuing modules, the other nodes, the labels, and how a content is revised. It marks `Owed: memory.stored-shape`.
+- The Status bullet states that a move of Status, a claim, a priority, a dependence, a label and a parent are recorded by Requests.
+
+---
+
+### The Plan and Report records, the label verbs and the task records are the task module's
+- Time: 2026-10-24T09:30:00Z
+- Type: Changed
+- Cited:
+  - [Knowledge](../../knowledge/knowledge.md#the-modules-of-this-category) - Reference: documentation is a pluggable module
+- Tasks:
+  - main:.agents/tasks/20261018-T133018Z-26648/: Partial - the removal of the kernel's dependence on documentation; the owner asked for it (2026-10-24)
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — asked that the task module not depend on documentation and that each service stand alone
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — moved and repaired
+
+#### What changed
+- The Plan and Report facets (`plan/`, `report/`, with their specifications, handoffs and changelogs), `primitive/record.py`, the `TaskKind` label and the services that read and write the files (`services/plan_*.py`, `services/report_*.py`) are this module's. The label verbs (`label_add`, `label_list`, `plan_labels`) label a task's plan, so they are here too, still `memar label add` and `memar label list`.
+- The tests of these moved beside them in `tests/`.
+- `memar task get-decisions-digest` moved to the `ai` module, because it reads the handoffs' questions, which the documentation module owns, and a kernel module does not import it. The task records that search reads (`task_records`) are `modules-plugable/management/task/`, the optional part of this module.
+
+#### Considered and not done
+- Leaving plan and report as modules of their own: they use each other's types and this module's, so as modules they made a cycle the module-graph test refuses; their services are this module's services, and only their specifications keep a folder each.
+- The memory port programme (task 20261022-T185903Z-15504) re-bases these files on the port; its plans name the old paths, which this change moved.

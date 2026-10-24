@@ -21,7 +21,7 @@
 - Time: 2026-10-19T10:50:00Z
 - Type: changed
 - Cited:
-  - [Documentation → Recording Is Not Gated; Removal Is](../documentation/documentation.md#recording-is-not-gated-removal-is) - Reference: what is dropped is named here with its reason
+  - [Documentation → Recording Is Not Gated; Removal Is](../../../modules-plugable/knowledge/documentation/documentation.md#recording-is-not-gated-removal-is) - Reference: what is dropped is named here with its reason
   - [Modules → Placement](../../modules.md#placement) - Reference: the kernel and pluggable tests behind the contradiction left open below
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-19)
@@ -71,7 +71,7 @@
 
 #### What changed
 - `.agents/memar/labels.md` is removed. Its 22 topics, with their identifiers, are declared as code: the streams of work in `modules-plugable/management/task/labels/topics.py`, and the three topics that name a module (`task`, `label`, `khayyam`) in that module's `labels/topics.py`. Two topics that plans carried but the file had lost (`memar-skill`, `memar-cli`) are declared with them.
-- A declaration is `LabelDefinition` with its meaning and its end of life (`ended`, `replaced_by`), made by `topic()` in `modules/knowledge/documentation/plan/labels/topic.py`; a declaring file holds a `LABELS` tuple and forces no store.
+- A declaration is `LabelDefinition` with its meaning and its end of life (`ended`, `replaced_by`), made by `topic()` in `modules/knowledge/label/primitive/topic.py`; a declaring file holds a `LABELS` tuple and forces no store.
 - [services/declarations.py](services/declarations.py) finds the declarations by walking the project's tree; `memar label add` and `memar task ensure --label` refuse a topic declared nowhere, printing the declaration to write and the declared topics near it, and refuse an ended one naming what replaced it; `memar label list` lists the declared topics too, and a carried label nobody declares as undeclared.
 - [label.md](label.md): Where labels are declared says the file is retired and where a label is declared instead; A name is one label no longer says a free kind takes a word when it is first used.
 

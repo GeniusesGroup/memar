@@ -45,8 +45,8 @@ import modules.management.task.services.layout as task_layout
 import modules.management.task.services.temp as task_temp
 from modules.management.task.services.layout import FOLDERS
 from modules.management.task.primitive.claim import Claim
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.services.report_file import REPORT_NAME
 
 class TopHoldsOnly(unittest.TestCase):
 

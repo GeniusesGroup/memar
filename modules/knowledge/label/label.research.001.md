@@ -23,7 +23,7 @@
 ## Status
 Active
 
-Nothing here is ratified. Every proposal carries a confidence mark in the sense of [Handoff Practice](../documentation/handoff/handoff.practice.md): Decided, Tentative, Explored (explored but unresolved), or Deferred. **No item below is Decided by this research.** Items already Decided in the domain documents are cited as such and are not re-argued. Where a claim is the agent's own proposal it says "(agent, ...)"; where it comes from a document it cites the document.
+Nothing here is ratified. Every proposal carries a confidence mark in the sense of [Handoff Practice](../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md): Decided, Tentative, Explored (explored but unresolved), or Deferred. **No item below is Decided by this research.** Items already Decided in the domain documents are cited as such and are not re-argued. Where a claim is the agent's own proposal it says "(agent, ...)"; where it comes from a document it cites the document.
 
 This research covers three domains as one cluster, because the documents show they are one question seen three times: **label** (the primary subject), **status** (a label that is read synchronously, on the documents' own account) and **edge** (the relation that carries a label). The research file lives in the label folder; [status](../status/status.md) and [edge](../edge/edge.md) get a pointer in their handoffs and a changelog line each, and nothing else.
 

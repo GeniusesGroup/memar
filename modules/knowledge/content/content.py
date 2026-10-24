@@ -4,7 +4,13 @@
 """modules/knowledge/content/content.py — the written content of a Memar checkout: read it, relate it, audit it, write it.
 
 Reached as `memar content`, and every verb is under that one word; each verb is
-declared by its own `content_<verb>.py` beside this file. Usage is the
+declared by its own `content_<verb>.py` (the router's rule for a capability kept
+outside its domain's folder), kept in the module whose subject the act is: the
+text module for search and ranking, the Markdown module for what is a section
+or a link, the documentation module for the changelog, the questions and the
+check, the filesystem module for putting text into a file. This folder keeps
+`resolve-path` and `path`, the two verbs that turn a reference into a file, and
+the reference they share (owner, 2026-10-24). Usage is the
 interface; `memar content --help` and `memar content <verb> --help` are the
 authority for what each verb accepts. What is left here is what a help text
 cannot carry: why this domain exists, what its boundary is, and what it cannot

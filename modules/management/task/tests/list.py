@@ -87,10 +87,10 @@ import modules.process.project.services.registry as registry
 import modules.process.project.services.preferences as project_preferences
 import modules.management.task.services.list as task_find
 import modules.process.project.services.task_location as task_location
-import modules.knowledge.documentation.plan.services.plan as task_plan
+import modules.management.task.services.plan_file as task_plan
 from modules.process.project.services.task_location import register
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+from modules.management.task.services.report_file import REPORT_NAME
 DAY = 24 * 60 * 60
 EARLIER_FORM = '1111-18dc000000000001-0'
 OLDEST = '20261001-T000000Z-1'

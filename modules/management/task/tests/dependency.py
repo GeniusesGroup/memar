@@ -49,7 +49,7 @@ sys.dont_write_bytecode = True
 import modules.management.task.services.dependency as depends_on
 import modules.process.project.services.registry as registry
 from modules.management.task.services.dependency import DependsOn, Reader, Ref, refused_for_writing
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_key import PlanKey
 
 def plan_text(status: str, depends: str | None=None, project: str='P') -> str:
     given = f'Depends_on: {depends}\n' if depends else ''

@@ -6,9 +6,9 @@
 - Time: 2026-10-16T15:15:00Z
 - Type: Added
 - Cited:
-  - [Documentation](../documentation.md) - Depends_on: defines the Facet system this specification joins, and states once what it says about a task's plan and report, which is not restated here.
-  - [Documentation — Handoff](../handoff/handoff.md) - Reference: the reader-relationship discipline, the open-catalog section pattern, and the recursion stop that a Changelog-facet file applies to itself, which this specification extends to the plan artifact.
-  - [Documentation — Changelog](../changelog/changelog.md) - Reference: the companion-file pairing and naming rules this specification follows for its own folder.
+  - [Documentation](../../../../modules-plugable/knowledge/documentation/documentation.md) - Depends_on: defines the Facet system this specification joins, and states once what it says about a task's plan and report, which is not restated here.
+  - [Documentation — Handoff](../../../../modules-plugable/knowledge/documentation/handoff/handoff.md) - Reference: the reader-relationship discipline, the open-catalog section pattern, and the recursion stop that a Changelog-facet file applies to itself, which this specification extends to the plan artifact.
+  - [Documentation — Changelog](../../../../modules-plugable/knowledge/documentation/changelog/changelog.md) - Reference: the companion-file pairing and naming rules this specification follows for its own folder.
 - Propagates to:
   - modules/management/task/services/ensure.py: Pending - its help says what each part of a plan is for, in words that now have their home in this specification; the two copies should be reconciled in the session that reviews this specification.
   - .agents/scripts/services/session_record.py and the services beside it: Done (task `20261016-T141543Z-22844`) - the shape they enforce now carries the session's identifier, as the sixth requirement of this specification states.

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a task's plan.md format in `modules/knowledge/documentation/plan/services/plan.py`.
+"""Tests for a task's plan.md format in `modules/management/task/services/plan_file.py`.
 
-    python modules/knowledge/documentation/plan/tests/plan.py
+    python modules/management/task/tests/plan_file.py
 
 The subject is the plan format every task service reads and writes, named
 for the file that holds it per
@@ -43,7 +43,7 @@ What is pinned, and what each pin is for:
                   front matter, and leaves every other line as written; a
                   value outside 1 to 10, or a plan with no front matter, is
                   refused.
-  Kind            A plan's kind is one of the kinds `modules/knowledge/documentation/plan/labels/task_kind.py`
+  Kind            A plan's kind is one of the kinds `modules/management/task/labels/task_kind.py`
                   lets a plan carry, and one it does not let a plan carry is
                   refused with the reason. For now every kind is judgment,
                   the strongest model, but `mechanical`, a cheaper one
@@ -71,22 +71,22 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[4] / 'bundles' / 'memar'
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.knowledge.documentation.plan.services.plan as task_plan
-import modules.knowledge.documentation.plan.services.status as task_plan_status
-import modules.knowledge.documentation.plan.services.priority as task_plan_priority
-import modules.knowledge.label.services.plan_labels as task_plan_labels
-from modules.knowledge.documentation.primitive.label import Label, Labels, new_id
-from modules.knowledge.documentation.plan.labels import task_kind as task_kind_module
+import modules.management.task.services.plan_file as task_plan
+import modules.management.task.services.plan_status as task_plan_status
+import modules.management.task.services.plan_priority as task_plan_priority
+import modules.management.task.services.plan_labels as task_plan_labels
+from modules.knowledge.label.primitive.label import Label, Labels, new_id
+from modules.management.task.labels import task_kind as task_kind_module
 DESIGN = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.word == 'design'))
 MECHANICAL = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.word == 'mechanical'))
-from modules.knowledge.documentation.plan.primitive.priority import Priority as PlanPriority
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.primitive.status import DocumentKind, Status
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.plan.primitive.priority import Priority as PlanPriority
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.management.task.labels.task_kind import TaskKind
 TITLE = 'Parse the header'
 OPENED = '2026-10-01T00:00:00Z'
 TASK = '20261001T000000Z-1-0'

@@ -3,7 +3,7 @@
 
 """Tests for the task record types in `record.py`.
 
-    python modules/knowledge/documentation/tests/record.py
+    python modules/management/task/tests/record.py
 
 The subject is the shape of a task's plan.md and report.md, declared once,
 named for the file that holds it per
@@ -41,11 +41,11 @@ SCRIPTS = TOP / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-from modules.knowledge.documentation.record import PLAN, REPORT
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.report.primitive.report_key import ReportKey
-from modules.knowledge.documentation.primitive.record_key import ID_FIELD
-from modules.knowledge.documentation.primitive.status import DocumentKind, Status
+from modules.management.task.primitive.record import PLAN, REPORT
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.report.primitive.report_key import ReportKey
+from modules.knowledge.content.primitive.record_key import ID_FIELD
+from modules.knowledge.status.primitive.status import DocumentKind, Status
 
 class PlanRecord(unittest.TestCase):
 
