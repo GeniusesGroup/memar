@@ -23,7 +23,7 @@
 ## Status
 Active
 
-Nothing here is ratified. Every proposal carries a confidence mark in the sense of [Handoff Practice](../../knowledge/documentation/handoff/handoff.practice.md): Decided, Tentative, Explored (explored but unresolved), or Deferred. **No item below is Decided by this research.** Items already Decided in the domain documents are cited as such and are not re-argued: the unit belongs to the account; availability is not account state; the balance is a per-record snapshot; holding is not legal title; a negative balance is neither allowed nor forbidden by the kernel; a bookkeeping record is never edited or deleted; a non-UUID identifier is an edge to the `uri` domain ([account.md](account.md#policies-rules), [account.handoff.md](account.handoff.md#decisions), [bookkeeping.md](edges/bookkeeping/bookkeeping.md#policies-rules)).
+Nothing here is ratified. Every proposal carries a confidence mark in the sense of [Handoff Practice](../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md): Decided, Tentative, Explored (explored but unresolved), or Deferred. **No item below is Decided by this research.** Items already Decided in the domain documents are cited as such and are not re-argued: the unit belongs to the account; availability is not account state; the balance is a per-record snapshot; holding is not legal title; a negative balance is neither allowed nor forbidden by the kernel; a bookkeeping record is never edited or deleted; a non-UUID identifier is an edge to the `uri` domain ([account.md](account.md#policies-rules), [account.handoff.md](account.handoff.md#decisions), [bookkeeping.md](edges/bookkeeping/bookkeeping.md#policies-rules)).
 
 ## Question and Goals
 - **Questions:**

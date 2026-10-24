@@ -247,7 +247,7 @@ Considered creating a dedicated `memar.md` to hold Memar's project-level identit
 - No other open question in that handoff was touched.
 
 #### Considered and not done
-- Adding the answer to the handoff as a resolved entry, or marking the question "Answered": a handoff records what a discussion still stands at, and a rule already landed in its governing document must not be duplicated there — the copy is what drifts. The question therefore leaves the artifact without a trace, per [Documentation Handoff → Decisions and Open Questions](../modules/knowledge/documentation/handoff/handoff.md#optional-sections).
+- Adding the answer to the handoff as a resolved entry, or marking the question "Answered": a handoff records what a discussion still stands at, and a rule already landed in its governing document must not be duplicated there — the copy is what drifts. The question therefore leaves the artifact without a trace, per [Documentation Handoff → Decisions and Open Questions](../modules-plugable/knowledge/documentation/handoff/handoff.md#optional-sections).
 - Deleting an `## Anticipated Work` line: the two lines nearest the deleted question (framework goals as a named section, goals-as-design-space notation) schedule different work and stay.
 
 ---
@@ -477,7 +477,7 @@ Dropped, with the reason: *Not Goals* (it says nothing is identified, and memar'
 #### What changed
 - README.md → Where Memar Stops, and Where Work Continues is removed. Its claim that Memar states the path while the finished system is delivered elsewhere, under Enterprise, no longer holds: the product bundles are in this repository. Its two rules that still hold were moved. "Subjects no Memar document governs" now sits in How to navigate Memar's content, step 3. "Every change, whatever its size" is an entry in [Cognition Handoff](./cognition.handoff.md), to be folded into the norm it sharpens. Its note on a record of Memar's own limits was already anticipated work in [Framework Handoff → Evaluating progress toward Memar's stated goal](./framework.handoff.md).
 - README.md → Enterprise becomes Licence: it points to LICENSE and LEGAL for commercial use and its contact. The list of components offered as commercial software (ChaparKhane, Achaemenid) and the three contact addresses are removed: the bundles are in the tree, and LEGAL holds the contact.
-- README.md → How to navigate: the list of organization-side comparison candidates moved to [Comparison Handoff](../modules/knowledge/documentation/comparison/comparison.handoff.md), since the README points at the comparisons and does not track their state.
+- README.md → How to navigate: the list of organization-side comparison candidates moved to [Comparison Handoff](../modules-plugable/knowledge/documentation/comparison/comparison.handoff.md), since the README points at the comparisons and does not track their state.
 
 #### Considered and not done
 - **Keeping Where Memar Stops as a statement of the framework's limits.** Not done: what it limited was the line between framework and product, and that line is now an open question about the one tree ([Framework Handoff → The framework and the product it builds, in one repository](./framework.handoff.md)).

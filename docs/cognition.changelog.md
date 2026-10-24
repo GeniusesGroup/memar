@@ -445,7 +445,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - [README.md](../README.md): Done - a new section stating where Memar stops and where the work continues, which is the disclosure instance of the consistency requirement this entry's second change concerns. That file carries no changelog of its own.
   - [framework.md](./framework.md): None needed - the consistency requirement already states what the README section answers; the answer is not a new claim about the framework.
   - [.agents/skills/memar/SKILL.md](../.agents/skills/memar/SKILL.md): None needed - the skill's intake rules are stated as pointers into this document and inherit the norm's new shape without naming it.
-  - [.agents/scripts/memar-documentation.py](../modules/knowledge/content/content.py), [.agents/scripts/README.md](../.agents/scripts/README.md): None needed - nothing in this change alters a document's written surface, and the check that reports open work is recorded in the [Documentation Changelog](../modules/knowledge/documentation/changelog/changelog.md).
+  - [.agents/scripts/memar-documentation.py](../modules/knowledge/content/content.py), [.agents/scripts/README.md](../.agents/scripts/README.md): None needed - nothing in this change alters a document's written surface, and the check that reports open work is recorded in the [Documentation Changelog](../modules-plugable/knowledge/documentation/changelog/changelog.md).
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - directed, decided
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) - drafted
@@ -471,7 +471,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
 ### A large change has a second moment, after it exists
 - Time: 2026-10-04T00:00:00Z
 - Cited:
-  - [Practice facet](../modules/knowledge/documentation/practice/practice.md) - Reference: the split this entry follows, where an obligation lives beside the facet and only the runtime-dependent fact stays in the agent's own configuration
+  - [Practice facet](../modules-plugable/knowledge/documentation/practice/practice.md) - Reference: the split this entry follows, where an obligation lives beside the facet and only the runtime-dependent fact stays in the agent's own configuration
 - Propagates to:
   - ../.agents/skills/memar/SKILL.md: Done - the clause this norm now carries was removed from the skill's large-scope rule, which had been its only home
 - Contributors:
@@ -553,7 +553,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - An AI agent (via [Cursor](../CONTRIBUTORS.md#cursor)) — drafted, applied
 
 #### What changed
-- [Confirm before large-scope changes](./cognition.md#confirm-before-large-scope-changes) gains its boundary: adding a rule, a note, or an open question to the document that owns its subject waits for no one; removing text is a change the norm covers, because removal is what loses information. The rule itself lives in [Documentation → Recording Is Not Gated; Removal Is](../modules/knowledge/documentation/documentation.md#recording-is-not-gated-removal-is).
+- [Confirm before large-scope changes](./cognition.md#confirm-before-large-scope-changes) gains its boundary: adding a rule, a note, or an open question to the document that owns its subject waits for no one; removing text is a change the norm covers, because removal is what loses information. The rule itself lives in [Documentation → Recording Is Not Gated; Removal Is](../modules-plugable/knowledge/documentation/documentation.md#recording-is-not-gated-removal-is).
 
 #### Considered and not done
 - **Stating the whole rule here** (rejected): one home per rule; this norm needed only the sentence that keeps it from being read as gating additions spread across several documents.
@@ -644,7 +644,7 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — drafted, applied
 
 #### What changed
-- [Norm Application Points](./cognition.practice.md#norm-application-points) gained the escalation checkpoint: an agent settles what the owning material and a second opinion from another model settle, recorded Tentative with the opinion as its reasoning; a definition other documents consume, a change that removes meaning, a change beyond the instance, and a premise the model rests on reach the owner however well they seem settled, as decisions needed gathered into one digest ([Queued Work and Its Hand-Back](../modules/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back)).
+- [Norm Application Points](./cognition.practice.md#norm-application-points) gained the escalation checkpoint: an agent settles what the owning material and a second opinion from another model settle, recorded Tentative with the opinion as its reasoning; a definition other documents consume, a change that removes meaning, a change beyond the instance, and a premise the model rests on reach the owner however well they seem settled, as decisions needed gathered into one digest ([Queued Work and Its Hand-Back](../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#queued-work-and-its-hand-back)).
 - Observed: the owner was in the path of questions an agent could answer at some token cost; the owner's ruling (2026-10-12) keeps the owner for the decisive ones only.
 
 ---
@@ -657,8 +657,8 @@ Dissolved every `#### Discussion` wrapper (the definition topic, Modes of Thinki
   - [Claude](../CONTRIBUTORS.md#claude) (Sonnet 5.5) - applied
 
 #### What changed
-- In [Norm Application Points](./cognition.practice.md#norm-application-points), the checkpoint for a question that reaches the owner now says the agent writes each of the four kinds as an entry in the handoff ([Questions Found During a Task](../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)), and that an agent with no owner to ask ends with a one-line pointer to the entry under decisions needed, not the question held only in its report.
-- Why: the same ruling as the entry of this date in [documentation-handoff.changelog.md](../modules/knowledge/documentation/handoff/handoff.changelog.md); task `20261013-T103110Z-17584`.
+- In [Norm Application Points](./cognition.practice.md#norm-application-points), the checkpoint for a question that reaches the owner now says the agent writes each of the four kinds as an entry in the handoff ([Questions Found During a Task](../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)), and that an agent with no owner to ask ends with a one-line pointer to the entry under decisions needed, not the question held only in its report.
+- Why: the same ruling as the entry of this date in [documentation-handoff.changelog.md](../modules-plugable/knowledge/documentation/handoff/handoff.changelog.md); task `20261013-T103110Z-17584`.
 
 ---
 

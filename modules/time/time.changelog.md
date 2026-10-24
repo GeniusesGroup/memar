@@ -53,7 +53,7 @@
 - Time: 2026-09-29T10:40:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Content Rule](../knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
+  - [Documentation → Content Rule](../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: content lives in one authoritative home and is linked, not restated.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and a code folder carries only a README
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
@@ -146,7 +146,7 @@
 - Time: 2026-10-15T08:30:00Z
 - Type: Changed
 - Cited:
-  - [Documentation — Handoff Practice → Questions Found During a Task](../knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) - Premise: each question is settled from owning material and recorded Tentative, made smaller by a queued session, or written for the owner.
+  - [Documentation — Handoff Practice → Questions Found During a Task](../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task) - Premise: each question is settled from owning material and recorded Tentative, made smaller by a queued session, or written for the owner.
   - Abstraction in Khayyam → A concept is an abstraction; a concrete instance is a capsule (`docs/khayyam/abstraction.md#a-concept-is-an-abstraction-a-concrete-instance-is-a-capsule`) - Premise: a contract's unit or width is the implementation's.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: documents and moves are held until session 12672 settles placement; protocol declarations may be drafted in Khayyam
@@ -160,5 +160,5 @@
 - `time.handoff.md` → "What protects a time-limited value from a clock that moves?": queued task 20261015-T080417Z-23696 to make it smaller, with `Deadline` in `modules/process/operation/protocol/deadline.kh` named as a live consumer.
 
 #### Considered and not done
-- Removing the entries the Decisions answer, and moving "Distributed ordering versus the Instant contract" to GP's and sRPC's handoffs: removal waits for the owner ([Recording Is Not Gated; Removal Is](../knowledge/documentation/documentation.md#recording-is-not-gated-removal-is)).
+- Removing the entries the Decisions answer, and moving "Distributed ordering versus the Instant contract" to GP's and sRPC's handoffs: removal waits for the owner ([Recording Is Not Gated; Removal Is](../../modules-plugable/knowledge/documentation/documentation.md#recording-is-not-gated-removal-is)).
 - Editing `modules/time/protocol/time.kh` and `modules/time/duration/protocol/duration.kh`: they are definitions other modules consume, so the replacement is asked, not applied.

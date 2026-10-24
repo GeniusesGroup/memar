@@ -106,7 +106,7 @@ The owner's challenge of 2026-10-03 asked whether all rules relating to Khayyam 
 
 #### Considered and not done
 - A superseding research was not opened (Omid Hekayati — declined). The facet's own lifecycle makes supersession the correction mechanism for a frozen record, and that rule was set on the owner's approval; he directed that the record be corrected in place regardless of its status, and the tension between the two instructions is recorded here rather than resolved by this entry.
-- Re-attributing the vocabulary definitions to the specification was rejected as fabrication (Space Bunny Alpha — argued). The inquiry did not read that specification, and attributing a reading to a document nobody opened is exactly what [Documentation → Content Rule](../../knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids. The gap is recorded as a limitation and as an open question instead.
+- Re-attributing the vocabulary definitions to the specification was rejected as fabrication (Space Bunny Alpha — argued). The inquiry did not read that specification, and attributing a reading to a document nobody opened is exactly what [Documentation → Content Rule](../../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids. The gap is recorded as a limitation and as an open question instead.
 - Withdrawing the vocabulary findings as prior art no document relies upon was not done (Omid Hekayati — pending). It is a defensible outcome and is now a question in `rule.handoff.md`.
 
 #### Deliberation

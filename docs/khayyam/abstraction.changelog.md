@@ -182,7 +182,7 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - Time: 2026-09-29T10:40:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Content Rule](../../modules/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: a rule stated in two documents is given one home.
+  - [Documentation → Content Rule](../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) - Premise: a rule stated in two documents is given one home.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and language rules go to `docs/khayyam/`
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
@@ -224,7 +224,7 @@ Alternatives: (a) keep the identical-receiver wording and change examples to use
 - [Sharing Behavior Across Implementations](./abstraction.md#sharing-behavior-across-implementations): "free of compiler magic or implicit routing" became "with no implicit routing".
 - [Rejection of Default Implementations](./abstraction.md#rejection-of-default-implementations): the optimization clause was removed — "and it clouds compile-time optimization because the compiler can no longer assume the call target is a simple VTable entry or a monomorphized concrete method."
 - [Dispatch Strategy](./abstraction.md#dispatch-strategy): the pointer to a dispatch section in another language document became a boundary statement — "The compiler's mechanism for resolving polymorphic calls (monomorphization vs. dynamic dispatch) is documented in [Polymorphism in Khayyam](./polymorphism.md)." became "The grammar states no strategy for resolving a call through an abstraction and offers no syntax to choose one; what a Khayyam compiler does at a given call site is [Compiler](../../modules/computer/compiler/compiler.md)'s business."
-- Two sentences narrating superseded drafts were removed from the body, per [Documentation → Written surface](../../modules/knowledge/documentation/documentation.md#written-surface): the document's opening claim that it "supersedes two prior, now-absorbed drafts — one on intentional abstraction satisfaction, one on the rejection of default implementations", and the note that "earlier polymorphism examples that showed one have been corrected in the paired changelog".
+- Two sentences narrating superseded drafts were removed from the body, per [Documentation → Written surface](../../modules-plugable/knowledge/documentation/documentation.md#written-surface): the document's opening claim that it "supersedes two prior, now-absorbed drafts — one on intentional abstraction satisfaction, one on the rejection of default implementations", and the note that "earlier polymorphism examples that showed one have been corrected in the paired changelog".
 
 ---
 

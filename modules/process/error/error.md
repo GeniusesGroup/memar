@@ -90,6 +90,9 @@ tp Find mt (self Service) (id ID) (result Result) (err Error)
 
 `Authorize` can fail in exactly one way (the token does not authorize), so its error type is the concrete `ErrPermissionDenied` — the caller can dispatch on the type directly and the realization's covariant-return support gives this no runtime cost. `Find`, by contrast, can fail for several distinct reasons (not found, storage unavailable, timeout, permission denied) and so returns the abstraction; the caller uses the realization's type inspection to recover the specific cause.
 
+### Declining the error
+`err Error` stays in a shared abstraction's signature even where an implementation cannot fail, so that no implementation is written as if it alone existed. A caller that does not want the error passes the discard value this module provides: a variable, not a capsule, whose `Error` implementation takes what is written to it and keeps nothing. The abstraction is not bypassed, and the call says at its site that it takes no error. Every abstraction whose influenced output a caller may decline has its own module provide its own discard value in the same way; the compiler knows none of them ([Compiler → The compiler recognizes language primitives, not library names](../../computer/compiler/compiler.md#the-compiler-recognizes-language-primitives-not-library-names)). The discard value's name and file are not settled here.
+
 ### Identity and equality
 Identity is `GetTypeID()` alone (via `Field_ID`, part of `Type`). `Error` does not declare an `Equivalence` method. A realization may provide a convenience comparison helper, such as an implementation-package-level `IsEqual`, where an explicit comparison is useful; the helper does not add a second identity source.
 
@@ -233,7 +236,7 @@ tp ImplError mt (self ErrServiceNotFound) () () {
 This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
 
 ### Enforcement of the "each Error is its own type" rule
-Per the [Type](../../../docs/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../knowledge/documentation/explanation/explanation.md#conventions).
+Per the [Type](../../../docs/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../../modules-plugable/knowledge/documentation/explanation/explanation.md#conventions).
 
 This rule is the load-bearing one that everything else in this document depends on. Without it:
 

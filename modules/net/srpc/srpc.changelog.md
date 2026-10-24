@@ -46,8 +46,8 @@
 - Time: 2026-09-21T16:15:56Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../../knowledge/documentation/explanation/explanation.md) — Reference: the Explanation-facet skeleton, Relevance discipline, and Progressive migration this rewrite follows.
-  - [Documentation](../../knowledge/documentation/documentation.md) — Reference: written surface, content rule (no derivative inventories), and citation direction used to drop the languages list and keep implementations out of the protocol body.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Reference: the Explanation-facet skeleton, Relevance discipline, and Progressive migration this rewrite follows.
+  - [Documentation](../../../modules-plugable/knowledge/documentation/documentation.md) — Reference: written surface, content rule (no derivative inventories), and citation direction used to drop the languages list and keep implementations out of the protocol body.
 - Propagates to:
   - http.md: Done — inbound links `./sRPC.md#service-id` and `./sRPC.md` still resolve; heading texts that produce `#service-id`, `#service-frame`, and the Service Frame `Time` mention were kept; no edit required.
   - networking.handoff.md: Done — inbound link `./sRPC.md#independent-identities` still resolves; no edit required.

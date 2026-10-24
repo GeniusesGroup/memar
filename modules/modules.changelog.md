@@ -35,7 +35,7 @@
 #### Considered and not done
 - A new category-level doctrine file for the audit — not taken: the criteria land in the existing `modules.md`, and the working state in `modules.handoff.md`. The framework tests stay in Memar's own documents and are linked, not restated.
 - Porting the per-domain rationale of the applied moves back out of their destinations — not taken: that rationale already lives in each destination document.
-- Copying the framework tests themselves into `modules.md` — not taken: [Content Rule](./knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids a second copy of what Memar already owns.
+- Copying the framework tests themselves into `modules.md` — not taken: [Content Rule](../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids a second copy of what Memar already owns.
 
 ### Go → Khayyam migration map graduated out of `____Chats`
 - Time: 2026-10-08T09:56:07Z

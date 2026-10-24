@@ -46,7 +46,7 @@ class Worker:
         recorded.watch_imports()
         from mcp.mcp import COMMAND
         from mcp.services import _tools
-        from modules.knowledge.content.services import index
+        from modules.knowledge.text.services import index
         self.tools_module = _tools
         router = _load_router(scripts)
         recorded.values.pop(router.__name__, None)

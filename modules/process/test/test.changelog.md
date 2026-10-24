@@ -9,7 +9,7 @@
   - [../../process.md](../process.md) - Depends_on: the concept document that owns the definition of an expectation and a check, and already states that they precede enactment.
   - [test.research.001.md](./test.research.001.md) - Evidence: no language specification and no standards body mandates any test layout, naming rule, or discovery scheme, which is what makes a placement condition a Rule rather than a standard.
   - [test.research.002.md](./test.research.002.md) - Evidence: the 1975 error taxonomy grounding the ordering in reach; the ecosystem's own account of TDD as a Test driving development *in place of* a specification; the absence of any documented descent from that literature to TDD; and Basili and Selby's disclosure that uncommented programs made their code reading a worst case.
-  - [../../documentation-explanation.md → Merging before Final](../../knowledge/documentation/explanation/explanation.md) - Depends_on: the rule authorizing the absorption below, since both documents were `Draft`.
+  - [../../documentation-explanation.md → Merging before Final](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) - Depends_on: the rule authorizing the absorption below, since both documents were `Draft`.
   - [../computer/linter.md](../../computer/linter/linter.md) - Depends_on: the authorship rule that keeps the structural conditions out of this document.
   - [../../modeling.md](../../../docs/modeling.md) - Extends: the principle that commitments become explicit before they become costly.
   - `docs/khayyam/khayyam.md` - Depends_on: the mechanism a type's human-facing text is written by, and the grammar that makes opaque code structurally impossible.
@@ -31,9 +31,9 @@
   - [../ddd.handoff.md](../../../modules-plugable/process/ddd/ddd.handoff.md): Done - its pointer to the expectation-and-check step retargeted.
   - [../../process.handoff.md](../process.handoff.md): Done - its two links retargeted here and to this document's handoff.
   - [../../process.changelog.md](../process.changelog.md): Done - the link the absorption invalidated retargeted, and its historical entries on the absorbed document annotated.
-  - [../../documentation-explanation.changelog.md](../../knowledge/documentation/explanation/explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
+  - [../../documentation-explanation.changelog.md](../../../modules-plugable/knowledge/documentation/explanation/explanation.changelog.md): Done - annotated alongside its existing pointer to the removed changelog.
   - [../comparisons/superpowers.001.md](../../../docs/comparisons/superpowers.001.md): Done - three lines that attributed a Memar protocol to a name that no longer names one retargeted.
-  - [../../documentation-changelog.md](../../knowledge/documentation/changelog/changelog.md) - Reference: within one working chat an entry may still be revised, which is why this chat's six drafts are one entry.
+  - [../../documentation-changelog.md](../../../modules-plugable/knowledge/documentation/changelog/changelog.md) - Reference: within one working chat an entry may still be revised, which is why this chat's six drafts are one entry.
 
 #### What changed
 - Added [test.md](./test.md), stating the Test as the written expectations of a named Process, produced before the work and kept as a standing part of the system that owes them. It separates the Test from the check and from the runner, states the obligation a system carries over the parts of its protocol surface whose expectations are decidable, what a Test may assume, what a passing suite does and does not establish, and the routing among development under the discipline, verification, and inquiry. It states no structural rule and points to the Rules that carry them instead.
@@ -51,7 +51,7 @@
 - **Moving the ordering into [Process → Expectations and Checks](../process.md#expectations-and-checks).** The concept layer already states that expectations precede enactment, and that is where the definition belongs. What it does not state is the reach argument for why a development must do it, and a claim about what a check can detect is a protocol-layer claim about the artifact the check reads.
 - **Writing that comments should be eliminated.** The one measured statement on the question runs the other way. The claim is scoped to the subset a Test can carry.
 - **Romanticizing the older literature.** The sources are admitted on what they argue and how well they argue it, never on their date; the caution that an idea's antiquity is independent of its merit, with this repository's own example of an inherited idea nobody ever named as a mistake, is recorded in the research rather than assumed away.
-- **Correcting the absorbed document's changelog into this one wholesale.** Its load-bearing rejections are recorded here as considered-and-not-done; per [Merging before Final](../../knowledge/documentation/explanation/explanation.md) no citation entry points at the abandoned document, and per the changelog facet its history does not become a second home for the same decisions.
+- **Correcting the absorbed document's changelog into this one wholesale.** Its load-bearing rejections are recorded here as considered-and-not-done; per [Merging before Final](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) no citation entry points at the abandoned document, and per the changelog facet its history does not become a second home for the same decisions.
 
 ---
 
@@ -62,7 +62,7 @@
   - [Comparison: Memar and GitHub Spec Kit](../../../docs/comparisons/spec-kit.001.md) - **Reference**: whose Adapt filter produced the item. Spec Kit's `/analyze` is strictly read-only and its Next Actions name the owning command per finding class, under the doctrine "return to the earlier step that owns them and fix them at the source".
 - Propagates to:
   - [test.md](./test.md): None needed - [What a Passing Suite Establishes](./test.md#what-a-passing-suite-establishes) already separates what a run proves from the claim that the work is finished; this is the reporting form of that separation, not a new claim.
-  - [documentation.md](../../knowledge/documentation/documentation.md): None needed - no artifact-structure rule changes.
+  - [documentation.md](../../../modules-plugable/knowledge/documentation/documentation.md): None needed - no artifact-structure rule changes.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - decided
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) - drafted

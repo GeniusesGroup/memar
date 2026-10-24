@@ -11,7 +11,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 What `memar ai get-task-init-context` and `memar content get-act-context` print through it is
 pinned beside them, in `modules/management/task/tests/start.py` and
-`modules/knowledge/content/tests/task_context.py`.
+`modules-plugable/ai/tests/task_context.py`.
 
 What is pinned, and what each pin is for:
 

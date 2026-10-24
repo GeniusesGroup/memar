@@ -47,7 +47,7 @@
 - Time: 2026-08-30T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../../knowledge/documentation/explanation/explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: the structure this migration follows — YAML front matter, the `Abstract → Introduction → Explanation → Results → Discussion` body, and the per-topic Discussion pattern — is that specification's, applied to this document for the first time.
   - Khayyam - Programming Language (`docs/khayyam/khayyam.md`) — Reference: *Khayyam Is Not Its Own Compiler or Runtime* and *Separation of Syntax and Governance*, which supply the framing for the new Abstract, Motivation, and Discussion content.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested

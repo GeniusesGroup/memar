@@ -1,5 +1,5 @@
 # Networking Connection Handoff
-Open work for `modules/net/networking-connection.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
+Open work for `modules/net/networking-connection.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -8,7 +8,7 @@ Open work for `modules/net/networking-connection.md`. Entries are mutable curren
 - Next: benchmark during the userspace transport work.
 
 ### A terminology entry for "stateless"
-- State: given how much confusion the hidden-state arrangement has produced, whether "stateless" deserves an explicit entry in [terminology.md](../../terminology.md) is undecided. The HTTP instance of the slogan versus cookie reconstruction now lives in [http.md](../lib/net/http.md); this question is about the general term.
+- State: given how much confusion the hidden-state arrangement has produced, whether "stateless" deserves an explicit entry in [terminology.md](../../../docs/terminology.md) is undecided. The HTTP instance of the slogan versus cookie reconstruction now lives in [http.md](../../../modules-plugable/net/http/http.md); this question is about the general term.
 - Next: propose during the next terminology revision.
 
 ## Anticipated Work

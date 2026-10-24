@@ -36,9 +36,9 @@
 - Time: 2026-08-19T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: defines the current front matter, top-level body sections, and topic-first organization.
-  - [Documentation — Changelog](../../modules/knowledge/documentation/changelog/changelog.md) — Depends_on: defines this companion file as the home for migrated provenance and change history.
-  - [How to make a new explanation document](../../modules/knowledge/documentation/explanation/explanation.practice.md) — Reference: supplies the revision procedure applied in this migration.
+  - [Documentation — Explanation](../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: defines the current front matter, top-level body sections, and topic-first organization.
+  - [Documentation — Changelog](../../modules-plugable/knowledge/documentation/changelog/changelog.md) — Depends_on: defines this companion file as the home for migrated provenance and change history.
+  - [How to make a new explanation document](../../modules-plugable/knowledge/documentation/explanation/explanation.practice.md) — Reference: supplies the revision procedure applied in this migration.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.6) — rewrote
@@ -85,8 +85,8 @@ Corrects `tp hash`/`tp salt` to `tp Hash`/`tp Salt` per the PascalCase conventio
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../../modules/knowledge/documentation/handoff/handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../modules-plugable/knowledge/documentation/handoff/handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied

@@ -6,15 +6,15 @@
 - Time: 2026-08-26T07:33:31Z
 - Type: merged
 - Cited:
-  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: the Explanation-facet structure this rewrite follows.
-  - [Chapar - Data Link Protocol](chapar.md) — Extends_by: Chapar's media-existence discussion was found during critical review to be an instance of a general principle; that principle now lives here (Layer presence) and Chapar references it.
+  - [Documentation — Explanation](../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Reference: the Explanation-facet structure this rewrite follows.
+  - [Chapar - Data Link Protocol](chapar/chapar.md) — Extends_by: Chapar's media-existence discussion was found during critical review to be an instance of a general principle; that principle now lives here (Layer presence) and Chapar references it.
 - Propagates to:
-  - networking-frames.md: Done — content merged into [Special signature frame](networking.md#special-signature-frame) and [Padding frame](networking.md#padding-frame); file removed.
-  - networking-hardware.md: Done — content merged into [Hardware](networking.md#hardware); file removed.
-  - chapar.md: Done — general principle extracted to Layer presence; Chapar references it instead of restating it; its capacity table link repointed from the removed hardware file to [Hardware](networking.md#hardware).
+  - networking-frames.md: Done — content merged into [Special signature frame](net.md#special-signature-frame) and [Padding frame](net.md#padding-frame); file removed.
+  - networking-hardware.md: Done — content merged into [Hardware](net.md#hardware); file removed.
+  - chapar.md: Done — general principle extracted to Layer presence; Chapar references it instead of restating it; its capacity table link repointed from the removed hardware file to [Hardware](net.md#hardware).
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - This document previously predated the current documentation method: no front matter, no recorded drafting date, scattered across three sibling files with dead links.
@@ -35,8 +35,8 @@
 - Propagates to:
   - chapar.md: Rejected — no Chapar-level statement depends on the reworded definition or the new grouping; anchors it does not use remained stable.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 - The Abstract and Scope no longer define networking as connections between 'computer systems': the definition is now between computing components generally, with the PCIe/GPU-CPU case asserted in the definition itself — such a link forms a real network whose principles this document governs — instead of appearing later as an example.
@@ -52,12 +52,12 @@
 - Time: 2026-08-26T09:03:51Z
 - Type: revised
 - Cited:
-  - [Media Type Extension](../identifier/media-type.md) — Reference: its 64-bit hash-derived identifier definition supplied the recorded rationale for why FrameType deliberately does not reuse it.
+  - [Media Type Extension](../computer/mediatype/mediatype.md) — Reference: its 64-bit hash-derived identifier definition supplied the recorded rationale for why FrameType deliberately does not reuse it.
 - Propagates to:
   - chapar.md: Rejected — its capacity-table link to this document's Hardware topic is now satisfied by the added wireless-addressing rationale; nothing else it states depends on these revisions.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
 - Six review threads closed in one pass.
@@ -83,8 +83,8 @@
   - giti.md: Done — inline pointer added where ChaparKhane and Achaemenid are introduced.
   - README.md (repository root): Done — one-sentence pointer added.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — wrote.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — wrote.
 
 #### What changed
 - New topic recording that ChaparKhane and Achaemenid are intended commercial software by Geniuses Group — the reason they sometimes appear without explanation — while stating explicitly that organizations remain free to develop their own implementations on top of the open protocols; the project's ask is support (funding the continuous development) rather than self-implementation, so that Memar moves faster.
@@ -97,8 +97,8 @@
   - README.md (repository root): Done — statement now lives in README's Enterprise section.
   - giti.md: Done — pointer repointed to it.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 - The Commercial components topic added earlier this session was removed from this document.
@@ -112,15 +112,15 @@
 - Time: 2026-08-31T17:29:51Z
 - Type: revised
 - Cited:
-  - [Giti (GP)](giti.md) — Depends_on: owns both GP frame definitions this registry now names, and points back at this document's Edge computing topic from its frame architecture.
+  - [Giti (GP)](giti/giti.md) — Depends_on: owns both GP frame definitions this registry now names, and points back at this document's Edge computing topic from its frame architecture.
   - A recorded ChatGPT design review of Giti/GP (its session file was not kept in the repository) — Reference: the design review behind the GP redesign this change follows.
 - Propagates to:
   - giti.md: Done — defines both frames and cross-references Edge computing.
   - giti.changelog.md: Done — paired entries recorded.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 - Registry row 4 renamed from GP to GP-Thing and row 5 added as GP-App, matching GP's redesigned pair of routing frames.
@@ -135,14 +135,14 @@
 - Time: 2026-08-31T19:26:46Z
 - Type: revised
 - Cited:
-  - [Giti (GP)](giti.md) — Extends: the stack overview topic moved here from Giti, which no longer restates a private copy; the low-capacity shape completes the answer to the small-media question raised during GP's redesign.
+  - [Giti (GP)](giti/giti.md) — Extends: the stack overview topic moved here from Giti, which no longer restates a private copy; the low-capacity shape completes the answer to the small-media question raised during GP's redesign.
 - Propagates to:
   - giti.md: Done — its Place in the stack topic removed; it references this document's overview.
   - giti.practice.md: Done — created as GP's Practice facet during the same pass; its record lives in giti.changelog.md.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 - New Place in the stack topic: the OSI-oriented table (Asb/Parvaz, Chapar, Giti (GP), sRPC) with the ecosystem roles (ChaparKhane, PersiaOS, Achaemenid unikernel generation) and the explicit rule that protocol documents reference this table instead of restating their own.
@@ -157,10 +157,10 @@
 - Time: 2026-09-03T00:00:00Z
 - Type: revised
 - Cited:
-  - [Media Type Extension](../identifier/media-type.md) — Reference: the source of the identifier this topic's removed rationale compared against. Its MediaTypeID is a 64-bit, hash-derived (first 64 bits of SHA3-256 over the structure), registrar-free identifier — that scheme was the comparison basis when FrameType's one-byte, centrally-registered registry was decided. The comparison itself now lives only in this entry; the base document states the decision without arguing why the other scheme does not fit.
+  - [Media Type Extension](../computer/mediatype/mediatype.md) — Reference: the source of the identifier this topic's removed rationale compared against. Its MediaTypeID is a 64-bit, hash-derived (first 64 bits of SHA3-256 over the structure), registrar-free identifier — that scheme was the comparison basis when FrameType's one-byte, centrally-registered registry was decided. The comparison itself now lives only in this entry; the base document states the decision without arguing why the other scheme does not fit.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 - The Frames topic's passage explaining why FrameType deliberately parts ways with MediaTypeID (hash-derived decentralized minting justifying 64 bits there versus a small centrally-registered wire vocabulary justifying one byte here) was removed.
@@ -176,8 +176,8 @@
 - Time: 2026-09-03T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - directed, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved.
 
 #### What changed
 - This document, its changelog, and its sibling files (networking-osi_1-Asb.md, networking-osi_1-Parvaz.md, networking-connection.md) moved from `docs/` to `docs/protocols/`. Relative links to documentation-system documents were adjusted for the added depth; no content change.
@@ -194,8 +194,8 @@
   - os.md: Done — the OS-side half of the position (the embedded stack read as a compatibility library, never the foundation) added to that document's Networking topic in the same pass, with a pointer back to this document's new topic.
   - networking-connection.md, sRPC.md, concurrency.md: Done — references to the dissolved standalone document repointed to the new topic here.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — reviewed, decided
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — rewrote
 
 #### What changed
 - The position — the traditional OS-embedded network stack is a compatibility library, chosen where its constraints are acceptable and replaced where they are not, never the foundation — now lives in this document as a full topic ("Memar's position on the traditional network stack"), placed after Compatibility with existing protocols, with its four examination points (state ownership, layer-seven discipline, budgets, checkable compliance), the justified-dependence cases, the userspace direction, and the filtration counter-argument.
@@ -205,7 +205,7 @@
 - The earlier standalone-document decision was recorded in the topic's own Rationale so the reversal is explicit rather than silent.
 
 #### Deliberation
-- The standalone position document "Memar's Position on the Kernel Network Stack" was judged ill-fitting and misworded: its use of "kernel" conflicted with this documentation set's own definition ([OS](../computer/os.md) establishes kernel as a layer concept of any system, not an OS-exclusive component), and the position's two halves belong to the two documents that already own them (Omid Hekayati).
+- The standalone position document "Memar's Position on the Kernel Network Stack" was judged ill-fitting and misworded: its use of "kernel" conflicted with this documentation set's own definition ([OS](../computer/os/os.md) establishes kernel as a layer concept of any system, not an OS-exclusive component), and the position's two halves belong to the two documents that already own them (Omid Hekayati).
 - It was directed that the standalone document be dissolved and its content folded into this document and into os.md (Omid Hekayati).
 
 ---
@@ -216,7 +216,7 @@
 - Propagates to:
   - networking.handoff.md: Done - open questions and anticipated work moved there.
 - Contributors:
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) - moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
@@ -226,8 +226,8 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 
 #### Considered and not done
 - **Keep the three legacy files separate (rejected)**: the split followed no reader need — the packet model, its frame kinds, and the hardware considerations are consulted together; the separation produced dead links (`networking-frame-signature.md`) and duplicated switch-class definitions across files.
-- **Leave the layer-presence principle inside [Chapar](chapar.md) (rejected)**: it is not Chapar's rule — it binds every layer and every future protocol; keeping it there would force unrelated protocols to cite a layer-2 specification to justify their own absence.
-- **Stating the traditional-stack position as a standalone document (rejected on review; migrated from the position topic's inline considered-and-rejected paragraph)**: the stance has two owners — the OS-side half belonging to [OS](../computer/os.md), which had already stated it, and the network-side half belonging here; keeping a third file meant saying everything twice and coining a "kernel" meaning that OS's own definition contradicts.
+- **Leave the layer-presence principle inside [Chapar](chapar/chapar.md) (rejected)**: it is not Chapar's rule — it binds every layer and every future protocol; keeping it there would force unrelated protocols to cite a layer-2 specification to justify their own absence.
+- **Stating the traditional-stack position as a standalone document (rejected on review; migrated from the position topic's inline considered-and-rejected paragraph)**: the stance has two owners — the OS-side half belonging to [OS](../computer/os/os.md), which had already stated it, and the network-side half belonging here; keeping a third file meant saying everything twice and coining a "kernel" meaning that OS's own definition contradicts.
 - **Folding the entire position into OS (rejected; migrated from the same paragraph)**: the position binds protocol documents and systems that may run on any host; it is a networking position, not only an OS-contract position.
 
 #### Considered and not done (from the removed document-level Drawbacks section)
@@ -235,7 +235,7 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 
 #### Related work
 - [Enlightra](https://enlightra.com/).
-- The OSI model's own layering, and the long practice of tunneling one layer over another (L2-over-L3 VPNs), show stacks being composed opportunistically — the [Layer presence](networking.md#layer-presence) principle states explicitly what such practice implies: presence is per-link, never automatic.
+- The OSI model's own layering, and the long practice of tunneling one layer over another (L2-over-L3 VPNs), show stacks being composed opportunistically — the [Layer presence](net.md#layer-presence) principle states explicitly what such practice implies: presence is per-link, never automatic.
 
 ---
 
@@ -245,12 +245,12 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 - Propagates to:
   - http.md: Done — owns the HTTP-shaped-traffic instance.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
-  - [Grok](../../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../../CONTRIBUTORS.md#cursor)) — applied
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested, decided
+  - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
 
 #### What changed
 - The HTTP-filter counter-argument (protocols riding on HTTP pass through filters; designing around a censor inherits the censor's lifetime) left this document. This document keeps the positive rule: a deployment constraint is not an architecture; the dependence check decides the wire shape.
-- The stance paragraph now names [http](../lib/net/http.md) as the parallel position on HTTP, next to filesystem for storage.
+- The stance paragraph now names [http](../../modules-plugable/net/http/http.md) as the parallel position on HTTP, next to filesystem for storage.
 - A consumed-contract link points at http.md for the HTTP-shaped case of the deployment rule.
 
 #### Considered and not done
@@ -265,11 +265,11 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
   - networking.handoff.md: Done — the entry now states the settled rule and layer and names only the missing sentence.
   - networking.md: Pending — the principles section the entry names does not exist yet; the rule is stated there when it is developed.
 - Contributors:
-  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - The paired handoff's Open Questions entry "The address carries only destination information" narrowed to its residue.
-- Recorded as settled: [HTTP → Two Optional Places for One Concept](../lib/net/http.md#two-optional-places-for-one-concept) states the rule — "an address contains only the information required to determine the destination; request data does not belong in the routing address" — and names what it is, "the HTTP appearance of a Networking-layer rule". That answers the entry's open choice, because routing the rule to the protocol-concept layer is what that sentence declines. [sRPC → Independent identities](./sRPC.md#independent-identities) is recorded as the application-protocol instance, not the rule's authority.
+- Recorded as settled: [HTTP → Two Optional Places for One Concept](../../modules-plugable/net/http/http.md#two-optional-places-for-one-concept) states the rule — "an address contains only the information required to determine the destination; request data does not belong in the routing address" — and names what it is, "the HTTP appearance of a Networking-layer rule". That answers the entry's open choice, because routing the rule to the protocol-concept layer is what that sentence declines. [sRPC → Independent identities](./srpc/srpc.md#independent-identities) is recorded as the application-protocol instance, not the rule's authority.
 - Residue recorded: this document states the rule nowhere and has no principles section to state it in; the missing sentence is the rule asserted once here, as a Networking-layer principle, with the HTTP collapse and sRPC's identities as instances.
 - The base document's body is unchanged; the other seven entries under Open Questions are untouched.
 
@@ -281,9 +281,9 @@ Dissolved the document-level `## Discussion` (Drawbacks, Rationale and alternati
 - Propagates to:
   - giti.md: Done — its Frame architecture topic points at this principle so header economy is never read as license for gratuitous data movement.
 - Contributors:
-  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — collaborated
-  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) — collaborated
+  - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied.
 
 #### What changed
 New topic under Hardware in networking.md: total network cost is the sum of transmission, routing, and state, so minimizing a header is not minimizing the network; data movement must be justified, execution and storage belong at the edge where locality pays, the ecosystem's tooling should make the local choice the easy choice, and no topology is imposed on applications. GP's frame architecture cross-references it. This entry was first written on `giti.changelog.md`, which is not the document it records a change to; the change is to `networking.md`, so the record belongs here.
@@ -299,8 +299,20 @@ New topic under Hardware in networking.md: total network cost is the sum of tran
 - Time: 2026-10-12T09:45:50Z
 - Type: Changed
 - Contributors:
-  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed, revised
 
 #### What changed
 - Reviewed the handoff change and the entry moved here from `giti.changelog.md`. The settled address question is recorded in the entry above and its quote is present in `http.md`; the moved entry is explained in its own text.
 - Fixed `networking.handoff.md`, entry *The traditional-stack dependence check's home*: the new *Candidate source* line ended with a duplicated tail of the preceding State sentence (`— the pattern filesystem.practice.md ... Not decided.`), which made it read as two sentences run together; the duplicate is removed. The em dashes that the change had turned into hyphens in the State sentence and in the added line are restored to match the rest of the file.
+
+---
+
+### Achaemenid is linked as a bundle, not as a commercial component
+- Time: 2026-10-19T00:00:00Z
+- Type: Changed
+- Ruling: owner, 2026-10-19 (session 20261019-T183339Z-19720): with organization in this repository, a document points to the thing itself rather than to the README's description of it.
+- Contributors:
+  - Claude Opus 5.5 - applied
+
+#### What changed
+- [Networking](./net.md), the stack overview: Achaemenid is linked to its bundle, [bundles/Achaemenid](../../bundles/Achaemenid/Achaemenid.md); the pointer to the README's Enterprise statement is removed, since that statement is gone and commercial use is what [LEGAL](../../LEGAL) governs.

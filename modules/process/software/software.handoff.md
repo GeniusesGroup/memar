@@ -1,5 +1,5 @@
 # Software Handoff
-Open work for `software.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `software.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 

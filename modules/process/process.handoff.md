@@ -1,5 +1,5 @@
 # Process Handoff
-Open work for `process.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](./documentation-handoff.md) for what a handoff is. Questions were relocated here from the document's per-topic Unresolved-questions lists when the documentation method removed those lists from body documents.
+Open work for `process.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is. Questions were relocated here from the document's per-topic Unresolved-questions lists when the documentation method removed those lists from body documents.
 
 ## Open Questions
 
@@ -43,7 +43,7 @@ Open work for `process.md`. Entries are mutable current state — revised as eac
 ### Threads the four-discipline survey left open
 Recorded from the survey whose result is in [Process Changelog](./process.changelog.md#four-disciplines-surveyed-against-process-modeling-and-their-practices), so they are not re-derived from the documents:
 - **Should the point at which a change would prevent a class of these from arising be a decision the inquiry returns in its own right**, or an interpretation its reader layers on the finding? The second is the current position and is stated nowhere.
-- **Should a check's expectations carry a baseline and a declared limit** - what must not get worse on the way to the outcome - so a result is read against something declared before the work rather than against whichever number each reader prefers? And is that second half a concept Memar should name, or an application of [System -> The Inseparability of Capability and Constraint](./system.md#the-inseparability-of-capability-and-constraint) needing no name?
+- **Should a check's expectations carry a baseline and a declared limit** - what must not get worse on the way to the outcome - so a result is read against something declared before the work rather than against whichever number each reader prefers? And is that second half a concept Memar should name, or an application of [System -> The Inseparability of Capability and Constraint](../../docs/system.md#the-inseparability-of-capability-and-constraint) needing no name?
 - **Is terminology.md complete without an entry for the problem a process serves**, given that four independent disciplines all needed the word and none found it? The absence was recorded as a finding rather than supplied, since defining it is the owner's.
-- **Should Memar state anywhere that its scope includes problem solving as a subject**, or does [README -> Where Memar Stops](../README.md#where-memar-stops-and-where-work-continues) settle it by omission? A framework's limits are checkable only where it names them.
+- **Should Memar state anywhere that its scope includes problem solving as a subject**, or does the line between framework and product, open in [Framework Handoff → The framework and the product it builds, in one repository](../../docs/framework.handoff.md#the-framework-and-the-product-it-builds-in-one-repository), settle it by omission? A framework's limits are checkable only where it names them.
 

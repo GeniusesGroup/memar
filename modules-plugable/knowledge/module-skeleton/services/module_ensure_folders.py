@@ -9,7 +9,7 @@ of instances. Which roles there are, and what each holds and does not, is
 declared here once, in `Role`: the name, what the folder holds, and what it does
 not. `modules/README.md` names the roles and points here, and `memar module
 ensure-folders --help` prints each by calling the enum, so no other place retypes a
-description ([A Fact in Code Is Written Once](../../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+description ([A Fact in Code Is Written Once](../../documentation/documentation.md#a-fact-in-code-is-written-once)).
 A role folder carries its role's name exactly, which is why the names are taken
 from the enum and never spelled at the call.
 

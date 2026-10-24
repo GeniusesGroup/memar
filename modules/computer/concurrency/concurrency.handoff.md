@@ -1,10 +1,10 @@
 # Concurrency Realization Handoff
-Open work for `modules/computer/concurrency.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
+Open work for `modules/computer/concurrency.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
 ### The signaling primitive's contract
-- State: delivery guarantees, multiple receivers, and priority are unspecified; the contract must be settled together with the Event concept in [process.md](../../process.md#events).
+- State: delivery guarantees, multiple receivers, and priority are unspecified; the contract must be settled together with the Event concept in [process.md](../../process/process.md#events).
 - Next: joint session with the Process document's Event topic.
 
 ### Substrate configuration exposure
@@ -19,4 +19,4 @@ Open work for `modules/computer/concurrency.md`. Entries are mutable current sta
 ## Anticipated Work
 - The signaling primitive's contract specification (delivery guarantees, multiple receivers, priority).
 - Substrate observability (Worker states, queue depths, pool saturation) as a framework capability.
-- Alignment checks with [Runtime](runtime.md) once that protocol and a Khayyam-consuming realization of it mature.
+- Alignment checks with [Runtime](../runtime/runtime.md) once that protocol and a Khayyam-consuming realization of it mature.

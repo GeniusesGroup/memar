@@ -6,10 +6,10 @@
 - Time: 2026-09-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [test.md](../../../../../docs/modules/process/test.md) - Depends_on: the subject whose structural condition this Rule states.
+  - [test.md](../../test.md) - Depends_on: the subject whose structural condition this Rule states.
   - [test-placement.md](../test-placement/test-placement.md) - Depends_on: the folder this Rule's naming follows from, and the reason a marker in the name is unnecessary.
-  - [documentation.md -> File Naming](../../../../../docs/documentation.md#file-naming) - Extends: the repository's rule for a name carrying another angle on the same subject, which this Rule deliberately does not use for a Test.
-  - [Linter -> How a governance rule is authored](../../../../../docs/modules/computer/linter.md#how-a-governance-rule-is-authored) - Extends: the members a governance Rule carries, supplied here as Subject, Tier, Default, and Override.
+  - [documentation.md -> File Naming](../../../../../modules-plugable/knowledge/documentation/documentation.md#file-naming) - Extends: the repository's rule for a name carrying another angle on the same subject, which this Rule deliberately does not use for a Test.
+  - [Linter -> How a governance rule is authored](../../../../computer/linter/linter.md#how-a-governance-rule-is-authored) - Extends: the members a governance Rule carries, supplied here as Subject, Tier, Default, and Override.
 - Contributors:
   - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - ruled that a Test is a separate identity rather than another angle on the file it checks, and settled the name form that follows
   - Auto (model not recorded) - drafted the Rule

@@ -34,9 +34,9 @@
 - Time: 2026-08-26T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation](../../modules/knowledge/documentation/documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog and the cross-cutting URI and citation rules.
-  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: governing structure the base document was migrated to.
-  - [Documentation — Changelog](../../modules/knowledge/documentation/changelog/changelog.md) — Depends_on: entry structure used for this companion file.
+  - [Documentation](../../modules-plugable/knowledge/documentation/documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog and the cross-cutting URI and citation rules.
+  - [Documentation — Explanation](../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: governing structure the base document was migrated to.
+  - [Documentation — Changelog](../../modules-plugable/knowledge/documentation/changelog/changelog.md) — Depends_on: entry structure used for this companion file.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — migrated

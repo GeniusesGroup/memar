@@ -447,7 +447,7 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - `modularity.handoff.md`, first item under *The category layout of this repository*: the sentence said `modules/README.md` and `modules/lib/lib.md` both place the runtime under `computer/runtime/`. Only `lib.md` does; `modules/README.md` lists `runtime/` as a category of its own. Corrected to say so, since that disagreement is part of the question.
 
 #### Considered and not done
-- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](../documentation/documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.
+- **Editing the 2026-09-29T14:00:00Z entry**, which says the handoff carries concept questions only, now that the handoff holds a layout section. Not done: the section arrived by the owner's ruling recorded in [A folder README carries no changelog and no handoff](../../../modules-plugable/knowledge/documentation/documentation.changelog.md#a-folder-readme-carries-no-changelog-and-no-handoff), history is not rewritten, and the 2026-10-07 entry already links the section. No entry in this changelog records the section's arrival, which is left to the owner.
 
 ---
 
@@ -455,7 +455,7 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 - Time: 2026-10-12T11:30:00Z
 - Type: Changed
 - Cited:
-  - [Documentation → Citation Direction](../documentation/documentation.md#citation-direction) — `Depends_on`: a base document links to its own layer or a lower one, and names a higher place in plain text
+  - [Documentation → Citation Direction](../../../modules-plugable/knowledge/documentation/documentation.md#citation-direction) — `Depends_on`: a base document links to its own layer or a lower one, and names a higher place in plain text
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied

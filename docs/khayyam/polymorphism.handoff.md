@@ -6,7 +6,7 @@ Open questions and anticipated work for the Polymorphism in Khayyam document (`p
 ## Status
 Active
 
-Open work for `polymorphism.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `polymorphism.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -38,7 +38,7 @@ Open work for `polymorphism.md`. Entries are mutable current state — revised a
 - Next: depends on the Linter's mechanism for organizational-level rules.
 ### Where compile-time facts are stated, if anywhere
 - State: [polymorphism.md](./polymorphism.md) closes its Matrix analysis by saying compile-time facts (dimensions, layout constraints, optimization hints) are not type identity and that whether the language states them at all, and through what construct, is open, belonging to "whichever document owns the question"; no such document is named and no owner is assigned. It previously assigned the residue to "a dedicated document on compiler-facing abstractions", which the 2026-10-03 removal of compiler prescriptions retired; this entry carries the successor question so it has a tracked work item.
-- Next: decide whether the language states compile-time facts at all; if it does, draft the document that owns the construct when the facts the Matrix section names (dimensions, layout constraints, optimization hints) have their first real consumer, and coordinate with [Compiler](../modules/computer/compiler.md).
+- Next: decide whether the language states compile-time facts at all; if it does, draft the document that owns the construct when the facts the Matrix section names (dimensions, layout constraints, optimization hints) have their first real consumer, and coordinate with [Compiler](../../modules/computer/compiler/compiler.md).
 
 ### Residual inheritance-wording re-audit
 - State: the vr-ab review session closed with an open suggestion to re-audit this document (and `abstraction.md`) for surviving "inheritance" phrasing that conflicts with the extension-not-inheritance terminology established in [Type → Explicit Behavior Ownership](../type.md#explicit-behavior-ownership); the pass was never run.

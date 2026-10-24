@@ -342,7 +342,7 @@
 - [System → Key Properties](./system.md#key-properties) now states how Purpose meets a system whose members hold incompatible goals: contested purpose does not qualify the definition, their conflict is content of the system's Processes rather than a defect, and observers who disagree which purpose is at issue have chosen different Boundaries.
 - [System → When Is a Responsibility Coherent?](./system.md#when-is-a-responsibility-coherent) now states how a Module holding several tightly coupled Responsibilities is judged: domain-imposed coupling is not itself a fault, no count of contained Responsibilities decides the question, and the judgment is stated against a concern rather than against the part.
 - [System → System Openness](./system.md#system-openness-open-closed-and-isolated) now states that open, closed, and isolated qualify one pair of Systems with respect to one channel of influence at one time rather than the `influences` edge type, and that a document which needs to say which kind it means says so at that claim, as the `shaped by` entry does.
-- [Architecture](./system.md#architecture) gained *Reconciling Conflicting Decisions*: the governing document carries the current design, a decision that supersedes another says so in its own [changelog](../modules/knowledge/documentation/changelog/changelog.md) entry naming what it replaced and why, and entries are appended rather than rewritten so superseded reasoning stays readable.
+- [Architecture](./system.md#architecture) gained *Reconciling Conflicting Decisions*: the governing document carries the current design, a decision that supersedes another says so in its own [changelog](../modules-plugable/knowledge/documentation/changelog/changelog.md) entry naming what it replaced and why, and entries are appended rather than rewritten so superseded reasoning stays readable.
 - `system.handoff.md` no longer carries the questions about contested purposes, about System Openness as an edge label, or about reconciling conflicting architectural decisions.
 - No clause of the existing `**Purpose.**` definition was changed; the added sentences apply the functional sense the paragraph already states.
 
@@ -386,7 +386,7 @@
 - Nothing else in the section changed: Framework Considered as a System remains a secondary, instance-specific lens that a framework need not be examined under, and the paragraph following the aspect statement is untouched.
 
 #### Considered and not done
-- **Restating the resolution at length in this section (rejected)**: the aspect paragraph's own job is the aspect relationship within this document's graph; the reasoning that settles the edge's form belongs to the Framework document, which holds it, and duplicating that reasoning here would be the restatement [Content Rule](../modules/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids.
+- **Restating the resolution at length in this section (rejected)**: the aspect paragraph's own job is the aspect relationship within this document's graph; the reasoning that settles the edge's form belongs to the Framework document, which holds it, and duplicating that reasoning here would be the restatement [Content Rule](../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance) forbids.
 
 ---
 

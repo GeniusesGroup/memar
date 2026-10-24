@@ -12,7 +12,7 @@ the registry's (`project_find`), which needs a name this type has checked.
 The flag, its metavar, the attribute a parser gives it, what a value must be to
 be a name, and the words that say both flags together are the type's and
 written nowhere else
-([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
 from typing import ClassVar

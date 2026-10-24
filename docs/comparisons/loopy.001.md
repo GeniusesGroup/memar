@@ -54,7 +54,7 @@ Memar already overlaps some *concerns* (ask and confirm at intake, handoff acros
 - `LOOPS.md` as persistent memory — thinking is a process, not a store ([Cognition → What Thinking Is](../cognition.md#what-thinking-is)); handoffs retire on graduation; reusable patterns graduate into governing documents, they do not accumulate as local prompt files.
 - Live external catalog as source of truth — Memar's source of truth is the live documentation in the repository; an outside database cannot hold that position.
 - Prompt-compression norms (fewer than 80 words) and loop-versus-one-shot heuristics as framework rules — durable concepts, not patches for today's model limits.
-- Grid layouts or diagram blocks as carriers of normative logic — Memar keeps load-bearing logic linear ([Written surface](../../modules/knowledge/documentation/documentation.md#written-surface)).
+- Grid layouts or diagram blocks as carriers of normative logic — Memar keeps load-bearing logic linear ([Written surface](../../modules-plugable/knowledge/documentation/documentation.md#written-surface)).
 
 ### Already owned
 Intake ask and confirm, report-absence, handoff produce and consume with mid-session tangents, changelog approval with an independent reviewer (a sub-agent without session context, usually a smaller model), sub-agent session economy, Agency delegation with responsibility, authority, capability, context, knowledge, acceptance criteria, and escalation as a designed boundary.
@@ -87,8 +87,8 @@ Filtered agreement from this session; applied where the home already exists:
 **Done in this session**
 - Generalized the skill's `Session economy with sub-agents` into `Agent workflow in sessions` (session container, intake, delegate versus tangent, brief shape, bounded execution with named stops, four-part critique and review, close by type); norms stay in Cognition, Agency, and facet Practices.
 - Extended [Cognition Practice](../cognition.practice.md#norm-application-points) so an in-session second opinion uses the same four-part request shape an approval requires.
-- Extended [Documentation Changelog Practice](../../modules/knowledge/documentation/changelog/changelog.practice.md#choosing-who-reviews) so the same request serves critique without an `approved` tag.
-- Clarified [Handoff Practice](../../modules/knowledge/documentation/handoff/handoff.practice.md#mid-task-tangents) that bounded work needing integration is delegation inside the session, not a tangent.
+- Extended [Documentation Changelog Practice](../../modules-plugable/knowledge/documentation/changelog/changelog.practice.md#choosing-who-reviews) so the same request serves critique without an `approved` tag.
+- Clarified [Handoff Practice](../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#mid-task-tangents) that bounded work needing integration is delegation inside the session, not a tangent.
 - Required the human-last-resort order (skill workflow; [Cognition Practice](../cognition.practice.md#norm-application-points)): re-read, delegate, seek machine critique before asking the human; bring only what survives, with what was tried.
 - Defined the run report and its debrief (skill close rule; [Debriefing Runs](../cognition.practice.md#debriefing-runs)): preserve what ran, the check, the boundary, the stopping reason beside the session; attribute across plan-design, execution, tool and environment, and goal causes; one run is one result.
 - Pointed delegation intake at [Interaction With an Agent](../agency.md#interaction-with-an-agent): the ten dimensions a delegation must establish, which is Memar's standing answer to the craft interview.

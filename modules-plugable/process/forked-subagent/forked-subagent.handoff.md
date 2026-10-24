@@ -1,5 +1,5 @@
 # Forked Sub-Agent Handoff
-Open work for [forked-subagent.md](./forked-subagent.md). Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules/knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for [forked-subagent.md](./forked-subagent.md). Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 

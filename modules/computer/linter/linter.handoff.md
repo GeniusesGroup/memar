@@ -1,5 +1,5 @@
 # Linter Handoff
-Open work for `linter.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `linter.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Topic & Purpose
 Resume the 2026-09-15 toolchain-layer rewrite (memory, linter, compiler, runtime moved into `docs/modules/` and rewritten as language-independent protocols). The originating session's context is full; the owner still has critiques of that rewrite that have not all been stated. This file carries the one critique that was stated, plus the state the next chat must not re-derive.

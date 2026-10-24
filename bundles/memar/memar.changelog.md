@@ -13,7 +13,7 @@
   - `bundles/memar/services/install/services/apps.py`: Done — the skill pointer in each agent app names the checkout's `SKILL.md` by its path on the machine, so the skill is one read away
   - `modules/process/project/services/preferences.py`: Done — reads the `memar:` block of the project's `manifest.yaml`; install writes no preferences file and no manifest
   - The `memar` and `organization` repositories: Done — `memar install` rewrote their AGENTS.md and trashed their `.agents/memar/README.md`; Memar's `.agents/memar/preferences.md`, whose keys were all empty, was trashed
-  - `modules/knowledge/content/rules/normative_references/normative_references.md`, `modules/knowledge/documentation/handoff/handoff.handoff.md`, `docs/comparisons/context-mode.001.md`, `docs/framework.handoff.md`: Done — they name the manifest block, or the removed file's last version where an essay cites it
+  - `modules/knowledge/content/rules/normative_references/normative_references.md`, `modules-plugable/knowledge/documentation/handoff/handoff.handoff.md`, `docs/comparisons/context-mode.001.md`, `docs/framework.handoff.md`: Done — they name the manifest block, or the removed file's last version where an essay cites it
   - Task 20261017-T162520Z-13368: Done — closed without work by the owner's ruling of 2026-10-22
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed, decided

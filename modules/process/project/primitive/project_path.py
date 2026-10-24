@@ -11,7 +11,7 @@ said it is a path (`FLAG`) gets a folder or a refusal, and no registry is asked.
 The flag, its metavar, the attribute a parser gives it, the test of what a text
 written as a path looks like, and what a value must be to be a project's folder
 are the type's and written nowhere else
-([A Fact in Code Is Written Once](../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
 from pathlib import Path

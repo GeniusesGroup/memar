@@ -1,7 +1,7 @@
 # Revision Handoff
 
 ## Topic & Purpose
-Open work for [`revision.md`](./revision.md), the Revision contract (enumerate sources, reviewable plan, explicit write, refuse-on-newly-broken, report). See the repository's [documentation-handoff.md](../../documentation-handoff.md) for what a handoff is.
+Open work for [`revision.md`](./revision.md), the Revision contract (enumerate sources, reviewable plan, explicit write, refuse-on-newly-broken, report). See the repository's [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Status
 Draft contract under owner review. The twin split and the Binding narrowing are decided in `bundles/khayyam/services/rename/rename-management.handoff.md`; this file holds what the contract itself still owes.

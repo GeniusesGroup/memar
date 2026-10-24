@@ -1,5 +1,5 @@
 # Syllab - Encoder Handoff
-Open work for `modules/computer/codec/syllab.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `modules/computer/codec/syllab.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -11,7 +11,7 @@ Open work for `modules/computer/codec/syllab.md`. Entries are mutable current st
 - Asked: 2026-10-14, task 20261014T124123Z-27296-0.
 
 ### What replaces the Go structure sketches?
-- State: the Structures sections show the dynamically sized array, the hash table, the tuple and the `Capsule` with a `typeID` as Go types, and the encoding example takes a Go schema. Owner ruling (2026-10-15, Decided): no trace of Go may remain in any module, so the Go sketches are to be replaced, not kept as illustrations. What is not ruled is what replaces them and which structures are normative; [Documentation → A Fact in Code Is Written Once](../../../knowledge/documentation/documentation.md#a-fact-in-code-is-written-once) keeps a module document independent of one language's syntax.
+- State: the Structures sections show the dynamically sized array, the hash table, the tuple and the `Capsule` with a `typeID` as Go types, and the encoding example takes a Go schema. Owner ruling (2026-10-15, Decided): no trace of Go may remain in any module, so the Go sketches are to be replaced, not kept as illustrations. What is not ruled is what replaces them and which structures are normative; [Documentation → A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once) keeps a module document independent of one language's syntax.
 - Options: (1) declare the normative structures in Khayyam in the module's protocol folder and let the document name the path; the owner has ruled that new protocol declarations may be written in Khayyam. (2) describe each structure in prose and a table of widths and offsets, with no code. Recommended: (1). Decided by the chat that develops Syllab, together with the buffer-size question above.
 - Anchor: `modules/computer/codec/syllab.md`, sections Structures, Hash Table - Map, Tuple, Data Fields; the answer lands there and in `modules/computer/codec/`.
 - Blocks: deciding which structures a conforming codec must support. Meanwhile the sketches stay in the text only until replaced and are read as illustrations, Tentative.

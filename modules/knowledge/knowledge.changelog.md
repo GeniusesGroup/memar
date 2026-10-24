@@ -235,8 +235,8 @@
   - [Terminology → A Term Deliberately Left Open](../../docs/terminology.md#a-term-deliberately-left-open) - **Reference**: the class and its single member, decided in the session that recorded them.
 - Propagates to:
   - [terminology.md](../../docs/terminology.md): Done - the class this site points at.
-  - [documentation-changelog.md](documentation/changelog/changelog.md): Done - the `Tasks` field marks its own use the same way.
-  - [documentation.practice.md](documentation/documentation.practice.md): None needed - the practice's Research procedure sends an inquiry's outcome to its base changelog, which is where this entry is.
+  - [documentation-changelog.md](../../modules-plugable/knowledge/documentation/changelog/changelog.md): Done - the `Tasks` field marks its own use the same way.
+  - [documentation.practice.md](../../modules-plugable/knowledge/documentation/documentation.practice.md): None needed - the practice's Research procedure sends an inquiry's outcome to its base changelog, which is where this entry is.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided the position this site records
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - drafted
@@ -257,7 +257,7 @@
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) - claimed, argued, applied
 
 #### What changed
-No entry above is edited. This entry states the relation two of them recorded, under [Documentation → Citations → Source standing](documentation/documentation.md#citations) as that rule now reads.
+No entry above is edited. This entry states the relation two of them recorded, under [Documentation → Citations → Source standing](../../modules-plugable/knowledge/documentation/documentation.md#citations) as that rule now reads.
 - The tertiary compilation cited in *Scale what the record owes a reader by what misreading it costs* is recorded with the `Reference` relation, not `Evidence`. A tertiary compilation is a pointer toward primary sources, and the entry's own text already said that no claim in the document rests on it alone; the body text it supported does not carry the claim it was cited for.
 - The social-media post cited in that entry and in *A rendering is checked by eye, and names the reader it is for* is recorded with the `Reference` relation, not `Evidence`. A post of that kind is admitted as the claim being weighed and as the occasion for the question, which is what both entries already said in their own words; the conclusions rest on the notation examined in the documents themselves.
 
@@ -266,7 +266,7 @@ No entry above is edited. This entry states the relation two of them recorded, u
 - Withdrawing the social-media post from the record entirely was rejected (Space Bunny Alpha — argued). Recording where a question came from is legitimate and both entries record it honestly; what was wrong was the relation, not the record.
 
 #### Deliberation
-The rule added in [Documentation → Citations](documentation/documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and four citations across four records were found that the rule does not accept (Space Bunny Alpha — argued). Two were in records this chat owns and were corrected there: `rule.research.001.md`, whose vocabulary sources support nothing and whose specification was never read, and `documentation-handoff.research.001.md`, whose vendor article is a vendor's account of its own product. The other two sit in changelogs written by earlier chats and are corrected by this entry instead (Omid Hekayati — decided).
+The rule added in [Documentation → Citations](../../modules-plugable/knowledge/documentation/documentation.md#citations) was applied against the whole doc set rather than only against the session that wrote it, and four citations across four records were found that the rule does not accept (Space Bunny Alpha — argued). Two were in records this chat owns and were corrected there: `rule.research.001.md`, whose vocabulary sources support nothing and whose specification was never read, and `documentation-handoff.research.001.md`, whose vendor article is a vendor's account of its own product. The other two sit in changelogs written by earlier chats and are corrected by this entry instead (Omid Hekayati — decided).
 
 ---
 
@@ -285,7 +285,7 @@ The rule added in [Documentation → Citations](documentation/documentation.md#c
 - No other open question in that handoff was touched.
 
 #### Considered and not done
-- Rewriting the entries as resolved entries, or marking them "Answered": a handoff holds current state, and a rule already recorded in its governing document must not be restated there — the duplicate is what drifts. Both questions leave without a marker, per [Documentation Handoff → Optional Sections](documentation/handoff/handoff.md#optional-sections).
+- Rewriting the entries as resolved entries, or marking them "Answered": a handoff holds current state, and a rule already recorded in its governing document must not be restated there — the duplicate is what drifts. Both questions leave without a marker, per [Documentation Handoff → Optional Sections](../../modules-plugable/knowledge/documentation/handoff/handoff.md#optional-sections).
 - Deleting the `## Anticipated Work` line on **Versioning Strategy**: it asks how versioning works in a non-file-centric system — content versions, snapshot versions, logical timestamps — which is broader than the coexistence of snapshot state with task-centric evolution, so it stays as work still owed.
 - Narrowing the **Versioning Strategy** line to exclude the snapshot half, since that half is now settled: the line's own question — how versioning works where there are no files — is not what the deleted question asked, and rewording it would be an edit the closed question does not justify.
 
@@ -314,7 +314,7 @@ The rule added in [Documentation → Citations](documentation/documentation.md#c
 - Type: Changed
 - Cited:
   - [Terminology](../../docs/terminology.md) - Consumed definitions: Terminology Authority and Governance (one authoritative home per Definition, and the governing document where two disagree) and A Term Deliberately Left Open (Task as a term used but never defined in Memar).
-  - [Changelog](documentation/changelog/changelog.md) - Consumed structure: Considered and not done, the home for reasoning examined and not applied.
+  - [Changelog](../../modules-plugable/knowledge/documentation/changelog/changelog.md) - Consumed structure: Considered and not done, the home for reasoning examined and not applied.
 - Propagates to:
   - knowledge.handoff.md: Done - three open questions removed: concurrent knowledge modification without locking semantics, whether the Task concept decomposes further, and the entry point into a knowledge system.
 - Contributors:
@@ -324,7 +324,7 @@ The rule added in [Documentation → Citations](documentation/documentation.md#c
 - [Task-Centric Knowledge Evolution](./knowledge.md#task-centric-knowledge-evolution) gains a paragraph stating that concurrent modification is reconciled as what it is: two changes to one definition arriving at once are two decisions about the same invariant rather than two writes to one text, the invariant has one authoritative home, and what is reconciled is the claim and not the file — the revision that holds stands in the governing document, and the reasoning of the one that does not stays readable as Considered and not done.
 - [The Smallest Knowledge Unit Is Smaller Than You Think](./knowledge.md#the-smallest-knowledge-unit-is-smaller-than-you-think) gains a paragraph stating that an entry into a knowledge system is one of its units surfaced rather than a page — a concept carrying its definition together with the context that unit holds — and that a listing, a wiki page, or a search result remains a valid projection of that entry.
 - `knowledge.handoff.md` no longer carries three entries. "How do we handle concurrent knowledge modification without locking semantics?" and "What is the entry point into a knowledge system, and what does a concept hub carry?" are answered by the two paragraphs above. "Does the Task concept itself decompose further?" is answered by [Terminology → A Term Deliberately Left Open](../../docs/terminology.md#a-term-deliberately-left-open): Task is a term used but never defined in Memar, and what a Task is structurally, what states it has, and how one is identified belong to the project developing it. Its remaining entry, on cultural factors in principle adoption, is untouched.
-- The removed entry-point entry's registered candidate source, a wiki system named Genera, stays unregistered. No primary source for it has been read, so under [Documentation → Citations](documentation/documentation.md#citations) it may prompt a question but may never carry a conclusion; the one thing it was registered to settle — whether that system's entry is a page or a unit surfaced — is settled here without it.
+- The removed entry-point entry's registered candidate source, a wiki system named Genera, stays unregistered. No primary source for it has been read, so under [Documentation → Citations](../../modules-plugable/knowledge/documentation/documentation.md#citations) it may prompt a question but may never carry a conclusion; the one thing it was registered to settle — whether that system's entry is a page or a unit surfaced — is settled here without it.
 
 #### Considered and not done
 - **Answering the entry-point question from a named external system (rejected)**: the handoff recorded the candidate and withheld its link until a primary source is read. A conclusion resting on an unread source is a claim the record cannot defend, and the conclusion the entry was reaching for follows from two principles this document already states.
@@ -481,3 +481,24 @@ The rule added in [Documentation → Citations](documentation/documentation.md#c
 #### Considered and not done
 - **The Wikipedia definition of knowledge and of knowledge management (dropped)**: the [Definition](./knowledge.md#definition) section and the opening paragraph already define both for Memar's purpose, and a second definition beside them would be two models.
 - **The "Idea backlog" on health-directive labels "Life support" and "Donate" (kept here, not ratified)**: bare labels with no semantics in a protocol package. Review questions it carried: which capability owns an advance health directive, a signed-instrument concern of [Contract](../rights/contract/contract.md), a person-record label set, or something else; until who may set it and what it triggers is written the labels fail the no-bare-edges test and stay backlog; and why the category root carried them at all, possibly a misplaced protocol. `modules/knowledge/protocol` does not exist in memar, so no labels were carried.
+
+---
+
+### Where documentation, search and Markdown stand
+- Time: 2026-10-24T09:00:00Z
+- Type: Changed
+- Cited:
+  - [Pluggable](modularity/labels/pluggable.md) - Reference: a pluggable folder named by its kernel module holds that module's optional parts
+  - [Guest](modularity/labels/guest.md) - Reference: the label of a module whose subject is an outside surface
+- Tasks:
+  - main:.agents/tasks/20261018-T133018Z-26648/: Partial - the split of the content module's services; the owner agreed the placements in the chat
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — ruled the placements (2026-10-24)
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — proposed, moved and recorded
+
+#### What changed
+- The section The Modules of This Category no longer says Documentation stands directly under the category. Documentation is a structure laid over content and text, so it is optional for them and is the pluggable `modules-plugable/knowledge/documentation/`; the way a document is written in Markdown is not its identity, and Markdown is the guest module `modules-plugable/computer/codec/markdown/`. A search over text is not a domain: its services are in the Text module.
+
+#### Considered and not done
+- A search module of its own (proposed first, refused by the owner: there is no search domain, only services that cover a search requirement).
+- Documentation under the kernel category, as it stood: the plan and report records, which the task module needs, left it for the task module, which removed the kernel's dependence on it.

@@ -1,5 +1,5 @@
 # Khayyam - Programming Language Handoff
-Open work for `khayyam.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../documentation-handoff.md) for what a handoff is.
+Open work for `khayyam.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -42,7 +42,7 @@ Now that philosophy and syntax reference live in one document — the way *Behav
 - Next: a dedicated stdlib session, per the source note; the dedicated ADT session also feeds it.
 
 ### Whether the compiler/linker must reject mutual `in` inclusion cycles between files, independent of module-level cycles
-- State: recovered 2026-09-16 from the same audit. The Error & ADT session identified that the file-inclusion contract ([RFC 000013](../modules/lib/memory/filesystem.md) era, now stated in [Khayyam → Import Mechanism](./khayyam.md#import-mechanism-in)) does not address mutual `in` inclusion between files, and recorded that this gates the stdlib bootstrap question above. The [Modularity in Khayyam](./modularity.handoff.md#cyclic-module-dependencies) handoff owns the *module-level* cycle decision; the *file-inclusion-level* cycle question has no tracked owner and was never carried into a handoff.
+- State: recovered 2026-09-16 from the same audit. The Error & ADT session identified that the file-inclusion contract ([RFC 000013](../../modules-plugable/computer/filesystem/filesystem.md) era, now stated in [Khayyam → Import Mechanism](./khayyam.md#import-mechanism-in)) does not address mutual `in` inclusion between files, and recorded that this gates the stdlib bootstrap question above. The [Modularity in Khayyam](./modularity.handoff.md#cyclic-module-dependencies) handoff owns the *module-level* cycle decision; the *file-inclusion-level* cycle question has no tracked owner and was never carried into a handoff.
 - Next: decide with the Import Mechanism, or fold into the module-cycle decision whichever layer the ruling actually belongs to. What that section already fixes is settled — the `in` value is an address whose scheme and resolution the manifest declares — so what it leaves open is narrower than it did: whether the grammar refuses a cycle of inclusions at all, and no document answers that.
 
 ### Which method returns human-facing text, and on which owner?

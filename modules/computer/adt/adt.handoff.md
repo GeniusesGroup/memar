@@ -1,5 +1,5 @@
 # Abstract Data Types Handoff
-Open work for `modules/computer/adt.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `modules/computer/adt.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Plan
 - **Review ADT protocols against Liskov & Guttag operation classification** — Use creators, producers, observers, and mutators (Liskov & Guttag, *Abstraction and Specification in Program Development*, MIT Press, 1986) to classify and align protocol abstractions with the observer and mutator rule (`modules/computer/adt/rules/observer-mutator/observer-mutator.md`). Start with `modules/computer/adt/container/protocol/accessor.kh`. Not started.

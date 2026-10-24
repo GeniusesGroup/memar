@@ -6,8 +6,8 @@
 - Time: 2026-08-26T05:29:13Z
 - Type: merged
 - Cited:
-  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: its merge-before-Final rules governed which ID the merged document kept and prohibited new citations pointing at the absorbed pre-Final documents.
-  - [The Error](../process/error.md) — Reference: declared as `Depends_on` by absorbed document `001002` (Chapar Broadcast: Scope, Privacy Rationale, and Known Risks); on verification no body-level dependency on it survives in the merged content, so it is recorded here rather than linked from the base document.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Reference: its merge-before-Final rules governed which ID the merged document kept and prohibited new citations pointing at the absorbed pre-Final documents.
+  - [The Error](../../process/error/error.md) — Reference: declared as `Depends_on` by absorbed document `001002` (Chapar Broadcast: Scope, Privacy Rationale, and Known Risks); on verification no body-level dependency on it survives in the merged content, so it is recorded here rather than linked from the base document.
 - Propagates to:
   - networking.md: Done — its link target `./chapar.md` is unchanged; verified no edit needed.
   - sRPC.md: Done — its link target `./chapar.md` is unchanged; verified no edit needed.
@@ -35,7 +35,7 @@
 - Type: added
 - Cited:
   - [Chapar - Data Link Protocol](chapar.md) — Depends_on: every step in chapar.practice.md restates normative behavior defined here; the procedures are meaningless without it.
-  - [Documentation — Practice](../../documentation-practice.md) — Reference: the schema followed (name/description-only front matter, imperative style).
+  - [Documentation — Practice](../../../modules-plugable/knowledge/documentation/practice/practice.md) — Reference: the schema followed (name/description-only front matter, imperative style).
 - Propagates to:
   - chapar.md: Done — the practice file derives only from behavior already normative here; nothing needed to change in the spec.
 - Contributors:
@@ -53,7 +53,7 @@
 - Time: 2026-08-26T06:11:59Z
 - Type: revised
 - Cited:
-  - [Documentation — Explanation](../../documentation-explanation.md) — Reference: its definitions of Motivation (the problem/friction) and Methodology (how the content was actually arrived at) governed the rewrite and the boundary between the two sections.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Reference: its definitions of Motivation (the problem/friction) and Methodology (how the content was actually arrived at) governed the rewrite and the boundary between the two sections.
 - Propagates to:
   - chapar.practice.md: Rejected — this revision changed ordering, Introduction prose, and rationale expansions only; no normative statement the procedures restate was altered.
 - Contributors:
@@ -129,7 +129,7 @@
 - Time: 2026-08-26T07:33:31Z
 - Type: revised
 - Cited:
-  - [Networking](networking.md) — Depends_for: now owns the layer-presence principle this document references; its rewrite merged the two sibling files this document previously linked for hardware rationale.
+  - [Networking](../net.md) — Depends_for: now owns the layer-presence principle this document references; its rewrite merged the two sibling files this document previously linked for hardware rationale.
 - Propagates to:
   - networking.md: Done — principle generalized there under Layer presence; switch-class definitions and hardware rationale now owned there.
   - chapar.practice.md: Rejected — procedures restate Chapar-level behavior only; the extracted material (generic switch-class definitions, media-existence principle) was never procedural content here.
@@ -138,7 +138,7 @@
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — applied
 
 #### What changed
-- Three pieces moved out of this document into [Networking](networking.md), which was rewritten under the current method with the two sibling files merged in.
+- Three pieces moved out of this document into [Networking](../net.md), which was rewritten under the current method with the two sibling files merged in.
 - First and principal: the media-existence discussion became Networking's Layer presence topic in its general form — no layer is mandatory; every layer has its own identity; presence on a link is a per-link capacity-and-role decision — with this document keeping only the Chapar application and referencing the rule.
 - The generic Blocking/Non-blocking switch definitions, which had existed verbatim in both this document and the hardware file, are now owned once by Networking's Hardware topic; this document keeps the class names, the reference, and the Chapar-specific consequences (synchronous confirmation under blocking; silent-loss window and timeout-driven re-Discovery under non-blocking).
 - Minor ownership attributions: the OSI packet-ordering rule is attributed to Networking's packet model, and the topology-capacity table's wireless-addressing link now points at Networking — Hardware instead of the removed hardware file.
@@ -267,3 +267,17 @@
 
 #### Considered and not done
 - Naming the party bound by the policy, so that a verdict has an obligor: not taken. Which party owes the two uses is not Chapar's to assign, and the question is routed to the paired handoff rather than settled here.
+
+---
+
+### Practice name follows its file
+- Time: 2026-10-15T11:58:47Z
+- Type: Changed
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — allowed the fix
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
+
+#### What changed
+- `chapar.practice.md`'s front-matter `name` was `implement-chapar`; it is now `chapar`, the file's base name, as [Documentation — Practice → Frontmatter](../../../modules-plugable/knowledge/documentation/practice/practice.md#frontmatter) now states. No other document referred to the old name.
+- Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
+- Made in session 20261015-T110002Z-23000.

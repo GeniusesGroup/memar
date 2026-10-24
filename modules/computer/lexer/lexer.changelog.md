@@ -61,7 +61,7 @@
 #### What changed
 - The document's whole conceptual core was established and the base document rewritten to record it: thirteen working positions; the definition of the Lexer and the consumer contract; boundary principles (no boundary assumptions; grounding in observable extents); the Lexical Model with identity and immutability; the Lexical Type with matching behavior and inter-type relationships; unit/naming separation with classification kept out of the unit core; the delivery/memory split; the change contract; the `Lexical` capsule lifecycle; graph-modeling candidates; domain scope; the candidate concept inventory; the research-evidence disposition (adopted findings vs examined-and-rejected proposals).
 - The z.ai research report's synthesis was the evidence base examined and partly rejected in these sessions; the DeepSeek survey report likewise.
-- The document also migrated to the current Explanation-facet structure (Abstract / Introduction / Explanation / Results / Discussion) with a paired changelog, per [documentation-explanation.md](../../knowledge/documentation/explanation/explanation.md).
+- The document also migrated to the current Explanation-facet structure (Abstract / Introduction / Explanation / Results / Discussion) with a paired changelog, per [documentation-explanation.md](../../../modules-plugable/knowledge/documentation/explanation/explanation.md).
 
 #### Deliberation
 - The founding positions were authored across four sessions (Omid Hekayati — claimed):
@@ -166,8 +166,8 @@
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../../knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../../knowledge/documentation/handoff/handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied

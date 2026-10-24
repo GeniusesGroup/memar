@@ -1,5 +1,5 @@
 # ADT Rule — Observer and Mutator Handoff
-Open state for [observer-mutator.md](./observer-mutator.md). See the repository's [documentation-handoff.md](../../../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open state for [observer-mutator.md](./observer-mutator.md). See the repository's [documentation-handoff.md](../../../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Status
 Active — rule relocated from `bundles/khayyam/rules/observer-mutator-abstractions/` to `modules/computer/adt/rules/observer-mutator/` 2026-09-29 (owner). Observer/mutator family names, method naming, and side-file default decided same day.

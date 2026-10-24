@@ -11,7 +11,7 @@
   - [Abstraction in Khayyam](./abstraction.md) — Reference: The abstraction mechanism is specified separately. This document records the encapsulation guarantees (capsules hide all internal state, all interaction occurs through methods) that make the abstraction model possible.
   - [Polymorphism in Khayyam](./polymorphism.md) — Reference: Polymorphism classification and dispatch strategy are specified separately. This document defines the capsule-level boundaries that constrain polymorphic behavior.
   - [Method in Khayyam](./method.md) — Reference: Method as Callable Capsule — the mechanical spec of the method signature itself (pass-by-reference, parenthesized separation, static-vs-instance invocation, body-less methods) — previously lived in this document's Explanation section and has moved there, since a capsule is an abstraction over `vr`/`mt`, not the other way around. This document now depends on that spec rather than restating it.
-  - [Control Flow in Khayyam](../modules/process/control-flow.md) — Reference: The Code Scope (`sc`) topic previously lived in this document's Explanation section and has moved there, since code scopes are structurally the mechanism control-flow libraries (IF/ELSE/LOOP) are built on, not a capsule-level concern.
+  - [Control Flow in Khayyam](../../modules/process/control-flow/control-flow.md) — Reference: The Code Scope (`sc`) topic previously lived in this document's Explanation section and has moved there, since code scopes are structurally the mechanism control-flow libraries (IF/ELSE/LOOP) are built on, not a capsule-level concern.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [ChatGPT](../../CONTRIBUTORS.md#chatgpt) (GPT-5.5, medium effort) — critically reviewed
@@ -46,7 +46,7 @@
 - Contributors: not recorded per-change in the source section
 
 #### What changed
-A capsule is an abstraction layered over `vr` and `mt`, not an independent primitive — so content specific to those underlying concepts should be defined in their own documents and only referenced here. Accordingly: "Method as Callable Capsule" (including its Method Invocation Rules and Body-less Methods subsections) moved to [Method in Khayyam](./method.md); "Code Scope" moved to [Control Flow in Khayyam](../modules/process/control-flow.md), since `sc` is structurally the mechanism control-flow libraries are built on rather than a capsule-level concern. The Abstract and front-matter Citations were updated to reference both documents instead of restating their content.
+A capsule is an abstraction layered over `vr` and `mt`, not an independent primitive — so content specific to those underlying concepts should be defined in their own documents and only referenced here. Accordingly: "Method as Callable Capsule" (including its Method Invocation Rules and Body-less Methods subsections) moved to [Method in Khayyam](./method.md); "Code Scope" moved to [Control Flow in Khayyam](../../modules/process/control-flow/control-flow.md), since `sc` is structurally the mechanism control-flow libraries are built on rather than a capsule-level concern. The Abstract and front-matter Citations were updated to reference both documents instead of restating their content.
 
 ### Closures merge
 - Time: 2026-07-15T00:00:00Z (approximated; original time not recorded)
@@ -92,9 +92,9 @@ Further review (2026-08-01) closed the reference-rebinding question at both leve
 - Time: 2026-08-26T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Documentation](../documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog.
-  - [Documentation — Explanation](../documentation-explanation.md) — Depends_on: governing structure the base document was brought fully in line with.
-  - [Documentation — Changelog](../documentation-changelog.md) — Depends_on: entry structure used for this companion file.
+  - [Documentation](../../modules-plugable/knowledge/documentation/documentation.md) — Reference: facet meta-layer defining Explanation/Practice/Changelog.
+  - [Documentation — Explanation](../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: governing structure the base document was brought fully in line with.
+  - [Documentation — Changelog](../../modules-plugable/knowledge/documentation/changelog/changelog.md) — Depends_on: entry structure used for this companion file.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — requested
   - [Super Z](../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — migrated
@@ -154,7 +154,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-15T09:00:00Z
 - Type: Changed
 - Cited:
-  - [Linter](../modules/computer/linter.md) — Consumed contract: assistance writes source on request.
+  - [Linter](../../modules/computer/linter/linter.md) — Consumed contract: assistance writes source on request.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided (rule home is the subject's document)
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.6 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
@@ -168,7 +168,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-23T08:43:30Z
 - Type: Fixed
 - Cited:
-  - [abstraction_p.Implements](../modules/computer/abstraction-implements.md) — Reference: the `ErrServiceNotFound` example places a bare `Implements` in a `cp` body.
+  - [abstraction_p.Implements](../../modules/computer/abstraction/implements.md) — Reference: the `ErrServiceNotFound` example places a bare `Implements` in a `cp` body.
   - [Metaprogramming in Khayyam](./metaprogramming.md) — Reference: the `UserRecord` example places a bare `Structural` in a `cp` body.
 - Propagates to:
   - khayyam.md: Done — the capsule bullet states the same one-token composition line.
@@ -187,7 +187,7 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-23T10:20:00Z
 - Type: Fixed
 - Cited:
-  - [abstraction_p.Implements](../modules/computer/abstraction-implements.md) — Depends_on: the author states implementation intent; a generator writes the method bodies.
+  - [abstraction_p.Implements](../../modules/computer/abstraction/implements.md) — Depends_on: the author states implementation intent; a generator writes the method bodies.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — applied
@@ -204,8 +204,8 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-28T14:34:08Z
 - Type: Fixed
 - Cited:
-  - [Math Handoff → Does the tower hold widths the reference does not declare?](../modules/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled the pairing a slip.
-  - [Math Handoff → Does the tower hold widths the reference does not declare?](../modules/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: a signed 32-bit integer is `I32`.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../../modules/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner ruled the pairing a slip.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../../modules/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: a signed 32-bit integer is `I32`.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
@@ -224,15 +224,15 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-09-29T10:40:00Z
 - Type: Changed
 - Cited:
-  - [Math Handoff → Does the tower hold widths the reference does not declare?](../modules/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner's answers of 2026-09-28 on 16-bit signed, complex, platform-sized, address-sized, byte, and rune.
+  - [Math Handoff → Does the tower hold widths the reference does not declare?](../../modules/math/math.handoff.md#does-the-tower-hold-widths-the-reference-does-not-declare) - Premise: the owner's answers of 2026-09-28 on 16-bit signed, complex, platform-sized, address-sized, byte, and rune.
   - Commits `d08db25` (2023-06-06) and `0ea0d86` (2024-10-12) of this repository, `Khayyam.md` - Evidence: the owner's original text of the notes on library-implemented types, and its removal from the language specification.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) - decided: code under `modules/` introduces itself, and language rules go to `docs/khayyam/`
   - Auto (model not recorded) via [Cursor](../../CONTRIBUTORS.md#cursor) - applied
 
 #### What changed
-- [Primitive Capsule Specification](./encapsulation.md#primitive-capsule-specification): the migration example maps `int32` to `I32`; value equality (`Equal`) and logical equivalence (`Equivalence`) keep two names as a Khayyam language rule. The number tower and kinds that are not numeric widths moved to [Math → The number tower](../modules/math/math.md#the-number-tower), [Memory → Address-sized integers are not numeric widths](../modules/memory/memory.md#address-sized-integers-are-not-numeric-widths), and [Characters Codec → Characters and octets are not numeric widths](../modules/codec/characters-codec.md#characters-and-octets-are-not-numeric-widths).
-- Numeric open questions, the owner's earlier notes, and numeric implementation residue moved to [Math Handoff](../modules/math/math.handoff.md); this changelog's 2026-09-28 entry cites that handoff for the same ruling.
+- [Primitive Capsule Specification](./encapsulation.md#primitive-capsule-specification): the migration example maps `int32` to `I32`; value equality (`Equal`) and logical equivalence (`Equivalence`) keep two names as a Khayyam language rule. The number tower and kinds that are not numeric widths moved to [Math → The number tower](../../modules/math/math.md#the-number-tower), [Memory → Address-sized integers are not numeric widths](../../modules/computer/memory/memory.md#address-sized-integers-are-not-numeric-widths), and [Characters Codec → Characters and octets are not numeric widths](../../modules/computer/codec/characters-codec/characters-codec.md#characters-and-octets-are-not-numeric-widths).
+- Numeric open questions, the owner's earlier notes, and numeric implementation residue moved to [Math Handoff](../../modules/math/math.handoff.md); this changelog's 2026-09-28 entry cites that handoff for the same ruling.
 
 #### Considered and not done
 - Copying the owner's notes in the wording the module document gave them: that wording was edited; the owner's own text is in git history and is the one copied.
@@ -276,14 +276,14 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-10-03T11:16:28Z
 - Type: Changed
 - Propagates to:
-  - [Computer — Linter → Assistance writes source, on request](../modules/computer/linter.md#assistance-writes-source-on-request): Reference - named as the home of the accessor-writing policy this document used to state.
+  - [Computer — Linter → Assistance writes source, on request](../../modules/computer/linter/linter.md#assistance-writes-source-on-request): Reference - named as the home of the accessor-writing policy this document used to state.
   - identifier naming (`bundles/khayyam/rules/identifier-naming/identifier-naming.md`): Pending - the method-naming bullet removed here states a rule this repository's catalog owns; the catalog does not yet carry it in this form.
-  - [Memory](../modules/memory/memory.md): Pending - where a constant's value is established (inlined at compile time, or obtained from a memory service at run time) is no longer described here.
+  - [Memory](../../modules/computer/memory/memory.md): Pending - where a constant's value is established (inlined at compile time, or obtained from a memory service at run time) is no longer described here.
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied
 
 #### What changed
-- [Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy): the policy on generated accessors was removed — "A [Linter](../modules/computer/linter.md) or companion generator MAY write `get`/`set` methods into explicit source **when requested**; it MUST NOT synthesize a public surface the author never asked for. Mechanical accessors for every field recreate public fields with extra steps." The topic keeps the language-level statement — direct field read/write outside the capsule's own methods is already impossible at the language level, and any remaining diagnostic is governance rather than a language error — and points at the linter protocol for what a tool may write into source on request.
+- [Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy): the policy on generated accessors was removed — "A [Linter](../../modules/computer/linter/linter.md) or companion generator MAY write `get`/`set` methods into explicit source **when requested**; it MUST NOT synthesize a public surface the author never asked for. Mechanical accessors for every field recreate public fields with extra steps." The topic keeps the language-level statement — direct field read/write outside the capsule's own methods is already impossible at the language level, and any remaining diagnostic is governance rather than a language error — and points at the linter protocol for what a tool may write into source on request.
 - [Closures as Implicit Capsule Syntax](./encapsulation.md#closures-as-implicit-capsule-syntax): the optimization claim was removed with its parenthetical correction — "**Reduced Optimization Surface:** capsule-centric code, where state is always a named, explicit type, is significantly easier for the compiler to analyze and optimize than ad-hoc captured scopes. Both models are theoretically equivalent in the worst case, but capsule-based state is far more consistently optimizable in practice, because the compiler always has a concrete, named type to reason about rather than an implicit closure environment whose shape varies by call site. (An earlier, now-corrected version of this rationale argued closures cause additional heap allocation/escape compared to capsules — this is not accurate...)". What remains of the topic states what the grammar buys: every state dependency explicit, testable, and strictly encapsulated. The rule-pointer sentence about a throwaway capsule being an identifier-naming concern went with it.
 - [Primitive Capsule Specification](./encapsulation.md#primitive-capsule-specification): the inlining claim became a statement about the interaction model — "Whether a given primitive capsule's methods happen to be trivial enough for the compiler to inline is a backend optimization decision, orthogonal to the interaction model" became "How the work inside such a method is carried out is orthogonal to the interaction model: the operation still goes through a method either way."
 - [Constants as Capsule-Returned Values](./encapsulation.md#constants-as-capsule-returned-values): the two flavors are now named by what they are rather than by when they are computed. "**Static constants**: compile-time declared and initialized, usually inlined directly at compile time. Conceptually equivalent to 'a function that runs entirely at compile time and returns the value living in that function's body.'" became "**Values fixed before execution begins**: the value is determined by the program itself and holds for every run"; "**Dynamically-valued constants**: compile-time declared, but runtime-initialized. These require a runtime memory-service call to obtain their value since they cannot be inlined." became "**Values determined during execution**: the value is worked out while the program runs, so obtaining it is an ordinary call on a capsule."
@@ -295,12 +295,12 @@ Completed the migration an earlier pass had started (this document already follo
 - Time: 2026-10-04T21:13:00Z
 - Type: Fixed
 - Cited:
-  - [Linter → A rule's home is its subject's document](../modules/computer/linter.md#a-rules-home-is-its-subjects-document) — Premise: a governance rule lives in the document owning its subject, and that document "is not a catalogue of those rules and does not grow by absorbing them".
+  - [Linter → A rule's home is its subject's document](../../modules/computer/linter/linter.md#a-rules-home-is-its-subjects-document) — Premise: a governance rule lives in the document owning its subject, and that document "is not a catalogue of those rules and does not grow by absorbing them".
 - Contributors:
   - [Space Bunny Alpha](../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
-- The entry on whether the `get`/`set` generation MAY belongs here is removed from [Encapsulation in Khayyam Handoff](./encapsulation.handoff.md). That entry pointed at the Linter handoff's catalog question, which [Linter → A rule's home is its subject's document](../modules/computer/linter.md#a-rules-home-is-its-subjects-document) now answers: the rule lives in the document owning its subject and no catalog collects them. Its own subject was settled earlier — the 2026-10-03 entry above moved the accessor policy out of [Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy) to [Linter → Assistance writes source, on request](../modules/computer/linter.md#assistance-writes-source-on-request), so this document carries the language-level statement and no suggested tooling rule. The entry's caution against adding more maybe-rules here therefore resolves as: a further suggested tooling rule is stated in the Linter protocol when the subject is tooling assistance, not here.
+- The entry on whether the `get`/`set` generation MAY belongs here is removed from [Encapsulation in Khayyam Handoff](./encapsulation.handoff.md). That entry pointed at the Linter handoff's catalog question, which [Linter → A rule's home is its subject's document](../../modules/computer/linter/linter.md#a-rules-home-is-its-subjects-document) now answers: the rule lives in the document owning its subject and no catalog collects them. Its own subject was settled earlier — the 2026-10-03 entry above moved the accessor policy out of [Capsule Structure and Privacy](./encapsulation.md#capsule-structure-and-privacy) to [Linter → Assistance writes source, on request](../../modules/computer/linter/linter.md#assistance-writes-source-on-request), so this document carries the language-level statement and no suggested tooling rule. The entry's caution against adding more maybe-rules here therefore resolves as: a further suggested tooling rule is stated in the Linter protocol when the subject is tooling assistance, not here.
 - The entry "Memory aliasing through borrowed, externally-mutable buffers" was also removed in the first form of this pass, on the premise that [Sovereign Encapsulation](./encapsulation.md#sovereign-encapsulation) answers it. It does not: that section's `unsafe`-style sentence concerns representation exposure, and its other paragraph still defers raw memory aliasing to future memory-management documents. The entry is restored (see the review entry of 2026-10-12 below).
 
 #### Considered and not done

@@ -26,9 +26,9 @@
 - Type: refactor
 - Cited:
   - [Modularity](../../modules/knowledge/modularity/modularity.md) — Depends_on: the authoritative definition of Module and Modularity; this document now retains only Khayyam-specific language and ecosystem consequences.
-  - [Documentation — Explanation](../../modules/knowledge/documentation/explanation/explanation.md) — Depends_on: defines the current Explanation-facet structure.
-  - [Documentation — Changelog](../../modules/knowledge/documentation/changelog/changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
-  - [How to make a new explanation document](../../modules/knowledge/documentation/explanation/explanation.practice.md) — Reference: supplies the migration procedure.
+  - [Documentation — Explanation](../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: defines the current Explanation-facet structure.
+  - [Documentation — Changelog](../../modules-plugable/knowledge/documentation/changelog/changelog.md) — Depends_on: defines this companion changelog as the home for provenance and revision history.
+  - [How to make a new explanation document](../../modules-plugable/knowledge/documentation/explanation/explanation.practice.md) — Reference: supplies the migration procedure.
 - Propagates to:
   - [Modularity](../../modules/knowledge/modularity/modularity.md): Done — the general document links to this document for the Khayyam language and ecosystem realization.
 - Contributors:
@@ -165,7 +165,7 @@
 - **Rewriting the `memar/` references in the non-Khayyam files that carry them**: `modules/khayyam/targets/go/abstraction_bridge.py`, several `modules/**/*.go` files, and the `//memar:impl` annotations in about twenty `.kh` files carry `memar/`-rooted references. None is an `in` URI, so none is in the sources this change governs, and each needs its own decision about what it means — an annotation naming a symbolic `memar:impl` target is not a URI at all. Reported, not touched.
 - **Fixing the `modules/process/error/error.kh` address in `if.kh`**: the rewrite carried the address across faithfully, and choosing the correct target is a fact about the sources that this change does not establish.
 - **Naming the resolution base in the grammar**: a resolver whose base is the repository's `modules/` directory and a URI rooted at `modules/` collide — the same string means two things. The collision is a real argument for the manifest to name its base rather than the grammar to imply it, which is why the handoff records it as load-bearing manifest work; the base this repository's toolchain resolves from is recorded as a property of the rule in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`).
-- **Restating the address's spelling rule in this document**: the rule is recorded once, in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`). This document states the boundary and links the rest, per [Documentation → Content Rule: No Fabricated or Redundant Provenance](../../modules/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance).
+- **Restating the address's spelling rule in this document**: the rule is recorded once, in Import Address → The rule (`bundles/khayyam/rules/import-address/import-address.md#the-rule`). This document states the boundary and links the rest, per [Documentation → Content Rule: No Fabricated or Redundant Provenance](../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance).
 
 #### Deliberation
 - `.kh` is this repository's naming convention for its own files, and the address in an `in` declaration is not required to be a repository file path — it is a URI whose scheme the manifest declares. Once the manifest is the thing that says how an address resolves, a rule about suffixes in the grammar is a rule about one resolver's key (OpenCode, argued; Omid Hekayati, decided).

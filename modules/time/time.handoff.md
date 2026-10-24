@@ -1,5 +1,5 @@
 # Time Handoff
-Open work for `modules/time/time.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `modules/time/time.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Decisions
 Recorded 2026-10-15 by the module pilot (task 20261014T124124Z-3000-0, records branch `dev-knowledge`, `.agents/tasks/20261014T124124Z-3000-0/`), each from the owning material it cites and without a second opinion yet; each graduates into `time.md` or a protocol declaration on the owner's word, and the Open Questions entry it answers stays until then.

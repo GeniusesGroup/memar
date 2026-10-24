@@ -7,7 +7,9 @@ tp Copy_String_Character in "modules/computer/adt/marker/protocol/copy.kh"
 
 tp Equivalence mt (self Character) (with Character) (b Boolean)
 
-// Character is base of any character encoding
+// Character is one unit of text, identified by a code point of a character set. It says nothing of how
+// the unit is stored: each encoding declares its own capsule that satisfies this abstraction
+// (UTF8_Char, ASCII_Char), and no encoding is the base of Character.
 tp Character ab {
     Logic_Equivalence
     Clone_String_Character

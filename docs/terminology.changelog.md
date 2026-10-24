@@ -128,7 +128,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
 - Cited:
   - `docs/vocabulary.md` (deleted) — Evidence: the retired document's own state motivated the rule; it held only two external links (connection-oriented/connectionless, consumed by chapar.md's Ethernet-comparison discussion) and no membership criterion, no front matter, and no changelog of its own, so it had begun functioning as an unmanaged catch-all — the exact failure mode an ungoverned vocabulary list invites.
 - Propagates to:
-  - `docs/vocabulary.md`: Done — deleted. Its two links moved into `docs/modules/net/networking.md`'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](../modules/knowledge/documentation/explanation/explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
+  - `docs/vocabulary.md`: Done — deleted. Its two links moved into `docs/modules/net/networking.md`'s Layer presence topic (the classification question is a cross-layer networking concern, not a layer-2 protocol's); the RFC-process paragraph it carried was RFC-era boilerplate rather than governed content, so it died with the file without loss — the substance of that paragraph (a consistent, reviewed path for changes to enter the project's documentation, with statuses that say what may be depended on) is specified authoritatively in [documentation-explanation.md](../modules-plugable/knowledge/documentation/explanation/explanation.md)'s Status section, and its remaining wording was generic GitHub pull-request boilerplate.
   - thinking.md: Done — the Discourse Norms' definitions-outrank-terminology entry previously pointed to vocabulary.md as a lookup home; it now points to this document's new section instead.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed, decided
@@ -205,7 +205,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
 - Time: 2026-10-04T06:38:54Z
 - Type: Added
 - Cited:
-  - [Documentation — File Naming](../modules/knowledge/documentation/documentation.md#file-naming) — `Reference`: the criteria a name is chosen by — it communicates meaning, preserves conceptual boundaries, avoids implementation-specific vocabulary, and stays stable over time
+  - [Documentation — File Naming](../modules-plugable/knowledge/documentation/documentation.md#file-naming) — `Reference`: the criteria a name is chosen by — it communicates meaning, preserves conceptual boundaries, avoids implementation-specific vocabulary, and stays stable over time
   - [Terminology — The Default Meaning of an Unreferenced Term](./terminology.md#the-default-meaning-of-an-unreferenced-term) — `Reference`: the rule this ruling relies on, that a word no document defines carries exactly its general meaning
   - [Terminology — Correcting a Term Used Against Its Definition](./terminology.md#correcting-a-term-used-against-its-definition) — `Reference`: the correction names the word and not the reasoning, and the observation stands
 - Propagates to:
@@ -239,7 +239,7 @@ Precisely defined Comprehensive and Exclusive as the two directions of necessary
   - [Process Research 001 — Work Decomposition](../modules/process/process.research.001.md) - **Reference**: the inquiry whose Question 3 asked whether a Memar document should own a definition for *Task*, and whose finding was that no document did while three documents leaned on the word.
 - Propagates to:
   - [knowledge.md](../modules/knowledge/knowledge.md): Done - [Task-Centric Knowledge Evolution](../modules/knowledge/knowledge.md#task-centric-knowledge-evolution) now marks its use and links here.
-  - [documentation-changelog.md](../modules/knowledge/documentation/changelog/changelog.md): Done - the `Tasks` field's deferral now names this position rather than standing alone as a refusal to model one.
+  - [documentation-changelog.md](../modules-plugable/knowledge/documentation/changelog/changelog.md): Done - the `Tasks` field's deferral now names this position rather than standing alone as a refusal to model one.
   - [README.md](../README.md): None needed - the Enterprise scope this entry points at is already the README's own subject.
   - [terminology.handoff.md](./terminology.handoff.md): None needed - no question this entry answers was carried there.
 - Contributors:

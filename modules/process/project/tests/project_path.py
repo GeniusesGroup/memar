@@ -12,7 +12,7 @@ up. Named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-The fact is written once ([A Fact in Code Is Written Once](../../../../modules/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
+The fact is written once ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 
 Writes only in a scratch folder this suite makes and removes.
 

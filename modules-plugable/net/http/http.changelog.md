@@ -148,6 +148,6 @@
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
 
 #### What changed
-- `http.practice.md`'s `description` now states when the check is run, from its *When to Run the Check* section, and what it is not: the argument against the default, and the design of the protocol chosen, which [Documentation — Practice → Description quality criteria](../../../modules/knowledge/documentation/practice/practice.md#description-quality-criteria) requires.
+- `http.practice.md`'s `description` now states when the check is run, from its *When to Run the Check* section, and what it is not: the argument against the default, and the design of the protocol chosen, which [Documentation — Practice → Description quality criteria](../../knowledge/documentation/practice/practice.md#description-quality-criteria) requires.
 - Why: the study of session 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
 - Made in session 20261015-T110002Z-23000.

@@ -6,7 +6,7 @@
 - Time: unknown (historical import — drafted 2026-07-08 per the document's Start Date; this changelog was created at migration time, so the entry is reconstructed from the former front matter; [Omid Hekayati]'s `claimed` attribution was recorded there without a stated contribution description)
 - Type: Added
 - Cited:
-  - [Control Flow in Khayyam](../process/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
+  - [Control Flow in Khayyam](../../process/control-flow/control-flow.md) — Depends_on: this document builds on the precedent set by that document of keeping behavioral policies as ordinary library-driven mechanisms rather than new syntax.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — claimed
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash, effort: Medium — extended thinking enabled) — drafted
@@ -55,7 +55,7 @@
 #### What changed
 - The document previously followed the legacy RFC body structure (`Summary / Motivation / Guide-level explanation / Reference-level explanation / Drawbacks / Rationale and alternatives / Prior art / Unresolved questions / Future possibilities`) with `Applied to`, `Citations`, and `Contributor(s)` front matter.
 - Migration mapping, with every load-bearing claim preserved without summarizing: Summary became the Abstract; Motivation kept its role under Introduction; Guide-level explanation became the Explanation topic *Declaring and discovering intent*; Reference-level explanation became the topic *Semantics and constraints*; Drawbacks, Rationale and alternatives, Prior art, Unresolved questions, and Future possibilities moved to the document-wide Discussion.
-- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links `docs/khayyam/khayyam.md`; the Prior-art precedent mention now links [khayyam-control_flow.md](../process/control-flow.md)).
+- Plain-text references were converted to real hyperlinks per the Internal Cross-References convention (the Contract-First Approach mention now links `docs/khayyam/khayyam.md`; the Prior-art precedent mention now links [khayyam-control_flow.md](../../process/control-flow/control-flow.md)).
 - The former `Applied to`, `Citations`, and `Contributor(s)` front-matter fields moved into this file (entries above); the base document retains only identity front matter.
 - No position changed.
 
@@ -68,16 +68,16 @@
 - Time: 2026-09-11T08:29:10Z
 - Type: Changed
 - Cited:
-  - [Documentation — Explanation](../../documentation-explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
-  - [Documentation — Handoff](../../documentation-handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
+  - [Documentation — Explanation](../../../modules-plugable/knowledge/documentation/explanation/explanation.md) — Depends_on: the three-section skeleton and the Relevance-discipline routing this migration applies are defined by the Explanation facet's governing specification.
+  - [Documentation — Handoff](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) — Depends_on: any open work created by this migration follows the Handoff facet's specification.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - directed
   - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM 5.3) - applied
 
 #### What changed
 - The document-wide `## Discussion` section was retired; the body now carries only the three-section skeleton (Abstract / Introduction / Explanation), with nothing new folded inline — every Discussion block routed to this entry or to the handoff.
-- The Discussion's Drawbacks record and Prior-art survey are preserved in this entry below; its Rationale-and-alternatives items are recorded under Considered and not done. The one hyperlink in the migrated content (the Prior-art paragraph's [Control Flow](../process/control-flow.md) reference) needed no retargeting — this file shares the base document's directory.
-- The Unresolved questions' open item (no formal criterion for "complex enough to warrant this" beyond abstraction-author judgment) moved to the newly created paired handoff ([abstraction-implements.handoff.md](abstraction-implements.handoff.md)) as an Open Question, and the Future possibilities item (extension with parameters or a return value) became that handoff's Anticipated Work.
+- The Discussion's Drawbacks record and Prior-art survey are preserved in this entry below; its Rationale-and-alternatives items are recorded under Considered and not done. The one hyperlink in the migrated content (the Prior-art paragraph's [Control Flow](../../process/control-flow/control-flow.md) reference) needed no retargeting — this file shares the base document's directory.
+- The Unresolved questions' open item (no formal criterion for "complex enough to warrant this" beyond abstraction-author judgment) moved to the newly created paired handoff ([abstraction-implements.handoff.md](implements.handoff.md)) as an Open Question, and the Future possibilities item (extension with parameters or a return value) became that handoff's Anticipated Work.
 - The Unresolved questions' Resolved item (Error adopting the pattern via its own domain-specific realization) was dropped rather than migrated: it restates the resolution already graduated into the body's Semantics and constraints — the domain-specific-name MAY, the disambiguation reason, and Error's `ImplementsError`/`ImplError()` example.
 
 #### Considered and not done (migrated from the retired Rationale and alternatives)
@@ -85,7 +85,7 @@
 - **Domain-specific-only declarations, no shared generic base (considered, not chosen as the sole approach):** every abstraction defining its own uniquely-named `Implements`-analog (as `Error`'s `ImplError` does) loses the ability for a single, generic codegen/linter pass to discover "which capsules across the whole codebase declare some implementation intent" without already knowing which specific abstraction to look for. This document does not preclude a specific abstraction from *additionally* defining its own distinctly-named realization (as `Error` does) for disambiguation when multiple abstractions might be claimed at once — the two are complementary, not mutually exclusive, and neither is "stronger" than the other in terms of guarantee.
 
 #### Related work (from the retired Prior art)
-Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent ahead of the compiler's completeness check, but expressed as an ordinary composed method rather than new syntax, consistent with the [Control Flow](../process/control-flow.md) protocol's precedent of keeping such capabilities library-driven rather than syntax-driven.
+Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent ahead of the compiler's completeness check, but expressed as an ordinary composed method rather than new syntax, consistent with the [Control Flow](../../process/control-flow/control-flow.md) protocol's precedent of keeping such capabilities library-driven rather than syntax-driven.
 
 #### Drawbacks (from the retired body Discussion)
 - Adds one extra, functionally-inert method to every abstraction and capsule that opts in.
@@ -98,7 +98,7 @@ Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent 
 - Type: Fixed
 - Cited:
   - Abstraction in Khayyam (`docs/khayyam/abstraction.md`) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
-  - [Protocol](../../protocol.md) — Depends_on: Protocol vs Contract.
+  - [Protocol](../../../docs/protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied

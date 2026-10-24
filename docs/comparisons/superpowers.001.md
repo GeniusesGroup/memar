@@ -60,14 +60,14 @@ Memar already overlaps some *concerns* (ask / confirm, handoff, the Test discipl
 - Spike / bounded / architectural scale → implied by confirm-before-large-scope; name later if useful; never block clarifying questions.
 
 ### Reject for Memar
-- Marketplace / multi-plugin / multi-skill as how the project *is* — one continuous mental model ([Knowledge](../knowledge.md#a-project-carries-one-continuous-mental-model)); failed Memar trials: separate Khayyam skill, Cognition as peer skill.
+- Marketplace / multi-plugin / multi-skill as how the project *is* — one continuous mental model ([Knowledge](../../modules/knowledge/knowledge.md#a-project-carries-one-continuous-mental-model)); failed Memar trials: separate Khayyam skill, Cognition as peer skill.
 - Harness-coverage race as a Memar goal — Agency is not harness theory.
 - Heavy persuasion bootstrap — burns context; fights ask-before-assume.
-- Prose Practices that belong in executable modules — contracts in docs; generation in language servers / tools agents call ([Knowledge and Code](../knowledge.md#knowledge-and-code)).
+- Prose Practices that belong in executable modules — contracts in docs; generation in language servers / tools agents call ([Knowledge and Code](../../modules/knowledge/knowledge.md#knowledge-and-code)).
 - Software-only Iron Laws (worktree, PR menus, toolchain defaults) as core.
-- Grid layouts or diagram blocks as carriers of normative logic — including preferring `dot` graphs for models; Memar keeps load-bearing logic linear ([Written surface](../documentation.md#written-surface)).
+- Grid layouts or diagram blocks as carriers of normative logic — including preferring `dot` graphs for models; Memar keeps load-bearing logic linear ([Written surface](../../modules-plugable/knowledge/documentation/documentation.md#written-surface)).
 - ALL-CAPS pressure language and absolute rules without co-located reason.
-- Command/recipe catalogs in the Memar skill or growing paste files — scripts document themselves; host helpers are small executables, not prose dumps; no membership indexes of script or comparison folders ([Content Rule](../documentation.md#content-rule-no-fabricated-or-redundant-provenance)).
+- Command/recipe catalogs in the Memar skill or growing paste files — scripts document themselves; host helpers are small executables, not prose dumps; no membership indexes of script or comparison folders ([Content Rule](../../modules-plugable/knowledge/documentation/documentation.md#content-rule-no-fabricated-or-redundant-provenance)).
 
 ### Already owned
 Documentation-as-truth with discovery scripts; Handoff (agent-general); mid-session tangents; the discipline generalized via Process expectations and checks; sub-agent session economy; critique norms.

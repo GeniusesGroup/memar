@@ -44,7 +44,10 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.knowledge.content.services.normative_references import PREFERENCE, Place, normative_reference_places
+_m_normative_references = plugable_load('knowledge.documentation.services.normative_references')
+PREFERENCE = _m_normative_references.PREFERENCE
+Place = _m_normative_references.Place
+normative_reference_places = _m_normative_references.normative_reference_places
 from modules.process.project.services.preferences import BLOCK_KEY, preferences_path, preferences_text, read_preferences
 
 class Fixture(unittest.TestCase):

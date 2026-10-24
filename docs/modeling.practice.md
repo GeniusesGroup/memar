@@ -183,4 +183,4 @@ A modeling or review session is successful if it produces:
 - Refined relationships.
 - Improved responsibility boundaries.
 
-A session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions. When it does deliver a model as a document in a folder of its own, the name is not the session's to choose: [Documentation → File Naming](../modules/knowledge/documentation/documentation.md#file-naming) fixes it to the concept's own name, and the paired handoff takes the same base name.
+A session does not need to produce implementation artifacts, database schemas, APIs, or finalized abstraction definitions. When it does deliver a model as a document in a folder of its own, the name is not the session's to choose: [Documentation → File Naming](../modules-plugable/knowledge/documentation/documentation.md#file-naming) fixes it to the concept's own name, and the paired handoff takes the same base name.
