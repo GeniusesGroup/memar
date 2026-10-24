@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar content edit` in `modules/knowledge/content/services/edit.py`.
+"""Tests for `memar content edit` in `modules-plugable/computer/filesystem/services/content_edit.py`.
 
-    python modules/knowledge/content/tests/edit.py
+    python modules-plugable/computer/filesystem/tests/content_edit.py
 
 The subject is the exact-text replacement, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -24,6 +24,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -42,7 +43,7 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.knowledge.content.services.edit as content_edit
+content_edit = import_module('modules-plugable.computer.filesystem.services.content_edit')
 
 class EditTakesTheLock(unittest.TestCase):
     """The edit verb takes the per-file lock around the read and the write.

@@ -29,9 +29,9 @@ from machine.console import fail
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
 from .get_task_answer_context import ANSWERING_COMMAND, questions_problem
 from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.record import REPORT
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.primitive.record import REPORT
+from modules.management.task.services.report_file import REPORT_NAME
 from modules.management.task.primitive.task_id import TaskId
 QUESTIONS_BRIEF_COMMAND = 'get-task-questions-answer-brief'
 

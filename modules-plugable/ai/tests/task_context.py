@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for composing the context of a set of kinds, in `modules/knowledge/content/services/task_context.py`.
+"""Tests for composing the context of a set of kinds, in `modules-plugable/ai/services/task_context.py`.
 
-    python modules/knowledge/content/tests/task_context.py
+    python modules-plugable/ai/tests/task_context.py
 
 The subject is the one composition `memar ai get-task-init-context` and
 `memar content get-act-context` both print, from the lists of
 [Normative References](../../rules/normative_references/normative_references.md),
 named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Two kinds of pin. The shape of the composition is pinned on small documents
 and lists of the suite's own, in a scratch checkout, so no pin depends on what
@@ -75,6 +75,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
@@ -92,18 +93,36 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = TESTS.parents[2] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
-from modules.knowledge.content.services.get_section import by_anchor, section_hash
-from modules.knowledge.content.services.normative_references import EVERY_ACT, LIST_NAME, MEMAR_PLACE, PREFERENCE, memar_place
+_m_content_get_section = import_module('modules-plugable.computer.codec.markdown.services.content_get_section')
+by_anchor = _m_content_get_section.by_anchor
+section_hash = _m_content_get_section.section_hash
+_m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
+EVERY_ACT = _m_normative_references.EVERY_ACT
+LIST_NAME = _m_normative_references.LIST_NAME
+MEMAR_PLACE = _m_normative_references.MEMAR_PLACE
+PREFERENCE = _m_normative_references.PREFERENCE
+memar_place = _m_normative_references.memar_place
 from modules.process.project.services.preferences import preferences_path, preferences_text
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
-from modules.knowledge.content.services.task_context import CHANGED_DO, GONE_DO, Printed, Ref, compose, context, context_places, context_text, read_record, record_path, write_record
-from modules.knowledge.documentation.primitive.label import Label, Labels
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+_m_task_context = import_module('modules-plugable.ai.services.task_context')
+CHANGED_DO = _m_task_context.CHANGED_DO
+GONE_DO = _m_task_context.GONE_DO
+Printed = _m_task_context.Printed
+Ref = _m_task_context.Ref
+compose = _m_task_context.compose
+context = _m_task_context.context
+context_places = _m_task_context.context_places
+context_text = _m_task_context.context_text
+read_record = _m_task_context.read_record
+record_path = _m_task_context.record_path
+write_record = _m_task_context.write_record
+from modules.knowledge.label.primitive.label import Label, Labels
+from modules.management.task.labels.task_kind import TaskKind
 ROOT = SCRIPTS.parent.parent
 LAUNCHER = SCRIPTS / 'memar'
 DOCS = {'plain.md': '# Plain\n\n## Abstract\nPLAIN-ABSTRACT\n\n## One\nONE-TEXT\n\n## Two\nTWO-TEXT\n\n## Three\nTHREE-TEXT\n', 'way.practice.md': '---\nname: way\ndescription: WAY-DESCRIPTION\n---\n\n# Way Practice\n\n## First\nFIRST-TEXT\n\n## Second\nSECOND-TEXT\n\n### Inner\nINNER-TEXT\n\n## Third\nTHIRD-TEXT\n', 'core.md': '# Core\n\n## Abstract\nCORE-ABSTRACT\n\n## Norms\nCORE-NORMS\n'}
@@ -513,7 +532,7 @@ class CommandLineWithTask(Fixture):
         self.lists({DESIGN.word: [('plain.md', 'one')], CRITIQUE.word: [('plain.md', 'one'), ('plain.md', 'two')]})
 
     def run_with(self, *arguments: str) -> str:
-        import modules.knowledge.content.services.get_act_context as content_context
+        content_context = import_module('modules-plugable.ai.services.content_get_act_context')
         parser = argparse.ArgumentParser()
         run = content_context.describe(parser.add_subparsers())
         printed = io.StringIO()
@@ -565,7 +584,7 @@ class CommandLineWithTask(Fixture):
         self.assertIn('20261016-T000000Z-2', str(refused.exception.code))
 
     def run_with_id(self, task_id: str, *arguments: str) -> None:
-        import modules.knowledge.content.services.get_act_context as content_context
+        content_context = import_module('modules-plugable.ai.services.content_get_act_context')
         parser = argparse.ArgumentParser()
         run = content_context.describe(parser.add_subparsers())
         with contextlib.redirect_stdout(io.StringIO()):

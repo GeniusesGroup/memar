@@ -90,11 +90,11 @@ import modules.process.project.services.registry as project_registry
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 task_gc = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
 import modules.management.task.services.ensure as task_ensure
-import modules.knowledge.documentation.plan.services.plan as task_plan
+import modules.management.task.services.plan_file as task_plan
 from modules.process.project.services.task_location import register, registered_locations
 TASK_LOG_NAME = import_module('modules-plugable.computer.git.services.log').TASK_LOG_NAME
 log_path = import_module('modules-plugable.computer.git.services.log').log_path
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
 DAY = 24 * 60 * 60
 IDLE = '20261001-T000000Z-1111'
 OTHER = '20261002-T000000Z-2222'

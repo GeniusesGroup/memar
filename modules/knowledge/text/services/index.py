@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/index.py — the index `memar content find` ranks: the sections of the checkout's content, scored by word similarity.
+"""modules/knowledge/text/services/index.py — the index `memar content find` ranks: the sections of the checkout's content, scored by word similarity.
 
 **The corpus is the one `content_corpus` names**, the same as `search`'s, so no verb sees a narrower
 or a wider world than the verb beside it. Its units are each Markdown section, from its heading to
@@ -40,6 +40,7 @@ does not carry. Recorded 2026-10-16, task 20261016-T135247Z-15464; the study of 
 task 20261016-T095101Z-14276; the keep, task 20261019-T111413Z-21136.
 """
 from __future__ import annotations
+from machine.plugable_import import load as plugable_load
 import hashlib
 import math
 import posixpath
@@ -48,9 +49,11 @@ import time
 from collections import Counter
 from pathlib import Path, PurePath, PurePosixPath
 from typing import NamedTuple
-from modules.knowledge.content.services.corpus import content_files
+from modules.knowledge.text.services.corpus import content_files
 from modules.knowledge.content.services.reference import read_text
-from modules.knowledge.content.services.get_section import outline, section_hash
+_m_content_get_section = plugable_load('computer.codec.markdown.services.content_get_section')
+outline = _m_content_get_section.outline
+section_hash = _m_content_get_section.section_hash
 K1 = 1.2
 B = 0.75
 HEADING_WEIGHT = 3
@@ -214,7 +217,9 @@ def _task_reads(root: Path, kept: dict[str, Kept] | None) -> tuple[list[tuple[st
     A live file is kept as a document is, by its stat; an archived one by its blob id, which
     changes whenever its bytes do. A file that turns out binary is left out.
     """
-    from modules.knowledge.content.services.task_records import read_all, task_records
+    _m_task_records = plugable_load('management.task.services.task_records')
+    read_all = _m_task_records.read_all
+    task_records = _m_task_records.task_records
     records, notes = task_records(root)
     reads: dict[str, Read] = {}
     missing = []
@@ -241,7 +246,7 @@ def _task_reads(root: Path, kept: dict[str, Kept] | None) -> tuple[list[tuple[st
 
 def build(root: Path, sources=None) -> Index:
     """The index of the corpus of the checkout at ROOT, of the SOURCES named (`CorpusSource`; the default ones without), read now, or checked now against what `keep()` kept."""
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     chosen = CorpusSource.default() if sources is None else tuple(sources)
     kept = None if _kept is None else _kept.setdefault(root.resolve(), {})
     units: list[Unit] = []

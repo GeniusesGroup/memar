@@ -50,7 +50,7 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 from modules.process.project.services.task_location import register
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
 SID = '20261011-T000000Z-1'
 BRIEF = f'Your task is task {SID}. Run `memar ai get-task-init-context --task-id {SID}` first, before anything else, and follow what it prints.'
 

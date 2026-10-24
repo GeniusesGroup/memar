@@ -1,44 +1,35 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/backlinks.py — `memar content backlinks`: which documents link to a file, or to one section of it.
+"""modules-plugable/computer/codec/markdown/services/content_backlinks.py — `memar content backlinks`: which documents link to a file, or to one section of it.
 
 The question an agent changing a document has to ask first: who depends on it.
 Answered by resolved path, never by prose — a mention without a link is not a
 backlink, a link quoted in code is text about links, and the target's own
 in-page links are navigation rather than dependence. A root-relative link
-(`/docs/...`) is resolved as `memar content path` resolves it, against the
+(`/docs/...`) is resolved as `memar content resolve-path` resolves it, against the
 checkout, so the Memar skill's links, all of that form, are counted.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import argparse
 from pathlib import Path
-
-from modules.knowledge.content.services.corpus import content_files
-from modules.knowledge.content.services.links import file_links, headings_by_fragment, link_target
-from modules.knowledge.content.services.markdown import without_code
+from modules.knowledge.text.services.corpus import content_files
+_m_links = import_module('modules-plugable.computer.codec.markdown.services.links')
+file_links = _m_links.file_links
+headings_by_fragment = _m_links.headings_by_fragment
+link_target = _m_links.link_target
+_m_markdown = import_module('modules-plugable.computer.codec.markdown.services.markdown')
+without_code = _m_markdown.without_code
 from modules.knowledge.content.services.reference import content_root, resolve_ref
 
-
 def describe(verbs):
-    parser = verbs.add_parser(
-        "backlinks",
-        help="list the documents linking to each file",
-        description="List the documents linking to each FILE, by resolved "
-                    "path: relative links, and root-relative ones (/docs/...) "
-                    "resolved as `memar content path` resolves them. "
-                    "FILE#anchor keeps only the links whose fragment is that "
-                    "anchor.",
-        formatter_class=argparse.HelpFormatter,
-    )
-    parser.add_argument("files", nargs="+", help="FILE or FILE#anchor")
+    parser = verbs.add_parser('backlinks', help='list the documents linking to each file', description='List the documents linking to each FILE, by resolved path: relative links, and root-relative ones (/docs/...) resolved as `memar content resolve-path` resolves them. FILE#anchor keeps only the links whose fragment is that anchor.', formatter_class=argparse.HelpFormatter)
+    parser.add_argument('files', nargs='+', help='FILE or FILE#anchor')
     return run
-
 
 def run(args: argparse.Namespace) -> None:
     cmd_backlinks(args, content_root())
-
 
 def _outgoing_file_links(path: Path) -> list[tuple[str, str, int]]:
     """Every link to a file `path` makes, as (file part, fragment, line).
@@ -48,15 +39,12 @@ def _outgoing_file_links(path: Path) -> list[tuple[str, str, int]]:
     document and are left out here as they are there.
     """
     try:
-        text = path.read_text(encoding="utf-8")
+        text = path.read_text(encoding='utf-8')
     except (OSError, UnicodeDecodeError):
         return []
     return [(file_part, fragment, line) for line, _, file_part, fragment in file_links(without_code(text))]
 
-
-def find_backlinks(
-    target: Path, docs: list[Path], root: Path, anchor: str | None
-) -> list[tuple[Path, int, str]]:
+def find_backlinks(target: Path, docs: list[Path], root: Path, anchor: str | None) -> list[tuple[Path, int, str]]:
     """Every document in `docs` linking to `target`, as (linker, line, fragment).
 
     Identity is the resolved path, so a document reached by two spellings is
@@ -83,36 +71,34 @@ def find_backlinks(
                 continue
     return sorted(found, key=lambda hit: (str(hit[0]), hit[1]))
 
-
 def _answers_to(target: Path, anchor: str) -> bool:
     """Whether a heading of `target` produces `anchor`; True when the file cannot be read, so nothing false is said."""
     try:
-        text = target.read_text(encoding="utf-8")
+        text = target.read_text(encoding='utf-8')
     except (OSError, UnicodeDecodeError):
         return True
     return anchor in headings_by_fragment(without_code(text), text)
 
-
 def cmd_backlinks(args: argparse.Namespace, root: Path) -> None:
     for file_ref in args.files:
-        _, hash_mark, fragment = file_ref.partition("#")
+        _, hash_mark, fragment = file_ref.partition('#')
         anchor = fragment if hash_mark else None
         target = resolve_ref(file_ref, root, None)
         try:
             shown = target.relative_to(root)
         except ValueError:
             shown = target
-        print(f"== {shown}{'#' + anchor if anchor is not None else ''} ==")
+        print(f"== {shown}{('#' + anchor if anchor is not None else '')} ==")
         hits = find_backlinks(target, content_files(root), root, anchor)
         if not hits:
-            print("(no incoming links)")
-        if anchor is not None and target.suffix.lower() == ".md" and not _answers_to(target, anchor):
-            print(f"(no heading in this file answers to #{anchor})")
+            print('(no incoming links)')
+        if anchor is not None and target.suffix.lower() == '.md' and (not _answers_to(target, anchor)):
+            print(f'(no heading in this file answers to #{anchor})')
         for linker, line, link_fragment in hits:
-            where = f"#{link_fragment}" if link_fragment else ""
+            where = f'#{link_fragment}' if link_fragment else ''
             try:
                 linker_shown = linker.relative_to(root)
             except ValueError:
                 linker_shown = linker
-            print(f"{linker_shown}:{line}{where}")
+            print(f'{linker_shown}:{line}{where}')
         print()

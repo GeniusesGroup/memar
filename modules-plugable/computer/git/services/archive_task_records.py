@@ -71,9 +71,9 @@ from modules.management.task.services.folder import Task, folder_of, read_task, 
 from .keep import KEEP_LIMIT_BYTES, Left, Selection, select
 from modules.process.project.services.task_location import same_path
 from .log import record
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.services.report_file import REPORT_NAME
 from modules.management.task.services.temp import TEMP_FOLDER
 from modules.management.task.primitive.task_id import TaskId
 ARCHIVE_COMMAND = 'archive-task-records'

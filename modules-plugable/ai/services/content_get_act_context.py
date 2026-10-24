@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/get_act_context.py — `memar content get-act-context`: the sections a kind of act requires, with or without a task.
+"""modules-plugable/ai/services/content_get_act_context.py — `memar content get-act-context`: the sections a kind of act requires, with or without a task.
 
 `memar ai get-task-init-context` prints a task's context from its plan's Kind; this
-prints the same composition (`modules/knowledge/content/services/task_context.py`), from the lists of
-[Normative References](../rules/normative_references/normative_references.md),
+prints the same composition (`modules-plugable/ai/services/task_context.py`), from the lists of
+[Normative References](../../../modules/knowledge/content/rules/normative_references/normative_references.md),
 for kinds given on the command line: for a question answered in chat, which
 opens no task, or for a task whose act changes midway — from design to
 implementing, or an agent about to queue other tasks — which reads what
@@ -19,7 +19,7 @@ kinds' lists say now. With `--task-id`, what this prints is added to the
 record once its last part is printed, so every part of one text is composed
 from the same record.
 
-The kinds and when each applies are `modules/knowledge/documentation/plan/labels/task_kind.py`'s, and the help
+The kinds and when each applies are `modules/management/task/labels/task_kind.py`'s, and the help
 lists them from there. A composition too long for one tool output prints in
 ordered parts through `machine/console_parts.py`, each of its blocks a section
 a part is cut between. The project whose preferences set the bound is named by
@@ -28,13 +28,14 @@ and the first line says Memar's lists alone are read. The same project's `normat
 preference names the folders its own lists are read in, beside Memar's.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 from machine.console_parts import add_part_arguments
 from modules.process.project.services.find import add_project_flags
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.labels.task_kind import TaskKind
 from modules.management.task.primitive.task_id import TaskId
 COMMAND = 'get-act-context'
 TASK_FLAG = '--task-id'
@@ -66,7 +67,11 @@ def run(args: argparse.Namespace) -> None:
     from machine.modules_import import load as modules_load
     _folder = modules_load('management', 'task', 'services', 'folder')
     folder_of, is_task_folder = (_folder.folder_of, _folder.is_task_folder)
-    from modules.knowledge.content.services.task_context import context, context_places, read_record, write_record
+    _m_task_context = import_module('modules-plugable.ai.services.task_context')
+    context = _m_task_context.context
+    context_places = _m_task_context.context_places
+    read_record = _m_task_context.read_record
+    write_record = _m_task_context.write_record
     if args.after and args.task_id is None:
         fail(AFTER_REFUSED)
     folder = None

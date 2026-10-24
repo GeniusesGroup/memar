@@ -2,8 +2,8 @@
 
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Observer_JSON_Length in "modules/lib/codec/json/protocol/length.observers.kh"
-tp JSON_Length in "modules/lib/codec/json/protocol/length.kh"
+tp Observer_JSON_Length in "modules-plugable/computer/codec/json/protocol/length.observers.kh"
+tp JSON_Length in "modules-plugable/computer/codec/json/protocol/length.kh"
 
 // Marshalling is the interface that CAN implement by any struct that can be a JSON object.
 // Standards by https://www.json.org/json-en.html

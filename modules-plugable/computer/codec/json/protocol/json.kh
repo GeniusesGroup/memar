@@ -2,7 +2,7 @@
 
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Observer_JSON_Length in "modules/lib/codec/json/protocol/length.observers.kh"
+tp Observer_JSON_Length in "modules-plugable/computer/codec/json/protocol/length.observers.kh"
 
 // Codec JSON is the interface that must implement by any struct that can be a JSON object.
 // Standards by https://www.json.org/json-en.html

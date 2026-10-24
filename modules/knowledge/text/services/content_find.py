@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/find.py — `memar content find`: the sections of the checkout's content most like a text, ranked.
+"""modules/knowledge/text/services/content_find.py — `memar content find`: the sections of the checkout's content most like a text, ranked.
 
 For what no normative-references list reaches: a subject that enters the work midway, or a
 question the lists do not answer. `search` answers where a term occurs; this answers which
 sections are about a text, best first, so a reader opens the few that matter instead of grepping.
 It is informative and nothing more: it ranks by word similarity, binds nobody, and does not find
 what an act must read — that is what `memar content get-act-context` prints from the lists of
-[Normative References](../rules/normative_references/normative_references.md).
+[Normative References](../../content/rules/normative_references/normative_references.md).
 
-The ranking and its corpus are `modules/knowledge/content/services/index.py`'s, with the support its constants have.
+The ranking and its corpus are `modules/knowledge/text/services/index.py`'s, with the support its constants have.
 **A hit** is one line: the checkout's name, the document's path and the section's anchor, the
 heading, the section's first sentence cut at `SENTENCE_LIMIT` characters with links reduced to
 their text, and the section's hash, the one `memar content get-section FILE '#anchor' --hash` prints
@@ -34,7 +34,7 @@ FRONT_MATTER = re.compile('\\A---\\r?\\n.*?\\r?\\n---\\r?\\n', re.DOTALL)
 NO_HEADING = '(before the first heading)'
 
 def describe(verbs):
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     from modules.process.project.services.find import add_project_flags
     parser = verbs.add_parser(COMMAND, help="rank the sections of the checkout's content by word similarity to a text", description=f"{INFORMATIVE}.\n\nPrint the sections of the checkout's content most like TEXT, best first, one line each:\nroot:path#anchor | heading | first sentence | hash. The hash is the one\n`memar content get-section FILE '#anchor' --hash` prints. Under each hit are the sections it\nlinks by anchor, one level, each once, marked; --no-links leaves them out. Open a hit with\n`memar content get-section FILE '#anchor'`. The words are compared as they are written, with no\nstemming, and a section whose heading holds them ranks above one that mentions them. It\ndoes not find what an act must read: that is printed by `memar content get-act-context`. To see\nwhere a term occurs, use `memar content search`.\n\nWhat is read is chosen with --from. A hit from the tasks is a task's record, what\nthat task wrote and never a ruling: its path begins with the records branch, opened with\n`memar git show-task-records --task-id ID --file FILE`, or lies in a live task folder. A text\nfile of theirs that is not Markdown is ranked as one unit, named by its file. What of the\ntasks could not be read is said on standard error.", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('text', help='the words to look for: a subject, a question, a sentence')
@@ -76,7 +76,7 @@ def find_lines(root: Path, query: str, top: int=TOP, links: bool=True, label: st
 
 def find_output(root: Path, query: str, top: int=TOP, links: bool=True, label: str | None=None, sources=None) -> tuple[list[str], tuple[str, ...]]:
     """`find_lines`, with the notes on what of the tasks could not be read."""
-    from modules.knowledge.content.services.index import build
+    from modules.knowledge.text.services.index import build
     name = label or root.name
     index = build(root, sources)
     ranked = index.rank(query)[:max(top, 0)]
@@ -97,7 +97,7 @@ def find_output(root: Path, query: str, top: int=TOP, links: bool=True, label: s
 def run(args: argparse.Namespace) -> None:
     import sys
     from machine.console import fail
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     from modules.knowledge.content.services.reference import content_root
     from modules.process.project.services.find import project_from_args
     if args.top < 1:

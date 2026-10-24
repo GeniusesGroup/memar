@@ -6,7 +6,7 @@
 - Time: 2026-07-19T20:26:35Z
 - Type: Added
 - Cited:
-  - [Documentation](../../../modules/knowledge/documentation/documentation.md) — Reference: this specification is informed by the Documentation framework's analysis of document types as profiles rather than independent structures.
+  - [Documentation](../../knowledge/documentation/documentation.md) — Reference: this specification is informed by the Documentation framework's analysis of document types as profiles rather than independent structures.
   - [Knowledge](../../../modules/knowledge/knowledge.md) — Depends_on: this critique and that specification are companion documents with opposite polarity (critique vs. principles); the positive knowledge-modeling principles this critique enables are stated there.
   - [Semantic File Systems](https://dl.acm.org/doi/10.1145/121132.121138) — Reference: Gifford et al.'s demonstration that attribute-based (semantic) access outperforms hierarchical (directory-tree) access for information-rich content; primary academic support for the classification critique.
   - [Unikernels: Library Operating Systems for the Cloud](https://anil.recoil.org/papers/2013-asplos-mirage.pdf) — Reference: Madhavapeddy et al.'s evidence that general-purpose filesystems are not universal requirements, supporting the filesystem-is-optional argument.
@@ -221,7 +221,7 @@
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5) — revised
 
 #### What changed
-- `filesystem.practice.md`'s `description` now states when the check is run, from its *When to Run the Check* section, and what it is not: the argument against the default, and the design of the storage chosen, which [Documentation — Practice → Description quality criteria](../../../modules/knowledge/documentation/practice/practice.md#description-quality-criteria) requires.
+- `filesystem.practice.md`'s `description` now states when the check is run, from its *When to Run the Check* section, and what it is not: the argument against the default, and the design of the storage chosen, which [Documentation — Practice → Description quality criteria](../../knowledge/documentation/practice/practice.md#description-quality-criteria) requires.
 - Why: the study of task 20261015-T061908Z-9468 (report.md, Result 5) found the defect, and the owner allowed it fixed on 2026-10-15; a Practice's `description` is printed as the header an agent reads above its passages, so a description that misleads or states no boundary misleads every agent that reads it.
 - Made in task 20261015-T110002Z-23000.
 
@@ -237,3 +237,20 @@
 #### What changed
 - `filesystem.md` gained the section *Many Small Files Under a Malware Scanner*: the scanner's CPU against the work it watches for creating, editing and reading small files, the effect of excluding the working-tree folder, and what git's own settings did not change.
 - Why: the study of task 20261020-T131910Z-22300 measured it on the owner's machine; it supports the document's claim that the file-per-record default has a cost, so it is cited at that claim as evidence.
+
+---
+
+### The projection-layer question is rephrased as the editor adapter's
+- Time: 2026-10-23T17:30:00Z
+- Type: Changed
+- Cited:
+  - [Memory Record](../../../modules/computer/memory/record/record.md) - Reference: the binding of the class of source files
+- Tasks:
+  - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme; the build tasks are queued after it
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-22/23), ruled the premises it rests on
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted
+  - Three sub-agents (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed; their findings are applied, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- [filesystem.handoff.md](filesystem.handoff.md) gains the Open Questions entry on what replaces the files adapter so that Memar's own source tree can move into the memory store, with its options and the Tentative assumption, and the Projection Layer Architecture item points to it. The task that settles it is queued.

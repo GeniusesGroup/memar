@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/task_records.py — the tasks a content verb reads when it is asked to: their archived records and their live folders.
+"""modules-plugable/management/task/services/task_records.py — the tasks a content verb reads when it is asked to: their archived records and their live folders.
 
-The source `tasks` of `CorpusSource` (`modules/knowledge/content/primitive/corpus_source.py`).
+The source `tasks` of `CorpusSource` (`modules/knowledge/text/primitive/corpus_source.py`).
 A task's records are what it wrote while it worked, and a later task meeting a question
 like an earlier one must be able to find the earlier answer (owner, 2026-10-19). They are read
 only when a verb is asked for them, because each is one task's claim and never a ruling, and
@@ -67,8 +67,8 @@ def _label(file: Path, root: Path) -> str:
 
 def _names_project(folder: Path, root: Path) -> bool:
     """Whether the plan in FOLDER names ROOT by its folder."""
-    from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-    from modules.knowledge.documentation.plan.services.plan import read_plan
+    from modules.management.task.plan.primitive.plan_key import PlanKey
+    from modules.management.task.services.plan_file import read_plan
     named = ((read_plan(folder / PLAN_FILE).front or {}).get(PlanKey.PROJECT.key) or '').strip()
     if not named:
         return False
@@ -93,7 +93,7 @@ def live_folders(root: Path) -> list[Path]:
     return [found[name] for name in sorted(found)]
 
 def _live(root: Path, folder: Path) -> list[Record]:
-    from modules.knowledge.content.services.corpus import is_generated
+    from modules.knowledge.text.services.corpus import is_generated
     records = []
     for file in sorted(folder.rglob('*')):
         if not file.is_file() or file.is_symlink():

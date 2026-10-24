@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar content backlinks` in `modules/knowledge/content/services/backlinks.py`.
+"""Tests for `memar content backlinks` in `modules-plugable/computer/codec/markdown/services/content_backlinks.py`.
 
-    python modules/knowledge/content/tests/backlinks.py
+    python modules-plugable/computer/codec/markdown/tests/content_backlinks.py
 
 The subject is which documents link to a file, named for the file that holds it
-per [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+per [Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: every document is written into
-one, made under the folder `machine/fs_test_scratch.py` names, and removed
+one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
 again, and no test reads the repository's own `docs/`.
 
 What is pinned, and what each pin is for:
@@ -22,7 +22,10 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from importlib import import_module
+from machine.plugable_import import load as plugable_load
+_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 import contextlib
 import io
 import sys
@@ -30,21 +33,12 @@ import tempfile
 import unittest
 from argparse import Namespace
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-from machine.fs_test_scratch import suite_scratch
-
-import modules.knowledge.content.services.backlinks as content_backlinks
-
+content_backlinks = import_module('modules-plugable.computer.codec.markdown.services.content_backlinks')
 
 class BacklinksAreResolvedPaths(unittest.TestCase):
     """`backlinks` answers which documents link here, and nothing else.
@@ -71,7 +65,7 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
                         the verb stays an answer rather than an empty run.
       RootRelativeCounts A link written from the checkout's root
                         (`/docs/...`), the form the Memar skill writes every
-                        link in, resolves as `memar content path` resolves it,
+                        link in, resolves as `memar content resolve-path` resolves it,
                         against the checkout, and is a backlink like any other.
       PerAnchor         `FILE#anchor` keeps only the links whose fragment is
                         that anchor, so the dependents of one section are
@@ -87,107 +81,89 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
     def write(self, relative: str, text: str) -> Path:
         path = self.root / relative
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding="utf-8", newline="\n")
+        path.write_text(text, encoding='utf-8', newline='\n')
         return path
 
     def make_tree(self) -> Path:
-        self.write("docs/target.md", "# Target\n## Part\n")
-        self.write("docs/a.md", "# A\nSee [T](./target.md#part).\n")
-        self.write("docs/b.md", "# B\nSee [T](./target.md).\n")
-        self.write("docs/unrelated.md", "# U\nNo links here.\n")
-        return self.root / "docs" / "target.md"
+        self.write('docs/target.md', '# Target\n## Part\n')
+        self.write('docs/a.md', '# A\nSee [T](./target.md#part).\n')
+        self.write('docs/b.md', '# B\nSee [T](./target.md).\n')
+        self.write('docs/unrelated.md', '# U\nNo links here.\n')
+        return self.root / 'docs' / 'target.md'
 
     def docs(self) -> list[Path]:
-        return sorted((self.root / "docs").glob("*.md"))
+        return sorted((self.root / 'docs').glob('*.md'))
 
     def test_linkers_are_listed_with_line_and_fragment(self) -> None:
         target = self.make_tree()
         found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
-        self.assertEqual(
-            found,
-            [
-                (self.root / "docs" / "a.md", 2, "part"),
-                (self.root / "docs" / "b.md", 2, ""),
-            ],
-        )
+        self.assertEqual(found, [(self.root / 'docs' / 'a.md', 2, 'part'), (self.root / 'docs' / 'b.md', 2, '')])
 
     def test_self_links_are_not_incoming(self) -> None:
         target = self.make_tree()
-        self.write("docs/target.md", "# Target\n## Part\nSee [P](#part).\n")
+        self.write('docs/target.md', '# Target\n## Part\nSee [P](#part).\n')
         found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_a_mention_without_a_link_is_not_a_backlink(self) -> None:
         target = self.make_tree()
-        self.write("docs/c.md", "# C\ntarget.md is discussed a lot here.\n")
+        self.write('docs/c.md', '# C\ntarget.md is discussed a lot here.\n')
         found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_a_link_naming_a_missing_spelling_matches_nothing(self) -> None:
         target = self.make_tree()
-        self.write("docs/c.md", "# C\nSee [T](./targte.md).\n")
+        self.write('docs/c.md', '# C\nSee [T](./targte.md).\n')
         found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_a_link_inside_code_is_text_about_links(self) -> None:
         target = self.make_tree()
-        self.write("docs/c.md", "# C\n`[T](./target.md)`\n")
+        self.write('docs/c.md', '# C\n`[T](./target.md)`\n')
         found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_nothing_linking_reports_nothing(self) -> None:
         self.make_tree()
-        lonely = self.write("docs/lonely.md", "# Lonely\n")
+        lonely = self.write('docs/lonely.md', '# Lonely\n')
         self.assertEqual(content_backlinks.find_backlinks(lonely, self.docs(), self.root, None), [])
 
     def test_cmd_prints_linker_hits_per_target(self) -> None:
         self.make_tree()
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            content_backlinks.cmd_backlinks(
-                Namespace(files=["docs/target.md"]), self.root
-            )
+            content_backlinks.cmd_backlinks(Namespace(files=['docs/target.md']), self.root)
         out = printed.getvalue()
         self.assertIn(f"== {Path('docs/target.md')} ==", out)
         self.assertIn(f"{Path('docs/a.md')}:2#part", out)
         self.assertIn(f"{Path('docs/b.md')}:2", out)
-        self.assertNotIn("unrelated", out)
+        self.assertNotIn('unrelated', out)
 
     def test_a_root_relative_link_is_a_backlink(self) -> None:
         target = self.make_tree()
-        self.write("docs/c.md", "# C\nSee [T](/docs/target.md#part).\n")
-        self.write("modules/m/m.md", "# M\nSee [T](/docs/target.md).\n")
-        docs = self.docs() + [self.root / "modules" / "m" / "m.md"]
+        self.write('docs/c.md', '# C\nSee [T](/docs/target.md#part).\n')
+        self.write('modules/m/m.md', '# M\nSee [T](/docs/target.md).\n')
+        docs = self.docs() + [self.root / 'modules' / 'm' / 'm.md']
         found = content_backlinks.find_backlinks(target, docs, self.root, None)
-        self.assertIn((self.root / "docs" / "c.md", 2, "part"), found)
-        self.assertIn((self.root / "modules" / "m" / "m.md", 2, ""), found)
+        self.assertIn((self.root / 'docs' / 'c.md', 2, 'part'), found)
+        self.assertIn((self.root / 'modules' / 'm' / 'm.md', 2, ''), found)
         self.assertEqual(len(found), 4, found)
 
     def test_a_root_relative_link_resolves_against_the_root_given(self) -> None:
-        # The root is the checkout `memar content path` resolves against, not
-        # the linking document's folder nor the machine's filesystem root.
         target = self.make_tree()
-        self.write("docs/c.md", "# C\nSee [T](/target.md).\n")
+        self.write('docs/c.md', '# C\nSee [T](/target.md).\n')
         found = content_backlinks.find_backlinks(target, self.docs(), self.root, None)
         self.assertEqual(len(found), 2, found)
 
     def test_an_anchor_keeps_only_the_links_to_that_section(self) -> None:
         target = self.make_tree()
-        self.write("docs/c.md", "# C\nSee [T](/docs/target.md#part) and [T](./target.md#target).\n")
-        found = content_backlinks.find_backlinks(target, self.docs(), self.root, "part")
-        self.assertEqual(
-            found,
-            [
-                (self.root / "docs" / "a.md", 2, "part"),
-                (self.root / "docs" / "c.md", 2, "part"),
-            ],
-        )
+        self.write('docs/c.md', '# C\nSee [T](/docs/target.md#part) and [T](./target.md#target).\n')
+        found = content_backlinks.find_backlinks(target, self.docs(), self.root, 'part')
+        self.assertEqual(found, [(self.root / 'docs' / 'a.md', 2, 'part'), (self.root / 'docs' / 'c.md', 2, 'part')])
 
     def test_cmd_takes_file_hash_anchor(self) -> None:
         self.make_tree()
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            content_backlinks.cmd_backlinks(
-                Namespace(files=["docs/target.md#part"]), self.root
-            )
+            content_backlinks.cmd_backlinks(Namespace(files=['docs/target.md#part']), self.root)
         out = printed.getvalue()
         self.assertIn(f"== {Path('docs/target.md')}#part ==", out)
         self.assertIn(f"{Path('docs/a.md')}:2#part", out)
@@ -196,13 +172,9 @@ class BacklinksAreResolvedPaths(unittest.TestCase):
     def test_cmd_says_when_no_heading_answers_to_the_anchor(self) -> None:
         self.make_tree()
         with contextlib.redirect_stdout(io.StringIO()) as printed:
-            content_backlinks.cmd_backlinks(
-                Namespace(files=["docs/target.md#gone"]), self.root
-            )
+            content_backlinks.cmd_backlinks(Namespace(files=['docs/target.md#gone']), self.root)
         out = printed.getvalue()
-        self.assertIn("(no incoming links)", out)
-        self.assertIn("no heading in this file answers to #gone", out)
-
-
-if __name__ == "__main__":
+        self.assertIn('(no incoming links)', out)
+        self.assertIn('no heading in this file answers to #gone', out)
+if __name__ == '__main__':
     unittest.main(verbosity=2)

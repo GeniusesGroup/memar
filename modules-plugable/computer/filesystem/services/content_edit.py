@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/edit.py — `memar content edit`: exact text in a file replaced, or nothing written.
+"""modules-plugable/computer/filesystem/services/content_edit.py — `memar content edit`: exact text in a file replaced, or nothing written.
 
 The caller states the text it believes the file holds, and the verb refuses
 unless that text occurs exactly once — or as often as `--all` accepts — so an
@@ -18,7 +18,7 @@ import argparse
 import sys
 from pathlib import Path
 from modules.knowledge.content.services.reference import content_root
-from modules.knowledge.content.services.text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
+from modules.knowledge.text.services.file_text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
 
 def describe(verbs):
     parser = verbs.add_parser('edit', help='replace exact text in a file, refusing an absent or ambiguous match', description='Replace exact text in FILE, refusing an absent or ambiguous match. Same encoding and newline guarantees as write; removes a BOM if it finds one. The read, the match, and the write happen under the per-file lock, so the text matched is the text written to.', formatter_class=argparse.HelpFormatter)

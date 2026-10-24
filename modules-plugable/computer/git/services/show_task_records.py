@@ -33,8 +33,8 @@ from modules.management.task.services.dependency import Reader
 from modules.management.task.services.depends import concerns_for, home_of, notes_for
 from modules.management.task.services.list import find_tasks
 from modules.management.task.services.folder import folder_of, read_task
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, read_plan
-from modules.knowledge.documentation.report.services.report import REPORT_NAME, decisions_needed, handback_problem, read_report_status
+from modules.management.task.services.plan_file import PLAN_NAME, read_plan
+from modules.management.task.services.report_file import REPORT_NAME, decisions_needed, handback_problem, read_report_status
 from modules.process.project.primitive.project_name import ProjectName
 from modules.management.task.primitive.task_id import TaskId
 SHOW_COMMAND = 'show-task-records'

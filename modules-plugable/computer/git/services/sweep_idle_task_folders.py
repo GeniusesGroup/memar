@@ -98,7 +98,7 @@ from modules.management.task.services.concerns import concerns
 from modules.management.task.services.folder import DAY_SECONDS, Task, last_change, queued_why, read_task, task_folders
 from modules.process.project.services.task_location import prune_registry, registered_locations
 from .log import TASK_LOG_NAME, log_path, record
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, is_complete
+from modules.management.task.services.plan_file import PLAN_NAME, is_complete
 from modules.management.task.primitive.task_id import TaskId
 GC_COMMAND = 'sweep-idle-task-folders'
 TASK_IDLE_DAYS = 1

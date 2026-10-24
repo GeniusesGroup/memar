@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for one section of a document, in `modules/knowledge/content/services/section.py`, and its verb `memar content section`.
+"""Tests for one section of a document, in `modules-plugable/computer/codec/markdown/services/content_get_section.py`, and its verb `memar content get-section`.
 
-    python modules/knowledge/content/tests/section.py
+    python modules-plugable/computer/codec/markdown/tests/content_get_section.py
 
 The subject is the section a name gives — the fragment a link uses, or the
 heading's text — and its hash, named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 Only `Verb` touches the filesystem, in a temporary folder.
 
 What is pinned, and what each pin is for:
@@ -29,13 +29,13 @@ What is pinned, and what each pin is for:
              taken of the section's text; it covers the subsections, so an
              edit inside one changes it, and an edit outside the section does
              not; the line endings the file was read with do not.
-  Verb       `memar content section FILE '#anchor'` prints the section, and
+  Verb       `memar content get-section FILE '#anchor'` prints the section, and
              `--hash` prints only its hash.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
+from importlib import import_module
 import argparse
 import contextlib
 import io
@@ -43,143 +43,111 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
 from machine.console_parts import text_id
-from modules.knowledge.content.services.section import by_anchor, cmd_section, named, section_hash
-
-TEXT = """# Title
-
-## Alpha Part
-alpha text
-### Inner (Detail)
-inner text
-
-## Beta Part
-```
-## not a heading
-```
-beta text
-
-## Gamma Part
-gamma text
-"""
-
+_m_content_get_section = import_module('modules-plugable.computer.codec.markdown.services.content_get_section')
+by_anchor = _m_content_get_section.by_anchor
+cmd_section = _m_content_get_section.cmd_section
+named = _m_content_get_section.named
+section_hash = _m_content_get_section.section_hash
+TEXT = '# Title\n\n## Alpha Part\nalpha text\n### Inner (Detail)\ninner text\n\n## Beta Part\n```\n## not a heading\n```\nbeta text\n\n## Gamma Part\ngamma text\n'
 
 class ByAnchor(unittest.TestCase):
+
     def test_a_section_is_found_by_its_slug_with_its_heading_line_and_runs_to_the_next_at_its_level(self) -> None:
-        found = by_anchor(TEXT, "alpha-part")
-        self.assertTrue(found.startswith("## Alpha Part"))
-        self.assertIn("inner text", found)
-        self.assertNotIn("beta text", found)
+        found = by_anchor(TEXT, 'alpha-part')
+        self.assertTrue(found.startswith('## Alpha Part'))
+        self.assertIn('inner text', found)
+        self.assertNotIn('beta text', found)
 
     def test_a_deeper_heading_is_found_and_ends_at_the_next_heading_above_it(self) -> None:
-        found = by_anchor(TEXT, "inner-detail")
-        self.assertEqual(found, "### Inner (Detail)\ninner text")
+        found = by_anchor(TEXT, 'inner-detail')
+        self.assertEqual(found, '### Inner (Detail)\ninner text')
 
     def test_a_hash_inside_a_fenced_block_is_no_heading(self) -> None:
-        found = by_anchor(TEXT, "beta-part")
-        self.assertIn("## not a heading", found)
-        self.assertIn("beta text", found)
-        self.assertIsNone(by_anchor(TEXT, "not-a-heading"))
+        found = by_anchor(TEXT, 'beta-part')
+        self.assertIn('## not a heading', found)
+        self.assertIn('beta text', found)
+        self.assertIsNone(by_anchor(TEXT, 'not-a-heading'))
 
     def test_an_anchor_no_heading_answers_to_is_none(self) -> None:
-        self.assertIsNone(by_anchor(TEXT, "nowhere"))
+        self.assertIsNone(by_anchor(TEXT, 'nowhere'))
 
     def test_an_anchor_may_carry_its_hash(self) -> None:
-        self.assertEqual(by_anchor(TEXT, "#gamma-part"), by_anchor(TEXT, "gamma-part"))
-
+        self.assertEqual(by_anchor(TEXT, '#gamma-part'), by_anchor(TEXT, 'gamma-part'))
 
 class Through(unittest.TestCase):
+
     def test_the_text_runs_on_to_the_end_of_the_last_section(self) -> None:
-        found = by_anchor(TEXT, "alpha-part", "Beta Part")
-        self.assertIn("alpha text", found)
-        self.assertIn("beta text", found)
-        self.assertNotIn("gamma text", found)
+        found = by_anchor(TEXT, 'alpha-part', 'Beta Part')
+        self.assertIn('alpha text', found)
+        self.assertIn('beta text', found)
+        self.assertNotIn('gamma text', found)
 
     def test_a_last_heading_that_is_not_after_the_first_is_none(self) -> None:
-        self.assertIsNone(by_anchor(TEXT, "gamma-part", "Alpha Part"))
-        self.assertIsNone(by_anchor(TEXT, "alpha-part", "No Such Heading"))
-
-
-REPEATS = """# Notes
-
-## Notes
-first notes
-```
-## Notes
-```
-
-## Notes
-second notes
-"""
-
+        self.assertIsNone(by_anchor(TEXT, 'gamma-part', 'Alpha Part'))
+        self.assertIsNone(by_anchor(TEXT, 'alpha-part', 'No Such Heading'))
+REPEATS = '# Notes\n\n## Notes\nfirst notes\n```\n## Notes\n```\n\n## Notes\nsecond notes\n'
 
 class Named(unittest.TestCase):
+
     def test_a_name_opening_with_a_hash_is_an_anchor(self) -> None:
-        self.assertEqual(named(TEXT, "#alpha-part"), by_anchor(TEXT, "alpha-part"))
+        self.assertEqual(named(TEXT, '#alpha-part'), by_anchor(TEXT, 'alpha-part'))
 
     def test_the_suffix_names_a_repeated_heading_counted_from_the_top_heading(self) -> None:
-        self.assertEqual(named(REPEATS, "#notes-1"), "## Notes\nfirst notes\n```\n## Notes\n```")
-        self.assertEqual(named(REPEATS, "#notes-2"), "## Notes\nsecond notes")
+        self.assertEqual(named(REPEATS, '#notes-1'), '## Notes\nfirst notes\n```\n## Notes\n```')
+        self.assertEqual(named(REPEATS, '#notes-2'), '## Notes\nsecond notes')
 
     def test_a_heading_inside_a_fence_takes_no_suffix(self) -> None:
-        self.assertIsNone(named(REPEATS, "#notes-3"))
+        self.assertIsNone(named(REPEATS, '#notes-3'))
 
     def test_a_heading_text_gives_the_same_text_as_its_anchor(self) -> None:
-        self.assertEqual(named(TEXT, "Alpha Part"), named(TEXT, "#alpha-part"))
-        self.assertEqual(named(TEXT, "alpha part"), named(TEXT, "#alpha-part"))
+        self.assertEqual(named(TEXT, 'Alpha Part'), named(TEXT, '#alpha-part'))
+        self.assertEqual(named(TEXT, 'alpha part'), named(TEXT, '#alpha-part'))
 
     def test_a_heading_text_inside_a_fence_is_not_matched(self) -> None:
-        self.assertIsNone(named(TEXT, "not a heading"))
+        self.assertIsNone(named(TEXT, 'not a heading'))
 
     def test_a_name_no_heading_answers_to_is_none(self) -> None:
-        self.assertIsNone(named(TEXT, "#nowhere"))
-        self.assertIsNone(named(TEXT, "Nowhere"))
-
+        self.assertIsNone(named(TEXT, '#nowhere'))
+        self.assertIsNone(named(TEXT, 'Nowhere'))
 
 class Hash(unittest.TestCase):
+
     def test_the_hash_is_the_text_hash_of_the_section(self) -> None:
-        self.assertEqual(section_hash(named(TEXT, "#alpha-part")), text_id(named(TEXT, "#alpha-part")))
+        self.assertEqual(section_hash(named(TEXT, '#alpha-part')), text_id(named(TEXT, '#alpha-part')))
 
     def test_an_edit_in_a_subsection_changes_the_hash(self) -> None:
-        edited = TEXT.replace("inner text", "inner text, edited")
-        self.assertNotEqual(section_hash(named(edited, "#alpha-part")), section_hash(named(TEXT, "#alpha-part")))
+        edited = TEXT.replace('inner text', 'inner text, edited')
+        self.assertNotEqual(section_hash(named(edited, '#alpha-part')), section_hash(named(TEXT, '#alpha-part')))
 
     def test_an_edit_outside_the_section_leaves_the_hash(self) -> None:
-        edited = TEXT.replace("beta text", "beta text, edited")
-        self.assertEqual(section_hash(named(edited, "#alpha-part")), section_hash(named(TEXT, "#alpha-part")))
+        edited = TEXT.replace('beta text', 'beta text, edited')
+        self.assertEqual(section_hash(named(edited, '#alpha-part')), section_hash(named(TEXT, '#alpha-part')))
 
     def test_line_endings_do_not_change_the_hash(self) -> None:
-        crlf = TEXT.replace("\n", "\r\n")
-        self.assertEqual(section_hash(named(crlf, "#alpha-part")), section_hash(named(TEXT, "#alpha-part")))
-
+        crlf = TEXT.replace('\n', '\r\n')
+        self.assertEqual(section_hash(named(crlf, '#alpha-part')), section_hash(named(TEXT, '#alpha-part')))
 
 class Verb(unittest.TestCase):
+
     def run_verb(self, name: str, hashed: bool) -> str:
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
-            (root / "doc.md").write_text(TEXT, encoding="utf-8", newline="\n")
+            (root / 'doc.md').write_text(TEXT, encoding='utf-8', newline='\n')
             out = io.StringIO()
             with contextlib.redirect_stdout(out):
-                cmd_section(argparse.Namespace(file="/doc.md", heading=name, hash=hashed), root)
+                cmd_section(argparse.Namespace(file='/doc.md', heading=name, hash=hashed), root)
             return out.getvalue()
 
     def test_an_anchor_prints_the_section(self) -> None:
-        self.assertEqual(self.run_verb("#inner-detail", False), "### Inner (Detail)\ninner text\n")
+        self.assertEqual(self.run_verb('#inner-detail', False), '### Inner (Detail)\ninner text\n')
 
     def test_hash_prints_only_the_sections_hash(self) -> None:
-        self.assertEqual(self.run_verb("#alpha-part", True), section_hash(named(TEXT, "#alpha-part")) + "\n")
-
-
-if __name__ == "__main__":
+        self.assertEqual(self.run_verb('#alpha-part', True), section_hash(named(TEXT, '#alpha-part')) + '\n')
+if __name__ == '__main__':
     unittest.main(verbosity=2)

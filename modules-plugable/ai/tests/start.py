@@ -34,7 +34,7 @@ What is pinned, and what each pin is for:
   PlanAndFolder    The plan is printed whole, and the folder's listing names
                    what is in it, folders marked.
   Documents        The sections the plan's Kind's normative references name
-                   are printed, as `modules/knowledge/content/services/task_context.py` composes them
+                   are printed, as `modules-plugable/ai/services/task_context.py` composes them
                    from Memar's lists, under their first line, and recorded in
                    the task's `temp/context_read.txt`: the every-act sections
                    alone for a plan with no kind; the lists of the project the
@@ -93,17 +93,25 @@ sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
 import modules.management.task.services.temp as task_temp
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
-import modules.knowledge.label.services.plan_labels as task_plan_labels
+import modules.management.task.services.plan_labels as task_plan_labels
 commands = import_module('modules-plugable.computer.ui.command.command')
-from modules.knowledge.documentation.primitive.label import Label, Labels, new_id
-from modules.knowledge.documentation.plan.labels import task_kind
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
-from modules.knowledge.content.services.get_section import by_anchor, section_hash
-from modules.knowledge.content.services.normative_references import EVERY_ACT, LIST_NAME, PREFERENCE, lists, memar_place
+from modules.knowledge.label.primitive.label import Label, Labels, new_id
+from modules.management.task.labels import task_kind
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+from modules.management.task.services.report_file import REPORT_NAME
+_m_content_get_section = import_module('modules-plugable.computer.codec.markdown.services.content_get_section')
+by_anchor = _m_content_get_section.by_anchor
+section_hash = _m_content_get_section.section_hash
+_m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
+EVERY_ACT = _m_normative_references.EVERY_ACT
+LIST_NAME = _m_normative_references.LIST_NAME
+PREFERENCE = _m_normative_references.PREFERENCE
+lists = _m_normative_references.lists
+memar_place = _m_normative_references.memar_place
 from modules.process.project.services.preferences import preferences_path, preferences_text
-from modules.knowledge.content.services.task_context import read_record
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+_m_task_context = import_module('modules-plugable.ai.services.task_context')
+read_record = _m_task_context.read_record
+from modules.management.task.labels.task_kind import TaskKind
 SID = '20261011-T000000Z-7'
 ROOT = SCRIPTS.parent.parent
 SKILL = '# Skill\n- SKILL-TEXT, printed whole.\n'
@@ -254,7 +262,8 @@ class Documents(Fixture):
                 self.assertEqual(found, printed)
 
     def compose_heads(self, kind: TaskKind) -> list[str]:
-        from modules.knowledge.content.services.task_context import context_text
+        _m_task_context = import_module('modules-plugable.ai.services.task_context')
+        context_text = _m_task_context.context_text
         return [line for line in headers(context_text([memar_place(self.fake_root)], [kind])) if '(description)' not in line]
 
     def test_a_plan_with_no_kind_or_a_mistyped_one_prints_the_every_act_sections(self) -> None:

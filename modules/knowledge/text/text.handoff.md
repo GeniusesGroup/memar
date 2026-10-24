@@ -158,6 +158,12 @@ left unconverted rather than converted against a name invented here.
   record's storage service sitting in a widget folder. Its home is
   `edges/language/protocol/`, and the folder it is in has no document of its own.
 
+### How does Text learn that a document has parts?
+- State: the index that ranks sections (`services/index.py`) needs a document's parts, and for a Markdown file it loads the Markdown module's `content_get_section` at run time through `plugable_load`; a `.kh` file is one part. This is not a relationship Text exposes, and the owner (2026-10-24) cautions that Text itself may have no view of the structure of what it holds.
+- Options: a part-splitter registry in Text that an authoring-syntax module fills when it attaches; the splitter held by the Markdown module alone, with the index moved beside it; a part as an edge of Content, so Text asks the graph and not a format.
+- Anchor: [Markdown](../../../modules-plugable/computer/codec/markdown/markdown.md#open); [Pluggable](../modularity/labels/pluggable.md) (a pluggable module attaches through a relationship the module exposes).
+- Blocks: nothing; the index works as it is. Asked 2026-10-24.
+
 ## Not converted, and why
 
 | Path | Disposition |
@@ -233,6 +239,12 @@ Each carries a recommended default and what it blocks; the full text is in the r
 5. Settle the three validation errors together with the memar side (question 7) and record the decision in both repositories' handoffs.
 6. Reconcile the contradictions listed in the research in the documents that own each side, notably the language count of a text (contradiction 1), the identity statements (2), the hashtag and mention duplicates (6), and this handoff's waiting list (10, of which only `Field_LanguageUUID` was verified stale).
 7. Read what the research did not: the `user`, `object`, `notification` and `group` domains, the label domain beyond its Text paragraph, `internal/matn_____/` file by file, and the localization and information-retrieval literature; record anything that changes a Tentative item.
+
+## Anticipated Work
+
+### The text domain's check
+- State: the byte and encoding rules of `memar content check` (byte-order mark, invalid UTF-8, the replacement character, mojibake fingerprints, newlines, final newline) belong here as this domain's check, run when a text is placed and as a query ([Content → Checking text](../content/content.md#checking-text)).
+- Next: they move from `modules-plugable/knowledge/documentation/services/content_check.py` when the dispatcher is built; until then they stay where they are.
 
 ## Related Artifacts
 - [`text.research.001.md`](text.research.001.md) — the conceptual research: scenarios, kernel, models, mapping, tests, owner questions

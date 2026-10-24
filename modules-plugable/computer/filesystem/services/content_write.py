@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/write.py — `memar content write`: a whole file's text put into it, undamaged.
+"""modules-plugable/computer/filesystem/services/content_write.py — `memar content write`: a whole file's text put into it, undamaged.
 
 The text arrives whole, from a file or from stdin, and is written under the
 discipline `content_text` holds: UTF-8 with no BOM, the file's own line endings,
@@ -20,7 +20,7 @@ import argparse
 import sys
 from pathlib import Path
 from modules.knowledge.content.services.reference import content_root
-from modules.knowledge.content.services.text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
+from modules.knowledge.text.services.file_text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
 
 def describe(verbs):
     parser = verbs.add_parser('write', help='write a text file as UTF-8 without a BOM, preserving its newlines', description="Put text into FILE as UTF-8 with no BOM, keeping the file's own line endings (LF for a new file) and guaranteeing a final newline. Never put text into a file through a shell's own text handling. The write is taken under the per-file lock, so a cooperating task writing the same file is serialized rather than interleaved.", formatter_class=argparse.HelpFormatter)
@@ -72,7 +72,7 @@ def refuse_kept_scratch(source: Path) -> None:
     the document written from it. Scratch goes in the task's temp/ folder,
     which is never archived.
     """
-    from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
+    from modules.management.task.services.plan_file import PLAN_NAME
     try:
         resolved = source.resolve()
     except OSError:

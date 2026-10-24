@@ -31,7 +31,7 @@ The parts, in order, each opened by a mark line `=== NAME ===`:
 **Nothing here is a second copy of a rule.** Which sections a Kind requires is
 the lists of [Normative References](../rules/normative_references/normative_references.md),
 read from Memar's declared place, and how they print is
-`modules/knowledge/content/services/task_context.py`'s, the composition `memar content get-act-context` prints
+`modules-plugable/ai/services/task_context.py`'s, the composition `memar content get-act-context` prints
 too; a plan with no Kind, or one no kind answers to, gets the every-act
 sections alone. What the documents part printed is recorded in the task's
 `temp/context_read.txt`, so a later `memar content get-act-context --task-id ID
@@ -74,7 +74,7 @@ import argparse
 import re
 import subprocess
 import sys
-from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
+from modules.management.task.plan.primitive.plan_part import PlanPart
 from pathlib import Path
 from typing import Callable
 from machine.console import fail
@@ -86,12 +86,17 @@ from modules.management.task.services.folder import folder_of, is_task_folder
 from modules.management.task.services.temp import TEMP_SENTENCE
 from modules.management.task.services.ensure import ensure_task
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, part_text, read_plan
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
-from modules.knowledge.label.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KINDS, task_kind_of
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
-from modules.knowledge.content.services.task_context import Composed, Ref, context, context_places, write_record
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.services.plan_file import PLAN_NAME, part_text, read_plan
+from modules.management.task.plan.primitive.plan_key import PlanKey
+from modules.management.task.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KINDS, task_kind_of
+from modules.management.task.services.report_file import REPORT_NAME
+_m_task_context = import_module('modules-plugable.ai.services.task_context')
+Composed = _m_task_context.Composed
+Ref = _m_task_context.Ref
+context = _m_task_context.context
+context_places = _m_task_context.context_places
+write_record = _m_task_context.write_record
+from modules.management.task.labels.task_kind import TaskKind
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 from modules.management.task.primitive.task_id import TaskId

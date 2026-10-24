@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/text.py — reading and writing a text file without damaging it.
+"""modules/knowledge/text/services/file_text.py — reading and writing a text file without damaging it.
 
 Shared by `write` and `edit`, which put text into a file, by `changelog-append`,
 which keeps a ledger's own line endings, and by `check`, which names a file the

@@ -30,7 +30,7 @@ import argparse
 from typing import Callable
 from machine.console import fail
 from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
+from modules.management.task.services.plan_file import PLAN_NAME
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND

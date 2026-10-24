@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/section.py — `memar content section`: one named section of a document, and no more.
+"""modules-plugable/computer/codec/markdown/services/content_section.py — `memar content section`: one named section of a document, and no more.
 
 A reader who needs the part of a document that governs a step reads that part
 rather than the whole. A section is named by its anchor — the fragment a link
@@ -18,6 +18,7 @@ section hashes alike whatever newlines a checkout gave the file; `--hash`
 prints it, and a change anywhere in the section, a subsection included, changes it.
 """
 from __future__ import annotations
+from importlib import import_module
 
 import argparse
 import re
@@ -26,7 +27,9 @@ from pathlib import Path
 from typing import NamedTuple
 
 from machine.console_parts import text_id
-from modules.knowledge.content.services.links import anchor_slug, fragments
+_m_links = import_module('modules-plugable.computer.codec.markdown.services.links')
+anchor_slug = _m_links.anchor_slug
+fragments = _m_links.fragments
 from modules.knowledge.content.services.reference import content_root, read_text, resolve_ref
 
 HEADING = re.compile(r"^(#{1,6})[ \t]+(.*?)[ \t]*#*[ \t]*$", re.MULTILINE)

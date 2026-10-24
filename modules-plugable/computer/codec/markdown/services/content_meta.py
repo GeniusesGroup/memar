@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/meta.py — `memar content meta`: what a document is, before reading it.
+"""modules-plugable/computer/codec/markdown/services/content_meta.py — `memar content meta`: what a document is, before reading it.
 
 Its front matter, or its title where it has none, and its Abstract: enough to
 decide whether the document is the one to read, without taking in its body.

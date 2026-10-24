@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/search.py — `memar content search`: where in the checkout's content a term occurs.
+"""modules/knowledge/text/services/content_search.py — `memar content search`: where in the checkout's content a term occurs.
 
 The corpus is the one `content_corpus` names — the whole checkout, less the
 companions a reader is not sent into and the folders the project does not own —
@@ -16,15 +16,16 @@ the file it came from. Whatever of the tasks could not be read is said on
 standard error, so an empty answer is not taken for an absence.
 """
 from __future__ import annotations
+from machine.plugable_import import load as plugable_load
 import argparse
 import re
 import sys
 from pathlib import Path
-from modules.knowledge.content.services.corpus import content_files
+from modules.knowledge.text.services.corpus import content_files
 from modules.knowledge.content.services.reference import content_root, read_text
 
 def describe(verbs):
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     from modules.process.project.services.find import add_project_flags
     parser = verbs.add_parser('search', help='regex search the content of the checkout', description="Print where in the content each PATTERN, a regular expression matched in any case, occurs.\nOne pattern prints each matching line as path:line:text; several print each file that\nholds all of them as path:all-matched. A path that begins with the records branch, or that\nlies in a task folder, is a task's record: what that task wrote, never a ruling.\nWhat is read is chosen with --from; what of the tasks could not be read is said on\nstandard error. To rank sections by how alike they are to a text, use `memar content find`.", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('patterns', nargs='+')
@@ -33,21 +34,23 @@ def describe(verbs):
     return run
 
 def run(args: argparse.Namespace) -> None:
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     from modules.process.project.services.find import project_from_args
     project = project_from_args(args)
     root = project if project is not None else content_root()
     cmd_search(args, root, CorpusSource.chosen(args))
 
 def cmd_search(args: argparse.Namespace, root: Path, sources=None) -> None:
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     chosen = CorpusSource.default() if sources is None else tuple(sources)
     patterns = [re.compile(pattern, re.IGNORECASE) for pattern in args.patterns]
     for path in content_files(root, chosen):
         _print_matches(str(path.relative_to(root)), read_text(path), patterns)
     if CorpusSource.TASKS not in chosen:
         return
-    from modules.knowledge.content.services.task_records import read_all, task_records
+    _m_task_records = plugable_load('management.task.services.task_records')
+    read_all = _m_task_records.read_all
+    task_records = _m_task_records.task_records
     records, notes = task_records(root)
     texts = read_all(root, records)
     for record in records:

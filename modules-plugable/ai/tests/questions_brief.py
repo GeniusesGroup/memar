@@ -48,8 +48,8 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 questions_brief = import_module('modules-plugable.ai.services.get_task_questions_answer_brief')
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+from modules.management.task.services.report_file import REPORT_NAME
 SID = '20261011-T000000Z-1'
 QUESTIONS_BRIEF = f'Your task is to answer the questions of task {SID}, not to take it up. Run `memar ai get-task-answer-context --task-id {SID}` first, before anything else, and follow what it prints.'
 REPORT_WITH_QUESTIONS = '---\nTitle: R\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n- Q1: which name?\n'

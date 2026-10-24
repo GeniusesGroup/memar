@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the one digest of decisions tasks hand back, in `modules/management/task/services/get_decisions_digest.py`.
+"""Tests for the one digest of decisions tasks hand back, in `modules-plugable/ai/services/task_get_decisions_digest.py`.
 
-    python modules/management/task/tests/digest.py
+    python modules-plugable/ai/tests/task_get_decisions_digest.py
 
 The subject is the digest — every `Decisions needed` entry across the
 tasks' reports gathered into one text the owner reads — named for the file
 that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../modules/process/test/rules/test-placement/test-placement.md).
 The design it holds is the parent plan's, task 20261012T134849Z-25068-0,
 "Design": `memar task get-decisions-digest` gathers every `Decisions needed` entry across
 reports into one digest.
@@ -56,6 +56,7 @@ What is pinned, and what each pin is for:
                      location, as `list --project` does; the default does not.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -74,17 +75,17 @@ import unittest.mock
 from datetime import datetime, timedelta
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = TESTS.parents[2] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.process.project.services.preferences as project_preferences
 import modules.process.project.services.registry as registry
-import modules.management.task.services.get_decisions_digest as task_digest
+task_digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
 import modules.process.project.services.task_location as task_location
-import modules.knowledge.documentation.plan.services.plan as task_plan
-import modules.knowledge.documentation.plan.services.priority as task_plan_priority
-import modules.knowledge.documentation.report.services.report as task_report
+import modules.management.task.services.plan_file as task_plan
+import modules.management.task.services.plan_priority as task_plan_priority
+import modules.management.task.services.report_file as task_report
 
 class Fixture(unittest.TestCase):
     ENDS = {'success': 'complete', 'blocked': 'blocked', 'approval-required': 'blocked', 'exhausted': 'active'}

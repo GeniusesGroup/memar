@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the source `tasks` of `memar content find` and `memar content search`, in `modules/knowledge/content/services/task_records.py`, `modules/knowledge/content/primitive/corpus_source.py` and `modules-plugable/computer/git/services/_git_records.py`.
+"""Tests for the source `tasks` of `memar content find` and `memar content search`, in `modules-plugable/management/task/services/task_records.py`, `modules/knowledge/text/primitive/corpus_source.py` and `modules-plugable/computer/git/services/_git_records.py`.
 
-    python modules/knowledge/content/tests/task_records.py
+    python modules-plugable/management/task/tests/task_records.py
 
 The subject is the owner's ruling of 2026-10-19, carried out by task 20261019-T170853Z-4740:
 archived task records are reached by content through `memar content`, with a filter `--from`
@@ -51,10 +51,10 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.knowledge.content.primitive.corpus_source import CorpusSource
-from modules.knowledge.content.services import find as content_find
-from modules.knowledge.content.services import search as content_search
-from modules.knowledge.content.services.corpus import content_files
+from modules.knowledge.text.primitive.corpus_source import CorpusSource
+from modules.knowledge.text.services import content_find
+from modules.knowledge.text.services import content_search
+from modules.knowledge.text.services.corpus import content_files
 from modules.process.project.services.preferences import preferences_path, preferences_text
 ARCHIVED = '20261001-T000000Z-1'
 LIVE = '20261002-T000000Z-2'

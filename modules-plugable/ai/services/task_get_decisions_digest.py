@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/get_decisions_digest.py — every decision the tasks hand back, gathered into one digest.
+"""modules-plugable/ai/services/task_get_decisions_digest.py — every decision the tasks hand back, gathered into one digest.
 
 Why one digest. The owner's attention is one of the two bottlenecks of the
 work, and a question asked in each of a hundred tasks is a hundred
@@ -48,7 +48,7 @@ the final output, so a reviewed task leaves no folder behind.
 
 Open handoff questions. A question only the owner can answer lives as an entry
 under `Open Questions` in a handoff ([Questions Found During a
-Task](../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
+Task](../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
 not in a report, so the digest ends with those entries as `content_questions`
 lists them (blocking first, then oldest `Asked`), read from Memar's checkout or
 from `--project`'s. An entry a report's `Decisions needed` line already points
@@ -59,15 +59,19 @@ where it said. With `--day` only the entries asked that day are listed;
 `--conversation` is about tasks, and leaves the entries out.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 import re
 from datetime import date
 from pathlib import Path
 from typing import Callable
 from machine.console import note
-from modules.knowledge.documentation.record import REPORT
-from modules.knowledge.documentation.primitive.status import Status
-from modules.knowledge.content.services.questions import BLOCKING_MARK, handoff_files, open_questions
+from modules.management.task.primitive.record import REPORT
+from modules.knowledge.status.primitive.status import Status
+_m_content_questions = import_module('modules-plugable.knowledge.documentation.services.content_questions')
+BLOCKING_MARK = _m_content_questions.BLOCKING_MARK
+handoff_files = _m_content_questions.handoff_files
+open_questions = _m_content_questions.open_questions
 from modules.knowledge.content.services.reference import content_root
 from modules.management.task.services.dependency import Reader
 from modules.management.task.services.concerns import concerns
@@ -76,11 +80,11 @@ from modules.management.task.services.day import DAY_NAMES, day_of, parse_day
 from modules.process.project.services.find import add_project_flags, project_from_args
 from modules.management.task.services.list import find_tasks, project_of
 from modules.management.task.services.folder import Task
-from modules.knowledge.documentation.plan.primitive.priority import Priority
-from modules.knowledge.documentation.report.services.report import REPORT_NAME, decisions_needed, handback_problem, read_report_status
-from modules.knowledge.documentation.report.services.summary import summary_lines
+from modules.management.task.plan.primitive.priority import Priority
+from modules.management.task.services.report_file import REPORT_NAME, decisions_needed, handback_problem, read_report_status
+from modules.management.task.services.report_summary import summary_lines
 from modules.process.project.primitive.project_name import ProjectName
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.plan.primitive.plan_key import PlanKey
 OPEN_HEADING = 'Open handoff questions'
 DIGEST_COMMAND = 'get-decisions-digest'
 _POINTER = re.compile('([\\w./\\\\~:-]*?[\\w.-]+\\.handoff\\.md)(?::(\\d+))?')

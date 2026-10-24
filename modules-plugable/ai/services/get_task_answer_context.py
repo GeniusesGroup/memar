@@ -14,7 +14,7 @@ The questions are the lines under `Decisions needed` in the task's report:
 that is where a task's questions for the owner already stand, one line
 each, pointing to the handoff entry that holds a question at length
 ([Questions Found During a
-Task](../../../modules/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
+Task](../../knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
 and where the digest gathers them. A task with no such line has no
 question, and is refused; why is said by `questions_problem` here, which the
 questions' brief asks too, so the two refuse alike.
@@ -61,12 +61,12 @@ from machine.console_parts import part_text as parted
 from modules.knowledge.content.services.reference import content_root, read_text
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
 from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME
-from modules.knowledge.documentation.record import REPORT
-from modules.knowledge.documentation.report.services.report import REPORT_NAME, decisions_needed
+from modules.management.task.services.plan_file import PLAN_NAME
+from modules.management.task.primitive.record import REPORT
+from modules.management.task.services.report_file import REPORT_NAME, decisions_needed
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 from .get_task_init_context import SKILL_FILE, commands, documents, marked_part, marked_passages, model_part, plan_project, step_documents
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.labels.task_kind import TaskKind
 from modules.management.task.primitive.task_id import TaskId
 ANSWERING_COMMAND = 'get-task-answer-context'
 ENDING = f"You answer the questions of this task; you do not take it up. Its questions are the lines under `{REPORT.hand_back_part}` in its {REPORT_NAME} (above), each with the handoff entry it points to, if any.\nYour answering opens no task and creates none: run no `memar ai get-task-init-context`, `ensure`, `claim` or `claims`. It writes nothing: no file in this task's folder, in the checkout, or elsewhere; the task that handed you the questions writes what follows from your answers.\nFor each question, in the order asked: read the plan, the entry it points to, and the passages of the documents it concerns, found as the skill says; answer it with its reasons, citing the passages they rest on; and say whether you are sure. Say you are unsure where the documents do not settle it, and say so too where it is one of the kinds the Norm Application Points (above) send to the owner however well settled: those go to the owner.\nReturn the answers as your final text, one per question, each marked sure or unsure, and name the model you run on."

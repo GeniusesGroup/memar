@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/primitive/corpus_source.py — where the content a verb reads is read from, declared once.
+"""modules/knowledge/text/primitive/corpus_source.py — where the content a verb reads is read from, declared once.
 
 `memar content find` and `memar content search` read a corpus, and the agent says which
 sources it is made of with `--from`, once per source; without it, the documents and the code,
@@ -10,7 +10,7 @@ wrote is that task's claim, never a ruling: a reader asks for them by name and a
 them names the task it came from (owner, 2026-10-19: a filter on `memar content`, not a new
 verb). The flag, its values, what each reads and the default are the type's, and every help
 text that names them asks it
-([A Fact in Code Is Written Once](../../documentation/documentation.md#a-fact-in-code-is-written-once)).
+([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load

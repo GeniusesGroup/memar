@@ -22,15 +22,15 @@ more by hand, over what the plan says.
 from __future__ import annotations
 import argparse
 import re
-from modules.knowledge.documentation.plan.primitive.plan_part import PlanPart
+from modules.management.task.plan.primitive.plan_part import PlanPart
 from typing import Callable
 from machine.console import fail
 from modules.management.task.services.dependency import DependsOn
 from modules.management.task.primitive.task_id import TaskId
 from .get_task_plan_carry_out_brief import brief_text
 from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, part_text, read_plan
-from modules.knowledge.documentation.plan.primitive.plan_key import PlanKey
+from modules.management.task.services.plan_file import PLAN_NAME, part_text, read_plan
+from modules.management.task.plan.primitive.plan_key import PlanKey
 NEW_CHATS_COMMAND = 'get-new-chats-ask'
 INTRO = 'Please run each task below in a completely new chat: open the chat, paste the text under its title, and let it end. A task marked "blocks" stops the work of the chat that asked until it is done; say "<id> is done" there when it ends. A task marked "independent" can run now, at the same time as the others, in its own chat.'
 

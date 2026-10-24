@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/corpus.py — which files of a checkout are its content, and which are its ledgers.
+"""modules/knowledge/text/services/corpus.py — which files of a checkout are its content, and which are its ledgers.
 
 Shared by `search`, `backlinks`, and `obligations`, which read the corpus, and by
 `check`, whose walk of a folder leaves out the same generated and dependency
@@ -73,7 +73,7 @@ def content_files(root: Path, sources=None) -> list[Path]:
     Never a silent partial answer: a checkout with none of these folders is
     refused rather than reported as an empty corpus.
     """
-    from modules.knowledge.content.primitive.corpus_source import CorpusSource
+    from modules.knowledge.text.primitive.corpus_source import CorpusSource
     chosen = CorpusSource.default() if sources is None else tuple(sources)
     suffixes = tuple((suffix for source in chosen for suffix in source.suffixes))
     if not suffixes:

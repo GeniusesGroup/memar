@@ -18,7 +18,7 @@ refined and keep its identifier (`memar-tasks` was `memar-sessions`); a stream
 whose concept changed ends, with the date and the topics that replace it.
 """
 from __future__ import annotations
-from modules.knowledge.documentation.plan.labels.topic import topic
+from modules.knowledge.label.primitive.topic import topic
 LABELS = (
     topic('memar-scripts', '01a14a13-1972-7b1b-8056-e00b30bb0067', "Memar's own scripts and the `memar` command: what each verb does, and the module that holds it."),
     topic('memar-khayyam-types', '01a14a13-1980-7a5f-8be8-e766626965a0', "Memar's own types written as Khayyam types."),

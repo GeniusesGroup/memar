@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the checkout's corpus in `modules/knowledge/content/services/corpus.py`.
+"""Tests for the checkout's corpus in `modules/knowledge/text/services/corpus.py`.
 
-    python modules/knowledge/content/tests/corpus.py
+    python modules/knowledge/text/tests/corpus.py
 
 The subject is which files of a checkout are its content and which its ledgers,
 named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: every checkout is laid out in
 one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
@@ -42,7 +42,7 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.knowledge.content.services.corpus as content_corpus
+import modules.knowledge.text.services.corpus as content_corpus
 
 class CorpusIsTheCheckout(unittest.TestCase):
     """The corpus is the whole checkout, so the tool's name is not narrower than its reach.

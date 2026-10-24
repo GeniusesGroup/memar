@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar content write` in `modules/knowledge/content/services/write.py`.
+"""Tests for `memar content write` in `modules-plugable/computer/filesystem/services/content_write.py`.
 
-    python modules/knowledge/content/tests/write.py
+    python modules-plugable/computer/filesystem/tests/content_write.py
 
 The subject is the whole-file write, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -25,6 +25,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -45,7 +46,7 @@ SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.knowledge.content.services.write as content_write
+content_write = import_module('modules-plugable.computer.filesystem.services.content_write')
 
 class WriteTakesTheLock(unittest.TestCase):
     """The write verb takes the per-file lock, which is what makes the claim true.

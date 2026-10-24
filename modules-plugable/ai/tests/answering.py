@@ -72,12 +72,16 @@ sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK
 answering = import_module('modules-plugable.ai.services.get_task_answer_context')
 commands = import_module('modules-plugable.computer.ui.command.command')
-from modules.knowledge.documentation.plan.services.plan import PLAN_NAME, plan_skeleton
-from modules.knowledge.documentation.report.services.report import REPORT_NAME
-from modules.knowledge.content.services.normative_references import EVERY_ACT, lists, memar_place
-from modules.knowledge.content.services.task_context import context_text
-from modules.knowledge.documentation.primitive.label import Label, Labels
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+from modules.management.task.services.report_file import REPORT_NAME
+_m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
+EVERY_ACT = _m_normative_references.EVERY_ACT
+lists = _m_normative_references.lists
+memar_place = _m_normative_references.memar_place
+_m_task_context = import_module('modules-plugable.ai.services.task_context')
+context_text = _m_task_context.context_text
+from modules.knowledge.label.primitive.label import Label, Labels
+from modules.management.task.labels.task_kind import TaskKind
 SID = '20261011-T000000Z-9'
 ROOT = SCRIPTS.parent.parent
 SKILL = '# Skill\n- SKILL-TEXT, printed whole.\n'

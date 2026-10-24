@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/task_context.py — the context of a set of kinds: the sections their normative references name, read and printed once each.
+"""modules-plugable/ai/services/task_context.py — the context of a set of kinds: the sections their normative references name, read and printed once each.
 
 What an act reads before it starts is declared by the lists of the rule
-[Normative References](../rules/normative_references/normative_references.md),
-read by `modules/knowledge/content/services/normative_references.py`; this composes the sections they name
+[Normative References](../../../modules/knowledge/content/rules/normative_references/normative_references.md),
+read by `modules-plugable/knowledge/documentation/services/normative_references.py`; this composes the sections they name
 into the text an agent reads. Two commands print it, and neither composes on its
 own: `memar ai get-task-init-context`, for the Kind of the task's plan, followed by the
 documents the plan's Steps name; and `memar content get-act-context`, for kinds given
@@ -56,19 +56,33 @@ with no section at all is read at its front matter's `description`, printed
 once above; one with neither is said, not skipped.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
-from modules.knowledge.documentation.explanation.primitive.body_section import BodySection
-from modules.knowledge.documentation.practice.primitive.practice_key import PracticeKey
+_m_body_section = import_module('modules-plugable.knowledge.documentation.explanation.primitive.body_section')
+BodySection = _m_body_section.BodySection
+_m_practice_key = import_module('modules-plugable.knowledge.documentation.practice.primitive.practice_key')
+PracticeKey = _m_practice_key.PracticeKey
 from pathlib import Path
 from typing import Iterable, NamedTuple, Sequence
 from modules.knowledge.content.services.reference import read_text
-from modules.knowledge.content.services.get_section import outline, section_hash, span_by_anchor
-from modules.knowledge.content.services.normative_references import EVERY_ACT, MEMAR_REPOSITORY, Entry, Place, ReferenceList, lists, memar_place
-from modules.knowledge.content.services.normative_references import normative_reference_places
-from modules.knowledge.documentation.plan.services.plan import front_matter
-from modules.knowledge.documentation.plan.labels.task_kind import TaskKind
+_m_content_get_section = import_module('modules-plugable.computer.codec.markdown.services.content_get_section')
+outline = _m_content_get_section.outline
+section_hash = _m_content_get_section.section_hash
+span_by_anchor = _m_content_get_section.span_by_anchor
+_m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
+EVERY_ACT = _m_normative_references.EVERY_ACT
+MEMAR_REPOSITORY = _m_normative_references.MEMAR_REPOSITORY
+Entry = _m_normative_references.Entry
+Place = _m_normative_references.Place
+ReferenceList = _m_normative_references.ReferenceList
+lists = _m_normative_references.lists
+memar_place = _m_normative_references.memar_place
+_m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
+normative_reference_places = _m_normative_references.normative_reference_places
+from modules.management.task.services.plan_file import front_matter
+from modules.management.task.labels.task_kind import TaskKind
 ABSTRACT = BodySection.ABSTRACT.heading.lower()
 FIRST_SECTION = 'first section'
 DESCRIPTION_KEY = PracticeKey.DESCRIPTION.key
