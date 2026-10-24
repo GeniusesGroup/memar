@@ -100,7 +100,7 @@ Rules that already have folders under `modules/khayyam/rules/` are excluded. **T
 
 | # | Implicit rule | Where visible | Automatable? |
 | --- | --- | --- | --- |
-| 1 | **`Field_X` field abstraction** — state exposed through accessor methods; declared as `ab` | `modules/net/uri/protocol/scheme.kh`; `modules/time/protocol/time.kh`; `modules/computer/capsule/protocol/field.kh`; 200+ `Field_` in `modules/` | Partially (prefix + kind `ab`) |
+| 1 | **`Field_X` field abstraction** — state exposed through accessor methods; declared as `ab` | `modules-plugable/net/uri/protocol/scheme.kh`; `modules/time/protocol/time.kh`; `modules/computer/capsule/protocol/field.kh`; 200+ `Field_` in `modules/` | Partially (prefix + kind `ab`) |
 | 2 | **Field accessor named for return value**, not doubled field name | [receiver-method-names.md](../receiver-method-names/receiver-method-names.md); `scheme.kh`; `targets/go/abstraction_bridge.py` | Partially (return type) |
 | 3 | **`Field_` then qualifier** — `Field_URI_Path`, not `URI_Field_Path` | [qualified-names.md](../qualified-names/qualified-names.md) §Field abstractions; `abstraction_bridge.py` | Yes (spelling) |
 | 4 | **Method names as verb phrases** (governance; sources still have bare nouns) | [method-verb-phrases.md](./method-verb-phrases.md); `encapsulation.md#naming-conventions` (non-binding; a heading since removed) | Partial (POS / heuristics) |

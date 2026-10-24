@@ -4,7 +4,7 @@ tp Error in "modules/process/error/protocol/error.kh"
 tp HTTP_Request in "modules/lib/net/http/protocol/http.kh"
 tp HTTP_Response in "modules/lib/net/http/protocol/http.kh"
 tp Net_Socket_2 in "modules/net/protocol/socket.kh"
-tp Observer_URI_Path in "modules/net/uri/protocol/path.observers.kh"
+tp Observer_URI_Path in "modules-plugable/net/uri/protocol/path.observers.kh"
 
 // Handler is any object to be HTTP service handler.
 // Some other protocol like gRPC, SOAP, ... must implement inside HTTP, If they are use HTTP as a transfer protocol.

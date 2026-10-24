@@ -15,7 +15,7 @@ Active — rule relocated from `bundles/khayyam/rules/observer-mutator-abstracti
 ## Open Questions
 
 ### Two declarations disagree with the rule's examples
-- State: found 2026-10-16 while the rule's copy of its examples was replaced by pointers. (1) `modules/computer/memory/file/protocol/name.mutators.kh` names the method of `Mutator_Rename` `File_Mutator_Rename_Rename`, where the rule asks for the domain verb `Rename`. (2) `modules/net/uri/protocol/uri.kh` declares `URI` without composing any observer, where the removed example showed `URI` composing `Observer_Scheme` and `Observer_URI_Path`. The owner ruled the same day to leave both to later chats, since the declarations come from the Go conversion and the ADT abstraction in Khayyam is not worked out ([adt.handoff.md](../../adt.handoff.md)).
+- State: found 2026-10-16 while the rule's copy of its examples was replaced by pointers. (1) `modules/computer/memory/file/protocol/name.mutators.kh` names the method of `Mutator_Rename` `File_Mutator_Rename_Rename`, where the rule asks for the domain verb `Rename`. (2) `modules-plugable/net/uri/protocol/uri.kh` declares `URI` without composing any observer, where the removed example showed `URI` composing `Observer_Scheme` and `Observer_URI_Path`. The owner ruled the same day to leave both to later chats, since the declarations come from the Go conversion and the ADT abstraction in Khayyam is not worked out ([adt.handoff.md](../../adt.handoff.md)).
 - What waits on the answer: which side changes, the rule or the declaration.
 - **Which module owns a concept declared twice** — `Record_Observer_RecordUUID` / `Storage_Observer_RecordUUID` and related pairs; see [qualified names handoff](../../../../../bundles/khayyam/rules/qualified-names/qualified-names.handoff.md).
 
@@ -26,7 +26,7 @@ Active — rule relocated from `bundles/khayyam/rules/observer-mutator-abstracti
 | [qualified-names.md](../../../../../bundles/khayyam/rules/qualified-names/qualified-names.md) | Sibling — collision logic; observer shape lives here | Keep in sync |
 | [method-verb-phrases.md](../../../../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.md) | Sibling — verb phrases outside Observer/Mutator families | Keep in sync |
 | [receiver-method-names.md](../../../../../bundles/khayyam/rules/receiver-method-names/receiver-method-names.md) | Sibling — bare accessor when unambiguous | Keep in sync |
-| [modules/net/uri/protocol/scheme.kh](../../../../net/uri/protocol/scheme.kh) | Example — owner's observer-shape ruling | None (read) |
+| [modules-plugable/net/uri/protocol/scheme.kh](../../../../../modules-plugable/net/uri/protocol/scheme.kh) | Example — owner's observer-shape ruling | None (read) |
 | [targets/go/abstraction_bridge.py](../../../../../bundles/khayyam/targets/go/abstraction_bridge.py) | Implements — `observer-names` mode | Keep in sync |
 | [method-verb-phrases.research.001.md](../../../../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.research.001.md) | Evidence — accessor naming research | None (read) |
 | [observer-mutator.research.001.md](./observer-mutator.research.001.md) | Evidence — Field/Method pair research; led to Observer/Mutator decision | None (read) |

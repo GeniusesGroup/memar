@@ -1,5 +1,5 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
-tp URI in "modules/net/uri/protocol/uri.kh"
+tp URI in "modules-plugable/net/uri/protocol/uri.kh"
 // https://datatracker.ietf.org/doc/html/rfc8089
 // https://en.wikipedia.org/wiki/File_URI_scheme
 tp Storage_URI ab {

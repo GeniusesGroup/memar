@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Observer_Authority in "modules/net/uri/protocol/authority.observers.kh"
+tp Observer_Authority in "modules-plugable/net/uri/protocol/authority.observers.kh"
 tp Observer_Extension in "modules/memory/file/protocol/extention.observers.kh"
 tp Observer_Name in "modules/memory/file/protocol/name.observers.kh"
-tp Observer_Scheme in "modules/net/uri/protocol/scheme.observers.kh"
-tp Observer_URI_Path in "modules/net/uri/protocol/path.observers.kh"
+tp Observer_Scheme in "modules-plugable/net/uri/protocol/scheme.observers.kh"
+tp Observer_URI_Path in "modules-plugable/net/uri/protocol/path.observers.kh"
 tp Storage_URI in "modules/memory/file/protocol/uri.kh"
 
 tp Observer_File_URI ab

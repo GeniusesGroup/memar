@@ -21,7 +21,7 @@ The substance this domain was expected to carry is not here: see Open Questions,
 
 ## Ambiguities Resolved
 
-- **The time domain declares no `Time` at all — did that source live in another repository, or was it never written?** — answered (2026-10-08): it lived in memar. `memar/modules/time/protocol/time.kh` declares `tp Time ab` (with `Observer_Epoch`); `utc_epoch.DayInWeek` is `memar/modules/time/utc/epoch/day-in-week.kh` (`var DayInWeek = day_in_week{}`); `duration.Second` is `memar/modules/time/duration/protocol/second.observers.kh` (`Observer_Duration_Second`, `GetDuration`). A conversion imports them the way [`edges/ttl/protocol/ttl.kh`](edges/ttl/protocol/ttl.kh) already imports `Duration` from `memar/modules/time/duration/protocol/duration.kh`. What is genuinely absent stays open below: the `Field_*` accessors.
+- **The time domain declares no `Time` at all — did that source live in another repository, or was it never written?** — answered (2026-10-08): it lived in memar. `memar/modules/time/protocol/time.kh` declares `tp Time ab` (with `Observer_Epoch`); `utc_epoch.DayInWeek` is `memar/modules-plugable/time/utc/epoch/day-in-week.kh` (`var DayInWeek = day_in_week{}`); `duration.Second` is `memar/modules/time/duration/protocol/second.observers.kh` (`Observer_Duration_Second`, `GetDuration`). A conversion imports them the way [`edges/ttl/protocol/ttl.kh`](edges/ttl/protocol/ttl.kh) already imports `Duration` from `memar/modules/time/duration/protocol/duration.kh`. What is genuinely absent stays open below: the `Field_*` accessors.
 
 ## Open Questions
 

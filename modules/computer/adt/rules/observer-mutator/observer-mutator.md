@@ -19,14 +19,14 @@ An entity's command surface that groups several mutating methods and no queries 
 
 A capsule or abstraction that holds the state composes observer and mutator abstractions in its `ab { … }` block and implements their methods. The abstraction is the contract; the capsule chooses representation.
 
-A module prefix on `Observer_*` or `Mutator_*` is kept only when the bare concept after the prefix is ambiguous in the sources — the same collision criterion as the [qualified names rule](../../../../../bundles/khayyam/rules/qualified-names/qualified-names.md). The owner's ruling on `modules/net/uri/protocol/scheme.kh` (2026-09-29) is the example: `Observer_Scheme` when one module claims a scheme; `Observer_URI_Path` when five modules claim a path; `Observer_Time_Access` when the accessor returns a `Time`.
+A module prefix on `Observer_*` or `Mutator_*` is kept only when the bare concept after the prefix is ambiguous in the sources — the same collision criterion as the [qualified names rule](../../../../../bundles/khayyam/rules/qualified-names/qualified-names.md). The owner's ruling on `modules-plugable/net/uri/protocol/scheme.kh` (2026-09-29) is the example: `Observer_Scheme` when one module claims a scheme; `Observer_URI_Path` when five modules claim a path; `Observer_Time_Access` when the accessor returns a `Time`.
 
 ### Side files
 A type's observer and mutator abstractions **strongly default** to companion files beside the type's protocol file: `time.observers.kh` and `time.mutators.kh` next to `time.kh` under the same `protocol/` folder (for example `modules/time/protocol/`). This keeps query and command contracts readable without crowding the main protocol file. It is a strong default, not mandatory — a module may keep all three in one file when the surface is small.
 
 ### Examples — good
 The good examples are the protocol files that follow the rule; each is declared once there and not copied here:
-- `Observer_Scheme` and its method `GetScheme`: [`modules/net/uri/protocol/scheme.observers.kh`](../../../../net/uri/protocol/scheme.observers.kh).
+- `Observer_Scheme` and its method `GetScheme`: [`modules-plugable/net/uri/protocol/scheme.observers.kh`](../../../../../modules-plugable/net/uri/protocol/scheme.observers.kh).
 - `Observer_Time_Access` and its method `GetAccessTime`: [`modules/process/time/protocol/access.observers.kh`](../../../../process/time/protocol/access.observers.kh).
 - `Memory_Pointer` composing `Observer_MemoryAddress` and `Mutator_SetMemoryAddress`, whose method is `SetMemoryAddress`: [`modules/memory/address/protocol/address.kh`](../../../../memory/address/protocol/address.kh) and [`address.mutators.kh`](../../../../memory/address/protocol/address.mutators.kh).
 - `Mutator_File`, a mutator bundle composing `Mutator_Rename`: [`modules/memory/file/protocol/file.mutators.kh`](../../../../memory/file/protocol/file.mutators.kh).

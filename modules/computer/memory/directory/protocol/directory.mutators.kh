@@ -2,7 +2,7 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 tp File_Name in "modules/memory/file/protocol/name.kh"
-tp URI_Path in "modules/net/uri/protocol/path.kh"
+tp URI_Path in "modules-plugable/net/uri/protocol/path.kh"
 
 // = Call GetFile() and write `Metadata`&`Data`
 tp Mutator_Directory_Helpers ab

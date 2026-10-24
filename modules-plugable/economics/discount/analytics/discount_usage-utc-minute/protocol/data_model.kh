@@ -2,7 +2,7 @@
 
 tp U64 in "modules/math/integer/unsigned-64.kh"
 tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
-tp Observer_MinuteElapsed in "modules/time/utc/duration-minute.observers.kh"
+tp Observer_MinuteElapsed in "modules-plugable/time/utc/duration-minute.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp Observer_DiscountUsageUtcMinute_TotalRedeemed ab

@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Observer_URI in "modules/net/uri/protocol/uri.observers.kh"
-tp Observer_Scheme in "modules/net/uri/protocol/scheme.observers.kh"
-tp Observer_URN_NID in "modules/net/uri/protocol/urn-nid.observers.kh"
-tp Observer_URN_NSS in "modules/net/uri/protocol/urn-nss.observers.kh"
+tp Observer_URI in "modules-plugable/net/uri/protocol/uri.observers.kh"
+tp Observer_Scheme in "modules-plugable/net/uri/protocol/scheme.observers.kh"
+tp Observer_URN_NID in "modules-plugable/net/uri/protocol/urn-nid.observers.kh"
+tp Observer_URN_NSS in "modules-plugable/net/uri/protocol/urn-nss.observers.kh"
 
 // URN is a division of URI
 // e.g. "urn:isbn:0451450523"
