@@ -145,3 +145,34 @@
 #### Considered and not done
 - Leaving plan and report as modules of their own: they use each other's types and this module's, so as modules they made a cycle the module-graph test refuses; their services are this module's services, and only their specifications keep a folder each.
 - The memory port programme (task 20261022-T185903Z-15504) re-bases these files on the port; its plans name the old paths, which this change moved.
+
+---
+
+### Several humans and several agents at once: Tentative decisions recorded
+- Time: 2026-10-24T17:00:00Z
+- Type: Added
+- Tasks:
+  - main:.agents/tasks/20261024-T052152Z-22628/: Partial - the design of parallel development; the owner approved the draft and the held-proposal mechanism (2026-10-24)
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — chose the held-proposal mechanism and approved the draft
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote it
+
+#### What changed
+- `task.handoff.md` gained "Tentative: several humans and several agents at once": the `Writes` plan key and overlap check, agent identity, dispatch, the `change-class=held` label, measurement.
+
+#### Considered and not done
+- Editing `plan.md`, `plan_key.py`, the skill or `memar task ensure` now: the memory-port programme changes these files, and the skill and `ensure` text are proposed to the owner first.
+
+---
+
+### Questions are discovered and answered by a panel of agents, not put in a chat
+- Time: 2026-10-25T08:00:00Z
+- Type: Added
+- Tasks:
+  - main:.agents/tasks/20261024-T052152Z-22628/: Partial - question 10 of the parallel-development design; the owner ruled it on 2026-10-25
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled that discovery and answer of questions are done by several independent agents
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote it
+
+#### What changed
+- `task.handoff.md` gained the Tentative panel procedure: three independent question lists, merge, two independent answers, agreement is Tentative, a lasting disagreement or an always-asked kind goes to a handoff entry; cost, worth and the sub-agent and one-at-a-time rules.
