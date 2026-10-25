@@ -174,3 +174,81 @@
 - A narrow, explicitly pre-compiled emergency shutoff is stated as compatible with the principle rather than an open exception question, because its halt path and its run path are both in the built artifact and the signal choosing between them is not code — the standing [Emergency halt](./immutable_infrastructure.md#emergency-halt-god-halt-service) already gave that proposal; what the service still needs stays recorded under [Open Design Threads](./immutable_infrastructure.md#open-design-threads), untouched.
 - The Abstract and [Relationship to Type-Level Identity](./immutable_infrastructure.md#relationship-to-type-level-identity) carry the same wording as the principle they name, rather than the "no logic or code may be added at runtime" phrasing, whose "added" no input defined — selecting among pre-compiled capabilities and adding one both sat inside it.
 - The runtime-registry counterexample is unaffected and stays valid: a registry that registers a Type the artifact does not carry is exactly a capability with no artifact.
+
+---
+
+### A change carried to a site with no network
+- Time: 2026-10-24T16:04:00Z
+- Type: Added
+- Contributors:
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) — argued, drafted, applied
+
+#### What changed
+- `immutable_infrastructure.md` gained [A change carried to a site with no network](./immutable_infrastructure.md#a-change-carried-to-a-site-with-no-network), Tentative: the release carried in is one signed whole with a manifest of digests and the version it replaces; the site verifies it against a key installed at commissioning before anything runs; site configuration is inside the release; a release carries the conversions of stored shapes and the system reads only the new; going back is the release before plus the backup taken before a conversion; data edited at runtime, such as rules and approval matrices, selects among the artifact's capabilities and the console accepts no code.
+- The handoff gained the question whether a site's secrets are configuration inside the release or key material kept outside it, with option 1 (outside, generated on site) assumed meanwhile.
+
+#### Deliberation
+- A Memar-built system on an isolated industrial site has no network and needs automatic migrations, backup and restore and an update path; the governance rule of [The Principle](./immutable_infrastructure.md#the-principle) already decides that such a change is a new artifact, so the section applies it rather than adding a rule (Claude — argued).
+- The owner's ruling that rules, workflows and approval matrices are data meets the rule that every capability is in the artifact only if the data cannot name an operation the artifact lacks (Claude — argued).
+
+---
+
+### The site-without-network section: who signs, the update order, and what a restore loses
+- Time: 2026-10-24T16:50:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261024-T162240Z-16944/: Complete - applies the independent critique of task 20261024-T161344Z-16944 to the Python-first delivery path
+- Contributors:
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied the critique's findings
+
+#### What changed
+- [A change carried to a site with no network](./immutable_infrastructure.md#a-change-carried-to-a-site-with-no-network): a release is signed by a party the site trusts, and a site may trust several keys installed at commissioning; the two cases, only the builder's key or also the site owner's, are stated with what each allows, and the choice is left to the owner.
+- The same section: an update stops every service that writes before it takes its backup; a new bullet states that a restore loses every record written after the update, that going back is lossless only until the new release's first write, and that after it going back needs the Requests written since carried back by a reverse conversion, or a release that fixes forward.
+- The same section points to the open questions on site secrets and on converting the signed payloads of past Requests ([Request Handoff](../../request/request.handoff.md#decisions)).
+- The [handoff](./immutable_infrastructure.handoff.md) gained three open questions (who may sign a release a site installs; who holds a signing key and what is done on its loss or compromise; how a site's key is rotated or revoked with no network), a Tentative decision naming the options a site's release is designed on meanwhile, and, on the secrets question, the statement that its recommended option is an exception to The Principle.
+
+#### Deliberation
+- The critique (task 20261024-T161344Z-16944, findings (c)2, (d)1, (d)2 and (d)3) found the delivery design both signing every release with the builder's key and letting the site's owner rebuild releases, the backup taken before the services stop, the loss on restore unstated, and keys named without custody, rotation or revocation (Claude — checked against the section and the design).
+- Who signs and how keys are governed are choices of the owner's, not consequences of The Principle, so they are questions and not rules (Claude — argued).
+
+---
+
+### A site's key is rotated and revoked by a release, recorded Tentative
+- Time: 2026-10-24T17:00:00Z
+- Type: Changed
+- Propagates to:
+  - [immutable_infrastructure.md](./immutable_infrastructure.md): Pending - when the decision is no longer Tentative, the bullet "The site verifies before it loads" states that a key change is a release, and stops calling rotation and revocation open
+- Tasks:
+  - dev-knowledge:.agents/tasks/20261024-T164111Z-16944/: Closed - records the answer the questions-answer agent of task 20261024-T074257Z-16944 gave from the owning document
+- Contributors:
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5) - recorded
+
+#### What changed
+- The [handoff](./immutable_infrastructure.handoff.md) gained the Tentative decision "A key change is itself a release": a release signed by a currently trusted key adds a new verification key, a later release removes the old one, and a revocation is the same kind of release removing the compromised key; the signer of a revoking release follows the open custody question.
+- The open entry "How is a site's trusted verification key rotated or revoked without a network?" was removed, its answer being that decision; the decision on what a site's release is designed on now points to it for rotation and revocation.
+
+#### Considered and not done
+- A separate signed key file installed outside the release: a second artifact kind, which The Principle does not name.
+- Never rotating, revoking only by recommissioning: a key would live as long as the site.
+
+---
+
+### The owner's working answers to the three release entries recorded as Tentative decisions
+- Time: 2026-10-25T14:30:00Z
+- Type: Changed
+- Propagates to:
+  - [immutable_infrastructure.md](./immutable_infrastructure.md): Pending - "Configuration is part of the release" still says whether secrets are configuration is open, and the single exception the secrets answer names is not yet stated; to be carried by task 20261025-T140521Z-16944. Only its two links were repointed to the handoffs' Decisions.
+- Tasks:
+  - dev-knowledge:.agents/tasks/20261025-T140621Z-16944/: Closed - records the owner's acceptance of 2026-10-25
+  - dev-knowledge:.agents/tasks/20261024-T074257Z-16944/: Reference - the design task whose report asked the entries
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Opus-5.5 via Claude Code) - recorded
+
+#### What changed
+- On 2026-10-25 the owner accepted the recommended option of each of three open entries of [the handoff](./immutable_infrastructure.handoff.md) as a working answer, all to be studied in depth in task 20261025-T140521Z-16944. Each entry left Open Questions and is now a Tentative decision carrying its reasons, the options not taken, and that task:
+  - "Are a site's secrets configuration that must be in the release, or key material kept outside it?": key material generated on the site and kept outside the release, stated as an exception to The Principle that stays visibly a working answer.
+  - "Who may sign a release that a site installs: only its builder, or also the site's owner?": only the builder; the site's owner verifies its own builds and does not install them; tied to the licence task 20261024-T074259Z-16944.
+  - "Who holds a release-signing key, and what is done when it is lost or compromised?": an offline hardware token with a recovery key. The decision states the owner's position that the key model must be made exact and independent of any adopting organization, and that bearer-token practice such as JWT is a security disaster, a premise the deeper task tests.
+- The decision on what a site's release is designed on names these working answers; the decision "A key change is itself a release" now says the recovery key of the custody decision signs a revocation, instead of linking the removed entry.
+- [The changelog's](./immutable_infrastructure.changelog.md) one link to the removed Request entry was repointed to the Request handoff's Decisions.

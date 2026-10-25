@@ -42,7 +42,7 @@ Owner (close of transfer): the twelve theme folders have no leftover rule to reb
 - Time: 2026-09-21T14:25:00Z
 - Type: moved
 - Cited:
-  - [Law Validity Changelog](../modules-plugable/rights/law-validity/law-validity.changelog.md) - Relation: Evidence: the git mv and the owner reason
+  - [Law Validity Changelog](../modules-plugable/rights/law/edges/validity/validity.changelog.md) - Relation: Evidence: the git mv and the owner reason
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Grok](../CONTRIBUTORS.md#grok) (Grok 4.6 via Cursor) — moved
@@ -57,7 +57,7 @@ Owner: some concepts went to bundles too early. Time/validity of a law is needed
 - Time: 2026-09-21T14:29:00Z
 - Type: clarified
 - Cited:
-  - [Law Validity](../modules-plugable/rights/law-validity/law-validity.md) - Relation: Evidence: the only high-confidence wholesale move from this pass
+  - [Law Validity](../modules-plugable/rights/law/edges/validity/validity.md) - Relation: Evidence: the only high-confidence wholesale move from this pass
 - Propagates to:
   - `modules/rights/law/law.changelog.md`: Done — its Partial on remaining candidates is closed here
   - `modules/rights/law/law.handoff.md`: Done — duration remains the only plugable move from this import
@@ -83,3 +83,35 @@ Owner asked for a full review of what landed in bundles too early, with `git mv`
 
 #### What changed
 `bundles.handoff.md` gained the open question of when a bundle composition acquires enough unique semantics that a piece must graduate into a real module. A bundle owns no kernel schema; a piece graduates only once it already owns identity, lifecycle, authorization, and processing that no existing module owns. The retired session slip `____Chats/2026-09-21-society-transfer.md` is no longer cited and its pointer was removed from `bundles.handoff.md`; the slip recorded that its content lives in `bundles.md` and this changelog.
+
+---
+
+### A composition in a project of its own
+- Time: 2026-10-24T16:02:00Z
+- Type: Added
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — argued, drafted, applied
+
+#### What changed
+- `bundles.md` gained the section [A composition in a project of its own](./bundles.md#a-composition-in-a-project-of-its-own), Tentative: a system built with Memar for another organization is a bundle in that organization's own repository; what the project holds (manifest, documents, `bundles/<system>/` and its `modules/`); Memar as a pinned dependency joined on the import path as namespace packages; a delivered history without task records; and the composition's own choices recorded in the project, with the rules every delivery obeys pointed to where they govern.
+
+#### Deliberation
+- An adopting organization's need for its own full source with history, and kernel neutrality for its vocabularies and tables, were the reasons (Claude — argued; the placement was listed as settled by the owning material in the gap analysis of 2026-10-24).
+- Whether Memar's process-safety subjects become Memar's own pluggable modules stays the owner's question and is not decided here (Claude — recorded).
+
+---
+
+### The project-of-its-own section corrected on imports and on the profile's standing
+- Time: 2026-10-24T16:50:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261024-T162240Z-16944/: Complete - applies the independent critique of task 20261024-T161344Z-16944 to the Python-first delivery path
+- Contributors:
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus-5.5) — applied the critique's findings
+
+#### What changed
+- [A composition in a project of its own](./bundles.md#a-composition-in-a-project-of-its-own): the namespace-package claim is limited to `modules` and `bundles`, which have no `__init__.py`; `modules-plugable` is stated not to be a Python identifier, with how a project imports a pluggable module pointed to the open question in the [Python target's handoff](./khayyam/targets/python/target.handoff.md#decisions).
+- The same section no longer lists the Python profile among the rules every delivery obeys: it points to the profile as proposed and Tentative until the owner ratifies it.
+
+#### Deliberation
+- The critique (task 20261024-T161344Z-16944, findings (a)1 and (a)3) found the import claim inaccurate (Memar's own code reaches `modules-plugable` by `import_module` with a string) and the section citing as binding a profile the owner has not ratified (Claude — checked against `bundles/memar/tests/module_graph.py`).
