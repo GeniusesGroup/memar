@@ -76,6 +76,13 @@ Migrated from the organization's ephemeral KM seed, where it was parked.
 
 ## Open Questions
 
+### Does the content domain need nodes, parts and labels, or only addresses?
+- State: "When a check runs" in `content.md` speaks of a text node, a `blob` node and the label `legacy-unchecked`, which are `record`'s terms (a node, its parts under domain keys, its labels), and "How a Task is stored" in `task.md` makes a content a node with the part `content`. The owner ruled on 2026-10-24 that a kernel module's link to `record` is only the reference to an address ([Memory Address](../../computer/memory/address/address.md)). That a store holds bytes and is blind to their encoding is the memory contract's own and is repointed to it; the `labels` part and `scan` by label are only `record`'s (the concept of a label is [Label](../label/label.md)'s), and the node vocabulary and `legacy-unchecked` beside them are load-bearing for the check's attachment to texts, and were not edited.
+- Options: (1) Recommended: `content.md` states a text and a content by the address that holds them and says the check is attached by whatever classification the composition keeps, and the label `legacy-unchecked` and the node vocabulary are the composition's use of `record`; cost: a rewrite of the paragraph. (2) The paragraph stays, stated as the composition's use of `record`. (3) The content domain needs labels as its own subject.
+- Anchor: the bullet "When a check runs" of [content.md](content.md).
+- Blocks: the move of the `record` capsule. Assumption meanwhile: option 2.
+- Asked: 2026-10-24, Claude (task `20261024-T160312Z-25344`), for Omid Hekayati.
+
 ### Primary media versus a text transcription of the same content
 - State: a content may carry audio (or other media) while an agent or a human also types that utterance into text stored under text. On a Task timeline it must be clear which content is the *primary* capture and which edge is the textual rendering. Owner named this on 2026-10-20; design task `20261020-T131911Z-22300` (depends on sitting 4).
 - Options: (1) one content node with a medium object plus a `transcript_of` (or similar) edge to a text-bearing content; (2) one content with two attachments, primacy a label or edge attribute; (3) other — session proposes.
@@ -89,6 +96,7 @@ Migrated from the organization's ephemeral KM seed, where it was parked.
 - Anchor: this module's folder; the research's [Open Questions](content.research.001.md#open-questions); the owner's rulings of 2026-10-17 that content as a domain is the organization's and that file-system thinking is put aside there.
 - Blocks: the content-domain definition and every Next Step of [Research 001](#research-001-questions-and-next-steps-2026-10-15) that writes into a document. Assumption meanwhile (Tentative): `content.md` stays the interface-semantics model and nothing of the domain is written into it.
 - Asked: 2026-10-19, by the session that carried the organization's text.
+- Ruled 2026-10-24 (owner, task 20261023-T164153Z-4608): the two readings are one concept; the organization's unit is the records of Content. The canonical definition of those records still has no home and is not written; see [Text Handoff](../text/text.handoff.md#owners-rulings-on-the-premises-of-text-content-and-representation-2026-10-24).
 
 ### How do overlapping or nesting compound tokens behave?
 - State: moved 2026-09-11 from the same wrapper. Token composition (the polysemy mechanism) has not been tested against real multi-word phrases that overlap or nest.

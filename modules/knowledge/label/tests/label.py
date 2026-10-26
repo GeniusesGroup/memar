@@ -43,7 +43,7 @@ import sys
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-TOP = TESTS.parents[3]
+TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
 SCRIPTS = TOP / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(TOP))

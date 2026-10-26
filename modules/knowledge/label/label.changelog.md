@@ -94,3 +94,28 @@
 
 #### What changed
 - [Where labels are declared](./label.md#where-labels-are-declared) names the topics as the first vocabulary declared this way, and the task domain's statuses as the next.
+
+---
+
+### Categories nest; the two roots correspond; a pluggable module stands at the mirror of the module it attaches to
+- Time: 2026-10-25T16:00:00Z
+- Type: Changed
+- Cited:
+  - [Placements Handoff → Decisions](../modularity/placements.handoff.md#decisions) - Depends_on: the owner's ruling of 2026-10-24 that "a category is one level" is a bad rule, and his choice of mirroring for every module a capability attaches to.
+- Tasks:
+  - 20261024-T052937Z-22844: Closed - the task that wrote it.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- [Category → The rules](./labels/category.md#the-rules) no longer limits a category to one level. A folder is a module or a category, never both: a category holds no contract (no `protocol/`, code, `services/`), and a module holds its own facets and no module; the categories of the two roots correspond at the same paths; a mirror folder is the one exception, on the pluggable side; "a category is itself a module" is withdrawn. The owner refused, on 2026-10-26, the first draft's "a module may hold modules": a category that offers a protocol collects every concept nobody modelled.
+- [Category Depth](./rules/category-depth/category-depth.md) states the mirror: a pluggable module stands at `modules-plugable/` + the whole path of the module whose contract it realizes or extends + its capability's name, for every such module; a capability of a whole category stands directly in the category's pluggable folder; the router's key by leaf folder name is named as the change the rule makes necessary.
+- The index row of [rules/README.md](./rules/README.md) follows.
+
+#### Considered and not done
+- **Mirroring only a module that has children.** Not done: the owner chose the single test.
+- **Moving any module.** Not done: the moves are queued as tasks from the review in [Modules Handoff](../../modules.handoff.md#re-reading-this-repositorys-categories).
+
+#### Left open
+- The router (`bundles/memar/memar`, `catalog`) keys by leaf folder name; the files that count `parents[N]` from their own location change when a module moves.

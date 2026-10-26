@@ -36,3 +36,23 @@
 
 #### Considered and not done
 - A module named search (refused: services, not a domain).
+
+---
+
+### The owner's rulings on the premises of Text, Content and Representation
+- Time: 2026-10-24T10:30:00Z
+- Type: Added
+- Cited:
+  - [Content](../content/content.md#what-content-means-here-and-what-this-document-is-not) - Reference: representations are never the model
+- Tasks:
+  - main:.agents/tasks/20261023-T164153Z-4608/: Partial - the premises ruled; the documents not yet rewritten
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled the premises
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — asked and recorded
+
+#### What changed
+- [text.handoff.md](text.handoff.md) gains the rulings: one Content, Representation defined, Text a kind of Representation, markup as annotation on spans, the names, addressing a part, where passages go, and the effect on the view's name.
+- [content.handoff.md](../content/content.handoff.md) notes that its question of the two readings is ruled.
+
+#### Considered and not done
+- text.md, content.md and every `.kh` file are unchanged; nothing was moved or removed.

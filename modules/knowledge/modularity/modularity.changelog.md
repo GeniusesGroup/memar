@@ -555,3 +555,23 @@ The section had been hedged in two directions at once — a Rule that *may* be a
 #### What changed
 - [Kernel Neutrality → What this rule does not claim](./rules/kernel-neutrality/kernel-neutrality.md#what-this-rule-does-not-claim) says the rule does not bind a bundle or Memar's own tooling, and binds Memar's tool modules under `modules/`.
 - The open question in [Placements Handoff](./placements.handoff.md) is recorded as decided.
+
+---
+
+### A pluggable module stands at the mirror of the module it attaches to
+- Time: 2026-10-25T16:00:00Z
+- Type: Changed
+- Cited:
+  - [Category Depth](../label/rules/category-depth/category-depth.md) - Depends_on: the rule that states the mirror.
+- Tasks:
+  - 20261024-T052937Z-22844: Closed - the task that wrote it.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- [Pluggable → Operational rules](./labels/pluggable.md#operational-rules) places a capability at the mirror of the module whose contract it realizes or extends, and a capability of a whole category directly in the category's pluggable folder; its path template follows. [Kernel](./labels/kernel.md), [Placements](./placements.md), [Placement](./rules/placement/placement.md) and [Guest](./labels/guest.md) follow.
+- [Placements Handoff](./placements.handoff.md): the decision is recorded, the 2026-10-17 entry "Categories are one level" is marked superseded in part, the open question "How a pluggable module is placed under a kernel module that has children" is removed as decided, and the assumption of the same categories on both sides is revised.
+
+#### Considered and not done
+- **Rewriting every guest module's path.** Not done: the moves are queued from the review.

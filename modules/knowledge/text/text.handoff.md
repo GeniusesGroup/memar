@@ -82,6 +82,21 @@ another domain owns are still waiting on that domain; see Open questions.
   prose into a declaration would have been the middle state the comment-policy
   rule forbids. The prose is preserved in `text.md` under Validation.
 
+### Owner's rulings on the premises of Text, Content and Representation (2026-10-24)
+
+Ruled by the owner in the chat of task 20261023-T164153Z-4608, from the concept map of task 20261018-T095710Z-4380. Each is a premise; the documents named under "Not yet written" do not carry it yet.
+
+- **Content is one concept.** Memar's Content (the model that HTML, Markdown and JSON represent, [content.md](../content/content.md)) and the organization's Content (the unit the knowledge base holds, with a ContentUUID, versions and code as content) are the same concept. What the organization stores and versions is its records of that Content, and the organization does not keep a separate definition. *(decided)*
+- **Representation is defined,** as a concept written in some form (text, image, audio, structure), kept apart from the concept it represents. Document is one kind of Representation. *(decided; where it is defined is open)*
+- **Text is a kind of Representation,** the written, readable form of a concept. It is not the String (the machine value) and not the record (identity, language). The owner confirms the two were mixed in `edges/language/protocol/data_model.kh` (`Field_Text` against `Field_TextID`) and are to be held apart. *(decided)*
+- **Markup is annotation on spans.** The characters of a Text are a plain value; style, structure, links and mentions are separate annotations that point at a span of it. HTML or Markdown is one way to write a text together with its annotations, a representation of it, not the Text. This replaces the lines of [text.md](text.md) that put HTML and CSS inside the value. The owner's reading: as Content may be image, subtitle and audio at once, the Text domain is an umbrella that keeps a text and its style separable, and a text always comes with its structure, never plain only. *(decided)*
+- **Names.** Text is the whole (characters with their annotations); the plain value is called Characters for now. This word meets the Character abstraction of task 20261023-T164151Z-21796, which decides it; until then it is a working name. *(decided as direction; name open)*
+- **A part is addressed medium by medium.** Text gives (start, end) in a stated unit, image a region, audio a time range. The owner points out that a shared abstraction with a shape per medium and one address per medium are practically the same; a shared abstraction is kept only if it states a requirement common to all (a part is meaningful only against one immutable value, and resolves to the part or fails). *(Tentative; the unit of text offsets is left to the Character task)*
+- **Where passages go.** The Position A/B passage of content.md (lines 259-271) goes to the Text domain; the diagram passages (273-304) split: those about representation go with Representation, those about documenting and cognition to those documents. content.md keeps a link at each place. *(decided; the move is not done, removal is gated)*
+- **Effect on the read-only view's name** (task 20261023-T164155Z-21032): the view that a quoted form hands to a method is of plain Characters, not of Text, since Text now includes annotations; its name must not contain Text or Content. `CharacterView` and `CharacterRun` stay the candidates and the Character task's decision on the word Character comes first.
+
+Not yet written: the definition of Representation (a document of its own beside Content); rewriting [text.md](text.md) Model and "Text with style" to the rulings above; moving Position A/B and the diagram passages out of content.md; a canonical definition of the organization's Content records (the second reading in [content.handoff.md](../content/content.handoff.md)); the unit of text offsets; the annotation record's shape; whether String needs a length unit. The owner's caution that Text itself may have no view of the structure of a document it holds (below, "How does Text learn that a document has parts?") stands: annotations here are spans of one value, not the parts of a document.
+
 ## Open questions
 
 ### Waiting on a name another domain owns

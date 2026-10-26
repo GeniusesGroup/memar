@@ -11,7 +11,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder. Every document is written into
-one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
+one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
 again, and no test reads the repository's own
 `docs/`: a test that asserts against the tree stops being a test of the rule and
 becomes a report on whatever the tree currently holds.
@@ -79,11 +79,11 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_copy_excluded = plugable_load('computer.filesystem.services.fs_copy_excluded')
+_m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy_excluded')
 NEVER_COPIED_PATTERNS = _m_fs_copy_excluded.NEVER_COPIED_PATTERNS
-_m_fs_memar_repository = plugable_load('computer.filesystem.services.fs_memar_repository')
+_m_fs_memar_repository = plugable_load('computer.memory.filesystem.services.fs_memar_repository')
 memar_repository = _m_fs_memar_repository
 enclosing_repository = _m_fs_memar_repository.enclosing_repository
 import sys
@@ -91,7 +91,7 @@ import tempfile
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True

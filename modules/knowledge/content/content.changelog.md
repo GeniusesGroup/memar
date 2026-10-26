@@ -402,7 +402,7 @@ The tension was not the category but the exemption. Read against a document decl
 - Time: 2026-10-23T17:30:00Z
 - Type: Added
 - Cited:
-  - [Memory Record](../../computer/memory/record/record.md) - Reference: the port stays blind to encodings
+  - [Memory Record](../../../modules-plugable/computer/memory/store/record/record.md) - Reference: the port stays blind to encodings
 - Tasks:
   - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme; the build tasks are queued after it
 - Contributors:
@@ -435,3 +435,22 @@ The tension was not the category but the exemption. Read against a document decl
 #### Considered and not done
 - Removing the word `content` from the verbs: it changes every MCP tool name, the skill and `AGENTS.md`, so it is a task of its own (owner, 2026-10-24: a service is an independent identity with a complete name, and the category in front of it is to go).
 - Removing `meta`, `section`, `path` and `obligations` as duplicates of `get-meta`, `get-section`, `resolve-path` and `list-undischarged-propagations`: they are a rename in progress by another chat, and the installed launcher still calls `content path`.
+
+---
+
+### Encoding blindness repointed to the memory contract; node and label vocabulary asked of the owner
+- Time: 2026-10-24T17:30:00Z
+- Type: Changed
+- Cited:
+  - [Memory](../../computer/memory/memory.md#retention-is-reached-through-one-contract) - Reference: the memory contract's reference to an address, which is all a kernel module takes of retention
+- Tasks:
+  - main:.agents/tasks/20261024-T160312Z-25344/: Partial - repoints the kernel documents from the record contract to the memory contract's reference to an address; a fresh critique follows
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled on 2026-10-24 that the link is only the reference to an address
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — found the statements and wrote the change
+
+#### What changed
+- `content.md`, "When a check runs": that the store stays blind to encodings is stated of the memory contract, which holds bytes under addresses, in place of the `record` contract. `content.handoff.md` gained the Open Question "Does the content domain need nodes, parts and labels, or only addresses?".
+
+#### Considered and not done
+- Rewriting the text node, `blob` node and `legacy-unchecked` label wording: they are `record`'s vocabulary and load-bearing for the attachment of the check, so the owner decides.

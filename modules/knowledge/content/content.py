@@ -33,7 +33,7 @@ folder, and a name that states a narrower subject than the file serves is a
 name that will be believed.
 
 **The Memar root is not decided here.** `machine/env_location.py` is the one place
-that reads the location variable, and `modules-plugable/computer/filesystem/services/fs_memar.py` resolves the root from
+that reads the location variable, and `modules-plugable/computer/memory/filesystem/services/fs_memar.py` resolves the root from
 it; each verb asks that module once when it runs, and nothing decides for
 itself. Minting a document ID asks the clock rather than the checkout, so it
 works on a machine that has not installed Memar at all.

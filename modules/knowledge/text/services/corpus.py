@@ -17,7 +17,7 @@ for (`task_records.py`).
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_copy_excluded = plugable_load('computer.filesystem.services.fs_copy_excluded')
+_m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy_excluded')
 NEVER_COPIED_PATTERNS = _m_fs_copy_excluded.NEVER_COPIED_PATTERNS
 import functools
 import os

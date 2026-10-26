@@ -6,7 +6,7 @@ This document and its companions, [modules.changelog.md](modules.changelog.md) a
 ## Placement
 Where a module is placed — [Kernel](./knowledge/modularity/labels/kernel.md), [Pluggable](./knowledge/modularity/labels/pluggable.md), [Bundle](./knowledge/modularity/labels/bundle.md) — which [category](./knowledge/label/labels/category.md) it is browsed under, and which [labels](./knowledge/label/label.md#a-modules-labels) (`guest`, first) it carries is decided by Memar's [Placements](./knowledge/modularity/placements.md), with its [Placement](./knowledge/modularity/rules/placement/placement.md) and [Category Depth](./knowledge/label/rules/category-depth/category-depth.md) rules. That module is the authority; this repository's placements were first worked out here and now cite it, and where this repository places a module differently it owes the reason in that module's own handoff. What a label is, and that a name is one, is Memar's [Label](./knowledge/label/label.md). The bundle test is in [Bundles](../bundles/bundles.md).
 
-This repository's categories (`computer`, `economics`, `identity`, `knowledge`, `management`, `rights`, `storage`) are not final; their re-reading is in [Modules Handoff](modules.handoff.md#re-reading-this-repositorys-categories).
+This repository's categories (`computer`, `economics`, `identity`, `knowledge`, `management`, `process`, `rights`, nested as their subjects ask) are not final; their re-reading is in [Modules Handoff](modules.handoff.md#re-reading-this-repositorys-categories).
 
 These rules are this repository's own, over its graph of vertices and edges:
 

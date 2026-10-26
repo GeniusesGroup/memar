@@ -21,45 +21,26 @@ What is pinned, and what each pin is for:
                        second interface beside the first.
   RootVerbIsNotHere    Where Memar lives moved out of this domain and into the
                        installer, as `--root`: it is not a question about
-                       content, and `bundles/memar/install/tests/install.py` holds its pins.
+                       content, and `bundles/memar/services/install/tests/install.py` holds its pins.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-
 import os
 import subprocess
 import sys
 import unittest
 from pathlib import Path
-
 TESTS = Path(__file__).resolve().parent
-# This suite lives in the `tests/` folder of the shelf that owns its subject, so
-# the scripts folder is two levels up. Running a file puts its OWN folder on the
-# module search path and not its parent's, which is the one line this needs and
-# the reason it carries one.
-SCRIPTS = TESTS.parents[3] / ".agents" / "scripts"
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))  # the checkout's top, where `modules/` is imported from
+sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-
-LAUNCHER = SCRIPTS / "memar"
-
+LAUNCHER = SCRIPTS / 'memar'
 
 def run_memar(*arguments: str) -> subprocess.CompletedProcess:
-    environment = dict(
-        os.environ,
-        COLUMNS="80",
-        PYTHONIOENCODING="utf-8",
-        PYTHONDONTWRITEBYTECODE="1",
-        MEMAR_NO_AUTO_UPDATE="1",
-    )
-    return subprocess.run(
-        [sys.executable, str(LAUNCHER), *arguments],
-        capture_output=True,
-        env=environment,
-    )
-
+    environment = dict(os.environ, COLUMNS='80', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1', MEMAR_NO_AUTO_UPDATE='1')
+    return subprocess.run([sys.executable, str(LAUNCHER), *arguments], capture_output=True, env=environment)
 
 class OneVerbHoldsThemAll(unittest.TestCase):
     """Every verb lives under `content`, and nowhere else.
@@ -72,70 +53,42 @@ class OneVerbHoldsThemAll(unittest.TestCase):
     hash, because argparse wraps help to the terminal width and a byte pin is a
     property of the machine as much as of the file.
     """
-
-    EVERY_VERB = (
-        "path",
-        "meta",
-        "section",
-        "context",
-        "search",
-        "find",
-        "backlinks",
-        "obligations",
-        "questions",
-        "changelog-append",
-        "list-ai-only-changelog-records",
-        "add-human-approval-to-changelog-record",
-        "hour-id",
-        "write",
-        "edit",
-        "check",
-    )
+    EVERY_VERB = ('path', 'meta', 'section', 'context', 'search', 'find', 'backlinks', 'obligations', 'questions', 'changelog-append', 'list-ai-only-changelog-records', 'add-human-approval-to-changelog-record', 'hour-id', 'write', 'edit', 'check')
 
     def test_every_verb_is_accepted_under_content(self) -> None:
         for verb in self.EVERY_VERB:
             with self.subTest(verb=verb):
-                asked = run_memar("content", verb, "--help")
+                asked = run_memar('content', verb, '--help')
                 self.assertEqual(asked.returncode, 0, asked.stderr)
-                shown = asked.stdout.decode("utf-8", "replace")
-                self.assertIn(f"usage: memar content {verb}", shown)
+                shown = asked.stdout.decode('utf-8', 'replace')
+                self.assertIn(f'usage: memar content {verb}', shown)
 
     def test_the_flat_spellings_are_gone(self) -> None:
         for verb in self.EVERY_VERB:
             with self.subTest(verb=verb):
-                completed = run_memar(verb, "--help")
+                completed = run_memar(verb, '--help')
                 self.assertNotEqual(completed.returncode, 0, verb)
-                self.assertIn(
-                    "invalid choice",
-                    completed.stderr.decode("utf-8", "replace"),
-                    verb,
-                )
+                self.assertIn('invalid choice', completed.stderr.decode('utf-8', 'replace'), verb)
 
     def test_content_groups_exactly_these_verbs(self) -> None:
-        asked = run_memar("content", "--help")
+        asked = run_memar('content', '--help')
         self.assertEqual(asked.returncode, 0, asked.stderr)
-        shown = asked.stdout.decode("utf-8", "replace")
-        listed = {
-            line.split()[0]
-            for line in shown.splitlines()
-            if line.startswith("    ") and not line.startswith("     ")
-        }
+        shown = asked.stdout.decode('utf-8', 'replace')
+        listed = {line.split()[0] for line in shown.splitlines() if line.startswith('    ') and (not line.startswith('     '))}
         self.assertEqual(listed, set(self.EVERY_VERB))
 
     def test_content_is_a_verb_of_memar(self) -> None:
-        asked = run_memar("--help")
+        asked = run_memar('--help')
         self.assertEqual(asked.returncode, 0, asked.stderr)
-        shown = asked.stdout.decode("utf-8", "replace")
-        self.assertIn("memar content search <term>", " ".join(shown.split()))
-
+        shown = asked.stdout.decode('utf-8', 'replace')
+        self.assertIn('memar content search <term>', ' '.join(shown.split()))
 
 class RootVerbIsNotHere(unittest.TestCase):
+
     def test_no_verb_of_this_domain_answers_where_memar_lives(self) -> None:
-        completed = run_memar("content", "root")
+        completed = run_memar('content', 'root')
         self.assertEqual(completed.returncode, 2)
-        self.assertIn("invalid choice", completed.stderr.decode("utf-8", "replace"))
-        self.assertFalse((SCRIPTS.parent.parent / "modules" / "knowledge" / "content" / "services" / "root.py").exists())
-
-
-if __name__ == "__main__":
+        self.assertIn('invalid choice', completed.stderr.decode('utf-8', 'replace'))
+        self.assertFalse((SCRIPTS.parent.parent / 'modules' / 'knowledge' / 'content' / 'services' / 'root.py').exists())
+if __name__ == '__main__':
     unittest.main(verbosity=2)

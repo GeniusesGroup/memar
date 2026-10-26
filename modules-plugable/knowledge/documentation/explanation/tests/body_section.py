@@ -17,7 +17,7 @@ import sys
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-TOP = TESTS.parents[4]
+TOP = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
 sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True

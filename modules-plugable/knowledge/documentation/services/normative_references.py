@@ -27,7 +27,7 @@ an entry: the shape is the declaration.
 
 **Where an entry's link leads.** A relative link names a file of the place's own
 repository. In a project's list a link may instead be a page of Memar's
-published repository (`modules-plugable/computer/filesystem/services/fs_memar.py`'s `PUBLISHED_PAGES`): it names that
+published repository (`modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s `PUBLISHED_PAGES`): it names that
 file of the Memar checkout the place was given, and is read and hashed from
 there, so a project can name a passage Memar's lists omit, or drop one they name,
 without knowing where Memar's checkout lies on a machine.
@@ -35,7 +35,7 @@ without knowing where Memar's checkout lies on a machine.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 PUBLISHED_PAGES = _m_fs_memar.PUBLISHED_PAGES
 import re
 from pathlib import Path, PurePosixPath

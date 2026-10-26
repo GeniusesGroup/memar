@@ -113,3 +113,24 @@ In organization (commit `19834121`) `modules/README.md` was a git symlink to `mo
 
 #### What changed
 - [Module skeleton](./modules.md#module-skeleton) lists `labels` among the structural kinds: the folder in which every module, kernel or pluggable, declares its own labels as code.
+
+---
+
+### `storage` is dissolved into `memory`, and the categories are reviewed by the new rule
+- Time: 2026-10-25T16:00:00Z
+- Type: Changed
+- Cited:
+  - [Category Depth](./knowledge/label/rules/category-depth/category-depth.md) - Depends_on: the rule the review applies.
+- Tasks:
+  - 20261024-T052937Z-22844: Closed - the task that wrote it.
+- Contributors:
+  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - ruled
+  - [Claude](../CONTRIBUTORS.md#claude) (Opus 5.5 via Claude Code) - applied
+
+#### What changed
+- `storage` is dissolved as a category (owner, 2026-10-24): `graph` and `key_value` belong under `memory`, as capsules of the memory contract, and the move is task 20261024-T160310Z-25344. The shapes rejected were `computer/storage` as one module of two facets and two siblings on the `computer` floor.
+- The categories were scored against the new rule in task 20261024-T052937Z-22844; the clear moves are queued as tasks and what stays open is a short list in [Modules Handoff](./modules.handoff.md#re-reading-this-repositorys-categories).
+- [Modules](./modules.md) and [README](./README.md) no longer say a category is one level or a module.
+
+#### Left open
+- No module was moved.

@@ -15,7 +15,7 @@ here too. The module is pluggable, and nothing under `modules/` imports it
 (`bundles/memar/tests/module_graph.py` fails if one does).
 
 Nothing here writes outside its scratch folder: each folder the roles are made
-in is made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and removed
+in is made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
 again. `modules/README.md` is read, never written. The subprocesses run ask
 for `--help` only, which writes nothing.
 
@@ -41,7 +41,7 @@ What is pinned, and what each pin is for:
                        prints what it made and what was already there, and
                        refuses a PATH that is not a folder, and no PATH: the
                        current folder is never read.
-  TempIsTheMachines    The `temp` role takes its name from `modules-plugable/computer/filesystem/services/fs_memar.py`,
+  TempIsTheMachines    The `temp` role takes its name from `modules-plugable/computer/memory/filesystem/services/fs_memar.py`,
                        which spells it once, and the task's sentence on
                        temporary files takes it from there too.
   ToolsReadTheProfile  `fs_memar.role_folders()`, which the router and
@@ -57,9 +57,9 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 import contextlib
 import importlib.util
@@ -74,7 +74,7 @@ import unittest.mock
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-TOP = TESTS.parents[3]
+TOP = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
 SCRIPTS = TOP / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS / 'services'))
 sys.path.insert(1, str(SCRIPTS))
@@ -91,7 +91,7 @@ BARE_ROLE = re.compile('^[a-z][a-z0-9-]*/$')
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
 launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
-MODULE_SERVICES = [name for name in launcher.services() if name.partition(launcher.DOMAIN_SEPARATOR)[0] == 'module']
+MODULE_SERVICES = launcher.services_of('module')
 
 def readme_roles() -> list[str]:
     """The bare role names the roles sentence of the README's bullet lists, in order."""

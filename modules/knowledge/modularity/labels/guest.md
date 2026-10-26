@@ -17,14 +17,14 @@ A module labelled `guest` holds Memar's side of a foreign surface and nothing el
 
 ## The test
 A module earns the label when its subject is a surface whose meaning **Memar cannot change without the agreement of someone outside this project**. The test is authority, not familiarity, and it applies to positions as well as to declarations. Two kinds of module pass it:
-- **A protocol surface owned outside Memar** that Memar's stack conforms to and may itself realize — the application-protocol case ([http.md](../../../../modules-plugable/net/http/http.md)) and the storage case ([filesystem.md](../../../../modules-plugable/computer/filesystem/filesystem.md)).
+- **A protocol surface owned outside Memar** that Memar's stack conforms to and may itself realize — the application-protocol case ([http.md](../../../../modules-plugable/net/http/http.md)) and the storage case ([filesystem.md](../../../../modules-plugable/computer/memory/filesystem/filesystem.md)).
 - **A design name that circulates with senses Memar does not inherit** — [ddd.md](../../../../modules-plugable/process/ddd/ddd.md) is the case. Such a name is not a protocol surface and has no declarations; it is labelled because the authority over what the name means is outside Memar, and not because of the form its subject takes.
 
 ## The rule
 1. **A protocol Memar does not own carries the label `guest`.** If changing its contract would require the agreement of someone outside this project, the module is a guest whatever language it is written in and however much of it Memar relies on.
 2. **The module's name is the foreign protocol's own, spelled the way the outside world spells it.** `http`, `soap`, `json` are the names those worlds use. A name Memar coined does not qualify for the label.
 3. **A protocol Memar owns never carries the label, and is never mirrored.** No copy of a Memar module is made under a guest's name, and no module is duplicated in a renamed form: a subject Memar owns has exactly one home, at its own address, reachable by the same `in` address as everything else. The timer is the counterexample that made the rule necessary: it is Memar's own, so a second address for it, rooted under the foreign shelf, was a second address for one subject, and the second address was the one two files actually imported from.
-4. **A guest's place follows the module it attaches to.** The guest is filed under the category of the Memar module it attaches to, as a [pluggable](./pluggable.md) module, because the claim of the label no longer depends on the path. HTTP attaches to the networking Memar owns and is filed under `net`; the JSON grammar attaches to the codecs and is filed under `computer`, the category the codecs belong to.
+4. **A guest's place follows the module it attaches to.** The guest stands at the mirror of the Memar module it attaches to, as a [pluggable](./pluggable.md) module ([Category Depth](../../label/rules/category-depth/category-depth.md)), because the claim of the label no longer depends on the path. HTTP attaches to the networking Memar owns and stands under `net`; the JSON grammar attaches to the codecs and stands at `computer/codec/json`.
 
 ## What does not carry the label
 - **Memar's own protocols.** Their specification and realization are in the category that owns the concern, under its own name, with no separate shelf.

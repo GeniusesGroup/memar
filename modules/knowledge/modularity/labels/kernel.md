@@ -7,7 +7,7 @@ ID: 496333
 
 # Kernel
 ## Abstract
-**Kernel** is the placement of a module that Memar's foundational set cannot lose: a module whose removal would force a foundational abstraction to be fabricated or another to be distorted. A kernel module sits at `modules/<category>/<module>/`, and the category is only a browsing namespace ([Category](../../label/labels/category.md)). Kernel is one of the three placements of [Placements](../placements.md); the others are [Pluggable](./pluggable.md) and [Bundle](./bundle.md).
+**Kernel** is the placement of a module that Memar's foundational set cannot lose: a module whose removal would force a foundational abstraction to be fabricated or another to be distorted. A kernel module sits at `modules/<path>/<module>/`, the path being zero or more categories, and a category is only a browsing namespace ([Category](../../label/labels/category.md)). Kernel is one of the three placements of [Placements](../placements.md); the others are [Pluggable](./pluggable.md) and [Bundle](./bundle.md).
 
 ## The test
 The test is the one [Modularity → What Earns Foundational Status](../modularity.md#what-earns-foundational-status) states, applied to a module: attempt to express, through the remaining modules, the part of reality the candidate covers. If the result forces a new foundational abstraction, or bends an existing one, the candidate is kernel. If an independently modeled capability attaching to existing modules can fill the gap, the candidate is pluggable, however central it feels.

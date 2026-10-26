@@ -24,15 +24,15 @@ so it is this pluggable module's and not the kernel's
 ([Kernel Neutrality](../../../../modules/knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule);
 owner, 2026-10-20). No kernel module imports it: a task keeps its own small
 layout (`task_layout`), the name of the `temp` folder is
-`modules-plugable/computer/filesystem/services/fs_memar.py`'s, and the tools that must not take a role folder for a
-module ask `modules-plugable/computer/filesystem/services/fs_memar.py`'s `role_folders()`, which reads `ROLE_FOLDERS` here.
+`modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s, and the tools that must not take a role folder for a
+module ask `modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s `role_folders()`, which reads `ROLE_FOLDERS` here.
 The file is named `module_` and then its verb, as the router's rule for a
 capability kept outside its domain's folder asks: the router offers it under
 `memar module` only because its name starts with that domain and an underscore.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
 import argparse
 import textwrap
@@ -58,7 +58,7 @@ class Role(Enum):
     TESTS = ('tests', "one Test per named Process of the module, each primitive type's and each service's test, and the check that a realization satisfies its abstraction.", "no Test of another module's subject: a Test never leaves the module that owns its subject, and a module with no decidable expectation has no tests/.")
     SERVICES = ('services', "one folder per service the module offers outside callers: each a contract a caller can read without reading the module. In a task folder, services/ holds the task's scripts.", "not the types a service takes or gives back: those are declared in protocol/ and primitive/ or stand in the module's root.")
     DOCS = ('docs', 'documents about the module that are not its specification: notes, research, reports.', "not the specification, which is the module's main document beside the role folders, and not a document a governing rule places beside its base artifact.")
-    TEMP = (TEMP_FOLDER, "what the work makes and the module's record does not need: a draft not yet appended elsewhere, a tool's output without content value. Every module has one, every task included.", 'nothing the record needs: it is kept out of version control and out of every archive (modules-plugable/computer/filesystem/services/fs_memar.py, TEMP_FOLDER).')
+    TEMP = (TEMP_FOLDER, "what the work makes and the module's record does not need: a draft not yet appended elsewhere, a tool's output without content value. Every module has one, every task included.", 'nothing the record needs: it is kept out of version control and out of every archive (modules-plugable/computer/memory/filesystem/services/fs_memar.py, TEMP_FOLDER).')
 
     def __init__(self, folder: str, holds: str, holds_not: str) -> None:
         self.folder = folder

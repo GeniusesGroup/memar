@@ -25,7 +25,7 @@ endings. The link path is the one the record's own contributor links use.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_lock = plugable_load('computer.filesystem.services.fs_lock')
+_m_fs_lock = plugable_load('computer.memory.filesystem.services.fs_lock')
 edit_task = _m_fs_lock.edit_task
 import argparse
 import sys
