@@ -6,7 +6,7 @@
 - Time: 2026-09-21T15:36:36Z
 - Type: Added
 - Cited:
-  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](../../computer/filesystem/filesystem.md) — Extends: this document is the same kind of protocol-folder member — Memar's position on an external protocol surface — applied to HTTP rather than to POSIX/VFS.
+  - [Reevaluating the Filesystem as a Fundamental Modeling Primitive](../../computer/memory/filesystem/filesystem.md) — Extends: this document is the same kind of protocol-folder member — Memar's position on an external protocol surface — applied to HTTP rather than to POSIX/VFS.
   - [sRPC](../../../modules/net/srpc/srpc.md) — Depends_for: the four-identity collapse and the "re-encoded URL" caution originated as lost sRPC design rationale; the HTTP critique moves here so sRPC can state its independent identities as a positive contract.
   - [Networking Connection](../../../modules/net/connection/connection.md) — Depends_for: the "stateless HTTP" versus cookie reconstruction instance moves here so the connection document can state state-ownership without prosecuting HTTP.
   - [Networking](../../../modules/net/net.md) — Depends_for: the HTTP-shaped-traffic filter case moves here; Networking keeps the general rule that a deployment constraint is not an architecture.

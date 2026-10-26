@@ -87,3 +87,260 @@ func (sk *Socket) ScheduleProcessingSocket() {
 	// st.SetState(net_p.Status_ReceivedCompletely)
 }
 */
+
+
+// TODO(go-migrate):
+/*
+package net
+
+import (
+	"libgo/authorization"
+	"libgo/protocol"
+	"libgo/user"
+	// "libgo/uuid/16byte"
+)
+
+// https://github.com/balacode/udpt/blob/main/sender.go
+type Socket struct {
+	/* Connection data * /
+	weight   protocol.Weight
+	linkConn protocol.NetworkLink
+
+	/* Peer data * /
+	domainName string
+	// Peer Identifiers
+	userID         user.UUID // Can't change on StateLoaded
+	delegateUserID user.UUID // Can't change on StateLoaded
+
+	/* Security data * /
+	AccessControl authorization.AccessControl
+	cipher        protocol.Cipher // Selected cipher algorithms https://en.wikipedia.org/wiki/Cipher_suite
+
+	STATUS
+	Metric
+}
+
+//libgo:impl libgo/protocol.ObjectLifeCycle
+func (s *Socket) Init() (err protocol.Error)   { return }
+func (s *Socket) Reinit() (err protocol.Error) { return }
+func (s *Socket) Deinit() (err protocol.Error) {
+	// first closing open listener for income frame and refuse all new frame,
+	// then closing all idle connections,
+	// and then waiting indefinitely for connections to return to idle
+	// and then shut down
+	return
+}
+
+func (s *Socket) Weight() protocol.Weight { return s.weight }
+
+//libgo:impl libgo/protocol.NetworkAddress
+// func (s *Socket) LocalAddr() protocol.Stringer  { return &s.localAddr }
+// func (s *Socket) RemoteAddr() protocol.Stringer { return &s.remoteAddr }
+
+func (s *Socket) DomainName() string              { return s.domainName }
+func (s *Socket) UserID() protocol.UserID         { return &s.userID }
+func (s *Socket) DelegateUserID() protocol.UserID { return &s.delegateUserID }
+
+//libgo:impl libgo/protocol.Session
+func (s *Socket) Close() (err protocol.Error)  { return }
+func (s *Socket) Revoke() (err protocol.Error) { return }
+
+// EstablishNewConnectionByDomainID make new connection by peer domain ID and initialize it.
+func EstablishNewConnectionByDomainID(domainID [32]byte) (s *Socket, err protocol.Error) {
+	// TODO::: Get closest domain GP add
+	var domainGPAddr = Addr{}
+	conn, err = EstablishNewConnectionByPeerAdd(domainGPAddr)
+	if err != nil {
+		return
+	}
+	// s.userID = domainID
+	// s.userType = protocol.UserType_App
+	return
+}
+
+// EstablishNewConnectionByPeerAdd make new connection by peer GP and initialize it.
+func EstablishNewConnectionByPeerAdd(gpAddr Addr) (s *Socket, err protocol.Error) {
+	// var userID, thingID [32]byte
+	// TODO::: Get peer publickey & userID & thingID from peer GP router
+
+	// if userID != [32]byte{} {
+	// conn = protocol.Net.GetConnectionByUserIDThingID(userID, thingID)
+	// }
+
+	// If conn not exist means guest connection.
+	if conn == nil {
+		conn, err = MakeNewGuestConnection()
+		if err == nil {
+			s.addr = gpAddr
+			// s.Cipher = crypto.NewGCM(crypto.NewAES256([32]byte{}))
+		}
+	}
+	return
+}
+
+// MakeNewGuestConnection make new connection and register on given stream due to it is first attempt connect to server.
+func MakeNewGuestConnection() (s *Socket, err protocol.Error) {
+	// if Server.Manifest.TechnicalInfo.GuestMaxConnections == 0 {
+	// 	return nil, ErrGuestConnectionNotAllow
+	// } else if Server.Manifest.TechnicalInfo.GuestMaxConnections > 0 && Server.Connections.GuestConnectionCount > Server.Manifest.TechnicalInfo.GuestMaxConnections {
+	// 	return nil, ErrGuestConnectionMaxReached
+	// }
+
+	conn = &Connection{
+		// ID:       uuid.Random32Byte(),
+		// status: protocol.NetworkStatus_New,
+		// userType: protocol.UserType_Unset,
+	}
+	s.AccessControl.GiveFullAccess()
+	return
+}
+*/
+
+
+// TODO(go-migrate):
+/*
+package srpc
+
+import (
+	"context"
+
+	"memar/net"
+	"memar/protocol"
+	"memar/time/utc"
+)
+
+// Stream use to send or receive data on specific connection.
+// It can pass to logic layer to give data access to developer!
+// Data flow can be up to down (parse raw income data) or down to up (encode app data with respect MTU)
+// If OutcomePayload not present stream is UnidirectionalStream otherwise it is BidirectionalStream!
+type Stream struct {
+	id          uint64 // Even number for Peer(who start connection). Odd number for server(who accept connection).
+	service     protocol.Service
+	incomeData  protocol.Codec
+	outcomeData protocol.Codec
+
+	// id         protocol.StreamID // Even number for Peer(who start connection). Odd number for server(who accept connection).
+	// protocolID uint16 // protocol ID usage is like TCP||UDP ports that indicate payload protocol.
+
+	Weight protocol.Weight // 16 queue for priority weight of the streams exist.
+	ctx    context.Context
+
+	/* Metrics * /
+	TotalPacket     uint32 // Expected packets count that must received!
+	PacketReceived  uint32 // Count of packets received!
+	LastPacketID    uint32 // Last send or received Packet use to know order of packets!
+	PacketDropCount uint8  // Count drop packets to prevent some attacks type!
+
+	net.STATUS
+}
+
+func (st *Stream) init()   {}
+func (st *Stream) reinit() {}
+func (st *Stream) deinit() {}
+
+func (st *Stream) ID() uint64                          { return st.id }
+func (st *Stream) Service() protocol.Service           { return st.service }
+func (st *Stream) IncomeData() protocol.Codec          { return st.incomeData }
+func (st *Stream) OutcomeData() protocol.Codec         { return st.outcomeData }
+func (st *Stream) SetIncomeData(codec protocol.Codec)  { st.incomeData = codec }
+func (st *Stream) SetOutcomeData(codec protocol.Codec) { st.outcomeData = codec }
+
+// SetService check and if it is first time register given service for the stream.
+func (st *Stream) SetService(service protocol.Service) {
+	if st.service != nil {
+		st.service = service
+	}
+}
+
+// SendRequest use for default and empty switch port due to non of ports can be nil!
+// SendAndWait register stream in send pool and block caller until response ready to read.
+func (st *Stream) SendRequest() (err protocol.Error) {
+	// if st == nil {
+	// }
+
+	// st.Send()
+
+	// Listen to response stream and decode error ID and return it to caller
+	var responseStatus protocol.NetworkStatus = <-st.State()
+	if responseStatus == protocol.NetworkStatus_Ready {
+
+	} else {
+
+	}
+
+	// Last Close response stream!
+	st.Close()
+	return
+}
+
+// SendResponse register stream in send pool. Usually use to send response stream.
+func (st *Stream) SendResponse() (err protocol.Error) {
+	// First Check st.Connection.Status to ability send stream over it
+
+	// TODO::: remove this check when remove IP support
+	// if st.Connection.IPAddr != [16]byte{} {
+	// Send by IP
+	// } else {
+	// Send stream by GP
+	// }
+
+	// send stream by weight
+
+	/* Metrics data * /
+	// c.BytesSent += uint64(len(st.OutcomePayload))
+
+	// Last Close stream!
+	st.Close()
+	return
+}
+
+// CloseStream delete given Stream from pool
+func (st *Stream) Close() (err protocol.Error) {
+	sp.mutex.Lock()
+	delete(st.connection.StreamPool.p, st.id)
+	sp.mutex.Unlock()
+	return
+}
+
+// Authorize authorize request by data in related stream and connection.
+func (st *Stream) Authorize() (err protocol.Error) {
+	// if st.Connection().UserID() != protocol.OS.AppManifest().AppUUID() {
+	// 	// TODO::: Attack??
+	// 	err = authorization.ErrUserNotAllow
+	// 	return
+	// }
+
+	err = st.Service.Authorization.UserType.Check(st.Connection.UserType)
+	if err != nil {
+		return
+	}
+
+	var now = utc.Now()
+	err = st.Connection.AccessControl.AuthorizeWhen(now.Weekdays(), now.DayHours())
+	if err != nil {
+		return
+	}
+	err = st.Connection.AccessControl.AuthorizeWhich(st.Service.ID, st.Service.Authorization.CRUD)
+	if err != nil {
+		return
+	}
+	err = st.Connection.AccessControl.AuthorizeWhere(st.Connection.GPAddr.GetSocietyID(), st.Connection.GPAddr.GetRouterID())
+	if err != nil {
+		return
+	}
+	return
+}
+
+// MakeNewStream use to make new stream without any connection exist yet!
+// TODO::: due to IPv4&&IPv6 support we need this func! Remove it when remove those support!
+func MakeNewStream() (st *Stream, err protocol.Error) {
+	// TODO::: check server allow make new connection and has enough resource
+
+	st = &Stream{
+		// ID:           0,
+		State:        protocol.NetworkStatus_Opening,
+		StateChannel: make(chan protocol.NetworkStatus),
+	}
+	return
+}
+*/

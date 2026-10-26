@@ -1,6 +1,6 @@
 ---
 name: http
-description: replaces the default assumption that a system is an HTTP application — and that session handoff is a GET with query parameters — with an explicit, per-concern need-check and recorded decision
+description: replaces the default assumption that a system is an HTTP application — and that session handoff is a GET with query parameters — with an explicit, per-concern need-check and recorded decision; use when a URL or endpoint shows up as the addressing model, a session or identity must move between origins, a shareable address is minted, a Memar protocol is adapted to ride on HTTP, or an HTTP dependency is inherited unexamined. Not the argument against the default, which http.md holds, and not the design of the protocol chosen
 ---
 
 # HTTP Practice
@@ -33,10 +33,10 @@ Answer each question about **one concern at a time** — the answer may differ p
    Locator, request data, and credential are different jobs ([Three Jobs Collapsed into One String](http.md#three-jobs-collapsed-into-one-string)). If the same string is doing more than one, split them. A shareable locator may remain HTTP; the request and the credential may not ride it.
 
 2. **Must a human or another system share this address?**
-   Yes → a locator is justified ([Content → Reference vs. Locator](../../../content.md#reference-as-a-relation-not-a-property)); mint one that holds destination information only, not request data or credentials ([Three Jobs Collapsed into One String](http.md#three-jobs-collapsed-into-one-string)). No → do not invent a URL in order to have somewhere to put parameters.
+   Yes → a locator is justified ([Content → Reference vs. Locator](../../../modules/knowledge/content/content.md#reference-as-a-relation-not-a-property)); mint one that holds destination information only, not request data or credentials ([Three Jobs Collapsed into One String](http.md#three-jobs-collapsed-into-one-string)). No → do not invent a URL in order to have somewhere to put parameters.
 
 3. **Is the consumer a browser document, a native process, or a machine protocol?**
-   Browser document or existing-Internet peer → HTTP as guest surface may win ([Guest Use: HTTP as Interoperability, Not as Model](http.md#guest-use-http-as-interoperability-not-as-model)). Machine protocol between Memar peers → do not copy URL structure into the new protocol ([Four Identities Collapsed into One String](http.md#four-identities-collapsed-into-one-string), [sRPC](../../net/sRPC.md)).
+   Browser document or existing-Internet peer → HTTP as guest surface may win ([Guest Use: HTTP as Interoperability, Not as Model](http.md#guest-use-http-as-interoperability-not-as-model)). Machine protocol between Memar peers → do not copy URL structure into the new protocol ([Four Identities Collapsed into One String](http.md#four-identities-collapsed-into-one-string), [sRPC](../../../modules/net/srpc/srpc.md)).
 
 4. **Where does the request live?**
    One concept, one representation, decided once per resource class ([Two Optional Places for One Concept](http.md#two-optional-places-for-one-concept)). If HTTP is the guest surface, pick payload or locator-modifier deliberately; do not leave both optional.
@@ -50,7 +50,7 @@ Answer each question about **one concern at a time** — the answer may differ p
 ---
 
 ## Recording the Decision
-The outcome — HTTP as guest surface for named concerns, projection-only (locators and browsers), or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../../framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
+The outcome — HTTP as guest surface for named concerns, projection-only (locators and browsers), or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../../docs/framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
 
 ---
 

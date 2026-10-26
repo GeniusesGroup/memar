@@ -76,9 +76,9 @@
   - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- The state-ownership section gained `What the exposure surface is`: a connection's exposing component offers a read-only state query and the [Event → The EventTarget capability](../process/event.md#the-eventtarget-capability) capability, and nothing else.
+- The state-ownership section gained `What the exposure surface is`: a connection's exposing component offers a read-only state query and the [Event → The EventTarget capability](../../process/event/event.md#the-eventtarget-capability) capability, and nothing else.
 - Facts a layer above must react to rather than read — half-open detection and its resolution, an exhausted budget, a lifecycle change — are stated as their own kinds of Event, dispatched through that capability rather than through a notification channel of the connection's own.
-- Subscriptions are `AddEventListener` and `RemoveEventListener`, and [Type → Explicit Behavior Ownership](../../type.md#explicit-behavior-ownership) is cited as what forbids a layer above from composing one.
+- Subscriptions are `AddEventListener` and `RemoveEventListener`, and [Type → Explicit Behavior Ownership](../../../docs/type.md#explicit-behavior-ownership) is cited as what forbids a layer above from composing one.
 - The members of the read-only state query — which facts it returns and in what form — are left to each protocol's own document, as the half-open rule already leaves frame-level mechanics.
 
 #### Considered and not done
@@ -97,7 +97,7 @@
 
 #### What changed
 - The Open Questions entry "Per-exchange explicit bounds" is deleted from this handoff, with no replacement marker.
-- [Timeouts and liveness are budgets of the owning component](./networking-connection.md#timeouts-and-liveness-are-budgets-of-the-owning-component) already states the answer: "Where an individual exchange genuinely carries a caller-meaningful bound, that bound is an explicit parameter of that exchange — modeled where it is meaningful, not threaded invisibly everywhere". [Process → Timeout is an internal budget, not a per-request promise](../../process.md#timeout-is-an-internal-budget-not-a-per-request-promise) states the same rule at the layer that owns it.
+- [Timeouts and liveness are budgets of the owning component](./connection.md#timeouts-and-liveness-are-budgets-of-the-owning-component) already states the answer: "Where an individual exchange genuinely carries a caller-meaningful bound, that bound is an explicit parameter of that exchange — modeled where it is meaningful, not threaded invisibly everywhere". [Process → Timeout is an internal budget, not a per-request promise](../../process/process.md#timeout-is-an-internal-budget-not-a-per-request-promise) states the same rule at the layer that owns it.
 - The entry's choice — a dedicated parameter convention in sRPC, or an application-level modeling choice — is answered: the bound is a parameter of the exchange, and the exchange is modeled where it is meaningful, which for sRPC is sRPC's own frame model rather than a per-call convention threaded through every layer.
 - No line under Anticipated Work changed; the other two entries are untouched.
 

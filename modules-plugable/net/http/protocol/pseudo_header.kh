@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Observer_HTTP_Method in "modules/lib/net/http/protocol/method.observers.kh"
-tp Observer_HTTP_Status in "modules/lib/net/http/protocol/status.observers.kh"
-tp Observer_Version in "modules/lib/net/http/protocol/version.observers.kh"
-tp Mutator_Status in "modules/lib/net/http/protocol/status.mutators.kh"
+tp Observer_HTTP_Method in "modules-plugable/net/http/protocol/method.observers.kh"
+tp Observer_HTTP_Status in "modules-plugable/net/http/protocol/status.observers.kh"
+tp Observer_Version in "modules-plugable/net/http/protocol/version.observers.kh"
+tp Mutator_Status in "modules-plugable/net/http/protocol/status.mutators.kh"
 tp Observer_Host in "modules-plugable/net/uri/protocol/host.observers.kh"
 tp Observer_URI_Path in "modules-plugable/net/uri/protocol/path.observers.kh"
 tp Observer_Port in "modules-plugable/net/uri/protocol/port.observers.kh"

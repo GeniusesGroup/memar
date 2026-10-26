@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Observer_HTTP_Body in "modules/lib/net/http/protocol/body.observers.kh"
-tp Mutator_Body in "modules/lib/net/http/protocol/body.mutators.kh"
-tp Net_Header in "modules/lib/net/http/protocol/header.kh"
-tp PseudoHeader_Request in "modules/lib/net/http/protocol/pseudo_header.kh"
-tp PseudoHeader_Response in "modules/lib/net/http/protocol/pseudo_header.kh"
+tp Observer_HTTP_Body in "modules-plugable/net/http/protocol/body.observers.kh"
+tp Mutator_Body in "modules-plugable/net/http/protocol/body.mutators.kh"
+tp Net_Header in "modules-plugable/net/http/protocol/header.kh"
+tp PseudoHeader_Request in "modules-plugable/net/http/protocol/pseudo_header.kh"
+tp PseudoHeader_Response in "modules-plugable/net/http/protocol/pseudo_header.kh"
 
 // Request indicate HTTP request semantic.
 //

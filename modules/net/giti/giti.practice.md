@@ -1,5 +1,5 @@
 ---
-name: apply-gp-practices
+name: giti
 description: Use when implementing, deploying, or operating any GP network component where the protocol document deliberately leaves the how open — running software routers or ChaparKhane-role coordinators, bridging GP traffic over today's Internet, or executing any other GP-related procedure that evolves over time. Procedures only; the protocol's own rules live in giti.md.
 ---
 
@@ -7,8 +7,8 @@ description: Use when implementing, deploying, or operating any GP network compo
 Procedures for operating GP networks. [giti.md](giti.md) owns the protocol — frames, addressing, and normative rules — and says nothing here binds it; each practice below is a working procedure, expected to evolve with experience, and none defines a GP frame, field, or rule.
 
 ## Run a GP software router (ChaparKhane role)
-1. Implement the router as an ordinary application holding an exclusive entitlement to its network hardware — under [OS](../computer/os.md) a router is a service, not a sanctified OS subsystem.
-2. Carry GP packets over [Chapar](chapar.md) as the link-layer protocol; every inter-router edge must be a real physical or wireless hop.
+1. Implement the router as an ordinary application holding an exclusive entitlement to its network hardware — under [OS](../../computer/os/os.md) a router is a service, not a sanctified OS subsystem.
+2. Carry GP packets over [Chapar](../chapar/chapar.md) as the link-layer protocol; every inter-router edge must be a real physical or wireless hop.
 3. Apply the [Inter-society delivery](giti.md#inter-society-delivery) ladder locally: forward to a directly connected destination router when connected; hand off to any router of the destination society when the destination router itself is not; relay only under an explicit prior agreement — never as a default.
 4. Enforce the source-validation invariant before forwarding: reject any packet whose claimed source could not legitimately originate traffic through the path it arrived on.
 5. Choose the society's interior organization freely — spread across border routers, dedicated core routers taking hand-offs from the rest, or any tested arrangement fitted to the society's physical realities; routing the society's own 32-bit router space is a design problem to solve, test, and refine, not a rule to follow.

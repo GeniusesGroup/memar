@@ -8,7 +8,7 @@ Open work for `modules/net/networking.md`. Entries are mutable current state —
 - Next: write that sentence when this document's principles section is developed; the rule's content and its layer are no longer open.
 
 ### The traditional-stack dependence check's home
-- State: whether the dependence check (use the host's embedded stack or not) needs its own practice document — the pattern [filesystem.practice.md](../../modules-plugable/computer/filesystem/filesystem.practice.md) set for storage — or folds into the protocol documents themselves. Not decided.
+- State: whether the dependence check (use the host's embedded stack or not) needs its own practice document — the pattern [filesystem.practice.md](../../modules-plugable/computer/memory/filesystem/filesystem.practice.md) set for storage — or folds into the protocol documents themselves. Not decided.
 - Candidate source: [go-zero](https://github.com/zeromicro/go-zero), recovered 2026-10-04 from a retired session note and unexamined since, as a case where a framework bundles microservice conventions, full `net/http` compatibility, and its own middleware layer. Whether bundling those three makes the transport boundary harder to see — and so whether the check needs a document of its own to stay legible — is the question worth examining it for. Not read.
 - Next: decide when the check is first exercised against a real system.
 
