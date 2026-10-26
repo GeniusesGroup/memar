@@ -64,7 +64,7 @@ A construct is covered when a Khayyam document states its form. Four are not, an
 Converting code that uses none of these is mechanical by the table. Converting code that uses one is not, until its form is stated, and the hand conversion this target owes (below) is the test of whether the table is enough; it has not been run.
 
 ### How a conversion is accepted
-A conversion is accepted when the module's contract suite, the given-when-then tests written against its protocol, passes on the Khayyam realization as it passed on the Python one. The record port's suite is the model: it is written against the contract and runs against every adapter ([Memory Record → The contract suite](../../../../modules/computer/memory/record/record.md#the-contract-suite)). So every module written under this profile carries tests against its protocol, not against its Python internals, and those tests are what proves the translation.
+A conversion is accepted when the module's contract suite, the given-when-then tests written against its protocol, passes on the Khayyam realization as it passed on the Python one. The record port's suite is the model: it is written against the contract and runs against every adapter ([Memory Record → The contract suite](../../../../modules-plugable/computer/memory/store/record/record.md#the-contract-suite)). So every module written under this profile carries tests against its protocol, not against its Python internals, and those tests are what proves the translation.
 
 ### What this target owes
 - A checker that reads a Python source and refuses every construct the table does not admit, under one label per refusal, run before a commit on domain code.

@@ -47,13 +47,13 @@ const ARCHIVE_EXPECTATIONS: ReadonlyArray<
   // capsule, an abstraction composition, a method with more than one parameter.
   // Three files once refused as `declaration-form` and now belong here, because the
   // form that put them there is gone from the sources: the method written without
-  // `mt` that concurrency.kh, blocking.kh, and life_cycle.kh each carried. The
+  // `mt` that concurrency.kh, blocking.kh, and life_cycle_contract.kh each carried. The
   // form itself is pinned by refusal.test.ts, which can hold text the sources no
   // longer does; a matrix row can only report what a real file holds, and these
   // three hold the corrected form.
   ["modules/computer/runtime/protocol/concurrency.kh", "accept"],
   ["modules/computer/runtime/protocol/blocking.kh", "accept"],
-  ["modules/computer/capsule/protocol/life_cycle.kh", "accept"],
+  ["modules/computer/capsule/protocol/life_cycle_contract.kh", "accept"],
   ["modules/process/control-flow/protocol/panic-recovery.kh", "accept"],
   ["modules/time/duration/nano-in-second.kh", "accept"],
   ["modules/computer/type/protocol/identifiers.kh", "accept"],

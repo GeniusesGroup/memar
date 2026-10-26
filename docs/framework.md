@@ -198,7 +198,7 @@ Memar's purpose is a chain:
 Knowledge ──material──► Thinking ──quality──► Intelligence ──exercised──► Agency ──directed──► Goals
 ```
 
-- **Knowledge** is the material — what understanding is made of and how it survives in systems ([Knowledge](./knowledge.md)).
+- **Knowledge** is the material — what understanding is made of and how it survives in systems ([Knowledge](../modules/knowledge/knowledge.md)).
 - **Thinking** is the cognitive system's process of manipulating representations toward ends ([Cognition](./cognition.md)).
 - **Intelligence** is the *quality* of that activity: the ability to build a reliable model of reality from partial and ambiguous evidence, and to revise that model when new evidence contradicts it. It has no document of its own because it is not an independent concept — it is an output relation of knowledge, thinking, and agency, defined here the way [System](./system.md#knowledge-and-science) defines Science inline: naming the relation, not re-deriving the constituents.
 - **Agency** is the exercise of that quality toward objectives — acting on the model, deciding, and taking responsibility ([Agency](./agency.md)).

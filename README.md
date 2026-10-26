@@ -15,7 +15,7 @@ This approach naturally requires crossing traditional disciplinary boundaries. M
 The project assumes that meaningful progress often requires stepping outside existing conceptual systems and examining their assumptions from an external perspective. This process is difficult because it challenges ideas that are frequently treated as foundational, yet it is often the only way to expose hidden contradictions and create more coherent models. Memar therefore treats definitions as more fundamental than terminology, models as more important than implementations, and understanding as more important than convention.
 
 ## Goals
-Memar's purpose is a chain: reliable **knowledge** of reality, built and revised through **thinking**, at a quality that constitutes **intelligence**, exercised as **agency** toward goals beyond itself — ultimately the outcomes those agents pursue, such as quality of life. The goal is stated in full, with its rationale, in [Framework → Memar's Purpose Space](./docs/framework.md#memars-purpose-space-from-knowledge-to-agency); the concept homes are [Knowledge](./docs/knowledge.md), [Cognition](./docs/cognition.md), and [Agency](./docs/agency.md).
+Memar's purpose is a chain: reliable **knowledge** of reality, built and revised through **thinking**, at a quality that constitutes **intelligence**, exercised as **agency** toward goals beyond itself — ultimately the outcomes those agents pursue, such as quality of life. The goal is stated in full, with its rationale, in [Framework → Memar's Purpose Space](./docs/framework.md#memars-purpose-space-from-knowledge-to-agency); the concept homes are [Knowledge](docs/knowledge.md), [Cognition](./docs/cognition.md), and [Agency](./docs/agency.md).
 
 The engineering goals below are means to that end:
 - Improves the quality of reasoning about systems.
@@ -56,7 +56,7 @@ Memar's written content is intentionally decentralized: each concern lives in on
 
 Agents working the Memar way follow [`.agents/skills/memar/SKILL.md`](.agents/skills/memar/SKILL.md), which routes into the live content of the repository through the same command rather than through memorized paths. Using Memar outside this repository is [Using Memar in another project](#using-memar-in-another-project).
 
-Fair, public comparisons with projects often treated as substitutes for Memar live under [`docs/comparisons/`](./docs/comparisons/) — the method is [modules/content/documentation/comparison/comparison.md](./modules/content/documentation/comparison/comparison.md).
+Fair, public comparisons with projects often treated as substitutes for Memar live under [`docs/comparisons/`](./docs/comparisons/) — the method is [modules/content/documentation/comparison/comparison.md](modules/content/documentation/comparison/comparison.md).
 
 ## Using Memar in another project
 Memar is a development framework, not a host-tool plugin. There is one skill: it routes into this repository's live content; it does not carry a copy of it.

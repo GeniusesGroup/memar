@@ -177,5 +177,22 @@ class TypeOwnedInstantiations(unittest.TestCase):
         )
         self.assertEqual(instantiation.decl.output_file, "modules/math/logic/protocol/equivalence.kh")
 
+
+class ModuleRank(unittest.TestCase):
+    """A declaration's nearer category outranks a farther one: rank falls with the leading segments two module paths share."""
+
+    def rank(self, declared: str, target: str) -> int:
+        from types import SimpleNamespace
+
+        return CorpusPort.module_rank(None, SimpleNamespace(module=declared), SimpleNamespace(module=target))
+
+    def test_a_deeper_shared_category_ranks_nearer(self):
+        near = self.rank("computer/net/http/handler", "computer/net/tcp/conn")
+        mid = self.rank("computer/net/http/handler", "computer/ui/gui/window")
+        far = self.rank("computer/net/http/handler", "knowledge/label/tag")
+        self.assertLess(near, mid)
+        self.assertLess(mid, far)
+        self.assertEqual(self.rank("a/b", "a/b"), 0)
+
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,6 @@
 ---
-name: khayyam-syntax
-description: Use whenever Khayyam (the programming language, file extension .kh) is mentioned, discussed, or when writing, reading, reviewing, or explaining Khayyam code. Khayyam is a young, uncommon language not covered by general training data — do not attempt to write or reason about Khayyam code from memory or by analogy to Go/Rust/C. Trigger this skill for requests like "write this in Khayyam", "convert this function to Khayyam", "explain Khayyam's syntax", "how do capsules/abstractions/methods work in Khayyam", or any .kh file content. Part of the Memar framework ecosystem; also trigger if the user mentions "Memar" alongside code/language questions.
+name: khayyam
+description: Use whenever Khayyam code (file extension .kh) is written, read, reviewed, translated into, or explained — "write this in Khayyam", "convert this function to Khayyam", "how do capsules/abstractions/methods work in Khayyam", or any .kh file content. Khayyam is a young language general training data does not cover: work from this quick reference and the live khayyam.md, never from memory or by analogy to Go/Rust/C. A quick reference and a translation mapping only: not the language's specification, which khayyam.md is and which wins where the two differ, and not the deciding of what a program's types should be, which the modeling and type practices own.
 ---
 
 # Khayyam Language Skill
@@ -98,7 +98,7 @@ For the mechanical-translation posture — a structural mapping, not a redesign.
 If a construct doesn't map cleanly (closures, macros, generics-heavy code), don't invent syntax — fetch the documented replacement pattern via `memar` SKILL before proposing one.
 
 ## Field-shaped values
-A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../modules/computer/abstraction-implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
+A value such as `Field_UserUUID` is one type. On that type, write one method that names which other abstractions a code generator implements for it, per [abstraction_p.Implements](../../modules/computer/abstraction/implements.md). The generator writes those methods. This is a generation procedure, not a Khayyam keyword.
 
 ## Rules worth applying even when not asked
 For the full-design-treatment posture, apply grammar-enforced modeling (no magic numbers, wrapped primitives, one construct per intent — see [Khayyam → Self-Documenting Code and Naming](./khayyam.md#self-documenting-code-and-naming)) and this repository's organizational naming rules, identifier-naming and domain-capsule-naming, in its Khayyam toolchain (bundles/khayyam/rules). If a concrete case isn't covered, fetch the relevant document via `memar` SKILL rather than inventing an answer.

@@ -72,7 +72,7 @@ tp {name} cp { ___ }
 
 Each field in a capsule is written as `fieldName fieldType` on its own line. Fields are always private — there is no visibility modifier, no `public`/`private` keyword, and no way to expose a field directly. The only way to read or modify a capsule's internal state is through methods attached to that capsule.
 
-A one-token line in the same block is a bare abstraction name. The capsule composes that abstraction, the same shape an abstraction block uses when it lists the abstractions it includes. The line allocates no state. What the composition requires — a tooling signal, compiler-supplied methods, or the abstraction's own method set — is defined by the abstraction named on that line. [`abstraction_p.Implements`](../modules/computer/abstraction-implements.md#declaring-and-discovering-intent) and [Metaprogramming → Reflective Programming](./metaprogramming.md#reflective-programming) are two such abstractions.
+A one-token line in the same block is a bare abstraction name. The capsule composes that abstraction, the same shape an abstraction block uses when it lists the abstractions it includes. The line allocates no state. What the composition requires — a tooling signal, compiler-supplied methods, or the abstraction's own method set — is defined by the abstraction named on that line. [`abstraction_p.Implements`](../../modules/computer/abstraction/implements.md#declaring-and-discovering-intent) and [Metaprogramming → Reflective Programming](./metaprogramming.md#reflective-programming) are two such abstractions.
 
 This absolute privacy rule is not a default that can be overridden; it is a structural guarantee of the language. A capsule author cannot accidentally expose a field, and a consumer cannot access a field even if the author intended to expose it through some other mechanism. All access must go through methods, making the capsule's public interface its complete and only contract.
 
@@ -89,7 +89,7 @@ tp ServerConfig cp {
 
 The `TLSConfig` field is itself a capsule, composed within `ServerConfig`. Access to `TLSConfig`'s internal data must go through `TLSConfig`'s own methods — `ServerConfig` does not gain special access to `TLSConfig`'s fields by virtue of containing it.
 
-Even trivial read access to a field (e.g., getting a configuration value) requires a method definition. For capsules with many fields, this can result in a large number of getter-style methods. However, these methods serve a critical purpose: they define the capsule's behavioral contract, and they can be evolved independently of the internal representation without breaking consumers. Direct field read/write outside the capsule's own methods is already impossible at the language level; any remaining diagnostic is governance, not a compiler error, and what a tool may write into source on request is [Linter → Assistance writes source, on request](../modules/computer/linter.md#assistance-writes-source-on-request).
+Even trivial read access to a field (e.g., getting a configuration value) requires a method definition. For capsules with many fields, this can result in a large number of getter-style methods. However, these methods serve a critical purpose: they define the capsule's behavioral contract, and they can be evolved independently of the internal representation without breaking consumers. Direct field read/write outside the capsule's own methods is already impossible at the language level; any remaining diagnostic is governance, not a compiler error, and what a tool may write into source on request is [Linter → Assistance writes source, on request](../../modules/computer/linter/linter.md#assistance-writes-source-on-request).
 
 ### Closures as Implicit Capsule Syntax
 A closure, looked at structurally rather than syntactically, is not really a separate language feature — it is an implicit capsule. Whatever a closure captures is, in effect, a set of unnamed fields; whatever a closure runs when called is, in effect, an unnamed method attached to those fields. Every closure written in another language is already doing what a Khayyam capsule does — holding state and offering behavior over it — the only difference is that it does so anonymously, without a declared type, and without going through Sovereign Encapsulation's requirement that a capsule's state be named and explicit.
@@ -133,7 +133,7 @@ None of the possible behavioral guarantees listed above create an exception to S
 
 Defining behavioral guarantees for primitive capsules adds complexity to the "de-Primitive-ing" migration story. A developer replacing `int32` with `I32` must now understand that `I32` is not a drop-in replacement but a capsule with specific behavioral contracts that may differ from the raw integer semantics they expect.
 
-The number tower — width naming, kinds that are not numeric widths, and where those rules live — is stated in [Math → The number tower](../modules/math/math.md#the-number-tower).
+The number tower — width naming, kinds that are not numeric widths, and where those rules live — is stated in [Math → The number tower](../../modules/math/math.md#the-number-tower).
 
 Value equality and logical equivalence are two operations and keep two names. A width's `Equal` is value equality. `Bool`'s operation is the logical equivalence of truth values and is named `Equivalence`.
 

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Khayyam in the browser — compile and run</title>
+    <style>
+      textarea { width: 100%; min-height: 10em; font-family: monospace; }
+      .unit { margin-bottom: 1em; }
+      .unit input[type="text"] { width: 100%; font-family: monospace; }
+    </style>
+  </head>
+  <body>
+    <h1>Khayyam in the browser</h1>
+    <p>
+      This page compiles a <code>.kh</code> program inside the browser with the
+      JavaScript target's own compiler, loads what it emitted, and runs it
+      (<code>bundles/khayyam/targets/js/target.md</code> → Compiling in a browser).
+      The compiler is what <code>npm run build:browser</code> wrote under
+      <code>build/compiler/</code>; this page builds nothing itself. Hand it every
+      unit the program reaches, the root first, each with its URI. A unit is added
+      from a file or as text, or by <code>?unit=URI</code> in the address.
+    </p>
+    <p>
+      <label>Add units from files: <input id="files" type="file" accept=".kh" multiple /></label>
+      <button id="add" type="button">Add a unit as text</button>
+      <button id="run" type="button">Compile and run</button>
+    </p>
+    <div id="units">
+      <div class="unit">
+        <input type="text" aria-label="unit URI" placeholder="the root unit's URI, from the repository root" />
+        <textarea aria-label="unit source" placeholder="the root unit's source"></textarea>
+      </div>
+    </div>
+    <h2>Output</h2>
+    <pre id="out">waiting for a unit</pre>
+    <script type="module">
+      // The page's own script: it reads the inputs, shows the output, and holds the
+      // host's configuration. It is JavaScript and not Khayyam because a host's side
+      // of a run is the host's (target.md → Running a program).
+      import { compileProgram, emitUnit } from "../build/compiler/targets/js/src/program.js";
+      import { readLinkMap } from "../build/compiler/targets/js/src/link.js";
+      import { run } from "../build/compiler/targets/js/src/run.js";
+      import { compileUnits, loaderOf } from "../build/compiler/targets/js/demo/page-host.js";
+
+      const out = document.getElementById("out");
+      const unitsElement = document.getElementById("units");
+
+      // The host's configuration: the entry, the values it is called with, and the
+      // implementation of each body-less method, keyed by the declaring unit's URI
+      // and the exported name — the request src/run.ts takes. It is written for
+      // the Hello demo, the program this page is a host to.
+      const DEMO = "bundles/khayyam/targets/js/demo/greeting.kh";
+      const HOST = {
+        uri: DEMO,
+        method: "Greet",
+        owner: { type: "Greeter" },
+        influencing: (root) => [new root.Text({ text: "Hello, Khayyam" })],
+        supplied: {
+          [DEMO]: {
+            "Greeter$Announce": () => {
+              out.textContent += "The host says hello.\n";
+            },
+            "Text$Print": (self) => {
+              out.textContent += `${self.text.value}\n`;
+            },
+          },
+        },
+      };
+
+      // A unit fills the first row while that row is empty, so the root is the
+      // first unit handed over however it arrives.
+      function addUnit(uri, source) {
+        const first = unitsElement.querySelector(".unit");
+        if (first.querySelector("input").value === "" && first.querySelector("textarea").value === "") {
+          first.querySelector("input").value = uri;
+          first.querySelector("textarea").value = source;
+          return;
+        }
+        const row = document.createElement("div");
+        row.className = "unit";
+        const name = document.createElement("input");
+        name.type = "text";
+        name.value = uri;
+        name.setAttribute("aria-label", "unit URI");
+        const text = document.createElement("textarea");
+        text.value = source;
+        text.setAttribute("aria-label", "unit source");
+        row.append(name, text);
+        unitsElement.append(row);
+      }
+
+      function unitsHanded() {
+        return [...unitsElement.querySelectorAll(".unit")].map((row) => ({
+          uri: row.querySelector("input").value.trim(),
+          source: row.querySelector("textarea").value,
+        }));
+      }
+
+      async function compileAndRun() {
+        out.textContent = "";
+        try {
+          const units = unitsHanded();
+          const linkMap = await (await fetch(new URL("../link_map.json", import.meta.url))).text();
+          const compiled = compileUnits({
+            compiler: { compileProgram, emitUnit, readLinkMap },
+            units,
+            linkMap,
+            buildRoot: "bundles/khayyam/targets/js/build",
+          });
+          if (!compiled.ok) {
+            out.textContent = `refused: ${compiled.problem}\n`;
+            return;
+          }
+          if (compiled.program.root !== HOST.uri) {
+            out.textContent = `this page's host configuration is for ${HOST.uri}, not ${compiled.program.root}\n`;
+            return;
+          }
+          const load = loaderOf({
+            program: compiled.program,
+            texts: compiled.texts,
+            urlOf: (text) => URL.createObjectURL(new Blob([text], { type: "text/javascript" })),
+          });
+          const root = await load(HOST.uri);
+          await run(
+            {
+              uri: HOST.uri,
+              units: compiled.program.units.map((unit) => unit.uri),
+              method: HOST.method,
+              owner: HOST.owner,
+              influencing: HOST.influencing(root),
+              supplied: HOST.supplied,
+            },
+            load,
+          );
+        } catch (error) {
+          out.textContent += `failed: ${error instanceof Error ? error.message : String(error)}\n`;
+        }
+      }
+
+      document.getElementById("add").addEventListener("click", () => {
+        const row = unitsElement.querySelector(".unit").cloneNode(true);
+        row.querySelector("input").value = "";
+        row.querySelector("textarea").value = "";
+        unitsElement.append(row);
+      });
+      document.getElementById("run").addEventListener("click", compileAndRun);
+      document.getElementById("files").addEventListener("change", async (event) => {
+        // A file carries a name and no path, so its URI is shown to be completed.
+        for (const file of event.target.files) addUnit(file.name, await file.text());
+      });
+
+      const named = new URLSearchParams(location.search).getAll("unit");
+      const missing = [];
+      for (const uri of named) {
+        const response = await fetch(new URL(`/${uri}`, location.origin));
+        if (response.ok) addUnit(uri, await response.text());
+        else missing.push(`${uri} (${response.status})`);
+      }
+      if (missing.length > 0) out.textContent = `not fetched: ${missing.join(", ")}\n`;
+      else if (named.length > 0) await compileAndRun();
+    </script>
+  </body>
+</html>

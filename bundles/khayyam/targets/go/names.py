@@ -68,7 +68,7 @@ KNOWN_GO_INTERFACES = {
 # never rewrites them. Their identifiers are reserved so the port cannot
 # declare a name the archive already owns.
 PRE_EXISTING_KHAYYAM: tuple[str, ...] = (
-    "modules/computer/capsule/protocol/life_cycle.kh",
+    "modules/computer/capsule/protocol/life_cycle_contract.kh",
     "modules/computer/runtime/protocol/blocking.kh",
     "modules/computer/runtime/protocol/concurrency.kh",
     "modules/process/control-flow/protocol/break.kh",

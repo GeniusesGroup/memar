@@ -516,7 +516,7 @@ Therefore:
 > **Delegation establishes a relationship; it does not prescribe every action.**
 
 ### Agency in Process Execution
-Agency is not limited to situations in which one System delegates work to another System through a Principal–Agent relationship. A process can also depend on a System being capable of taking responsibility for a bounded portion of the process progression and determining how that responsibility is executed. See [Process → Concurrency](./process.md#concurrency) for the Process-side treatment this topic supplies the Agency grounding for — in particular, the Worker/CPU-core distinction and the escalating decision chain there (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking) are a Concurrency-specific instance of the general responsibility-before-synchronization principle this topic states below, under *Agency Before Synchronization*.
+Agency is not limited to situations in which one System delegates work to another System through a Principal–Agent relationship. A process can also depend on a System being capable of taking responsibility for a bounded portion of the process progression and determining how that responsibility is executed. See [Process → Concurrency](../modules/process/process.md#concurrency) for the Process-side treatment this topic supplies the Agency grounding for — in particular, the Worker/CPU-core distinction and the escalating decision chain there (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking) are a Concurrency-specific instance of the general responsibility-before-synchronization principle this topic states below, under *Agency Before Synchronization*.
 
 This distinction is important because the Agent relationship used to describe representation (`agent_for`) is not the only relationship through which Agency becomes relevant. A process may assign execution responsibility to a System without that System becoming a representative of the process, a domain entity, or a Principal's Agent in the narrower representational sense.
 
@@ -545,9 +545,9 @@ Account 123
 The important property is not the identity of the particular Agent but the existence of a well-defined responsibility boundary at the time the process is progressing. This makes Agency useful for modeling execution independently of the mechanism used to realize it.
 
 #### Execution Agent
-An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type. It remains descriptive terminology defined here, not a Concept Process needs of its own: naming an Execution Agent presupposes Agency and Process alike, and a Concept qualifies as independent only when it can be defined without first defining another. Process cites this term — see [Process → Agency and Execution Responsibility](./process.md#agency-and-execution-responsibility) — rather than defining it.
+An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type. It remains descriptive terminology defined here, not a Concept Process needs of its own: naming an Execution Agent presupposes Agency and Process alike, and a Concept qualifies as independent only when it can be defined without first defining another. Process cites this term — see [Process → Agency and Execution Responsibility](../modules/process/process.md#agency-and-execution-responsibility) — rather than defining it.
 
-An Execution Agent may be represented by many different mechanisms, including a Worker, Actor, process, thread, service instance, device, human operator, or another system. None of those representations is intrinsically an Agent merely because it has the corresponding implementation name. See [Process → Concurrency](./process.md#concurrency) for Worker's own treatment there, including its distinction from a physical CPU core.
+An Execution Agent may be represented by many different mechanisms, including a Worker, Actor, process, thread, service instance, device, human operator, or another system. None of those representations is intrinsically an Agent merely because it has the corresponding implementation name. See [Process → Concurrency](../modules/process/process.md#concurrency) for Worker's own treatment there, including its distinction from a physical CPU core.
 
 Conversely, a Worker can be an expression of Agency when it is not merely an execution primitive but a bounded acting unit with an identifiable responsibility, relevant capabilities, available knowledge, and authority to perform the work assigned to it.
 
@@ -974,7 +974,7 @@ Knowledge Space
 Agent B
 ```
 
-This is one reason [knowledge management](./knowledge.md) is not merely an administrative concern.
+This is one reason [knowledge management](../modules/knowledge/knowledge.md) is not merely an administrative concern.
 
 It is part of the infrastructure through which collective Agency operates.
 
@@ -983,7 +983,7 @@ Many failures attributed to AI Agents are not fundamentally AI problems.
 
 They may be manifestations of weaknesses in:
 
-- [Knowledge Management](./knowledge.md)
+- [Knowledge Management](../modules/knowledge/knowledge.md)
 - responsibility definition,
 - delegation,
 - documentation,
@@ -1022,7 +1022,7 @@ But the deeper problem may be:
 
 > "The organization has no mechanism for transferring and preserving understanding."
 
-This connects Agency directly to [Knowledge Management](./knowledge.md).
+This connects Agency directly to [Knowledge Management](../modules/knowledge/knowledge.md).
 
 ### Contracts
 A Contract establishes expectations between participants.
@@ -1992,7 +1992,7 @@ What a system is able to do.
 Information and conditions relevant to the Agent's current action.
 
 #### Knowledge
-Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](./knowledge.md), building on the foundational definition in [System → Knowledge and Science](./system.md#knowledge-and-science).
+Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](../modules/knowledge/knowledge.md), building on the foundational definition in [System → Knowledge and Science](./system.md#knowledge-and-science).
 
 #### Autonomy
 The degree to which an Agent can determine or execute actions without direct specification of each individual action.

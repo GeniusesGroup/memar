@@ -201,7 +201,7 @@ tp Create mt (self CarFactory) () (product Car) { /* Car satisfies Product */ }
 ```
 
 #### What the Grammar Says About Dispatch
-The grammar states nothing about how a call through an abstraction is performed, and offers no syntax to choose: the same polymorphic code may be performed differently at different call sites depending on what is knowable where, and no declaration expresses a preference. That decision, and what it costs at each call site, belongs to the compiler that consumes this grammar — see [Compiler](../modules/computer/compiler.md).
+The grammar states nothing about how a call through an abstraction is performed, and offers no syntax to choose: the same polymorphic code may be performed differently at different call sites depending on what is knowable where, and no declaration expresses a preference. That decision, and what it costs at each call site, belongs to the compiler that consumes this grammar — see [Compiler](../../modules/computer/compiler/compiler.md).
 
 ### Relationship to Parametric Polymorphism
 An important theoretical observation, supported by recent research, is that **inclusion polymorphism and parametric polymorphism have significant overlap in expressive power**. The paper "Structural Subtyping as Parametric Polymorphism" (Ghiotto et al., 2023, POPL) demonstrates that structural subtyping can encode parametric polymorphism, and vice versa, in certain type systems.

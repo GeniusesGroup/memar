@@ -117,7 +117,7 @@ Considered merging the "Agency Before Synchronization" chain and process.md's Co
   - [Qwen](../CONTRIBUTORS.md#qwen) (Qwen3.8-Flash) — rewrote
 
 #### What changed
-- The three plain-text "Knowledge Management" mentions in the Agency and Knowledge Management topic are now hyperlinks to [Knowledge](./knowledge.md), which was renamed from knowledge-management.md and re-scoped to the concept in the same pass.
+- The three plain-text "Knowledge Management" mentions in the Agency and Knowledge Management topic are now hyperlinks to [Knowledge](../modules/knowledge/knowledge.md), which was renamed from knowledge-management.md and re-scoped to the concept in the same pass.
 - The glossary's Knowledge entry no longer states a competing standalone definition: it now defers to knowledge.md, building on the foundational definition in [System](./system.md#knowledge-and-science).
 - The Relation to Memar concept list already named Knowledge; that reference now resolves to a real document.
 
@@ -194,7 +194,7 @@ Considered merging the "Agency Before Synchronization" chain and process.md's Co
   - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
-- [Execution Agent](./agency.md#execution-agent) now states that the term remains descriptive terminology defined in this document rather than a Concept Process defines of its own, since naming an Execution Agent presupposes Agency and Process alike; the subsection carries a cross-link to [Process → Agency and Execution Responsibility](./process.md#agency-and-execution-responsibility).
+- [Execution Agent](./agency.md#execution-agent) now states that the term remains descriptive terminology defined in this document rather than a Concept Process defines of its own, since naming an Execution Agent presupposes Agency and Process alike; the subsection carries a cross-link to [Process → Agency and Execution Responsibility](../modules/process/process.md#agency-and-execution-responsibility).
 - A new subsection, [Transfer, Reassignment, Takeover, and Replication](./agency.md#transfer-reassignment-takeover-and-replication), added under Agency in Process Execution names the four movements of execution responsibility and states what stays fixed across them — who holds the responsibility changes; the domain entity and the mechanism realizing it do not — cross-linked to [Treating Execution Ownership as Domain Ownership](./agency.md#treating-execution-ownership-as-domain-ownership).
 - The two questions left [agency.handoff.md](./agency.handoff.md)'s Open Questions.
 

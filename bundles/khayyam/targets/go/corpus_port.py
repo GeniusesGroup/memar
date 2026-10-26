@@ -284,6 +284,8 @@ class CorpusNameTable:
         return self.output.get(decl.key, decl.name)
 
 
+# More segments than a module path can have, so a rank counts down from it by the segments two paths share.
+MODULE_DEPTH_LIMIT = 64
 CORPUS_AB_PATTERN = re.compile(r"^tp\s+([A-Za-z_][A-Za-z0-9_]*)\s+ab\b", re.M)
 CORPUS_MT_PATTERN = re.compile(r"^tp\s+([A-Za-z_][A-Za-z0-9_]*)\s+mt\b", re.M)
 CORPUS_DECLARED_PATTERN = re.compile(r"^tp\s+([A-Za-z_][A-Za-z0-9_]*)\s+(ab|mt|cp|sc|in)\b", re.M)
@@ -537,9 +539,15 @@ class CorpusPort:
             return 0
         if strip_protocol(target.module) == strip_protocol(decl.module):
             return 1
-        if target.module.split("/")[0] == decl.module.split("/")[0]:
-            return 2
-        return 3
+        # Past the same module (0) and the same module less its protocol folder (1), the nearer category wins:
+        # the more leading segments of the two paths agree, the lower the rank; categories nest, so the first
+        # segment alone names the whole top and ranks every module under it alike.
+        shared = 0
+        for ours, theirs in zip(target.module.split("/"), decl.module.split("/")):
+            if ours != theirs:
+                break
+            shared += 1
+        return 2 + MODULE_DEPTH_LIMIT - shared
 
     def home_for(self, decl: CorpusDecl) -> CorpusTarget | None:
         """The protocol file that declares `decl`.
