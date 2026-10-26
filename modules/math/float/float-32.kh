@@ -2,7 +2,7 @@
 
 tp Bool in "modules/math/boolean/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // R32 is 32-bit floating point number.
 tp R32 cp {

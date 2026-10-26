@@ -35,7 +35,7 @@ A declaration belongs under `modules/math/` when its subject is a number or a tr
 It does not belong there when its subject is something measured or encoded in numbers:
 - a span or an instant of time — `modules/time/` (`modules/time/README.md`);
 - a position among elements, which is a container's concept — `modules/computer/adt/`;
-- an address in memory — `modules/memory/address/` (`modules/memory/address/README.md`);
-- a character or an octet of an encoding — `modules/codec/`.
+- an address in memory — `modules/computer/memory/address/` (`modules/computer/memory/address/README.md`);
+- a character or an octet of an encoding — `modules/computer/codec/`.
 
 Open questions on the tower, common numeric abstractions, and owner notes on library-implemented types are tracked in the paired [handoff](math.handoff.md).

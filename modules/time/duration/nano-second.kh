@@ -3,7 +3,7 @@
 tp NanoInSecond in "modules/time/duration/nano-in-second.kh"
 tp Second in "modules/time/duration/second.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // A NanoSecond duration represents the elapsed time between two instants as an int64 nanosecond count.
 // The representation limits the largest representable duration to approximately 290 earth years.

@@ -3,7 +3,7 @@
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp Stringer_To in "modules/codec/string/protocol/stringer.kh"
+tp Stringer_To in "modules/computer/codec/string/protocol/stringer.kh"
 
 // Epoch is the interface that must implement by any time capsule.
 // It is base on Epoch and Second terms to work anywhere (in any planet in the universe).
