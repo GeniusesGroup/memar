@@ -13,7 +13,7 @@ in the `tests/` folder of the shelf that owns it per
 
 Nothing here starts a real update or writes outside its scratch folder: the
 Memar root is patched onto one, made under the folder
-`modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and the start of the background run is
+`modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and the start of the background run is
 patched to record its command, except in the one test that starts a harmless
 child to prove it outlives no caller's output.
 
@@ -57,15 +57,15 @@ import unittest.mock
 from importlib import import_module
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[2]
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS / 'services'))
 sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 test_scratch = _m_fs_test_scratch
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 import bundles.memar.services.update.services.daily as daily
 AWAKE: dict[str, str] = {}

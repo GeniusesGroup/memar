@@ -28,7 +28,7 @@ import re
 import sys
 from pathlib import Path
 from machine.env_location import resolve_root
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 SERVER_NAME = 'memar'
 ROUTER = _m_fs_memar.LAUNCHER_RELATIVE / 'memar'
 SERVE = ('mcp', 'serve')

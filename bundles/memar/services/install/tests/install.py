@@ -6,7 +6,7 @@
     python bundles/memar/services/install/tests/install.py
 
 Nothing here writes outside its scratch folder. The scratch folder is made
-under the one `modules-plugable/computer/filesystem/services/fs_test_scratch.py` names, and is removed again; every
+under the one `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and is removed again; every
 subprocess runs a path that stops before any write, and
 the platform's own record of MEMAR_ROOT is read but never written.
 
@@ -83,13 +83,13 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_target = import_module('modules-plugable.computer.filesystem.services.fs_target')
+_m_fs_target = import_module('modules-plugable.computer.memory.filesystem.services.fs_target')
 target = _m_fs_target
-_m_fs_memar_repository = import_module('modules-plugable.computer.filesystem.services.fs_memar_repository')
+_m_fs_memar_repository = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar_repository')
 SKILL_MARKER = _m_fs_memar_repository.SKILL_MARKER
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 memar_fs = _m_fs_memar
 memar_fs = _m_fs_memar
@@ -106,7 +106,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-TOP = TESTS.parents[4]
+TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
 LAUNCHER_SHELF = TOP / 'bundles' / 'memar'
 SERVICES_SHELF = LAUNCHER_SHELF / 'services'
 BOOTSTRAP_DIR = TOP / '.agents' / 'scripts'
@@ -220,11 +220,11 @@ class SiblingSurface(unittest.TestCase):
     def test_the_siblings_import_the_module_that_owns_each_concern(self):
         expected = {
             INTO_PROJECT: {
-                'is_memar_repository': 'modules-plugable.computer.filesystem.services.fs_memar_repository',
+                'is_memar_repository': 'modules-plugable.computer.memory.filesystem.services.fs_memar_repository',
                 'recorded_value': 'machine.env_location',
             },
             INTO_APPS: {
-                'soft_delete': 'modules-plugable.computer.filesystem.services.fs_trash',
+                'soft_delete': 'modules-plugable.computer.memory.filesystem.services.fs_trash',
                 'WINDOWS_BOOTSTRAP': 'bundles.memar.services.install.services.project',
                 'POSIX_BOOTSTRAP': 'bundles.memar.services.install.services.project',
                 'resolve_root': 'machine.env_location',
@@ -655,7 +655,7 @@ class HelpUnchanged(unittest.TestCase):
 
     def test_the_installer_help_carries_no_mechanism(self):
         shown = printed(run_install('--help'))
-        for phrase in ('modules-plugable/computer/filesystem/services/fs_memar_repository.py', 'bundles/memar/services/update/services/checkout.py', 'machine/env_location.py', 'modules-plugable/computer/filesystem/services/fs_lock.py', 'advisory', 'idempotent'):
+        for phrase in ('modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py', 'bundles/memar/services/update/services/checkout.py', 'machine/env_location.py', 'modules-plugable/computer/memory/filesystem/services/fs_lock.py', 'advisory', 'idempotent'):
             with self.subTest(phrase=phrase):
                 self.assertNotIn(phrase, shown)
 

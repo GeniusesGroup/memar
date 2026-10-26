@@ -142,7 +142,7 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-_REPO = Path(__file__).resolve().parents[4]
+_REPO = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent
 if __package__ in (None, ''):
     for _folder in (_REPO, _REPO / 'bundles' / 'memar', _REPO / 'bundles' / 'memar' / 'services'):
         if str(_folder) not in sys.path:
@@ -157,7 +157,7 @@ task keeps wanting to skip, and says which in its own --help.
 
 Deleting, moving, discarding, stashing, restoring, and committing go through
 this file and the path-invoked services under
-modules-plugable/computer/filesystem/services/ (tree, trash, link,
+modules-plugable/computer/memory/filesystem/services/ (tree, trash, link,
 history_move_glob, and the fs_*.py libraries beside them). Never the host's
 own command for those acts — rm, Remove-Item, git rm, git restore, git checkout
 of paths, git clean, a plain git commit — and never a command a runtime rewrites.

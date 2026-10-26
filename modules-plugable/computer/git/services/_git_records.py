@@ -18,7 +18,7 @@ repository: `is_top` says whether PROJECT is a repository's own top folder.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
 import os

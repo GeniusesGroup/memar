@@ -49,14 +49,14 @@ where it is used.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 scratch_root = _m_fs_memar.scratch_root
-_m_fs_lock = import_module('modules-plugable.computer.filesystem.services.fs_lock')
+_m_fs_lock = import_module('modules-plugable.computer.memory.filesystem.services.fs_lock')
 claim_today = _m_fs_lock.claim_today
 release_lock = _m_fs_lock.release_lock
 try_lock = _m_fs_lock.try_lock
 scratch_root = _m_fs_memar.scratch_root
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 in_test_run = _m_fs_test_scratch.in_test_run
 import contextlib
 import io
@@ -70,7 +70,7 @@ if TYPE_CHECKING:
 OPT_OUT_VARIABLE = 'MEMAR_NO_AUTO_UPDATE'
 UPDATE_VERB = 'update'
 BACKGROUND_FLAG = '--background'
-LAUNCHER = Path(__file__).resolve().parents[3] / 'memar'
+LAUNCHER = _m_fs_memar.checkout_root() / 'bundles' / 'memar' / 'memar'
 UPDATE_DIRNAME = 'update'
 DAILY_MARKER_NAME = 'update.daily'
 LOCK_NAME = 'update.lock'

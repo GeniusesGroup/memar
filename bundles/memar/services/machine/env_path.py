@@ -9,7 +9,7 @@ question for anything installed on that machine, and the day a second thing
 wants to be on it is the day the answer must not be written again.
 `bundles/memar/services/install/services/machine.py` is the one place that decides *about Memar*;
 this is the one place that decides *about the machine's environment*, and the
-installer asks it the same way it asks `modules-plugable/computer/filesystem/services/fs_memar_repository.py`
+installer asks it the same way it asks `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py`
 whether a folder qualifies.
 
 Two facts about PATH drive everything here. It is **per-process**: a shell

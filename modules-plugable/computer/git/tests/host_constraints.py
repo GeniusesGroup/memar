@@ -81,11 +81,11 @@ from __future__ import annotations
 
 from importlib import import_module
 
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_trash = import_module('modules-plugable.computer.filesystem.services.fs_trash')
+_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 import ast
 import importlib.util
@@ -95,10 +95,10 @@ import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-REPO = TESTS.parents[3]
+REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
 GIT_SERVICES = TESTS.parent / 'services'
 GIT_CLI = GIT_SERVICES / '_host_git_cli.py'
-FS_SERVICES = TESTS.parents[1] / 'filesystem' / 'services'
+FS_SERVICES = REPO / 'modules-plugable' / 'computer' / 'memory' / 'filesystem' / 'services'
 SCRIPTS = REPO / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(REPO))
@@ -152,7 +152,7 @@ class NothingIsPermanent(unittest.TestCase):
 
     def test_the_recoverable_delete_is_the_one_the_fs_shelf_uses(self) -> None:
         self.assertIn('soft_delete', read('fs.py'))
-        self.assertIn('modules-plugable.computer.filesystem.services.fs_trash', read('fs.py'))
+        self.assertIn('modules-plugable.computer.memory.filesystem.services.fs_trash', read('fs.py'))
 
     def test_the_git_shelf_delegates_deletion_to_the_fs_shelf(self) -> None:
         source = read('git.py')
@@ -267,7 +267,7 @@ class ShelfIsNotRouted(unittest.TestCase):
             with self.subTest(path=path.name):
                 self.assertTrue(path.is_file())
                 stem = path.stem.lstrip('_')
-                self.assertNotIn(stem, services)
+                self.assertFalse(any((key.rsplit('/', 1)[-1] == stem for key in services)))
                 self.assertFalse(any((entry.endswith('.' + path.stem) for entry in router.catalog().values())))
 
     def test_neither_file_is_a_memar_verb(self) -> None:
@@ -287,7 +287,7 @@ class ShelfIsNotRouted(unittest.TestCase):
         description = module.DESCRIPTION
         self.assertIn('not', description.lower())
         self.assertIn('memar', description.lower())
-        self.assertIn('modules-plugable/computer/filesystem/services/', description)
+        self.assertIn('modules-plugable/computer/memory/filesystem/services/', description)
 
 class ScratchRepository(unittest.TestCase):
     """A throwaway repository with three files committed once, and git asked of it."""

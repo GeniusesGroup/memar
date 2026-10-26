@@ -18,7 +18,7 @@ this is the only read of the variable in this folder.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_memar_repository = plugable_load('computer.filesystem.services.fs_memar_repository')
+_m_fs_memar_repository = plugable_load('computer.memory.filesystem.services.fs_memar_repository')
 is_memar_repository = _m_fs_memar_repository.is_memar_repository
 not_a_repository = _m_fs_memar_repository.not_a_repository
 import os

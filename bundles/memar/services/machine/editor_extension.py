@@ -31,11 +31,11 @@ is a different kind of act, and that is the whole of the difference.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_copy_excluded = plugable_load('computer.filesystem.services.fs_copy_excluded')
+_m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy_excluded')
 NEVER_COPIED = _m_fs_copy_excluded.NEVER_COPIED
-_m_fs_copy = plugable_load('computer.filesystem.services.fs_copy')
+_m_fs_copy = plugable_load('computer.memory.filesystem.services.fs_copy')
 differs = _m_fs_copy.differs
-_m_fs_trash = plugable_load('computer.filesystem.services.fs_trash')
+_m_fs_trash = plugable_load('computer.memory.filesystem.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
 import json
 import shutil

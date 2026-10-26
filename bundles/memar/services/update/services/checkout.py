@@ -7,7 +7,7 @@ A checkout is obtained by the bootstrap, which is a shell and cannot be asked,
 so whether a checkout has fallen behind the branch it tracks is answered here,
 for the update and for the installer that marks a checkout as a developer's,
 and so is the one act that brings it up to date. What a Memar repository is
-belongs to `modules-plugable/computer/filesystem/services/fs_memar_repository.py`, which everything below the update
+belongs to `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py`, which everything below the update
 asks as well.
 
 Most checkouts belong to people who use Memar and never change it; a few are

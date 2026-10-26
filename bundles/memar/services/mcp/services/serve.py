@@ -25,13 +25,18 @@ import argparse
 import json
 import os
 import sys
+from importlib import import_module
 from pathlib import Path
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
+role_folders = _m_fs_memar.role_folders
 COMMAND = 'serve'
-SCRIPTS = Path(__file__).resolve().parents[3]
+SCRIPTS = _m_fs_memar.checkout_root() / 'bundles' / 'memar'
 TOP = SCRIPTS.parent.parent
 CODE_ROOTS = ('modules', 'modules-plugable', 'bundles')
 ROUTER = 'memar'
-NOT_CODE = {'node_modules', '__pycache__', 'temp', 'tests', 'docs', 'rules', 'protocol', 'errors'}
+# The folders the worker's code is not kept in: the role folders the module-skeleton profile declares, less the two that hold code.
+CODE_FOLDERS = ('primitive', 'services')
+NOT_CODE = {'node_modules', '__pycache__', *role_folders()} - set(CODE_FOLDERS)
 BOOT = 'import sys; from pathlib import Path; s, t = Path(sys.argv[1]), Path(sys.argv[2]); sys.path[0:0] = [str(t), str(s), str(s / "services")]; from mcp.services._worker import main; main(str(s), str(t))'
 INITIALIZE = 'initialize'
 INITIALIZED = 'notifications/initialized'

@@ -19,13 +19,13 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
 names.
 
 What is pinned, and what each pin is for:
 
   Location        The file is temp/projects.log under the Memar root, its path
-                  owned by `modules-plugable/computer/filesystem/services/fs_memar.py`; asking for it creates only the
+                  owned by `modules-plugable/computer/memory/filesystem/services/fs_memar.py`; asking for it creates only the
                   missing temp folder.
   Reading         A missing file, a folder in its place, and lines that are not
                   entries read as empty or are skipped, never as an error.
@@ -42,9 +42,9 @@ What is pinned, and what each pin is for:
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 import argparse
 import contextlib
@@ -56,7 +56,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True

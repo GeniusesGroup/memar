@@ -53,9 +53,9 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 import argparse
 import contextlib
@@ -67,7 +67,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
@@ -360,10 +360,10 @@ class BranchNameIsOneConstant(unittest.TestCase):
 
     def test_no_script_spells_the_branch_name_but_the_one_line_that_defines_it(self) -> None:
         # The services moved out of bundles/memar into the module shelves, so the whole tree of code is read.
-        top = TESTS.parents[3]
+        top = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
         shelves = [top / name for name in ('bundles', 'modules', 'modules-plugable')]
         spelled = sorted(path.relative_to(top).as_posix() for shelf in shelves for path in shelf.rglob('*.py') if not {'tests', 'temp'} & set(path.relative_to(top).parts) and BRANCH in path.read_text(encoding='utf-8', errors='replace'))
-        self.assertEqual(spelled, ['modules-plugable/computer/filesystem/services/fs_memar.py'])
+        self.assertEqual(spelled, ['modules-plugable/computer/memory/filesystem/services/fs_memar.py'])
         self.assertEqual(memar_fs.RECORDS_BRANCH, BRANCH)
 
 class RelatedTasks(Fixture):

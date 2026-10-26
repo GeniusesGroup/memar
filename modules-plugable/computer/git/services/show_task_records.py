@@ -19,7 +19,7 @@ told by `--project` or `--project-path`, never the folder this runs in.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 import argparse
 import sys

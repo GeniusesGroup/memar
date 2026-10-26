@@ -74,7 +74,7 @@ import importlib
 import os
 import sys
 from pathlib import Path
-from typing import Callable, Iterable
+from typing import Callable, Iterable, NamedTuple
 
 SCRIPTS = Path(__file__).resolve().parent
 # The checkout's top too: a module under `modules/` that holds code (its `primitive/` types) is imported by its
@@ -87,7 +87,7 @@ for folder in (TOP, SCRIPTS, SCRIPTS / "services"):
 from machine.console import use_utf8_stdio
 from machine.plugable_import import load as plugable_load
 
-role_folders = plugable_load("computer.filesystem.services.fs_memar").role_folders
+role_folders = plugable_load("computer.memory.filesystem.services.fs_memar").role_folders
 
 SERVICES = "services"
 DESCRIBE = "describe"
@@ -104,9 +104,10 @@ SEARCHED_ROOTS = (
 )
 NOT_MODULES = frozenset({SERVICES, *role_folders(), "node_modules", "__pycache__"})
 # A module that has a command-line face keeps it in a file named by its folder (`task/task.py`);
-# each capability is a file in its `services/` folder. The name the router works with is the folder's
-# alone for the module's own file, and the folder, this separator and the file's name for a capability
-# (`task_new`), which is how a capability finds the verb it goes under.
+# each capability is a file in its `services/` folder. What the router works with is a path: the module's for its
+# own file, and that path with `services` and the file's stem for a capability. A capability goes under the domain of
+# the folder it is in, or under the domain whose last word, then this separator, begins its stem (`module_ensure_folders`
+# goes under `module`); a folder's last word may be shared by a mirror and its original, so no word is a key.
 DOMAIN_SEPARATOR = "_"
 VERB_METAVAR = "<verb>"
 HELP_WORDS = ("help",)
@@ -123,7 +124,7 @@ EPILOG = """Ask any verb with `--help` and it says what it accepts.
 
 Before deleting, moving, restoring, or committing files, use
 `modules-plugable/computer/git/services/_host_git_cli.py` and the services under
-`modules-plugable/computer/filesystem/services/` for delete, move, restore, and
+`modules-plugable/computer/memory/filesystem/services/` for delete, move, restore, and
 commit. For putting text into a file, use `memar content write` and
 `memar content edit`."""
 
@@ -155,18 +156,28 @@ class Verbs:
         return dict(self.group.choices) if self.group is not None else {}
 
 
-@functools.lru_cache(maxsize=None)
-def catalog(top: Path = TOP) -> dict[str, str]:
-    """Each name the router works with, and the dotted address its file is imported by.
+class Entry(NamedTuple):
+    """One file that may declare verbs: where it is imported from, which domain it goes under, and how it is shown to a reader."""
 
-    A folder that holds a file of its own name has a command line: that file is the domain, and each file in
-    its `services/` folder is one of the domain's capabilities, unless another domain's name begins it. A
-    folder without a file of its own name, an optional capability added to a domain kept elsewhere,
-    offers only the files in its `services/` folder that a domain's name begins.
+    address: str
+    domain: str | None
+    shown: str
+
+
+@functools.lru_cache(maxsize=None)
+def entries(top: Path = TOP) -> dict[str, Entry]:
+    """Each file that may declare verbs, keyed by the address of its folder and, for a capability, its file.
+
+    The key is a folder address under the checkout, so nesting and a mirror of one folder's address under `modules-plugable/
+    never make two files one: a domain is keyed by its folder's address (`modules/group/alpha`), a capability
+    by that address, `services` and its stem. A folder that holds a file of its own name has a command line: that
+    file is the domain, and each file in its `services/` folder is one of the domain's capabilities, unless
+    another domain's name begins it. A folder without a file of its own name, an optional capability added to a
+    domain kept elsewhere, offers only the files in its `services/` folder that a domain's name begins; the
+    name that begins it is a domain's last word, and a capability whose beginning two domains share is named on stderr and left out.
     """
-    found: dict[str, str] = {}
-    shelved: list[tuple[str | None, str, str]] = []
-    domains: set[str] = set()
+    domains: dict[str, tuple[str, str]] = {}
+    shelved: list[tuple[str, bool, str, str, str]] = []
     for root, base in SEARCHED_ROOTS:
         for folder, dirs, files in os.walk(top / root):
             dirs[:] = sorted(name for name in dirs if name not in NOT_MODULES)
@@ -175,32 +186,54 @@ def catalog(top: Path = TOP) -> dict[str, str]:
             own = f"{leaf}.py" in files
             if not own and not shelf.is_dir():
                 continue
+            key = Path(folder).relative_to(top).as_posix()
             package = ".".join(Path(folder).relative_to(top / base).parts)
             if own:
-                if leaf in found:
-                    raise SystemExit(f"memar: more than one folder is named {leaf}: {found[leaf]} and {folder}")
-                found[leaf] = f"{package}.{leaf}"
-                domains.add(leaf)
+                domains[key] = (leaf, f"{package}.{leaf}")
             for path in sorted(shelf.glob("*.py")):
                 if not path.stem.startswith("_"):
-                    shelved.append((leaf if own else None, path.stem, f"{package}.{SERVICES}.{path.stem}"))
+                    shelved.append((key, own, path.stem, f"{package}.{SERVICES}.{path.stem}", leaf))
+    found = {key: Entry(address, None, leaf) for key, (leaf, address) in domains.items()}
     # A capability file named by another domain first is that domain's, wherever it is kept.
-    for leaf, stem, address in shelved:
-        owner = next((each for each in domains if each != leaf and stem.startswith(each + DOMAIN_SEPARATOR)), None)
-        if owner:
-            found[stem] = address
-        elif leaf is not None:
-            found[f"{leaf}{DOMAIN_SEPARATOR}{stem}"] = address
+    for home, own, stem, address, leaf in shelved:
+        owners = [
+            key for key, (word, _) in domains.items() if word != leaf and key != home and stem.startswith(word + DOMAIN_SEPARATOR)
+        ]
+        if len(owners) > 1:
+            print(f"memar: {stem} begins the name of more than one domain, so it is left out: {', '.join(sorted(owners))}", file=sys.stderr)
+            continue
+        if owners:
+            found[f"{home}/{SERVICES}/{stem}"] = Entry(address, owners[0], stem)
+        elif own:
+            found[f"{home}/{SERVICES}/{stem}"] = Entry(address, home, f"{leaf}{DOMAIN_SEPARATOR}{stem}")
     return found
 
 
+def catalog(top: Path = TOP) -> dict[str, str]:
+    """Each key the router works with, and the dotted address its file is imported by."""
+    return {key: each.address for key, each in entries(top).items()}
+
+
+def domain_of(key: str, top: Path = TOP) -> str | None:
+    """The key of the domain a key goes under; none for a domain, whose verb goes on `memar` itself."""
+    return entries(top)[key].domain
+
+
+def services_of(word: str, top: Path = TOP) -> list[str]:
+    """The keys of a domain whose last word is `word`, and of the capabilities under it, in the order `services` gives."""
+    found = entries(top)
+    homes = {key for key, each in found.items() if each.domain is None and each.shown == word}
+    return [key for key in services(top) if key in homes or found[key].domain in homes]
+
+
 def services(top: Path = TOP) -> list[str]:
-    """The names of the files that may declare verbs, each domain's own before its capabilities."""
-    return sorted(catalog(top), key=lambda name: (DOMAIN_SEPARATOR in name, name))
+    """The keys of the files that may declare verbs, each domain's own before its capabilities."""
+    found = entries(top)
+    return sorted(found, key=lambda key: (found[key].domain is not None, found[key].shown, key))
 
 
 def import_path(name: str, names: dict[str, str] | None = None) -> str:
-    """What a name from `services` is imported by."""
+    """What a key from `services` is imported by."""
     # With the same argument `services` gives, so the two calls share one cache entry and the checkout is walked once.
     return (catalog(TOP) if names is None else names)[name]
 
@@ -208,6 +241,7 @@ def import_path(name: str, names: dict[str, str] | None = None) -> str:
 def assemble(
     names: Iterable[str],
     load: Callable[[str], object] = lambda name: importlib.import_module(import_path(name)),
+    domain: Callable[[str], str | None] = domain_of,
 ) -> tuple[argparse.ArgumentParser, list[Callable[[list[str]], None]]]:
     """The command line the services declare, and what asks to run before every verb.
 
@@ -237,12 +271,16 @@ def assemble(
         describe = getattr(loaded, DESCRIBE, None)
         if describe is None:
             continue
-        domain, separator, _ = name.partition(DOMAIN_SEPARATOR)
-        verbs = levels.get(domain) if separator else root
+        home = domain(name)
+        verbs = root if home is None else levels.get(home)
         if verbs is None:
             continue
         known = verbs.registered()
-        run = describe(verbs)
+        try:
+            run = describe(verbs)
+        except (argparse.ArgumentError, ValueError) as clash:
+            print(f"memar: {name} could not declare its verb, so it is missing: {clash}", file=sys.stderr)
+            continue
         added = {key: parser for key, parser in verbs.registered().items() if key not in known}
         if not added:
             if run is not None:
@@ -251,8 +289,8 @@ def assemble(
         for parser in {id(parser): parser for parser in added.values()}.values():
             if run is not None:
                 parser.set_defaults(**{f"{RUN_PREFIX}{verbs.depth}": run})
-            if not separator:
-                levels[domain] = Verbs(parser, verbs.depth + 1)
+            if home is None:
+                levels[name] = Verbs(parser, verbs.depth + 1)
     return top, before
 
 

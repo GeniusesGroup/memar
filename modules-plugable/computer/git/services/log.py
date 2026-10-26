@@ -17,7 +17,7 @@ daily sweep's, in `task_gc`; a project's log is the project's.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 tasks_root = _m_fs_memar.tasks_root
 import sys
 from datetime import datetime, timezone

@@ -41,7 +41,7 @@ What is pinned:
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 remove_tree = _m_fs_test_scratch.remove_tree
 suite_scratch = _m_fs_test_scratch.suite_scratch
 import json
@@ -52,7 +52,7 @@ import time
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[2]
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 TOP = SCRIPTS.parent.parent
 for folder in (TOP, SCRIPTS, SCRIPTS / 'services'):
     if str(folder) not in sys.path:

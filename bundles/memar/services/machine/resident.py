@@ -49,7 +49,8 @@ CONNECT_SECONDS = 0.5
 TAKEN_SECONDS = 5.0
 MOST_BYTES = 64 * 1024 * 1024
 BOOT = '# memar resident process\nimport sys; from pathlib import Path; s, t = Path(sys.argv[1]), Path(sys.argv[2]); sys.path[0:0] = [str(t), str(s), str(s / "services")]; from resident.services.serve import serve_forever; raise SystemExit(serve_forever())'
-ROUTER = Path(__file__).resolve().parents[2] / 'memar'
+CHECKOUT = next(p for p in Path(__file__).resolve().parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
+ROUTER = CHECKOUT / 'bundles' / 'memar' / 'memar'
 CREATION_FLAGS = 512 | 134217728
 
 def folder(top: Path) -> Path:
@@ -132,7 +133,7 @@ def start(top: Path) -> None:
         marker.parent.mkdir(parents=True, exist_ok=True)
         marker.write_text(str(os.getpid()), encoding='utf-8')
         options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_task': True}
-        subprocess.Popen([sys.executable, '-c', BOOT, str(ROUTER.parent), str(ROUTER.parents[2])], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
+        subprocess.Popen([sys.executable, '-c', BOOT, str(ROUTER.parent), str(CHECKOUT)], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
     except OSError:
         pass
 

@@ -30,8 +30,10 @@ import time
 from pathlib import Path
 from machine.resident import STATE, ask, folder, read_line, state_of
 from resident.services._pool import Pool
+from importlib import import_module
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 COMMAND = 'serve'
-SCRIPTS = Path(__file__).resolve().parents[3]
+SCRIPTS = _m_fs_memar.checkout_root() / 'bundles' / 'memar'
 TOP = SCRIPTS.parent.parent
 IDLE_SECONDS = 30 * 60
 IDLE_ENV = 'MEMAR_SERVER_IDLE'

@@ -27,3 +27,29 @@ What a project tells Memar's tools (`sessions`, `records`, `most-characters`, `n
 #### Considered and not done
 - A `.agents/memar/preferences.json` or `.toml`: not done, because the owner had already named the project's manifest as the one place for its preferences.
 - Writing an empty `memar:` block into a project's manifest on install: not done, because the manifest is the project's and an absent block already means the defaults.
+
+---
+
+### The router is keyed by path, and the checkout is found by a marker, so nested and mirrored modules can move
+- Time: 2026-10-26T12:22:00Z
+- Type: Changed
+- Cited:
+  - Task 20261024-T052937Z-22844 - Relation: Evidence: categories nest and a pluggable module stands at the path of the kernel module it realizes, so a leaf name is not unique and a fixed depth is not true.
+  - `modules/knowledge/label/labels/category.md` - Relation: Rule: the nesting and the mirror this change makes the tools read correctly.
+- Propagates to:
+  - `bundles/memar/tests/memar.py`: Done — expects path keys, a nested module and its mirror with one leaf as two domains, and a verb two files declare named and left out
+  - `bundles/memar/tests/module_graph.py`: Done — counts `primitive/` code, adds `Nested` and `Mirrored`; six `knowledge/documentation` sub-modules stand at no kernel path and are listed in `UNMIRRORED` until the move tasks place them
+  - `modules-plugable/computer/filesystem/services/fs_memar.py`: Done — `checkout_root()` finds the nearest `modules-plugable` folder above the file; about 113 `parents[N]` counts in services and tests are replaced by it or by the same marker in one line where the root must be found before an import
+  - `bundles/khayyam/targets/go/corpus_port.py`: Done — a module's rank falls with the leading path segments it shares with the declaration
+  - `bundles/memar/services/mcp/services/serve.py`: Done — the folders that hold no worker code are the role folders the module-skeleton profile declares, less `primitive` and `services`, and not a second list
+  - Two counts are left: `bundles/memar/services/install/services/apps.py` and its test climb from the skill folder, not from a module
+- Contributors:
+  - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — claimed
+  - [Claude](../../CONTRIBUTORS.md#claude) (Sonnet 5.5) — carried, recorded
+
+#### What changed
+`catalog` keys each file that may declare verbs by its folder's path under the checkout (a domain) or that path, `services` and the stem (a capability), and each entry names the domain it goes under: the folder it stands in, or the one domain whose last word, then `_`, begins its stem (`module_ensure_folders` under `module`). Two domains with one last word are two entries; if both declare one verb, the second is named on stderr and left out like a service that fails to import, and a capability that begins with two domains' words is named on stderr and left out. `services_of(word)` gives a domain and its capabilities by the last word, for the tests that ask for one verb.
+
+#### Considered and not done
+- Attaching a capability by path alone: not done, because `module_ensure_folders` stands in another module's folder and goes under `module` by its name, which the router's contract says.
+- Requiring a leaf to be unique: not done, because a mirror repeats its kernel module's last word by rule.

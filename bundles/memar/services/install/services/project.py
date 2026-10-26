@@ -22,7 +22,7 @@ block in the project's own manifest, which no agent reads and no install writes
 install is not read any more, and an install says so and leaves it.
 
 Every module has a `temp` folder for what the work makes and no record needs
-(`modules-plugable/computer/filesystem/services/fs_memar.py`'s `TEMP_FOLDER`), every task included, so a project under
+(`modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s `TEMP_FOLDER`), every task included, so a project under
 git is given a `.gitignore` line that ignores a folder of that name at any
 depth, added once when no line there already does, with the file's own lines
 and line endings kept.
@@ -43,7 +43,7 @@ every project by hand.
 
 Where Memar lives on this machine is one thing, and this file asks rather than
 decides: `machine/env_location.py` is the one module that reads the location
-variable, and `modules-plugable/computer/filesystem/services/fs_memar_repository.py` holds the test of what a Memar
+variable, and `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` holds the test of what a Memar
 repository is — which is what gives the Memar repository the section that names
 its own skill rather than the one written for a project that has to fetch Memar first.
 
@@ -58,16 +58,16 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 PUBLISH_BRANCH = _m_fs_memar.PUBLISH_BRANCH
 PUBLISHED_REPOSITORY = _m_fs_memar.PUBLISHED_REPOSITORY
 SCRIPTS_RELATIVE = _m_fs_memar.SCRIPTS_RELATIVE
 LAUNCHER_RELATIVE = _m_fs_memar.LAUNCHER_RELATIVE
 SKILL_RELATIVE = _m_fs_memar.SKILL_RELATIVE
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
-_m_fs_memar_repository = import_module('modules-plugable.computer.filesystem.services.fs_memar_repository')
+_m_fs_memar_repository = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar_repository')
 is_memar_repository = _m_fs_memar_repository.is_memar_repository
-_m_fs_trash = import_module('modules-plugable.computer.filesystem.services.fs_trash')
+_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
 import contextlib
 import re

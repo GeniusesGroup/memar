@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 import argparse
+from importlib import import_module
 import subprocess
 import sys
 from pathlib import Path
@@ -12,7 +13,7 @@ from ._run import in_repo, repository_flag, repository_root, run_captured, run_g
 
 def cmd_remove(repository: Path, paths: list[Path]) -> None:
     root = repository_root(repository)
-    fs_py = Path(__file__).resolve().parents[2] / 'filesystem' / 'services' / 'trash.py'
+    fs_py = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar').checkout_root() / 'modules-plugable' / 'computer' / 'memory' / 'filesystem' / 'services' / 'trash.py'
     for path in paths:
         named = in_repo(path, root)
         if not (root / named).exists() and (not _tracked(named, root)):

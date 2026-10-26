@@ -15,7 +15,7 @@ or reads outside a call can reach the conversation; during a call they are the c
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 scratch_root = _m_fs_memar.scratch_root
 import json
 import os

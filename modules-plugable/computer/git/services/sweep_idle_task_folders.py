@@ -77,13 +77,13 @@ The flags are the same `concerns` marks `list` prints (`task_concerns`).
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
 tasks_root = _m_fs_memar.tasks_root
-_m_fs_lock = import_module('modules-plugable.computer.filesystem.services.fs_lock')
+_m_fs_lock = import_module('modules-plugable.computer.memory.filesystem.services.fs_lock')
 claim_today = _m_fs_lock.claim_today
-_m_fs_trash = import_module('modules-plugable.computer.filesystem.services.fs_trash')
+_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
 import argparse
 import contextlib
 import io

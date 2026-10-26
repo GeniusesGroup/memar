@@ -25,13 +25,14 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
+from importlib import import_module
 from pathlib import Path
 from modules.process.project.primitive.project_path import ProjectPath
 from ._run import plumb
 TRAILER = 'Task'
 NO_TASK_FLAG = '--no-task'
 TASK_FLAG = '--task-id'
-ROUTER = Path(__file__).resolve().parents[4] / 'bundles' / 'memar' / 'memar'
+ROUTER = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar').checkout_root() / 'bundles' / 'memar' / 'memar'
 
 def cited_by_hand(message: str, root: Path) -> list[str]:
     """The `Task:` trailers MESSAGE already holds."""

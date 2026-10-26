@@ -25,7 +25,7 @@ from __future__ import annotations
 from importlib import import_module
 _m_git_records = import_module('modules-plugable.computer.git.services._git_records')
 git_records = _m_git_records
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 import shutil
 import subprocess

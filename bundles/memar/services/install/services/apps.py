@@ -35,7 +35,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_trash = import_module('modules-plugable.computer.filesystem.services.fs_trash')
+_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
 import sys
 from pathlib import Path

@@ -74,7 +74,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
 import argparse
 import ast
@@ -159,7 +159,11 @@ class FakeShelf:
         return self.status[name]
 
     def assemble(self, names=None):
-        return memar.assemble(self.NAMES if names is None else names, load=self.modules.__getitem__)
+        return memar.assemble(self.NAMES if names is None else names, load=self.modules.__getitem__, domain=self.domain)
+
+    @staticmethod
+    def domain(name):
+        return name.partition('_')[0] if '_' in name else None
 
     def main(self, argv: list[str]) -> tuple[int, str, str]:
         """`memar.main` over this shelf: its status, stdout, and stderr; SystemExit's code when it exits."""
@@ -167,7 +171,7 @@ class FakeShelf:
         with contextlib.ExitStack() as stack:
             stack.enter_context(unittest.mock.patch.object(memar, 'services', lambda: list(self.NAMES)))
             original = memar.assemble
-            stack.enter_context(unittest.mock.patch.object(memar, 'assemble', lambda names: original(names, load=self.modules.__getitem__)))
+            stack.enter_context(unittest.mock.patch.object(memar, 'assemble', lambda names: original(names, load=self.modules.__getitem__, domain=self.domain)))
             stack.enter_context(contextlib.redirect_stdout(out))
             stack.enter_context(contextlib.redirect_stderr(err))
             try:
@@ -274,11 +278,13 @@ class DomainsFirst(unittest.TestCase):
             (top / 'modules' / 'group' / 'alpha' / 'tests' / 'alpha.py').write_text('', encoding='utf-8')
             (top / 'modules' / 'group' / 'plain').mkdir()
             (top / 'modules' / 'group' / 'plain' / 'other.py').write_text('', encoding='utf-8')
-            self.assertEqual(memar.services(top), ['alpha', 'zeta', 'alpha_aa', 'alpha_beta', 'zeta_a'])
+            base = 'modules/group'
+            self.assertEqual(memar.services(top), [f'{base}/alpha', f'{base}/zeta', f'{base}/alpha/services/aa', f'{base}/alpha/services/beta', f'{base}/zeta/services/a'])
             found = memar.catalog(top)
-            self.assertEqual(found['alpha_beta'], 'modules.group.alpha.services.beta')
-            self.assertEqual(found['zeta'], 'modules.group.zeta.zeta')
-            self.assertNotIn('plain', found)
+            self.assertEqual(found[f'{base}/alpha/services/beta'], 'modules.group.alpha.services.beta')
+            self.assertEqual(found[f'{base}/zeta'], 'modules.group.zeta.zeta')
+            self.assertNotIn(f'{base}/plain', found)
+            self.assertEqual(memar.domain_of(f'{base}/alpha/services/beta', top), f'{base}/alpha')
 
     def test_a_capability_file_named_by_another_domain_is_that_domains(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
@@ -288,15 +294,50 @@ class DomainsFirst(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text('', encoding='utf-8')
             found = memar.catalog(top)
-            self.assertEqual(found['beta_one'], 'modules.alpha.services.beta_one')
-            self.assertEqual(found['alpha_two'], 'modules.alpha.services.two')
-            self.assertNotIn('alpha_beta_one', found)
+            self.assertEqual(found['modules/alpha/services/beta_one'], 'modules.alpha.services.beta_one')
+            self.assertEqual(memar.domain_of('modules/alpha/services/beta_one', top), 'modules/beta')
+            self.assertEqual(memar.domain_of('modules/alpha/services/two', top), 'modules/alpha')
+            self.assertEqual(len(found), 4)
 
     def test_the_real_shelf_is_read_the_same_way(self) -> None:
         names = memar.services()
-        domains = [name for name in names if memar.DOMAIN_SEPARATOR not in name]
-        self.assertEqual(names[:len(domains)], sorted(domains))
-        self.assertEqual(names[len(domains):], sorted(names[len(domains):]))
+        domains = [name for name in names if memar.domain_of(name) is None]
+        self.assertEqual(names[:len(domains)], domains)
+        self.assertEqual(domains, sorted(domains, key=lambda key: (Path(key).name, key)))
+
+    def test_a_nested_module_and_its_mirror_with_one_leaf_are_two_domains(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
+            top = Path(folder)
+            for name in ('modules/computer/store/git/git.py', 'modules-plugable/computer/store/git/git.py', 'modules-plugable/other/other.py', 'modules-plugable/other/services/git_note.py', 'modules-plugable/computer/store/git/services/pull.py'):
+                path = top / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('', encoding='utf-8')
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                left_out = memar.catalog(top)
+            self.assertIn('more than one domain', err.getvalue())
+            self.assertNotIn('modules-plugable/other/services/git_note', left_out)
+            (top / 'modules-plugable' / 'other' / 'services' / 'git_note.py').unlink()
+            memar.entries.cache_clear()
+            found = memar.catalog(top)
+            self.assertEqual(found['modules/computer/store/git'], 'modules.computer.store.git.git')
+            self.assertEqual(found['modules-plugable/computer/store/git'], 'modules-plugable.computer.store.git.git')
+            self.assertEqual(memar.domain_of('modules-plugable/computer/store/git/services/pull', top), 'modules-plugable/computer/store/git')
+    def test_a_capability_beginning_with_its_own_mirrors_word_stays_in_its_folder(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
+            top = Path(folder)
+            for name in ('modules/c/disk/disk.py', 'modules-plugable/c/disk/disk.py', 'modules/c/disk/services/disk_x.py'):
+                path = top / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('', encoding='utf-8')
+            self.assertEqual(memar.domain_of('modules/c/disk/services/disk_x', top), 'modules/c/disk')
+    def test_a_verb_two_modules_declare_is_named_and_left_out(self) -> None:
+        shelf = FakeShelf()
+        shelf.modules['alpha_dup'] = types.SimpleNamespace(describe=lambda verbs: verbs.add_parser('beta', help='again'))
+        out = io.StringIO()
+        with contextlib.redirect_stderr(out):
+            top, _ = shelf.assemble(['alpha', 'alpha_beta', 'alpha_dup'])
+        self.assertIn('memar: alpha_dup could not declare its verb', out.getvalue())
 
 class PluggableRoot(unittest.TestCase):
     """The pluggable shelf is a root the router walks, as `modules/` and `bundles/` are."""
@@ -307,12 +348,12 @@ class PluggableRoot(unittest.TestCase):
             path = top / 'modules-plugable' / 'net' / 'mcp' / 'mcp.py'
             path.parent.mkdir(parents=True)
             path.write_text('', encoding='utf-8')
-            self.assertEqual(memar.catalog(top)['mcp'], 'modules-plugable.net.mcp.mcp')
-            self.assertIn('mcp', memar.services(top))
+            self.assertEqual(memar.catalog(top)['modules-plugable/net/mcp'], 'modules-plugable.net.mcp.mcp')
+            self.assertIn('modules-plugable/net/mcp', memar.services(top))
 
     def test_the_real_shelf_reads_the_pluggable_root_the_same_way(self) -> None:
-        self.assertEqual(memar.catalog()['command'], 'modules-plugable.computer.ui.command.command')
-        self.assertIn('command', memar.services())
+        self.assertEqual(memar.catalog()['modules-plugable/computer/ui/command'], 'modules-plugable.computer.ui.command.command')
+        self.assertIn('modules-plugable/computer/ui/command', memar.services())
 
 class RouterNamesNoVerb(unittest.TestCase):
     """The docstring may name a service as an example of the contract; that is
