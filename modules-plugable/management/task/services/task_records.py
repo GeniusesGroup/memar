@@ -31,7 +31,7 @@ from __future__ import annotations
 from machine.plugable_import import load as plugable_load
 _m_git_records = plugable_load('computer.git.services._git_records')
 git_records = _m_git_records
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 TEMP_DIRNAME = _m_fs_memar.TEMP_DIRNAME
 TASKS_DIRNAME = _m_fs_memar.TASKS_DIRNAME

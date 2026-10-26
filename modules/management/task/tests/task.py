@@ -14,7 +14,7 @@ What each service does is pinned by its own suite beside this one; a behavior
 pinned in two files is one of them to forget.
 
 Nothing here writes outside its scratch folder. The Memar root the services
-resolve is patched onto one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
 names, and removed again. The command is assembled by the launcher from the
 task services alone, so another domain's services are not this suite's
 subject. The subprocesses run ask for `--help` only, which resolves no root and
@@ -72,9 +72,9 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 from importlib import import_module
 import argparse
@@ -91,7 +91,7 @@ import unittest.mock
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
@@ -121,7 +121,7 @@ LAUNCHER = SCRIPTS / 'memar'
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
 launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
-TASK_SERVICES = [name for name in launcher.services() if name.partition(launcher.DOMAIN_SEPARATOR)[0] == 'task']
+TASK_SERVICES = launcher.services_of('task')
 TITLE = 'Test the task command'
 
 def command(*arguments: str) -> int:

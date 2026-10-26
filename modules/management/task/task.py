@@ -47,7 +47,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
 from modules.management.task.primitive.claim import Claim
 from modules.management.task.services.layout import TESTS_FOLDER, folders_listing, kinds_listing

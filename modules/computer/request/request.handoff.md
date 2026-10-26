@@ -91,7 +91,7 @@ Facts verified on 2026-10-23: the four wrong imports listed under the contradict
 ## Open Questions
 
 ### Does the Request domain need more of `record` than the reference to an address?
-- State: "Recording a change of state" in `request.md` is written in `record`'s terms: a domain's current value is a part on a node, a Request is a node with the parts `request` and `request-data`, `request-head` is a map from a domain key to the last Request, a Request is found by `scan` on its labels, and the batch needs a class whose adapter declares `atomic_batch`. Its identifier is now stated as an address (the memory module's reference to an address, [Memory → Retention is reached through one contract](../memory/memory.md#retention-is-reached-through-one-contract)), which is all the owner's ruling of 2026-10-24 leaves a kernel module. Parts, domain keys, labels, `scan` and the binding of classes to adapters are only `record`'s, a pluggable capsule; the section is load-bearing for every change of state, so it was not edited and its links to `record.md` stay.
+- State: "Recording a change of state" in `request.md` is written in `record`'s terms: a domain's current value is a part on a node, a Request is a node with the parts `request` and `request-data`, `request-head` is a map from a domain key to the last Request, a Request is found by `scan` on its labels, and the batch needs a class whose adapter declares `atomic_batch`. Its identifier is now stated as an address (the memory module's reference to an address, [Memory Address](../memory/address/address.md)), which is all the owner's ruling of 2026-10-24 leaves a kernel module. Parts, domain keys, labels, `scan` and the binding of classes to adapters are only `record`'s, a pluggable capsule; the section is load-bearing for every change of state, so it was not edited and its links to `record.md` stay.
 - Options: (1) Recommended: the chain of Requests is stated over the memory contract alone (an address, `get`, `list`, an atomic `batch` under expectations), with `request-head` as a value under an address that the Request domain names, and the parts, labels and `scan` are the composition's use of `record`, moved to the pluggable side of this domain; cost: a rewrite of the section and of the Request node's description. (2) The section stays as how a project binds the Request class to `record`, stated as that choice. (3) The Request domain needs parts and labels as its own subject, and the ruling is revised.
 - Anchor: [Recording a change of state](request.md#recording-a-change-of-state), [The Request node](request.md#the-request-node).
 - Blocks: the move of the `record` capsule and the build of the verbs that write Requests. Assumption meanwhile: option 2.
@@ -171,7 +171,7 @@ See [Contradictions found](request.research.001.md#contradictions-found). One fi
 | --- | --- |
 | `protocol/dt-uuid.kh` | `Field_RequestID` and `UUID` are memar's `Observer_RequestID` and `Request_UUID`; declaring them again is the cross-repository duplicate the qualified-names rule names. |
 | `protocol/uuid.kh` | `UserRequestUUID` is the retired `user-request` domain's name for memar's `Request_UUID`. |
-| `widget/protocol/data_model.kh` | Needs the graph record abstraction from `modules/storage/graph/protocol/data_model.kh`, which is not converted. |
+| `widget/protocol/data_model.kh` | Needs the graph record abstraction from `modules-plugable/computer/memory/store/graph/protocol/data_model.kh`, which is not converted. |
 | `widget/protocol/storage.kh` | Same, plus `Field_ServiceID` from `modules/computer/service/protocol/dt-uuid.kh`, also not converted. |
 | `edges/connection/protocol/data_model.kh` | Needs `Field_ConnectionID` from `modules/computer/connection/protocol/dt-uuid.kh`, not converted. |
 | `edges/service/protocol/data_model.kh` | Needs `Field_ServiceID` from `modules/computer/service/protocol/dt-uuid.kh`, not converted. |
@@ -181,7 +181,7 @@ See [Contradictions found](request.research.001.md#contradictions-found). One fi
 **What the conversion of the blocked files needs from elsewhere:** `Field_ServiceID` in
 `modules/computer/service/protocol/dt-uuid.kh`; `Field_ConnectionID` in
 `modules/computer/connection/protocol/dt-uuid.kh`; a graph record abstraction in
-`modules/storage/graph/protocol/data_model.kh`; and, for the media-type identity, a memar change
+`modules-plugable/computer/memory/store/graph/protocol/data_model.kh`; and, for the media-type identity, a memar change
 in `identifier/mediatype/protocol/`. None of these is this domain's to declare.
 
 **What still held from the retired trees**, recorded so it is not lost with them: a request record

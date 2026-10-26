@@ -165,6 +165,25 @@
 
 ---
 
+### Record contract named in the storage section: a question for the owner
+- Time: 2026-10-24T17:30:00Z
+- Type: Changed
+- Cited:
+  - [Memory](../../computer/memory/memory.md#retention-is-reached-through-one-contract) - Reference: the memory contract's reference to an address, which is all a kernel module takes of retention
+- Tasks:
+  - main:.agents/tasks/20261024-T160312Z-25344/: Partial - repoints the kernel documents from the record contract to the memory contract's reference to an address; a fresh critique follows
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled on 2026-10-24 that the link is only the reference to an address
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — found the statements and wrote the change
+
+#### What changed
+- `task.handoff.md` gained the Open Question "Does the Task need more of `record` than the reference to an address?"; `task.md` gained one sentence in "How a Task is stored" that states a Task is named by an address, by reference to the memory contract, and points to that question; the rest of the section is unchanged.
+
+#### Considered and not done
+- Editing "How a Task is stored": it states parts under domain keys, labels and `scan`, which only `record` has and the task verbs rely on, so by the ruling the question goes to the owner and the text stays.
+
+---
+
 ### Questions are discovered and answered by a panel of agents, not put in a chat
 - Time: 2026-10-25T08:00:00Z
 - Type: Added
@@ -176,3 +195,18 @@
 
 #### What changed
 - `task.handoff.md` gained the Tentative panel procedure: three independent question lists, merge, two independent answers, agreement is Tentative, a lasting disagreement or an always-asked kind goes to a handoff entry; cost, worth and the sub-agent and one-at-a-time rules.
+
+---
+
+### The citation of the memory contract names the module that owns the statement
+- Time: 2026-10-26T14:10:00Z
+- Type: Changed
+- Cited:
+  - [Memory Address](../../computer/memory/address/address.md) - Reference: the reference to an address
+- Tasks:
+  - main:.agents/tasks/20261024-T160310Z-25344/: Partial - the files moved with `git mv` and the links and addresses repaired; the second division and the build tasks are still owed
+- Contributors:
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — carried out the move and repaired the links; no `approved` is recorded
+
+#### What changed
+- The links to `memory.md#retention-is-reached-through-one-contract` in the document and its handoff name [Memory Address](../../computer/memory/address/address.md), the module that owns the statement, since the section is now a pointer.

@@ -22,7 +22,7 @@ they belong; whoever made them files them.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
 from pathlib import Path
 from typing import NamedTuple

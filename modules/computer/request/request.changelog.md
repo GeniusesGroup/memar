@@ -23,7 +23,7 @@
 - Time: 2026-10-23T17:30:00Z
 - Type: Added
 - Cited:
-  - [Memory Record](../memory/record/record.md) - Reference: the store the Request is written to
+  - [Memory Record](../../../modules-plugable/computer/memory/store/record/record.md) - Reference: the store the Request is written to
 - Tasks:
   - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme; the build tasks are queued after it
 - Contributors:
@@ -93,3 +93,18 @@
 
 #### What changed
 - On 2026-10-25 the owner accepted the recommended option of the open entry "How does an update convert stored shapes when past Requests are signed and never edited?" in [the handoff](./request.handoff.md) as a working answer, to be studied in depth in task 20261025-T140526Z-16944. The entry left Open Questions and is now the Tentative decision "Past Requests are never converted; old shapes are read only in history", carrying its reasons and the options not taken; it is an exception to a stated rule and stays visibly a working answer.
+
+---
+
+### The citation of the memory contract names the module that owns the statement
+- Time: 2026-10-26T14:10:00Z
+- Type: Changed
+- Cited:
+  - [Memory Address](../memory/address/address.md) - Reference: the reference to an address
+- Tasks:
+  - main:.agents/tasks/20261024-T160310Z-25344/: Partial - the files moved with `git mv` and the links and addresses repaired; the second division and the build tasks are still owed
+- Contributors:
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — carried out the move and repaired the links; no `approved` is recorded
+
+#### What changed
+- The links to `memory.md#retention-is-reached-through-one-contract` in the document and its handoff name [Memory Address](../memory/address/address.md), the module that owns the statement, since the section is now a pointer.

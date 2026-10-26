@@ -8,7 +8,7 @@ folders are tasks, what their plan says, and how long nothing in them has
 changed — and each answer is given here once, so a task listed as active is
 the task the sweep keeps.
 
-Where the folders are is not decided here: `modules-plugable/computer/filesystem/services/fs_memar.py` owns every
+Where the folders are is not decided here: `modules-plugable/computer/memory/filesystem/services/fs_memar.py` owns every
 Memar path, the task folder among them. Only the task root's folders are
 Memar's; a folder directly in temp/ is not read as a task.
 A folder in a
@@ -27,7 +27,7 @@ no modification time, so a folder that is only read still counts as idle.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 task_dir = _m_fs_memar.task_dir
 tasks_root = _m_fs_memar.tasks_root
 import os

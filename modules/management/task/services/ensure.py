@@ -16,7 +16,7 @@ touching the task being opened or continued.
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 task_dir = _m_fs_memar.task_dir
 from pathlib import Path
 from machine.console import fail

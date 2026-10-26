@@ -18,7 +18,7 @@ claim fresh, so one lapses only after a day. Taking the N first in line is
 `modules/management/task/services/claims.py`'s, and its tests are `task_claims.py` here.
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
 names. The concurrent claims run two real processes, each importing the
 service with the same root patched in, so the race is the operating system's.
 
@@ -40,9 +40,9 @@ What is pinned, and what each pin is for:
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 import contextlib
 import io
@@ -55,7 +55,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True

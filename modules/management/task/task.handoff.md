@@ -49,6 +49,13 @@ Active — Task / Change Set decisions decided; canonical decomposition and full
 
 ## Open Questions
 
+### Does the Task need more of `record` than the reference to an address?
+- State: "How a Task is stored" in `task.md` says a Task is a node of the record contract and then states the Task's node as parts under domain keys (`task`, `timeline`, `group`, `request-head`), `labels` that classify nodes, the encoding of a part, and the revision of a content by moving a `timeline` entry in one batch under an expectation. The owner ruled on 2026-10-24 that the link of Task, timeline and Request to `record` is only the reference to an address that the memory module offers ([Memory Address](../../computer/memory/address/address.md)), since `record` is a pluggable capsule and a kernel module depends on nothing of it ([Kernel Neutrality → The rule](../../knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule)). A part under a domain key, a label and `scan` by label are only `record`'s, so this section states more than a reference, and it is load-bearing for the task verbs; it was therefore not edited, and its link to `record.md` stays.
+- Options: (1) Recommended: the section's stored shape (parts, keys, labels, encoding) moves to the pluggable `modules-plugable/management/task/`, which already holds the optional task records, and `task.md` keeps what a Task is, naming its identifier as an address by reference; cost: a rewrite of the section and of what links to its anchor. (2) The section stays and is retitled as how a project that binds work records to `record` stores a Task, stated as the composition's use of that capsule; cost: a kernel document still names a pluggable capsule. (3) The Task needs nodes, parts and labels as its own subject; then the node model is kernel and the ruling on `record` is revised.
+- Anchor: [How a Task is stored](task.md#how-a-task-is-stored); the answer lands there and in the `record` capsule's documents.
+- Blocks: the move of the `record` capsule to `modules-plugable/computer/memory/store/record/` and the verbs re-based on it. Assumption meanwhile: option 2, the section is read as the composition's use of the capsule and not as the Task's definition.
+- Asked: 2026-10-24, Claude (task `20261024-T160312Z-25344`), for Omid Hekayati.
+
 From the Task section *(open)* bullet above, plus consolidated list items about Task:
 
 1. Canonical definitions of Content, Task, Timeline, Group and their minimal decomposition (is Timeline primitive? does Task decompose into Group + Content + Relation + State + Permission?).

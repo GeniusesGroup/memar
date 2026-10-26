@@ -19,7 +19,7 @@ opened first among equals. The owner's ruling recorded in task
 20261012T163251Z-25244-0 makes the project required: no default, no all.
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one, made under the folder `modules-plugable/computer/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
 names. The concurrent claims run two real processes, each importing the
 service with the same root patched in, so the race is the operating system's.
 
@@ -39,9 +39,9 @@ What is pinned, and what each pin is for:
 """
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.filesystem.services.fs_test_scratch')
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
 from importlib import import_module
 import argparse
@@ -56,7 +56,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[3] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
@@ -249,7 +249,7 @@ class ClaimsTakesN(Fixture):
             "sys.path.insert(1, __import__('os').path.dirname(__import__('os').path.dirname(sys.argv[1]))); "
             "sys.dont_write_bytecode = True\nfrom pathlib import Path\n"
             "from importlib import import_module\n"
-            "m = import_module('modules-plugable.computer.filesystem.services.fs_memar')\n"
+            "m = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')\n"
             "m.memar_root = lambda: Path(sys.argv[2])\n"
             "import modules.management.task.services.claims as c\n"
             "while time.time() < float(sys.argv[3]): pass\n"

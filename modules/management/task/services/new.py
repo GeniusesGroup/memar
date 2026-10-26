@@ -6,7 +6,7 @@
 Why one folder per task, under ONE root. Parallel agent tasks edit one
 shared working tree with no coordination, and concurrent writes to one file
 collide silently — shared-tree collisions. The per-file advisory locks in
-`modules-plugable/computer/filesystem/services/fs_lock.py` answer that, and `memar content write` and `edit` take one,
+`modules-plugable/computer/memory/filesystem/services/fs_lock.py` answer that, and `memar content write` and `edit` take one,
 but advisory locks are honored by skill rule and not by the filesystem:
 file-write tools bypass them, and only intent notes saying who plans what
 against which base let a waiter that takes over a stale lock read what the dead
@@ -18,7 +18,7 @@ own, for Memar), which git does not ignore, because an ignored folder is lost to
 a clean or a re-clone while the task's records are not yet archived. OS temp dirs
 are forbidden for the same reason: they are wiped by other apps while tasks last
 days (the OS-temp wiped risk). Where exactly is
-`modules-plugable/computer/filesystem/services/fs_memar.py`'s answer, and it fails closed rather than guessing.
+`modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s answer, and it fails closed rather than guessing.
 
 A task writes only inside its own folder: --task-id reuses an id only to
 continue the same task, and two tasks writing one folder reintroduce the
