@@ -20,21 +20,18 @@ Each is **Tentative**: taken by task `20261026-T181945Z-16468` where the code ne
 - **The seam of the groups is three methods of the adapter: `fall_back(fallback, held)`, `working_tree()`, and `shared_reachable(flag)`, `shared_state()`, `sibling()`.** No abstraction names them; they are declared in `cases.py` with the groups. Changing them costs the cases.
 - **Packs are bounded by `repack -d --geometric=2` once a store has more than 32.** Measured by [Research 001](git-store.research.001.md#findings) (task `20261026-T192807Z-36152`): over 10,000 single-write batches the count stayed between 2 and 34 at every sample of 100 and ended at 4, so the bound stands. Changing it costs one number.
 
+## Decided by the owner, 2026-10-26
+- **Memar's own work records (tasks and other development data) are published to this repository itself under `refs/memory/`**, by explicit refspec; `git-store-shared` for `work-records` names it when the records migrate (P4), and nothing writes there before. The earlier worry that `origin` is a public host was raised to the owner and is his ruling.
+- **The lag stays the path-invoked command `git-store.py lag`** for now; whether it becomes a `memar` verb waits for the new structure of the bundle's services.
+
 ## Open Questions
 
-### Which shared store do Memar's own work records publish to?
-- State: `memory: work-records=git-store` is in Memar's `manifest.yaml` with no `git-store-shared`, so nothing is published. The owner's decision that every committed batch is published needs a shared store named; the project's `origin` is a public host, and the records branch was never pushed.
-- Options: name a private shared store for `work-records` (recommended: records reach a store the owner controls); name `origin`, publishing the work records publicly; keep none until P4.
+### Does the git ref format `reftable` serve this adapter, and how does git serve as an organization's live database at low storage cost?
+- State: the adapter uses git's default ref format; the owner (2026-10-26) suspects `reftable` (available here: git 2.55 initialises `--ref-format=reftable`) fits many refs, atomic multi-ref updates and fast reads, and wants a record visible to others soon after it is written without a commit per record. Nothing in Memar's documents mentions it.
+- Options: study it as a design task (queued: `20261026-T200843Z-21460`) and decide the ref format, the push cadence and the shape of a batch before more of the adapter is built.
 - Anchor: [Publishing to the shared store](git-store.md#publishing-to-the-shared-store).
-- Blocks: publishing Memar's work records; nothing in this step.
-- Asked: 2026-10-26, Claude (task `20261026-T181945Z-16468`), for Omid Hekayati.
-
-### Should the lag be a `memar` verb?
-- State: the lag is printed by the path-invoked `git-store.py lag`; a `memar` verb needs a route in `bundles/memar` and a name the owner gives.
-- Options: `memar memory lag --class NAME` (recommended: the agent's door is `memar`); keep the path-invoked command.
-- Anchor: [Publishing to the shared store](git-store.md#publishing-to-the-shared-store).
-- Blocks: nothing now.
-- Asked: 2026-10-26, Claude (task `20261026-T181945Z-16468`), for Omid Hekayati.
+- Blocks: the shape of `git-store`'s refs and publishing.
+- Asked: 2026-10-26, Omid Hekayati.
 
 ## Anticipated Work
 - **The saved index grows with the store and is rewritten whole.** [Research 001](git-store.research.001.md#findings) measured 1.1 GB written to the data area while 99,000 nodes were written in batches of 200 (the packs were 9.9 MB): the index, a JSON file of every address, is saved whole every 256 changed addresses, about 2.2 MB per batch at 100,000 nodes. Options for the task that takes it: save it only on `close` and on a time bound, or save it in parts by the address's fan-out prefix, or append changes and compact; each keeps it a cache that dropping changes no answer of.
