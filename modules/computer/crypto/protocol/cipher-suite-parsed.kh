@@ -1,9 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp String in "modules/codec/string/protocol/string.kh"
-tp Stringer in "modules/codec/string/protocol/stringer.kh"
-tp UUID_Hash in "modules/identifier/protocol/uuid.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Stringer in "modules/computer/codec/string/protocol/stringer.kh"
+tp UUID_Hash in "modules/computer/identifier/protocol/uuid.kh"
 
 tp CipherSuite_Parsed ab {
     Stringer

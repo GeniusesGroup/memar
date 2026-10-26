@@ -6,7 +6,7 @@ tp Container_Offset in "modules/computer/adt/container/protocol/pagination.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/computer/module/protocol/path.kh"
-tp Character in "modules/codec/string/protocol/character.kh"
+tp Character in "modules/computer/codec/character/protocol/character.kh"
 
 // ElementIndex is related to `NumberOfElement`
 // ElementIndex can refer to any location of memory blocks in byte or 8bit number.

@@ -2,9 +2,8 @@
 
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Storage_Block in "modules/memory/block/protocol/block.kh"
-tp String in "modules/codec/string/protocol/string.kh"
-tp Character in "modules/codec/string/protocol/character.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Character in "modules/computer/codec/character/protocol/character.kh"
 
 // Copy is implicit, inexpensive, and cannot be re-implemented (memcpy).
 // The Copy trait represents values that can be safely duplicated via memcpy:
@@ -42,16 +41,6 @@ tp Marker_Copy_Computer_Buffer_CopyFrom mt (self Copy_Computer_Buffer) (source C
 
 // Performs copy-assignment to destination
 tp Marker_Copy_Computer_Buffer_CopyTo mt (self Copy_Computer_Buffer) (destination Computer_Buffer) (err Error)
-
-tp Copy_Storage_Block ab
-// Returns a copy of the itself
-tp Marker_Copy_Storage_Block_Copy mt (self Copy_Storage_Block) () (c Storage_Block, err Error)
-
-// Performs copy-assignment from source
-tp Marker_Copy_Storage_Block_CopyFrom mt (self Copy_Storage_Block) (source Storage_Block) (err Error)
-
-// Performs copy-assignment to destination
-tp Marker_Copy_Storage_Block_CopyTo mt (self Copy_Storage_Block) (destination Storage_Block) (err Error)
 
 // TODO(go-migrate):
 /*

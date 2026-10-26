@@ -8,7 +8,7 @@ ID: 495025
 # Linter
 
 ## Abstract
-A **linter** is a system that enforces governance rules on programs that are already well-formed as existence. It does not decide what may exist — that is the [Compiler](compiler.md). It decides how well-formed instances must flow, name, and relate, under a rule set an organization can replace without forking a language. This document is Memar's protocol for that system: what a linter is, how it is distinct from a compiler, that a governance rule is authored in the document that owns its subject and only *checked* here, and that a linter must not become a second compiler. The protocol is language-independent: the same split — ontology in the compiler, governance in the linter — applies to a C or Go toolchain as to any other.
+A **linter** is a system that enforces governance rules on programs that are already well-formed as existence. It does not decide what may exist — that is the [Compiler](../compiler/compiler.md). It decides how well-formed instances must flow, name, and relate, under a rule set an organization can replace without forking a language. This document is Memar's protocol for that system: what a linter is, how it is distinct from a compiler, that a governance rule is authored in the document that owns its subject and only *checked* here, and that a linter must not become a second compiler. The protocol is language-independent: the same split — ontology in the compiler, governance in the linter — applies to a C or Go toolchain as to any other.
 
 ## Introduction
 
@@ -18,7 +18,7 @@ A language that bakes architectural policy into grammar forces every project usi
 The second gap is authorship. Before this protocol, it was not stated how a governance rule is written: which document owns it, what a check must name, and which tier (error, warning, suggestion) it may carry. Without that, each linter team re-derives policy from language lore, and the linter becomes the de-facto owner of rules it should only enforce.
 
 ### Methodology
-The compiler/linter split is the same line Khayyam (`docs/khayyam/khayyam.md`) states as *Separation of Syntax and Governance* — existence versus flow. That language's documents exercised the split first; this protocol states it independently as a language-neutral contract, because the line is a protocol concern, not a grammar and not any one language's property. The authorship rule (a rule lives in the document that owns its subject) is the pattern [The Error](../process/error.md#enforcement-of-the-each-error-is-its-own-type-rule) already exercises for the `Err` prefix: that document owns the convention; a linter, if configured to, checks it. This document generalizes that pattern and does not re-list per-subject rules.
+The compiler/linter split is the same line Khayyam (`docs/khayyam/khayyam.md`) states as *Separation of Syntax and Governance* — existence versus flow. That language's documents exercised the split first; this protocol states it independently as a language-neutral contract, because the line is a protocol concern, not a grammar and not any one language's property. The authorship rule (a rule lives in the document that owns its subject) is the pattern [The Error](../../process/error/error.md#enforcement-of-the-each-error-is-its-own-type-rule) already exercises for the `Err` prefix: that document owns the convention; a linter, if configured to, checks it. This document generalizes that pattern and does not re-list per-subject rules.
 
 ## Explanation
 
@@ -35,7 +35,7 @@ A decision that *creates* or *denies* existence belongs in the compiler precisel
 The failure this topic exists to prevent is the linter quietly becoming a second compiler — hardening governance into de-facto language restrictions.
 
 ### A rule's home is its subject's document
-A governance rule is stated in the document that owns the subject the rule is about. The linter does not own the rule; it owns the *check*. [The Error](../process/error.md#enforcement-of-the-each-error-is-its-own-type-rule) is the standing example: the `Err`-prefix convention lives there, as a non-binding convention whose enforcement, if any, is per-organization linter configuration. Naming, modularity, encapsulation, and memory-path coverage follow the same placement. This document is not a catalogue of those rules and does not grow by absorbing them.
+A governance rule is stated in the document that owns the subject the rule is about. The linter does not own the rule; it owns the *check*. [The Error](../../process/error/error.md#enforcement-of-the-each-error-is-its-own-type-rule) is the standing example: the `Err`-prefix convention lives there, as a non-binding convention whose enforcement, if any, is per-organization linter configuration. Naming, modularity, encapsulation, and memory-path coverage follow the same placement. This document is not a catalogue of those rules and does not grow by absorbing them.
 
 ### How a governance rule is authored
 Until a notation is designed (see the paired handoff), a rule that this protocol will accept as a linter check has these required members, stated in the owning document:
@@ -45,13 +45,13 @@ Until a notation is designed (see the paired handoff), a rule that this protocol
 - **Default** — whether a reference configuration ships the check on or off.
 - **Override** — that an organization may relax or replace the check without forking a language.
 
-The notation itself — a capability interface, a configuration schema, a Syllab-level annotation — is not settled. What is settled is that the linter does not invent rules that have no home outside it. Those members describe the authoring form a Rule takes; the claim itself is a Type on the subject it governs ([Type](../../type.md)), and a notation is one rendering of that statement rather than its carrier.
+The notation itself — a capability interface, a configuration schema, a Syllab-level annotation — is not settled. What is settled is that the linter does not invent rules that have no home outside it. Those members describe the authoring form a Rule takes; the claim itself is a Type on the subject it governs ([Type](../../../docs/type.md)), and a notation is one rendering of that statement rather than its carrier.
 
 ### Configuration and override
 A linter ships a reference configuration, not a unique legal configuration. Organizations add, relax, and replace checks. Custom governance rules plug into the same machinery rather than living in ad-hoc scripts. A conformance suite, when one exists, tests that a linter implementation honors this protocol's split and the authorship members above — it does not freeze any one organization's rule set.
 
 ### Analysis consumes compiler events, not library names
-A linter (and any analysis library it uses) subscribes to events the [Compiler](compiler.md) emits — entering and leaving a scope, taking or skipping a branch — rather than recognizing a particular library's constructs by name. Branch exclusivity is learned from those events. Special-casing one control-flow library's `IF` as if it were grammar undoes the compiler's own refusal to privilege libraries, and it undoes it on the analysis side where the mistake is harder to see.
+A linter (and any analysis library it uses) subscribes to events the [Compiler](../compiler/compiler.md) emits — entering and leaving a scope, taking or skipping a branch — rather than recognizing a particular library's constructs by name. Branch exclusivity is learned from those events. Special-casing one control-flow library's `IF` as if it were grammar undoes the compiler's own refusal to privilege libraries, and it undoes it on the analysis side where the mistake is harder to see.
 
 ### Assistance writes source, on request
 When a linter or companion tool generates code — accessors, teardown calls, suggested types — it writes **explicit source** the author can read, review, and refuse, matching [Memory → Teardown is explicit, and automation writes source](../memory/memory.md#teardown-is-explicit-and-automation-writes-source). It does not synthesize a public surface the author never requested. Mechanical generation of an accessor for every field recreates public fields with extra steps; generation is faithful only when requested deliberately.

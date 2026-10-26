@@ -2,7 +2,46 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 
-// Capsule_LifeCycle carries teardown only. Initialization and re-initialization are each capsule's own
-// named methods with its own domain arguments (docs/khayyam/variable.md#overview).
-tp Capsule_LifeCycle ab
+tp Capsule_LifeCycle ab {
+	// Init and Reinit are not members of this protocol. Initialization and re-initialization are the
+	// capsule's own behavior, through its own named methods carrying its own domain arguments
+	// (docs/khayyam/variable.md#overview). Reusing an instance through a pool is a contract term the
+	// pooling library states (modules/computer/memory/memory.md#copy-and-ownership-semantics-are-contract-members).
+}
+
+// Deinit is the teardown surface for a capsule whose acquisition requires a release
+// (docs/khayyam/khayyam.md#how-khayyam-realizes-memory).
 tp Deinit mt (self Capsule_LifeCycle) () (err Error)
+
+// TODO(go-migrate):
+/*
+package capsule_p
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+type LifeCycle interface {
+	// new call to allocate the object and initialize it.
+	// It must be called on pointer to the struct not direct use e.g. `t *embed`.
+	// New()
+
+	// Allocate()
+
+	// Constructors should instantiate the fields of an object and do any other initialization necessary to make the object ready to use.
+	// This is generally means constructors are small, but there are scenarios where this would be a substantial amount of work.
+	// TODO::: how let custom initialize and get some args??
+	// Init() (err Error)
+
+	// TODO::: how let custom reinitialize and get some args??
+	// Reinit() (err Error)
+
+	Deinit() (err error_p.Error)
+
+	// Deallocate()
+
+	// Opposite of New()
+	// Release(), Destroy(), Delete(), Drop()
+	// remove, dispose, clear, close
+}
+*/

@@ -1,8 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
+
 tp Details in "modules/computer/type/protocol/detail.kh"
 tp Identifiers in "modules/computer/type/protocol/identifiers.kh"
 tp Observer_Type_LifeCycle in "modules/computer/type/protocol/life-cycle.observers.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Type ab {
     Identifiers

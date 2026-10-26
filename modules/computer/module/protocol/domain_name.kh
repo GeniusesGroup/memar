@@ -4,7 +4,7 @@ tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Function_Access in "modules/computer/function/protocol/access.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // DomainName
 // flagSet.StringVar(&req.name, "n", "", "module domain name e.g. user-name")

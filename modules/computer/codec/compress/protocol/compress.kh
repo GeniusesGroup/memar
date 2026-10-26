@@ -1,12 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp CompressOptions in "modules/codec/compress/protocol/compress-options.kh"
-tp Observer_ContentEncoding in "modules/codec/compress/protocol/content_encoding.observers.kh"
+tp CompressOptions in "modules/computer/codec/compress/protocol/compress-options.kh"
+tp Observer_ContentEncoding in "modules/computer/codec/compress/protocol/content_encoding.observers.kh"
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
-tp Observer_Extension in "modules/memory/file/protocol/extention.observers.kh"
+tp Observer_MediaType in "modules/computer/mediatype/protocol/media-type.observers.kh"
+tp Observer_Extension in "modules/computer/mediatype/protocol/extension.observers.kh"
 
 // CompressType is standard shape of any compress coding type
 tp CompressType ab {

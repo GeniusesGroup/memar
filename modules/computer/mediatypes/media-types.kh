@@ -9,9 +9,9 @@ tp mediaTypes cp {
 
 // From media-types_test.go:
 
-// TODO(go-migrate): the Go name mediaTypes is kept bare; it differs from the protocol's MediaTypes (modules/identifier/mediatypes/protocol/media-types.kh) only by case and prefix, so confirm the name.
+// TODO(go-migrate): the Go name mediaTypes is kept bare; it differs from the protocol's MediaTypes (modules/computer/mediatypes/protocol/media-types.kh) only by case and prefix, so confirm the name.
 // TODO(go-migrate): [under "// RegisterMediaType register given MediaType to the application"] impl body uses if, &&, panic, map assignment, and a local var; none has a Khayyam form yet (control flow is a library, not grammar); a body-less mt on a cp means FFI, so the declaration stays commented; proposed `tp mediaTypes_Register mt (self mediaTypes) (mediaType Parsed) (err Error)`. Note the impl takes mediatype_p.Parsed while the protocol Register takes mediatype_p.GetMediaType.
-// TODO(go-migrate): [under "// From media-types_test.go:"] compile-time assertion that mediaTypes implements the protocol MediaTypes; Khayyam has no such form yet (the corpus marks implementations with //memar:impl comments), and the Go impl's Register(mediatype_p.Parsed) does not match the protocol's Register(mediatype_p.GetMediaType), so the assertion would not hold as written.
+// TODO(go-migrate): [under "// From media-types_test.go:"] compile-time assertion that mediaTypes implements the protocol MediaTypes; Khayyam has no such form yet (the sources mark implementations with //memar:impl comments), and the Go impl's Register(mediatype_p.Parsed) does not match the protocol's Register(mediatype_p.GetMediaType), so the assertion would not hold as written.
 // TODO(go-migrate): memar/modules/identifier/mediatypes/media-types.go
 /*
 package mediatypes

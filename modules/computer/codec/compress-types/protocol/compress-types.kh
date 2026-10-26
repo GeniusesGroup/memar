@@ -1,10 +1,10 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
-tp CompressType in "modules/codec/compress/protocol/compress.kh"
+tp CompressType in "modules/computer/codec/compress/protocol/compress.kh"
 tp Type_ID in "modules/computer/type/protocol/id.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Codec_CompressTypes ab
 tp Codec_CompressTypes_Register mt (self Codec_CompressTypes) (ct CompressType) (err Error)

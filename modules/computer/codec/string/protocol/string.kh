@@ -10,8 +10,8 @@ tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Clone_String in "modules/computer/adt/marker/protocol/clone.kh"
 tp Copy_String in "modules/computer/adt/marker/protocol/copy.kh"
-tp String_CharacterEncoding in "modules/codec/string/protocol/character-encoding.kh"
-tp Join in "modules/codec/string/protocol/join.kh"
+tp String_CharacterEncoding in "modules/computer/codec/string/protocol/character-encoding.kh"
+tp Join in "modules/computer/codec/string/protocol/join.kh"
 
 tp Compare mt (self String) (with String) (n NumberOfElement)
 

@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Type_ID in "modules/computer/type/protocol/id.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Observer_Type_ID ab
 tp GetTypeID mt (self Observer_Type_ID) () (i Type_ID)

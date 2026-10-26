@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Hash64 in "modules/crypto/hash/protocol/hash.kh"
+tp Hash64 in "modules/computer/crypto/hash/protocol/hash.kh"
 tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
 
 tp HashTable_Key ab {

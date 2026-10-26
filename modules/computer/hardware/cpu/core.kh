@@ -11,7 +11,7 @@ tp CoreID cp {
 
 // From core_test.go:
 
-// TODO(go-migrate): [under "// activeCoreID or WhichCoreAmIOn return active core id that thread(goroutine) run on it."] body-less Go function implemented in assembly (modules/hardware/cpu/core.s, CPUID leaf 0xB, returns DX); a body-less Khayyam method is the FFI form, but a method needs an owner type and this is a free function, so the owner is undecided; result type would be W64 (modules/math/integer/unsigned-64.kh).
+// TODO(go-migrate): [under "// activeCoreID or WhichCoreAmIOn return active core id that thread(goroutine) run on it."] body-less Go function implemented in assembly (modules/computer/hardware/cpu/core.s, CPUID leaf 0xB, returns DX); a body-less Khayyam method is the FFI form, but a method needs an owner type and this is a free function, so the owner is undecided; result type would be W64 (modules/math/integer/unsigned-64.kh).
 // TODO(go-migrate): memar/modules/hardware/cpu/core.go
 /*
 package cpu

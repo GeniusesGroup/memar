@@ -4,8 +4,8 @@
 
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp String in "modules/codec/string/protocol/string.kh"
-tp Character in "modules/codec/string/protocol/character.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Character in "modules/computer/codec/character/protocol/character.kh"
 
 // Reversed is a container level operation.
 

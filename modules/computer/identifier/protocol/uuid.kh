@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Identifier_ID in "modules/identifier/protocol/id.kh"
+tp Identifier_ID in "modules/computer/identifier/protocol/id.kh"
 
 tp UUID_Hash ab
 

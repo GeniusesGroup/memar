@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Codec_Length in "modules/codec/protocol/length.kh"
+tp Codec_Length in "modules/computer/codec/protocol/length.kh"
 
 tp Observer_Codec_Length ab
 // GetSerializationLength return value ln, that is the max number of bytes that will written as encode data by Encode()||Marshal()

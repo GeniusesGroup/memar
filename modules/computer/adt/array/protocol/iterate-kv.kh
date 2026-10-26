@@ -4,7 +4,7 @@ tp Array_Key in "modules/computer/adt/array/protocol/key.kh"
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Iterate_KV ab
 // Iterate or traverse

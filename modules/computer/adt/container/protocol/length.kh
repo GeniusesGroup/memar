@@ -4,7 +4,7 @@ tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Module_Path in "modules/computer/module/protocol/path.kh"
-tp Character in "modules/codec/string/protocol/character.kh"
+tp Character in "modules/computer/codec/character/protocol/character.kh"
 
 // NumberOfElement or Length is a measure of distance.
 // In the International System of Quantities, length is a quantity with dimension distance.

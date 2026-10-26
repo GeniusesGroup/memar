@@ -2,10 +2,8 @@
 
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Storage_Block in "modules/memory/block/protocol/block.kh"
-tp Storage_Page in "modules/memory/page/protocol/page.kh"
-tp String in "modules/codec/string/protocol/string.kh"
-tp Character in "modules/codec/string/protocol/character.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Character in "modules/computer/codec/character/protocol/character.kh"
 
 // Clone is explicit, may be expensive, and may be re-implement arbitrarily.
 // Clone is designed for arbitrary duplications:
@@ -42,26 +40,6 @@ tp Marker_Clone_Computer_Buffer_CloneFrom mt (self Clone_Computer_Buffer) (sourc
 
 // Performs clone-assignment to destination
 tp Marker_Clone_Computer_Buffer_CloneTo mt (self Clone_Computer_Buffer) (destination Computer_Buffer) (err Error)
-
-tp Clone_Storage_Block ab
-// Returns a clone of the itself
-tp Marker_Clone_Storage_Block_Clone mt (self Clone_Storage_Block) () (c Storage_Block, err Error)
-
-// Performs clone-assignment from source
-tp Marker_Clone_Storage_Block_CloneFrom mt (self Clone_Storage_Block) (source Storage_Block) (err Error)
-
-// Performs clone-assignment to destination
-tp Marker_Clone_Storage_Block_CloneTo mt (self Clone_Storage_Block) (destination Storage_Block) (err Error)
-
-tp Clone_Storage_Page ab
-// Returns a clone of the itself
-tp Marker_Clone_Storage_Page_Clone mt (self Clone_Storage_Page) () (c Storage_Page, err Error)
-
-// Performs clone-assignment from source
-tp Marker_Clone_Storage_Page_CloneFrom mt (self Clone_Storage_Page) (source Storage_Page) (err Error)
-
-// Performs clone-assignment to destination
-tp Marker_Clone_Storage_Page_CloneTo mt (self Clone_Storage_Page) (destination Storage_Page) (err Error)
 
 // TODO(go-migrate):
 /*

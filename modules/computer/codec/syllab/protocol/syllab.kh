@@ -2,7 +2,7 @@
 
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Observer_Syllab_Lengths in "modules/codec/syllab/protocol/length.observers.kh"
+tp Observer_Syllab_Lengths in "modules/computer/codec/syllab/protocol/length.observers.kh"
 
 // Syllab is the interface that must implement by any `Capsule` to be a Syllab object transmittable over networks.
 // Standards in https://github.com/GeniusesGroup/memar/blob/main/Syllab.md

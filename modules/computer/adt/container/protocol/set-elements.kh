@@ -6,7 +6,7 @@ tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Character in "modules/codec/string/protocol/character.kh"
+tp Character in "modules/computer/codec/character/protocol/character.kh"
 
 // Reversed is a container level operation.
 

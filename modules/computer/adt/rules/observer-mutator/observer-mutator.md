@@ -2,7 +2,7 @@
 Title: "ADT Rule — Observer and Mutator"
 Status: Draft
 Start Date: 2026-09-29
-ID: 510443
+ID: 497415
 ---
 
 # ADT Rule — Observer and Mutator
@@ -28,8 +28,8 @@ A type's observer and mutator abstractions **strongly default** to companion fil
 The good examples are the protocol files that follow the rule; each is declared once there and not copied here:
 - `Observer_Scheme` and its method `GetScheme`: [`modules-plugable/net/uri/protocol/scheme.observers.kh`](../../../../../modules-plugable/net/uri/protocol/scheme.observers.kh).
 - `Observer_Time_Access` and its method `GetAccessTime`: [`modules/process/time/protocol/access.observers.kh`](../../../../process/time/protocol/access.observers.kh).
-- `Memory_Pointer` composing `Observer_MemoryAddress` and `Mutator_SetMemoryAddress`, whose method is `SetMemoryAddress`: [`modules/memory/address/protocol/address.kh`](../../../../memory/address/protocol/address.kh) and [`address.mutators.kh`](../../../../memory/address/protocol/address.mutators.kh).
-- `Mutator_File`, a mutator bundle composing `Mutator_Rename`: [`modules/memory/file/protocol/file.mutators.kh`](../../../../memory/file/protocol/file.mutators.kh).
+- `Memory_Pointer` composing `Observer_MemoryAddress` and `Mutator_SetMemoryAddress`, whose method is `SetMemoryAddress`: [`modules/computer/memory/address/protocol/address.kh`](../../../memory/address/protocol/address.kh) and [`address.mutators.kh`](../../../memory/address/protocol/address.mutators.kh).
+- `Mutator_File`, a mutator bundle composing `Mutator_Rename`: [`modules-plugable/computer/memory/filesystem/file/protocol/file.mutators.kh`](../../../../../modules-plugable/computer/memory/filesystem/file/protocol/file.mutators.kh).
 
 ### Examples — bad
 ```khayyam

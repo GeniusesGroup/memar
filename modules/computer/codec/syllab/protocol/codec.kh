@@ -2,9 +2,9 @@
 
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Index_Heap in "modules/codec/syllab/protocol/index.kh"
-tp Index_Stack in "modules/codec/syllab/protocol/index.kh"
-tp Observer_Syllab_Lengths in "modules/codec/syllab/protocol/length.observers.kh"
+tp Index_Heap in "modules/computer/codec/syllab/protocol/index.kh"
+tp Index_Stack in "modules/computer/codec/syllab/protocol/index.kh"
+tp Observer_Syllab_Lengths in "modules/computer/codec/syllab/protocol/length.observers.kh"
 
 // Codec is
 tp CodecSyllab_Codec ab {
