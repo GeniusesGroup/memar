@@ -27,7 +27,7 @@ import subprocess
 import sys
 import unittest
 from pathlib import Path
-SCRIPTS = Path(__file__).resolve().parents[5] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True

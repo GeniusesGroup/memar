@@ -31,7 +31,7 @@ import unittest.mock
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parents[2] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
@@ -43,7 +43,7 @@ LAUNCHER = SCRIPTS / 'memar'
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
 launcher = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(launcher)
-TASK_SERVICES = [name for name in launcher.services() if name.partition(launcher.DOMAIN_SEPARATOR)[0] == 'ai']
+TASK_SERVICES = launcher.services_of('ai')
 VERBS = ['get-task-answer-context', 'get-new-chats-ask', 'get-task-plan-carry-out-brief', 'get-task-questions-answer-brief']
 
 def command(*arguments: str) -> int:

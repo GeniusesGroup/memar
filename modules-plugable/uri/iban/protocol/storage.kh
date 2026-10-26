@@ -3,9 +3,9 @@
 tp Error in "modules/process/error/protocol/error.kh"
 tp IBAN in "modules-plugable/uri/iban/protocol/iban.kh"
 tp IBANDataModel in "modules-plugable/uri/iban/protocol/data_model.kh"
-tp NumberOfVersion in "modules/computer/memory/protocol/version.kh"
+tp NumberOfVersion in "modules/computer/memory/version/protocol/version.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
-tp VersionOffset in "modules/computer/memory/protocol/version.kh"
+tp VersionOffset in "modules/computer/memory/version/protocol/version.kh"
 
 tp IBANStorage ab
 

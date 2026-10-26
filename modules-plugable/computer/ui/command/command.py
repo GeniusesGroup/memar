@@ -28,7 +28,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Callable
-SCRIPTS = Path(__file__).resolve().parents[4] / 'bundles' / 'memar'
+SCRIPTS = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
 ROUTER = SCRIPTS / 'memar'
 COMMANDS_COMMAND = 'commands'
 USAGE_PREFIX = re.compile('^usage:\\s*')

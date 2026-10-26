@@ -4,7 +4,7 @@ tp Field_ProductID in "modules/economics/product/protocol/dt-uuid.kh"
 tp Field_Service_Seat_Type in "modules-plugable/economics/service/edges/seat/protocol/dt-type.kh"
 tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
-tp Storage_UUID in "modules/computer/memory/record/protocol/uuid.kh"
+tp RecordUUID in "modules-plugable/computer/memory/store/record/protocol/uuid.kh"
 tp U64 in "modules/math/integer/unsigned-64.kh"
 
 tp Observer_Seat_SeatCapacity ab
@@ -13,7 +13,7 @@ tp GetSeatCapacity mt (self Observer_Seat_SeatCapacity) () (n U64)
 
 tp Observer_Seat_MapID ab
 
-tp GetMapID mt (self Observer_Seat_MapID) () (m Storage_UUID)
+tp GetMapID mt (self Observer_Seat_MapID) () (m RecordUUID)
 
 tp SeatDataModel ab {
 	Field_ProductID

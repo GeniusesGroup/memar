@@ -12,7 +12,7 @@ they apply to a file is decided by the caller.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_memar_repository = plugable_load('computer.filesystem.services.fs_memar_repository')
+_m_fs_memar_repository = plugable_load('computer.memory.filesystem.services.fs_memar_repository')
 enclosing_repository = _m_fs_memar_repository.enclosing_repository
 import re
 from pathlib import Path

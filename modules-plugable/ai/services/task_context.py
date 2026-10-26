@@ -58,7 +58,7 @@ once above; one with neither is said, not skipped.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.filesystem.services.fs_memar')
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
 _m_body_section = import_module('modules-plugable.knowledge.documentation.explanation.primitive.body_section')
 BodySection = _m_body_section.BodySection

@@ -5,7 +5,7 @@ tp Field_Number in "modules-plugable/uri/number-itu/protocol/dt-number.kh"
 tp Field_OrganizationUUID in "modules/identity/organization/protocol/dt-uuid.kh"
 tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
 tp Number in "modules-plugable/uri/number-itu/protocol/dt-number.kh"
-tp NumberOfVersion in "modules/computer/memory/protocol/version.kh"
+tp NumberOfVersion in "modules/computer/memory/version/protocol/version.kh"
 tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp BS_Register_Request ab {

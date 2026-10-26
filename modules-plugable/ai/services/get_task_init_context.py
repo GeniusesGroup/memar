@@ -68,7 +68,7 @@ not paid for twice.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.filesystem.services.fs_memar')
+_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 SKILL_RELATIVE = _m_fs_memar.SKILL_RELATIVE
 import argparse
 import re
@@ -102,7 +102,7 @@ from modules.process.project.primitive.project_path import ProjectPath
 from modules.management.task.primitive.task_id import TaskId
 START_COMMAND = 'get-task-init-context'
 SKILL_FILE = (SKILL_RELATIVE / 'SKILL.md').as_posix()
-SCRIPTS = Path(__file__).resolve().parents[3] / 'bundles' / 'memar'
+SCRIPTS = _m_fs_memar.checkout_root() / 'bundles' / 'memar'
 MEMAR = SCRIPTS / 'memar'
 MARK = '==='
 ALWAYS_HELP = (('task',), ('content', 'write'))
