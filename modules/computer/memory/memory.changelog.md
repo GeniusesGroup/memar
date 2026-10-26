@@ -284,3 +284,123 @@
 
 #### Considered and not done
 - Declaring the three forms closed against any fourth contract term: not taken. Whether a form is admitted is the contract's own evolution, and stating it here would make a wording fix carry a design decision it has no evidence for.
+
+---
+
+### Non-volatile memory is reached through a port
+- Time: 2026-10-23T17:30:00Z
+- Type: Added
+- Cited:
+  - [Memory Record](../../../modules-plugable/computer/memory/store/record/record.md) - Reference: the contract the new section points to
+- Tasks:
+  - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme; the build tasks are queued after it
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested the work (2026-10-22/23), ruled the premises it rests on
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — researched and drafted
+  - Three sub-agents (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed; their findings are applied, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- [memory.md](memory.md) gains the section Non-volatile memory is reached through a port, as the rule against the shadow tier applied.
+- [memory.handoff.md](memory.handoff.md) notes under the erasure question that the port offers no removal until it is ruled, and that contents labelled scratch are kept.
+
+---
+
+### The parts of the memory module: state and target
+- Time: 2026-10-23T18:10:00Z
+- Type: Changed
+- Cited:
+  - [Record](../../../modules-plugable/computer/memory/store/record/record.md) - Reference: the contract that becomes the one abstraction of retention
+- Tasks:
+  - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the design task of the memory-port programme
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — steered: the record is the abstraction and no separate port module is wanted; File and Directory belong to the filesystem; the pluggable floor of `computer` is too crowded
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — drafted
+
+#### What changed
+- [memory.handoff.md](memory.handoff.md) gains the Tentative decision on where each part of the module belongs: memory proper stays; `record` is the abstraction; `file` and `directory` move to the filesystem module (task queued); `index`, `services` and `sql` are optional and move under the pluggable mirror of `record` when converted.
+
+---
+
+### Retention is reached through one contract: the model of the memory layer
+- Time: 2026-10-24T16:10:00Z
+- Type: Changed
+- Cited:
+  - [Memory Handoff](memory.handoff.md#the-model-of-the-memory-layer-2026-10-24-decided-by-the-owner-in-task-20261024-t052936z-22844) - Reference: the rulings the model carries out
+  - [Kernel Neutrality](../../knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule) - Reference: the test that leaves the contract in the kernel and the capsules out
+- Tasks:
+  - main:.agents/tasks/20261024-T052936Z-22844/: Partial - the modelling task; the build tasks it queues carry it out
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled each premise in the chat of the task: one contract parametric in the address, no module of its own for it, the adapters independent of `record`, the file system under memory, `key_value` on `page`, `cluster` a module of its own, and that Task, timeline and Request refer to an address through the memory module
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — proposed, drafted
+  - A sub-agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — critiqued; its findings are applied or recorded in the handoff, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- The section "Non-volatile memory is reached through a port" becomes "Retention is reached through one contract": the contract (address, `get`, `list`, `batch`, `state`, `changes`, the guarantees, the capabilities, the suite and `volatile`) is this module's protocol, realized by every capsule; it is also what other kernel modules refer to an address through; and the table of what stays in the kernel and what is pluggable under `modules-plugable/computer/memory/`.
+- [memory.handoff.md](memory.handoff.md) gains the decided model, supersedes in part the Tentative entries of 2026-10-23, and opens the questions the critique found: the order of `block` and `page`, the fate of `version.kh` and of the kernel importers of `Storage_Block` and `Storage_Page`, what `services/batch.kh` is, the responsibility of `cluster`, the names of the git adapter and the allocator module, and the Go-era content with no home.
+
+#### Considered and not done
+- Keeping `record` in the kernel because Task, timeline and Request name nodes: the critique proposed it; the owner ruled that their link is only the reference to an address, which this module offers.
+- A module of its own for the contract: the owner ruled it would be this module's definition under another name.
+
+---
+
+### The contract returns the token, and its added cases are named
+- Time: 2026-10-24T17:20:00Z
+- Type: Changed
+- Cited:
+  - [Memory Record](../../../modules-plugable/computer/memory/store/record/record.md#the-contract-suite) - Reference: the suite the new cases join
+- Tasks:
+  - main:.agents/tasks/20261023-T074641Z-5420/: Partial - the last review of the design before the build
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled the model this completes
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — drafted
+  - A sub-agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed whether the build could start; its findings are applied, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- The token joins the contract; the cases for `state`, `changes` and the address parameters are named; the byte form of a `record` address is stated.
+
+---
+
+### Memory becomes a category: the contract is divided into modules
+- Time: 2026-10-26T13:00:00Z
+- Type: Changed
+- Cited:
+  - [Category](../../knowledge/label/labels/category.md#the-rules) - Reference: a category holds no contract and a module holds no module
+  - [Category Depth](../../knowledge/label/rules/category-depth/category-depth.md#the-rule) - Reference: where a pluggable module stands
+  - [Memory Handoff](memory.handoff.md#the-division-of-the-memory-contract-into-modules-2026-10-26-tentative) - Reference: the division and its reasons
+- Tasks:
+  - main:.agents/tasks/20261026-T120259Z-16244/: Partial - the division is written and the moves task has its paths; the second division of this document's rules is queued
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — ruled on 2026-10-26 that a category holds no contract and that the contract divides into independent modules
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — designed, drafted
+  - A sub-agent (Claude, no CONTRIBUTORS.md entry) — critiqued; its findings are applied, the corrected text was not reviewed again, so no `approved` is recorded
+
+#### What changed
+- The section "Retention is reached through one contract" is now a short pointer, with its anchor kept, to the new modules [Address](address/address.md), [Store](store/store.md) (which carries the contract and the table of what stands where), [Volatile](volatile/volatile.md) and [Conformance](conformance/conformance.md). The capsules stand at `modules-plugable/computer/memory/store/`; the guest surfaces and the allocator at `modules-plugable/computer/memory/`.
+- The pointer and the address-sized integer are read to the `reference` module, and the ordered contract address is the `address` module's alone.
+- The document states that this category is provisional until its remaining rules are divided into modules.
+
+#### Considered and not done
+- Task, timeline and Request depending on `address` alone: the critique found the Request and the Task also read and write, so they depend on `store` where they do.
+- A home for `protocol/version.kh`: three kernel files import it; the open entry decides it before any move.
+- Merging `volatile` into `conformance` or into `store`: the suite needs `volatile` and `volatile` needs `store`, so the suite cannot be the store's tests.
+
+---
+
+### The capsules moved out of the kernel and the memory protocol folder is gone
+- Time: 2026-10-26T14:10:00Z
+- Type: Changed
+- Cited:
+  - [Memory Handoff](memory.handoff.md#the-division-of-the-memory-contract-into-modules-2026-10-26-tentative) - Reference: the division and the paths the moves use
+- Tasks:
+  - main:.agents/tasks/20261024-T160310Z-25344/: Partial - the files moved with `git mv` and the links and addresses repaired; the second division and the build tasks are still owed
+- Contributors:
+  - An AI agent (Claude, model claude-sonnet-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — carried out the move and repaired the links; no `approved` is recorded
+
+#### What changed
+- `block`, `page`, `record`, `index` (with `index-one_one`), `cluster` (`cluster`, `manifest`, `metrics-v0`, `errors`), `lockable`, `nonvolatile`, `view`, `key_value` and `graph` stand at `modules-plugable/computer/memory/store/`; `sql` and `allocator` (`heap.kh`, `mem.kh`) at `modules-plugable/computer/memory/`; `file` and `directory` in the `filesystem` module.
+- The file extension declarations moved to `modules/computer/mediatype/protocol/` (that module keeps no changelog). `protocol/version.kh` moved to the kernel module `version/`; `protocol/` is gone. The `Clone_Storage_*`, `Copy_Storage_Block` and `Move_Storage_Page` declarations left the marker protocols for the capsules that own the types.
+- `services/` keeps `batch.kh` and `transaction-manager.kh` until the open entry on `batch` is resolved.
+
+#### Considered and not done
+- Moving `address/pointer.kh` and the pointer declarations to `reference`: the build of the contract does it.

@@ -1,0 +1,40 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package def
+
+import (
+	"time"
+
+	"memar/file"
+	file_p "memar/storage/file/protocol"
+	time_p "memar/time/protocol"
+)
+
+// fileMetadata implement protocol.FilemetaData interface
+type fileMetadata struct {
+	uri            file.URI
+	size           uint64
+	creationTime   time.Time
+	lastAccessTime time.Time
+	lastWriteTime  time.Time
+}
+
+func (md *fileMetadata) URI() file_p.URI       { return &md.uri }
+func (md *fileMetadata) Size() uint64          { return md.size }
+func (md *fileMetadata) Created() time_p.Time  { return md.creationTime }
+func (md *fileMetadata) Accessed() time_p.Time { return md.lastAccessTime }
+func (md *fileMetadata) Modified() time_p.Time { return md.lastWriteTime }
+func (md *fileMetadata) Hidden() bool          { return md.uri.Name()[0] == '.' }
+
+// fileDirectoryMetadata implement protocol.FilemetaData interface
+type fileDirectoryMetadata struct {
+	dirNum  uint
+	fileNum uint
+	fileMetadata
+}
+
+func (md *fileDirectoryMetadata) DirNum() uint  { return md.dirNum }
+func (md *fileDirectoryMetadata) FileNum() uint { return md.fileNum }
+*/

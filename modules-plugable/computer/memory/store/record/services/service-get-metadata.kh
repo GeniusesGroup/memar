@@ -1,0 +1,46 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package object
+
+import (
+	error_p "memar/process/error/protocol"
+	"memar/protocol"
+	"memar/time/unix"
+)
+
+func (ser *getMetadataService) ServeSRPC(st protocol.Stream) (err error_p.Error) {
+	var srpcRequestPayload = srpcReq.Payload()
+	var reqAsSyllab = getRequestSyllab(srpcRequestPayload)
+	err = reqAsSyllab.CheckSyllab(srpcRequestPayload)
+	if err != nil {
+		return
+	}
+
+	var objMetadata protocol.ObjectMetadata
+	objMetadata, err = getMetadata(reqAsSyllab)
+	if err != nil {
+		return
+	}
+	switch md := objMetadata.(type) {
+	case Metadata:
+		res = md
+	default:
+		var tempMetadata = metadata{
+			id:             objMetadata.ID(),
+			writeTime:      unix.Time(objMetadata.WriteTime().Unix()),
+			mediaTypeID:    objMetadata.MediaTypeID(),
+			compressTypeID: objMetadata.CompressTypeID(),
+			dataLength:     objMetadata.DataLength(),
+		}
+		res = &tempMetadata
+	}
+	return
+}
+
+func getMetadata(req getMetadataRequest) (metadata protocol.ObjectMetadata, err error_p.Error) {
+	metadata, err = protocol.OS.ObjectDirectory().Metadata(req.ObjectID(), req.ObjectStructureID())
+	return
+}
+*/

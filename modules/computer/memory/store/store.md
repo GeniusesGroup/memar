@@ -1,0 +1,49 @@
+---
+Title: "Memory Store"
+Status: Draft
+Start Date: 2026-10-26
+ID: 498060
+---
+
+# Memory Store
+
+## Abstract
+A **store** is anything that retains bytes under addresses: a block device, a page, a record store, a key-value store, a file system, the working memory of a process. The store contract is the one abstraction through which state kept in volatile or non-volatile memory is read and written: `get` and `list` read, the atomic `batch` under expectations writes, `state` and `changes` let a structure derived from the store keep itself current, and the guarantees say what every store keeps true. The contract is parametric in the kind of address ([Memory Address](../address/address.md)) and in three properties of the store (dense or sparse, fixed or any value length, compare-and-write or not). A capsule that realizes it for one kind of address adds no abstraction of its own, as a capsule that realizes an abstraction realizes no other ([Khayyam → Sovereign Encapsulation](../../../../docs/khayyam/encapsulation.md)). The medium is an adapter a project chooses, never a property of the services that read and write: a concern's authoritative data has one location, and a file in the working tree, a branch of version control and a database are ways an adapter keeps it, never a second place a service also writes ([Memory → The memory/storage dichotomy rejected](../memory.md#the-memorystorage-dichotomy-rejected)).
+
+This document is the contract moved out of [Memory](../memory.md#retention-is-reached-through-one-contract) on 2026-10-26, because a category holds no contract ([Category → The rules](../../../knowledge/label/labels/category.md#the-rules)). The statements of [Memory Record](../../../../modules-plugable/computer/memory/store/record/record.md) that name no id, part or label (the operations' answers, the guarantees, the capabilities and limits, the cases of the suite) are this module's too, and the build task moves them here with its protocol ([Memory Handoff](../memory.handoff.md#the-division-of-the-memory-contract-into-modules-2026-10-26-tentative)).
+
+## Explanation
+
+### The contract
+- **Address.** A byte string with equality and a total order, the byte order; its kind and length are fixed by whoever instantiates the contract ([Memory Address](../address/address.md)). Volatile memory is an instance of the contract when its positions are given an order.
+- **Parameters of an instantiation.** Whether the address space is *dense*, every address holding a value, so that nothing reads Absent and `list` answers the capacity range, or *sparse*; whether a value has a *fixed* length or any length; and whether the medium can *compare and write* one address atomically. The core cases of the suite are split by these three, so that a block device is not required to read Absent nor to take an expectation it cannot apply.
+- **Operations.** `get(addresses)`, `list(from, to, after, limit, descending)` and `batch(expect, write)`, with the answers Found, Absent and Unavailable, and Refused, Unavailable, Conflict and Committed, as [Memory Record → The operations](../../../../modules-plugable/computer/memory/store/record/record.md#the-operations) states them for ids; `list` is bounded by addresses and not by instants. `state()`, a token of the committed state, and `changes(since)`, the addresses written between a token and now, so that a structure derived from the store (an index, a view) is brought up to date without rescanning and a batch committed by another process shows in the next read. An adapter realizes them as the medium allows (for git, the hash of the reference and `diff-tree`).
+- **Guarantees.** Atomic and isolated, linear, one place orders the writes, durable as declared, absent is not unknown, derived structures rebuildable and never stale, and nothing removed until the erasure rule is made: the bullets of [What every adapter guarantees](../../../../modules-plugable/computer/memory/store/record/record.md#what-every-adapter-guarantees), with a held range an address range, and the clause that new addresses are minted after the last held range kept only for an address kind whose minting is monotone. "No file in the working tree, where declared" is a guarantee only of the adapter that declares `leaves_working_tree_untouched`.
+- **Token.** A value found is returned with its token, the SHA-256 of its bytes, and an expectation of a batch is either a token or `absent`; so an adapter that knows addresses only serves every capsule. The algorithm is the subject and not a choice: a token recorded outside the store must be equal in every adapter, which two organizations choosing two hashes would break.
+- **Capabilities, limits, `stats`** as [Capabilities and limits](../../../../modules-plugable/computer/memory/store/record/record.md#capabilities-and-limits) names them. The optional operations are not here: `lockable` and `nonvolatile` are pluggable modules at `modules-plugable/computer/memory/store/` (below).
+- **Referring to an address.** The contract is the one abstraction other kernel modules use to refer to a thing retained: an identifier in a Task, a timeline or a Request names an address ([Memory Address](../address/address.md)) and, where the document reads or writes it, depends on this module, and on nothing of `record`, `file` or any adapter. How a thing is stored is the capsule's affair.
+
+### What stands where
+Put to each part, [Kernel Neutrality](../../../knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule) and [Pluggable → The test](../../../knowledge/modularity/labels/pluggable.md#the-test) leave in the kernel the address, this contract, the reference adapter [Memory Volatile](../volatile/volatile.md) and the suite [Memory Conformance](../conformance/conformance.md). Every capsule that realizes the contract for one kind of address, and every optional operation, is optional and can be removed whole, so it is pluggable and stands at `modules-plugable/computer/memory/store/<capability>/`, the mirror of this module ([Category Depth](../../../knowledge/label/rules/category-depth/category-depth.md#the-rule)). What rests on another module places nothing.
+| Capsule | Address | Rests on |
+| --- | --- | --- |
+| `lockable` | optional `Lock` and `Unlock` on the `Locker` of `modules/process/sync/`, with a lease (owner, 2026-10-25); the default control of writers is the expectation | the contract |
+| `nonvolatile` | optional `Flush` for a medium that keeps a write only after a flush | the contract |
+| `block` | position, fixed value size, dense | the contract |
+| `page` | position, fixed value size, dense | the contract; the order of `block` and `page` is open |
+| `record` | a 16-byte id and a domain key | the contract, and `index` for the labels |
+| `key_value` | a variable-length key, listed in order | `page`, and `nonvolatile` as the barrier |
+| `index` | derived | the contract's `changes` |
+| `graph` | none of its own (it adds no address kind, operation or guarantee) | `key_value`; held while the review's question is open |
+| `git-store`, `files` | addresses only | `git-store` the contract and the git module; `files` the contract and the `filesystem` module |
+| `view` | a consumer of `record` | `record` (a pluggable that attaches to another stands beside it) |
+| `cluster` | a replicated-store node; may have no responsibility of its own | see [Memory Handoff](../memory.handoff.md) |
+
+Not at this mirror, because they realize no one store: `filesystem` (with `File` and `Directory`), the guest surface that realizes a whole family, `sql` while it is a foreign surface and not a query over one store, and `allocator`, which extends the subject of the category as a whole, each directly at `modules-plugable/computer/memory/` ([Category Depth](../../../knowledge/label/rules/category-depth/category-depth.md#the-rule), third bullet). The home of `sql` becomes `store/sql` if it proves to be a surface over `key_value` or `record`, and that of `allocator` is decided with the division of the rules of [Memory](../memory.md) that remain in the category.
+
+A key-value store is not a record store: its key is not a fixed-length id and it lists keys, which `record` cannot and should not, and storing it in records would cost a hash of the key and the whole pair in a record's data; so it is a capsule of its own on `page` and not a layer on `record`. `record` is a capsule over any store that realizes the contract: the 16 bytes of an id followed by the bytes of a domain key form its address (`parts` of an id is a `list` over the addresses that begin with it, and a bound on existence instants is a range over the six-byte millisecond prefix), a part is a value, and the labels of a node and `scan` by label are answered from an `index` that `record` keeps current by `changes`, outside the store's medium. `files` and `git-store` know no id and no label: `git-store` shards by a fixed-length prefix of the address, which for an id of version 7 is a window of time without the adapter reading the id.
+
+### The cases this module owes
+Specified here, coded in [Memory Conformance](../conformance/conformance.md); each pending one carries `owed:memory.port.contract-suite`: `state-changes-on-commit-only`, `changes-since-lists-written-addresses`, `changes-sees-other-process`, `dense-has-no-absent`, `fixed-length-refuses-other-size`, `no-compare-refuses-expectation`, and the cases of [The contract suite](../../../../modules-plugable/computer/memory/store/record/record.md#the-contract-suite) that name no id, part or label, restated for addresses. The groups of an optional capability (`fallback`, `working-tree`, `lockable` with `lock-excludes-second-holder`, `lock-lapses-with-lease` and `lock-refused-when-not-lockable`) are owed by the module that declares the capability, and run the suite's runner.
+
+Owed: memory.port.protocol

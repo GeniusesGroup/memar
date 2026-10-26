@@ -1,0 +1,54 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+/*
+def abbreviations for "Default Operating System"
+* /
+package def
+
+import (
+	"memar/file"
+	"memar/mediatype"
+	"memar/net/gp"
+	error_p "memar/process/error/protocol"
+	"memar/protocol"
+)
+
+// OS implements protocol.OperatingSystem
+var OS os
+
+type os struct {
+	AppID    [32]byte // Hash of domain act as Application ID too
+	Manifest Manifest
+
+	appFileURI                file.URI        // Just fill in old type OS like linux, windows, ...
+	localFileDirectory        FileDirectory   // Local file storage
+	localObjectDirectory      ObjectDirectory // Local object storage
+	localCacheObjectDirectory ObjectDirectory // Local object storage
+
+	gp gp.OSMultiplexer
+	// ipv6 ipv6.OSMultiplexerIPv6
+
+	mediatype.MediaTypes
+}
+
+func (os *os) AppManifest() protocol.ApplicationManifest { return &os.Manifest }
+func (os *os) Objects() protocol.StorageObjects          { return &os.localObjectDirectory }
+func (os *os) ObjectsCache() protocol.StorageObjects     { return &os.localCacheObjectDirectory }
+func (os *os) Files() protocol.FileDirectory             { return &os.localFileDirectory }
+
+// Init method use to auto initialize App object with default data.
+func (os *os) Init() (err error_p.Error) {
+	return
+}
+
+// Deinit use to graceful stop os
+func (os *os) Deinit() (err error_p.Error) {
+	return
+}
+
+// Start will start the app and block caller until app Deinit() call.
+func (os *os) Start() {
+}
+*/

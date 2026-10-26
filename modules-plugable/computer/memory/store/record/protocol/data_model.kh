@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Record_Data in "modules-plugable/computer/memory/store/record/protocol/data.observers.kh"
+tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_RecordUUID in "modules-plugable/computer/memory/store/record/protocol/uuid.observers.kh"
+tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
+
+// Store to know all request created by specific rule.
+tp Record_DataModel ab {
+    Observer_RecordUUID
+    Observer_Record_Data
+// datatype_p.Observer_DataTypeID
+    Observer_RequestID
+    Observer_Time_Request
+}

@@ -1,0 +1,173 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package def
+
+import (
+	"bytes"
+	"io"
+	goos "os"
+
+	"memar/compress"
+	"memar/file"
+	"memar/mediatype"
+	error_p "memar/process/error/protocol"
+	"memar/protocol"
+)
+
+// File store some data about a file!
+type File struct {
+	metadata        fileMetadata
+	parentDirectory *FileDirectory
+	mediaType       protocol.MediaType
+	compressType    protocol.CompressType
+	data            []byte
+}
+
+func (f *File) Metadata() protocol.FileMetadata         { return &f.metadata }
+func (f *File) Data() protocol.FileData                 { return f }
+func (f *File) ParentDirectory() protocol.FileDirectory { return f.parentDirectory }
+
+func (f *File) init(path string) (err error_p.Error) {
+	f.metadata.uri.Init(path)
+	var fileExtension = f.metadata.uri.Extension()
+	f.compressType = compress.CompressTypeByFileExtension(fileExtension)
+	if f.compressType != nil {
+		var nameWithoutExtension = f.metadata.uri.NameWithoutExtension()
+		fileExtension = file.Extension(nameWithoutExtension)
+	}
+	f.mediaType = mediatype.MediaTypeByFileExtension(fileExtension)
+	return
+}
+
+// Rename rename file name and full name
+func (f *File) Rename(newName string) {
+	delete(f.parentDirectory.files, f.metadata.uri.Name())
+	f.parentDirectory.files[newName] = f
+	f.metadata.uri.Rename(newName)
+}
+
+// Replace replace all old data in the file with new one
+func (f *File) Replace(old, new []byte, n int) {
+	f.data = bytes.Replace(f.data, old, new, n)
+}
+
+/*
+********** protocol.FileData interface **********
+ * /
+
+// Save use to write file to the file system!
+func (f *File) Save() (err error_p.Error) {
+	// Just write changed file
+	if f.data != nil {
+		var goErr = goos.WriteFile(f.metadata.uri.Path(), f.data, 0700)
+		if goErr != nil {
+			// err =
+		}
+	}
+	return
+}
+
+// Prepend add given data to start of exiting data that add earlier
+func (f *File) Prepend(data []byte) {
+	if f.data != nil {
+		f.data = append(data, f.data...)
+	} else {
+		// TODO:::
+	}
+}
+
+// Append append given data to end of exiting data that add earlier
+func (f *File) Append(data []byte) {
+	if f.data != nil {
+		f.data = append(f.data, data...)
+	} else {
+		var goErr error
+		var file *goos.File
+		file, goErr = goos.OpenFile(f.metadata.URI().URI(), goos.O_APPEND|goos.O_WRONLY, 0700)
+		if goErr != nil {
+			// if goos.IsNotExist(goErr) {
+			// 	return &ErrStorageNotExist
+			// }
+			// if goos.IsPermission(goErr) {
+			// 	return &ErrStorageNotAuthorize
+			// }
+			// return &ErrStorageDeviceProblem
+			return
+		}
+
+		_, goErr = file.Write(data)
+		var err1 = file.Close()
+		if goErr == nil {
+			goErr = err1
+		}
+	}
+}
+
+//memar:impl memar/protocol.Codec
+func (f *File) MediaType() protocol.MediaType       { return f.mediaType }
+func (f *File) CompressType() protocol.CompressType { return f.compressType }
+
+func (f *File) Decode(source protocol.Codec) (n int, err error_p.Error) {
+	var buf bytes.Buffer
+	var _, goErr = io.Copy(&buf, reader)
+	if goErr != nil {
+		// err =
+	}
+	err = f.Unmarshal(buf.Bytes())
+	return
+}
+
+// Encode write file to given writer
+func (f *File) Encode(destination protocol.Codec) (n int, err error_p.Error) {
+	_, err = f.WriteTo(writer)
+	return
+}
+
+// Marshal encodes and return whole file data!
+func (f *File) Marshal() (data []byte, err error_p.Error) {
+	if f.data != nil {
+		return f.data
+	}
+	data, _ = goos.ReadFile(f.metadata.uri.Path())
+	return
+}
+
+// MarshalTo encodes whole file data to given data and return it with new len!
+func (f *File) MarshalTo(data []byte) (added []byte, err error_p.Error) {
+	data = append(data, f.data...)
+	return data
+}
+
+// Unmarshal save given data to the file. It will overwritten exiting data.
+func (f *File) Unmarshal(data []byte) (n int, err error_p.Error) {
+	// TODO::: MediaType??
+	f.data = data
+	return
+}
+
+// Len return length of file
+func (f *File) Len() (ln int) { return len(f.data) }
+
+/*
+********** protocol.Buffer interface **********
+ * /
+
+// ReadFrom decodes f *File data by read from given io.Reader!
+func (f *File) ReadFrom(reader io.Reader) (n int64, err error) {
+	var buf bytes.Buffer
+	n, err = io.Copy(&buf, reader)
+	f.data = buf.Bytes()
+	return
+}
+
+// WriteTo encodes f *File data and write it to given io.Writer!
+// Declare to respect io.WriterTo interface!
+func (f *File) WriteTo(w io.Writer) (totalWrite int64, err error) {
+	var writeLength int
+	writeLength, err = w.Write(f.data)
+	totalWrite = int64(writeLength)
+	return
+}
+*/

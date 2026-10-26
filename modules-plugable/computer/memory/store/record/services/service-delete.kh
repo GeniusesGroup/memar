@@ -1,0 +1,82 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Time in "modules/time/protocol/time.kh"
+
+tp Temperature ab
+tp Temperature_Time mt (self Temperature) () (t Time)
+
+// TODO(go-migrate):
+/*
+package object
+
+import (
+	net_p "memar/net/protocol"
+	"memar/net/srpc"
+	error_p "memar/process/error/protocol"
+	"memar/protocol"
+	"memar/syllab"
+	time_p "memar/time/protocol"
+)
+
+type Temperature interface {
+	ThingID() UUID
+	Temperature() int64
+	RequestID() UUID
+}
+
+func (ser *deleteService) ServeSRPC(st net_p.Stream) (err error_p.Error) {
+	var incomeData = st.IncomeData()
+	var requestPayload = incomeData.Marshal()
+	var reqAsSyllab = deleteRequestSyllab(requestPayload)
+	err = reqAsSyllab.CheckSyllab(requestPayload)
+	if err != nil {
+		return
+	}
+
+	if reqAsSyllab.RequestType() == RequestTypeBroadcast {
+		// tell other node that this node handle request and don't send this request to other nodes!
+		reqAsSyllab.SetRequestType(RequestTypeStandalone)
+
+		var replicatedLocalNodes = protocol.App.ReplicatedLocalNode()
+		// send request to other related nodes
+		for i := 0; i < len(replicatedLocalNodes); i++ {
+			var conn = replicatedLocalNodes[i].Conn()
+
+			_, err = srpc.SendBidirectionalRequest(conn, ser, incomeData)
+			if err != nil {
+				// TODO::: Can we easily return error if some nodes do their job and just one node connection lost??
+				return
+			}
+		}
+	}
+
+	// Do for local node
+	err = protocol.OS.ObjectDirectory().Delete(reqAsSyllab.ObjectID(), reqAsSyllab.ObjectStructureID())
+	return
+}
+
+func delete(req DeleteRequest) (err error_p.Error) {
+	if req.RequestType() == RequestTypeBroadcast {
+		// tell other node that this node handle request and don't send this request to other nodes!
+		req.SetRequestType(RequestTypeStandalone)
+		var reqAsSyllab = syllab.NewCodec(&req)
+		var outcomeData protocol.Codec = &reqAsSyllab
+
+		var replicatedLocalNodes = protocol.App.ReplicatedLocalNode()
+		// send request to other related nodes
+		for i := 0; i < len(replicatedLocalNodes); i++ {
+			var conn = replicatedLocalNodes[i].Conn()
+
+			_, err = srpc.SendBidirectionalRequest(conn, &DeleteService, outcomeData)
+			if err != nil {
+				// TODO::: Can we easily return error if some nodes do their job and just one node connection lost??
+				return
+			}
+		}
+	}
+
+	// Do for local node
+	err = protocol.OS.ObjectDirectory().Delete(req.ObjectID(), req.ObjectStructureID())
+	return
+}
+*/

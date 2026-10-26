@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Record_Data in "modules-plugable/computer/memory/store/record/protocol/data.kh"
+tp RecordUUID in "modules-plugable/computer/memory/store/record/protocol/uuid.kh"
+
+// Lockable is the optional capability `lockable` of a store, outside the core operations of Records.
+// The default control of concurrent writers is the expectation on a token; a store that can hold
+// a record exclusively declares this capability, built on the Locker of modules/process/sync with a lease,
+// so a holder that dies releases the record.
+tp Lockable ab
+
+// Lock use to reach strict consistency
+tp Lock mt (self Lockable) (id RecordUUID) (lastVersion Record_Data, err Error)
+
+tp Unlock mt (self Lockable) (id RecordUUID, newVersion Record_Data) (err Error)

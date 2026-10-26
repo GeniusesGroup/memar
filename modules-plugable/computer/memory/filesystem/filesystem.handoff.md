@@ -1,0 +1,34 @@
+# Reevaluating the Filesystem as a Fundamental Modeling Primitive Handoff
+Open work for `filesystem.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../knowledge/documentation/handoff/handoff.md) for what a handoff is.
+
+## Open Questions
+
+### Can repository-wide state be completely eliminated without losing necessary historical context?
+- State: if it can, the snapshot paradigm of Git is obsolete. (Migrated from the base document's retired `Unresolved questions`.)
+
+### What minimum primitive replaces the File?
+- State: if a file is an artificial boundary, what the correct atomic unit of content is remains open. (Migrated from the base document's retired `Unresolved questions`.)
+
+### If Git is internally already graph-like, what does its filesystem surface contribute?
+- State: Git's object model is a graph — commits are content-addressed nodes (identity by hash, not path), parents are edges, branches are labels on nodes — so the filesystem-centric shape persists at Git's *surface and workflows*, not in its model. The residual limit is semantic, not structural: Git models the graph of files and changes, not the knowledge graph — it cannot know that two terms are synonyms, that one decision caused seventeen modifications, or that one document invalidates another's assumption. Open: whether a knowledge system can adopt the graph-like internal model while replacing the file-centric surface, or whether Git's repair value is inherently bound to code-centric workflows. (From the knowledge-management session that produced `knowledge.md`.)
+
+### How do we handle the cognitive transition for developers who have spent careers thinking in files?
+- State: even if the new model is superior, the migration cost (learning, tooling, muscle memory) is non-trivial and may be underestimated. (Migrated from the base document's retired `Unresolved questions`.)
+
+### Is Repository itself a fundamental domain concept, or merely a filesystem-era projection of a richer graph structure?
+- State: a repository bundles several distinct concerns — access control, context, grouping, versioning boundary, discovery boundary — into a single physical container. It is not yet established whether these concerns are inherently coupled, or whether "Repository" would simply re-emerge as an *emergent* grouping (e.g., all Content linked to a shared context node) once the underlying model no longer requires a physical container to enforce them. (Migrated from the base document's retired `Possible questions` list, where it was the one question left unanswered.)
+
+### What replaces the files adapter, so that Memar's own source tree can move into the memory store?
+- State: the owner ruled (2026-10-23) that every service reaches nodes through the [record contract](../store/record/record.md) and that Memar's own source tree (`modules/`, `docs/`, code) is served for now by a files adapter on main, which presents a path as a label of a node; the tree moves into the store later by changing that binding and importing it once. Traditional editors are not a requirement the programme serves, and no file is ever made writable by the operating system against the port. What the files adapter stands in for is Memar's own editing surfaces: the browser GUI over the port (task `20261022-T193636Z-9280`) and an editor adapter that edits through the port. The question the "Projection Layer Architecture" item below asked, how to keep file-system-like compatibility for tools atop a non-file model, is therefore this one: what the editor adapter presents to a person who edits a document, how a save becomes one batch with an expectation on the token read, what happens when the node changed under the editor, how a compiler, a linter or a test run reaches the text (the port design materializes a script that must run into the operating system's temporary directory, outside the working tree, and deletes it after), and how a path, which has no existence instant, is given an id the port can order.
+- Options: (1) the editing surface is Memar's own (the GUI and an editor adapter), a save is a batch, tools get a temporary materialization, and the files adapter is dropped once the tree is imported, recommended because it is the ruling and keeps one door; (2) a writable working folder kept in step with the store by a watcher that turns saves into batches, cost: it makes a file writable against the port, which the owner excluded; (3) keep the source tree as files indefinitely and the port for work records only, cost: two doors for good and an exception in the content services.
+- Anchor: `modules-plugable/computer/memory/filesystem/filesystem.md`; [Memory Record → Binding adapters to classes](../store/record/record.md#binding-adapters-to-classes); the Projection Layer Architecture item under Anticipated Work below.
+- Blocks: moving the source tree into the store and dropping the files adapter. It blocks nothing in the memory-port programme, which leaves the class of source files unbound until the files adapter exists. Assumption meanwhile: option 1 (Tentative).
+- Asked: 2026-10-23, Claude (task `20261023-T074641Z-5420`), for Omid Hekayati.
+
+## Anticipated Work
+- Future documents must explore alternative primitives for Content and Task modeling that are not bound by file boundaries or tree structures. (Migrated from the base document's retired `Future possibilities`.)
+- A dedicated document is needed to redefine versioning not as a repository-wide physical snapshot, but as a logical consequence of task and decision evolution. (Migrated from the base document's retired `Future possibilities`.)
+- **Content Identity Mechanisms**: how ContentUUID or content-addressable identifiers replace file paths as stable references without sacrificing usability. (Migrated from the base document's retired `Future possibilities`.)
+- **Graph-Based Classification Systems**: practical implementations of multi-dimensional classification that exceed the capabilities of tags or hierarchies while remaining performant at scale. (Migrated from the base document's retired `Future possibilities`.)
+- **Task-Centric Versioning**: history models where the primary unit is task evolution (question → research → decision → outcome → related changes), not global snapshot. (Migrated from the base document's retired `Future possibilities`; carries the retired `Possible questions` answer's forward half — logical snapshots tied to tasks replacing physical snapshots.)
+- **Projection Layer Architecture**: how to maintain file-system-like UI compatibility (for developer familiarity and tool integration) atop a non-file-based knowledge model. Rephrased as the editor adapter's question in the Open Questions entry above. (Migrated from the base document's retired `Future possibilities`.)

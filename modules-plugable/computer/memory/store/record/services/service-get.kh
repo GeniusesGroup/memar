@@ -1,0 +1,33 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package object
+
+import (
+	error_p "memar/process/error/protocol"
+	"memar/protocol"
+)
+
+func (ser *getService) ServeSRPC(st protocol.Stream) (err error_p.Error) {
+	var srpcRequestPayload = srpcReq.Payload()
+	var reqAsSyllab = getRequestSyllab(srpcRequestPayload)
+	err = reqAsSyllab.CheckSyllab(srpcRequestPayload)
+	if err != nil {
+		return
+	}
+
+	var obj protocol.Object
+	obj, err = get(reqAsSyllab)
+	if err != nil {
+		return
+	}
+	res = Object(obj.Marshal())
+	return
+}
+
+func get(req getRequest) (obj protocol.Object, err error_p.Error) {
+	obj, err = protocol.OS.ObjectDirectory().Get(req.ObjectID(), req.ObjectStructureID())
+	return
+}
+*/

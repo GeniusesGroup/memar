@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp RecordUUID in "modules-plugable/computer/memory/store/record/protocol/uuid.kh"
+
+tp GUI_Widget_Services ab
+// Open a dialog to choose attach files
+tp Upload mt (self GUI_Widget_Services) () ()
+
+tp Select mt (self GUI_Widget_Services) () ()
+
+tp GetSelectUUID mt (self GUI_Widget_Services) () (u RecordUUID)

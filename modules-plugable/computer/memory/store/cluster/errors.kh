@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package ganjine
+
+import (
+	er "memar/error"
+	"memar/protocol"
+)
+
+const domainEnglish = "Ganjine"
+const domainPersian = "گنجینه"
+
+// Errors
+var (
+	ErrBadNode   er.Error
+	ErrWrongNode er.Error
+	// ErrContentAlreadyExist     er.Error
+	// ErrCantPrepareStatement    er.Error
+	// ErrStoringDataNotComplete  er.Error
+	// ErrDatabaseConnectionError er.Error
+	// ErrDatabasePingOut         er.Error
+)
+
+func init() {
+	ErrBadNode.Init("domain/ganjine.protocol; type=error; name=bad-node")
+	ErrBadNode.SetDetail(protocol.LanguageEnglish, domainEnglish, "Bad Node",
+		"Given request can't process due to send to an non Ganjine node",
+		"",
+		"",
+		nil)
+
+	ErrWrongNode.Init("domain/ganjine.protocol; type=error; name=wrong-node")
+	ErrWrongNode.SetDetail(protocol.LanguageEnglish, domainEnglish, "Wrong Node",
+		"Given request can't process due to send to a Ganjine node that not own the request range!",
+		"",
+		"",
+		nil)
+
+	// ErrContentAlreadyExist    .Init("This content was already exist")
+	// ErrCantPrepareStatement   .Init("Can't prepare a new statement to database")
+	// ErrStoringDataNotComplete .Init("We have some problem in storing your data in our databases. Send your request again! If error exist contact software administrators")
+	// ErrDatabaseConnectionError.Init("Could not connect to database")
+	// ErrDatabasePingOut        .Init("Error ocurred in Ping to database")
+}
+*/

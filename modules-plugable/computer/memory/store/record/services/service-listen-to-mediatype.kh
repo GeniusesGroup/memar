@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(go-migrate):
+/*
+package object
+
+import (
+	error_p "memar/process/error/protocol"
+)
+
+// get specific CRUD operation to all object store as specific mediatype.
+func listenToMediatype() (err error_p.Error) {
+	return
+}
+*/
