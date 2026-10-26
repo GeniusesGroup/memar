@@ -32,6 +32,14 @@ unset, Memar's default, `MOST_CHARACTERS` in machine/console_parts.py.
 sections an act reads before it starts are kept, as Memar's rule Normative
 References says: paths relative to the project's top folder, separated by
 commas, each a folder inside the project and none the top folder itself.
+`memory` says which adapter serves which class of nodes: `class=adapter`
+pairs separated by commas, each class once, an adapter named by its module's
+capability name, as Memory Record ("Binding adapters to classes",
+`modules-plugable/computer/memory/store/record/record.md`) says; unset, no
+class is bound, and opening one is refused. An adapter's own parameters are
+keys its module declares, and so is the key of a module that consumes a class,
+as the memory view's does; a key of a class takes the same form,
+`class=value` pairs, read through `class_values_preference`.
 
 The manifest is the project's own: `memar install` neither creates nor writes
 it. The block is read without a YAML library, the way a plan's front matter is
@@ -52,7 +60,10 @@ NORMATIVE_REFERENCES_KEY = 'normative_references'
 TASKS_KEY = 'tasks'
 RECORDS_KEY = 'records'
 MOST_CHARACTERS_KEY = MOST_FLAG.removeprefix('--')
+MEMORY_KEY = 'memory'
 FOLDER_SEPARATOR = ','
+BINDING_SEPARATOR = ','
+CLASS_ADAPTER_SEPARATOR = '='
 
 class Records(Enum):
     """What the `records` key may say: keep a task's records in the project, or not."""
@@ -117,6 +128,30 @@ def most_characters_preference(project: Path | None) -> int | None:
     if not value.isdigit() or int(value) <= 0:
         fail(f'{preferences_path(project)}: {MOST_CHARACTERS_KEY} must be a positive whole number of characters, not {value!r}')
     return int(value)
+
+def memory_binding_text(bindings: dict[str, str]) -> str:
+    """The value of the `memory` key binding each class of BINDINGS to its adapter, in the order given."""
+    return f'{BINDING_SEPARATOR} '.join((f'{name}{CLASS_ADAPTER_SEPARATOR}{adapter}' for name, adapter in bindings.items()))
+
+def class_values_preference(project: Path, key: str) -> dict[str, str] | None:
+    """The value PROJECT's KEY gives each class, in the order written: the form of `memory` and of an adapter's keys of
+    a class, `class=value` pairs separated by commas, each class once. Empty when KEY is unset, None when its form is
+    broken (a pair without both a class and a value, or a class named twice)."""
+    text = read_preferences(project).get(key, '').strip().strip('"\'').strip()
+    values: dict[str, str] = {}
+    if not text:
+        return values
+    for pair in text.split(BINDING_SEPARATOR):
+        name, separator, value = (each.strip() for each in pair.partition(CLASS_ADAPTER_SEPARATOR))
+        if not separator or not name or (not value) or (CLASS_ADAPTER_SEPARATOR in value) or (name in values):
+            return None
+        values[name] = value
+    return values
+
+def memory_preference(project: Path) -> dict[str, str] | None:
+    """The adapter PROJECT's `memory` key binds each class to, in the order written; empty when it is unset, None when
+    its form is broken (a pair without both a class and an adapter, or a class bound twice)."""
+    return class_values_preference(project, MEMORY_KEY)
 
 def records_preference(project: Path) -> Records | None:
     """Whether PROJECT keeps its tasks' records: ON when its preferences say nothing, None for a value `records` may not take."""

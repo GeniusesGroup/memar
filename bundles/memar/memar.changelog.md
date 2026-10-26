@@ -53,3 +53,21 @@ What a project tells Memar's tools (`sessions`, `records`, `most-characters`, `n
 #### Considered and not done
 - Attaching a capability by path alone: not done, because `module_ensure_folders` stands in another module's folder and goes under `module` by its name, which the router's contract says.
 - Requiring a leaf to be unique: not done, because a mirror repeats its kernel module's last word by rule.
+
+---
+
+### The entry point declares `open`, the door a service is handed a class of nodes by
+- Time: 2026-10-26T16:30:00Z
+- Type: Added
+- Cited:
+  - `modules-plugable/computer/memory/store/record/record.md` - Relation: Reference: "Binding adapters to classes", what `open` does and refuses
+- Tasks:
+  - main:.agents/tasks/20261026-T150608Z-8256/: Done - step 2 of task `20261023-T074642Z-5420`
+- Contributors:
+  - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote it; no `approved` is recorded
+
+#### What changed
+`memar` binds `open` to `open` of `services/memory/memory.py`, which reads the key `memory`, turns the adapter's name into its module at `modules-plugable/computer/memory/store/<capability>/` and its `bind`, and returns `record` laid over the bound store or a refusal (`NotBound`, `LessThanNeeded`, `SharedStore`, `Malformed`) naming the class and the line to add or mend. Its tests are `services/memory/tests/memory.py`.
+
+#### Considered and not done
+- Writing `open` in `memar` itself: the file routes and nothing else, and `RouterNamesNoVerb` refuses verb words (`project`, `add`, `list`) in its strings and names.

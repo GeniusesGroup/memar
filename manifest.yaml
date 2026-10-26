@@ -61,3 +61,5 @@ hasPart:
       "@type": MediaObject
       contentUrl: https://github.com/GeniusesGroup/memar/tree/main/.agents/skills/memar
       encodingFormat: text/markdown
+memar:
+  memory: work-records=git-store

@@ -88,6 +88,9 @@ from machine.console import use_utf8_stdio
 from machine.plugable_import import load as plugable_load
 
 role_folders = plugable_load("computer.memory.filesystem.services.fs_memar").role_folders
+# The one door a service is handed a class of nodes by, declared here and written in `services/memory/memory.py`
+# (Memory Record, "Binding adapters to classes"), since this file routes and nothing else.
+open = importlib.import_module("bundles.memar.services.memory.memory").open
 
 SERVICES = "services"
 DESCRIBE = "describe"
