@@ -50,3 +50,30 @@
 
 #### What changed
 - The folder moved unedited from `modules-plugable/computer/memory/record/view/` to `modules-plugable/computer/memory/store/view/`; the Placement paragraph names the new path.
+
+---
+
+### The view built: the builder, the key `view` and `memar view refresh`
+- Time: 2026-10-26T21:00:00Z
+- Type: Added
+- Cited:
+  - [Memory Record](../record/record.md) - Reference: the operations the builder reads through
+  - [Kernel Neutrality](../../../../../modules/knowledge/modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule) - Reference: why the key's name is this module's and only its form the preferences module's
+  - [Test Practice → The Cycle](../../../../../modules/process/test/test.practice.md#the-cycle) - Reference: the document, then the tests, then the code
+- Tasks:
+  - main:.agents/tasks/20261026-T192807Z-36152/: Done - step 4 of task `20261023-T074642Z-5420`, part A
+- Propagates to:
+  - `modules/process/project/services/preferences.py`: Done - its docstring says a module that consumes a class declares its key too
+- Contributors:
+  - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote the document's changes, the tests, the builder, the verb and the decisions; no `approved` is recorded
+
+#### What changed
+- `view.md` names the builder and the verb, says how the key `view` is read, what the builder is handed and what it answers, and replaces its list of cases, and the `Owed: memory.view` line, by a pointer to `tests/view.py`.
+- `view.py` holds the key, `Node`, the registry of presentations, the list the builder keeps, the refusals and `build`; `tests/view.py` runs every case over `volatile` and over `git-store`.
+- `memar view refresh` is `bundles/memar/services/view/services/refresh.py`, tested by `bundles/memar/services/view/tests/refresh.py` with a test presentation.
+- `view.handoff.md` holds the Tentative decisions the build took.
+
+#### Considered and not done
+- A line in the entry point of `bundles/memar` naming the verb's module, as `open` is named: its test refuses a verb word in the router's strings, and the router finds a verb by `describe`.
+- Registering the Task's presentation: the task module's, task `20261023-T074643Z-5420`.
+- A `view` line in Memar's own manifest and its ignore-list entry: the migration's (P4).

@@ -154,3 +154,69 @@
 #### What changed
 - The folder moved unedited from `modules/computer/memory/record/` to `modules-plugable/computer/memory/store/record/`; `protocol/lockable.kh` moved to `store/lockable/`.
 - Links, `in` addresses and the citation of the memory contract (now [Memory Store](../../../../../modules/computer/memory/store/store.md#the-contract)) were repaired.
+
+---
+
+### What names no id, part or label moved to the store contract and the suite
+- Time: 2026-10-26T15:02:00Z
+- Type: Changed
+- Cited:
+  - [Memory Store](../../../../../modules/computer/memory/store/store.md#the-contract) - Reference: where the operations' answers, the guarantees, the capabilities, the limits and the adapter's document now stand
+  - [Memory Conformance](../../../../../modules/computer/memory/conformance/conformance.md) - Reference: where the contract's cases are coded and which halves stayed here
+- Tasks:
+  - main:.agents/tasks/20261026-T144222Z-11720/: Partial - the contract and its suite are written and the statements moved; `record`'s own protocol and cases are step 2 of task `20261023-T074642Z-5420`
+- Contributors:
+  - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — chose what stayed as `record`'s and restated it; no `approved` is recorded
+
+#### What changed
+- `batch` states only what `record` adds to the contract's batch; "What every adapter guarantees", "Capabilities and limits" and "Adapters state themselves" keep only what they say of nodes, ids, parts and labels, and point at [Memory Store](../../../../../modules/computer/memory/store/store.md#the-contract).
+- "The contract suite" keeps `record`'s own cases, and of a case that checked both an address and a part or label, the half that stayed, under the case's name; the rest are code in `conformance.py`, and the `fallback` and `working-tree` cases are listed in [Memory Conformance](../../../../../modules/computer/memory/conformance/conformance.md).
+- The lines `Owed: memory.port.protocol` and `Owed: memory.port.contract-suite` left: the first is satisfied by `store/protocol/store.py`, the second moved to [Memory Store](../../../../../modules/computer/memory/store/store.md#the-cases-this-module-owes).
+- The Abstract's correction says the move is done.
+
+#### Considered and not done
+- Leaving an `Owed` line here for `record`'s own cases: no Test of them exists yet, and step 2's plan carries the work.
+- Editing `protocol/` or `services/` of this folder: they are task `20261024-T052938Z-22844`'s and the moves'.
+
+---
+
+### `record` built over the store contract, with its cases and `open`
+- Time: 2026-10-26T16:30:00Z
+- Type: Added
+- Cited:
+  - [Memory Store](../../../../../modules/computer/memory/store/store.md#the-contract) - Reference: the contract `record` realizes over keys and the guarantees its index keeps
+  - [Test Practice → The Cycle](../../../../../modules/process/test/test.practice.md#the-cycle) - Reference: the cases written and run red before the code
+- Tasks:
+  - main:.agents/tasks/20261026-T150608Z-8256/: Done - step 2 of task `20261023-T074642Z-5420`
+- Propagates to:
+  - `modules/process/project/services/preferences.py`: Done - the key `memory`, its form and its reader
+  - `bundles/memar/memar`: Done - declares `open`, written in `bundles/memar/services/memory/memory.py`
+- Contributors:
+  - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote the code, the cases and the decisions; no `approved` is recorded
+
+#### What changed
+- `record.py` holds `record`'s signatures, its key (the id then the domain key), the id form, the domain key charset, `Needs`, `Record` and `RecordAdapter`; `tests/record.py` holds `record`'s cases, one function each, and runs them and the contract's suite on `record` over `volatile`.
+- "The operations" says `record` is a store over keys and names the listing of ids `nodes`; "Derived structures" says the index is in the memory of the process, one for each open `record`.
+- "Binding adapters to classes" names the adapter's module, its `bind`, `Needs`, the refusals and the example's `git-store`.
+- "The contract suite" points at the tests instead of listing the cases, says how the contract's suite reaches `record`, and owes the cross-process case: `Owed: memory.port.contract-suite`.
+
+#### Considered and not done
+- Keeping the name `list` for the listing of ids: `record` is a store, and the contract's `list` answers keys.
+- Adding a way for an instantiation to give the conformance suite its addresses: a change to the conformance module, recorded in the handoff.
+- Writing `open` in the router's own file: the file routes and nothing else, and its test refuses verb words in its strings and names.
+
+---
+
+### The cross-process case runs on `git-store`, and the `Owed` line leaves
+- Time: 2026-10-26T19:45:00Z
+- Type: Changed
+- Cited:
+  - [Test Practice → The Cycle](../../../../../modules/process/test/test.practice.md#the-cycle) - Reference: a pending Test that passes stops being pending in the same change, its mark and the document's `Owed` line together
+  - [Memory Git Store](../git-store/git-store.md) - Reference: the first adapter declaring `shared_between_processes`
+- Tasks:
+  - main:.agents/tasks/20261026-T181945Z-16468/: Done - step 3 of task `20261023-T074642Z-5420`
+- Contributors:
+  - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — ran the case on `record` over `git-store` and removed the mark; no `approved` is recorded
+
+#### What changed
+- "The contract suite" says the cross-process half of `one-process-sees-the-others-commit` runs on `record` laid over `git-store`, in that adapter's tests; `Owed: memory.port.contract-suite` is removed, and the mark leaves the case's docstring in `tests/record.py`.
