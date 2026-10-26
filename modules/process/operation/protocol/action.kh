@@ -1,6 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
+
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // ActionType indicate all ActionType.
 // Famous action types are CRUD(Create, Read, Update, Delete)

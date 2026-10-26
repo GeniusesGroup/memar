@@ -1,7 +1,8 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
+
 tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
-tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+tp Observer_MediaType in "modules/computer/mediatype/protocol/media-type.observers.kh"
 tp Observer_Request in "modules/process/request/protocol/request.observers.kh"
 tp Observer_Response in "modules/process/response/protocol/response.observers.kh"
 tp Observer_ActionType in "modules/process/operation/protocol/action.observers.kh"

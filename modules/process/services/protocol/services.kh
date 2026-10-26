@@ -4,7 +4,7 @@ tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Operation_ID in "modules/process/operation/protocol/id.kh"
 tp Service in "modules/process/service/protocol/service.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // Services use to register services to get them in a desire way e.g. sid in http query.
 tp Process_Services ab

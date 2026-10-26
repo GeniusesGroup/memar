@@ -26,7 +26,7 @@ tp Event ab {
 
 // `Logic_Equivalence` in "modules/math/logic/protocol/equivalence.kh" declares the abstraction and
 // no method, so there is nothing here for a realization to satisfy. What it should compare is open:
-// `docs/protocols/process/event.handoff.md` -> What does `Logic_Equivalence` over two Event
+// `modules/process/event/event.handoff.md` -> What does `Logic_Equivalence` over two Event
 // occurrences answer?
 //
 // TODO(go-migrate):

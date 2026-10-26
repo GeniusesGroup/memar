@@ -6,10 +6,10 @@
 - Time: 2026-09-30T00:00:00Z
 - Type: Added
 - Cited:
-  - [test.md](../../../../../docs/modules/process/test.md) - Depends_on: the subject whose structural condition this Rule states.
-  - [rule.md](../../../../../docs/rule.md) - Depends_on: the concept placing an owner's executable conditions in a module `rules/` folder beside its `protocol/` folder.
-  - [Linter -> How a governance rule is authored](../../../../../docs/modules/computer/linter.md#how-a-governance-rule-is-authored) - Extends: the members a governance Rule carries, supplied here as Subject, Tier, Default, and Override.
-  - [Rule handoff -> Follow-up work: relocate document-level rules](../../../../../docs/rule.handoff.md) - Extends: the inventory this Rule is a first realized entry against.
+  - [test.md](../../test.md) - Depends_on: the subject whose structural condition this Rule states.
+  - [rule.md](../../../rule/rule.md) - Depends_on: the concept placing an owner's executable conditions in a module `rules/` folder beside its `protocol/` folder.
+  - [Linter -> How a governance rule is authored](../../../../computer/linter/linter.md#how-a-governance-rule-is-authored) - Extends: the members a governance Rule carries, supplied here as Subject, Tier, Default, and Override.
+  - [Rule handoff -> Follow-up work: relocate document-level rules](../../../rule/rule.handoff.md) - Extends: the inventory this Rule is a first realized entry against.
 - Contributors:
   - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - ruled that the structural condition about Test placement is a Rule rather than protocol text, and that the folder is plural
   - Auto (model not recorded) - drafted the Rule
@@ -38,7 +38,7 @@
   - Auto (model not recorded) - drafted the change and renamed the remaining `test/` folders
 - Propagates to:
   - [test-placement.handoff.md](./test-placement.handoff.md): Done - the open question on the plural removed as answered.
-  - [docs/modules/process/test.handoff.md](../../../../../docs/modules/process/test.handoff.md): Done - the mirrored question removed.
+  - [docs/modules/process/test.handoff.md](../../test.handoff.md): Done - the mirrored question removed.
   - [modules/README.md](../../../../README.md): Done - the role list names `tests/` alone and states the exact-name and module-versus-role conditions.
   - [bundles/README.md](../../../../../bundles/README.md): Done - the role list names `tests/` alone.
 

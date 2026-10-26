@@ -17,9 +17,9 @@ package errs
 // )
 
 // func init() {
-// 	SDKNotFound.Init("domain/memar.scm.geniuses.group; package=modules/memory; type=error; name=sdk-not-found")
-// 	NotStandardStructureID.Init("domain/memar.scm.geniuses.group; package=modules/memory; type=error; name=not-standard-structure-id")
-// 	FileNameIsNotValid.Init("domain/memar.scm.geniuses.group; package=modules/memory; type=error; name=file-name-is-not-valid")
-// 	ServiceNameIsNotValid.Init("domain/memar.scm.geniuses.group; package=modules/memory; type=error; name=service-name-is-not-valid")
+// 	SDKNotFound.Init("domain/memar.scm.geniuses.group; package=modules/computer/memory; type=error; name=sdk-not-found")
+// 	NotStandardStructureID.Init("domain/memar.scm.geniuses.group; package=modules/computer/memory; type=error; name=not-standard-structure-id")
+// 	FileNameIsNotValid.Init("domain/memar.scm.geniuses.group; package=modules/computer/memory; type=error; name=file-name-is-not-valid")
+// 	ServiceNameIsNotValid.Init("domain/memar.scm.geniuses.group; package=modules/computer/memory; type=error; name=service-name-is-not-valid")
 // }
 */

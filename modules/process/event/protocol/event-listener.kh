@@ -11,8 +11,8 @@ tp EventListener ab
 // Synchrony, capture, once, passive, and an abort signal are not members here: each is a property of
 // one registration rather than of a listener. What this protocol requires of the two parties instead,
 // and where the answer to each of the five is stated:
-// `docs/protocols/process/event.md` -> Why capture, once, passive, and synchrony are not members.
+// `modules/process/event/event.md` -> Why capture, once, passive, and synchrony are not members.
 // What that document defers to a dispatch mechanism's own contract — whether a dispatch waits for its
 // handlers, and the order a target visits its listeners in — is open state, not an answer:
-// `docs/protocols/process/event.handoff.md` -> Open Questions.
+// `modules/process/event/event.handoff.md` -> Open Questions.
 tp EventHandler mt (self EventListener) (event Event) ()

@@ -2,7 +2,7 @@
 
 tp Type_ID in "modules/computer/type/protocol/id.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // Errors use to register errors to get them in a desire way e.g. ErrorID in http headers.
 tp Process_Errors ab

@@ -2,7 +2,7 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 tp RulesEngine_Decision in "modules/process/rules-engine/protocol/decision.kh"
-tp String in "modules/codec/string/protocol/string.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp RulesEngine_Engine ab
 tp RulesEngine_Engine_GetDecision mt (self RulesEngine_Engine) (key String) (d RulesEngine_Decision, e Error)

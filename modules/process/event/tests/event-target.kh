@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 // The Test for the `EventTarget` Process. Its expectations are stated in
-// `docs/protocols/process/event.md` under The EventTarget capability, Dispatch, and A target accepts
+// `modules/process/event/event.md` under The EventTarget capability, Dispatch, and A target accepts
 // only the kind of event it declared, and are cited with each one below; nothing here is stated from
 // the sources.
 //
@@ -12,7 +12,7 @@
 // observation needs an executable realization says so.
 
 // E1 — The capability is three methods, and a fourth is not part of it.
-// Stated at: `docs/protocols/process/event.md` -> The EventTarget capability, which states the
+// Stated at: `modules/process/event/event.md` -> The EventTarget capability, which states the
 // contract as `DispatchEvent`, `AddEventListener`, and `RemoveEventListener`.
 // Decided by: read `modules/process/event/protocol/event-target.kh` and read every `tp {name} mt`
 // whose owner group names `EventTarget`. Three such declarations decide for E1. A fourth decides
@@ -20,7 +20,7 @@
 
 // E2 — Each of the three returns `Error`, the dispatch takes an `Event`, and the two registration
 // methods take an `EventListener`.
-// Stated at: `docs/protocols/process/event.md` -> The EventTarget capability, which gives each of the
+// Stated at: `modules/process/event/event.md` -> The EventTarget capability, which gives each of the
 // three a signature and states that the `Error` is the abstraction rather than a concrete type
 // because each of the three may fail for more than one reason.
 // Decided by: read the influenced group of each of the three declarations E1 read, and compare it
@@ -30,7 +30,7 @@
 
 // E3 — This protocol declares the three abstractions and no specialization of any of them; the
 // specialization belongs to the module that exposes the capability.
-// Stated at: `docs/protocols/process/event.md` -> A target accepts only the kind of event it declared,
+// Stated at: `modules/process/event/event.md` -> A target accepts only the kind of event it declared,
 // which says a module built on the Event concept must not be able to add a declaration to the Event
 // protocol by needing one.
 // Decided by: read every declaration under `modules/process/event/protocol/` and look for one whose
@@ -39,7 +39,7 @@
 
 // E4 — Every target in the sources satisfies `EventTarget` on all three methods, by method name and
 // not by any declaration saying so.
-// Stated at: `docs/protocols/process/event.md` -> A target accepts only the kind of event it declared,
+// Stated at: `modules/process/event/event.md` -> A target accepts only the kind of event it declared,
 // which says the specialization satisfies the capability because satisfaction is structural and by
 // method name; the criterion is `docs/khayyam/abstraction.md` -> Abstraction Realization.
 // Decided by: find the specialization the sources hold for a kind of event, then read the capsule
@@ -55,7 +55,7 @@
 // E5 — A dispatch sees the listener set as it stood when the dispatch began: a listener added during
 // a dispatch is first seen by a later dispatch, and a listener removed during a dispatch is still
 // handed that one.
-// Stated at: `docs/protocols/process/event.md` -> A dispatch's listener set is the set the dispatch
+// Stated at: `modules/process/event/event.md` -> A dispatch's listener set is the set the dispatch
 // started with, which says this is decidable from the outside and names how.
 // Decided by: dispatch one occurrence to a target holding a listener that, from inside its own
 // handler, adds a second listener to that same target and records how many times each ran; then
@@ -69,12 +69,12 @@
 // E6 — The order a target visits its listeners in is not part of this Process's contract, and a
 // listener may not assume it is called first or last, or called at all for a dispatch that reached
 // no listener.
-// Stated at: `docs/protocols/process/event.md` -> What a listener may assume about the occurrence,
+// Stated at: `modules/process/event/event.md` -> What a listener may assume about the occurrence,
 // which names the four assumptions the contract refuses, three of which are what E6 states; and ->
 // Why capture, once, passive, and synchrony are not members, which declines to fix a position in a
 // dispatch and assigns such a question to the mechanism.
 // Decided by: read the contract E1 read and look for any declaration that fixes an order, a position,
 // or a guarantee of invocation. None decides for E6; one does decide against it. The document states
-// the question as open at `docs/protocols/process/event.handoff.md` -> In what order does a target
+// the question as open at `modules/process/event/event.handoff.md` -> In what order does a target
 // visit its listeners, and is that order promised?, so a ruling there revises E6 rather than deciding
 // it.

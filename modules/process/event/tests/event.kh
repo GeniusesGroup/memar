@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// The Test for the `Event` Process. Its expectations are stated in `docs/protocols/process/event.md`
+// The Test for the `Event` Process. Its expectations are stated in `modules/process/event/event.md`
 // under What an Event Is and What an Event Is Not, and are cited with each one below; nothing here
 // is stated from the sources, and where a source and this document disagree the disagreement is
 // this Test's finding rather than a change to either.
@@ -12,7 +12,7 @@
 
 // E1 — An Event composes `Observer_DataType`, `Observer_Time`, and `Logic_Equivalence`, and nothing
 // else the protocol requires.
-// Stated at: `docs/protocols/process/event.md` -> What an Event Is, which shows the composition as
+// Stated at: `modules/process/event/event.md` -> What an Event Is, which shows the composition as
 // `Observer_DataType`, `Observer_Time`, `Logic_Equivalence`.
 // Decided by: open `modules/process/event/protocol/event.kh` and read the block of `tp Event ab`.
 // Three entries decide for E1. A fourth entry decides against it, whatever the fourth names.
@@ -20,7 +20,7 @@
 
 // E2 — Every member of that composition is an abstraction, so the base contract names behavior and
 // no type identity.
-// Stated at: `docs/protocols/process/event.md` -> What an Event Is, which grounds the composition in
+// Stated at: `modules/process/event/event.md` -> What an Event Is, which grounds the composition in
 // `docs/khayyam/abstraction.md` -> Behavior Over Type Identity; and What an Event Is Not, whose third
 // separation refuses the composition any representation.
 // Decided by: for each entry of the block E1 read, follow its `in` to the file it names and read the
@@ -28,14 +28,14 @@
 // target declares a `cp` decides against it.
 
 // E3 — No capsule composes `Event`; a Type dispatches an Event rather than holding one.
-// Stated at: `docs/protocols/process/event.md` -> What an Event Is, which says composing the
+// Stated at: `modules/process/event/event.md` -> What an Event Is, which says composing the
 // abstraction is what makes the fact dispatchable and is not a claim that the fact is held anywhere.
 // Decided by: read every `tp {name} cp { … }` block under `modules/` and look for the name `Event`
 // among the entries. No such block decides for E3. One such block decides against it, whether or not
 // the capsule behind it dispatches anything.
 
 // E4 — The `Event` capsule satisfies the `Event` abstraction.
-// Stated at: `docs/protocols/process/event.md` -> What an Event Is, for the identity and time a
+// Stated at: `modules/process/event/event.md` -> What an Event Is, for the identity and time a
 // receiver is promised; the satisfaction itself is `docs/khayyam/abstraction.md` -> Abstraction
 // Realization, which judges it by method name and receiver and not by where either was written.
 // Decided by: read `modules/process/event/event.kh` for the methods whose owner group names `Event`,
@@ -47,12 +47,12 @@
 
 // E5 — Two occurrences of one kind of event are comparable by the method `Logic_Equivalence` names,
 // and this expectation cannot be stated as a checkable claim until one is named.
-// Stated at: `docs/protocols/process/event.md` -> What an Event Is, which composes `Logic_Equivalence`
+// Stated at: `modules/process/event/event.md` -> What an Event Is, which composes `Logic_Equivalence`
 // "to let a receiver compare two occurrences", and What this protocol does not claim, which declines
 // to say what that comparison answers.
 // Decided by: none available. `modules/math/logic/protocol/equivalence.kh` declares `Logic_Equivalence`
 // and no method, so no realization has anything to implement and no observation can decide whether a
 // receiver can compare two occurrences. The spelling the method takes and what it compares are open
-// at `docs/protocols/process/event.handoff.md` -> What does `Logic_Equivalence` over two Event
+// at `modules/process/event/event.handoff.md` -> What does `Logic_Equivalence` over two Event
 // occurrences answer? An observer who has read that answer states this expectation in the form it
 // then takes, and E4 decides it with the two accessors above.

@@ -13,7 +13,7 @@ tp Locker in "modules/process/sync/protocol/locker.kh"
 // influencing types match exactly — `docs/khayyam/abstraction.md` -> Abstraction Realization
 // (Implicit Satisfaction) — so a method taking `Race_Event` would satisfy nothing and would leave
 // this capsule unable to be a `Detector`. Where the contract is stated:
-// `docs/protocols/process/event.md` -> The EventTarget capability.
+// `modules/process/event/event.md` -> The EventTarget capability.
 //
 // The mutual exclusion is held across the dispatch and across every change to the listener set, so a
 // handler that registers against this target from inside a dispatch waits for that dispatch to end.

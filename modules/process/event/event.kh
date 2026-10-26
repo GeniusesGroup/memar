@@ -5,7 +5,7 @@ tp Time in "modules/time/protocol/time.kh"
 
 // An Event is a runtime occurrence and not a stored record: it carries the identity its Type
 // supplies and the time it occurred, and nothing else the protocol requires. Where the contract is
-// stated: `docs/protocols/process/event.md` -> What an Event Is.
+// stated: `modules/process/event/event.md` -> What an Event Is.
 //
 //memar:impl memar/process/event/protocol.Event
 tp Event cp {
@@ -20,7 +20,7 @@ tp GetType mt (self Event) () (d Type)
 tp GetTime mt (self Event) () (t Time)
 
 // Initialization is the capsule's own behavior carrying its own domain arguments, which is what
-// `CapsuleLifeCycle` states when it declines to name an `Init` of its own.
+// `Capsule_LifeCycle` states when it declines to name an `Init` of its own.
 tp Init mt (self Event) (dt Type, time Time) ()
 
 // TODO(go-migrate):

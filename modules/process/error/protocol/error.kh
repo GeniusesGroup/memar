@@ -2,7 +2,7 @@
 
 tp Nil in "modules/computer/adt/protocol/nil.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
-tp Observer_MediaType in "modules/identifier/mediatype/protocol/media-type.observers.kh"
+tp Observer_MediaType in "modules/computer/mediatype/protocol/media-type.observers.kh"
 
 // Error is base behaviors that any Error capsule must implement.
 // Error MUST NOT mix with `Log Event`.
