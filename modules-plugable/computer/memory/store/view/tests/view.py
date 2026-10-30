@@ -195,7 +195,7 @@ class OverGitStore(Cases, unittest.TestCase):
         data = repository.parent / f'{repository.name}-data'
         data.mkdir()
         self.made.append(data)
-        adapter = _m_git_store.GitStoreAdapter(str(repository), 'refs/memory/notes', data_area=str(data))
+        adapter = _m_git_store.GitStoreAdapter(str(repository), 'refs/memar/notes', data_area=str(data))
         self.closing.append(adapter)
         return (_m_record.RecordAdapter(adapter).open(), repository)
 
