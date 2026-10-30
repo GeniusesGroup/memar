@@ -30,6 +30,8 @@ What is pinned:
   CodeIsLookedAtOnce   The pool looks at the code's fingerprint at most once in `check_every` seconds, and a change is a new generation.
 """
 from __future__ import annotations
+TIER = 'system'
+BUDGET_SECONDS = 150
 from importlib import import_module
 _m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 remove_tree = _m_fs_test_scratch.remove_tree

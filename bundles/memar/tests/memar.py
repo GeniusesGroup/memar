@@ -76,6 +76,7 @@ from __future__ import annotations
 from importlib import import_module
 _m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
+import concurrent.futures
 import argparse
 import ast
 import contextlib
@@ -127,6 +128,8 @@ def launch(*arguments: str, command: list[str] | None=None) -> subprocess.Comple
 
 def flat(text: bytes | str) -> str:
     return ' '.join((text.decode('utf-8') if isinstance(text, bytes) else text).split())
+
+BUDGET_SECONDS = 10
 
 class FakeShelf:
     """Services as the contract describes them, recording what runs."""
@@ -435,9 +438,10 @@ class EveryHelpAnswers(unittest.TestCase):
     def test_every_verb_and_sub_verb_answers_its_help(self) -> None:
         paths = list(declared())
         self.assertTrue(any((len(path) == 2 for path in paths)))
-        for path in paths:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+            asked = list(pool.map(lambda path: launch(*path, '--help'), paths))
+        for path, completed in zip(paths, asked):
             with self.subTest(verb=' '.join(path)):
-                completed = launch(*path, '--help')
                 self.assertEqual(completed.returncode, 0, completed.stderr)
                 self.assertIn(f"usage: memar {' '.join(path)}", flat(completed.stdout))
 

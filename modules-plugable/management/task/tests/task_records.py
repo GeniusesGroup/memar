@@ -41,6 +41,7 @@ suite_scratch = _m_fs_test_scratch.suite_scratch
 import argparse
 import contextlib
 import io
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -67,6 +68,34 @@ def write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding='utf-8', newline='\n')
 
+_ORCHARD: list = []
+
+def orchard_template() -> Path:
+    """The project every test starts from, made once per run and copied per test."""
+    if not _ORCHARD:
+        import atexit
+        holder = tempfile.TemporaryDirectory(dir=suite_scratch(), prefix='orchard-template-', ignore_cleanup_errors=True)
+        atexit.register(holder.cleanup)
+        root = Path(holder.name).resolve() / 'orchard'
+        write(root / 'docs' / 'pears.md', '# Pears\n\n## Rows\n\nPears grow in rows.\n')
+        write(root / 'docs' / 'model.kh', 'declaration of a pear tree\n')
+        git(root, 'init', '-q', '-b', 'main')
+        git(root, 'config', 'user.name', 'Test')
+        git(root, 'config', 'user.email', 'test@example.org')
+        git(root, 'add', 'docs')
+        git(root, 'commit', '-q', '-m', 'base')
+        git(root, 'checkout', '-q', '--orphan', RECORDS_BRANCH)
+        git(root, 'rm', '-q', '-r', '--cached', 'docs')
+        write(root / '.agents' / 'tasks' / ARCHIVED / 'plan.md', f'# Plan\n\n## Request\n\nCount the {TERM} burrows.\n')
+        write(root / '.agents' / 'tasks' / ARCHIVED / 'temp' / 'note.txt', f'{TERM} in scratch\n')
+        write(root / '.agents' / 'tasks' / ARCHIVED / 'docs' / 'notes.txt', f'one {TERM} seen\n')
+        git(root, 'add', '-f', '.agents')
+        git(root, 'commit', '-q', '-m', 'records')
+        git(root, 'checkout', '-q', '-f', 'main')
+        git(root, 'clean', '-q', '-f', '-d', '-x', '.agents')
+        _ORCHARD.append(root)
+    return _ORCHARD[0]
+
 class Project(unittest.TestCase):
     """A project with a document, a `.kh` file, and a records branch holding one task that alone mentions TERM."""
 
@@ -74,22 +103,7 @@ class Project(unittest.TestCase):
         scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(scratch.cleanup)
         self.root = Path(scratch.name).resolve() / 'orchard'
-        write(self.root / 'docs' / 'pears.md', '# Pears\n\n## Rows\n\nPears grow in rows.\n')
-        write(self.root / 'docs' / 'model.kh', 'declaration of a pear tree\n')
-        git(self.root, 'init', '-q', '-b', 'main')
-        git(self.root, 'config', 'user.name', 'Test')
-        git(self.root, 'config', 'user.email', 'test@example.org')
-        git(self.root, 'add', 'docs')
-        git(self.root, 'commit', '-q', '-m', 'base')
-        git(self.root, 'checkout', '-q', '--orphan', RECORDS_BRANCH)
-        git(self.root, 'rm', '-q', '-r', '--cached', 'docs')
-        write(self.root / '.agents' / 'tasks' / ARCHIVED / 'plan.md', f'# Plan\n\n## Request\n\nCount the {TERM} burrows.\n')
-        write(self.root / '.agents' / 'tasks' / ARCHIVED / 'temp' / 'note.txt', f'{TERM} in scratch\n')
-        write(self.root / '.agents' / 'tasks' / ARCHIVED / 'docs' / 'notes.txt', f'one {TERM} seen\n')
-        git(self.root, 'add', '-f', '.agents')
-        git(self.root, 'commit', '-q', '-m', 'records')
-        git(self.root, 'checkout', '-q', '-f', 'main')
-        git(self.root, 'clean', '-q', '-f', '-d', '-x', '.agents')
+        shutil.copytree(orchard_template(), self.root)
 
     def search(self, *patterns: str, sources=None) -> tuple[list[str], str]:
         out, err = (io.StringIO(), io.StringIO())

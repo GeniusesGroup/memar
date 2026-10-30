@@ -106,6 +106,7 @@ import os
 import re
 import shutil
 import subprocess
+import time
 import sys
 import tempfile
 import unittest
@@ -146,9 +147,45 @@ REPORT = f'---\nID: s-report\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What 
 OPENED = '\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z'
 GIT_PROJECT_ROOT = task_location.project_root
 
+class SkippedSeconds:
+    """The clock `TaskId.new` reads, with the wait for the next second taken by moving the clock on: the seam named here, since the rule that one process never mints a second id in one second is pinned in `task_id.py`."""
+
+    def __init__(self) -> None:
+        self.moved = 0.0
+
+    def time(self) -> float:
+        return time.time() + self.moved
+
+    def gmtime(self, seconds=None):
+        return time.gmtime(self.time() if seconds is None else seconds)
+
+    def strftime(self, form, moment=None):
+        return time.strftime(form, moment if moment is not None else self.gmtime())
+
+    def sleep(self, seconds: float) -> None:
+        self.moved += seconds
+
+BUDGET_SECONDS = 20
+_EMPTY_REPOSITORY: list = []
+
+def git_init(folder) -> None:
+    """`git init` of FOLDER, made once per run and copied after, so a Test does not start git for it."""
+    import atexit
+    import shutil
+    import tempfile
+    if not _EMPTY_REPOSITORY:
+        holder = tempfile.TemporaryDirectory(prefix='new-empty-repository-', ignore_cleanup_errors=True)
+        atexit.register(holder.cleanup)
+        subprocess.run(['git', 'init', '-q', holder.name], check=True, capture_output=True)
+        _EMPTY_REPOSITORY.append(Path(holder.name) / '.git')
+    shutil.copytree(_EMPTY_REPOSITORY[0], Path(folder) / '.git', dirs_exist_ok=True)
+
 class Fixture(unittest.TestCase):
 
     def setUp(self) -> None:
+        skipped = unittest.mock.patch.object(_m_task_id, 'time', SkippedSeconds())
+        skipped.start()
+        self.addCleanup(skipped.stop)
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.fake_root = Path(self.scratch.name)
@@ -407,7 +444,7 @@ class ProjectLocation(Fixture):
         self.assertEqual(read_task(child).parent, sid)
 
     def test_a_custom_location_git_does_not_ignore_is_told_so_and_nothing_is_written_to_it(self) -> None:
-        subprocess.run(['git', 'init', '-q', str(self.project)], check=True, capture_output=True)
+        git_init(self.project)
         self.prefer(self.project, 'work/tasks')
         _, _, printed = self.open(None, TITLE, None)
         self.assertRegex(printed, 'not ignored by git')
@@ -417,7 +454,7 @@ class ProjectLocation(Fixture):
         self.assertNotIn('not ignored by git', printed)
 
     def test_the_default_location_is_left_for_git_to_see(self) -> None:
-        subprocess.run(['git', 'init', '-q', str(self.project)], check=True, capture_output=True)
+        git_init(self.project)
         _, _, printed = self.open(None, TITLE, None)
         self.assertNotIn('not ignored by git', printed)
 
@@ -535,7 +572,7 @@ class ProjectNamed(Fixture):
         self.addCleanup(real.stop)
         self.work = self.fake_root / 'work'
         self.work.mkdir()
-        subprocess.run(['git', 'init', '-q', str(self.work)], check=True, capture_output=True)
+        git_init(self.work)
 
     def refused(self, *arguments, **options) -> str:
         with self.assertRaises(SystemExit) as raised, contextlib.redirect_stdout(io.StringIO()):

@@ -76,6 +76,7 @@ _m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.
 suite_scratch = _m_fs_test_scratch.suite_scratch
 _m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
+import concurrent.futures
 import contextlib
 import io
 import os
@@ -137,9 +138,31 @@ def plan_with(kind: str | None=None, request: str='Do the thing.', steps: str=''
     base = plan_skeleton('20261011T000000Z-1-0', 'Delegated', '2026-10-11T00:00:00Z', project, labels=Labels((_kind_label(kind),)) if kind else None)
     return base.replace('## Request\n', f'## Request\n{request}\n').replace('## Steps\n', f'## Steps\n{steps}\n')
 
+BUDGET_SECONDS = 10
+_REAL_HELP_OF = task_start._help_of
+_REAL_CARD_TEXT = commands.card_text
+_CARD_ONCE: list = []
+_HELPED = (*task_start.ALWAYS_HELP, ('content', 'search'), ('content', 'get-section'), ('task', 'priority'), ('content', 'resolve-path'), ('nothing', 'here'))
+_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=len(_HELPED))
+_HELP_ONCE: dict = {words: _POOL.submit(_REAL_HELP_OF, words) for words in _HELPED}
+
+def help_once(words):
+    if words not in _HELP_ONCE:
+        _HELP_ONCE[words] = _POOL.submit(_REAL_HELP_OF, words)
+    return _HELP_ONCE[words].result()
+
+def card_once():
+    if not _CARD_ONCE:
+        _CARD_ONCE.append(_REAL_CARD_TEXT())
+    return _CARD_ONCE[0]
+
 class Fixture(unittest.TestCase):
 
     def setUp(self) -> None:
+        for target, name, seam in ((task_start, '_help_of', help_once), (commands, 'card_text', card_once)):
+            seamed = unittest.mock.patch.object(target, name, seam)
+            seamed.start()
+            self.addCleanup(seamed.stop)
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.fake_root = Path(self.scratch.name)

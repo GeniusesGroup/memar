@@ -289,35 +289,61 @@ class ShelfIsNotRouted(unittest.TestCase):
         self.assertIn('memar', description.lower())
         self.assertIn('modules-plugable/computer/memory/filesystem/services/', description)
 
+TIER = 'system'
+BUDGET_SECONDS = 20
+_TEMPLATES: dict = {}
+
+def _git_in(folder: Path, *args: str) -> str:
+    import subprocess
+    return subprocess.run(['git', '-C', str(folder), *args], capture_output=True, text=True, check=True).stdout.strip()
+
+def repository_templates() -> dict:
+    """The two throwaway repositories every ScratchRepository test starts from, built once per run and copied per test."""
+    if not _TEMPLATES:
+        import atexit
+        import tempfile
+        holder = tempfile.TemporaryDirectory(dir=suite_scratch(), prefix='tmp-host-template-', ignore_cleanup_errors=True)
+        atexit.register(holder.cleanup)
+        repo = Path(holder.name) / 'repo'
+        elsewhere = Path(holder.name) / 'elsewhere'
+        repo.mkdir()
+        elsewhere.mkdir()
+        _git_in(repo, 'init', '-q', '-b', 'main')
+        _git_in(repo, 'config', 'user.name', 'Test')
+        _git_in(repo, 'config', 'user.email', 'test@example.org')
+        _git_in(repo, 'config', 'core.autocrlf', 'false')
+        for name in ('mine.md', 'theirs.md', 'shared.md'):
+            (repo / name).write_text('base\n', encoding='utf-8', newline='\n')
+        _git_in(repo, 'add', '.')
+        _git_in(repo, 'commit', '-q', '-m', 'base')
+        _git_in(elsewhere, 'init', '-q', '-b', 'main')
+        _git_in(elsewhere, 'config', 'user.name', 'Other')
+        _git_in(elsewhere, 'config', 'user.email', 'other@example.org')
+        (elsewhere / 'other.md').write_text('other\n', encoding='utf-8', newline='\n')
+        _git_in(elsewhere, 'add', '.')
+        _git_in(elsewhere, 'commit', '-q', '-m', 'other')
+        _TEMPLATES.update(repo=repo, elsewhere=elsewhere, base=_git_in(repo, 'rev-parse', 'HEAD'), elsewhere_tip=_git_in(elsewhere, 'rev-parse', 'HEAD'))
+    return _TEMPLATES
+
 class ScratchRepository(unittest.TestCase):
     """A throwaway repository with three files committed once, and git asked of it."""
 
     def setUp(self) -> None:
+        import shutil
         import tempfile
+        template = repository_templates()
         scratch = tempfile.TemporaryDirectory(dir=suite_scratch(), prefix='tmp-host-commit-', ignore_cleanup_errors=True)
         self.addCleanup(scratch.cleanup)
         self.repo = Path(scratch.name)
-        self.git('init', '-q', '-b', 'main')
-        self.git('config', 'user.name', 'Test')
-        self.git('config', 'user.email', 'test@example.org')
-        self.git('config', 'core.autocrlf', 'false')
-        for name in ('mine.md', 'theirs.md', 'shared.md'):
-            self.put(name, 'base\n')
-        self.git('add', '.')
-        self.git('commit', '-q', '-m', 'base')
-        self.base = self.git('rev-parse', 'HEAD')
+        shutil.copytree(template['repo'], self.repo, dirs_exist_ok=True)
+        self.base = template['base']
         self.message = self.repo / '.git' / 'message.txt'
         self.message.write_text('subject\n', encoding='utf-8', newline='\n')
         elsewhere = tempfile.TemporaryDirectory(dir=suite_scratch(), prefix='tmp-host-elsewhere-', ignore_cleanup_errors=True)
         self.addCleanup(elsewhere.cleanup)
         self.elsewhere = Path(elsewhere.name)
-        self.git_in(self.elsewhere, 'init', '-q', '-b', 'main')
-        self.git_in(self.elsewhere, 'config', 'user.name', 'Other')
-        self.git_in(self.elsewhere, 'config', 'user.email', 'other@example.org')
-        (self.elsewhere / 'other.md').write_text('other\n', encoding='utf-8', newline='\n')
-        self.git_in(self.elsewhere, 'add', '.')
-        self.git_in(self.elsewhere, 'commit', '-q', '-m', 'other')
-        self.elsewhere_tip = self.git_in(self.elsewhere, 'rev-parse', 'HEAD')
+        shutil.copytree(template['elsewhere'], self.elsewhere, dirs_exist_ok=True)
+        self.elsewhere_tip = template['elsewhere_tip']
         self.addCleanup(self.assert_elsewhere_untouched)
 
     def git(self, *args: str) -> str:

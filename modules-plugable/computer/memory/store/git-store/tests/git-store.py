@@ -24,6 +24,7 @@ Every scratch folder is made under the suite's scratch folder (`fs_test_scratch`
 """
 from __future__ import annotations
 import os
+import shutil
 import subprocess
 import sys
 import threading
@@ -52,23 +53,40 @@ Committed = _m_store.Committed
 OWED = _m_conformance.OWED
 address = _m_conformance.address
 value = _m_conformance.value
+TIER = 'system'
+BUDGET_SECONDS = 20
 MADE: list[tuple[Any, Path]] = []
 
 def _git(where: Path, *args: str) -> None:
     subprocess.run(['git', '-C', str(where), '-c', 'user.name=suite', '-c', 'user.email=suite@example.invalid', *args], check=True, capture_output=True)
 
+_PROJECT_TEMPLATE: list[Path] = []
+
+def project_template() -> Path:
+    """The scratch project every test starts from, built once per run and copied per test."""
+    if not _PROJECT_TEMPLATE:
+        import atexit
+        import tempfile
+        holder = tempfile.TemporaryDirectory(dir=_m_scratch.suite_scratch(), prefix='git-store-template-', ignore_cleanup_errors=True)
+        atexit.register(holder.cleanup)
+        project = Path(holder.name) / 'project'
+        project.mkdir()
+        _git(project, 'init', '-q')
+        (project / 'tracked.txt').write_bytes(b'tracked\n')
+        (project / '.gitignore').write_bytes(b'ignored.txt\n')
+        (project / 'ignored.txt').write_bytes(b'ignored\n')
+        _git(project, 'add', 'tracked.txt', '.gitignore')
+        _git(project, 'commit', '-q', '-m', 'scratch')
+        _PROJECT_TEMPLATE.append(project)
+    return _PROJECT_TEMPLATE[0]
+
 def scratch_project() -> tuple[Path, Path, Path]:
     """A new scratch folder holding a project repository with a tracked and an ignored file, and a data area."""
     folder = _m_scratch.suite_scratch() / f'git-store-{uuid.uuid4().hex[:12]}'
     project, data = (folder / 'project', folder / 'data')
-    project.mkdir(parents=True)
+    folder.mkdir(parents=True)
+    shutil.copytree(project_template(), project)
     data.mkdir()
-    _git(project, 'init', '-q')
-    (project / 'tracked.txt').write_bytes(b'tracked\n')
-    (project / '.gitignore').write_bytes(b'ignored.txt\n')
-    (project / 'ignored.txt').write_bytes(b'ignored\n')
-    _git(project, 'add', 'tracked.txt', '.gitignore')
-    _git(project, 'commit', '-q', '-m', 'scratch')
     return (folder, project, data)
 
 def make_local(**keywords: Any) -> Any:
