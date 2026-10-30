@@ -1,0 +1,131 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_View_Refusal in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+tp Error_View_UnignoredFolder in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+tp Error_View_ForeignFiles in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+tp Error_View_MalformedPath in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+tp Error_View_StoreUnavailable in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+tp Error_View_BadPreference in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+
+tp Domain mt (self Error_View_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self Error_View_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A build is refused and nothing is written or removed")(s, VoidError)
+}
+
+tp Overview mt (self Error_View_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A build is refused and nothing is written or removed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_View_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_View_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Error_View_UnignoredFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self Error_View_UnignoredFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The folder is in a working tree under version control that does not ignore it")(s, VoidError)
+}
+
+tp Overview mt (self Error_View_UnignoredFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The folder is in a working tree under version control that does not ignore it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_View_UnignoredFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_View_UnignoredFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail says to add the folder to the ignore list first.")(s, VoidError)
+}
+
+tp Domain mt (self Error_View_ForeignFiles) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self Error_View_ForeignFiles) () (s String) {
+    CharacterRun_From.FromCharacterRun("The folder holds a file the builder did not write, or a list that is not one")(s, VoidError)
+}
+
+tp Overview mt (self Error_View_ForeignFiles) () (s String) {
+    CharacterRun_From.FromCharacterRun("The folder holds a file the builder did not write, or a list that is not one.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_View_ForeignFiles) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_View_ForeignFiles) () (s String) {
+    CharacterRun_From.FromCharacterRun("A folder in use for something else is never cleaned.")(s, VoidError)
+}
+
+tp Domain mt (self Error_View_MalformedPath) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self Error_View_MalformedPath) () (s String) {
+    CharacterRun_From.FromCharacterRun("The presentation gave a path that leaves the folder, names the list, shows two things, or is both a file and a folder")(s, VoidError)
+}
+
+tp Overview mt (self Error_View_MalformedPath) () (s String) {
+    CharacterRun_From.FromCharacterRun("The presentation gave a path that leaves the folder, names the list, shows two things, or is both a file and a folder.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_View_MalformedPath) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_View_MalformedPath) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Error_View_StoreUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self Error_View_StoreUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store did not answer every read of the build")(s, VoidError)
+}
+
+tp Overview mt (self Error_View_StoreUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store did not answer every read of the build.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_View_StoreUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_View_StoreUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The reason of the store is kept.")(s, VoidError)
+}
+
+tp Domain mt (self Error_View_BadPreference) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self Error_View_BadPreference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key view is not one class equals folder pair")(s, VoidError)
+}
+
+tp Overview mt (self Error_View_BadPreference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key view is not one class equals folder pair.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_View_BadPreference) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_View_BadPreference) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

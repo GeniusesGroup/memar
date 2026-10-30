@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Project in "modules/process/project/protocol/project.kh"
+tp Record in "modules-plugable/computer/memory/store/record/protocol/record.kh"
+tp View_Registry in "modules-plugable/computer/memory/store/view/protocol/view-registry.kh"
+tp View_Presentation in "modules-plugable/computer/memory/store/view/protocol/view-presentation.kh"
+tp View_Folder in "modules-plugable/computer/memory/store/view/protocol/view-folder.kh"
+tp View_Preference in "modules-plugable/computer/memory/store/view/protocol/view-preference.kh"
+tp View_BuildAnswer in "modules-plugable/computer/memory/store/view/protocol/view-build-answer.kh"
+
+tp View ab {
+    View_Registry
+}
+
+tp GetKey mt (self View) () (key String)
+
+tp GetPreference mt (self View) (project Project) (preference View_Preference, given Boolean, err Error)
+
+tp Build mt (self View) (record Record, presentation View_Presentation, folder View_Folder) (answer View_BuildAnswer)

@@ -1,0 +1,29 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Error_Store_Unavailability in "modules/computer/memory/store/errors/errors.kh"
+
+tp Error_View_Refusal ab {
+    Error
+}
+
+tp Error_View_UnignoredFolder ab {
+    Error_View_Refusal
+}
+
+tp Error_View_ForeignFiles ab {
+    Error_View_Refusal
+}
+
+tp Error_View_MalformedPath ab {
+    Error_View_Refusal
+}
+
+tp Error_View_StoreUnavailable ab {
+    Error_View_Refusal
+    Error_Store_Unavailability
+}
+
+tp Error_View_BadPreference ab {
+    Error
+}

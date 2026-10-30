@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp View_Node in "modules-plugable/computer/memory/store/view/protocol/view-node.kh"
+tp View_Files in "modules-plugable/computer/memory/store/view/protocol/view-files.kh"
+
+tp View_Presentation ab
+
+tp Show mt (self View_Presentation) (node View_Node) (files View_Files)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View_Refused in "modules-plugable/computer/memory/store/view/protocol/view-refused.kh"
+
+tp Domain mt (self View_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The build is refused and the folder is as it was")(s, VoidError)
+}
+
+tp Overview mt (self View_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The build is refused and the folder is as it was.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names what for a reader.")(s, VoidError)
+}

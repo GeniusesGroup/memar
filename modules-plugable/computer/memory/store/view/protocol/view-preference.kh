@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+tp View_Folder in "modules-plugable/computer/memory/store/view/protocol/view-folder.kh"
+
+tp View_Preference ab
+
+tp GetClass mt (self View_Preference) () (class Record_Class)
+
+tp GetFolder mt (self View_Preference) () (folder View_Folder)

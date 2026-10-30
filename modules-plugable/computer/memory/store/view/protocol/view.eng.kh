@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View in "modules-plugable/computer/memory/store/view/protocol/view.kh"
+
+tp Domain mt (self View) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View) () (s String) {
+    CharacterRun_From.FromCharacterRun("The builder of a read-only folder of one class committed nodes, as a domain presents them")(s, VoidError)
+}
+
+tp Overview mt (self View) () (s String) {
+    CharacterRun_From.FromCharacterRun("The builder of a read-only folder of one class committed nodes, as a domain presents them.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View) () (s String) {
+    CharacterRun_From.FromCharacterRun("A function of the committed state of the store and the preferences that select it; never committed, never edited, built only when a person asks and read by no verb. The builder reaches the store through the record alone, handed to it already opened, so it imports no adapter. Every node is read from one committed state and every refusal is decided before anything is written. GetPreference answers not given when the key is unset and an error when its form is broken or it names more than one class.")(s, VoidError)
+}

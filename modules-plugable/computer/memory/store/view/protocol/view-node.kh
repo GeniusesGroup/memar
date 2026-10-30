@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Record_ID in "modules-plugable/computer/memory/store/record/protocol/record-id.kh"
+tp Record_DomainKey in "modules-plugable/computer/memory/store/record/protocol/record-domain-key.kh"
+
+tp View_Node ab
+
+tp GetID mt (self View_Node) () (id Record_ID)
+
+tp GetPartKey mt (self View_Node) (position W32) (domainKey Record_DomainKey)
+
+tp GetPartBytes mt (self View_Node) (position W32) (bytes Computer_Buffer)
+
+tp GetPartCount mt (self View_Node) () (count W32)

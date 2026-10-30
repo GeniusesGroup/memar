@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View_Node in "modules-plugable/computer/memory/store/view/protocol/view-node.kh"
+
+tp Domain mt (self View_Node) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View_Node) () (s String) {
+    CharacterRun_From.FromCharacterRun("A node as a presentation is handed it: its id and the bytes of each part by its domain key")(s, VoidError)
+}
+
+tp Overview mt (self View_Node) () (s String) {
+    CharacterRun_From.FromCharacterRun("A node as a presentation is handed it: its id and the bytes of each part by its domain key.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View_Node) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View_Node) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read with the others of a build from one committed state.")(s, VoidError)
+}

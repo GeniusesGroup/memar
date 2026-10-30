@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp View_Entry in "modules-plugable/computer/memory/store/view/protocol/view-entry.kh"
+
+tp View_Listing ab
+
+tp GetName mt (self View_Listing) () (name String)
+
+tp GetEntry mt (self View_Listing) (position W32) (entry View_Entry)
+
+tp GetCount mt (self View_Listing) () (count W32)

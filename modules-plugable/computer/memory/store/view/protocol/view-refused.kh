@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Error_View_Refusal in "modules-plugable/computer/memory/store/view/errors/errors.kh"
+tp View_BuildAnswer in "modules-plugable/computer/memory/store/view/protocol/view-build-answer.kh"
+
+tp View_Refused ab {
+    View_BuildAnswer
+}
+
+tp GetReason mt (self View_Refused) () (reason Error_View_Refusal)
+
+tp GetDetail mt (self View_Refused) () (detail String)

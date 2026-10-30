@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View_Path in "modules-plugable/computer/memory/store/view/protocol/view-path.kh"
+
+tp Domain mt (self View_Path) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View_Path) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path of a file inside the folder of a view")(s, VoidError)
+}
+
+tp Overview mt (self View_Path) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path of a file inside the folder of a view.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View_Path) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View_Path) () (s String) {
+    CharacterRun_From.FromCharacterRun("Relative and written with forward slashes. It is not well formed when it is empty, begins with a slash, holds a backslash or a colon, has an empty segment or a segment that is a dot or two dots, or begins with the name of the list. A path may not be both a file and a folder of another file.")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View_Preference in "modules-plugable/computer/memory/store/view/protocol/view-preference.kh"
+
+tp Domain mt (self View_Preference) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View_Preference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The class a project shows and the folder it is built in")(s, VoidError)
+}
+
+tp Overview mt (self View_Preference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The class a project shows and the folder it is built in.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View_Preference) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View_Preference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key view of the manifest is written class equals folder and names one class; its form is the one the preferences module declares for every key of a class, and its name is this module's.")(s, VoidError)
+}

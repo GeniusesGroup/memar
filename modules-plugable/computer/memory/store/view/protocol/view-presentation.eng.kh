@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View_Presentation in "modules-plugable/computer/memory/store/view/protocol/view-presentation.kh"
+
+tp Domain mt (self View_Presentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View_Presentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("A function from a node to the files it shows")(s, VoidError)
+}
+
+tp Overview mt (self View_Presentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("A function from a node to the files it shows.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View_Presentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View_Presentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("The layout inside the folder is the domain of the class, whose module registers its presentation when the entry point of the tooling starts; the view module knows no domain.")(s, VoidError)
+}

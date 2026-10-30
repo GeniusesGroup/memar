@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp View_Path in "modules-plugable/computer/memory/store/view/protocol/view-path.kh"
+
+tp View_File ab
+
+tp GetPath mt (self View_File) () (path View_Path)
+
+tp GetBytes mt (self View_File) () (bytes Computer_Buffer)
