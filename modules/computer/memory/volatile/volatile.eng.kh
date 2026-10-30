@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Volatile in "modules/computer/memory/volatile/volatile.kh"
+
+tp Domain mt (self Volatile) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Volatile")(s, VoidError)
+}
+
+tp Summary mt (self Volatile) () (s String) {
+    CharacterRun_From.FromCharacterRun("The reference store, kept in the memory of the process")(s, VoidError)
+}
+
+tp Overview mt (self Volatile) () (s String) {
+    CharacterRun_From.FromCharacterRun("The reference store, kept in the memory of the process.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Volatile) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Volatile) () (s String) {
+    CharacterRun_From.FromCharacterRun("Built with the parameters, the limits and the atomicity it is given; each Open is a new handle on the same memory, and the handles of one memory are isolated by one lock. It is the model against which every other adapter is compared. A dense store that cannot count its capacity with its address length is refused at Build as Error_Store_Malformed.")(s, VoidError)
+}

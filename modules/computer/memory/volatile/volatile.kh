@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Store_Seam in "modules/computer/memory/store/protocol/store-seam.kh"
+tp Store_Parameters in "modules/computer/memory/store/protocol/store-parameters.kh"
+tp Store_Limits in "modules/computer/memory/store/protocol/store-limits.kh"
+
+tp Volatile_Capabilities in "modules/computer/memory/volatile/volatile-capabilities.kh"
+tp Volatile_Memory in "modules/computer/memory/volatile/volatile-memory.kh"
+
+tp Volatile ab {
+    Store
+    Store_Seam
+}
+
+tp Build mt (self Volatile) (parameters Store_Parameters, limits Store_Limits, atomic Boolean) (built Volatile, err Error)
+
+tp Open mt (self Volatile) () (handle Volatile)
+
+tp GetMemory mt (self Volatile) () (memory Volatile_Memory)
+
+tp GetDeclared mt (self Volatile) () (capabilities Volatile_Capabilities)
