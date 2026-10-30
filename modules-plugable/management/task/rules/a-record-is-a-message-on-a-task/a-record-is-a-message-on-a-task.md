@@ -1,14 +1,14 @@
-# Task Rule — A task writes a record where it will live and appends to no file another task writes
+# Task Rule — What a task learns is a message with a template on the task, not an entry in a document
 Status: Draft
 
 ## The rule
-- **A task folder holds one folder for each domain the task acts on, and each record the task makes about a domain is a file of its own in that domain's folder.** The folder path is the domain's path in the repository, the file's name is its number on the Task's timeline and a short slug, and the file is one handoff entry or one changelog record, in a records folder named `@handoff` or `@changelog`.
-- **A record is moved to its home and is not rewritten.** What moves it is a rule on the path and the name, and it needs no reading of the text: the record's file is placed beside the document it concerns, under a name made of its instant, the task and the slug; the number stays in its front matter.
-- **A task appends to no file that another task also writes.** The shared handoff and changelog of a document are views assembled from the records, not files an agent edits, except the head of a handoff (its topic and status), which is a state of the document and open for the owner.
-- **A record that is a state, such as an open question, is answered by a reply and is not edited into an answer.**
+- **A decision, a question, an assumption, a piece of anticipated work and a change record are each a message on the timeline of the task that finds or makes it,** written to a template and joined by an edge to the thing it concerns. A handoff is the template of such a message, not a document an agent writes.
+- **A task keeps no layout of its own for them and names no file, folder or path.** Where a text is kept is text's, how it is joined and ordered is content's and timeline's; the task asks them for what it needs and records the question in their handoffs.
+- **A question is answered by a reply and is not edited into an answer.**
+- **The creation of the task that holds a finding is quick, and it first checks for a related task** (task `20261030-T073507Z-6324`), so that a finding is never held back for want of a place.
 
 ## Why it exists
-1294 changelog entries sit in 221 files and the handoffs in 256 more, and every task appends to the file of each document it touches, so two writers race over one file and a file grows past what one reading can take. Records that are separate files, named by where they go, can be moved by a script, and several tasks can write at once.
+Handoffs and changelogs written as documents were appended to by every task: 1294 changelog entries and 256 handoffs, written by racing writers into files that outgrow one reading. A record that is a message on a task has one writer, one place on the timeline and an edge to its subject, and a design made on files would have to be rewritten as soon as the task and text stores settle.
 
 ## How a check would run
-List the files a task wrote outside its own folder before its end: a handoff or a changelog is one only if the move that places it was done by the script. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#critique-as-a-content-on-the-timeline-2026-10-30-tentative); this repository runs no automatic check of it today.
+A Task rule, document or service that names a file or folder for a record, or an agent that appends a decision or a question to a document's handoff after the removal of handoffs, breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#critique-as-a-content-on-the-timeline-2026-10-30-tentative); this repository runs no automatic check of it today.
