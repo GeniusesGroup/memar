@@ -2,11 +2,10 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Duration in "modules/time/duration/protocol/duration.kh"
-tp Error in "modules/process/error/protocol/error.kh"
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
 tp Store in "modules/computer/memory/store/protocol/store.kh"
-tp Store_Read in "modules/computer/memory/store/protocol/store-read.kh"
+tp Store_GetAnswer in "modules/computer/memory/store/protocol/store-get-answer.kh"
 tp Store_BatchAnswer in "modules/computer/memory/store/protocol/store-batch-answer.kh"
 
 tp Store_Lockable ab {
@@ -15,6 +14,6 @@ tp Store_Lockable ab {
 
 tp GetLease mt (self Store_Lockable) () (lease Duration)
 
-tp Lock mt (self Store_Lockable) (address MemoryAddress) (read Store_Read, err Error)
+tp Lock mt (self Store_Lockable) (address MemoryAddress) (answer Store_GetAnswer)
 
 tp Unlock mt (self Store_Lockable) (address MemoryAddress, value Computer_Buffer, given Boolean) (answer Store_BatchAnswer)
