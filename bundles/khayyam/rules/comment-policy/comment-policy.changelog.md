@@ -2,6 +2,23 @@
 
 ## Changelog
 
+### The documentation fallback is retired: no comment in Khayyam code
+- Time: 2026-10-30T12:00:00Z
+- Type: Changed
+- Ruling: owner, 2026-10-30
+- Tasks:
+  - 20261026-T200841Z-21460: Complete - the task that moved the comment ban to Type.
+- Contributors:
+  - [Omid Hekayati](../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5 via Claude Code) - applied
+
+#### What changed
+- [The rule](./comment-policy.md#the-rule): the bullet that allowed documentation in comments where no documentation method exists is removed, and the bullet on a type's human-facing text points at the Type rule that owns the ban. The license header stays.
+- The handoff's open question on when the clause expires is closed as a decision.
+
+#### Considered and not done
+- **Rewriting the ported sources' comments now.** Not done: they are repaired when a task changes a file, as the Type rule says.
+
 ### One blank line after the license header, and the header on every source file
 - Time: 2026-10-10T08:20:00Z
 - Type: Changed

@@ -10,14 +10,13 @@ Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../REA
 
 ## The rule
 - Every `.kh` file in this repository opens with the repository's license header, carried in a `/* … */` block comment, and the `LEGAL` reference it names is kept resolvable.
-- Documentation is carried in comments where a documentation method does not yet exist for the thing being described.
-- A type's human-facing text — its name, its summary, the note a user or a maintainer reads — is a value one of the type's own methods writes, not a comment. [Khayyam → Self-Documenting Code and Naming](../../../../docs/khayyam/khayyam.md#self-documenting-code-and-naming) states that mechanism; this rule is where the fallback lives while the methods are still being written.
+- A `.kh` file carries no other comment: a type's human-facing text — its name, its summary, the note a user or a maintainer reads — is a value one of the type's own methods writes ([Khayyam → Self-Documenting Code and Naming](../../../../docs/khayyam/khayyam.md#self-documenting-code-and-naming)), and a comment that says it is refused by the [Type Rule — No Comments in Code](../../../../modules/computer/type/rules/no-comments-in-code/no-comments-in-code.md), which owns that condition.
 
 ## Why it exists
-The header is the one piece of prose every reader of a `.kh` file meets first, and a file that carries it and a file that does not are not two styles of the same thing — one of them is out of compliance with the repository's terms. The documentation clause exists because the ported sources arrived with 392 comment blocks that are, today, the only human-readable account of most of the abstraction layer; a rule that forbade comments before the methods existed would have deleted them, and a rule that said nothing would have let the comment become the permanent answer.
+The header is the one piece of prose every reader of a `.kh` file meets first, and a file that carries it and a file that does not are not two styles of the same thing — one of them is out of compliance with the repository's terms. The documentation clause that once allowed a comment where no documentation method existed was retired on 2026-10-30 at the owner's word: the ported sources' comments are repaired when a task changes a file, and no new comment is written.
 
 ## Keep it or drop it
-This is deliberately a rule an organization may drop, and this organization may be the one that drops it. An organization may forbid comments outright and require every type's human-facing text to come from its own methods — that is the direction the Khayyam library is being taken, and the declarations that shape takes are already in `modules/computer/datatype/protocol/detail.kh`. What may not happen by accident is the middle state this rule currently describes: comments as a permanent fallback, with the methods never written.
+An organization may drop the header and allow comments; it then keeps a second place for every fact a type says of itself, which the Type rule above is written against.
 
 ## What this rule does not claim
 - It does not claim a comment form. That is the [comment forms rule](../comment-forms/comment-forms.md).
