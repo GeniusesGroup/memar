@@ -2,6 +2,23 @@
 
 ## Changelog
 
+### Entries for the rules of the memory-layer task
+- Time: 2026-10-30T13:00:00Z
+- Type: Added
+- Cited:
+  - The owner's answer of 2026-10-30 in task 20261026-T200841Z-21460 - Depends_on: add the rules to the lists while the lists are kept by hand.
+- Tasks:
+  - 20261026-T200841Z-21460: Complete - the task that wrote the rules.
+- Contributors:
+  - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) - decided
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Sonnet 5.5 via Claude Code) - applied
+
+#### What changed
+- The Implement list gained five entries: abstraction first, errors folder, no comments in code, tests first and scoped, a document restates no code. The Plan list gained three: the lowest model in a delegation, a refused report, and a red run seen before a green one is accepted. Each cites the rule's own section and carries its review mark.
+
+#### Considered and not done
+- **A list that needs no hand.** The owner dislikes keeping these lists by hand; a task to derive them is queued.
+
 ### The rule and its lists written, migrated from the passages of `task_kind.py`
 - Time: 2026-10-16T14:30:00Z
 - Type: Added
