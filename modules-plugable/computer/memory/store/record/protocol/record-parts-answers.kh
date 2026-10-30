@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Record_PartsAnswer in "modules-plugable/computer/memory/store/record/protocol/record-parts-answer.kh"
+
+tp Record_PartsAnswers ab
+
+tp GetAnswer mt (self Record_PartsAnswers) (position W32) (answer Record_PartsAnswer)
+
+tp GetCount mt (self Record_PartsAnswers) () (count W32)

@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error_Store_Malformed in "modules/computer/memory/store/errors/errors.kh"
+
+tp Error_Record_BadKey ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_BadID ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_BadLabels ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_BadInstant ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_BadBounds ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_BadLimit ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_BadAllOf ab {
+    Error_Store_Malformed
+}
+
+tp Error_Record_NotLayable ab {
+    Error_Store_Malformed
+}

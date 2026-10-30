@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Error_Store_Refusal in "modules/computer/memory/store/errors/errors.kh"
+tp Record_PartsAnswers in "modules-plugable/computer/memory/store/record/protocol/record-parts-answers.kh"
+tp Record_NodesAnswer in "modules-plugable/computer/memory/store/record/protocol/record-nodes-answer.kh"
+
+tp Record_Refused ab {
+    Record_PartsAnswers
+    Record_NodesAnswer
+}
+
+tp GetReason mt (self Record_Refused) () (reason Error_Store_Refusal)
+
+tp GetDetail mt (self Record_Refused) () (detail String)

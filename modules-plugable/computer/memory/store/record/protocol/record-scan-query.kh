@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Record_Labels in "modules-plugable/computer/memory/store/record/protocol/record-labels.kh"
+tp Record_NodesQuery in "modules-plugable/computer/memory/store/record/protocol/record-nodes-query.kh"
+
+tp Record_ScanQuery ab {
+    Record_NodesQuery
+}
+
+tp GetAllOf mt (self Record_ScanQuery) () (labels Record_Labels)

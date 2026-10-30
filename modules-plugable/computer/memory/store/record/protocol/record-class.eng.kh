@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+
+tp Domain mt (self Record_Class) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_Class) () (s String) {
+    CharacterRun_From.FromCharacterRun("A name a composition gives to the nodes one group of services reads and writes")(s, VoidError)
+}
+
+tp Overview mt (self Record_Class) () (s String) {
+    CharacterRun_From.FromCharacterRun("A name a composition gives to the nodes one group of services reads and writes.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_Class) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_Class) () (s String) {
+    CharacterRun_From.FromCharacterRun("A node belongs to exactly one class, hence to one store, and a batch never spans two. The record fixes no class name and has no default adapter for a class.")(s, VoidError)
+}

@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Record_Unmet ab
+
+tp GetReason mt (self Record_Unmet) (position W32) (reason String)
+
+tp GetCount mt (self Record_Unmet) () (count W32)

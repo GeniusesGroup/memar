@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+
+tp Record_DomainKey ab {
+    Logic_Equivalence
+}
+
+tp GetName mt (self Record_DomainKey) () (name String)
+
+tp IsReserved mt (self Record_DomainKey) () (reserved Boolean)

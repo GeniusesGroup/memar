@@ -1,0 +1,32 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Store_Seam in "modules/computer/memory/store/protocol/store-seam.kh"
+tp Conformance_Opener in "modules/computer/memory/conformance/conformance-opener.kh"
+tp Record_IDs in "modules-plugable/computer/memory/store/record/protocol/record-ids.kh"
+tp Record_PartsAnswers in "modules-plugable/computer/memory/store/record/protocol/record-parts-answers.kh"
+tp Record_NodesQuery in "modules-plugable/computer/memory/store/record/protocol/record-nodes-query.kh"
+tp Record_ScanQuery in "modules-plugable/computer/memory/store/record/protocol/record-scan-query.kh"
+tp Record_NodesAnswer in "modules-plugable/computer/memory/store/record/protocol/record-nodes-answer.kh"
+tp Record_Index in "modules-plugable/computer/memory/store/record/protocol/record-index.kh"
+
+tp Record ab {
+    Store
+    Store_Seam
+}
+
+tp Layable mt (self Record) (store Store) (can Boolean)
+
+tp Lay mt (self Record) (store Store) (laid Record, err Error)
+
+tp Parts mt (self Record) (ids Record_IDs) (answers Record_PartsAnswers)
+
+tp Nodes mt (self Record) (query Record_NodesQuery) (answer Record_NodesAnswer)
+
+tp Scan mt (self Record) (query Record_ScanQuery) (answer Record_NodesAnswer)
+
+tp GetIndex mt (self Record) () (index Record_Index, err Error)
+
+tp GetOpener mt (self Record) () (opener Conformance_Opener, given Boolean)

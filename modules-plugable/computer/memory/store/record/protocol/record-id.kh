@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+
+tp Record_ID ab {
+    Logic_Equivalence
+}
+
+tp GetInstant mt (self Record_ID) () (instant W64)
+
+tp Precedes mt (self Record_ID) (than Record_ID) (b Boolean)

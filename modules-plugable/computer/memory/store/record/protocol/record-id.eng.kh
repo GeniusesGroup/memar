@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_ID in "modules-plugable/computer/memory/store/record/protocol/record-id.kh"
+
+tp Domain mt (self Record_ID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_ID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Sixteen bytes forming a UUID version 7, the name of a node")(s, VoidError)
+}
+
+tp Overview mt (self Record_ID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Sixteen bytes forming a UUID version 7, the name of a node.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_ID) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_ID) () (s String) {
+    CharacterRun_From.FromCharacterRun("The port requires of an id equality, an existence instant (the milliseconds since the Unix epoch its first six bytes carry) and the byte order, which for this form is the order of existence instants and then of the remaining bytes. Sixteen bytes whose version and variant bits are other are refused. The record mints no id and never checks the instant against a clock.")(s, VoidError)
+}

@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Store_Capabilities in "modules/computer/memory/store/protocol/store-capabilities.kh"
+tp Store_Limits in "modules/computer/memory/store/protocol/store-limits.kh"
+tp Record_Unmet in "modules-plugable/computer/memory/store/record/protocol/record-unmet.kh"
+
+tp Record_Needs ab
+
+tp GetCapabilities mt (self Record_Needs) () (capabilities Store_Capabilities)
+
+tp GetLimits mt (self Record_Needs) () (limits Store_Limits)
+
+tp Unmet mt (self Record_Needs) (store Store) (unmet Record_Unmet)

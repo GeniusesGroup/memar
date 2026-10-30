@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_Binding in "modules-plugable/computer/memory/store/record/protocol/record-binding.kh"
+
+tp Domain mt (self Record_Binding) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_Binding) () (s String) {
+    CharacterRun_From.FromCharacterRun("One pair of the key memory of the manifest: a class and the name of its adapter")(s, VoidError)
+}
+
+tp Overview mt (self Record_Binding) () (s String) {
+    CharacterRun_From.FromCharacterRun("One pair of the key memory of the manifest: a class and the name of its adapter.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_Binding) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_Binding) () (s String) {
+    CharacterRun_From.FromCharacterRun("Written class equals adapter. The names of the classes are the composition's, and a class occurs once.")(s, VoidError)
+}

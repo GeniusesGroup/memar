@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_Parts in "modules-plugable/computer/memory/store/record/protocol/record-parts.kh"
+
+tp Domain mt (self Record_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("The domain keys a node holds with the token of each, ascending")(s, VoidError)
+}
+
+tp Overview mt (self Record_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("The domain keys a node holds with the token of each, ascending.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read from one committed state, so the parts a batch wrote together are seen together.")(s, VoidError)
+}

@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store_Token in "modules/computer/memory/store/protocol/store-token.kh"
+tp Record_DomainKey in "modules-plugable/computer/memory/store/record/protocol/record-domain-key.kh"
+
+tp Record_Part ab
+
+tp GetDomainKey mt (self Record_Part) () (domainKey Record_DomainKey)
+
+tp GetToken mt (self Record_Part) () (token Store_Token)

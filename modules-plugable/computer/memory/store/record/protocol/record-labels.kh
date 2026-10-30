@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Record_ID in "modules-plugable/computer/memory/store/record/protocol/record-id.kh"
+tp Record_IDs in "modules-plugable/computer/memory/store/record/protocol/record-ids.kh"
+
+tp Record_Labels ab {
+    Record_IDs
+}
+
+tp Has mt (self Record_Labels) (label Record_ID) (has Boolean)

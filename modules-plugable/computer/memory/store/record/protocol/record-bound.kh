@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Conformance_Adapter in "modules/computer/memory/conformance/conformance-adapter.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+
+tp Record_Bound ab {
+    Conformance_Adapter
+}
+
+tp GetClass mt (self Record_Bound) () (class Record_Class)
+
+tp SameStore mt (self Record_Bound) (other Record_Bound) (same Boolean)

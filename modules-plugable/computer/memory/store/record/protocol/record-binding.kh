@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+
+tp Record_Binding ab
+
+tp GetClass mt (self Record_Binding) () (class Record_Class)
+
+tp GetAdapterName mt (self Record_Binding) () (name String)

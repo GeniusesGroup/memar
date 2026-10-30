@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_Index in "modules-plugable/computer/memory/store/record/protocol/record-index.kh"
+
+tp Domain mt (self Record_Index) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_Index) () (s String) {
+    CharacterRun_From.FromCharacterRun("The ids of the nodes and the labels of each, as of one committed state")(s, VoidError)
+}
+
+tp Overview mt (self Record_Index) () (s String) {
+    CharacterRun_From.FromCharacterRun("The ids of the nodes and the labels of each, as of one committed state.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_Index) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_Index) () (s String) {
+    CharacterRun_From.FromCharacterRun("Derived from the nodes alone and kept in the memory of the process, one for each open record, never in the store medium nor on disk; before it answers it applies the changes since the state it records. Dropping it costs one rebuild and changes no answer.")(s, VoidError)
+}

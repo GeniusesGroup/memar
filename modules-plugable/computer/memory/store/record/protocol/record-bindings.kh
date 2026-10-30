@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+tp Record_Binding in "modules-plugable/computer/memory/store/record/protocol/record-binding.kh"
+
+tp Record_Bindings ab
+
+tp GetBinding mt (self Record_Bindings) (position W32) (binding Record_Binding)
+
+tp GetCount mt (self Record_Bindings) () (count W32)
+
+tp Of mt (self Record_Bindings) (class Record_Class) (binding Record_Binding, found Boolean)

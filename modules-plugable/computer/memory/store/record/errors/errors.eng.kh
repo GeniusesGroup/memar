@@ -1,0 +1,173 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Record_BadKey in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_BadID in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_BadLabels in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_BadInstant in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_BadBounds in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_BadLimit in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_BadAllOf in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+tp Error_Record_NotLayable in "modules-plugable/computer/memory/store/record/errors/errors.kh"
+
+tp Domain mt (self Error_Record_BadKey) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadKey) () (s String) {
+    CharacterRun_From.FromCharacterRun("A key whose id or domain key is not of the form")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadKey) () (s String) {
+    CharacterRun_From.FromCharacterRun("A key whose id or domain key is not of the form.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadKey) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadKey) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Get and Batch before anything is applied.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_BadID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadID) () (s String) {
+    CharacterRun_From.FromCharacterRun("An id that is not sixteen bytes of a UUID version 7")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadID) () (s String) {
+    CharacterRun_From.FromCharacterRun("An id that is not sixteen bytes of a UUID version 7.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadID) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Parts, Scan and a listing whose after is not an id.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_BadLabels) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadLabels) () (s String) {
+    CharacterRun_From.FromCharacterRun("A labels part that is not ids ascending without repetition")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadLabels) () (s String) {
+    CharacterRun_From.FromCharacterRun("A labels part that is not ids ascending without repetition.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadLabels) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadLabels) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Batch.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_BadInstant) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadInstant) () (s String) {
+    CharacterRun_From.FromCharacterRun("An instant that is not a whole number of milliseconds of six bytes")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadInstant) () (s String) {
+    CharacterRun_From.FromCharacterRun("An instant that is not a whole number of milliseconds of six bytes.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadInstant) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadInstant) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Nodes and Scan.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_BadBounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadBounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("A from after a to")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadBounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("A from after a to.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadBounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadBounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Nodes and Scan.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_BadLimit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadLimit) () (s String) {
+    CharacterRun_From.FromCharacterRun("A limit below one")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadLimit) () (s String) {
+    CharacterRun_From.FromCharacterRun("A limit below one.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadLimit) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadLimit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Nodes and Scan.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_BadAllOf) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_BadAllOf) () (s String) {
+    CharacterRun_From.FromCharacterRun("A set of labels that is empty or holds what is not an id")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_BadAllOf) () (s String) {
+    CharacterRun_From.FromCharacterRun("A set of labels that is empty or holds what is not an id.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_BadAllOf) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_BadAllOf) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused as a whole by Scan.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Record_NotLayable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Error_Record_NotLayable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store is not a sparse store of any address length and any value length")(s, VoidError)
+}
+
+tp Overview mt (self Error_Record_NotLayable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store is not a sparse store of any address length and any value length.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Record_NotLayable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Record_NotLayable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused when the record is laid over the store. A batch whose expectations are on more than one key needs atomic batch, and an adapter that declares less answers it with the error of the store, Error_Store_NotAtomic.")(s, VoidError)
+}

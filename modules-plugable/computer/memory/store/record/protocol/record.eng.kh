@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record in "modules-plugable/computer/memory/store/record/protocol/record.kh"
+
+tp Domain mt (self Record) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record) () (s String) {
+    CharacterRun_From.FromCharacterRun("The capsule of nodes, parts and labels laid over any store of the contract")(s, VoidError)
+}
+
+tp Overview mt (self Record) () (s String) {
+    CharacterRun_From.FromCharacterRun("The capsule of nodes, parts and labels laid over any store of the contract.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record) () (s String) {
+    CharacterRun_From.FromCharacterRun("A store of the contract whose address is a key. Get, List, Batch, State and Changes are the contract over keys, with the refusals added of a key not of the form and of a labels part not in the form; Parts, Nodes and Scan are its own. It is laid over a sparse store of any address length and any value length, and a store of another kind is refused at Lay. It keeps the parameters of the store but compare and write, the limits and the capabilities, mints no id, stamps no time, removes nothing and enforces no access.")(s, VoidError)
+}

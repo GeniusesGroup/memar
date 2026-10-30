@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_PartsAbsent in "modules-plugable/computer/memory/store/record/protocol/record-parts-absent.kh"
+
+tp Domain mt (self Record_PartsAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_PartsAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The node holds no part")(s, VoidError)
+}
+
+tp Overview mt (self Record_PartsAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The node holds no part.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_PartsAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_PartsAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Answered only when the adapter has answered that none is there.")(s, VoidError)
+}

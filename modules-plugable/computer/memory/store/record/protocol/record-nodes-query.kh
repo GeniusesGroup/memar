@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+tp Record_ID in "modules-plugable/computer/memory/store/record/protocol/record-id.kh"
+
+tp Record_NodesQuery ab
+
+tp GetFrom mt (self Record_NodesQuery) () (from W64, given Boolean)
+
+tp GetTo mt (self Record_NodesQuery) () (to W64, given Boolean)
+
+tp GetAfter mt (self Record_NodesQuery) () (after Record_ID, given Boolean)
+
+tp GetLimit mt (self Record_NodesQuery) () (limit W32, given Boolean)
+
+tp GetDescending mt (self Record_NodesQuery) () (descending Boolean)

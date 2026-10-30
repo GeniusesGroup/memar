@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Record_Refused in "modules-plugable/computer/memory/store/record/protocol/record-refused.kh"
+
+tp Domain mt (self Record_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Record")(s, VoidError)
+}
+
+tp Summary mt (self Record_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The input of parts, nodes or scan is refused as a whole")(s, VoidError)
+}
+
+tp Overview mt (self Record_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The input of parts, nodes or scan is refused as a whole.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Record_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Record_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing is answered and nothing is applied; the reason is one of the errors in the folder errors of this module or of the store, and the detail names what for a reader.")(s, VoidError)
+}
