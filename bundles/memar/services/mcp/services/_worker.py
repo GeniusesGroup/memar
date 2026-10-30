@@ -74,7 +74,7 @@ class Worker:
     def _result(self, method: str, params: dict) -> dict:
         if method == 'initialize':
             asked = params.get('protocolVersion')
-            return {'protocolVersion': asked if asked in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0], 'capabilities': {'tools': {'listChanged': True}}, 'serverInfo': SERVER, 'instructions': 'Each tool is one verb of the `memar` command and answers exactly what it prints. Start with the tool `commands`.'}
+            return {'protocolVersion': asked if asked in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0], 'capabilities': {'tools': {'listChanged': True}}, 'serverInfo': SERVER, 'instructions': 'Each tool is one verb of the `memar` command and answers exactly what it prints. A tool\'s description holds its verb\'s help: call the tool, and do not run `memar` in a shell. The tool `commands` lists every verb and is needed only when the descriptions are not enough.'}
         if method == 'ping':
             return {}
         if method == 'tools/list':

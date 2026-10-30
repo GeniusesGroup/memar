@@ -54,7 +54,7 @@ _m_plan_file = import_module('modules-plugable.management.task.services.plan_fil
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_skeleton = _m_plan_file.plan_skeleton
 SID = '20261011-T000000Z-1'
-BRIEF = f'Your task is task {SID}. Run `memar ai get-task-init-context --task-id {SID}` first, before anything else, and follow what it prints.'
+BRIEF = f'Your task is task {SID}. Run `memar ai get-task-init-context --task-id {SID}` first, before anything else, and follow what it prints. Where Memar\'s MCP tools are listed, call the tool `ai_get-task-init-context` with the same arguments instead of running the command.'
 
 class Fixture(unittest.TestCase):
 

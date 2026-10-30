@@ -54,7 +54,7 @@ plan_skeleton = _m_plan_file.plan_skeleton
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
 SID = '20261011-T000000Z-1'
-QUESTIONS_BRIEF = f'Your task is to answer the questions of task {SID}, not to take it up. Run `memar ai get-task-answer-context --task-id {SID}` first, before anything else, and follow what it prints.'
+QUESTIONS_BRIEF = f'Your task is to answer the questions of task {SID}, not to take it up. Run `memar ai get-task-answer-context --task-id {SID}` first, before anything else, and follow what it prints. Where Memar\'s MCP tools are listed, call the tool `ai_get-task-answer-context` with the same arguments instead of running the command.'
 REPORT_WITH_QUESTIONS = '---\nTitle: R\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n- Q1: which name?\n'
 REPORT_WITHOUT = '---\nTitle: R\nStatus: Complete\n---\n# Report\n\n## Decisions needed\n\n## Result\nDone.\n'
 

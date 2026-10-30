@@ -43,7 +43,7 @@ QUESTIONS_BRIEF_COMMAND = 'get-task-questions-answer-brief'
 
 def questions_brief_text(task_id: str) -> str:
     """The text that hands TASK_ID's questions, not its task, to an agent that answers them, ready to paste."""
-    return f'Your task is to answer the questions of task {task_id}, not to take it up. Run `memar {TASK_COMMAND} {ANSWERING_COMMAND} --task-id {task_id}` first, before anything else, and follow what it prints.'
+    return f'Your task is to answer the questions of task {task_id}, not to take it up. Run `memar {TASK_COMMAND} {ANSWERING_COMMAND} --task-id {task_id}` first, before anything else, and follow what it prints. Where Memar\'s MCP tools are listed, call the tool `{TASK_COMMAND}_{ANSWERING_COMMAND}` with the same arguments instead of running the command.'
 
 def get_task_questions_answer_brief(task_id: str) -> None:
     """Print the text that hands TASK_ID's questions over, once its folder, its plan and a question under its report's hand-back part are there."""

@@ -44,7 +44,7 @@ PLAN_BRIEF_COMMAND = 'get-task-plan-carry-out-brief'
 
 def brief_text(task_id: str) -> str:
     """The text that hands TASK_ID's task to a sub-agent, ready to paste."""
-    return f'Your task is task {task_id}. Run `memar {TASK_COMMAND} {START_COMMAND} --task-id {task_id}` first, before anything else, and follow what it prints.'
+    return f'Your task is task {task_id}. Run `memar {TASK_COMMAND} {START_COMMAND} --task-id {task_id}` first, before anything else, and follow what it prints. Where Memar\'s MCP tools are listed, call the tool `{TASK_COMMAND}_{START_COMMAND}` with the same arguments instead of running the command.'
 
 def get_task_plan_carry_out_brief(task_id: str) -> None:
     """Print TASK_ID's brief alone, once its folder and its plan are there."""
