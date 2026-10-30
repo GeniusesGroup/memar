@@ -1,20 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests that the builder of `view.py` builds the view [Memory View](../view.md) states, over `volatile` and over `git-store`.
-
-    python modules-plugable/computer/memory/store/view/tests/view.py
-
-The subject is `view.py`, named for the file that holds it per
-[Test Naming](../../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the
-module that owns it per [Test Placement](../../../../../../modules/process/test/rules/test-placement/test-placement.md).
-Each case of the document is a test of `Cases`, named by the case, and runs twice: `OverVolatile` builds over `record`
-laid over `volatile`, `OverGitStore` over `record` laid over `git-store` on a scratch repository. The presentation is
-the test's own (`present`): a node's folder is its id in hexadecimal, and each part is a file named by its domain key.
-Every view is built in a folder of a scratch repository that ignores `view/`, and every scratch folder is made under
-the suite's scratch folder (`fs_test_scratch`) and removed whole after its test.
-"""
 from __future__ import annotations
+TIER = 'system'
+BUDGET_SECONDS = 60
+import ast
+import enum
+import io
+import tokenize
 import os
 import stat
 import subprocess
@@ -40,11 +32,9 @@ Committed = import_module('modules.computer.memory.store.protocol.store').Commit
 VIEW = 'view'
 
 def node_id(i: int) -> bytes:
-    """The id of the I-th node of a test: a UUID version 7 of a fixed instant."""
     return bytes.fromhex(f'019000000000700080000000{i:08x}')
 
 def present(node: Any) -> dict[str, bytes]:
-    """The test presentation: one folder per node, named by its id, holding one file per part, named by its domain key."""
     return {f'{node.id.hex()}/{domain_key}.txt': value for domain_key, value in node.parts.items()}
 
 def git(where: Path, *args: str) -> str:
@@ -52,7 +42,6 @@ def git(where: Path, *args: str) -> str:
     return done.stdout
 
 def scratch_repository(ignored: bool=True) -> Path:
-    """A new scratch folder that is a repository with one commit, ignoring `view/` when IGNORED."""
     folder = _m_scratch.suite_scratch() / f'view-{uuid.uuid4().hex[:12]}'
     folder.mkdir(parents=True)
     git(folder, 'init', '-q')
@@ -62,7 +51,6 @@ def scratch_repository(ignored: bool=True) -> Path:
     return folder
 
 def files(folder: Path) -> dict[str, tuple[bytes, int]]:
-    """Every file under FOLDER, by its path relative to it, with its bytes and its modification time."""
     if not folder.exists():
         return {}
     return {each.relative_to(folder).as_posix(): (each.read_bytes(), each.stat().st_mtime_ns) for each in folder.rglob('*') if each.is_file()}
@@ -72,7 +60,6 @@ def write(record: Any, i: int, **parts: bytes) -> None:
     assert answer == Committed(), answer
 
 class Cases:
-    """The cases of [Memory View → The cases](../view.md#the-cases); `make()` gives a `record` and its scratch repository."""
 
     def setUp(self) -> None:
         self.made: list[Path] = []
@@ -98,7 +85,6 @@ class Cases:
         return _m_view.build(record, present, folder)
 
     def test_view_is_deterministic(self) -> None:
-        """view-is-deterministic: two builds with no change in between leave every file's bytes and modification time as they were."""
         record, folder = self.three_nodes()
         first = self.build(record, folder)
         self.assertIsInstance(first, _m_view.Built)
@@ -110,7 +96,6 @@ class Cases:
         self.assertEqual(files(folder), before)
 
     def test_view_rebuild_identical(self) -> None:
-        """view-rebuild-identical: a build after the folder is deleted gives the same set of paths and bytes."""
         record, folder = self.three_nodes()
         self.build(record, folder)
         before = {path: data for path, (data, _) in files(folder).items()}
@@ -119,8 +104,6 @@ class Cases:
         self.assertEqual({path: data for path, (data, _) in files(folder).items()}, before)
 
     def test_view_changed_node_rewrites_only_its_files(self) -> None:
-        """view-changed-node-rewrites-only-its-files: after one node changes, exactly the files that show it are rewritten.
-        The builder's own list of the files it wrote shows no node, and is left out of the comparison."""
         record, folder = self.three_nodes()
         self.build(record, folder)
         before = files(folder)
@@ -134,8 +117,6 @@ class Cases:
         self.assertEqual((built.written, built.removed, built.drift), (2, 0, 0))
 
     def test_view_refuses_unignored_folder(self) -> None:
-        """view-refuses-unignored-folder: in a working tree under version control, a folder that version control does not
-        ignore is refused and nothing is written."""
         record, repository = self.make(ignored=False)
         write(record, 1, alpha=b'one\n')
         refused = self.build(record, repository / VIEW)
@@ -145,7 +126,6 @@ class Cases:
         self.assertEqual(git(repository, 'status', '--porcelain'), '')
 
     def test_view_files_read_only(self) -> None:
-        """view-files-read-only: every file the builder wrote carries the operating system's read-only attribute."""
         record, folder = self.three_nodes()
         self.build(record, folder)
         written = [each for each in folder.rglob('*') if each.is_file()]
@@ -155,7 +135,6 @@ class Cases:
                 self.assertFalse(each.stat().st_mode & stat.S_IWRITE)
 
     def test_view_drift_is_rewritten_and_counted(self) -> None:
-        """view-drift-is-rewritten-and-counted: a file changed by hand is restored by the next build, which reports one drift."""
         record, folder = self.three_nodes()
         self.build(record, folder)
         changed = folder / node_id(1).hex() / 'alpha.txt'
@@ -168,8 +147,6 @@ class Cases:
         self.assertFalse(changed.stat().st_mode & stat.S_IWRITE)
 
     def test_view_refuses_foreign_files(self) -> None:
-        """view-refuses-foreign-files: a folder holding a file the builder did not write is refused and nothing is written
-        or removed."""
         record, folder = self.three_nodes()
         self.build(record, folder)
         foreign = folder / 'notes.txt'
@@ -187,8 +164,6 @@ class Cases:
         self.assertEqual(sorted((each.name for each in fresh.iterdir())), ['kept.txt'])
 
     def test_view_removes_the_files_of_a_node_no_longer_shown(self) -> None:
-        """A path the presentation no longer gives is removed with the folders it leaves empty: the view is a function of
-        the state, and a file it once wrote is the builder's to take away."""
         record, folder = self.three_nodes()
         self.build(record, folder)
         shown = {'alpha'}
@@ -197,7 +172,6 @@ class Cases:
         self.assertFalse((folder / node_id(3).hex()).exists())
 
     def test_view_refuses_a_path_outside_the_folder(self) -> None:
-        """A presentation that gives a path leaving the folder, or one path for two nodes, is refused and nothing is written."""
         record, folder = self.three_nodes()
         for wrong in (lambda node: {'../outside.txt': b'x'}, lambda node: {'same.txt': node.id}):
             with self.subTest():
@@ -226,7 +200,6 @@ class OverGitStore(Cases, unittest.TestCase):
         return (_m_record.RecordAdapter(adapter).open(), repository)
 
 class Preference(unittest.TestCase):
-    """The key `view` is this module's, read in the form the preferences module declares once; a project defines at most one view."""
 
     def setUp(self) -> None:
         self.folder = _m_scratch.suite_scratch() / f'view-preference-{uuid.uuid4().hex[:12]}'
@@ -255,12 +228,6 @@ class Preference(unittest.TestCase):
         self.assertIs(_m_view.presentation(name), present)
 
 class NeverReadByVerbs(unittest.TestCase):
-    """view-never-read-by-verbs: a scan of the verbs' source finds no read of the view's folder.
-
-    The folder is reached only through the key `view` (`view_preference`, or the key's name read by the preferences
-    module's reader) and is known by the list the builder keeps in it; a source that names neither cannot find it. So
-    every Python file under `modules/`, `modules-plugable/` and `bundles/` is scanned for those names, outside this module
-    and the verb that builds the view. A read through a path typed by hand is beyond what a scan of names can see."""
 
     def test_no_verb_names_the_views_folder(self) -> None:
         builder = TOP / 'modules-plugable' / 'computer' / 'memory' / 'store' / 'view'
@@ -274,5 +241,50 @@ class NeverReadByVerbs(unittest.TestCase):
                 text = each.read_text(encoding='utf-8', errors='replace')
                 found.extend((f'{each.relative_to(TOP).as_posix()}: {name}' for name in names if name in text))
         self.assertEqual(found, [])
+def bare(path):
+    source = Path(path).read_text(encoding='utf-8')
+    comments = [t.start[0] for t in tokenize.generate_tokens(io.StringIO(source).readline) if t.type == tokenize.COMMENT and t.start[0] > 2]
+    documented = [getattr(n, 'lineno', 0) for n in ast.walk(ast.parse(source)) if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and ast.get_docstring(n, clean=False) is not None]
+    return (comments, documented)
+
+def own_error_types(module):
+    return sorted((name for name, each in vars(module).items() if isinstance(each, type) and each.__module__ == module.__name__ and (issubclass(each, (BaseException, enum.Enum)) or 'Refus' in name)))
+
+def errors_module():
+    return import_module('modules-plugable.computer.memory.store.view.errors.errors')
+
+class ErrorsFolder(unittest.TestCase):
+
+    def test_the_errors_are_declared_in_the_errors_folder(self) -> None:
+        errors = errors_module()
+        self.assertEqual([each.name for each in errors.ViewRefusal], ['UNIGNORED_FOLDER', 'FOREIGN_FILES', 'MALFORMED_PATH', 'UNAVAILABLE'])
+        self.assertTrue(all((each.summary() for each in errors.ViewRefusal)))
+        self.assertEqual(errors.ViewRefused(errors.ViewRefusal.FOREIGN_FILES, 'a.txt').summary(), errors.ViewRefusal.FOREIGN_FILES.summary() + ': a.txt')
+        self.assertTrue(errors.BadPreference('view: one').summary())
+
+    def test_view_re_exports_the_declared_errors_and_defines_none(self) -> None:
+        errors = errors_module()
+        self.assertIs(_m_view.ViewRefusal, errors.ViewRefusal)
+        self.assertIs(_m_view.ViewRefused, errors.ViewRefused)
+        self.assertEqual(own_error_types(_m_view), [])
+
+    def test_a_refused_build_answers_the_declared_error(self) -> None:
+        errors = errors_module()
+        record = _m_record.RecordAdapter(_m_volatile.Volatile()).open()
+        write(record, 1, alpha=b'one\n')
+        scratch = scratch_repository()
+        try:
+            answer = _m_view.build(record, lambda node: {'../out.txt': b'x'}, scratch / VIEW)
+        finally:
+            _m_scratch.remove_tree(scratch)
+        self.assertIsInstance(answer, errors.ViewRefused)
+        self.assertIs(answer.reason, errors.ViewRefusal.MALFORMED_PATH)
+
+class NoComments(unittest.TestCase):
+
+    def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
+        for path in (_m_view.__file__, errors_module().__file__, __file__):
+            with self.subTest(path=Path(path).name):
+                self.assertEqual(bare(path), ([], []))
 if __name__ == '__main__':
     unittest.main()
