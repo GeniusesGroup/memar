@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore in "modules-plugable/computer/memory/store/git-store/protocol/git-store.kh"
+
+tp Domain mt (self GitStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("A handle on a store kept in a reference of a git object database and nothing else")(s, VoidError)
+}
+
+tp Overview mt (self GitStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("A handle on a store kept in a reference of a git object database and nothing else.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("No worktree, no index and no file in the working tree of the project; the state is the commit the reference points to, one commit for each committed batch, written as one pack and made visible by one compare and swap of the reference. Plumbing only. It knows addresses only and shards them by a fixed length prefix of the address, a rule no answer shows. Changes answers the addresses whose value changed, so a write of the bytes an address already held is not answered. It removes nothing, does not order writers on two machines, and survives the loss of power only as far as git does. Close ends what the medium runs in this process for every handle of it.")(s, VoidError)
+}

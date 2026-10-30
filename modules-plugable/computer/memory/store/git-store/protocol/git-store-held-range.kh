@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+
+tp GitStore_HeldRange ab
+
+tp GetFrom mt (self GitStore_HeldRange) () (from MemoryAddress)
+
+tp GetTo mt (self GitStore_HeldRange) () (to MemoryAddress, given Boolean)

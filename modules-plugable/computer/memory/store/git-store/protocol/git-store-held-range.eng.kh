@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_HeldRange in "modules-plugable/computer/memory/store/git-store/protocol/git-store-held-range.kh"
+
+tp Domain mt (self GitStore_HeldRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_HeldRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("A range of addresses a store decides alone")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_HeldRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("A range of addresses a store decides alone.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_HeldRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_HeldRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("From is included and to is excluded; to not given is no end.")(s, VoidError)
+}

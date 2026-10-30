@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Reference in "modules-plugable/computer/memory/store/git-store/protocol/git-store-reference.kh"
+
+tp Domain mt (self GitStore_Reference) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Reference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The name of a git reference a store is kept in")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Reference) () (s String) {
+    CharacterRun_From.FromCharacterRun("The name of a git reference a store is kept in.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Reference) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Reference) () (s String) {
+    CharacterRun_From.FromCharacterRun("It begins with refs/, holds no two dots, and does not end with a slash or with .lock. The public reference of a class is refs/memar/ then the class, and nothing outside refs/memar/ is a public reference. A reference may not lie under refs/memar-local/, which belongs to the adapter. A class may not be named so that its reference is a folder of the reference of another, as a and a/b, because git cannot hold both; IsFolderOf decides it and the class bound second is refused as Error_GitStore_ReferenceCollision.")(s, VoidError)
+}

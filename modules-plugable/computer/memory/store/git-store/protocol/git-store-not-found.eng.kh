@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_NotFound in "modules-plugable/computer/memory/store/git-store/protocol/git-store-not-found.kh"
+
+tp Domain mt (self GitStore_NotFound) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_NotFound) () (s String) {
+    CharacterRun_From.FromCharacterRun("The one fallback: a shared store that answers that nothing is there")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_NotFound) () (s String) {
+    CharacterRun_From.FromCharacterRun("The one fallback: a shared store that answers that nothing is there.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_NotFound) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_NotFound) () (s String) {
+    CharacterRun_From.FromCharacterRun("Until a fetch of part of a shared store exists a store holds every address, so the fallback is reached only through the seam of the fallback group.")(s, VoidError)
+}

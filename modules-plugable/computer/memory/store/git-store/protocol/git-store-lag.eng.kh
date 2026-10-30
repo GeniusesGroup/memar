@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Lag in "modules-plugable/computer/memory/store/git-store/protocol/git-store-lag.kh"
+
+tp Domain mt (self GitStore_Lag) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Lag) () (s String) {
+    CharacterRun_From.FromCharacterRun("How far the shared store is behind a store")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Lag) () (s String) {
+    CharacterRun_From.FromCharacterRun("How far the shared store is behind a store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Lag) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Lag) () (s String) {
+    CharacterRun_From.FromCharacterRun("The batches ahead of the shared store, which are the commits between the local reference and the private published reference and so are known after a restart with no state in memory, the age of the oldest, and why a push was refused. A refusal as not a fast-forward is kept and reported and never overwritten.")(s, VoidError)
+}

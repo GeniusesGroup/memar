@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp GitStore_Reference in "modules-plugable/computer/memory/store/git-store/protocol/git-store-reference.kh"
+
+tp GitStore_ReferenceNamespace ab
+
+tp GetPublicPrefix mt (self GitStore_ReferenceNamespace) () (prefix String)
+
+tp GetPublishedPrefix mt (self GitStore_ReferenceNamespace) () (prefix String)
+
+tp GetPendingBatch mt (self GitStore_ReferenceNamespace) () (reference GitStore_Reference)
+
+tp PublishedOf mt (self GitStore_ReferenceNamespace) (reference GitStore_Reference) (published GitStore_Reference)

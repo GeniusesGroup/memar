@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp GitStore_Publish in "modules-plugable/computer/memory/store/git-store/protocol/git-store-publish.kh"
+
+tp GitStore_Publish_Soon ab {
+    GitStore_Publish
+}
+
+tp GitStore_Publish_Now ab {
+    GitStore_Publish
+}

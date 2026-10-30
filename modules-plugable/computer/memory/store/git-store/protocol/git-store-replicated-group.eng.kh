@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_ReplicatedGroup in "modules-plugable/computer/memory/store/git-store/protocol/git-store-replicated-group.kh"
+
+tp Domain mt (self GitStore_ReplicatedGroup) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_ReplicatedGroup) () (s String) {
+    CharacterRun_From.FromCharacterRun("The conformance group replicated")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_ReplicatedGroup) () (s String) {
+    CharacterRun_From.FromCharacterRun("The conformance group replicated.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_ReplicatedGroup) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_ReplicatedGroup) () (s String) {
+    CharacterRun_From.FromCharacterRun("Owed by this module, the first to declare the capability, until a second adapter declares it: a committed batch reaches the shared store, an unreachable shared store keeps the batch and retries, the lag survives a restart, and a publish refused as not a fast-forward is reported. Applies to a store that declares replicated.")(s, VoidError)
+}

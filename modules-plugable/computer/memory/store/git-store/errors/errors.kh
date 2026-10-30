@@ -1,0 +1,29 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Error_Store_Malformed in "modules/computer/memory/store/errors/errors.kh"
+tp Error_Store_Failed in "modules/computer/memory/store/errors/errors.kh"
+
+tp Error_GitStore_BadReference ab {
+    Error_Store_Malformed
+}
+
+tp Error_GitStore_ReferenceCollision ab {
+    Error_Store_Malformed
+}
+
+tp Error_GitStore_NotInRepository ab {
+    Error
+}
+
+tp Error_GitStore_BadParameter ab {
+    Error
+}
+
+tp Error_GitStore_Lost ab {
+    Error_Store_Failed
+}
+
+tp Error_GitStore_NotFastForward ab {
+    Error
+}

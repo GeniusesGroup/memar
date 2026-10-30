@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Held in "modules-plugable/computer/memory/store/git-store/protocol/git-store-held.kh"
+
+tp Domain mt (self GitStore_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("The ranges of addresses a store holds")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("The ranges of addresses a store holds.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("By default every address. An address outside the ranges is asked of the fallback, and a write to one, or an expectation of a value at one, is Unavailable as NotHeld.")(s, VoidError)
+}

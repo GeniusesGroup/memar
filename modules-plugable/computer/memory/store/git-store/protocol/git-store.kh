@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Store_Seam in "modules/computer/memory/store/protocol/store-seam.kh"
+tp GitStore_Capabilities in "modules-plugable/computer/memory/store/git-store/protocol/git-store-capabilities.kh"
+tp GitStore_Limits in "modules-plugable/computer/memory/store/git-store/protocol/git-store-limits.kh"
+tp GitStore_Lag in "modules-plugable/computer/memory/store/git-store/protocol/git-store-lag.kh"
+
+tp GitStore ab {
+    Store
+    Store_Seam
+}
+
+tp GetDeclared mt (self GitStore) () (capabilities GitStore_Capabilities)
+
+tp GetDeclaredLimits mt (self GitStore) () (limits GitStore_Limits)
+
+tp Lag mt (self GitStore) () (lag GitStore_Lag)
+
+tp Close mt (self GitStore) () ()

@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Store_Addresses in "modules/computer/memory/store/protocol/store-addresses.kh"
+tp Store_GetAnswer in "modules/computer/memory/store/protocol/store-get-answer.kh"
+tp Store_ListAnswer in "modules/computer/memory/store/protocol/store-list-answer.kh"
+
+tp GitStore_Fallback ab
+
+tp Get mt (self GitStore_Fallback) (addresses Store_Addresses) (answer Store_GetAnswer)
+
+tp List mt (self GitStore_Fallback) (from MemoryAddress, to MemoryAddress, bounded Boolean) (answer Store_ListAnswer)

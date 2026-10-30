@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Parameters in "modules-plugable/computer/memory/store/git-store/protocol/git-store-parameters.kh"
+
+tp Domain mt (self GitStore_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("The keys of the memar block of the manifest the adapter declares")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("The keys of the memar block of the manifest the adapter declares.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("Each key is written class equals value pairs separated by commas, each class once, in the form the preferences module declares for every key of a class. The key git-store-reference names the reference of a class and defaults to the public reference of the class; git-store-shared names the shared store and has no default; git-store-publish is now or soon and is soon when unset. A key in another form is Error_GitStore_BadParameter.")(s, VoidError)
+}

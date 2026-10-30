@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Store_State in "modules/computer/memory/store/protocol/store-state.kh"
+tp Conformance_Adapter in "modules/computer/memory/conformance/conformance-adapter.kh"
+tp GitStore_Fallback in "modules-plugable/computer/memory/store/git-store/protocol/git-store-fallback.kh"
+tp GitStore_Held in "modules-plugable/computer/memory/store/git-store/protocol/git-store-held.kh"
+
+tp GitStore_Seam ab
+
+tp FallBack mt (self GitStore_Seam) (fallback GitStore_Fallback, held GitStore_Held) ()
+
+tp GetWorkingTree mt (self GitStore_Seam) () (tree String, given Boolean)
+
+tp SharedReachable mt (self GitStore_Seam) (reachable Boolean) ()
+
+tp GetSharedState mt (self GitStore_Seam) () (state Store_State, given Boolean)
+
+tp Sibling mt (self GitStore_Seam) () (sibling Conformance_Adapter)

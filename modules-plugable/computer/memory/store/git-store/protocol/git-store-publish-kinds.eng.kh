@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Publish_Soon in "modules-plugable/computer/memory/store/git-store/protocol/git-store-publish-kinds.kh"
+tp GitStore_Publish_Now in "modules-plugable/computer/memory/store/git-store/protocol/git-store-publish-kinds.kh"
+
+tp Domain mt (self GitStore_Publish_Soon) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Publish_Soon) () (s String) {
+    CharacterRun_From.FromCharacterRun("A batch is answered at the local commit, the push following in the background")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Publish_Soon) () (s String) {
+    CharacterRun_From.FromCharacterRun("A batch is answered at the local commit, the push following in the background.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Publish_Soon) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Publish_Soon) () (s String) {
+    CharacterRun_From.FromCharacterRun("The default.")(s, VoidError)
+}
+
+tp Domain mt (self GitStore_Publish_Now) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Publish_Now) () (s String) {
+    CharacterRun_From.FromCharacterRun("A batch is answered after one push of it has been tried")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Publish_Now) () (s String) {
+    CharacterRun_From.FromCharacterRun("A batch is answered after one push of it has been tried.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Publish_Now) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Publish_Now) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

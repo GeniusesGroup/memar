@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Logic_Equivalence in "modules/math/logic/protocol/equivalence.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+
+tp GitStore_Reference ab {
+    Logic_Equivalence
+}
+
+tp GetName mt (self GitStore_Reference) () (name String)
+
+tp IsPublic mt (self GitStore_Reference) () (public Boolean)
+
+tp IsFolderOf mt (self GitStore_Reference) (other GitStore_Reference) (folder Boolean)
+
+tp OfClass mt (self GitStore_Reference) (class Record_Class) (reference GitStore_Reference, err Error)
+
+tp Named mt (self GitStore_Reference) (name String) (reference GitStore_Reference, err Error)

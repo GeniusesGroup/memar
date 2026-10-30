@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W64 in "modules/math/integer/unsigned-64.kh"
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp GitStore_Lag ab
+
+tp GetBatches mt (self GitStore_Lag) () (count W64)
+
+tp GetOldestAge mt (self GitStore_Lag) () (age Duration, given Boolean)
+
+tp GetRefusal mt (self GitStore_Lag) () (refusal Error, given Boolean)

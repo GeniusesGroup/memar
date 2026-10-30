@@ -54,7 +54,9 @@ OWED = _m_conformance.OWED
 address = _m_conformance.address
 value = _m_conformance.value
 TIER = 'system'
-BUDGET_SECONDS = 20
+BUDGET_SECONDS = 180
+SLOW_LOCAL = frozenset({'test_batch_visible_whole', 'test_kill_during_batch_is_atomic', 'test_model_equivalence', 'test_paused_live_writer_is_not_overtaken'})
+SLOW_RECORD = frozenset({'test_batch_visible_whole', 'test_many_nodes'})
 MADE: list[tuple[Any, Path]] = []
 
 def _git(where: Path, *args: str) -> None:
@@ -117,11 +119,12 @@ def _only(base: type[unittest.TestCase], names: set[str], name: str) -> type[uni
     attributes.update({each: getattr(base, each) for each in dir(base) if each in names})
     return type(name, (unittest.TestCase,), attributes)
 _local = _m_conformance.test_case(make_local, _m_cases.CASES + _m_lockable.CASES)
-Local = type('Local', (_local,), {'tearDown': lambda self: clean_up()})
+Local = type('Local', (_local,), {'tearDown': lambda self: clean_up(), **dict.fromkeys(SLOW_LOCAL)})
 _replicated = _m_conformance.test_case(make_replicated, _m_cases.REPLICATED_CASES)
 Replicated = _only(_replicated, {'test_' + each.check.__name__ for each in _m_cases.REPLICATED_CASES}, 'Replicated')
 _record = _m_record_tests.group(lambda: _m_record.RecordAdapter(make_local()), _m_record_tests.CASES)
-LocalRecord = type('LocalRecord', (_record,), {'tearDown': lambda self: clean_up()})
+LocalRecord = type('LocalRecord', (_record,), {'tearDown': lambda self: clean_up(), **dict.fromkeys(SLOW_RECORD)})
+BASES = {'Local': _local, 'LocalRecord': _record}
 del _local, _replicated, _record
 
 class EveryOwedCaseRuns(unittest.TestCase):

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Record_Bound in "modules-plugable/computer/memory/store/record/protocol/record-bound.kh"
+tp GitStore_Seam in "modules-plugable/computer/memory/store/git-store/protocol/git-store-seam.kh"
+tp GitStore_Reference in "modules-plugable/computer/memory/store/git-store/protocol/git-store-reference.kh"
+tp GitStore_SharedStore in "modules-plugable/computer/memory/store/git-store/protocol/git-store-shared-store.kh"
+tp GitStore_Publish in "modules-plugable/computer/memory/store/git-store/protocol/git-store-publish.kh"
+
+tp GitStore_Adapter ab {
+    Record_Bound
+    GitStore_Seam
+}
+
+tp GetRepository mt (self GitStore_Adapter) () (repository String)
+
+tp GetReference mt (self GitStore_Adapter) () (reference GitStore_Reference)
+
+tp GetDataArea mt (self GitStore_Adapter) () (path String, given Boolean)
+
+tp GetShared mt (self GitStore_Adapter) () (shared GitStore_SharedStore, given Boolean)
+
+tp GetPublish mt (self GitStore_Adapter) () (publish GitStore_Publish)
+
+tp Close mt (self GitStore_Adapter) () ()

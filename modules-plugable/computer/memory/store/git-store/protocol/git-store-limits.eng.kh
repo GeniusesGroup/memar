@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Limits in "modules-plugable/computer/memory/store/git-store/protocol/git-store-limits.kh"
+
+tp Domain mt (self GitStore_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the git store declares of its limits")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the git store declares of its limits.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("It declares none: no count of writes, no bytes of a batch and no bytes of a value is limited.")(s, VoidError)
+}

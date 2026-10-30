@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Publish in "modules-plugable/computer/memory/store/git-store/protocol/git-store-publish.kh"
+
+tp Domain mt (self GitStore_Publish) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Publish) () (s String) {
+    CharacterRun_From.FromCharacterRun("When a batch of a class with a shared store is answered")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Publish) () (s String) {
+    CharacterRun_From.FromCharacterRun("When a batch of a class with a shared store is answered.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Publish) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Publish) () (s String) {
+    CharacterRun_From.FromCharacterRun("Either soon or now; a batch is committed either way and a failed push leaves it in the lag.")(s, VoidError)
+}

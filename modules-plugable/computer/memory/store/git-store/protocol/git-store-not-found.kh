@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp GitStore_Fallback in "modules-plugable/computer/memory/store/git-store/protocol/git-store-fallback.kh"
+
+tp GitStore_NotFound ab {
+    GitStore_Fallback
+}

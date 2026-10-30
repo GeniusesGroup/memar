@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Adapter in "modules-plugable/computer/memory/store/git-store/protocol/git-store-adapter.kh"
+
+tp Domain mt (self GitStore_Adapter) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Adapter) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter of one class: a reference of the git repository of the project")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Adapter) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter of one class: a reference of the git repository of the project.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Adapter) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Adapter) () (s String) {
+    CharacterRun_From.FromCharacterRun("Its store is named by the repository and the reference, so two classes bound to one store are told; each Open is a new handle on it. The data area is where the derived index is saved, the data area of the user by default, outside every working tree. Close ends the git processes and the publishing it runs in this process.")(s, VoidError)
+}

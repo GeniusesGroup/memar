@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_ReferenceNamespace in "modules-plugable/computer/memory/store/git-store/protocol/git-store-reference-namespace.kh"
+
+tp Domain mt (self GitStore_ReferenceNamespace) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_ReferenceNamespace) () (s String) {
+    CharacterRun_From.FromCharacterRun("The references the adapter owns, public and private")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_ReferenceNamespace) () (s String) {
+    CharacterRun_From.FromCharacterRun("The references the adapter owns, public and private.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_ReferenceNamespace) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_ReferenceNamespace) () (s String) {
+    CharacterRun_From.FromCharacterRun("The public prefix is refs/memar/, outside refs/heads and refs/tags and never refs/pull, refs/changes, refs/for or refs/notes; its references are fetched only by an explicit refspec into a private namespace of the fetcher and are never checked out. The private references are refs/memar-local/published/ then the class, which records what the shared store acknowledged, and refs/memar-local/pending/batch, the branch a batch is written on before its swap; no publish or mirror refspec names them, so a glob over refs/memar/ can never push private state. The owner ruled the name memar on 2026-10-30; a reference of an earlier namespace is removed by hand.")(s, VoidError)
+}

@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp GitStore_HeldRange in "modules-plugable/computer/memory/store/git-store/protocol/git-store-held-range.kh"
+
+tp GitStore_Held ab
+
+tp GetRange mt (self GitStore_Held) (position W32) (range GitStore_HeldRange)
+
+tp GetCount mt (self GitStore_Held) () (count W32)
+
+tp Holds mt (self GitStore_Held) (address MemoryAddress) (holds Boolean)

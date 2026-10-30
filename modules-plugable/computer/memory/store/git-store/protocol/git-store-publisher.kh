@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Duration in "modules/time/duration/protocol/duration.kh"
+
+tp GitStore_Publisher ab
+
+tp Poke mt (self GitStore_Publisher) () ()
+
+tp Stop mt (self GitStore_Publisher) () ()
+
+tp PushOnce mt (self GitStore_Publisher) () (refused Error, given Boolean)
+
+tp GetFirstRetry mt (self GitStore_Publisher) () (wait Duration)
+
+tp GetMostRetry mt (self GitStore_Publisher) () (wait Duration)

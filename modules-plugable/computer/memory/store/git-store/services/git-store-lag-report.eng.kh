@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_LagReport in "modules-plugable/computer/memory/store/git-store/services/git-store-lag-report.kh"
+
+tp Domain mt (self GitStore_LagReport) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_LagReport) () (s String) {
+    CharacterRun_From.FromCharacterRun("Print how far the shared store of a class lags behind its git store")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_LagReport) () (s String) {
+    CharacterRun_From.FromCharacterRun("Print how far the shared store of a class lags behind its git store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_LagReport) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_LagReport) () (s String) {
+    CharacterRun_From.FromCharacterRun("Run by path with the project and the class; for a class that names no shared store it says so. It stays a path-invoked command until the owner rules on the new structure of the services of the bundle.")(s, VoidError)
+}

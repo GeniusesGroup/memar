@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Publisher in "modules-plugable/computer/memory/store/git-store/protocol/git-store-publisher.kh"
+
+tp Domain mt (self GitStore_Publisher) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Publisher) () (s String) {
+    CharacterRun_From.FromCharacterRun("The thread of a process that pushes the committed batches of a class to its shared store")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Publisher) () (s String) {
+    CharacterRun_From.FromCharacterRun("The thread of a process that pushes the committed batches of a class to its shared store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Publisher) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Publisher) () (s String) {
+    CharacterRun_From.FromCharacterRun("It pushes the reference by its explicit refspec, never forced, and on success moves the private published reference to what the shared store acknowledged. An unreachable shared store never fails or delays a batch: the push is retried, first after half a second and at most every fifteen seconds, for as long as a process has the store open. A store opened with a lag starts publishing at once.")(s, VoidError)
+}

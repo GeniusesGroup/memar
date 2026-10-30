@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GitStore_Fallback in "modules-plugable/computer/memory/store/git-store/protocol/git-store-fallback.kh"
+
+tp Domain mt (self GitStore_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Git Store")(s, VoidError)
+}
+
+tp Summary mt (self GitStore_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a store asks for an address outside the ranges it holds")(s, VoidError)
+}
+
+tp Overview mt (self GitStore_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a store asks for an address outside the ranges it holds.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GitStore_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self GitStore_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("One answer for each address, as fresh as the asking, and the held addresses of a range; what it answers is never written into the store.")(s, VoidError)
+}
