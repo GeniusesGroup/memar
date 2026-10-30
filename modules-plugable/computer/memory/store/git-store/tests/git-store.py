@@ -1,34 +1,17 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests that `git-store` keeps the store contract, the groups it declares, and `record`'s group laid over it.
-
-    python modules-plugable/computer/memory/store/git-store/tests/git-store.py
-
-The subject is `git-store.py`, named for the file that holds it per
-[Test Naming](../../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the
-module that owns it per [Test Placement](../../../../../../modules/process/test/rules/test-placement/test-placement.md).
-Its expectations are [Memory Git Store](../git-store.md) and the cases of
-[Memory Conformance](../../../../../../modules/computer/memory/conformance/conformance.md), run through the suite's
-runner with the groups of [`cases.py`](../cases.py), `lockable`'s, and `record`'s group:
-
-  Local          the kernel suite (core, model, durable, shared) and the fallback, working-tree and lockable groups,
-                 on a scratch repository whose working tree has a tracked and an ignored file.
-  Replicated     the replicated group, with a scratch bare repository as the shared store.
-  LocalRecord    `record`'s group on `record` laid over the store, its cross-process case included.
-  Medium         what the document says of the medium: one pack per batch, no reference but the class's and the
-                 acknowledged one, a stale `<reference>.lock` removed and a fresh one waited for.
-  Binding        `bind` reads the adapter's keys, and `open` lays `record` over the bound store.
-
-Every scratch folder is made under the suite's scratch folder (`fs_test_scratch`) and removed whole after its test.
-"""
 from __future__ import annotations
+import ast
+import io
 import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import threading
 import time
+import tokenize
+import types
 import unittest
 import uuid
 from importlib import import_module
@@ -55,6 +38,7 @@ address = _m_conformance.address
 value = _m_conformance.value
 TIER = 'system'
 BUDGET_SECONDS = 180
+BUDGET_SCALE = 10
 SLOW_LOCAL = frozenset({'test_batch_visible_whole', 'test_kill_during_batch_is_atomic', 'test_model_equivalence', 'test_paused_live_writer_is_not_overtaken'})
 SLOW_RECORD = frozenset({'test_batch_visible_whole', 'test_many_nodes'})
 MADE: list[tuple[Any, Path]] = []
@@ -65,7 +49,6 @@ def _git(where: Path, *args: str) -> None:
 _PROJECT_TEMPLATE: list[Path] = []
 
 def project_template() -> Path:
-    """The scratch project every test starts from, built once per run and copied per test."""
     if not _PROJECT_TEMPLATE:
         import atexit
         import tempfile
@@ -83,7 +66,6 @@ def project_template() -> Path:
     return _PROJECT_TEMPLATE[0]
 
 def scratch_project() -> tuple[Path, Path, Path]:
-    """A new scratch folder holding a project repository with a tracked and an ignored file, and a data area."""
     folder = _m_scratch.suite_scratch() / f'git-store-{uuid.uuid4().hex[:12]}'
     project, data = (folder / 'project', folder / 'data')
     folder.mkdir(parents=True)
@@ -93,7 +75,7 @@ def scratch_project() -> tuple[Path, Path, Path]:
 
 def make_local(**keywords: Any) -> Any:
     folder, project, data = scratch_project()
-    adapter = _m_git_store.GitStoreAdapter(str(project), 'refs/memory/work-records', data_area=str(data), **keywords)
+    adapter = _m_git_store.GitStoreAdapter(str(project), 'refs/memar/work-records', data_area=str(data), **keywords)
     MADE.append((adapter, folder))
     return adapter
 
@@ -101,7 +83,7 @@ def make_replicated() -> Any:
     folder, project, data = scratch_project()
     shared = folder / 'shared.git'
     subprocess.run(['git', 'init', '-q', '--bare', str(shared)], check=True, capture_output=True)
-    adapter = _m_git_store.GitStoreAdapter(str(project), 'refs/memory/work-records', data_area=str(data), shared=str(shared))
+    adapter = _m_git_store.GitStoreAdapter(str(project), 'refs/memar/work-records', data_area=str(data), shared=str(shared))
     MADE.append((adapter, folder))
     return adapter
 
@@ -114,11 +96,10 @@ def clean_up() -> None:
             _m_scratch.remove_tree(folder)
 
 def _only(base: type[unittest.TestCase], names: set[str], name: str) -> type[unittest.TestCase]:
-    """A TestCase class holding only the tests of BASE that NAMES names, each with its scratch removed after it."""
     attributes: dict[str, Any] = {'tearDown': lambda self: clean_up()}
     attributes.update({each: getattr(base, each) for each in dir(base) if each in names})
     return type(name, (unittest.TestCase,), attributes)
-_local = _m_conformance.test_case(make_local, _m_cases.CASES + _m_lockable.CASES)
+_local = _m_conformance.test_case(make_local, _m_cases.CASES + _m_lockable.CASES, budget_scale=BUDGET_SCALE)
 Local = type('Local', (_local,), {'tearDown': lambda self: clean_up(), **dict.fromkeys(SLOW_LOCAL)})
 _replicated = _m_conformance.test_case(make_replicated, _m_cases.REPLICATED_CASES)
 Replicated = _only(_replicated, {'test_' + each.check.__name__ for each in _m_cases.REPLICATED_CASES}, 'Replicated')
@@ -128,8 +109,6 @@ BASES = {'Local': _local, 'LocalRecord': _record}
 del _local, _replicated, _record
 
 class EveryOwedCaseRuns(unittest.TestCase):
-    """The cases that waited for this store, the `durable` and `shared` groups and `record`'s cross-process case, apply
-    to it, so they run here, and none still carries the owed mark."""
 
     def tearDown(self) -> None:
         clean_up()
@@ -139,14 +118,14 @@ class EveryOwedCaseRuns(unittest.TestCase):
         waited = {each.name for each in _m_conformance.CASES if each.group in ('durable', 'shared')}
         self.assertEqual(len(waited), 8)
         self.assertEqual(waited - _m_conformance.applied(store), set())
-        self.assertEqual([each.name for each in _m_conformance.CASES if OWED in (each.check.__doc__ or '')], [])
+        self.assertEqual([each.name for each in _m_conformance.CASES if each.owed], [])
 
     def test_records_cross_process_case_applies(self) -> None:
         store = _m_record.RecordAdapter(make_local()).open()
         crossing = [each for each in _m_record_tests.CASES if each.group == 'record-shared']
         self.assertEqual(len(crossing), 1)
         self.assertTrue(crossing[0].applies(store))
-        self.assertNotIn(OWED, crossing[0].check.__doc__)
+        self.assertFalse(crossing[0].owed)
 
     def test_declares_what_the_document_says(self) -> None:
         local = make_local().open()
@@ -165,7 +144,6 @@ def references(project: Path) -> list[str]:
     return listed.stdout.split()
 
 class Medium(unittest.TestCase):
-    """What [Memory Git Store](../git-store.md) says of the medium, beyond the contract."""
 
     def tearDown(self) -> None:
         clean_up()
@@ -178,13 +156,13 @@ class Medium(unittest.TestCase):
         self.assertEqual(store.batch([], [(address(store, i), value(store, i)) for i in range(50)]), Committed())
         self.assertEqual(len(packs(project) - before), 1)
         self.assertEqual(loose_objects(project), loose)
-        self.assertEqual([each for each in references(project) if not each.startswith('refs/heads/')], ['refs/memory/work-records'])
+        self.assertEqual([each for each in references(project) if not each.startswith('refs/heads/')], ['refs/memar/work-records'])
 
     def test_a_stale_reference_lock_is_removed_and_a_fresh_one_waited_for(self) -> None:
         adapter = make_local()
         project = Path(adapter.repository)
         store = adapter.open()
-        lock = project / '.git' / 'refs' / 'memory' / 'work-records.lock'
+        lock = project / '.git' / 'refs' / 'memar' / 'work-records.lock'
         lock.parent.mkdir(parents=True, exist_ok=True)
         lock.write_bytes(b'')
         old = time.time() - 60
@@ -207,8 +185,6 @@ class Medium(unittest.TestCase):
         self.assertEqual(len(store.list()), 300)
 
 class Binding(unittest.TestCase):
-    """`bind(project, class_name)` reads the adapter's own keys, and `open` lays `record` over the store it names. The
-    user's data area is pointed into the scratch folder, so that nothing is saved outside it."""
 
     def setUp(self) -> None:
         folder = _m_scratch.suite_scratch() / f'git-store-data-{uuid.uuid4().hex[:12]}'
@@ -232,9 +208,9 @@ class Binding(unittest.TestCase):
         return project
 
     def test_the_reference_defaults_to_the_class_and_is_read_from_its_key(self) -> None:
-        project = self.project_with('memar:\n  memory: work-records=git-store, other=git-store\n  git-store-reference: other=refs/memory/elsewhere\n')
+        project = self.project_with('memar:\n  memory: work-records=git-store, other=git-store\n  git-store-reference: other=refs/memar/elsewhere\n')
         one, two = (_m_git_store.bind(project, 'work-records'), _m_git_store.bind(project, 'other'))
-        self.assertEqual((one.reference, two.reference), ('refs/memory/work-records', 'refs/memory/elsewhere'))
+        self.assertEqual((one.reference, two.reference), ('refs/memar/work-records', 'refs/memar/elsewhere'))
         self.assertNotEqual(one.store, two.store)
         self.assertEqual(one.store, _m_git_store.bind(project, 'work-records').store)
         self.assertNotIn(Capability.REPLICATED, one.open().capabilities)
@@ -248,6 +224,32 @@ class Binding(unittest.TestCase):
         self.assertIn(Capability.REPLICATED, adapter.open().capabilities)
         adapter.close()
 
+    def test_a_class_whose_reference_is_a_folder_of_anothers_is_refused(self) -> None:
+        project = self.project_with('memar:\n  memory: a=git-store, a/b=git-store\n')
+        first = _m_git_store.bind(project, 'a')
+        first.close()
+        with self.assertRaises(errors_module().ReferenceCollision):
+            _m_git_store.bind(project, 'a/b')
+
+    def test_custom_references_that_collide_are_refused_and_siblings_are_not(self) -> None:
+        project = self.project_with('memar:\n  memory: one=git-store, two=git-store, ab=git-store, a=git-store\n  git-store-reference: one=refs/memar/x, two=refs/memar/x/y\n')
+        with self.assertRaises(errors_module().ReferenceCollision):
+            _m_git_store.bind(project, 'two')
+        for name in ('one', 'a', 'ab'):
+            _m_git_store.bind(project, name).close()
+
+    def test_a_key_in_the_private_namespace_or_of_a_broken_form_is_refused(self) -> None:
+        errors = errors_module()
+        project = self.project_with('memar:\n  memory: work-records=git-store\n  git-store-reference: work-records=refs/memar-local/published/x\n')
+        with self.assertRaises(errors.BadReference):
+            _m_git_store.bind(project, 'work-records')
+        project = self.project_with('memar:\n  memory: work-records=git-store\n  git-store-publish: work-records=sometimes\n')
+        with self.assertRaises(errors.BadParameter):
+            _m_git_store.bind(project, 'work-records')
+        project = self.project_with('memar:\n  memory: work-records=git-store\n  git-store-shared: work-records\n')
+        with self.assertRaises(errors.BadParameter):
+            _m_git_store.bind(project, 'work-records')
+
     def test_open_lays_record_over_the_bound_store(self) -> None:
         project = self.project_with('memar:\n  memory: work-records=git-store\n')
         memory = import_module('bundles.memar.services.memory.memory')
@@ -257,6 +259,130 @@ class Binding(unittest.TestCase):
         self.assertEqual(opened.batch([], [(_m_record.key(node, 'alpha'), b'a')]), Committed())
         self.assertEqual(opened.parts([node])[0][0][0], 'alpha')
         opened.store.close()
+
+def errors_module() -> Any:
+    return import_module('modules-plugable.computer.memory.store.git-store.errors.errors')
+
+def bare(path: str) -> tuple[list[int], list[int]]:
+    source = Path(path).read_text(encoding='utf-8')
+    comments = [t.start[0] for t in tokenize.generate_tokens(io.StringIO(source).readline) if t.type == tokenize.COMMENT and t.start[0] > 2]
+    documented = [getattr(n, 'lineno', 0) for n in ast.walk(ast.parse(source)) if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and ast.get_docstring(n, clean=False) is not None]
+    return (comments, documented)
+
+def scratch_adapter(reference: str, **keywords: Any) -> Any:
+    folder, project, data = scratch_project()
+    adapter = _m_git_store.GitStoreAdapter(str(project), reference, data_area=str(data), **keywords)
+    MADE.append((adapter, folder))
+    return adapter
+
+class Namespace(unittest.TestCase):
+
+    def tearDown(self) -> None:
+        clean_up()
+
+    def test_the_public_and_private_prefixes_are_the_adapters_own(self) -> None:
+        self.assertEqual((_m_git_store.NAMESPACE, _m_git_store.PUBLISHED_NAMESPACE, _m_git_store.PENDING_BRANCH), ('refs/memar/', 'refs/memar-local/published/', 'refs/memar-local/pending/batch'))
+
+    def test_the_published_reference_of_a_class_is_private_and_a_custom_one_falls_back(self) -> None:
+        self.assertEqual(_m_git_store.published_reference('refs/memar/work-records'), 'refs/memar-local/published/work-records')
+        self.assertEqual(_m_git_store.published_reference('refs/custom/notes'), 'refs/memar-local/published/custom/notes')
+
+    def test_a_replicated_store_leaves_its_reference_and_the_acknowledged_one_only(self) -> None:
+        adapter = make_replicated()
+        store = adapter.open()
+        self.assertEqual(store.batch([], [(address(store, 1), value(store, 1))]), Committed())
+        self.assertTrue(_m_cases._settles(store, adapter))
+        kept = sorted((each for each in references(Path(adapter.repository)) if not each.startswith('refs/heads/')))
+        self.assertEqual(kept, ['refs/memar-local/published/work-records', 'refs/memar/work-records'])
+
+    def test_a_reference_outside_the_public_namespace_keeps_working(self) -> None:
+        adapter = scratch_adapter('refs/custom/notes')
+        store = adapter.open()
+        self.assertEqual(store.batch([], [(address(store, 1), value(store, 1))]), Committed())
+        self.assertEqual([each for each in references(Path(adapter.repository)) if not each.startswith('refs/heads/')], ['refs/custom/notes'])
+
+    def test_a_reference_the_adapter_may_not_keep_a_store_in_is_refused(self) -> None:
+        bad = errors_module().BadReference
+        folder, project, data = scratch_project()
+        MADE.append((None, folder))
+        for name in ('refs/memar-local/mine', 'refs/memar-local/published/x', 'refs/memar-local', 'heads/x', 'refs/a..b', 'refs/a/', 'refs/a.lock'):
+            with self.subTest(name=name):
+                with self.assertRaises(bad):
+                    _m_git_store.GitStoreAdapter(str(project), name)
+
+class ReferenceType(unittest.TestCase):
+
+    def test_a_reference_names_itself_and_says_whether_it_is_public(self) -> None:
+        Reference = _m_git_store.Reference
+        public, custom = (Reference.named('refs/memar/work-records'), Reference.named('refs/custom/notes'))
+        self.assertEqual((public.get_name(), public.is_public(), custom.is_public()), ('refs/memar/work-records', True, False))
+        self.assertEqual(public, Reference.of_class('work-records'))
+
+    def test_a_reference_is_a_folder_of_another_when_the_other_lies_under_it(self) -> None:
+        Reference = _m_git_store.Reference
+        a, ab, a_b = (Reference.of_class('a'), Reference.of_class('ab'), Reference.of_class('a/b'))
+        self.assertTrue(a.is_folder_of(a_b))
+        self.assertFalse(a_b.is_folder_of(a))
+        self.assertFalse(a.is_folder_of(ab))
+        self.assertFalse(a.is_folder_of(a))
+
+    def test_a_class_that_makes_no_reference_is_refused(self) -> None:
+        for name in ('', 'a..b', 'a/', 'a.lock'):
+            with self.subTest(name=name):
+                with self.assertRaises(errors_module().BadReference):
+                    _m_git_store.Reference.of_class(name)
+
+class Errors(unittest.TestCase):
+
+    def tearDown(self) -> None:
+        clean_up()
+
+    def test_the_errors_are_in_the_errors_folder_and_say_what_they_are(self) -> None:
+        errors = errors_module()
+        raised = import_module('modules.computer.memory.store.errors.errors')
+        for name in ('BadReference', 'ReferenceCollision', 'NotInRepository', 'BadParameter', 'Lost', 'NotFastForward'):
+            with self.subTest(name=name):
+                self.assertTrue(getattr(errors, name)().summary())
+        self.assertEqual((errors.BadReference().reason, errors.ReferenceCollision().reason), (raised.Refusal.MALFORMED, raised.Refusal.MALFORMED))
+        self.assertEqual(errors.Lost().reason, raised.Unavailability.FAILED)
+        self.assertTrue(all((issubclass(getattr(errors, name), raised.Raised) for name in ('BadReference', 'ReferenceCollision', 'Lost'))))
+
+    def test_the_realization_makes_no_error_type_of_its_own(self) -> None:
+        for module in (_m_git_store, _m_cases):
+            own = sorted((name for name, each in vars(module).items() if isinstance(each, type) and each.__module__ == module.__name__ and issubclass(each, BaseException)))
+            self.assertEqual(own, [])
+        self.assertFalse(hasattr(_m_git_store, '_Lost'))
+
+    def test_a_project_outside_a_repository_raises_not_in_repository(self) -> None:
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as plain:
+            adapter = _m_git_store.GitStoreAdapter(plain, 'refs/memar/work-records', data_area=str(Path(plain) / 'data'))
+            with self.assertRaises(errors_module().NotInRepository):
+                adapter.open()
+
+    def test_a_lost_git_process_raises_lost_and_a_read_answers_failed(self) -> None:
+        adapter = make_local()
+        store = adapter.open()
+        medium = adapter._medium_of()
+        gone = types.SimpleNamespace(stdin=io.BytesIO(), stdout=io.BytesIO(), poll=lambda: None)
+        medium._long_lived = lambda name, args, errors=None: gone
+        with self.assertRaises(errors_module().Lost):
+            medium.object_id('refs/memar/work-records')
+        self.assertEqual(store.get([address(store, 1)]), [_m_store.Unavailable(_m_store.Unavailability.FAILED)])
+
+    def test_an_unknown_publish_value_is_a_bad_parameter(self) -> None:
+        folder, project, data = scratch_project()
+        MADE.append((None, folder))
+        with self.assertRaises(errors_module().BadParameter):
+            _m_git_store.GitStoreAdapter(str(project), 'refs/memar/x', publish='sometimes')
+
+class NoComments(unittest.TestCase):
+
+    def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
+        here = Path(__file__).resolve().parent
+        module = here.parent
+        for path in (module / 'git-store.py', module / 'cases.py', module / 'services' / '_benchmark.py', module / 'errors' / 'errors.py', here / 'git-store.py', here / 'git-store-slow.py'):
+            with self.subTest(path=path.name):
+                self.assertEqual(bare(str(path)), ([], []))
 
 def tearDownModule() -> None:
     clean_up()

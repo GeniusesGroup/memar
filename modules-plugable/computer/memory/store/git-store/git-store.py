@@ -1,18 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""`git-store`, an adapter of the store contract that keeps a store in one reference of a git object database.
-
-What it is, what it declares and why, how it meets the suite and what it cannot do is
-[Memory Git Store](git-store.md); the contract is `modules/computer/memory/store/protocol/store.py`; the groups it owes
-are `cases.py`; the decisions no abstraction gave are [git-store Handoff](git-store.handoff.md#decisions).
-
-`bind(project, class_name)` is the adapter that serves a class, read from the adapter's keys of the project's `memar:`
-block; `GitStoreAdapter(...).open()` a handle on its store. The handles of one adapter in one process share one medium:
-three long-lived git processes, the index, and the writer's lock. Run as a command, it prints a class's lag:
-
-    python modules-plugable/computer/memory/store/git-store/git-store.py lag --project PATH --class NAME
-"""
 from __future__ import annotations
 import argparse
 import bisect
@@ -50,14 +37,22 @@ Stats = _m_store.Stats
 Unavailability = _m_store.Unavailability
 Unavailable = _m_store.Unavailable
 token = _m_store.token
+_m_errors = import_module('modules-plugable.computer.memory.store.git-store.errors.errors')
+BadParameter = _m_errors.BadParameter
+BadReference = _m_errors.BadReference
+Lost = _m_errors.Lost
+NotFastForward = _m_errors.NotFastForward
+NotInRepository = _m_errors.NotInRepository
+ReferenceCollision = _m_errors.ReferenceCollision
 TOKEN_LENGTH = len(token(b''))
 MODULE = 'modules-plugable.computer.memory.store.git-store.git-store'
 REFERENCE_KEY = 'git-store-reference'
 SHARED_KEY = 'git-store-shared'
 PUBLISH_KEY = 'git-store-publish'
-NAMESPACE = 'refs/memory/'
-PUBLISHED_NAMESPACE = 'refs/memory-published/'
-PENDING_BRANCH = 'refs/memory-pending/batch'
+NAMESPACE = 'refs/memar/'
+LOCAL_NAMESPACE = 'refs/memar-local/'
+PUBLISHED_NAMESPACE = LOCAL_NAMESPACE + 'published/'
+PENDING_BRANCH = LOCAL_NAMESPACE + 'pending/batch'
 WRITER_FOLDER = 'memar-git-store'
 FAN_OUT = 3
 STALE_LOCK_SECONDS = 2.0
@@ -71,10 +66,8 @@ COMMAND_BYTES = 3500
 COMMITTER = b'git-store <git-store@memar.invalid>'
 EMPTY_TREE = {'sha1': '4b825dc642cb6eb9a060e54bf8d69288fbee4904', 'sha256': '6ef19b41225c5369f1c104d45d8d85efa9b057b53b14b4b9b939dd74decc5321'}
 EVERY_ADDRESS: tuple[tuple[bytes, bytes | None], ...] = ((b'', None),)
-NOT_FAST_FORWARD = 'not a fast-forward: another writer published to the shared store first, and its batch was kept'
 
 class Publish(enum.Enum):
-    """When a batch of a class with a shared store is answered."""
     NOW = 'now'
     SOON = 'soon'
 
@@ -83,7 +76,6 @@ class Publish(enum.Enum):
 
 @dataclass(frozen=True)
 class Lag:
-    """How far the shared store is behind a store: the batches ahead of it, the age of the oldest in seconds, and why a push was refused."""
     batches: int
     oldest_age: float | None = None
     refused: str = ''
@@ -96,7 +88,6 @@ class Lag:
 
 @runtime_checkable
 class Fallback(Protocol):
-    """What a store asks for an address outside the ranges it holds: one answer per address, and the held addresses of a range."""
 
     def get(self, addresses: Sequence[bytes]) -> list[Any]:
         ...
@@ -105,7 +96,6 @@ class Fallback(Protocol):
         ...
 
 class NotFound:
-    """The one fallback: a shared store that answers that nothing is there."""
 
     def get(self, addresses: Sequence[bytes]) -> list[Any]:
         return [ABSENT for _ in addresses]
@@ -114,13 +104,11 @@ class NotFound:
         return ()
 
 def address_path(at: bytes) -> bytes:
-    """Where an address is written in the reference's tree: its first FAN_OUT bytes as folders, then the whole address."""
     digits = at.hex()
     folders = [digits[2 * i:2 * i + 2] or '__' for i in range(FAN_OUT)]
     return '/'.join(folders + [digits or '_']).encode('ascii')
 
 def path_address(path: bytes) -> bytes | None:
-    """The address a path of the tree holds, or None for a path the rule does not make."""
     leaf = path.rsplit(b'/', 1)[-1]
     if path.count(b'/') != FAN_OUT:
         return None
@@ -130,14 +118,35 @@ def path_address(path: bytes) -> bytes | None:
         return None
 
 def data_area() -> Path:
-    """The user's data area where `git-store` saves its index: outside every working tree."""
     if os.name == 'nt' and os.environ.get('LOCALAPPDATA'):
         return Path(os.environ['LOCALAPPDATA']) / 'Memar' / 'git-store'
     base = os.environ.get('XDG_DATA_HOME') or str(Path.home() / '.local' / 'share')
     return Path(base) / 'memar' / 'git-store'
 
+@dataclass(frozen=True)
+class Reference:
+    name: str
+
+    @staticmethod
+    def named(name: str) -> 'Reference':
+        if not name.startswith('refs/') or '..' in name or name.endswith(('/', '.lock')) or (name + '/').startswith(LOCAL_NAMESPACE):
+            raise BadReference(f'{name!r} is not a reference git-store may keep a store in')
+        return Reference(name)
+
+    @staticmethod
+    def of_class(class_name: str) -> 'Reference':
+        return Reference.named(NAMESPACE + class_name)
+
+    def get_name(self) -> str:
+        return self.name
+
+    def is_public(self) -> bool:
+        return self.name.startswith(NAMESPACE)
+
+    def is_folder_of(self, other: 'Reference') -> bool:
+        return other.name.startswith(self.name + '/')
+
 def published_reference(reference: str) -> str:
-    """The private reference that records what the shared store acknowledged of REFERENCE."""
     return PUBLISHED_NAMESPACE + (reference.removeprefix(NAMESPACE) if reference.startswith(NAMESPACE) else reference.removeprefix('refs/'))
 
 def _page(order: Sequence[bytes], from_: bytes | None, to: bytes | None, after: bytes | None, limit: int | None, descending: bool) -> tuple[bytes, ...]:
@@ -157,7 +166,6 @@ def _holds(held: Sequence[tuple[bytes, bytes | None]], at: bytes) -> bool:
     return any((low <= at and (high is None or at < high) for low, high in held))
 
 def _gaps(held: Sequence[tuple[bytes, bytes | None]], from_: bytes, to: bytes | None) -> list[tuple[bytes, bytes | None]]:
-    """The parts of [FROM_, TO) outside the held ranges."""
     gaps, at = ([], from_)
     for low, high in sorted(held, key=lambda each: each[0]):
         if to is not None and at >= to:
@@ -171,11 +179,7 @@ def _gaps(held: Sequence[tuple[bytes, bytes | None]], from_: bytes, to: bytes | 
         gaps.append((at, to))
     return gaps
 
-class _Lost(Exception):
-    """A long-lived git process ended before it answered."""
-
 class _FairLock:
-    """A reentrant lock taken in the order it was asked for, so a reader asking again at once cannot starve a writer."""
 
     def __init__(self) -> None:
         self._guard = threading.Condition(threading.Lock())
@@ -206,8 +210,6 @@ class _FairLock:
                 self._guard.notify_all()
 
 class _WriterLock:
-    """The lock that orders a store's writers on one machine: a file in git's directory, locked by the operating system,
-    which releases it when the holding process ends, however it ends."""
 
     def __init__(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -252,7 +254,6 @@ class _WriterLock:
             pass
 
 def _end(processes: dict[str, subprocess.Popen]) -> None:
-    """End the long-lived processes: their input closes, and one that does not end soon is killed."""
     for name in list(processes):
         process = processes.pop(name)
         try:
@@ -269,7 +270,6 @@ def _end(processes: dict[str, subprocess.Popen]) -> None:
                 stream.close()
 
 class _Medium:
-    """What the handles of one store in one process share: the git processes, the index, the writer's lock and the publisher."""
 
     def __init__(self, adapter: 'GitStoreAdapter') -> None:
         self.repository = Path(adapter.repository)
@@ -281,7 +281,7 @@ class _Medium:
         self.git = shutil.which('git') or 'git'
         found = self.run(['rev-parse', '--git-common-dir', '--show-object-format'], cwd=self.repository)
         if found.returncode != 0:
-            raise ValueError(f'{self.repository} is not in a git repository: {found.stderr.decode("utf-8", "replace").strip()}')
+            raise NotInRepository(f'{self.repository} is not in a git repository: {found.stderr.decode("utf-8", "replace").strip()}')
         common, object_format = found.stdout.decode('utf-8').split()[:2]
         self.git_dir = (self.repository / common).resolve()
         self.object_format = object_format
@@ -324,7 +324,6 @@ class _Medium:
         _end({name: self.processes.pop(name) for name in names if name in self.processes})
 
     def _ask(self, commands: list[bytes]) -> list[bytes | None]:
-        """The answer of `cat-file --batch-command` to each command, in order: a header line, or the contents asked."""
         answers: list[bytes | None] = []
         start = 0
         while start < len(commands):
@@ -339,7 +338,7 @@ class _Medium:
                 for command in commands[start:end]:
                     header = process.stdout.readline()
                     if not header:
-                        raise _Lost('cat-file')
+                        raise Lost('cat-file')
                     parts = header.split()
                     if len(parts) < 3:
                         answers.append(None)
@@ -351,12 +350,11 @@ class _Medium:
                         answers.append(header)
             except (OSError, ValueError) as lost:
                 self.end('cat-file')
-                raise _Lost('cat-file') from lost
+                raise Lost('cat-file') from lost
             start = end
         return answers
 
     def object_id(self, name: str) -> str | None:
-        """The id of the object NAME names, a reference or an id, or None when there is none."""
         header = self._ask([f'info {name}\n'.encode('utf-8')])[0]
         return header.split()[0].decode('ascii') if header else None
 
@@ -419,7 +417,6 @@ class _Medium:
         self.unsaved += len(changed)
 
     def diff(self, old: str, new: str) -> list[tuple[bytes, str | None]] | None:
-        """The addresses whose value differs between the trees of OLD and NEW, each with its blob in NEW (None when gone)."""
         done = self.run(['diff-tree', '-r', '-z', '--no-renames', old, new])
         if done.returncode != 0:
             return None
@@ -433,7 +430,6 @@ class _Medium:
         return found
 
     def bring_up_to_date(self, tip: str | None) -> None:
-        """Make the index reflect TIP: by `diff-tree` from the tip it reflects, or from the empty tree when it is unknown."""
         if self.built and self.tip_indexed == tip:
             return
         if tip is None:
@@ -445,7 +441,7 @@ class _Medium:
             self.blobs, self.order, self.built = ({}, [], False)
             found = self.diff(self.empty_tree, tip)
         if found is None:
-            raise _Lost('diff-tree')
+            raise Lost('diff-tree')
         if not self.built:
             self.blobs, self.order = ({}, [])
         self._apply(dict(found))
@@ -454,7 +450,6 @@ class _Medium:
             self.save_index()
 
     def read(self, addresses: Sequence[bytes]) -> dict[bytes, Any]:
-        """What the index's state holds at each of ADDRESSES: Found or Absent."""
         oids = {at: self.blobs.get(at) for at in addresses}
         wanted = sorted({oid for oid in oids.values() if oid is not None})
         values = dict(zip(wanted, self.contents(wanted)))
@@ -463,14 +458,13 @@ class _Medium:
             if oid is None:
                 answers[at] = ABSENT
             elif values.get(oid) is None:
-                raise _Lost('cat-file')
+                raise Lost('cat-file')
             else:
                 data = values[oid]
                 answers[at] = Found(data, self.tokens.setdefault(oid, token(data)))
         return answers
 
     def tokens_of(self, addresses: Sequence[bytes]) -> dict[bytes, Any]:
-        """The token at each address, Absent where none: from the tokens already known, reading only the others."""
         unknown = [at for at in addresses if at in self.blobs and self.blobs[at] not in self.tokens]
         self.read(unknown)
         return {at: self.tokens[self.blobs[at]] if at in self.blobs else ABSENT for at in addresses}
@@ -479,7 +473,6 @@ class _Medium:
         return hashlib.new(self.object_format, b'blob %d\x00' % len(data) + data).hexdigest()
 
     def write_objects(self, tip: str | None, write: Sequence[tuple[bytes, bytes]]) -> str:
-        """Write a batch's blobs, trees and commit, its parent TIP, as one pack, and answer the commit's id; no reference is written."""
         stream = [b'commit %s\nmark :1\ncommitter %s %d +0000\ndata 6\nbatch\n' % (PENDING_BRANCH.encode('ascii'), COMMITTER, int(time.time()))]
         if tip:
             stream.append(b'from %s\n' % tip.encode('ascii'))
@@ -497,14 +490,13 @@ class _Medium:
             done = process.stdout.readline().strip()
         except (OSError, ValueError) as lost:
             self.end('fast-import')
-            raise _Lost('fast-import') from lost
+            raise Lost('fast-import') from lost
         if len(commit) != 2 * self.oid_length or done != b'progress ' + mark:
             self.end('fast-import')
-            raise _Lost('fast-import')
+            raise Lost('fast-import')
         return commit
 
     def swap(self, new: str, old: str | None) -> str | None:
-        """Move the reference from OLD to NEW in one compare-and-swap: 'ok', 'moved' when it no longer holds OLD, or None when undecided."""
         expected = old or '0' * (2 * self.oid_length)
         waited_until = time.monotonic() + SWAP_WAITS_AT_MOST
         while time.monotonic() < waited_until:
@@ -538,7 +530,6 @@ class _Medium:
         return None
 
     def maintain(self) -> None:
-        """Keep the number of packs bounded: past PACKS_BEFORE_REPACK, `repack -d --geometric=2`, with this process's readers closed."""
         self.batches_since_count += 1
         if self.batches_since_count < BATCHES_BETWEEN_PACK_COUNTS:
             return
@@ -578,7 +569,6 @@ class _Medium:
         self.writer.close()
 
 class _Publisher(threading.Thread):
-    """Pushes a store's reference to its shared store after each commit, retrying while it cannot, and records what was acknowledged."""
 
     def __init__(self, medium: _Medium, reachable: bool) -> None:
         super().__init__(daemon=True, name=f'git-store publisher of {medium.reference}')
@@ -609,13 +599,12 @@ class _Publisher(threading.Thread):
         self.join(30)
 
     def push_once(self) -> str:
-        """One push of the tip: 'published', 'refused' (not a fast-forward), or 'ahead' (it could not be pushed and is retried)."""
         medium = self.medium
         with self.pushing:
             try:
                 with medium.reading:
                     tip, acknowledged = (medium.tip(), medium.object_id(medium.published))
-            except _Lost:
+            except Lost:
                 return 'ahead'
             if tip is None or tip == acknowledged:
                 return 'published'
@@ -628,7 +617,7 @@ class _Publisher(threading.Thread):
                 self.refused = ''
                 return 'published'
             if '[rejected]' in said or 'non-fast-forward' in said or 'fetch first' in said:
-                self.refused = NOT_FAST_FORWARD
+                self.refused = NotFastForward().summary()
                 return 'refused'
             return 'ahead'
 
@@ -636,7 +625,6 @@ class _Publisher(threading.Thread):
         self.wake.set()
 
 class GitStore:
-    """A handle on a store kept in a reference of a git object database; see the module's docstring and [Memory Git Store](git-store.md)."""
     parameters = Parameters()
     limits = Limits()
 
@@ -661,7 +649,7 @@ class GitStore:
             with self._medium.reading:
                 self._current()
                 found = self._medium.read(held)
-        except _Lost:
+        except Lost:
             return [Unavailable(Unavailability.FAILED) for _ in addresses]
         if others:
             found.update(zip(others, self._fallback.get(others)))
@@ -685,7 +673,7 @@ class GitStore:
                 if not asked:
                     return _page(self._medium.order, from_, to, after, limit, descending)
                 order = sorted(set(_page(self._medium.order, from_, to, None, None, False)).union(asked))
-        except _Lost:
+        except Lost:
             return Unavailable(Unavailability.FAILED)
         return _page(order, from_, to, after, limit, descending)
 
@@ -705,7 +693,6 @@ class GitStore:
         return None
 
     def _decide(self, expect: Sequence, write: Sequence) -> Any:
-        """Unavailable or Conflict, in that order, for the state the index reflects; None when every expectation holds."""
         if any((not _holds(self._held, at) for at, _ in write)) or any((not _holds(self._held, at) and (not isinstance(e, Absent)) for at, e in expect)):
             return Unavailable(Unavailability.NOT_HELD)
         outside = [at for at, _ in expect if not _holds(self._held, at)]
@@ -733,7 +720,7 @@ class GitStore:
                         tip = medium.tip()
                         medium.bring_up_to_date(tip)
                         answer = self._decide(expect, write)
-                except _Lost:
+                except Lost:
                     return Unavailable(Unavailability.FAILED)
                 if answer is not None:
                     return answer
@@ -744,7 +731,7 @@ class GitStore:
                         return Unavailable(Unavailability.FAILED)
                 try:
                     commit = medium.write_objects(tip, write)
-                except _Lost:
+                except Lost:
                     return Unavailable(Unavailability.FAILED)
                 swapped = medium.swap(commit, tip)
                 if swapped == 'ok':
@@ -803,29 +790,26 @@ class GitStore:
         self._medium.drop_index()
 
     def lag(self) -> Lag:
-        """The batches ahead of the shared store, the age of the oldest, and why a push was refused."""
         return self._medium.lag()
 
     def opener(self) -> tuple[str, str, dict]:
         return self._adapter_opener
 
     def close(self) -> None:
-        """End what the store's medium runs in this process; every handle of it."""
         self._medium.close()
 
 class GitStoreAdapter:
-    """The adapter of one class: a reference of the repository at REPOSITORY. Its `store` is what names the store, so two
-    classes bound to one store are told; each `open()` is a new handle on it. DATA_AREA is where the index is saved
-    (the user's data area by default); SHARED the shared store, a remote's name or a URL, or None; PUBLISH `now` or `soon`."""
 
     def __init__(self, repository: str, reference: str, data_area: str | None=None, shared: str | None=None, publish: str=Publish.SOON.value) -> None:
-        if not reference.startswith('refs/') or '..' in reference or reference.endswith(('/', '.lock')):
-            raise ValueError(f'{reference!r} is not a reference git-store may keep a store in')
+        reference = Reference.named(reference).name
         self.repository = str(Path(repository).resolve())
         self.reference = reference
         self.data_area = data_area
         self.shared = shared
-        self.publish = Publish(publish).value
+        try:
+            self.publish = Publish(publish).value
+        except ValueError as unknown:
+            raise BadParameter(f'{publish!r} is not a value of `{PUBLISH_KEY}`: {", ".join((each.value for each in Publish))}') from unknown
         self.store = (os.path.normcase(self.repository), reference)
         self.held: tuple[tuple[bytes, bytes | None], ...] = EVERY_ADDRESS
         self.fallback: Any = None
@@ -843,7 +827,6 @@ class GitStoreAdapter:
         return handle
 
     def opener(self) -> tuple[str, str, dict]:
-        """What opens the same adapter in another process: this module, the class, and its keyword arguments."""
         return (MODULE, type(self).__name__, {'repository': self.repository, 'reference': self.reference, 'data_area': self.data_area, 'shared': self.shared, 'publish': self.publish})
 
     def close(self) -> None:
@@ -852,23 +835,19 @@ class GitStoreAdapter:
             self._medium = None
 
     def fall_back(self, fallback: Any, held: Sequence[tuple[bytes, bytes | None]]) -> None:
-        """The seam of the `fallback` group: handles opened after it ask FALLBACK (NotFound when None) for what lies outside HELD."""
         self.fallback = fallback
         self.held = tuple(held)
 
     def working_tree(self) -> Path | None:
-        """The working tree of the repository, or None for a bare one."""
         return Path(self.repository) if (Path(self.repository) / '.git').exists() else None
 
     def shared_reachable(self, flag: bool) -> None:
-        """The seam of the `replicated` group: whether the shared store can be reached from now on."""
         self.reachable = flag
         if self._medium is not None and self._medium.publisher is not None:
             self._medium.publisher.reachable = flag
             self._medium.publisher.poke()
 
     def shared_state(self) -> bytes | None:
-        """The state of the class at the shared store, as `state()` answers it, or None when it holds none."""
         if not self.shared:
             return None
         listed = subprocess.run(['git', 'ls-remote', self.shared, self.reference], cwd=self.repository, capture_output=True, stdin=subprocess.DEVNULL)
@@ -876,22 +855,32 @@ class GitStoreAdapter:
         return bytes.fromhex(line[0].decode('ascii')) if listed.returncode == 0 and line else None
 
     def sibling(self) -> 'GitStoreAdapter':
-        """A new, empty adapter on another machine's store of the same class and shared store, beside this one's repository."""
         folder = Path(self.repository).parent / f'sibling-{uuid.uuid4().hex[:8]}'
         (folder / 'data').mkdir(parents=True)
         subprocess.run(['git', 'init', '-q', str(folder / 'project')], check=True, capture_output=True, stdin=subprocess.DEVNULL)
         return GitStoreAdapter(str(folder / 'project'), self.reference, data_area=str(folder / 'data'), shared=self.shared, publish=self.publish)
 
 def bind(project: Path, class_name: str) -> GitStoreAdapter:
-    """The adapter that serves CLASS_NAME in PROJECT, from the adapter's keys of its `memar:` block; it does no work on the medium."""
     preferences = import_module('modules.process.project.services.preferences')
     found: dict[str, dict[str, str]] = {}
     for key in (REFERENCE_KEY, SHARED_KEY, PUBLISH_KEY):
         values = preferences.class_values_preference(Path(project), key)
         if values is None:
-            raise ValueError(f'`{key}` in {preferences.preferences_path(Path(project))} is not `class=value` pairs separated by commas, each class once')
+            raise BadParameter(f'`{key}` in {preferences.preferences_path(Path(project))} is not `class=value` pairs separated by commas, each class once')
         found[key] = values
     reference = found[REFERENCE_KEY].get(class_name, NAMESPACE + class_name)
+    chosen = Reference.named(reference)
+    for other, bound in (preferences.memory_preference(Path(project)) or {}).items():
+        if other == class_name:
+            break
+        if bound != HERE.name:
+            continue
+        try:
+            theirs = Reference.named(found[REFERENCE_KEY].get(other, NAMESPACE + other))
+        except BadReference:
+            continue
+        if chosen.is_folder_of(theirs) or theirs.is_folder_of(chosen):
+            raise ReferenceCollision(f'the reference of `{class_name}`, {chosen.name}, and that of `{other}`, {theirs.name}, are folders of each other: git cannot hold both')
     publish = found[PUBLISH_KEY].get(class_name, Publish.SOON.value)
     return GitStoreAdapter(str(project), reference, shared=found[SHARED_KEY].get(class_name), publish=publish)
 

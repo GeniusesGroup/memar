@@ -1,25 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""The `fallback`, `working-tree` and `replicated` groups of the conformance suite, owed by `git-store`.
-
-[Memory Conformance](../../../../../modules/computer/memory/conformance/conformance.md) states the first two, restated
-for addresses; the note of 2026-10-26 in task `20261023-T074642Z-5420` names the third; why they are coded here is
-[git-store Handoff](git-store.handoff.md#decisions). An adapter's tests pass `CASES` to the suite's `test_case`. Each case
-is one function whose docstring states it, and reaches the store through the seam below, which an adapter declaring the
-group offers on the object `make()` returns:
-
-  fall_back(fallback, held)   the handles opened after it ask FALLBACK, or the adapter's own when it is None, for
-                              what lies outside HELD, a tuple of (from, to) ranges, `to` None for no end.
-  working_tree()              the working tree of the project the store belongs to, or None.
-  shared_reachable(flag)      whether the shared store can be reached from now on.
-  shared_state()              the state of the class at the shared store, as `state()` answers it, or None.
-  sibling()                   a new, empty adapter on another machine's store of the same class and shared store.
-  close()                     ends what the adapter runs in this process: its git processes and its publishing.
-
-A handle of a `replicated` store answers `lag()`, the batches ahead of the shared store, the age of the oldest and a
-refusal.
-"""
 from __future__ import annotations
 import hashlib
 import os
@@ -46,7 +26,6 @@ value = _m_conformance.value
 PUBLISHED_WITHIN = 60.0
 
 class Scripted:
-    """A fallback for the cases: it holds the values it is given, or cannot be reached."""
 
     def __init__(self, values: dict[bytes, bytes] | None=None, reachable: bool=True) -> None:
         self.values = dict(values or {})
@@ -66,11 +45,9 @@ def falls_back(store: Any) -> bool:
     return Capability.FALLBACK in store.capabilities
 
 def held_from(store: Any) -> tuple[tuple[bytes, None], ...]:
-    """The held ranges of the cases: every address from the 1000th of the cases on."""
     return ((address(store, 1000), None),)
 
 def unavailable_is_not_absent(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`unavailable-is-not-absent`: with the shared store unreachable, an address the adapter does not hold reads Unavailable and not Absent, and a held address never written reads Absent."""
     adapter = make()
     probe = adapter.open()
     adapter.fall_back(Scripted(reachable=False), held_from(probe))
@@ -78,7 +55,6 @@ def unavailable_is_not_absent(t: unittest.TestCase, make: Callable[[], Any]) -> 
     t.assertEqual(store.get([address(store, 1), address(store, 1001)]), [Unavailable(Unavailability.UNREACHABLE), ABSENT])
 
 def list_unavailable_is_not_short(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`list-unavailable-is-not-short`: with the part of the addresses the adapter does not hold unreachable, a range that covers it answers Unavailable and one that does not answers completely."""
     adapter = make()
     probe = adapter.open()
     adapter.fall_back(Scripted(reachable=False), held_from(probe))
@@ -90,7 +66,6 @@ def list_unavailable_is_not_short(t: unittest.TestCase, make: Callable[[], Any])
     t.assertEqual(store.list(from_=address(store, 1000)), tuple(sorted(written)))
 
 def held_only_updates(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`held-only-updates`: outside the held ranges an expectation of a value and a write are Unavailable as NotHeld, an `absent` expectation is Unavailable as Unreachable until the shared store has answered, and a stale expectation is Unavailable and not Conflict; inside them a creation commits without asking."""
     adapter = make()
     probe = adapter.open()
     fallback = Scripted(reachable=False)
@@ -110,7 +85,6 @@ def held_only_updates(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual(store.get([inside]), [Found(value(store, 3), token(value(store, 3)))])
 
 def fallback_not_found(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`fallback-not-found`: an address outside the held ranges that the shared store answers is not there reads Absent, through the adapter's own fallback, and a range outside them lists nothing."""
     adapter = make()
     probe = adapter.open()
     adapter.fall_back(None, held_from(probe))
@@ -119,7 +93,6 @@ def fallback_not_found(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual(store.list(to=address(store, 1000)), ())
 
 def fallback_found(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`fallback-found`: an address the shared store holds reads Found with its value as of the asking, a read after that value changed reads the new one, and what was read is not written into the adapter's store."""
     adapter = make()
     probe = adapter.open()
     at = address(probe, 1)
@@ -134,7 +107,6 @@ def fallback_found(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual((store.state(), store.changes(since), store.list(from_=address(store, 1000))), (since, (), ()))
 
 def _working_tree_view(tree: Path) -> tuple:
-    """What a person and git see of a working tree: each file outside `.git` with its bytes' hash, git's status with the ignored files, and its index."""
     files = []
     for folder, folders, names in os.walk(tree):
         folders[:] = [each for each in folders if each != '.git']
@@ -146,7 +118,6 @@ def _working_tree_view(tree: Path) -> tuple:
     return (sorted(files), status, index)
 
 def working_tree_unchanged(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`working-tree-unchanged`: after a sequence of every operation, including a dropped derived structure and a second process's batch, a listing of the project's working tree, its tracked and ignored files and its index are as they were."""
     adapter = make()
     tree = adapter.working_tree()
     t.assertIsNotNone(tree, 'an adapter declaring the capability names the working tree it leaves untouched')
@@ -167,7 +138,6 @@ def replicated(store: Any) -> bool:
     return Capability.REPLICATED in store.capabilities
 
 def _settles(store: Any, adapter: Any, within: float=PUBLISHED_WITHIN) -> bool:
-    """Whether the shared store reaches the store's state, and the lag none, within WITHIN seconds."""
     ends = time.monotonic() + within
     while time.monotonic() < ends:
         if adapter.shared_state() == store.state() and store.lag().batches == 0:
@@ -176,7 +146,6 @@ def _settles(store: Any, adapter: Any, within: float=PUBLISHED_WITHIN) -> bool:
     return False
 
 def committed_batch_reaches_shared_store(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`committed-batch-reaches-shared-store`: a batch committed at the local compare-and-swap reaches the shared store soon after, by itself, and the lag returns to none."""
     adapter = make()
     store = adapter.open()
     put(t, store, address(store, 1), value(store, 1))
@@ -185,7 +154,6 @@ def committed_batch_reaches_shared_store(t: unittest.TestCase, make: Callable[[]
     t.assertTrue(_settles(store, adapter), store.lag())
 
 def unreachable_shared_store_keeps_the_batch_and_retries(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`unreachable-shared-store-keeps-the-batch-and-retries`: with the shared store unreachable a batch commits without waiting for it and the lag counts it; once the shared store is reachable again, the batch reaches it without another write."""
     adapter = make()
     store = adapter.open()
     adapter.shared_reachable(False)
@@ -200,7 +168,6 @@ def unreachable_shared_store_keeps_the_batch_and_retries(t: unittest.TestCase, m
     t.assertTrue(_settles(store, adapter), store.lag())
 
 def lag_survives_a_restart(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`lag-survives-a-restart`: batches committed while the shared store is unreachable are counted, with the age of the oldest, by a new adapter on the same store that holds nothing in memory from the first; it publishes them once the shared store is reachable."""
     adapter = make()
     store = adapter.open()
     adapter.shared_reachable(False)
@@ -222,7 +189,6 @@ def lag_survives_a_restart(t: unittest.TestCase, make: Callable[[], Any]) -> Non
         again.close()
 
 def publish_refused_as_not_fast_forward_is_reported(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`publish-refused-as-not-fast-forward-is-reported`: when another machine has published a batch of the same class first, this store's batch commits locally, its push is refused as not a fast-forward, the refusal is reported in the lag, and the shared store keeps the other machine's batch."""
     adapter = make()
     other = adapter.sibling()
     try:
