@@ -1,22 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""The conformance suite of the store contract: the cases that decide whether an adapter keeps it, and their runner.
-
-The subject is the store contract of [Memory Store](../store/store.md) as `store/protocol/store.py` writes it; why the
-suite is a module of its own, and which cases are the contract's and which a capsule's, is
-[Memory Conformance](conformance.md). Each case below is one function whose docstring states it; its name is the
-case's name with hyphens. A case whose docstring carries `owed:memory.port.contract-suite` is pending: it is written
-and runs only for an adapter declaring its capability, and no adapter that declares it has run it yet. Since
-2026-10-26 every case here runs on `git-store`, and none carries the mark; the pending ones are `lockable`'s.
-
-An adapter's own `tests/` call `test_case(make)`, `make` returning a new, empty adapter each time it is called: an
-object whose `open()` opens a store, each call a new handle on the same store. The runner gives each case its own
-adapter and runs the cases each store's parameters and capabilities call for; a capability declared by a pluggable
-module brings its own `Case`s in `cases`. A case that reaches another process asks the adapter for `opener()`, the
-dotted module, the function and the keyword arguments that open the same adapter in a child, and runs this file there
-as `python conformance.py child ...`.
-"""
 from __future__ import annotations
 import hashlib
 import json
@@ -25,6 +9,7 @@ import subprocess
 import sys
 import threading
 import time
+import traceback
 import unittest
 from dataclasses import dataclass
 from importlib import import_module
@@ -34,6 +19,7 @@ HERE = Path(__file__).resolve().parent
 TOP = next((p for p in HERE.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()))
 if str(TOP) not in sys.path:
     sys.path.insert(0, str(TOP))
+_m_errors = import_module('modules.computer.memory.store.errors.errors')
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_volatile = import_module('modules.computer.memory.volatile.volatile')
 ABSENT = _m_store.ABSENT
@@ -42,56 +28,119 @@ Capability = _m_store.Capability
 Committed = _m_store.Committed
 Conflict = _m_store.Conflict
 Found = _m_store.Found
-Refusal = _m_store.Refusal
+Refusal = _m_errors.Refusal
 Refused = _m_store.Refused
 Seam = _m_store.Seam
-Unavailability = _m_store.Unavailability
+Unavailability = _m_errors.Unavailability
 Unavailable = _m_store.Unavailable
 token = _m_store.token
 Volatile = _m_volatile.Volatile
 OWED = 'owed:memory.port.contract-suite'
+DEFAULT_BUDGET_SECONDS = 60
 
 class Adapter(Protocol):
-    """What the suite takes as input: each `open()` a new handle on one store."""
 
     def open(self) -> Any:
         ...
 
 @dataclass(frozen=True)
+class Cost:
+    subprocesses: int = 0
+    writes_files: bool = False
+    waits_on_clock: bool = False
+
+class Verdict:
+    pass
+
+class Passed(Verdict):
+    pass
+
+class Failed(Verdict):
+    pass
+
+class ExceededBudget(Verdict):
+    pass
+
+class Pending(Verdict):
+    pass
+
+class NotApplicable(Verdict):
+    pass
+
+@dataclass(frozen=True)
+class Result:
+    case: 'Case'
+    verdict: Verdict
+    message: str = ''
+    spent: float = 0.0
+
+@dataclass(frozen=True)
 class Case:
-    """One case: its group (the capability or parameter that calls for it), when it applies to a store, and its check."""
     group: str
     applies: Callable[[Any], bool]
     check: Callable[[unittest.TestCase, Callable[[], Adapter]], None]
+    budget: float = DEFAULT_BUDGET_SECONDS
+    cost: Cost = Cost()
+    owed: bool = False
 
     @property
     def name(self) -> str:
         return self.check.__name__.replace('_', '-')
+
+    def judge(self, make: Callable[[], Adapter], probe: Any=None) -> Result:
+        started = time.monotonic()
+        held = probe if probe is not None else make().open()
+        if not self.applies(held):
+            return Result(self, NotApplicable(), '', 0.0)
+        if self.owed:
+            return Result(self, Pending(), OWED, 0.0)
+        outcome: dict[str, Any] = {}
+
+        def work() -> None:
+            try:
+                self.check(unittest.TestCase(), make)
+                outcome['verdict'] = Passed()
+            except Exception:
+                outcome['verdict'] = Failed()
+                outcome['message'] = traceback.format_exc()
+        thread = threading.Thread(target=work, daemon=True)
+        thread.start()
+        thread.join(self.budget)
+        spent = time.monotonic() - started
+        if thread.is_alive():
+            return Result(self, ExceededBudget(), f'{self.name} exceeded its budget of {self.budget} seconds', spent)
+        return Result(self, outcome['verdict'], outcome.get('message', ''), spent)
 CASES: list[Case] = []
 
-def case(group: str, applies: Callable[[Any], bool]=lambda store: True) -> Callable:
+def case(group: str, applies: Callable[[Any], bool]=lambda store: True, budget: float=DEFAULT_BUDGET_SECONDS, cost: Cost=Cost()) -> Callable:
 
     def register(check: Callable) -> Callable:
-        CASES.append(Case(group, applies, check))
+        CASES.append(Case(group, applies, check, budget, cost))
         return check
     return register
 
+def run(make: Callable[[], Adapter], extra: list[Case] | tuple[Case, ...]=()) -> list[Result]:
+    probe = make().open()
+    return [each.judge(make, probe) for each in CASES + list(extra)]
+
 def test_case(make: Callable[[], Adapter], cases: list[Case] | None=None) -> type[unittest.TestCase]:
-    """A TestCase class with one test for each case that applies to the stores `make` opens."""
     probe = make().open()
     attributes: dict[str, Any] = {}
     for each in CASES + list(cases or ()):
         if not each.applies(probe):
             continue
 
-        def method(self: unittest.TestCase, check: Callable=each.check) -> None:
-            check(self, make)
+        def method(self: unittest.TestCase, each: Case=each) -> None:
+            result = each.judge(make, probe)
+            if isinstance(result.verdict, Pending):
+                self.skipTest(result.message)
+            if not isinstance(result.verdict, Passed):
+                self.fail(result.message)
         method.__doc__ = each.check.__doc__
         attributes['test_' + each.check.__name__] = method
     return type('Conformance', (unittest.TestCase,), attributes)
 
 def applied(store: Any, cases: list[Case] | None=None) -> set[str]:
-    """The names of the cases that apply to a store."""
     return {each.name for each in CASES + list(cases or ()) if each.applies(store)}
 
 def sparse(store: Any) -> bool:
@@ -104,7 +153,6 @@ def atomic(store: Any) -> bool:
     return Capability.ATOMIC_BATCH in store.capabilities
 
 def address(store: Any, i: int) -> bytes:
-    """The i-th address of the cases: within the capacity of a dense store, of the fixed length when one is declared."""
     length = store.parameters.address_length
     if store.parameters.dense:
         i %= store.parameters.capacity
@@ -113,7 +161,6 @@ def address(store: Any, i: int) -> bytes:
     return b'k' + i.to_bytes(4, 'big')
 
 def value(store: Any, seed: int, length: int=8) -> bytes:
-    """A value made from a seed, of the fixed length when one is declared."""
     size = store.parameters.value_length if store.parameters.value_length is not None else length
     block = token(seed.to_bytes(8, 'big'))
     return (block * (size // len(block) + 1))[:size]
@@ -146,7 +193,6 @@ def write_in_batches(t: unittest.TestCase, store: Any, writes: list[tuple[bytes,
 
 @case('core', sparse)
 def get_absent(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`get-absent`: an address never written reads Absent, and an empty value written reads Found with an empty value."""
     store = make().open()
     t.assertEqual(store.get([address(store, 1)]), [ABSENT])
     if store.parameters.value_length in (None, 0):
@@ -155,7 +201,6 @@ def get_absent(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
 
 @case('core')
 def put_get_roundtrip(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`put-get-roundtrip`: values of length 0, 1, 255, a megabyte, every byte value, and bytes that are not valid text come back identical."""
     store = make().open()
     fixed = store.parameters.value_length
     if fixed is None:
@@ -169,7 +214,6 @@ def put_get_roundtrip(t: unittest.TestCase, make: Callable[[], Adapter]) -> None
 
 @case('core')
 def put_replaces(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`put-replaces`: a second write replaces the first, and the token changes with the value."""
     store = make().open()
     at = address(store, 3)
     first, second = (value(store, 1), value(store, 2))
@@ -181,7 +225,6 @@ def put_replaces(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
 
 @case('core')
 def token_is_value_hash(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`token-is-value-hash`: equal bytes under two addresses have equal tokens, one changed byte changes it, and the token equals the SHA-256 of the bytes."""
     store = make().open()
     data = value(store, 5)
     changed = bytes([data[0] ^ 1]) + data[1:]
@@ -194,7 +237,6 @@ def token_is_value_hash(t: unittest.TestCase, make: Callable[[], Adapter]) -> No
 
 @case('core', comparing)
 def expect_holds_pass_and_conflict(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`expect-holds-pass-and-conflict`: an expectation on a current token commits; on a stale token it conflicts, names that expectation, and leaves every address as it was."""
     store = make().open()
     at, other = (address(store, 1), address(store, 2))
     put(t, store, at, value(store, 1))
@@ -207,7 +249,6 @@ def expect_holds_pass_and_conflict(t: unittest.TestCase, make: Callable[[], Adap
 
 @case('core', lambda store: comparing(store) and sparse(store))
 def expect_absent_pass_and_conflict(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`expect-absent-pass-and-conflict`: an absent expectation commits for a never-written address and conflicts for a written one."""
     store = make().open()
     at = address(store, 4)
     t.assertEqual(store.batch([(at, ABSENT)], [(at, value(store, 1))]), Committed())
@@ -216,7 +257,6 @@ def expect_absent_pass_and_conflict(t: unittest.TestCase, make: Callable[[], Ada
 
 @case('core', atomic)
 def batch_all_or_nothing(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`batch-all-or-nothing`: of three writes with the last expectation failing, or the second malformed (an address written twice), none is applied."""
     store = make().open()
     a, b, c = (address(store, i) for i in (1, 2, 3))
     for at in (a, b, c):
@@ -232,7 +272,6 @@ def batch_all_or_nothing(t: unittest.TestCase, make: Callable[[], Adapter]) -> N
 
 @case('core')
 def batch_malformed_refused(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`batch-malformed-refused`: an empty batch, an address written twice, two expectations on one address, an address the instantiation does not take, a value of another size than the fixed one, and a batch over a declared limit are each refused with nothing applied."""
     store = make().open()
     p, limits = (store.parameters, store.limits)
     a, b = (address(store, 1), address(store, 2))
@@ -257,7 +296,6 @@ def batch_malformed_refused(t: unittest.TestCase, make: Callable[[], Adapter]) -
 
 @case('core', lambda store: any((each is not None for each in (store.limits.writes_per_batch, store.limits.bytes_per_batch, store.limits.bytes_per_value))))
 def batch_at_the_limits(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`batch-at-the-limits`: a batch at each limit the adapter declares, in writes, in bytes and in the size of one value, is committed, and a batch one over each is refused as TooLarge."""
     store = make().open()
     limits, fixed = (store.limits, store.parameters.value_length)
     small = value(store, 1, 1)
@@ -279,7 +317,6 @@ def batch_at_the_limits(t: unittest.TestCase, make: Callable[[], Adapter]) -> No
 
 @case('core', lambda store: comparing(store) and atomic(store))
 def batch_answer_order(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`batch-answer-order`: a batch that is malformed and also holds a stale expectation is Refused, one with two failing expectations names the first in the order given, and one with two expectations on an address is Refused. (Unavailable before Conflict, for an address the adapter does not hold, is the `fallback` group's `held-only-updates`.)"""
     store = make().open()
     a, b = (address(store, 1), address(store, 2))
     put(t, store, a, value(store, 1))
@@ -291,7 +328,6 @@ def batch_answer_order(t: unittest.TestCase, make: Callable[[], Adapter]) -> Non
 
 @case('core', lambda store: not atomic(store))
 def not_atomic_refused(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`not-atomic-refused`: an adapter declaring `atomic_batch` false refuses a two-address batch and a one-address batch with an expectation on a second address, and commits a one-address write with an expectation on it."""
     store = make().open()
     a, b = (address(store, 1), address(store, 2))
     t.assertEqual(store.batch([], [(a, value(store, 1)), (b, value(store, 1))]), Refused(Refusal.NOT_ATOMIC))
@@ -303,7 +339,6 @@ def not_atomic_refused(t: unittest.TestCase, make: Callable[[], Adapter]) -> Non
 
 @case('core', atomic)
 def batch_visible_whole(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`batch-visible-whole`: while one thread commits batches that write two addresses together, another reading them in one `get` call, and in one `list` call for a sparse store, never finds them inconsistent, over 10,000 rounds."""
     adapter = make()
     writer, reader = (adapter.open(), adapter.open())
     rounds, faults = (10000, [])
@@ -331,7 +366,6 @@ def batch_visible_whole(t: unittest.TestCase, make: Callable[[], Adapter]) -> No
 
 @case('core', comparing)
 def concurrent_writers_no_lost_update(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`concurrent-writers-no-lost-update`: N writers each add one to a counter by reading it and writing with an expectation on the token, retrying on conflict, and the final value is N."""
     adapter = make()
     counter, writers = (address(adapter.open(), 7), 8)
     size = adapter.open().parameters.value_length or 8
@@ -355,7 +389,6 @@ def concurrent_writers_no_lost_update(t: unittest.TestCase, make: Callable[[], A
 
 @case('core')
 def list_order_and_range(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`list-order-and-range`: addresses come back in byte order, the range is half open, `after` excludes its address, and paging ascending and descending with `after` set to the last address returned visits every address once and never repeats a page."""
     store = make().open()
     if sparse(store):
         held = [address(store, i) for i in (5, 1, 9, 3, 7, 2, 8)]
@@ -382,7 +415,6 @@ def list_order_and_range(t: unittest.TestCase, make: Callable[[], Adapter]) -> N
 
 @case('core')
 def many_nodes(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`many-nodes`: 10,000 addresses are written in batches and read back by `get` and `list`, equal to what was written."""
     store = make().open()
     writes = [(address(store, i), value(store, i)) for i in range(10000)]
     write_in_batches(t, store, writes)
@@ -394,7 +426,6 @@ def many_nodes(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
 
 @case('core')
 def derived_structures_droppable(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`derived-structures-droppable`: dropping every derived structure through the seam and repeating a sequence of `list` and `get` calls changes no answer."""
     store = make().open()
     write_in_batches(t, store, [(address(store, i), value(store, i)) for i in range(50)])
 
@@ -407,7 +438,6 @@ def derived_structures_droppable(t: unittest.TestCase, make: Callable[[], Adapte
 
 @case('core')
 def many_keys_one_pass(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`many-keys-one-pass`: a `get` of 1,000 addresses starts the same number of processes and opens the same number of files as a `get` of one."""
     store = make().open()
     write_in_batches(t, store, [(address(store, i), value(store, i)) for i in range(1000)])
     start = store.stats()
@@ -419,7 +449,6 @@ def many_keys_one_pass(t: unittest.TestCase, make: Callable[[], Adapter]) -> Non
 
 @case('core')
 def read_inputs_refused(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`read-inputs-refused`: a `get` of an address the instantiation does not take, and a `list` with a `limit` of zero or a `from` after a `to`, are Refused and answer nothing."""
     store = make().open()
     p = store.parameters
     t.assertIsInstance(store.list(limit=0), Refused)
@@ -431,7 +460,6 @@ def read_inputs_refused(t: unittest.TestCase, make: Callable[[], Adapter]) -> No
 
 @case('core')
 def state_changes_on_commit_only(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`state-changes-on-commit-only`: `state()` is unchanged by reads and by a batch that is Refused or in Conflict, and changes when a batch commits."""
     store = make().open()
     at = address(store, 1)
     put(t, store, at, value(store, 1))
@@ -447,7 +475,6 @@ def state_changes_on_commit_only(t: unittest.TestCase, make: Callable[[], Adapte
 
 @case('core')
 def changes_since_lists_written_addresses(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`changes-since-lists-written-addresses`: `changes(since)` answers the addresses written by the batches committed after `since`, ascending and each once; from the current state it answers none; a state the store never answered is Refused."""
     store = make().open()
     put(t, store, address(store, 9), value(store, 1))
     since = store.state()
@@ -460,7 +487,6 @@ def changes_since_lists_written_addresses(t: unittest.TestCase, make: Callable[[
 
 @case('dense', lambda store: store.parameters.dense)
 def dense_has_no_absent(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`dense-has-no-absent`: every address of a dense store's capacity reads Found, never Absent, an unwritten one with the unwritten value, and `list` with no bounds answers the whole capacity range."""
     store = make().open()
     p = store.parameters
     put(t, store, address(store, 3), value(store, 3))
@@ -472,7 +498,6 @@ def dense_has_no_absent(t: unittest.TestCase, make: Callable[[], Adapter]) -> No
 
 @case('fixed-length', lambda store: store.parameters.value_length is not None)
 def fixed_length_refuses_other_size(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`fixed-length-refuses-other-size`: a write of a value whose length is not the fixed length is Refused and nothing is applied."""
     store = make().open()
     at = address(store, 1)
     before = store.get([at])
@@ -483,7 +508,6 @@ def fixed_length_refuses_other_size(t: unittest.TestCase, make: Callable[[], Ada
 
 @case('no-compare', lambda store: not comparing(store))
 def no_compare_refuses_expectation(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`no-compare-refuses-expectation`: a store that cannot compare and write one address refuses a batch with any expectation, a token or `absent`, as NotAtomic, and commits the same write without one."""
     store = make().open()
     at = address(store, 1)
     put(t, store, at, value(store, 1))
@@ -494,7 +518,6 @@ def no_compare_refuses_expectation(t: unittest.TestCase, make: Callable[[], Adap
     put(t, store, at, value(store, 2))
 
 def child(adapter: Adapter, action: str, *arguments: str) -> subprocess.Popen:
-    """Run an action on the same adapter in a child process; its answers come on its standard output, one per line."""
     module, function, keywords = adapter.opener()
     return subprocess.Popen([sys.executable, str(Path(__file__)), 'child', module, function, json.dumps(keywords), action, *arguments], stdout=subprocess.PIPE, text=True)
 
@@ -502,9 +525,8 @@ def child_batch(adapter: Adapter, expect: list, write: list) -> subprocess.Popen
     encode = lambda expectation: None if isinstance(expectation, Absent) else expectation.hex()
     return child(adapter, 'batch', json.dumps([[at.hex(), encode(e)] for at, e in expect]), json.dumps([[at.hex(), data.hex()] for at, data in write]))
 
-@case('durable', lambda store: Capability.DURABLE in store.capabilities)
+@case('durable', lambda store: Capability.DURABLE in store.capabilities, budget=300, cost=Cost(1, True, False))
 def reopen_sees_committed(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`reopen-sees-committed`: after the store is closed and opened again by a new process, everything committed is there, with the same tokens."""
     adapter = make()
     store = adapter.open()
     written = [(address(store, i), value(store, i)) for i in (1, 2)]
@@ -513,9 +535,8 @@ def reopen_sees_committed(t: unittest.TestCase, make: Callable[[], Adapter]) -> 
     process = child(adapter, 'get', json.dumps([at.hex() for at, _ in written]))
     t.assertEqual(process.communicate(timeout=120)[0].split(), [token(data).hex() for _, data in written])
 
-@case('durable', lambda store: Capability.DURABLE in store.capabilities and atomic(store))
+@case('durable', lambda store: Capability.DURABLE in store.capabilities and atomic(store), budget=600, cost=Cost(200, True, False))
 def kill_during_batch_is_atomic(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`kill-during-batch-is-atomic`: a child process commits batches each writing a pair of addresses, reports each commit on a pipe, and is killed at random moments, 200 times; on reopening, every batch the child reported is present, and every other batch is present whole or absent whole."""
     adapter = make()
     chance = random.Random(20261026)
     for round_ in range(200):
@@ -539,9 +560,8 @@ def kill_during_batch_is_atomic(t: unittest.TestCase, make: Callable[[], Adapter
             else:
                 t.assertEqual(one, two)
 
-@case('durable', lambda store: Capability.DURABLE in store.capabilities)
+@case('durable', lambda store: Capability.DURABLE in store.capabilities, budget=300, cost=Cost(2, True, True))
 def killed_writer_leaves_no_lock(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`killed-writer-leaves-no-lock`: after a writer is killed while committing, a new process commits without waiting for the dead one."""
     adapter = make()
     process = child(adapter, 'pairs', '0')
     process.stdout.readline()
@@ -553,9 +573,8 @@ def killed_writer_leaves_no_lock(t: unittest.TestCase, make: Callable[[], Adapte
     t.assertEqual(follower.communicate(timeout=60)[0].split(), ['Committed'])
     t.assertLess(time.monotonic() - started, 30)
 
-@case('durable', lambda store: Capability.DURABLE in store.capabilities and comparing(store))
+@case('durable', lambda store: Capability.DURABLE in store.capabilities and comparing(store), budget=300, cost=Cost(0, True, True))
 def paused_live_writer_is_not_overtaken(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`paused-live-writer-is-not-overtaken`: two writers hold the same expectation on one address and the first is paused at the commit point for 60 seconds; the second waits or conflicts, and exactly one commits."""
     adapter = make()
     first, second = (adapter.open(), adapter.open())
     at = address(first, 1)
@@ -575,9 +594,8 @@ def paused_live_writer_is_not_overtaken(t: unittest.TestCase, make: Callable[[],
     two.join()
     t.assertEqual(sorted((type(each).__name__ for each in answers.values())), ['Committed', 'Conflict'])
 
-@case('durable', lambda store: Capability.DURABLE in store.capabilities)
+@case('durable', lambda store: Capability.DURABLE in store.capabilities, budget=300, cost=Cost(0, True, True))
 def unknown_fate_settles_first(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`unknown-fate-settles-first`: a batch made to fail at the commit point is answered Unavailable with the reason Failed, and when the pause ends the batch is not applied."""
     adapter = make()
     store = adapter.open()
     at = address(store, 1)
@@ -591,9 +609,8 @@ def unknown_fate_settles_first(t: unittest.TestCase, make: Callable[[], Adapter]
     store.at_commit_point(None)
     t.assertEqual(adapter.open().get([at]), before)
 
-@case('shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities and comparing(store))
+@case('shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities and comparing(store), budget=300, cost=Cost(2, True, False))
 def two_processes_lose_cleanly(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`two-processes-lose-cleanly`: two processes write the same address with the same expectation; one commits, the other conflicts, and the store is readable."""
     adapter = make()
     store = adapter.open()
     at = address(store, 1)
@@ -604,9 +621,8 @@ def two_processes_lose_cleanly(t: unittest.TestCase, make: Callable[[], Adapter]
     t.assertEqual(answers, ['Committed', 'Conflict'])
     t.assertIsInstance(get1(adapter.open(), at), Found)
 
-@case('shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities)
+@case('shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities, budget=300, cost=Cost(1, True, False))
 def one_process_sees_the_others_commit(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`one-process-sees-the-others-commit`: a call of `get` and `list` that begins after another process's batch returned sees it, whatever derived structure the first process held before."""
     adapter = make()
     store = adapter.open()
     at = address(store, 5)
@@ -617,9 +633,8 @@ def one_process_sees_the_others_commit(t: unittest.TestCase, make: Callable[[], 
     t.assertEqual(get1(store, at), Found(value(store, 5), token(value(store, 5))))
     t.assertIn(at, store.list())
 
-@case('shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities)
+@case('shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities, budget=300, cost=Cost(1, True, False))
 def changes_sees_other_process(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`changes-sees-other-process`: after another process commits a batch, `state()` differs from the state before it and `changes` from that state answers the addresses it wrote."""
     adapter = make()
     store = adapter.open()
     since = store.state()
@@ -629,9 +644,8 @@ def changes_sees_other_process(t: unittest.TestCase, make: Callable[[], Adapter]
     t.assertNotEqual(store.state(), since)
     t.assertTrue(set(written) <= set(store.changes(since)))
 
-@case('model')
+@case('model', budget=600)
 def model_equivalence(t: unittest.TestCase, make: Callable[[], Adapter]) -> None:
-    """`model-equivalence`: random sequences of `get`, `list` and `batch`, from a recorded seed, give the same answers on the adapter and on `volatile`, for at least 100,000 operations, the model built with the limits the adapter declares and the sequences kept within them; `changes` answers the same addresses."""
     store = make().open()
     model = Volatile(store.parameters, store.limits, atomic_batch=atomic(store))
     seed = 20261026
