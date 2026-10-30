@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Store_ListAnswer in "modules/computer/memory/store/protocol/store-list-answer.kh"
+tp Store_ChangesAnswer in "modules/computer/memory/store/protocol/store-changes-answer.kh"
+
+tp Store_Addresses ab {
+    Store_ListAnswer
+    Store_ChangesAnswer
+}
+
+tp GetAddress mt (self Store_Addresses) (position W32) (address MemoryAddress)
+
+tp GetCount mt (self Store_Addresses) () (count W32)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_Unavailable in "modules/computer/memory/store/protocol/store-unavailable.kh"
+
+tp Domain mt (self Store_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter cannot decide, and nothing was applied")(s, VoidError)
+}
+
+tp Overview mt (self Store_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter cannot decide, and nothing was applied.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Answered for a batch only once its fate is settled.")(s, VoidError)
+}

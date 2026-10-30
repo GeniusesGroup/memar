@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_Absent in "modules/computer/memory/store/protocol/store-absent.kh"
+
+tp Domain mt (self Store_Absent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Absent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The answer that nothing is held at an address, and the expectation that nothing is")(s, VoidError)
+}
+
+tp Overview mt (self Store_Absent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The answer that nothing is held at an address, and the expectation that nothing is.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Absent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Absent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+
+tp Domain mt (self Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("A store of bytes under addresses, written only by an atomic batch")(s, VoidError)
+}
+
+tp Overview mt (self Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("A store of bytes under addresses, written only by an atomic batch.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Get and List read; Batch applies every write only if every expectation holds; State and Changes let a structure derived from the store keep itself current; Stats tells what the medium cost. Every adapter realizes these with the answers the contract states.")(s, VoidError)
+}

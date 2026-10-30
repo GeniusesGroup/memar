@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Store_Read in "modules/computer/memory/store/protocol/store-read.kh"
+tp Store_Token in "modules/computer/memory/store/protocol/store-token.kh"
+
+tp Store_Found ab {
+    Store_Read
+}
+
+tp GetValue mt (self Store_Found) () (value Computer_Buffer)
+
+tp GetToken mt (self Store_Found) () (token Store_Token)

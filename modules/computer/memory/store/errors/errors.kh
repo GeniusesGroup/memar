@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Error_Store_Unavailability ab {
+    Error
+}
+
+tp Error_Store_NotHeld ab {
+    Error_Store_Unavailability
+}
+
+tp Error_Store_Unreachable ab {
+    Error_Store_Unavailability
+}
+
+tp Error_Store_Failed ab {
+    Error_Store_Unavailability
+}
+
+tp Error_Store_Refusal ab {
+    Error
+}
+
+tp Error_Store_Malformed ab {
+    Error_Store_Refusal
+}
+
+tp Error_Store_TooLarge ab {
+    Error_Store_Refusal
+}
+
+tp Error_Store_NotAtomic ab {
+    Error_Store_Refusal
+}

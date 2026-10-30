@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Store_Capability in "modules/computer/memory/store/protocol/store-capability.kh"
+
+tp Store_Capabilities ab
+
+tp Has mt (self Store_Capabilities) (capability Store_Capability) (has Boolean)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store_BatchAnswer in "modules/computer/memory/store/protocol/store-batch-answer.kh"
+
+tp Store_Committed ab {
+    Store_BatchAnswer
+}

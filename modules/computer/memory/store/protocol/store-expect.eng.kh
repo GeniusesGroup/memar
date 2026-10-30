@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_Expect in "modules/computer/memory/store/protocol/store-expect.kh"
+
+tp Domain mt (self Store_Expect) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Expect) () (s String) {
+    CharacterRun_From.FromCharacterRun("One expectation of a batch: an address and what it must hold")(s, VoidError)
+}
+
+tp Overview mt (self Store_Expect) () (s String) {
+    CharacterRun_From.FromCharacterRun("One expectation of a batch: an address and what it must hold.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Expect) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Expect) () (s String) {
+    CharacterRun_From.FromCharacterRun("An address carries one expectation in a batch.")(s, VoidError)
+}

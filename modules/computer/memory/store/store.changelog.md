@@ -43,3 +43,27 @@
 
 #### What changed
 - "The cases this module owes" names `git-store` as the first adapter owing `fallback` and `working-tree`, and says the `durable` and `shared` groups run on it; `Owed: memory.port.contract-suite` stays for the two `lockable` cases that wait for a lockable adapter.
+
+---
+
+### The memory store contract is stated in Khayyam, ahead of any code of the redo
+- Time: 2026-10-30T12:00:00Z
+- Type: Added
+- Cited:
+  - [Software Rule — Abstraction First](../../software/rules/abstraction-first/abstraction-first.md) - Reference: the abstraction is written in Khayyam and approved by an agent that did not write it, before any code
+  - [Error Rule — Errors Folder](../../../process/error/rules/errors-folder/errors-folder.md) - Reference: the errors are declared in the module's `errors` folder
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step 2 of the redo (skeleton and its review)
+- Propagates to:
+  - `modules/computer/memory/store/store.md`: Pending - reduced to concept, reasons and trade-offs once the realization is changed
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — wrote the skeleton through three sub-agents; reviewed by a fourth, fresh one
+  - A fresh AI reviewer (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — approved
+
+#### What changed
+- The store contract (`protocol/*.kh` with each type's `*.eng.kh`, and `errors/errors.kh` holding `Unavailability` and `Refusal`) stands in Khayyam beside `store.py`, which is not yet changed. The volatile, conformance, lockable, record, view and git-store modules and the `memory` and `view refresh` services have their skeletons in the same way.
+- The reviewer's claim, quoted: "The Khayyam abstraction skeleton of the memory store contract and of its modules stands before any code of the redo ... It follows the rules and states the same behaviour as the Python it will replace." Its verdict was permitted, with no blocking item. It ran `grep` for comment forms over 247 files (only the license header), `memar content check` over four folders (391 files, 0 problems), a check that every type has its five `detail.kh` methods, a check that every import path exists, and a check that the 36 errors are in nine `errors` folders, and it compared the declarations with the Python of each module.
+- Minor findings left to the realization: `Lock` of lockable returns an `Error` for a refused address where the rest answers `Store_Refused`; nothing reachable from a `Record` closes its store; the reference-collision rule and the `refs/memar-local/` refusal are not yet in `git-store.py`; whether `changes` answers every written address (volatile) or every changed address (git-store) is not stated by the contract; the Python must gain the time budget and cost of a case; `UserActionNote` and `DevActionNote` are empty.
+
+#### Considered and not done
+- The Khayyam was not compiled or parsed: no tool of this repository parses it, so what the review establishes is conformance to the rules and to the Python's behaviour, not that the files are valid Khayyam.

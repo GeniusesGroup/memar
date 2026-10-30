@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Store_Write in "modules/computer/memory/store/protocol/store-write.kh"
+
+tp Store_Writes ab
+
+tp GetWrite mt (self Store_Writes) (position W32) (write Store_Write)
+
+tp GetCount mt (self Store_Writes) () (count W32)

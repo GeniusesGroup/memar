@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error_Store_Unavailability in "modules/computer/memory/store/errors/errors.kh"
+tp Store_Read in "modules/computer/memory/store/protocol/store-read.kh"
+tp Store_ListAnswer in "modules/computer/memory/store/protocol/store-list-answer.kh"
+tp Store_BatchAnswer in "modules/computer/memory/store/protocol/store-batch-answer.kh"
+
+tp Store_Unavailable ab {
+    Store_Read
+    Store_ListAnswer
+    Store_BatchAnswer
+}
+
+tp GetReason mt (self Store_Unavailable) () (reason Error_Store_Unavailability)

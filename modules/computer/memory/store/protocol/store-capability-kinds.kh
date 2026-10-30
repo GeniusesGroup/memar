@@ -1,0 +1,31 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store_Capability in "modules/computer/memory/store/protocol/store-capability.kh"
+
+tp Store_Capability_AtomicBatch ab {
+    Store_Capability
+}
+
+tp Store_Capability_Durable ab {
+    Store_Capability
+}
+
+tp Store_Capability_SharedBetweenProcesses ab {
+    Store_Capability
+}
+
+tp Store_Capability_Fallback ab {
+    Store_Capability
+}
+
+tp Store_Capability_LeavesWorkingTreeUntouched ab {
+    Store_Capability
+}
+
+tp Store_Capability_Lockable ab {
+    Store_Capability
+}
+
+tp Store_Capability_Replicated ab {
+    Store_Capability
+}

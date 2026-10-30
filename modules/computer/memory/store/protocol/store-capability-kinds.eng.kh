@@ -1,0 +1,152 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_Capability_AtomicBatch in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+tp Store_Capability_Durable in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+tp Store_Capability_SharedBetweenProcesses in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+tp Store_Capability_Fallback in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+tp Store_Capability_LeavesWorkingTreeUntouched in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+tp Store_Capability_Lockable in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+tp Store_Capability_Replicated in "modules/computer/memory/store/protocol/store-capability-kinds.kh"
+
+tp Domain mt (self Store_Capability_AtomicBatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_AtomicBatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("A batch of more than one write, or with expectations on more than one address, is applied atomically")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_AtomicBatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("A batch of more than one write, or with expectations on more than one address, is applied atomically.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_AtomicBatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_AtomicBatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Store_Capability_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A committed batch survives the abrupt end of the process that wrote it")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A committed batch survives the abrupt end of the process that wrote it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Store_Capability_SharedBetweenProcesses) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_SharedBetweenProcesses) () (s String) {
+    CharacterRun_From.FromCharacterRun("Several processes may use one store at once")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_SharedBetweenProcesses) () (s String) {
+    CharacterRun_From.FromCharacterRun("Several processes may use one store at once.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_SharedBetweenProcesses) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_SharedBetweenProcesses) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Store_Capability_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter asks a shared store for an address it does not hold")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter asks a shared store for an address it does not hold.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_Fallback) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Store_Capability_LeavesWorkingTreeUntouched) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_LeavesWorkingTreeUntouched) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter keeps nothing in the working tree of the project and changes no file it tracks or shows")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_LeavesWorkingTreeUntouched) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter keeps nothing in the working tree of the project and changes no file it tracks or shows.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_LeavesWorkingTreeUntouched) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_LeavesWorkingTreeUntouched) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Store_Capability_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store offers the optional lock and unlock of an address, with a lease")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store offers the optional lock and unlock of an address, with a lease.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Store_Capability_Replicated) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Capability_Replicated) () (s String) {
+    CharacterRun_From.FromCharacterRun("Every committed batch is published to a shared store soon after it commits")(s, VoidError)
+}
+
+tp Overview mt (self Store_Capability_Replicated) () (s String) {
+    CharacterRun_From.FromCharacterRun("Every committed batch is published to a shared store soon after it commits.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Capability_Replicated) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Capability_Replicated) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

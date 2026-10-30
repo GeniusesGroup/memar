@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_State in "modules/computer/memory/store/protocol/store-state.kh"
+
+tp Domain mt (self Store_State) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_State) () (s String) {
+    CharacterRun_From.FromCharacterRun("A token of the committed state of a store")(s, VoidError)
+}
+
+tp Overview mt (self Store_State) () (s String) {
+    CharacterRun_From.FromCharacterRun("A token of the committed state of a store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_State) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_State) () (s String) {
+    CharacterRun_From.FromCharacterRun("Changes when a batch commits and at no other time; the adapter chooses how it is made, as the medium allows.")(s, VoidError)
+}

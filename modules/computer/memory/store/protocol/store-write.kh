@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+
+tp Store_Write ab
+
+tp GetAddress mt (self Store_Write) () (address MemoryAddress)
+
+tp GetValue mt (self Store_Write) () (value Computer_Buffer)

@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Store_CommitHook in "modules/computer/memory/store/protocol/store-commit-hook.kh"
+
+tp Store_Seam ab
+
+tp AtCommitPoint mt (self Store_Seam) (hook Store_CommitHook, given Boolean) ()
+
+tp DropDerivedStructures mt (self Store_Seam) () ()

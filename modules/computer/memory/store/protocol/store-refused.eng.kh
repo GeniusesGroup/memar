@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_Refused in "modules/computer/memory/store/protocol/store-refused.kh"
+
+tp Domain mt (self Store_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store")(s, VoidError)
+}
+
+tp Summary mt (self Store_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The input is refused as a whole and nothing is applied")(s, VoidError)
+}
+
+tp Overview mt (self Store_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The input is refused as a whole and nothing is applied.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail says which rule, for a reader, and is no part of the answer: two refusals with one reason are equal.")(s, VoidError)
+}

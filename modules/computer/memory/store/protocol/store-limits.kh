@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+
+tp Store_Limits ab
+
+tp GetWritesPerBatch mt (self Store_Limits) () (count W32, limited Boolean)
+
+tp GetBytesPerBatch mt (self Store_Limits) () (count W64, limited Boolean)
+
+tp GetBytesPerValue mt (self Store_Limits) () (count W32, limited Boolean)

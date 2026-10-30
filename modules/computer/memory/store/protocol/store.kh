@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store_Parameters in "modules/computer/memory/store/protocol/store-parameters.kh"
+tp Store_Limits in "modules/computer/memory/store/protocol/store-limits.kh"
+tp Store_Capabilities in "modules/computer/memory/store/protocol/store-capabilities.kh"
+tp Store_Addresses in "modules/computer/memory/store/protocol/store-addresses.kh"
+tp Store_GetAnswer in "modules/computer/memory/store/protocol/store-get-answer.kh"
+tp Store_ListQuery in "modules/computer/memory/store/protocol/store-list-query.kh"
+tp Store_ListAnswer in "modules/computer/memory/store/protocol/store-list-answer.kh"
+tp Store_Expects in "modules/computer/memory/store/protocol/store-expects.kh"
+tp Store_Writes in "modules/computer/memory/store/protocol/store-writes.kh"
+tp Store_BatchAnswer in "modules/computer/memory/store/protocol/store-batch-answer.kh"
+tp Store_State in "modules/computer/memory/store/protocol/store-state.kh"
+tp Store_ChangesAnswer in "modules/computer/memory/store/protocol/store-changes-answer.kh"
+tp Store_Stats in "modules/computer/memory/store/protocol/store-stats.kh"
+
+tp Store ab
+
+tp GetParameters mt (self Store) () (parameters Store_Parameters)
+
+tp GetLimits mt (self Store) () (limits Store_Limits)
+
+tp GetCapabilities mt (self Store) () (capabilities Store_Capabilities)
+
+tp Get mt (self Store) (addresses Store_Addresses) (answer Store_GetAnswer)
+
+tp List mt (self Store) (query Store_ListQuery) (answer Store_ListAnswer)
+
+tp Batch mt (self Store) (expect Store_Expects, write Store_Writes) (answer Store_BatchAnswer)
+
+tp State mt (self Store) () (state Store_State)
+
+tp Changes mt (self Store) (since Store_State) (answer Store_ChangesAnswer)
+
+tp Stats mt (self Store) () (stats Store_Stats)
