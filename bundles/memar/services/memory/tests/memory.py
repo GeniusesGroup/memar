@@ -1,30 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for opening a class of nodes: `open(project, class_name, needs)`, in `bundles/memar/services/memory/memory.py`.
-
-    python bundles/memar/services/memory/tests/memory.py
-
-The subject is `memory.py`, named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module
-that owns it per [Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md); its
-expectations are [Memory Record → Binding adapters to classes](../../../../../modules-plugable/computer/memory/store/record/record.md#binding-adapters-to-classes),
-and the form of the key `memory` is the one `modules/process/project/services/preferences.py` declares, pinned here
-because this is the service that reads it. Pinned on scratch projects of the suite's own, with a stand-in adapter
-module whose `bind` lays `volatile` under each class; no adapter of a medium is used.
-
-  Opens        A class the key binds is opened as `record` over the bound adapter, and reads what it writes.
-  NotBound     A class the key does not name, and a project with no manifest or no key, are refused, naming the
-               class and the line to add.
-  LessThanNeeded
-               An adapter that declares less than the needs, in a capability or a limit, or keeps a store `record`
-               cannot be laid over, is refused; one that declares no limit meets any.
-  SharedStore  Two classes whose adapter names one store are refused when either is opened.
-  Malformed    A key whose form is broken, and one naming an adapter no module offers, are refused as malformed.
-  InTheEntryPoint
-               The entry point of `bundles/memar` declares `open`, and it is this one.
-"""
 from __future__ import annotations
+TIER = 'unit'
+BUDGET_SECONDS = 60
+import ast
+import enum
+import io
+import tokenize
 import importlib.util
 import sys
 import tempfile
@@ -63,7 +45,6 @@ REAL_ADAPTER_MODULE = memory.adapter_module
 AT = bytes.fromhex('019a2000000070008000000000000001')
 
 class StandIn:
-    """An adapter for one class: `volatile` with the given declarations, keeping the store `store` names."""
 
     def __init__(self, store: str, parameters: Parameters, limits: Limits) -> None:
         self.store = store
@@ -176,5 +157,71 @@ class InTheEntryPoint(unittest.TestCase):
         launcher = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(launcher)
         self.assertIs(launcher.open, memory.open)
+def bare(path):
+    source = Path(path).read_text(encoding='utf-8')
+    comments = [t.start[0] for t in tokenize.generate_tokens(io.StringIO(source).readline) if t.type == tokenize.COMMENT and t.start[0] > 2]
+    documented = [getattr(n, 'lineno', 0) for n in ast.walk(ast.parse(source)) if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and ast.get_docstring(n, clean=False) is not None]
+    return (comments, documented)
+
+def own_error_types(module):
+    return sorted((name for name, each in vars(module).items() if isinstance(each, type) and each.__module__ == module.__name__ and (issubclass(each, (BaseException, enum.Enum)) or 'Refus' in name)))
+
+def errors_module():
+    return import_module('bundles.memar.services.memory.errors.errors')
+
+class ClosingVolatile(Volatile):
+    closed = 0
+
+    def close(self) -> None:
+        self.closed += 1
+
+class ErrorsFolder(Fixture):
+
+    def test_the_errors_are_declared_in_the_errors_folder(self) -> None:
+        errors = errors_module()
+        self.assertEqual([each.name for each in errors.OpeningRefusal], ['NOT_BOUND', 'LESS_THAN_NEEDED', 'SHARED_STORE', 'MALFORMED'])
+        self.assertTrue(all((each.summary() for each in errors.OpeningRefusal)))
+        self.assertEqual(errors.OpenRefused(errors.OpeningRefusal.NOT_BOUND, 'a'), errors.OpenRefused(errors.OpeningRefusal.NOT_BOUND, 'b'))
+
+    def test_memory_re_exports_the_declared_errors_and_defines_none(self) -> None:
+        errors = errors_module()
+        self.assertIs(memory.OpeningRefusal, errors.OpeningRefusal)
+        self.assertIs(memory.OpenRefused, errors.OpenRefused)
+        self.assertEqual(own_error_types(memory), [])
+
+    def test_a_refused_open_answers_the_declared_error(self) -> None:
+        self.prefer(None)
+        self.assertIsInstance(memory.open(self.project, 'work-records', Needs()), errors_module().OpenRefused)
+
+class Closes(Fixture):
+
+    def opened_over(self, store: ClosingVolatile, needs: Needs=Needs()) -> Any:
+        self.prefer('work-records=stand-in')
+        with unittest.mock.patch.object(StandIn, 'open', lambda self: store):
+            return memory.open(self.project, 'work-records', needs)
+
+    def test_closing_what_open_returns_closes_the_store_it_opened(self) -> None:
+        store = ClosingVolatile()
+        opened = self.opened_over(store)
+        self.assertIsInstance(opened, Record)
+        self.assertEqual(store.closed, 0)
+        opened.close()
+        self.assertEqual(store.closed, 1)
+
+    def test_a_refusal_after_the_store_was_opened_closes_it(self) -> None:
+        store = ClosingVolatile()
+        self.assertIsInstance(self.opened_over(store, Needs(frozenset({Capability.DURABLE}))), OpenRefused)
+        self.assertEqual(store.closed, 1)
+        self.parameters = Parameters(address_length=4)
+        store = ClosingVolatile(self.parameters)
+        self.assertIsInstance(self.opened_over(store), OpenRefused)
+        self.assertEqual(store.closed, 1)
+
+class NoComments(unittest.TestCase):
+
+    def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
+        for path in (memory.__file__, errors_module().__file__, __file__):
+            with self.subTest(path=Path(path).name):
+                self.assertEqual(bare(path), ([], []))
 if __name__ == '__main__':
     unittest.main()

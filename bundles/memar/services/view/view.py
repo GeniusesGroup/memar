@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""view/view.py — `memar view`: the read-only folder a project's `view` key names, built from one class's nodes.
-
-What a view is, and why no verb reads it, is Memory View (`modules-plugable/computer/memory/store/view/view.md`); the
-builder is that module's. The verb is kept in `bundles/memar` because it opens a class through `open`, which is this
-bundle's, and a pluggable module does not reach a bundle. Its sub-verb is in `services/`.
-"""
 from __future__ import annotations
 import argparse
 COMMAND = 'view'

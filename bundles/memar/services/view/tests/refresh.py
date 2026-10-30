@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests that `memar view refresh` builds a project's one view from the class its `view` key names.
-
-    python bundles/memar/services/view/tests/refresh.py
-
-The subject is `services/refresh.py`, named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md). Its expectations are
-[Memory View → What a view is](../../../../../modules-plugable/computer/memory/store/view/view.md#what-a-view-is): the verb
-opens the class through `open`, builds it with the presentation registered for it, and refuses, building nothing, a
-project with no view, a class with no presentation, and a class `open` refuses. The presentation is the test's own; the
-Task's is not built yet. The project is a scratch repository whose class is bound to `git-store`, with the user's data
-area pointed into the scratch folder, made under the suite's scratch folder (`fs_test_scratch`) and removed after.
-"""
 from __future__ import annotations
+TIER = 'system'
+BUDGET_SECONDS = 60
+import ast
+import enum
+import io
+import tokenize
+import unittest.mock
 import argparse
 import contextlib
 import io
@@ -38,7 +32,6 @@ _m_view_tests = import_module('modules-plugable.computer.memory.store.view.tests
 NODE = bytes.fromhex('0190000000007000800000000000000a')
 
 def parse(*words: str) -> tuple[argparse.Namespace, object]:
-    """The verb's own parser, as `memar` builds it, and the run it declared."""
     parser = argparse.ArgumentParser(prog='memar view')
     run = _m_refresh.describe(parser.add_subparsers())
     return (parser.parse_args([_m_refresh.COMMAND, *words]), run)
@@ -55,7 +48,7 @@ class Refresh(unittest.TestCase):
 
     def tearDown(self) -> None:
         for each in self.opened:
-            each.store.close()
+            each.close()
         for name, was in self.saved.items():
             if was is None:
                 os.environ.pop(name, None)
@@ -109,5 +102,89 @@ class Refresh(unittest.TestCase):
         self.assertEqual(status, 1)
         self.assertIn('bound to no adapter', said)
         self.assertFalse((self.project / 'view').exists())
+def bare(path):
+    source = Path(path).read_text(encoding='utf-8')
+    comments = [t.start[0] for t in tokenize.generate_tokens(io.StringIO(source).readline) if t.type == tokenize.COMMENT and t.start[0] > 2]
+    documented = [getattr(n, 'lineno', 0) for n in ast.walk(ast.parse(source)) if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and ast.get_docstring(n, clean=False) is not None]
+    return (comments, documented)
+
+def own_error_types(module):
+    return sorted((name for name, each in vars(module).items() if isinstance(each, type) and each.__module__ == module.__name__ and (issubclass(each, (BaseException, enum.Enum)) or 'Refus' in name)))
+
+def errors_module():
+    return import_module('bundles.memar.services.view.errors.errors')
+
+class Answers(unittest.TestCase):
+    setUp = Refresh.setUp
+    tearDown = Refresh.tearDown
+    with_block = Refresh.with_block
+
+    def test_the_errors_are_declared_in_the_errors_folder(self) -> None:
+        errors = errors_module()
+        self.assertEqual([each.name for each in errors.RefreshRefusal], ['NO_PROJECT', 'NO_VIEW', 'NO_PRESENTATION'])
+        self.assertTrue(all((each.summary() for each in errors.RefreshRefusal)))
+        self.assertEqual(errors.RefreshRefused(errors.RefreshRefusal.NO_VIEW, 'a'), errors.RefreshRefused(errors.RefreshRefusal.NO_VIEW, 'b'))
+
+    def test_refresh_defines_no_error_type_of_its_own(self) -> None:
+        self.assertEqual(own_error_types(_m_refresh), [])
+
+    def test_each_refusal_is_answered_by_its_declared_error(self) -> None:
+        errors = errors_module()
+        view_errors = import_module('modules-plugable.computer.memory.store.view.errors.errors')
+        memory_errors = import_module('bundles.memar.services.memory.errors.errors')
+        answer = _m_refresh.refresh(None)
+        self.assertEqual((type(answer), answer.reason), (errors.RefreshRefused, errors.RefreshRefusal.NO_PROJECT))
+        self.with_block('memar:\n  memory: notes=git-store\n')
+        answer = _m_refresh.refresh(self.project)
+        self.assertEqual((type(answer), answer.reason), (errors.RefreshRefused, errors.RefreshRefusal.NO_VIEW))
+        self.with_block('memar:\n  view: one\n')
+        self.assertIsInstance(_m_refresh.refresh(self.project), view_errors.BadPreference)
+        self.with_block('memar:\n  memory: unshown=git-store\n  view: unshown=view\n')
+        answer = _m_refresh.refresh(self.project)
+        self.assertEqual((type(answer), answer.reason), (errors.RefreshRefused, errors.RefreshRefusal.NO_PRESENTATION))
+        self.with_block('memar:\n  view: notes=view\n')
+        _m_view.register('notes', _m_view_tests.present)
+        self.assertIsInstance(_m_refresh.refresh(self.project), memory_errors.OpenRefused)
+
+    def test_a_refresh_that_builds_answers_built(self) -> None:
+        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        _m_view.register('notes', _m_view_tests.present)
+        opened = _m_memory.open(self.project, 'notes', _m_record.Needs())
+        self.opened.append(opened)
+        opened.batch([], [(_m_record.key(NODE, 'alpha'), b'alpha\n')])
+        answer = _m_refresh.refresh(self.project)
+        self.assertIsInstance(answer, _m_view.Built)
+        self.assertEqual(answer.written, 1)
+
+class Closes(unittest.TestCase):
+    setUp = Refresh.setUp
+    tearDown = Refresh.tearDown
+    with_block = Refresh.with_block
+
+    def closing(self):
+        return unittest.mock.patch.object(_m_record.Record, 'close', autospec=True, side_effect=_m_record.Record.close)
+
+    def test_a_refresh_closes_the_class_it_opened(self) -> None:
+        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        _m_view.register('notes', _m_view_tests.present)
+        with self.closing() as closed:
+            self.assertIsInstance(_m_refresh.refresh(self.project), _m_view.Built)
+        self.assertEqual(closed.call_count, 1)
+
+    def test_a_refused_build_closes_it_too(self) -> None:
+        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        _m_view.register('notes', _m_view_tests.present)
+        (self.project / 'view').mkdir()
+        (self.project / 'view' / 'foreign.txt').write_bytes(b'mine')
+        with self.closing() as closed:
+            self.assertIsInstance(_m_refresh.refresh(self.project), _m_view.ViewRefused)
+        self.assertEqual(closed.call_count, 1)
+
+class NoComments(unittest.TestCase):
+
+    def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
+        for path in (_m_refresh.__file__, errors_module().__file__, import_module('bundles.memar.services.view.view').__file__, __file__):
+            with self.subTest(path=Path(path).name):
+                self.assertEqual(bare(path), ([], []))
 if __name__ == '__main__':
     unittest.main()

@@ -1,12 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""view/services/refresh.py — `memar view refresh`: build a project's view again from its store.
-
-The verb reads the project's `view` key (the builder's module declares it), opens the class it names through `open` of
-`bundles/memar` (`services/memory/memory.py`), and hands the `record` it returns, with the presentation registered for
-the class, to `build` of `modules-plugable/computer/memory/store/view/view.py`. Nothing is imported until it runs.
-"""
 from __future__ import annotations
 import argparse
 import sys
@@ -18,6 +11,33 @@ def describe(verbs):
     import_module('modules.process.project.services.find').add_project_flags(parser, 'the project whose view to build', required=True)
     return run
 
+def refresh(project):
+    errors = import_module('bundles.memar.services.view.errors.errors')
+    if project is None:
+        return errors.RefreshRefused(errors.RefreshRefusal.NO_PROJECT, 'name the project with --project or --project-path')
+    view = import_module('modules-plugable.computer.memory.store.view.view')
+    view_errors = import_module('modules-plugable.computer.memory.store.view.errors.errors')
+    preferences = import_module('modules.process.project.services.preferences')
+    where = preferences.preferences_path(project)
+    chosen = view.view_preference(project)
+    if chosen is None:
+        return view_errors.BadPreference(f'`{view.VIEW_KEY}` in {where}')
+    if not chosen:
+        return errors.RefreshRefused(errors.RefreshRefusal.NO_VIEW, f'put `{view.VIEW_KEY}: <class>=<folder>` in the `{preferences.BLOCK_KEY}:` block of {where}')
+    (class_name, folder), = chosen.items()
+    shown = view.presentation(class_name)
+    if shown is None:
+        return errors.RefreshRefused(errors.RefreshRefusal.NO_PRESENTATION, f'the class `{class_name}` has none, so nothing can show its nodes')
+    memory = import_module('bundles.memar.services.memory.memory')
+    record = import_module('modules-plugable.computer.memory.store.record.record')
+    opened = memory.open(project, class_name, record.Needs())
+    if isinstance(opened, memory.OpenRefused):
+        return opened
+    try:
+        return view.build(opened, shown, project / folder)
+    finally:
+        opened.close()
+
 def _refuse(said: str) -> int:
     print(f'memar view refresh: {said}', file=sys.stderr)
     return 1
@@ -25,32 +45,13 @@ def _refuse(said: str) -> int:
 def run(args: argparse.Namespace) -> int:
     find = import_module('modules.process.project.services.find')
     view = import_module('modules-plugable.computer.memory.store.view.view')
-    preferences = import_module('modules.process.project.services.preferences')
-    project = find.project_from_args(args)
-    if project is None:
-        return _refuse('name the project with --project or --project-path')
-    where = preferences.preferences_path(project)
-    chosen = view.view_preference(project)
-    if chosen is None:
-        return _refuse(f'`{view.VIEW_KEY}` in {where} is not one `class=folder` pair')
-    if not chosen:
-        return _refuse(f'the project defines no view: put `{view.VIEW_KEY}: <class>=<folder>` in the `{preferences.BLOCK_KEY}:` block of {where}')
-    (class_name, folder), = chosen.items()
-    shown = view.presentation(class_name)
-    if shown is None:
-        return _refuse(f'no presentation is registered for the class `{class_name}`, so nothing can show its nodes')
     memory = import_module('bundles.memar.services.memory.memory')
-    record = import_module('modules-plugable.computer.memory.store.record.record')
-    opened = memory.open(project, class_name, record.Needs())
-    if isinstance(opened, memory.OpenRefused):
-        return _refuse(opened.detail or opened.reason.summary())
-    try:
-        built = view.build(opened, shown, project / folder)
-    finally:
-        close = getattr(opened.store, 'close', None)
-        if callable(close):
-            close()
-    if isinstance(built, view.ViewRefused):
-        return _refuse(built.summary())
-    print(f'{project / folder}: {built.summary()}')
-    return 0
+    project = find.project_from_args(args)
+    answer = refresh(project)
+    if isinstance(answer, view.Built):
+        (folder,) = view.view_preference(project).values()
+        print(f'{project / folder}: {answer.summary()}')
+        return 0
+    if isinstance(answer, memory.OpenRefused):
+        return _refuse(answer.detail or answer.reason.summary())
+    return _refuse(answer.summary())
