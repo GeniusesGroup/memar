@@ -14,7 +14,7 @@ A rule of this repository, held for [Type](../../type.md), whose human-facing id
 - **A new or changed file follows the rule;** older files are repaired when a task changes them, not in a sweep that touches files for no other reason.
 
 ## Why it exists
-The owner's ruling of 2026-10-30: every Memar rule applies in every language. The memory-layer task (20261023-T074642Z-5420) wrote comments and docstrings beside its declarations. The Khayyam [comment policy](../../../../../bundles/khayyam/rules/comment-policy/comment-policy.md) allowed comments as a fallback until the methods exist; this rule is the direction that rule names, and the conflict is recorded in that rule's handoff.
+The owner's ruling of 2026-10-30: every Memar rule applies in every language. The memory-layer task (20261023-T074642Z-5420) wrote comments and docstrings beside its declarations. The Khayyam [comment policy](../../../../../bundles/khayyam/rules/comment-policy/comment-policy.md) once allowed comments as a fallback until the methods exist; the owner removed that fallback the same day, and the policy now points here.
 
 ## Keep it or drop it
 An organization may allow comments in its code and remain conformant to Memar's concepts; it then keeps a second place for every fact a type says of itself.
