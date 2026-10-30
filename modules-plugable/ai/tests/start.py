@@ -191,6 +191,13 @@ class PartsInOrder(Fixture):
         self.assertEqual(list(parts), ['task', 'model', PLAN_NAME, 'folder', 'documents', 'commands', 'help', 'ending'])
         self.assertNotIn('SKILL-TEXT', ''.join(parts.values()))
 
+    def test_through_mcp_the_card_and_the_help_are_left_out(self) -> None:
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {'MEMAR_CALLER': 'mcp'}):
+            parts = self.parts(plan_with(), with_skill=False)
+        self.assertEqual(list(parts), ['task', 'model', PLAN_NAME, 'folder', 'documents', 'ending'])
+
     def test_nothing_comes_before_the_first_mark(self) -> None:
         self.assertTrue(self.text(plan_with()).startswith(MARK))
 

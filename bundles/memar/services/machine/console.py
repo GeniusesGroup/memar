@@ -24,5 +24,13 @@ def step(message: str) -> None:
 def note(message: str) -> None:
     print(f'    {message}')
 
+CALLER_ENV = 'MEMAR_CALLER'
+MCP_CALLER = 'mcp'
+
+def called_through_mcp() -> bool:
+    """True while a verb runs for an agent that reached Memar through its MCP tools, whose tool list already holds each command's help."""
+    import os
+    return os.environ.get(CALLER_ENV) == MCP_CALLER
+
 def fail(message: str) -> NoReturn:
     sys.exit(f'error: {message}')

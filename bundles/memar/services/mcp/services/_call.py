@@ -29,6 +29,7 @@ import sys
 import traceback
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
+from machine.console import CALLER_ENV, MCP_CALLER
 from typing import NamedTuple
 SCALARS = (bool, int, float, str, bytes, type(None))
 CAPTURE_FOLDER = 'mcp'
@@ -106,6 +107,7 @@ class Runner:
         sys.stdout, sys.stderr = (_stream(1, 'strict'), _stream(2, 'backslashreplace'))
         sys.stdin = io.TextIOWrapper(io.BytesIO(stdin.encode('utf-8')), encoding='utf-8')
         sys.argv = [str(self.router.__file__), *argv]
+        os.environ[CALLER_ENV] = MCP_CALLER
         try:
             status = self._main(argv)
         finally:
