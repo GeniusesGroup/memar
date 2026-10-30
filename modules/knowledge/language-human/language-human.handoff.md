@@ -118,6 +118,12 @@ to write it into yet and stay unconverted, as the text domain's do.
   should compose a language *model* that has some — is unanswered by any document
   in this domain.
 
+### The language registry of the retired memar-js repository
+- State (2026-10-30): `modules/computer/type/protocol/detail.kh` held, as comments, two files of the retired memar-js repository (archive commit 27e013d, `language/language.js` and `language/languages.js`). They were not a type's text and were removed from there at the owner's word; the sources stay in the archive. What they carried, as data, is the closed set of human languages the owner's rule on language files needs.
+- The data: language codes used by the old code were Unset 0, Machine 1, Mathematics 2, Musical 3, Sign 4, Persian 5, English 6, Russian 7, Arabic 8. Eight languages carried ISO 639-1, 639-2 and 639-3 codes and a direction: Arabic (ar, ara, rtl), Chinese (zh, zho, ltr), English (en, eng, ltr), French (fr, fra, ltr), German (de, deu, ltr), Hindi (hi, hin, ltr), Persian (fa, fas, rtl), Russian (ru, rus, ltr).
+- Blocks continuation: no.
+- Next: decide the closed set and its code form (`eng`, `per` or `fas`) with the language-file rule, then declare it in this domain as code.
+
 ## Not converted, and why
 | Path | Disposition |
 |---|---|

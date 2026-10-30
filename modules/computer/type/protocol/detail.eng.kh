@@ -1,0 +1,131 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Domain in "modules/computer/type/protocol/detail.kh"
+tp Summary in "modules/computer/type/protocol/detail.kh"
+tp Overview in "modules/computer/type/protocol/detail.kh"
+tp UserActionNote in "modules/computer/type/protocol/detail.kh"
+tp DevActionNote in "modules/computer/type/protocol/detail.kh"
+
+tp Domain mt (self Details) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self Details) () (s String) {
+    CharacterRun_From.FromCharacterRun("Human-facing details of a type")(s, VoidError)
+}
+
+tp Overview mt (self Details) () (s String) {
+    CharacterRun_From.FromCharacterRun("Some piece of information written for humans to understand a thing. Domain, Summary and Overview document the type itself, for someone inspecting or managing types in general, such as a manager reviewing what a service or role does, or a CLI or GUI listing the available types, and are read independently of any occurrence. UserActionNote and DevActionNote are addressed to whoever faces an occurrence of the type, typically an Error, at the moment it happens, and describe what action to take next: the first for the end user, the second for the developer or integrator.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Details) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Details) () (s String) {
+    CharacterRun_From.FromCharacterRun("When defining a new detail, the information included must be carefully vetted, and likewise when generating a problem, however it is serialized, the details given must be scrutinized. Risks include leaking information that can be exploited to compromise the system, access to the system, or the privacy of its users.")(s, VoidError)
+}
+
+tp Domain mt (self Domain) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self Domain) () (s String) {
+    CharacterRun_From.FromCharacterRun("Domain name of a type")(s, VoidError)
+}
+
+tp Overview mt (self Domain) () (s String) {
+    CharacterRun_From.FromCharacterRun("The locale name of the domain that the type belongs to, in the more user friendly form to show to users on screens.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Domain) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Domain) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Summary) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self Summary) () (s String) {
+    CharacterRun_From.FromCharacterRun("Summary text of a type")(s, VoidError)
+}
+
+tp Overview mt (self Summary) () (s String) {
+    CharacterRun_From.FromCharacterRun("The locale general summary text that gives the main points in a concise form. Usually it is a one line text, shown in the help output of a service or to notify an error to the user.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Summary) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Summary) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Overview) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self Overview) () (s String) {
+    CharacterRun_From.FromCharacterRun("Overview text of a type")(s, VoidError)
+}
+
+tp Overview mt (self Overview) () (s String) {
+    CharacterRun_From.FromCharacterRun("The locale general text that gives the main ideas without explaining all the details. Usually it is a multi line text, shown in the help output of a command or when the error details are expanded in a GUI screen.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Overview) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Overview) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self UserActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self UserActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("Note for the end user")(s, VoidError)
+}
+
+tp Overview mt (self UserActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("The locale note describing what action the end user should take when facing the type. It is a description text that gives the main ideas with explaining all the details and purposes, addressed directly to the end user.")(s, VoidError)
+}
+
+tp UserActionNote mt (self UserActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self UserActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self DevActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self DevActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("Note for the developer")(s, VoidError)
+}
+
+tp Overview mt (self DevActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("The locale technical note describing what action the developer or integrator should take when facing the type. It is a description text that gives the main ideas with explaining all the details and purposes, addressed to a developer.")(s, VoidError)
+}
+
+tp UserActionNote mt (self DevActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self DevActionNote) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
