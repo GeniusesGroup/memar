@@ -2,7 +2,7 @@
 Status: Draft
 
 ## The rule
-- **A decision, a question, an assumption, a piece of anticipated work and a change record are each a message on the timeline of the task that finds or makes it,** written to a template and joined by an edge to the thing it concerns. A handoff is the template of such a message, not a document an agent writes.
+- **A decision, a question, an assumption, a piece of anticipated work and a change record are each a message on the timeline of the task that finds or makes it,** written to a template and joined by an edge to the thing it concerns. Every kind of text that Documentation governs (plan, report, handoff, changelog, explanation, practice, research) is a template for writing a text and nothing more; the handoff is one example. Their main use is as the text of a message on a task's timeline.
 - **A task keeps no layout of its own for them and names no file, folder or path.** Where a text is kept is text's, how it is joined and ordered is content's and timeline's; the task asks them for what it needs and records the question in their handoffs.
 - **A question is answered by a reply and is not edited into an answer.**
 - **The creation of the task that holds a finding is quick, and it first checks for a related task** (task `20261030-T073507Z-6324`), so that a finding is never held back for want of a place.
