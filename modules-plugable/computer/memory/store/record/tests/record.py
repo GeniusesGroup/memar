@@ -1,29 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests that `record`, laid over a store, keeps the store contract and its own cases.
-
-    python modules-plugable/computer/memory/store/record/tests/record.py
-
-The subject is `record.py`, named for the file that holds it per
-[Test Naming](../../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the
-module that owns it per [Test Placement](../../../../../../modules/process/test/rules/test-placement/test-placement.md).
-Its expectations are the cases of [Memory Conformance](../../../../../../modules/computer/memory/conformance/conformance.md),
-run through the suite's runner, and `record`'s own group below, the cases of
-[Memory Record → The contract suite](../record.md#the-contract-suite): one function each, whose docstring states the case.
-`CASES` is the group, so an adapter's own tests run it on `record` laid over that adapter with `group(make, CASES)`.
-
-Nothing here reads or writes a file; the store under `record` is `volatile`, built three ways:
-
-  Sparse         any address and value length, compare-and-write, atomic, no limits.
-  Limited        the same with the three limits declared.
-  NotAtomic      the same, not atomic.
-
-The contract's suite runs on each through `Addressed`, which turns each of the suite's addresses into one key of a fixed
-id, the domain key `k` and the address in hexadecimal, so that equality and the byte order are kept and every call goes
-through `record` ([Memory Record Handoff](../record.handoff.md#decisions)). The group runs on each as it is.
-"""
 from __future__ import annotations
+TIER = 'unit'
+BUDGET_SECONDS = 60
+import ast
+import enum
+import io
+import tokenize
 import random
 import sys
 import threading
@@ -51,14 +34,12 @@ Refusal = _m_store.Refusal
 Refused = _m_store.Refused
 token = _m_store.token
 Volatile = _m_volatile.Volatile
-OWED = _m_conformance.OWED
 LABELS = _m_record.LABELS
 RecordAdapter = _m_record.RecordAdapter
 key = _m_record.key
 labels_value = _m_record.labels_value
 
 def ident(ms: int, n: int) -> bytes:
-    """A UUID version 7 whose existence instant is `ms` and whose other bits are made from `n`."""
     b = n.to_bytes(10, 'big')
     return ms.to_bytes(6, 'big') + bytes([112 | b[0] & 15]) + b[1:2] + bytes([128 | b[2] & 63]) + b[3:10]
 
@@ -69,7 +50,6 @@ def commit(t: unittest.TestCase, store: Any, writes: list[tuple[bytes, bytes]], 
     t.assertEqual(store.batch(expect or [], writes), Committed())
 
 def write_nodes(t: unittest.TestCase, store: Any, nodes: list[tuple[bytes, dict[str, bytes]]]) -> None:
-    """Write nodes in batches the store takes: one write per batch when it is not atomic."""
     writes = [w for at, parts in nodes for w in node_writes(at, parts)]
     per = 100 if Capability.ATOMIC_BATCH in store.capabilities else 1
     if store.limits.writes_per_batch:
@@ -91,7 +71,6 @@ def atomic(store: Any) -> bool:
     return Capability.ATOMIC_BATCH in store.capabilities
 
 def parts_are_independent(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`parts-are-independent`: writing one domain key leaves the node's other parts and other nodes unchanged."""
     store = make().open()
     x, y = (ident(1000, 1), ident(1000, 2))
     write_nodes(t, store, [(x, {'alpha': b'1', 'beta': b'2'}), (y, {'alpha': b'3'})])
@@ -101,7 +80,6 @@ def parts_are_independent(t: unittest.TestCase, make: Callable[[], Any]) -> None
     t.assertEqual(store.get([key(x, 'alpha')]), [Found(b'changed', token(b'changed'))])
 
 def parts_lists_keys_and_tokens(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`parts-lists-keys-and-tokens`: `parts` names every key the node holds with its token and answers Absent for a node holding none."""
     store = make().open()
     x, label = (ident(2000, 1), ident(5, 9))
     held = {'alpha': b'a', 'beta': b'', LABELS: labels_value([label])}
@@ -109,7 +87,6 @@ def parts_lists_keys_and_tokens(t: unittest.TestCase, make: Callable[[], Any]) -
     t.assertEqual(store.parts([x, ident(2000, 2)]), [tuple(((name, token(data)) for name, data in sorted(held.items()))), ABSENT])
 
 def batch_malformed_refused(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`batch-malformed-refused`, the half that stayed: an invalid domain key, and a `labels` value unsorted or with a repeated id, are each refused with nothing applied; and of `expect-holds-pass-and-conflict`, that a conflict leaves every part and label as it was."""
     store = make().open()
     x, one, two = (ident(3000, 1), ident(1, 1), ident(2, 2))
     write_nodes(t, store, [(x, {'alpha': b'a', LABELS: labels_value([one])})])
@@ -125,7 +102,6 @@ def batch_malformed_refused(t: unittest.TestCase, make: Callable[[], Any]) -> No
         t.assertEqual(store.scan([one]), (x,))
 
 def batch_visible_whole(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`batch-visible-whole`, the half that stayed: while one thread commits batches that write two parts and a label together, another reading them in one `parts` call and by `scan` on that label never finds them inconsistent, over 10,000 rounds."""
     adapter = make()
     writer, reader = (adapter.open(), adapter.open())
     if not atomic(writer):
@@ -159,7 +135,6 @@ def batch_visible_whole(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual(faults, [])
 
 def labels_set_and_scan(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`labels-set-and-scan`: a node with labels is found by `scan` for each and for any subset of them, not for an id it lacks, and not after its label set is rewritten without it."""
     store = make().open()
     x, other = (ident(5000, 1), ident(5000, 2))
     a, b, c, lacking = (ident(1, 1), ident(1, 2), ident(1, 3), ident(1, 4))
@@ -174,7 +149,6 @@ def labels_set_and_scan(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual(store.scan([b]), (x, other))
 
 def scan_pages_complete(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`scan-pages-complete`: paging with a small limit visits each matching id once while other ids are written, ascending and descending, and descending paging by `scan` with `after` set to the last id returned visits every id once."""
     adapter = make()
     store, other = (adapter.open(), adapter.open())
     label, unrelated = (ident(9, 1), ident(9, 2))
@@ -195,7 +169,6 @@ def scan_pages_complete(t: unittest.TestCase, make: Callable[[], Any]) -> None:
         t.assertEqual(seen, sorted(seen, reverse=descending))
 
 def list_ignores_adapter_boundaries(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`list-ignores-adapter-boundaries`: with ids whose instants are the Unix epoch, the instant before and after a month, a leap day, the turn of a year, the year 2100, and many ids within one second, any range of instants and paging answers as the model does (`nodes`, which the first design called `list`)."""
     store = make().open()
     month, leap_day, new_year, y2100 = (1769904000000, 1709164800000, 1767225600000, 4102444800000)
     instants = [0, 1, month - 1, month, leap_day, leap_day + 86399999, leap_day + 86400000, new_year - 1, new_year, y2100]
@@ -215,7 +188,6 @@ def list_ignores_adapter_boundaries(t: unittest.TestCase, make: Callable[[], Any
     t.assertEqual(list(store.nodes()), ids)
 
 def id_form_refused(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`id-form-refused`: 16 bytes whose version or variant bits are not those of a UUID version 7 are refused in a key, a label and an expectation."""
     store = make().open()
     good = ident(6000, 1)
     version_4 = good[:6] + bytes([64 | good[6] & 15]) + good[7:]
@@ -233,7 +205,6 @@ def id_form_refused(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual(store.get([key(good, 'alpha')]), [ABSENT])
 
 def domain_key_charset(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`domain-key-charset`: keys at the edge of the charset are accepted, and a key that is empty, has an upper-case letter, a hyphen at an end, a slash, a dot, a control character or 65 characters is refused."""
     store = make().open()
     at = ident(7000, 1)
     for name in ('a', '0', 'a-b', 'z9-0a-b', 'a' * 64, 'a' + '-b' * 31 + 'c'):
@@ -245,7 +216,6 @@ def domain_key_charset(t: unittest.TestCase, make: Callable[[], Any]) -> None:
         t.assertEqual(store.get([address]), Refused(Refusal.MALFORMED), name)
 
 def read_inputs_refused(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`read-inputs-refused`, the half that stayed: a `get`, `parts`, `nodes` or `scan` with an invalid domain key or an empty `all_of` is Refused and answers nothing; and so is `nodes` or `scan` with a `limit` below one or a `from` after a `to`."""
     store = make().open()
     at, label = (ident(8000, 1), ident(1, 1))
     t.assertIsInstance(store.get([key(at, 'alpha'), at + b'Bad']), Refused)
@@ -257,7 +227,6 @@ def read_inputs_refused(t: unittest.TestCase, make: Callable[[], Any]) -> None:
         t.assertIsInstance(call(from_=-1), Refused)
 
 def many_nodes(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`many-nodes`, the half that stayed: 10,000 nodes are found by `scan` as written."""
     store = make().open()
     label = ident(3, 3)
     ids = [ident(9000 + i // 7, i) for i in range(10000)]
@@ -266,7 +235,6 @@ def many_nodes(t: unittest.TestCase, make: Callable[[], Any]) -> None:
     t.assertEqual(store.nodes(), tuple(sorted(ids)))
 
 def derived_structures_droppable(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`derived-structures-droppable`, the half that stayed: dropping the label index and repeating a sequence of `scan` calls changes no answer."""
     store = make().open()
     labels = [ident(4, i) for i in range(4)]
     ids = [ident(10000 + i, i) for i in range(50)]
@@ -279,7 +247,6 @@ def derived_structures_droppable(t: unittest.TestCase, make: Callable[[], Any]) 
     t.assertEqual(answers(), before)
 
 def one_process_sees_the_others_commit(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`one-process-sees-the-others-commit`, the half that stayed, between two handles: a call of `parts` and `scan` that begins after another handle's batch returned sees it, including a label that batch set, whatever index the first handle held."""
     adapter = make()
     first, second = (adapter.open(), adapter.open())
     at, label = (ident(11000, 1), ident(5, 5))
@@ -290,7 +257,6 @@ def one_process_sees_the_others_commit(t: unittest.TestCase, make: Callable[[], 
     t.assertEqual(first.parts([at]), [(('alpha', token(b'a')), (LABELS, token(labels_value([label]))))])
 
 def one_process_sees_the_others_commit_across_processes(t: unittest.TestCase, make: Callable[[], Any]) -> None:
-    """`one-process-sees-the-others-commit`, the half that stayed, across processes: a call of `parts` and `scan` that begins after another process's batch returned sees it, including a label that batch set."""
     adapter = make()
     store = adapter.open()
     at, label = (ident(12000, 1), ident(6, 6))
@@ -300,10 +266,9 @@ def one_process_sees_the_others_commit_across_processes(t: unittest.TestCase, ma
     t.assertEqual(store.scan([label]), (at,))
     t.assertNotEqual(store.parts([at]), [ABSENT])
 CASES = [Case('record', lambda store: True, check) for check in (parts_are_independent, parts_lists_keys_and_tokens, batch_malformed_refused, batch_visible_whole, labels_set_and_scan, scan_pages_complete, list_ignores_adapter_boundaries, id_form_refused, domain_key_charset, read_inputs_refused, many_nodes, derived_structures_droppable, one_process_sees_the_others_commit)]
-CASES.append(Case('record-shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities, one_process_sees_the_others_commit_across_processes))
+CASES.append(Case('record-shared', lambda store: Capability.SHARED_BETWEEN_PROCESSES in store.capabilities, one_process_sees_the_others_commit_across_processes, budget=120, cost=_m_conformance.Cost(subprocesses=1)))
 
 def group(make: Callable[[], Any], cases: list[Case]) -> type[unittest.TestCase]:
-    """A TestCase class with one test for each of `cases` that applies to the `record` stores `make` opens."""
     probe = make().open()
     attributes: dict[str, Any] = {}
     for each in cases:
@@ -311,7 +276,6 @@ def group(make: Callable[[], Any], cases: list[Case]) -> type[unittest.TestCase]
 
             def method(self: unittest.TestCase, check: Callable=each.check) -> None:
                 check(self, make)
-            method.__doc__ = each.check.__doc__
             attributes['test_' + each.check.__name__] = method
     return type('RecordGroup', (unittest.TestCase,), attributes)
 FIXED = ident(1761480000000, 1)
@@ -323,7 +287,6 @@ def from_key(found: bytes) -> bytes:
     return bytes.fromhex(found[17:].decode('ascii'))
 
 class AddressedStore:
-    """A `record` handle seen by the contract's suite: each of its addresses is the key `to_key` makes of it."""
 
     def __init__(self, record: Any) -> None:
         self.record = record
@@ -356,7 +319,6 @@ class AddressedStore:
         self.record.drop_derived_structures()
 
 class Addressed:
-    """The adapter the contract's suite takes: `record` laid over `adapter`, seen through `AddressedStore`."""
 
     def __init__(self, adapter: Any) -> None:
         self.adapter = RecordAdapter(adapter)
@@ -375,6 +337,87 @@ class EveryCaseRuns(unittest.TestCase):
         probe = RecordAdapter(Volatile()).open()
         t = [each.check.__name__ for each in CASES if not each.applies(probe)]
         self.assertEqual(t, ['one_process_sees_the_others_commit_across_processes'])
-        self.assertNotIn(OWED, one_process_sees_the_others_commit_across_processes.__doc__)
+def bare(path):
+    source = Path(path).read_text(encoding='utf-8')
+    comments = [t.start[0] for t in tokenize.generate_tokens(io.StringIO(source).readline) if t.type == tokenize.COMMENT and t.start[0] > 2]
+    documented = [getattr(n, 'lineno', 0) for n in ast.walk(ast.parse(source)) if isinstance(n, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)) and ast.get_docstring(n, clean=False) is not None]
+    return (comments, documented)
+
+def own_error_types(module):
+    return sorted((name for name, each in vars(module).items() if isinstance(each, type) and each.__module__ == module.__name__ and (issubclass(each, (BaseException, enum.Enum)) or 'Refus' in name)))
+
+_m_store_errors = import_module('modules.computer.memory.store.errors.errors')
+
+def errors_module():
+    return import_module('modules-plugable.computer.memory.store.record.errors.errors')
+
+class Closing(Volatile):
+    closed = 0
+
+    def close(self) -> None:
+        self.closed += 1
+
+class ClosingAdapter:
+
+    def __init__(self) -> None:
+        self.opened = []
+
+    def open(self) -> Closing:
+        self.opened.append(Closing())
+        return self.opened[-1]
+
+    def opener(self):
+        return None
+
+class ErrorsFolder(unittest.TestCase):
+
+    def test_the_errors_are_declared_in_the_errors_folder(self) -> None:
+        errors = errors_module()
+        self.assertEqual([each.name for each in errors.Bad], ['KEY', 'ID', 'LABELS', 'INSTANT', 'BOUNDS', 'LIMIT', 'ALL_OF'])
+        self.assertTrue(all((each.summary() for each in errors.Bad)))
+        self.assertTrue(issubclass(errors.NotLayable, ValueError))
+        self.assertTrue(issubclass(errors.NotLayable, _m_store_errors.Raised))
+
+    def test_record_defines_no_error_type_of_its_own(self) -> None:
+        self.assertEqual(own_error_types(_m_record), [])
+
+    def test_each_refusal_of_record_is_malformed_with_the_declared_error_as_its_detail(self) -> None:
+        errors = errors_module()
+        record = RecordAdapter(Volatile()).open()
+        at = ident(1, 1)
+        said = [(record.get([b'not a key']), errors.Bad.KEY), (record.batch([], [(b'not a key', b'x')]), errors.Bad.KEY), (record.batch([], [(key(at, LABELS), b'x')]), errors.Bad.LABELS), (record.parts([b'x']), errors.Bad.ID), (record.nodes(after=b'x'), errors.Bad.ID), (record.nodes(from_=-1), errors.Bad.INSTANT), (record.nodes(from_=5, to=2), errors.Bad.BOUNDS), (record.nodes(limit=0), errors.Bad.LIMIT), (record.scan([]), errors.Bad.ALL_OF)]
+        for answer, why in said:
+            with self.subTest(why=why):
+                self.assertEqual(answer, Refused(Refusal.MALFORMED))
+                self.assertEqual(answer.detail, why.summary())
+
+    def test_a_store_record_cannot_be_laid_over_raises_the_declared_error(self) -> None:
+        errors = errors_module()
+        with self.assertRaises(errors.NotLayable) as raised:
+            _m_record.Record(Volatile(Parameters(address_length=4)))
+        self.assertIsInstance(raised.exception, ValueError)
+        self.assertEqual(raised.exception.reason, Refusal.MALFORMED)
+
+class Closes(unittest.TestCase):
+
+    def test_closing_a_record_closes_the_store_it_is_laid_over(self) -> None:
+        store = Closing()
+        _m_record.Record(store).close()
+        self.assertEqual(store.closed, 1)
+
+    def test_closing_a_record_over_a_store_with_nothing_to_close_is_quiet(self) -> None:
+        _m_record.Record(Volatile()).close()
+
+    def test_a_record_the_adapter_opens_is_closable(self) -> None:
+        adapter = ClosingAdapter()
+        RecordAdapter(adapter).open().close()
+        self.assertEqual([each.closed for each in adapter.opened], [1])
+
+class NoComments(unittest.TestCase):
+
+    def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
+        for path in (_m_record.__file__, errors_module().__file__, __file__):
+            with self.subTest(path=Path(path).name):
+                self.assertEqual(bare(path), ([], []))
 if __name__ == '__main__':
     unittest.main()

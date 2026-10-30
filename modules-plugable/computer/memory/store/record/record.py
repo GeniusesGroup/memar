@@ -1,20 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""`record`, the capsule of nodes, parts and labels laid over any store of the contract.
-
-What it adds to the store contract (`modules/computer/memory/store/protocol/store.py`), and why, is
-[Memory Record](record.md); this file is the one source of its signatures, its key, the id form and the domain key
-charset. `record` is itself a store of the contract whose address is a key: the 16 bytes of an id, a UUID version 7,
-then the ASCII bytes of a domain key, with no separator. A node's parts are the values under the keys that begin with
-its id, and its labels the part under `labels`, the ids ascending without repetition. `get`, `list`, `batch`, `state`
-and `changes` are the contract's over keys, with `record`'s refusals added; `parts`, `nodes` and `scan` are its own.
-
-`nodes` and `scan` answer from an index of the nodes' ids and labels kept in the memory of the process, one for each
-open `Record`, never in the store's medium nor on disk; it records the `state()` it reflects and applies
-`changes(since)` before it answers. A read that takes more than one call of the store is repeated until `state()` is
-the same before and after it, so it answers from one committed state.
-"""
 from __future__ import annotations
 import bisect
 import re
@@ -22,6 +7,7 @@ from dataclasses import dataclass, field
 from importlib import import_module
 from typing import Any, Sequence
 _m_store = import_module('modules.computer.memory.store.protocol.store')
+_m_errors = import_module('modules-plugable.computer.memory.store.record.errors.errors')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
 Capability = _m_store.Capability
@@ -30,6 +16,8 @@ Parameters = _m_store.Parameters
 Refusal = _m_store.Refusal
 Refused = _m_store.Refused
 Unavailable = _m_store.Unavailable
+Bad = _m_errors.Bad
+NotLayable = _m_errors.NotLayable
 ID_LENGTH = 16
 INSTANT_LENGTH = 6
 INSTANT_END = 1 << 8 * INSTANT_LENGTH
@@ -39,15 +27,12 @@ LABELS = 'labels'
 _LABELS = LABELS.encode('ascii')
 
 def is_id(value: object) -> bool:
-    """Whether `value` is 16 bytes with the version and variant bits of a UUID version 7."""
     return isinstance(value, bytes) and len(value) == ID_LENGTH and value[6] >> 4 == 7 and value[8] >> 6 == 2
 
 def is_domain_key(name: object) -> bool:
-    """Whether `name` is a domain key: lowercase letters and digits in groups joined by single hyphens, at most 64."""
     return isinstance(name, str) and len(name) <= DOMAIN_KEY_MOST and DOMAIN_KEY.fullmatch(name) is not None
 
 def key(at: bytes, domain_key: str) -> bytes:
-    """The key of a node's part: its id, then the domain key's ASCII bytes."""
     return at + domain_key.encode('ascii')
 
 def is_key(value: object) -> bool:
@@ -59,15 +44,12 @@ def is_key(value: object) -> bool:
         return False
 
 def instant(at: bytes) -> int:
-    """The existence instant of an id: the milliseconds since the Unix epoch its first six bytes carry."""
     return int.from_bytes(at[:INSTANT_LENGTH], 'big')
 
 def labels_value(ids: Sequence[bytes]) -> bytes:
-    """The `labels` part holding `ids`: their concatenation, ascending, without repetition."""
     return b''.join(sorted(set(ids)))
 
 def labels_of(value: bytes) -> tuple[bytes, ...] | None:
-    """The labels a `labels` part holds, or None when it is not in the form `labels_value` gives."""
     if len(value) % ID_LENGTH:
         return None
     ids = tuple((value[i:i + ID_LENGTH] for i in range(0, len(value), ID_LENGTH)))
@@ -76,18 +58,15 @@ def labels_of(value: bytes) -> tuple[bytes, ...] | None:
     return ids
 
 def layable(store: Any) -> bool:
-    """Whether `record` can be laid over `store`: a sparse store of any address and any value length."""
     p = store.parameters
     return p.address_length is None and (not p.dense) and (p.value_length is None)
 
 @dataclass(frozen=True)
 class Needs:
-    """What a class needs of the adapter it is opened on: capabilities, and the least limits it uses (None: none)."""
     capabilities: frozenset = frozenset()
     limits: Limits = field(default_factory=Limits)
 
     def unmet(self, store: Any) -> list[str]:
-        """What `store` declares less of than these needs, each said for a reader; empty when it meets them."""
         missing = [f'the capability `{each.value}`' for each in sorted(self.capabilities - store.capabilities, key=lambda c: c.value)]
         for name in ('writes_per_batch', 'bytes_per_batch', 'bytes_per_value'):
             needed, declared = (getattr(self.limits, name), getattr(store.limits, name))
@@ -96,7 +75,6 @@ class Needs:
         return missing
 
 def _page(order: Sequence[bytes], low: int, high: int, after: bytes | None, limit: int | None, descending: bool) -> tuple[bytes, ...]:
-    """The page of `order[low:high]` after `after`, ascending, or before it, descending, of at most `limit`."""
     if descending:
         if after is not None:
             high = min(high, bisect.bisect_left(order, after, low, max(low, high)))
@@ -108,7 +86,6 @@ def _page(order: Sequence[bytes], low: int, high: int, after: bytes | None, limi
     return tuple(order[low:end]) if low < end else ()
 
 class _Index:
-    """The ids of the nodes and the labels of each, as of the committed state `state`."""
 
     def __init__(self, state: bytes) -> None:
         self.state = state
@@ -132,11 +109,10 @@ class _Index:
             self.labels[at] = new
 
 class Record:
-    """`record` laid over one open handle of a store: the contract's operations over keys, and `parts`, `nodes`, `scan`."""
 
     def __init__(self, store: Any) -> None:
         if not layable(store):
-            raise ValueError('record is laid over a sparse store of any address and value length')
+            raise NotLayable(NotLayable().summary())
         self.store = store
         self.parameters = Parameters(compare_and_write=store.parameters.compare_and_write)
         self.limits = store.limits
@@ -145,7 +121,7 @@ class Record:
 
     def get(self, keys: Sequence[bytes]) -> Any:
         if not all((is_key(each) for each in keys)):
-            return Refused(Refusal.MALFORMED, 'a key whose id or domain key is not of the form')
+            return Refused(Refusal.MALFORMED, Bad.KEY.summary())
         return self.store.get(keys)
 
     def list(self, from_: bytes | None=None, to: bytes | None=None, after: bytes | None=None, limit: int | None=None, descending: bool=False) -> Any:
@@ -153,9 +129,9 @@ class Record:
 
     def batch(self, expect: Sequence, write: Sequence) -> Any:
         if not all((is_key(at) for at, _ in list(expect) + list(write))):
-            return Refused(Refusal.MALFORMED, 'a key whose id or domain key is not of the form')
+            return Refused(Refusal.MALFORMED, Bad.KEY.summary())
         if any((at[ID_LENGTH:] == _LABELS and (not isinstance(data, bytes) or labels_of(data) is None) for at, data in write)):
-            return Refused(Refusal.MALFORMED, 'a `labels` part that is not ids ascending without repetition')
+            return Refused(Refusal.MALFORMED, Bad.LABELS.summary())
         return self.store.batch(expect, write)
 
     def state(self) -> bytes:
@@ -177,10 +153,14 @@ class Record:
     def opener(self) -> Any:
         return self.store.opener()
 
+    def close(self) -> None:
+        close = getattr(self.store, 'close', None)
+        if callable(close):
+            close()
+
     def parts(self, ids: Sequence[bytes]) -> Any:
-        """For each id, the domain keys its node holds with the token of each, ascending, or Absent, or Unavailable."""
         if not all((is_id(at) for at in ids)):
-            return Refused(Refusal.MALFORMED, 'an id that is not of the form')
+            return Refused(Refusal.MALFORMED, Bad.ID.summary())
         while True:
             state = self.store.state()
             held: list[Any] = []
@@ -206,7 +186,6 @@ class Record:
             return answers
 
     def _current(self) -> Any:
-        """The index brought up to the store's committed state, or the Unavailable that kept it from it."""
         while True:
             state = self.store.state()
             if self._index is None:
@@ -235,13 +214,13 @@ class Record:
     def _refused(self, from_: Any, to: Any, after: Any, limit: Any) -> Refused | None:
         bounds = [each for each in (from_, to) if each is not None]
         if not all((isinstance(each, int) and (not isinstance(each, bool)) and (0 <= each <= INSTANT_END) for each in bounds)):
-            return Refused(Refusal.MALFORMED, 'an instant that is not a whole number of milliseconds of six bytes')
+            return Refused(Refusal.MALFORMED, Bad.INSTANT.summary())
         if from_ is not None and to is not None and (from_ > to):
-            return Refused(Refusal.MALFORMED, 'a from after a to')
+            return Refused(Refusal.MALFORMED, Bad.BOUNDS.summary())
         if limit is not None and (isinstance(limit, bool) or not isinstance(limit, int) or limit < 1):
-            return Refused(Refusal.MALFORMED, 'a limit below one')
+            return Refused(Refusal.MALFORMED, Bad.LIMIT.summary())
         if after is not None and (not is_id(after)):
-            return Refused(Refusal.MALFORMED, 'an after that is not an id')
+            return Refused(Refusal.MALFORMED, Bad.ID.summary())
         return None
 
     def _answer(self, order: Sequence[bytes], from_: int | None, to: int | None, after: bytes | None, limit: int | None, descending: bool) -> tuple[bytes, ...]:
@@ -251,7 +230,6 @@ class Record:
         return _page(order, low, max(low, high), after, limit, descending)
 
     def nodes(self, from_: int | None=None, to: int | None=None, after: bytes | None=None, limit: int | None=None, descending: bool=False) -> Any:
-        """The ids whose existence instant lies in `[from_, to)`, paged by `after` and `limit`, ascending or descending."""
         refused = self._refused(from_, to, after, limit)
         if refused:
             return refused
@@ -261,9 +239,8 @@ class Record:
         return self._answer(index.ids, from_, to, after, limit, descending)
 
     def scan(self, all_of: Sequence[bytes], from_: int | None=None, to: int | None=None, after: bytes | None=None, limit: int | None=None, descending: bool=False) -> Any:
-        """As `nodes`, only the ids of nodes whose labels include every id of `all_of`, a set of at least one."""
         if not all_of or not all((is_id(each) for each in all_of)):
-            return Refused(Refusal.MALFORMED, 'an all_of that is empty or holds what is not an id')
+            return Refused(Refusal.MALFORMED, Bad.ALL_OF.summary())
         refused = self._refused(from_, to, after, limit)
         if refused:
             return refused
@@ -275,7 +252,6 @@ class Record:
         return self._answer(matching, from_, to, after, limit, descending)
 
 class RecordAdapter:
-    """`record` laid over an adapter: each `open()` a `Record` over a new handle of the adapter's store."""
 
     def __init__(self, adapter: Any) -> None:
         self.adapter = adapter
