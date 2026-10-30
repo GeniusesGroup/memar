@@ -10,10 +10,11 @@ Open work for `documentation.md`. Entries are mutable current state - revised as
 
 ## Open Questions
 
-### Are a handoff entry and a changelog record files of their own, and the companion files views of them?
-- State: Tentative, from task 20261026-T200844Z-21460. A task writes each handoff entry and each changelog record as a file in the folder of the domain it concerns, named by its number on the task's timeline, and a script moves it beside the document it concerns; `<base>.handoff.md` and `<base>.changelog.md` stay at their paths as views assembled from those files. The reason is that 1294 changelog records sit in 221 files and 256 handoffs are appended to by every task, so writers race and a file outgrows one reading. The shape is in [the pluggable task module's document](../../management/task/task.md); what the changelog and handoff facets say of their file format would then change to say it of the record and not of the file.
-- Options: (1) Recommended: records are files and the companions are views. (2) The companions stay the written files and only a lock is added (the queued lock task), which leaves the size and the move as they are.
-- Blocks: the change of the services that append (`changelog-append`) and of the format sections of both facets. Assumption meanwhile: option 2 is the practice.
+### Is a handoff a template of a message on a task, and a changelog record a content with an edge to what it changed?
+- State: Tentative, owner's direction of 2026-10-30 (task `20261026-T200844Z-21460`). Handoffs are no longer documents agents write: the way of making one becomes a template of a descriptive message on a task, and the existing handoffs are removed soon after tasks can be made quickly (task `20261030-T073507Z-6324`). The files, folders and file-naming of the first proposal are withdrawn. What the handoff and changelog facets say of a file and its format then change to say it of a record; the requirements on text, content and timeline are listed in [the pluggable task module's document](../../management/task/task.md).
+- Options: (1) Recommended: as stated. (2) A changelog stays a document and only the handoff goes; this keeps the race and the size of the changelogs.
+- Anchor: the section "Results routing" of [Documentation](documentation.md#results-routing).
+- Blocks: the change of the services that append (`changelog-append`) and of the format sections of both facets. Assumption meanwhile: no new handoff is extended; findings go to a task's message.
 - Asked: 2026-10-30, Claude (task `20261026-T200844Z-21460`), for Omid Hekayati.
 
 ### Facet registry
