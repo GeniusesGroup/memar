@@ -1,15 +1,27 @@
-# Task Rule — The abstraction of a requirement is written in Khayyam, and approved, before any code of it
+---
+Title: "Software Rule — Abstraction First"
 Status: Draft
+Start Date: 2026-10-30
+---
+
+# Software Rule — Abstraction First
+A rule of this repository, held for [Software](../../software.md). It applies only to work whose product is software; Memar is also used for systems that are not, and the rule says nothing about them. It states the order in which a software requirement is developed: its abstraction first, in Khayyam, approved, and only then any code of it. Step 8 of the workflow accepts a protocol, an abstraction or the document that owns the subject; the narrowing to Khayyam is [Framework → Khayyam and Other Languages](../../../../../docs/framework.md#khayyam-and-other-languages)'s. The claim it applies is [Modeling Practice → The Modeling Workflow](../../../../../docs/modeling.practice.md#the-modeling-workflow), whose eighth step makes a module's contract stand before code is committed to the module, and [Test → The Expectation Is Written Before the Work](../../../../process/test/test.md#the-expectation-is-written-before-the-work), which puts the abstraction before the Test.
 
 ## The rule
-- **Before any code of a requirement, its abstraction is written in Khayyam.** The abstraction is the skeleton: the types, each with the methods of [`detail.kh`](../../../../../modules/computer/type/protocol/detail.kh) that say what the type says of itself; the services, as [`service.kh`](../../../../../modules/process/service/protocol/service.kh) and [`services.kh`](../../../../../modules/process/services/protocol/services.kh) declare a service and a group of them; and the errors, in the module's `errors` folder ([errors](../errors-in-the-errors-folder/errors-in-the-errors-folder.md)). A protocol or an abstraction is Khayyam, never Python and never a Markdown document; Python is a realization of an abstraction already stated, and a name first made while coding is a fault.
-- **It is approved before code begins.** A fresh agent that did not do the work approves it ([a reviewer is a fresh sub-agent](../reviewer-is-a-fresh-sub-agent/reviewer-is-a-fresh-sub-agent.md)), judging it against the requirement and the governing documents; and the owner approves it too where the existing rules send the decision to the owner. The approval is a record in the changelog of the module's document, and the task's plan names it as a step that comes before the first step that writes code.
-- **No code of the requirement is committed to a module before.** A commit of a module's code whose abstraction was not approved first breaks the rule, even when its tests are green.
-- **Where the abstraction needed is missing from Memar,** the agent writes it in Khayyam as part of this step, or records the gap in the handoff of the document it concerns and stops; it does not invent one in the realization.
-- **The order inside a requirement** is: the abstraction in Khayyam, its approval, the tests ([tests first](../tests-first-and-scoped/tests-first-and-scoped.md)), then the code.
+- **The abstraction of a software requirement is written in Khayyam before any code of it.** It is the skeleton: the types, each with the methods of [`detail.kh`](../../../../computer/type/protocol/detail.kh) that say what the type says of itself; the services, as [`service.kh`](../../../../process/service/protocol/service.kh) and [`services.kh`](../../../../process/services/protocol/services.kh) declare a service and a group of services; and the errors, in the module's `errors` folder ([Errors Folder](../../../../process/error/rules/errors-folder/errors-folder.md)). A protocol or an abstraction is not written in Python and is not a Markdown document: a realization in any language is of an abstraction already stated, and a name first made while coding is a fault ([Framework → Khayyam and Other Languages](../../../../../docs/framework.md#khayyam-and-other-languages)).
+- **A fresh agent that did not do the work approves it, and the owner too where the existing rules send the decision to the owner.** The approval is a record in the changelog of the module's document.
+- **No code of the requirement is committed to a module before that approval.** A commit whose abstraction was not approved first breaks the rule, even when its tests are green.
+- **Where the abstraction needed is missing from Memar,** it is written in Khayyam as part of the first step, or the gap is recorded in the handoff of the document it concerns and the work stops.
+- **Then the order is** the abstraction in Khayyam, its approval, the tests ([Test → The Expectation Is Written Before the Work](../../../../process/test/test.md#the-expectation-is-written-before-the-work)), then the code.
+- **The exception the workflow bounds stays bounded:** code whose subject is a language's own ability to compile and run may precede a contract, and only the owner accepts that a piece of work is that.
 
 ## Why it exists
-The owner found the memory-layer task (20261023-T074642Z-5420) built against Memar's own principles: its contract was written as a Python protocol and described in a Markdown document, and the Khayyam that should have stated it was not written. Khayyam is stable enough to replace the Markdown description of a contract, and an abstraction fixed in the realization is a second design nobody reviewed.
+The owner found the memory-layer task (20261023-T074642Z-5420) built against Memar's own principles: its contract was written as a Python protocol and described in a Markdown document, and the Khayyam that should have stated it was not written. Python is used because it compiles and runs today, not because it is wanted; an abstraction fixed in a realization is a second design nobody reviewed.
 
-## How a check would run
-For each commit of code in a module, find the `.kh` files of the module's abstraction and the changelog record that approves them, both before the code's first commit; a module whose contract exists only in `.py` or `.md` files breaks the rule. This repository runs no automatic check of it today.
+## Keep it or drop it
+An organization may develop its software from the code up and remain conformant to Memar's concepts, at the cost the workflow names: errors of understanding become invisible to every check.
+
+## What this rule does not claim
+- It does not claim the abstraction is final forever: a later requirement may move a boundary ([System → What Architecture Is Not](../../../../../docs/system.md#what-architecture-is-not)).
+- It does not claim how an approval is recorded beyond the changelog; that is [Changelog Practice](../../../../../modules-plugable/knowledge/documentation/changelog/changelog.practice.md).
+- It is enforced by no check this repository runs today; a reviewer finds, for each commit of code, the `.kh` files and the approval that precede it.
