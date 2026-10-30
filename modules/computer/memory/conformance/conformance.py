@@ -87,7 +87,7 @@ class Case:
     def name(self) -> str:
         return self.check.__name__.replace('_', '-')
 
-    def judge(self, make: Callable[[], Adapter], probe: Any=None) -> Result:
+    def judge(self, make: Callable[[], Adapter], probe: Any=None, budget_scale: float=1.0) -> Result:
         started = time.monotonic()
         held = probe if probe is not None else make().open()
         if not self.applies(held):
@@ -105,10 +105,11 @@ class Case:
                 outcome['message'] = traceback.format_exc()
         thread = threading.Thread(target=work, daemon=True)
         thread.start()
-        thread.join(self.budget)
+        budget = self.budget * budget_scale
+        thread.join(budget)
         spent = time.monotonic() - started
         if thread.is_alive():
-            return Result(self, ExceededBudget(), f'{self.name} exceeded its budget of {self.budget} seconds', spent)
+            return Result(self, ExceededBudget(), f'{self.name} exceeded its budget of {budget} seconds', spent)
         return Result(self, outcome['verdict'], outcome.get('message', ''), spent)
 CASES: list[Case] = []
 
@@ -119,11 +120,11 @@ def case(group: str, applies: Callable[[Any], bool]=lambda store: True, budget: 
         return check
     return register
 
-def run(make: Callable[[], Adapter], extra: list[Case] | tuple[Case, ...]=()) -> list[Result]:
+def run(make: Callable[[], Adapter], extra: list[Case] | tuple[Case, ...]=(), budget_scale: float=1.0) -> list[Result]:
     probe = make().open()
-    return [each.judge(make, probe) for each in CASES + list(extra)]
+    return [each.judge(make, probe, budget_scale) for each in CASES + list(extra)]
 
-def test_case(make: Callable[[], Adapter], cases: list[Case] | None=None) -> type[unittest.TestCase]:
+def test_case(make: Callable[[], Adapter], cases: list[Case] | None=None, budget_scale: float=1.0) -> type[unittest.TestCase]:
     probe = make().open()
     attributes: dict[str, Any] = {}
     for each in CASES + list(cases or ()):
@@ -131,7 +132,7 @@ def test_case(make: Callable[[], Adapter], cases: list[Case] | None=None) -> typ
             continue
 
         def method(self: unittest.TestCase, each: Case=each) -> None:
-            result = each.judge(make, probe)
+            result = each.judge(make, probe, budget_scale)
             if isinstance(result.verdict, Pending):
                 self.skipTest(result.message)
             if not isinstance(result.verdict, Passed):

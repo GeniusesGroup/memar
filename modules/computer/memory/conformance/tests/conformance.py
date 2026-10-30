@@ -100,6 +100,11 @@ class Verdicts(unittest.TestCase):
         self.assertLess(time.monotonic() - started, 5)
         self.assertIsInstance(result.verdict, conformance.ExceededBudget)
 
+    def test_an_adapter_may_scale_every_budget_it_is_judged_by(self) -> None:
+        stalled = conformance.Case('x', applies, stalls, budget=0.3)
+        self.assertIsInstance(stalled.judge(make, budget_scale=1).verdict, conformance.ExceededBudget)
+        self.assertIn('exceeded its budget of 1.5 seconds', stalled.judge(make, budget_scale=5).message)
+
     def test_an_owed_case_is_pending_and_is_not_run(self) -> None:
         ran = []
         result = conformance.Case('x', applies, lambda t, make: ran.append(1), owed=True).judge(make)
