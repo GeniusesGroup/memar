@@ -1,23 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""`volatile`, the reference adapter of the store contract: a store kept in the memory of the process.
-
-What it is and why it is kernel is [Memory Volatile](volatile.md); the contract it realizes is
-`modules/computer/memory/store/protocol/store.py`. It is built with the parameters, the limits and the atomicity it is
-given, so that the suite's model group can build it with another adapter's declarations. Its declared limits: whatever
-`Parameters` and `Limits` it is built with; `atomic_batch` as given; not `durable`, not `shared_between_processes`,
-no `fallback`, not `lockable`, not `replicated`. It keeps nothing outside the process, so it declares nothing of the
-working tree either. Each `open()` is a new handle on the same memory; the handles of one memory are isolated by one
-lock, and a batch paused at the commit point holds it. It keeps every committed batch's addresses, so `changes` answers
-from any state it ever answered.
-"""
 from __future__ import annotations
 import bisect
 import os
 import threading
 from importlib import import_module
 from typing import Callable, Sequence
+_m_errors = import_module('modules.computer.memory.store.errors.errors')
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
@@ -27,16 +16,19 @@ Conflict = _m_store.Conflict
 Found = _m_store.Found
 Limits = _m_store.Limits
 Parameters = _m_store.Parameters
-Refusal = _m_store.Refusal
+Refusal = _m_errors.Refusal
+Raised = _m_errors.Raised
 Refused = _m_store.Refused
 Stats = _m_store.Stats
-Unavailability = _m_store.Unavailability
+Unavailability = _m_errors.Unavailability
 Unavailable = _m_store.Unavailable
 token = _m_store.token
 TOKEN_LENGTH = len(token(b''))
 
+def _unbuildable(parameters: Parameters) -> bool:
+    return parameters.dense and (not parameters.address_length or parameters.capacity is None or parameters.capacity > 256 ** parameters.address_length)
+
 class _Memory:
-    """What the handles of one store share: the values, the held addresses in order, and the addresses of each commit."""
 
     def __init__(self, parameters: Parameters) -> None:
         self.lock = threading.RLock()
@@ -46,19 +38,23 @@ class _Memory:
         self.name = os.urandom(8)
 
 class Volatile:
-    """A store in the memory of the process; see the module's docstring for what it declares."""
 
     def __init__(self, parameters: Parameters=Parameters(), limits: Limits=Limits(), atomic_batch: bool=True, memory: _Memory | None=None) -> None:
-        if parameters.dense and (not parameters.address_length or parameters.capacity is None or parameters.capacity > 256 ** parameters.address_length):
-            raise ValueError('a dense store needs a fixed address length and a capacity the addresses can count')
+        if _unbuildable(parameters):
+            raise Raised(Refusal.MALFORMED, 'a dense store needs a fixed address length and a capacity the addresses can count')
         self.parameters = parameters
         self.limits = limits
         self.capabilities = frozenset({Capability.ATOMIC_BATCH} if atomic_batch else ())
         self._memory = memory or _Memory(parameters)
         self._hook: Callable[[], None] | None = None
 
+    @classmethod
+    def build(cls, parameters: Parameters, limits: Limits, atomic: bool) -> tuple['Volatile | None', Refusal | None]:
+        if _unbuildable(parameters):
+            return (None, Refusal.MALFORMED)
+        return (cls(parameters, limits, atomic), None)
+
     def open(self) -> 'Volatile':
-        """A new handle on the same store."""
         return Volatile(self.parameters, self.limits, Capability.ATOMIC_BATCH in self.capabilities, self._memory)
 
     def _takes(self, at: object) -> bool:
@@ -170,4 +166,4 @@ class Volatile:
         self._hook = hook
 
     def drop_derived_structures(self) -> None:
-        """`volatile` derives nothing from its values that it does not update in the same step."""
+        pass
