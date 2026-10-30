@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Conformance_Group in "modules/computer/memory/conformance/conformance-group.kh"
+
+tp Store_LockableGroup ab {
+    Conformance_Group
+}

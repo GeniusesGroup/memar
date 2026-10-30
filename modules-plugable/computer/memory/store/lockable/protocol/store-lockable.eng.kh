@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Store_Lockable in "modules-plugable/computer/memory/store/lockable/protocol/store-lockable.kh"
+
+tp Domain mt (self Store_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Store Lockable")(s, VoidError)
+}
+
+tp Summary mt (self Store_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The optional capability lockable: lock and unlock an address, with a lease")(s, VoidError)
+}
+
+tp Overview mt (self Store_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The optional capability lockable: lock and unlock an address, with a lease.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Store_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Store_Lockable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The handle that locked is the holder; Lock waits until the handle holds the address and answers what it holds, as Get would; Unlock writes the value when one is given and releases, and answers Conflict when the handle no longer holds the address; a lock its holder never unlocks lapses after the lease. A refused address is Error_Store_Malformed.")(s, VoidError)
+}
