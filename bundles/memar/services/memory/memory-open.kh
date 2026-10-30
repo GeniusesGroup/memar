@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Project in "modules/process/project/protocol/project.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Record in "modules-plugable/computer/memory/store/record/protocol/record.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+tp Record_Needs in "modules-plugable/computer/memory/store/record/protocol/record-needs.kh"
+
+tp Memar_Memory_Open ab {
+    Service
+}
+
+tp Open mt (self Memar_Memory_Open) (project Project, class Record_Class, needs Record_Needs) (record Record, err Error)

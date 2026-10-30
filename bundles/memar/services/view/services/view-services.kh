@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Services in "modules/process/services/protocol/services.kh"
+tp Memar_View_Refresh in "bundles/memar/services/view/services/view-refresh.kh"
+
+tp Memar_View_Services ab {
+    Process_Services
+}
+
+tp GetRefresh mt (self Memar_View_Services) () (refresh Memar_View_Refresh)

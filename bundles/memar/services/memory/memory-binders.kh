@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Record_Binder in "modules-plugable/computer/memory/store/record/protocol/record-binder.kh"
+
+tp Memar_Memory_Binders ab
+
+tp GetBinder mt (self Memar_Memory_Binders) (name String) (binder Record_Binder, found Boolean)

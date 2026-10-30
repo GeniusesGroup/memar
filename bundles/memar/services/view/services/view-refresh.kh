@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Project in "modules/process/project/protocol/project.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp View_BuildAnswer in "modules-plugable/computer/memory/store/view/protocol/view-build-answer.kh"
+
+tp Memar_View_Refresh ab {
+    Service
+}
+
+tp Refresh mt (self Memar_View_Refresh) (project Project) (answer View_BuildAnswer, err Error)

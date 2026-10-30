@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Memory_Open in "bundles/memar/services/memory/memory-open.kh"
+
+tp Domain mt (self Memar_Memory_Open) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Memory_Open) () (s String) {
+    CharacterRun_From.FromCharacterRun("Open a class of nodes: the record laid over the adapter the project binds the class to")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Memory_Open) () (s String) {
+    CharacterRun_From.FromCharacterRun("Open a class of nodes: the record laid over the adapter the project binds the class to.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Memory_Open) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Memory_Open) () (s String) {
+    CharacterRun_From.FromCharacterRun("A service asks for a class and never for an adapter, so no service holds a branch for a class or an adapter and no kernel module imports an adapter. It reads the key memory of the manifest, resolves the adapter name to its binder, binds the class, and refuses when the key does not name the class, is not in its form or names an adapter no module offers, when another class is bound to the same store, and when the adapter keeps a store a record cannot be laid over or declares less than the needs. Each refusal names the class and the line to add or mend. The caller closes the store it was handed.")(s, VoidError)
+}

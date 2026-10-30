@@ -1,0 +1,68 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Memar_View_NoProject in "bundles/memar/services/view/errors/errors.kh"
+tp Error_Memar_View_NoView in "bundles/memar/services/view/errors/errors.kh"
+tp Error_Memar_View_NoPresentation in "bundles/memar/services/view/errors/errors.kh"
+
+tp Domain mt (self Error_Memar_View_NoProject) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar View")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_View_NoProject) () (s String) {
+    CharacterRun_From.FromCharacterRun("The project is named by neither its name nor its path")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_View_NoProject) () (s String) {
+    CharacterRun_From.FromCharacterRun("The project is named by neither its name nor its path.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_View_NoProject) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_View_NoProject) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_View_NoView) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar View")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_View_NoView) () (s String) {
+    CharacterRun_From.FromCharacterRun("The project defines no view")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_View_NoView) () (s String) {
+    CharacterRun_From.FromCharacterRun("The project defines no view.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_View_NoView) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_View_NoView) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail gives the line to put in the memar block.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_View_NoPresentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar View")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_View_NoPresentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("No presentation is registered for the class the key names")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_View_NoPresentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("No presentation is registered for the class the key names.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_View_NoPresentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_View_NoPresentation) () (s String) {
+    CharacterRun_From.FromCharacterRun("So nothing can show its nodes.")(s, VoidError)
+}

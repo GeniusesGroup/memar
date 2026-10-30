@@ -1,0 +1,110 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Memar_Memory_Refusal in "bundles/memar/services/memory/errors/errors.kh"
+tp Error_Memar_Memory_NotBound in "bundles/memar/services/memory/errors/errors.kh"
+tp Error_Memar_Memory_LessThanNeeded in "bundles/memar/services/memory/errors/errors.kh"
+tp Error_Memar_Memory_SharedStore in "bundles/memar/services/memory/errors/errors.kh"
+tp Error_Memar_Memory_Malformed in "bundles/memar/services/memory/errors/errors.kh"
+
+tp Domain mt (self Error_Memar_Memory_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Memory_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Opening a class is refused and nothing is opened")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Memory_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Opening a class is refused and nothing is opened.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Memory_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Memory_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the class and what to add or mend.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Memory_NotBound) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Memory_NotBound) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key memory of the manifest does not name the class")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Memory_NotBound) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key memory of the manifest does not name the class.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Memory_NotBound) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Memory_NotBound) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail gives the line to add to the memar block.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Memory_LessThanNeeded) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Memory_LessThanNeeded) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter declares less than the class needs, or keeps a store a record cannot be laid over")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Memory_LessThanNeeded) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter declares less than the class needs, or keeps a store a record cannot be laid over.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Memory_LessThanNeeded) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Memory_LessThanNeeded) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carries the reasons of the unmet needs.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Memory_SharedStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Memory_SharedStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Another class is bound to the same store")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Memory_SharedStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Another class is bound to the same store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Memory_SharedStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Memory_SharedStore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Two adapters never write one store.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Memory_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Memory_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key memory is not in its form, or names an adapter no module offers")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Memory_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The key memory is not in its form, or names an adapter no module offers.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Memory_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Memory_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

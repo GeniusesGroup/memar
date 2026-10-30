@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Memory_Services in "bundles/memar/services/memory/memory-services.kh"
+
+tp Domain mt (self Memar_Memory_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Memory_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("The services that open the memory of a project")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Memory_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("The services that open the memory of a project.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Memory_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Memory_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("The entry point of the tooling declares Open and routes to it and does nothing else; a bundle may use pluggable modules and a kernel module may not.")(s, VoidError)
+}
