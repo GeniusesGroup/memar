@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+
+tp Conformance_Opener ab
+
+tp GetModule mt (self Conformance_Opener) () (module String)
+
+tp GetFunction mt (self Conformance_Opener) () (function String)
+
+tp GetKeywords mt (self Conformance_Opener) () (keywords String)

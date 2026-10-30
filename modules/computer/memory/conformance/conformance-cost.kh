@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Conformance_Cost ab
+
+tp GetSubprocesses mt (self Conformance_Cost) () (most W32)
+
+tp GetWritesFiles mt (self Conformance_Cost) () (writes Boolean)
+
+tp GetWaitsOnClock mt (self Conformance_Cost) () (waits Boolean)

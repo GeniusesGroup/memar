@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Runner in "modules/computer/memory/conformance/conformance-runner.kh"
+
+tp Domain mt (self Conformance_Runner) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Runner) () (s String) {
+    CharacterRun_From.FromCharacterRun("Runs the groups an adapter calls for and compares it with the reference store")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Runner) () (s String) {
+    CharacterRun_From.FromCharacterRun("Runs the groups an adapter calls for and compares it with the reference store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Runner) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Runner) () (s String) {
+    CharacterRun_From.FromCharacterRun("Gives each case its own adapter, runs the cases each store of the adapter calls for, ends a case that passes its time budget as ExceededBudget, and reports a result for each.")(s, VoidError)
+}

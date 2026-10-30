@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Cost in "modules/computer/memory/conformance/conformance-cost.kh"
+
+tp Domain mt (self Conformance_Cost) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Cost) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a case spends")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Cost) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a case spends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Cost) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Cost) () (s String) {
+    CharacterRun_From.FromCharacterRun("The most subprocesses it starts, whether it writes files and whether it waits on the clock, as the Test Tiers and Cost rule asks of every Test.")(s, VoidError)
+}

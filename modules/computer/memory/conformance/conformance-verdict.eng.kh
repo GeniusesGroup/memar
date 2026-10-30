@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Verdict in "modules/computer/memory/conformance/conformance-verdict.kh"
+
+tp Domain mt (self Conformance_Verdict) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Verdict) () (s String) {
+    CharacterRun_From.FromCharacterRun("How a case ended")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Verdict) () (s String) {
+    CharacterRun_From.FromCharacterRun("How a case ended.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Verdict) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Verdict) () (s String) {
+    CharacterRun_From.FromCharacterRun("Passed, failed, ended past its time budget, pending because no adapter declaring its capability has run it, or not applicable to the store.")(s, VoidError)
+}

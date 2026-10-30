@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Case in "modules/computer/memory/conformance/conformance-case.kh"
+
+tp Domain mt (self Conformance_Case) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Case) () (s String) {
+    CharacterRun_From.FromCharacterRun("One requirement of the store contract, decided for an adapter")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Case) () (s String) {
+    CharacterRun_From.FromCharacterRun("One requirement of the store contract, decided for an adapter.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Case) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Case) () (s String) {
+    CharacterRun_From.FromCharacterRun("Named, in a group, with the time budget it must finish within, the cost it declares and whether it is owed; it applies to a store only when its group applies and the parameters of the store let it be stated.")(s, VoidError)
+}

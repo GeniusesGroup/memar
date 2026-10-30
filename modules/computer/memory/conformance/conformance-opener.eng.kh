@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Opener in "modules/computer/memory/conformance/conformance-opener.kh"
+
+tp Domain mt (self Conformance_Opener) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Opener) () (s String) {
+    CharacterRun_From.FromCharacterRun("What opens the same adapter in a child process")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Opener) () (s String) {
+    CharacterRun_From.FromCharacterRun("What opens the same adapter in a child process.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Opener) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Opener) () (s String) {
+    CharacterRun_From.FromCharacterRun("The module, the function and the keywords that open the adapter again; the cases of the durable and shared groups use it.")(s, VoidError)
+}

@@ -1,0 +1,110 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Verdict_Passed in "modules/computer/memory/conformance/conformance-verdict-kinds.kh"
+tp Conformance_Verdict_Failed in "modules/computer/memory/conformance/conformance-verdict-kinds.kh"
+tp Conformance_Verdict_ExceededBudget in "modules/computer/memory/conformance/conformance-verdict-kinds.kh"
+tp Conformance_Verdict_Pending in "modules/computer/memory/conformance/conformance-verdict-kinds.kh"
+tp Conformance_Verdict_NotApplicable in "modules/computer/memory/conformance/conformance-verdict-kinds.kh"
+
+tp Domain mt (self Conformance_Verdict_Passed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Verdict_Passed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Verdict_Passed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Verdict_Passed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Verdict_Passed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The case ended Passed.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Verdict_Failed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Verdict_Failed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Verdict_Failed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Verdict_Failed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Verdict_Failed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The case ended Failed.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Verdict_ExceededBudget) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Verdict_ExceededBudget) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Verdict_ExceededBudget) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Verdict_ExceededBudget) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Verdict_ExceededBudget) () (s String) {
+    CharacterRun_From.FromCharacterRun("The case ended ExceededBudget.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Verdict_Pending) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Verdict_Pending) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Verdict_Pending) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Verdict_Pending) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Verdict_Pending) () (s String) {
+    CharacterRun_From.FromCharacterRun("The case ended Pending.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Verdict_NotApplicable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Verdict_NotApplicable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Verdict_NotApplicable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A way a case ends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Verdict_NotApplicable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Verdict_NotApplicable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The case ended NotApplicable.")(s, VoidError)
+}

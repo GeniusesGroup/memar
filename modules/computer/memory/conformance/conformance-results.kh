@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Conformance_Result in "modules/computer/memory/conformance/conformance-result.kh"
+
+tp Conformance_Results ab
+
+tp GetResult mt (self Conformance_Results) (position W32) (result Conformance_Result)
+
+tp GetCount mt (self Conformance_Results) () (count W32)

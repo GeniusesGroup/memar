@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Conformance_Cases in "modules/computer/memory/conformance/conformance-cases.kh"
+
+tp Conformance_Group ab
+
+tp GetName mt (self Conformance_Group) () (name String)
+
+tp GetCases mt (self Conformance_Group) () (cases Conformance_Cases)
+
+tp Applies mt (self Conformance_Group) (store Store) (applies Boolean)

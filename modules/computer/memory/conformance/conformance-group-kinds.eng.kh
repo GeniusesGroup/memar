@@ -1,0 +1,152 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Group_Core in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+tp Conformance_Group_Dense in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+tp Conformance_Group_FixedLength in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+tp Conformance_Group_NoCompare in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+tp Conformance_Group_Durable in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+tp Conformance_Group_Shared in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+tp Conformance_Group_Model in "modules/computer/memory/conformance/conformance-group-kinds.kh"
+
+tp Domain mt (self Conformance_Group_Core) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_Core) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of every adapter")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_Core) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of every adapter.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_Core) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_Core) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named Core, run for every adapter.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Group_Dense) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_Dense) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of a dense store")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_Dense) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of a dense store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_Dense) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_Dense) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named Dense, run for a dense store.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Group_FixedLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_FixedLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of a store of a fixed value length")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_FixedLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of a store of a fixed value length.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_FixedLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_FixedLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named FixedLength, run for a store of a fixed value length.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Group_NoCompare) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_NoCompare) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of a store that cannot compare and write")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_NoCompare) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of a store that cannot compare and write.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_NoCompare) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_NoCompare) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named NoCompare, run for a store that cannot compare and write.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Group_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of an adapter declaring durable")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of an adapter declaring durable.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_Durable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named Durable, run for an adapter declaring durable.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Group_Shared) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_Shared) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of an adapter declaring shared between processes")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_Shared) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of an adapter declaring shared between processes.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_Shared) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_Shared) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named Shared, run for an adapter declaring shared between processes.")(s, VoidError)
+}
+
+tp Domain mt (self Conformance_Group_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Group_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of every adapter, against the reference store built with its declarations")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Group_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group of every adapter, against the reference store built with its declarations.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Group_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Group_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("The group named Model, run for every adapter, against the reference store built with its declarations.")(s, VoidError)
+}

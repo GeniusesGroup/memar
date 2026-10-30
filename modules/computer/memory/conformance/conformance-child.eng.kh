@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Child in "modules/computer/memory/conformance/conformance-child.kh"
+
+tp Domain mt (self Conformance_Child) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Child) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a case runs in another process")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Child) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a case runs in another process.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Child) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Child) () (s String) {
+    CharacterRun_From.FromCharacterRun("Opens the same adapter from the opener, does one action (batch, get or pairs) and prints what it answered.")(s, VoidError)
+}

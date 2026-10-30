@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Conformance_Verdict in "modules/computer/memory/conformance/conformance-verdict.kh"
+
+tp Conformance_Verdict_Passed ab {
+    Conformance_Verdict
+}
+
+tp Conformance_Verdict_Failed ab {
+    Conformance_Verdict
+}
+
+tp Conformance_Verdict_ExceededBudget ab {
+    Conformance_Verdict
+}
+
+tp Conformance_Verdict_Pending ab {
+    Conformance_Verdict
+}
+
+tp Conformance_Verdict_NotApplicable ab {
+    Conformance_Verdict
+}

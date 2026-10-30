@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conformance_Result in "modules/computer/memory/conformance/conformance-result.kh"
+
+tp Domain mt (self Conformance_Result) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Conformance")(s, VoidError)
+}
+
+tp Summary mt (self Conformance_Result) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the runner knows of one case after it ended")(s, VoidError)
+}
+
+tp Overview mt (self Conformance_Result) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the runner knows of one case after it ended.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conformance_Result) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conformance_Result) () (s String) {
+    CharacterRun_From.FromCharacterRun("The case, how it ended, the message of a failure with the step and the seed that reproduce it, and the time it spent against its budget.")(s, VoidError)
+}
