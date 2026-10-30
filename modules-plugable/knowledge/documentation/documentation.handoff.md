@@ -10,6 +10,12 @@ Open work for `documentation.md`. Entries are mutable current state - revised as
 
 ## Open Questions
 
+### Are a handoff entry and a changelog record files of their own, and the companion files views of them?
+- State: Tentative, from task 20261026-T200844Z-21460. A task writes each handoff entry and each changelog record as a file in the folder of the domain it concerns, named by its number on the task's timeline, and a script moves it beside the document it concerns; `<base>.handoff.md` and `<base>.changelog.md` stay at their paths as views assembled from those files. The reason is that 1294 changelog records sit in 221 files and 256 handoffs are appended to by every task, so writers race and a file outgrows one reading. The shape is in [the pluggable task module's document](../../management/task/task.md); what the changelog and handoff facets say of their file format would then change to say it of the record and not of the file.
+- Options: (1) Recommended: records are files and the companions are views. (2) The companions stay the written files and only a lock is added (the queued lock task), which leaves the size and the move as they are.
+- Blocks: the change of the services that append (`changelog-append`) and of the format sections of both facets. Assumption meanwhile: option 2 is the practice.
+- Asked: 2026-10-30, Claude (task `20261026-T200844Z-21460`), for Omid Hekayati.
+
 ### Facet registry
 - State: whether a facet should carry metadata of its own (canonical name, one-line definition, reference to its governing specification) in a centralized machine-readable registry, or whether the current loose convention (each facet documented in its own specification file, found by listing the folder) is sufficient. At the scale this project works at the registry overhead is not justified; each facet's own specification is the authoritative statement of its name and reader relationship, and a registry would be a second place the next facet has to be recorded, which is what [Extensibility](./documentation.md#extensibility) rules out.
 - Next: revisit when tooling consumes facet metadata.
