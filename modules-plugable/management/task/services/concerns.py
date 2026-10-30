@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/concerns.py — what a plan gives away about work that looks finished or abandoned yet is not complete.
+"""modules-plugable/management/task/services/concerns.py — what a plan gives away about work that looks finished or abandoned yet is not complete.
 
 Why this exists. The sweep moves only `complete` tasks, because idle is not
 finished and a folder is what carries an unfinished task to the next task.
@@ -22,12 +22,19 @@ not named twice. A complete task raises nothing, however it looks, and a plan of
 the earlier sectioned form is not judged by a Request or by steps it never had.
 """
 from __future__ import annotations
+from importlib import import_module
 import re
-from modules.management.task.plan.primitive.plan_part import PlanPart
+_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
+PlanPart = _m_plan_part.PlanPart
 from modules.knowledge.status.primitive.status import Status
-from modules.management.task.services.folder import Task, measured_idle
-from modules.management.task.services.plan_file import is_complete, part_text
-from modules.management.task.services.report_file import report_shape_problem
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+Task = _m_folder.Task
+measured_idle = _m_folder.measured_idle
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+is_complete = _m_plan_file.is_complete
+part_text = _m_plan_file.part_text
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+report_shape_problem = _m_report_file.report_shape_problem
 EMPTY_REQUEST_IDLE_DAYS = 1
 _CHECKBOX = re.compile('^\\s*[-*]\\s+\\[([ xX])\\]')
 

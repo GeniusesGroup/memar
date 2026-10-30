@@ -108,7 +108,9 @@ MEMAR_PLACE = _m_normative_references.MEMAR_PLACE
 PREFERENCE = _m_normative_references.PREFERENCE
 memar_place = _m_normative_references.memar_place
 from modules.process.project.services.preferences import preferences_path, preferences_text
-from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_skeleton = _m_plan_file.plan_skeleton
 _m_task_context = import_module('modules-plugable.ai.services.task_context')
 CHANGED_DO = _m_task_context.CHANGED_DO
 GONE_DO = _m_task_context.GONE_DO
@@ -122,7 +124,8 @@ read_record = _m_task_context.read_record
 record_path = _m_task_context.record_path
 write_record = _m_task_context.write_record
 from modules.knowledge.label.primitive.label import Label, Labels
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 ROOT = SCRIPTS.parent.parent
 LAUNCHER = SCRIPTS / 'memar'
 DOCS = {'plain.md': '# Plain\n\n## Abstract\nPLAIN-ABSTRACT\n\n## One\nONE-TEXT\n\n## Two\nTWO-TEXT\n\n## Three\nTHREE-TEXT\n', 'way.practice.md': '---\nname: way\ndescription: WAY-DESCRIPTION\n---\n\n# Way Practice\n\n## First\nFIRST-TEXT\n\n## Second\nSECOND-TEXT\n\n### Inner\nINNER-TEXT\n\n## Third\nTHIRD-TEXT\n', 'core.md': '# Core\n\n## Abstract\nCORE-ABSTRACT\n\n## Norms\nCORE-NORMS\n'}
@@ -445,7 +448,7 @@ def every_part(*arguments: str) -> list[str]:
     """What `memar content get-act-context ARGUMENTS` prints, part after part, until the part that says it is the last."""
     parts: list[str] = []
     while True:
-        done = run_memar('content', 'context', *arguments, '--part', str(len(parts) + 1))
+        done = run_memar('content', 'get-act-context', *arguments, '--part', str(len(parts) + 1))
         if done.returncode != 0:
             raise AssertionError(done.stderr.decode('utf-8'))
         parts.append(done.stdout.decode('utf-8').replace('\r\n', '\n'))
@@ -498,13 +501,13 @@ class CommandLine(unittest.TestCase):
         self.assertEqual(joined(parts), real([DESIGN], project_named=True))
 
     def test_after_without_task_id_is_refused(self) -> None:
-        done = run_memar('content', 'context', '--kind', 'critique', '--after', 'design')
+        done = run_memar('content', 'get-act-context', '--kind', 'critique', '--after', 'design')
         self.assertNotEqual(done.returncode, 0)
         self.assertIn("--after needs --task-id: the record of what was printed is the task's", done.stderr.decode('utf-8'))
         self.assertEqual(done.stdout, b'')
 
     def test_the_help_lists_every_kind_with_when_it_applies(self) -> None:
-        done = run_memar('content', 'context', '--help')
+        done = run_memar('content', 'get-act-context', '--help')
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
         for kind in TaskKind:
@@ -514,7 +517,7 @@ class CommandLine(unittest.TestCase):
         self.assertIn('--task-id', shown)
 
     def test_a_word_that_is_no_kind_is_refused(self) -> None:
-        done = run_memar('content', 'context', '--kind', 'modelling')
+        done = run_memar('content', 'get-act-context', '--kind', 'modelling')
         self.assertEqual(done.returncode, 2)
 
 class CommandLineWithTask(Fixture):

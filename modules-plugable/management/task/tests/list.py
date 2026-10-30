@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for finding tasks in `modules/management/task/services/list.py`.
+"""Tests for finding tasks in `modules-plugable/management/task/services/list.py`.
 
-    python modules/management/task/tests/find.py
+    python modules-plugable/management/task/tests/find.py
 
 The subject is `list`'s answer, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -61,6 +61,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -85,12 +86,15 @@ sys.dont_write_bytecode = True
 import modules.process.project.services.find as project_find
 import modules.process.project.services.registry as registry
 import modules.process.project.services.preferences as project_preferences
-import modules.management.task.services.list as task_find
+task_find = import_module('modules-plugable.management.task.services.list')
 import modules.process.project.services.task_location as task_location
-import modules.management.task.services.plan_file as task_plan
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
 from modules.process.project.services.task_location import register
-from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_skeleton = _m_plan_file.plan_skeleton
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 DAY = 24 * 60 * 60
 EARLIER_FORM = '1111-18dc000000000001-0'
 OLDEST = '20261001-T000000Z-1'

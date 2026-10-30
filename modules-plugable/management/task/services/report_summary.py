@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/report_summary.py — one task in a few lines, for the owner who reviews it.
+"""modules-plugable/management/task/services/report_summary.py — one task in a few lines, for the owner who reviews it.
 
 The owner reviewing a day's tasks reads what each came to, not its folder.
 A task's own words for that are its report's Result, the part that says what
@@ -12,9 +12,13 @@ they are. A task whose report says nothing under either part has no summary
 and says so, rather than leaving the owner to wonder whether it was lost.
 """
 from __future__ import annotations
-from modules.management.task.report.primitive.report_part import ReportPart
+from importlib import import_module
+_m_report_part = import_module('modules-plugable.knowledge.documentation.report.primitive.report_part')
+ReportPart = _m_report_part.ReportPart
 from pathlib import Path
-from modules.management.task.services.report_file import REPORT_NAME, report_part
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+report_part = _m_report_file.report_part
 RESULT_HEADING = ReportPart.RESULT.heading
 RAN_HEADING = ReportPart.WHAT_RAN.heading
 SUMMARY_LINES = 3

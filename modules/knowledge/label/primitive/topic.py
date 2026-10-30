@@ -14,7 +14,7 @@ the task domain, and a topic that names a module by that module
 ([Label → Where labels are declared](../label.md#where-labels-are-declared)) —
 so a new subject is a declaration written where it belongs, with the sentence
 that says what it means, and a word nobody declared is refused naming the
-declared ones near it (`modules/management/task/services/plan_labels.py`). A plan
+declared ones near it (`modules-plugable/management/task/services/plan_labels.py`). A plan
 without a topic has none.
 
 It is a type so that the rule of normalizing and the check of a one-line value

@@ -67,15 +67,24 @@ from . import branch as task_branch
 from modules.process.project.services.preferences import RECORDS_KEY, Records, preferences_path, read_preferences, records_preference
 from modules.process.project.services.registry import read_entries
 from .branch import RecordRefused, folder_on_branch, reference
-from modules.management.task.services.folder import Task, folder_of, read_task, task_folders
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+Task = _m_folder.Task
+folder_of = _m_folder.folder_of
+read_task = _m_folder.read_task
+task_folders = _m_folder.task_folders
 from .keep import KEEP_LIMIT_BYTES, Left, Selection, select
 from modules.process.project.services.task_location import same_path
 from .log import record
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.plan.primitive.plan_key import PlanKey
-from modules.management.task.services.report_file import REPORT_NAME
-from modules.management.task.services.temp import TEMP_FOLDER
-from modules.management.task.primitive.task_id import TaskId
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+_m_temp = import_module('modules-plugable.management.task.services.temp')
+TEMP_FOLDER = _m_temp.TEMP_FOLDER
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 ARCHIVE_COMMAND = 'archive-task-records'
 
 class Outcome(Enum):

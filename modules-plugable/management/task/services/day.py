@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/day.py — the day a review is asked for, and the day a task belongs to.
+"""modules-plugable/management/task/services/day.py — the day a review is asked for, and the day a task belongs to.
 
 The owner reviews tasks by the day they were worked, because what they ask
 for is "what happened today". A task belongs to the local day of the latest
@@ -13,10 +13,12 @@ is local because the owner's day is, not UTC's. A day is named `today`,
 since a guessed day would review the wrong tasks.
 """
 from __future__ import annotations
+from importlib import import_module
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from machine.console import fail
-from modules.management.task.services.folder import last_change
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+last_change = _m_folder.last_change
 DAY_NAMES = 'today, yesterday, or a date as YYYY-MM-DD'
 
 def parse_day(text: str, today: date | None=None) -> date:

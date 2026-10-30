@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar task` in `modules/management/task/task.py` and the services that declare its verbs.
+"""Tests for `memar task` in `modules-plugable/management/task/task.py` and the services that declare its verbs.
 
-    python modules/management/task/tests/task.py
+    python modules-plugable/management/task/tests/task.py
 
 The subject is the task command — its help, its arguments, and which
 service answers each verb — named for the file that holds it per
@@ -95,27 +95,28 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.task as task
+task = import_module('modules-plugable.management.task.task')
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
-import modules.management.task.services.claim as task_claim
-from modules.management.task.primitive.claim import Claim
-import modules.management.task.services.claims as task_claims
+task_claim = import_module('modules-plugable.management.task.services.claim')
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
+task_claims = import_module('modules-plugable.management.task.services.claims')
 task_close = import_module('modules-plugable.computer.git.services.trash_task_folder')
 task_digest = plugable_load('ai.services.task_get_decisions_digest')
-import modules.management.task.services.list as task_find
-import modules.management.task.services.folder as task_folder
+task_find = import_module('modules-plugable.management.task.services.list')
+task_folder = import_module('modules-plugable.management.task.services.folder')
 task_gc = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
-import modules.management.task.primitive.task_id as task_id
+task_id = import_module('modules-plugable.management.task.primitive.task_id')
 import modules.process.project.services.task_location as task_location
 task_log = import_module('modules-plugable.computer.git.services.log')
-import modules.management.task.services.ensure as task_ensure
-import modules.management.task.services.new as task_new
-import modules.management.task.services.plan_file as task_plan
-import modules.management.task.services.priority as task_priority
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_new = import_module('modules-plugable.management.task.services.new')
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_priority = import_module('modules-plugable.management.task.services.priority')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
-import modules.management.task.services.label_add as task_label
-import modules.management.task.services.label_list as task_labels
-import modules.management.task.services.report_file as task_report
+task_label = import_module('modules-plugable.management.task.services.label_add')
+task_labels = import_module('modules-plugable.management.task.services.label_list')
+task_report = import_module('modules-plugable.management.task.services.report_file')
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 LAUNCHER = SCRIPTS / 'memar'
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
@@ -210,7 +211,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_new_says_what_it_writes_and_leaves_the_rest_to_the_file(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('never overwriting one that is there', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'A new chat never reaches a stronger model', 'at most 10 lines under `## Decisions needed`', 'use it as printed', '`memar content write`'):
+        for phrase in ('never overwriting one that is there', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', 'use it as printed', '`memar content write`'):
             self.assertIn(phrase, text)
         for phrase in ('Title: TITLE', 'written in PascalCase', 'Once a day', 'drive or filesystem root is refused'):
             self.assertNotIn(phrase, text)

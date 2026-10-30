@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/label_list.py — the labels a project's tasks carry, by kind, with how many, and the topics it declares.
+"""modules-plugable/management/task/services/label_list.py — the labels a project's tasks carry, by kind, with how many, and the topics it declares.
 
 Why a listing. A topic is declared by the domain whose it is
 (`modules/knowledge/label/primitive/topic.py`), in files spread over
@@ -20,18 +20,21 @@ queued, since the queued ones are what `claims` batches by topic. The largest
 first, then by kind and word, so the order does not depend on the order folders were read.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail, note
 from modules.knowledge.status.primitive.status import Status
 from modules.process.project.services.find import add_project_flags, project_from_args
-from machine.modules_import import load as modules_load
-_task_list = modules_load('management', 'task', 'services', 'list')
-_task_folder = modules_load('management', 'task', 'services', 'folder')
+_task_list = import_module('modules-plugable.management.task.services.list')
+_task_folder = import_module('modules-plugable.management.task.services.folder')
 find_tasks = _task_list.find_tasks
 project_of = _task_list.project_of
 Task = _task_folder.Task
-from modules.management.task.services.plan_labels import TOPIC, labels_of, registry_for
+_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+TOPIC = _m_plan_labels.TOPIC
+labels_of = _m_plan_labels.labels_of
+registry_for = _m_plan_labels.registry_for
 from modules.process.project.primitive.project_name import ProjectName
 LABELS_COMMAND = 'list'
 UNDECLARED = 'undeclared'

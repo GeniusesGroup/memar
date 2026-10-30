@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/dependency.py — a plan's dependencies, declared once: the tasks that must be Complete before it can start.
+"""modules-plugable/management/task/services/dependency.py — a plan's dependencies, declared once: the tasks that must be Complete before it can start.
 
 A plan's `Depends_on` is the tasks it cannot start without, as
 [Documentation → Citations](../../../modules-plugable/knowledge/documentation/documentation.md#citations)
@@ -35,6 +35,7 @@ This file only reads and checks. Writing the key is `task_plan_depends`,
 the Status a dependency gives a task is `task_depends`.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 import re
 from pathlib import Path
@@ -45,11 +46,21 @@ from modules.process.project.primitive.project_path import ProjectPath
 _m_branch = plugable_load('computer.git.services.branch')
 read_from_branch = _m_branch.read
 read_many_from_branch = _m_branch.read_many
-from modules.management.task.services.folder import folder_of
-from modules.management.task.services.plan_file import PLAN_NAME, front_key, front_matter, read_plan, status_word
-from modules.management.task.plan.primitive.plan_key import PlanKey
-from modules.management.task.report.primitive.report_key import ReportKey
-from modules.management.task.services.report_file import REPORT_NAME, read_report_status
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+front_key = _m_plan_file.front_key
+front_matter = _m_plan_file.front_matter
+read_plan = _m_plan_file.read_plan
+status_word = _m_plan_file.status_word
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+read_report_status = _m_report_file.read_report_status
 from modules.knowledge.status.primitive.status import Status
 DEPENDS_FOR = 'Depends_for'
 SEPARATOR = ','

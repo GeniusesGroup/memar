@@ -26,12 +26,15 @@ the files it held, so the commit that records the task says what it did not
 keep and why (`task_archive`).
 """
 from __future__ import annotations
+from importlib import import_module
 import os
 from enum import Enum
 from pathlib import Path
 from typing import NamedTuple
-from modules.management.task.services.temp import TEMP_FOLDER
-from modules.management.task.primitive.claim import Claim
+_m_temp = import_module('modules-plugable.management.task.services.temp')
+TEMP_FOLDER = _m_temp.TEMP_FOLDER
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
 KEEP_LIMIT_BYTES = 256 * 1024
 'The size above which a file that is not a document is left out.'
 BINARY_PROBE_BYTES = 8000

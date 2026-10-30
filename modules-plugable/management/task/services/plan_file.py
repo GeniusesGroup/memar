@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/plan_file.py — a task's plan.md: what a plan is and how it is read, for the services that read and write it.
+"""modules-plugable/management/task/services/plan_file.py — a task's plan.md: what a plan is and how it is read, for the services that read and write it.
 
 One format, imported by every service that touches a plan: `task_new` writes
 one, `task_find` reads one to list a task, `task_gc` reads one to
@@ -36,7 +36,7 @@ followed blindly by a write that would put back what another changed
 meanwhile: it is checked against the plan as it is just before it lands, and
 lands whole (`task_plan_rewrite`).
 
-Which waiting task goes first is the plan's `priority` (`modules/management/task/plan/primitive/priority.py`
+Which waiting task goes first is the plan's `priority` (`modules-plugable/knowledge/documentation/plan/primitive/priority.py`
 declares what it is). It is the plan's own because it is a fact about the task,
 read wherever the plan is read — `list`, `claims`, `digest` — and changed by
 anyone (`task_priority`), so it is one key rewritten in place
@@ -53,7 +53,7 @@ keep its context on it. A label is added or removed by one line
 
 One Status vocabulary serves every Memar document (modules-plugable/knowledge/documentation/documentation.md,
 section Status), declared once in `modules/knowledge/status/primitive/status.py`; the Statuses a plan may
-take are those of `PLAN.statuses` (`modules/management/task/primitive/record.py`), and its
+take are those of `PLAN.statuses` (`modules-plugable/knowledge/documentation/primitive/record.py`), and its
 Status is written in the front matter beside PascalCase keys. Only that
 shape is read. A plan written before in another (a lower-case key, a `Status:`
 line in the body, the words `open` and `done`, the sectioned form) is not read
@@ -76,12 +76,16 @@ replaced. This file holds what they and every reader share: the shape, the front
 reading.
 """
 from __future__ import annotations
+from importlib import import_module
 import time
 from pathlib import Path
 from typing import NamedTuple
 from machine.console import fail
-from modules.management.task.primitive.record import PLAN, REPORT
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+PLAN = _m_record.PLAN
+REPORT = _m_record.REPORT
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import Labels
 from modules.knowledge.status.primitive.status import Status
 PLAN_NAME = PLAN.file_name
@@ -125,13 +129,13 @@ def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: 
     TASK is the id of the task the plan belongs to, written into the
     record as its `ID` so that a reader finds it inside the document rather
     than by reading the name of the folder the record sits in
-    ([Documentation — Plan](../../../modules/management/task/plan/plan.md)).
+    ([Documentation — Plan](../../../modules-plugable/knowledge/documentation/plan/plan.md)).
     PARENT and CONVERSATION are written only for a task opened from another
     one; a task without them is the first of its own conversation. PRIORITY
     is written only when given; absent, the plan reads as `Priority.DEFAULT`.
     LABELS is written as a block only when it holds a label: the caller has
     checked each against its kind (`task_plan_labels`). DEPENDS_ON is written only when given, as the text of
-    the type that checked it (`modules/management/task/services/dependency.py`).
+    the type that checked it (`modules-plugable/management/task/services/dependency.py`).
     """
     given = {PlanKey.ID: task, PlanKey.TITLE: title, PlanKey.STATUS: status_word(status).capitalize(), PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.PRIORITY: priority, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
     front = ['---']

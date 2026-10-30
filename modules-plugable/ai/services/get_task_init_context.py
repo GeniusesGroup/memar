@@ -19,7 +19,7 @@ plan, and this reads the plan to know what to print.
 The parts, in order, each opened by a mark line `=== NAME ===`:
 
     task    the id and the paths; starting a task is `new --task-id`, so the report and the role folders are there
-    model      the strongest model for a plan whose Kind is judgment, a cheaper one for a mechanical Kind; what to do on a weaker one
+    model      the plan's Kind as the starting point of the model it needs, and the rule that sets the model; what to do on one too weak
     plan.md    the plan, whole
     folder     the task folder's listing
     skill      the Memar skill, whole; left out with `--without-skill`, for an agent whose runtime already loaded it
@@ -38,10 +38,11 @@ sections alone. What the documents part printed is recorded in the task's
 --after K0` leaves out only what was printed as it reads now. The plan's Steps decide
 the rest, by the paths of the documents they name — at any of the checkout's top
 folders — read at the section a link names, or at the Abstract when it names
-none, or at the document's first section when it has no Abstract. The model tier is the plan's Kind
-(`task_plan_labels`); a plan with none leaves it to the Request, and a Request
+none, or at the document's first section when it has no Abstract. The model the task needs is
+set by the rule `MODEL_RULE` names, with the plan's Kind as its starting point
+(`task_plan_labels`); a plan with no Kind leaves it to the Request, and a Request
 that ideates, designs, or critiques then ends the agent Blocked, because a guess
-at the tier is the failure it prevents.
+at the model is the failure it prevents.
 
 **The command card stays, though it costs a reverse dependency.** The `commands`
 part prints the card the command module generates, and that module is pluggable,
@@ -74,32 +75,48 @@ import argparse
 import re
 import subprocess
 import sys
-from modules.management.task.plan.primitive.plan_part import PlanPart
+_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
+PlanPart = _m_plan_part.PlanPart
 from pathlib import Path
 from typing import Callable
 from machine.console import fail
 from machine.console_parts import add_part_arguments, bound, next_command
 from machine.console_parts import part_text as parted
 from modules.knowledge.content.services.reference import content_root, read_text
-from modules.management.task.services.depends import refusal as dependency_refusal
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.temp import TEMP_SENTENCE
-from modules.management.task.services.ensure import ensure_task
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+dependency_refusal = _m_depends.refusal
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_temp = import_module('modules-plugable.management.task.services.temp')
+TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
+_m_ensure = import_module('modules-plugable.management.task.services.ensure')
+ensure_task = _m_ensure.ensure_task
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
-from modules.management.task.services.plan_file import PLAN_NAME, part_text, read_plan
-from modules.management.task.plan.primitive.plan_key import PlanKey
-from modules.management.task.services.plan_labels import CHEAPER_KINDS, STRONG_KINDS, TASK_KINDS, task_kind_of
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+part_text = _m_plan_file.part_text
+read_plan = _m_plan_file.read_plan
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
+_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+MODEL_RULE = _m_plan_labels.MODEL_RULE
+TASK_KINDS = _m_plan_labels.TASK_KINDS
+task_kind_of = _m_plan_labels.task_kind_of
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 _m_task_context = import_module('modules-plugable.ai.services.task_context')
 Composed = _m_task_context.Composed
 Ref = _m_task_context.Ref
 context = _m_task_context.context
 context_places = _m_task_context.context_places
 write_record = _m_task_context.write_record
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
-from modules.management.task.primitive.task_id import TaskId
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 START_COMMAND = 'get-task-init-context'
 SKILL_FILE = (SKILL_RELATIVE / 'SKILL.md').as_posix()
 SCRIPTS = _m_fs_memar.checkout_root() / 'bundles' / 'memar'
@@ -130,14 +147,14 @@ def _task_part(task_id: str, folder: Path) -> str:
     return marked_part('task', f'task_id: {task_id}\npath: {folder}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}')
 
 def model_part(kind: str) -> str:
-    if kind in STRONG_KINDS:
-        body = f'kind: {kind}\nThis task is judgment and needs the strongest model available: the strongest the runtime offers that can be used now. A stronger model that is refused (no credits, a limit) is not available, so the strongest usable one is the right one and the task goes on; say in the report which model ran. If you judge your reasoning too weak for this task, write that and why in its report, end Blocked, and ask for another agent to take it up.'
-    elif kind in CHEAPER_KINDS:
-        body = f"kind: {kind}\nThis task is mechanical: a cheaper model than the task's own suffices."
+    rule = f'The model a task runs on follows what it needs, not its kind alone: the rule is {MODEL_RULE} (`memar content resolve-path {MODEL_RULE}` gives its path); the plan states the facts it reads.'
+    too_weak = 'If you judge your reasoning too weak for this task, write that and why in its report, name the level you ran at and what it lacked, end Blocked, and ask for another agent one level above to take it up.'
+    if kind in TaskKind.words():
+        body = f'kind: {kind}\n{rule} The kind is its starting point. {too_weak}'
     elif kind:
         body = f"kind: {kind}\n{kind!r} is not a kind; the kinds are {', '.join(TASK_KINDS)}. End Blocked saying so, for the task that handed you the task to correct it."
     else:
-        body = 'kind: the plan states no kind.\nIf its Request ideates, designs, or critiques, end Blocked saying the plan states no kind: the strongest model is needed and the delegator states it. Otherwise a cheaper model suffices.'
+        body = f'kind: the plan states no kind.\n{rule} If its Request ideates, designs, or critiques, end Blocked saying the plan states no kind, for the delegator to state it. {too_weak}'
     return marked_part('model', body)
 
 def _folder_part(folder: Path) -> str:

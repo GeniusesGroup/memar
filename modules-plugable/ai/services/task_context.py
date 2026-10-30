@@ -81,8 +81,10 @@ lists = _m_normative_references.lists
 memar_place = _m_normative_references.memar_place
 _m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
 normative_reference_places = _m_normative_references.normative_reference_places
-from modules.management.task.services.plan_file import front_matter
-from modules.management.task.labels.task_kind import TaskKind
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+front_matter = _m_plan_file.front_matter
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 ABSTRACT = BodySection.ABSTRACT.heading.lower()
 FIRST_SECTION = 'first section'
 DESCRIPTION_KEY = PracticeKey.DESCRIPTION.key

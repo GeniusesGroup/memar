@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/layout.py — what stands at a task folder's top, and which folder takes the rest.
+"""modules-plugable/management/task/services/layout.py — what stands at a task folder's top, and which folder takes the rest.
 
 A task folder's top holds its plan and its report, and the claim Memar
 writes there while an agent holds the task; everything else the task makes is
@@ -21,14 +21,18 @@ of any other suffix, and a folder, have no kind here, so nothing guesses where
 they belong; whoever made them files them.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
 from pathlib import Path
 from typing import NamedTuple
-from modules.management.task.primitive.claim import Claim
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.services.report_file import REPORT_NAME
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 TOP_NAMES = (PLAN_NAME, REPORT_NAME, *Claim.NAMES)
 "The files a task folder's top holds besides its folders: the plan, the report, and Memar's claim."
 

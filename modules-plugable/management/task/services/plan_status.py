@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/plan_status.py — a plan's Status line rewritten: queued or claimed, and nothing else touched.
+"""modules-plugable/management/task/services/plan_status.py — a plan's Status line rewritten: queued or claimed, and nothing else touched.
 """
 from __future__ import annotations
+from importlib import import_module
 from pathlib import Path
 from machine.console import fail
-from modules.management.task.services.plan_file import front_matter, status_word
-from modules.management.task.services.plan_rewrite import key_of, line_end, rewrite
-from modules.management.task.primitive.record import PLAN
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+front_matter = _m_plan_file.front_matter
+status_word = _m_plan_file.status_word
+_m_plan_rewrite = import_module('modules-plugable.management.task.services.plan_rewrite')
+key_of = _m_plan_rewrite.key_of
+line_end = _m_plan_rewrite.line_end
+rewrite = _m_plan_rewrite.rewrite
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+PLAN = _m_record.PLAN
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.status.primitive.status import Status
 
 def set_status(path: Path, status: str, expected: tuple[str, ...] | None=None) -> None:

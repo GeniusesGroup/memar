@@ -66,25 +66,43 @@ from datetime import date
 from pathlib import Path
 from typing import Callable
 from machine.console import note
-from modules.management.task.primitive.record import REPORT
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+REPORT = _m_record.REPORT
 from modules.knowledge.status.primitive.status import Status
 _m_content_questions = import_module('modules-plugable.knowledge.documentation.services.content_questions')
 BLOCKING_MARK = _m_content_questions.BLOCKING_MARK
 handoff_files = _m_content_questions.handoff_files
 open_questions = _m_content_questions.open_questions
 from modules.knowledge.content.services.reference import content_root
-from modules.management.task.services.dependency import Reader
-from modules.management.task.services.concerns import concerns
-from modules.management.task.services.depends import concerns_for, reconcile_all
-from modules.management.task.services.day import DAY_NAMES, day_of, parse_day
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+Reader = _m_dependency.Reader
+_m_concerns = import_module('modules-plugable.management.task.services.concerns')
+concerns = _m_concerns.concerns
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+concerns_for = _m_depends.concerns_for
+reconcile_all = _m_depends.reconcile_all
+_m_day = import_module('modules-plugable.management.task.services.day')
+DAY_NAMES = _m_day.DAY_NAMES
+day_of = _m_day.day_of
+parse_day = _m_day.parse_day
 from modules.process.project.services.find import add_project_flags, project_from_args
-from modules.management.task.services.list import find_tasks, project_of
-from modules.management.task.services.folder import Task
-from modules.management.task.plan.primitive.priority import Priority
-from modules.management.task.services.report_file import REPORT_NAME, decisions_needed, handback_problem, read_report_status
-from modules.management.task.services.report_summary import summary_lines
+_m_list = import_module('modules-plugable.management.task.services.list')
+find_tasks = _m_list.find_tasks
+project_of = _m_list.project_of
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+Task = _m_folder.Task
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+decisions_needed = _m_report_file.decisions_needed
+handback_problem = _m_report_file.handback_problem
+read_report_status = _m_report_file.read_report_status
+_m_report_summary = import_module('modules-plugable.management.task.services.report_summary')
+summary_lines = _m_report_summary.summary_lines
 from modules.process.project.primitive.project_name import ProjectName
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 OPEN_HEADING = 'Open handoff questions'
 DIGEST_COMMAND = 'get-decisions-digest'
 _POINTER = re.compile('([\\w./\\\\~:-]*?[\\w.-]+\\.handoff\\.md)(?::(\\d+))?')

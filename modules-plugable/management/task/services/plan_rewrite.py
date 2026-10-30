@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/plan_rewrite.py — the one way a plan's lines are replaced, and the line helpers every field's writer uses.
+"""modules-plugable/management/task/services/plan_rewrite.py — the one way a plan's lines are replaced, and the line helpers every field's writer uses.
 
 Several writers reach one plan — a claim, a priority, a person editing — so a rewrite is never a
 read followed blindly by a write that would put back what another changed meanwhile: it is
 checked against the plan as it is just before it lands, and lands whole.
 """
 from __future__ import annotations
+from importlib import import_module
 import os
 import time
 from pathlib import Path
 from typing import Callable
 from machine.console import fail
-from modules.management.task.services.plan_file import REWRITE_ATTEMPTS, REWRITE_PAUSE_SECONDS, plan_shape_problem, read_bytes
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+REWRITE_ATTEMPTS = _m_plan_file.REWRITE_ATTEMPTS
+REWRITE_PAUSE_SECONDS = _m_plan_file.REWRITE_PAUSE_SECONDS
+plan_shape_problem = _m_plan_file.plan_shape_problem
+read_bytes = _m_plan_file.read_bytes
 
 def rewrite(path: Path, change: Callable[[list[str]], list[str]]) -> None:
     """Rewrite PATH as CHANGE makes its lines, starting over when another writer changed it meanwhile.

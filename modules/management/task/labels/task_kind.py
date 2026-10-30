@@ -27,8 +27,7 @@ is. A plan carries neither.
 Which agent runs a kind, and how able it must be, is not said here and is not
 a fact of the kind: a plan's own AI is the Labels design's concern
 (task 20261014T120306Z-20292-0), and until it lands the reader of these words
-(`task_plan_labels`) keeps the rule `start` applies, as a transitional rule
-with its reason.
+(`task_plan_labels`) cites the rule that says it (its constant `MODEL_RULE`).
 
 This file moves whole to the `protocol/` folder of the `task` module once the
 scripts are modules (study 20261015-T112819Z-23712, R7); the move of services
@@ -74,4 +73,4 @@ def _word(text: str) -> str:
     if not kind.carried:
         raise LabelProblem(f"a plan does not carry the kind {kind.word}: {kind.applies} A plan's kind is one of {', '.join(TaskKind.words(carried=True))}")
     return kind.word
-LABEL_KIND = LabelKind(TASK_KIND_LABEL, 'what act the task is, one of the words above that a plan may carry', "`get-task-init-context`, which reads a judgment act's sections, and `content get-act-context --kind`", _word, tuple((LabelDefinition(Label(word, _IDS[word]), (TASK_KIND_LABEL,)) for word in TaskKind.words(carried=True))))
+LABEL_KIND = LabelKind(TASK_KIND_LABEL, 'what act the task is, one of the words above that a plan may carry', "`get-task-init-context`, which reads an act's sections, and `content get-act-context --kind`", _word, tuple((LabelDefinition(Label(word, _IDS[word]), (TASK_KIND_LABEL,)) for word in TaskKind.words(carried=True))))

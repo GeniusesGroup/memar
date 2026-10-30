@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/report_file.py — a task's report.md: what a report is, and when it disagrees with the plan.
+"""modules-plugable/management/task/services/report_file.py — a task's report.md: what a report is, and when it disagrees with the plan.
 
 plan.md says what a task is and where it stands while it is worked; report.md
 says how the work on it ended — the Status it reached, what ran, the check
@@ -36,10 +36,19 @@ A report is scratch, like the plan, and goes with its folder: what lasts of it
 is routed by closing by type.
 """
 from __future__ import annotations
+from importlib import import_module
 from pathlib import Path
-from modules.management.task.services.plan_file import EARLIER_SHAPE_REMEDY, EARLIER_STATUS_WORDS, front_key, front_matter, status_word
-from modules.management.task.primitive.record import PLAN, REPORT
-from modules.management.task.report.primitive.report_key import ReportKey
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+EARLIER_SHAPE_REMEDY = _m_plan_file.EARLIER_SHAPE_REMEDY
+EARLIER_STATUS_WORDS = _m_plan_file.EARLIER_STATUS_WORDS
+front_key = _m_plan_file.front_key
+front_matter = _m_plan_file.front_matter
+status_word = _m_plan_file.status_word
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+PLAN = _m_record.PLAN
+REPORT = _m_record.REPORT
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
 from modules.knowledge.status.primitive.status import Status
 REPORT_NAME = REPORT.file_name
 EARLIER_OUTCOME_KEY = 'Outcome'
@@ -51,7 +60,7 @@ def report_skeleton(task: str, title: str | None=None) -> str:
     TASK is the id of the task the report belongs to, written into the
     record so that a reader finds it inside the document rather than by
     reading the name of the folder the record sits in
-    ([Documentation — Report](../../../modules/management/task/report/report.md)).
+    ([Documentation — Report](../../../modules-plugable/knowledge/documentation/report/report.md)).
     An empty Status is left for the task to fill when it ends; until it
     does, the report says nothing and is not checked.
     """

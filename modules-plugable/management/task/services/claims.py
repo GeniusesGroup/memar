@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/claims.py — the N queued tasks first in line, made one agent's.
+"""modules-plugable/management/task/services/claims.py — the N queued tasks first in line, made one agent's.
 
 Why through `try_claim`. Taking the N first in line is the act `claim`
 does — the exclusive create, the status moved — tried on several tasks in
@@ -50,32 +50,53 @@ project with `--project`, and `claims` refuses without it; an agent that does
 not know the project asks the owner rather than guessing.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 import argparse
-from modules.management.task.plan.primitive.plan_part import PlanPart
+_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
+PlanPart = _m_plan_part.PlanPart
 from typing import Callable
 from machine.console import fail, note
 from modules.knowledge.status.primitive.status import Status
 _m_plan_brief = plugable_load('ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
-from modules.management.task.services.claim import CLAIM_COMMAND, try_claim
-from modules.management.task.services.dependency import DependsOn, Reader
-from modules.management.task.services.depends import problems, reconcile_all
+_m_claim = import_module('modules-plugable.management.task.services.claim')
+CLAIM_COMMAND = _m_claim.CLAIM_COMMAND
+try_claim = _m_claim.try_claim
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+DependsOn = _m_dependency.DependsOn
+Reader = _m_dependency.Reader
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+problems = _m_depends.problems
+reconcile_all = _m_depends.reconcile_all
 from modules.process.project.services.find import add_project_flags, project_from_args
 _m_task_get_decisions_digest = plugable_load('ai.services.task_get_decisions_digest')
 DIGEST_COMMAND = _m_task_get_decisions_digest.DIGEST_COMMAND
-from modules.management.task.services.list import LIST_COMMAND, find_tasks, project_of
-from modules.management.task.services.folder import Task
-from modules.management.task.services.temp import TEMP_SENTENCE
-from modules.management.task.services.plan_file import PLAN_NAME, part_text
-from modules.management.task.plan.primitive.priority import Priority
+_m_list = import_module('modules-plugable.management.task.services.list')
+LIST_COMMAND = _m_list.LIST_COMMAND
+find_tasks = _m_list.find_tasks
+project_of = _m_list.project_of
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+Task = _m_folder.Task
+_m_temp = import_module('modules-plugable.management.task.services.temp')
+TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+part_text = _m_plan_file.part_text
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
 from modules.knowledge.label.primitive.topic import Topic
-from modules.management.task.services.plan_labels import TOPIC, topics_of
-from modules.management.task.primitive.record import REPORT
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+TOPIC = _m_plan_labels.TOPIC
+topics_of = _m_plan_labels.topics_of
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+REPORT = _m_record.REPORT
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 CLAIMS_COMMAND = 'claims'
 PROJECT_REQUIRED = f'{CLAIMS_COMMAND} needs {ProjectName.either_words()}: one run serves one project, and naming it keeps the work from landing in a project no one chose; if you do not know which project the tasks are for, ask the owner'
 

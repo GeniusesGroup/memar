@@ -29,13 +29,17 @@ from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.plan_file import PLAN_NAME
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
 from .get_task_init_context import START_COMMAND
-from modules.management.task.primitive.task_id import TaskId
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 PLAN_BRIEF_COMMAND = 'get-task-plan-carry-out-brief'
 
 def brief_text(task_id: str) -> str:

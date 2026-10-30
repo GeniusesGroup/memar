@@ -85,7 +85,8 @@ list_drops = _m_normative_references_check.list_drops
 list_problems = _m_normative_references_check.list_problems
 list_warnings = _m_normative_references_check.list_warnings
 from modules.process.project.services.preferences import preferences_path, preferences_text
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 ROOT = SCRIPTS.parent.parent
 DOC = '# Doc\n\n## Abstract\nDOC-ABSTRACT\n\n## One\nONE-TEXT\n\n## Two\nTWO-TEXT\n'
 UP = '../../../../../'

@@ -34,7 +34,7 @@ The parts, in order, each opened by a mark line `=== NAME ===`, as `start`
 marks and cuts them (`task_start`, `machine/console_parts.py`):
 
     task    the id and the paths of the plan and the report, read and not taken up
-    model      answering is judgment: the strongest model
+    model      the `answer` kind as the starting point of the model answering needs, and the rule that sets it
     plan.md    the plan, whole
     report.md  the report, whole: its `Decisions needed` holds the questions
     skill      the Memar skill, whole; left out with `--without-skill`
@@ -60,14 +60,22 @@ from machine.console_parts import add_part_arguments, bound, next_command
 from machine.console_parts import part_text as parted
 from modules.knowledge.content.services.reference import content_root, read_text
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.primitive.record import REPORT
-from modules.management.task.services.report_file import REPORT_NAME, decisions_needed
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+REPORT = _m_record.REPORT
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+decisions_needed = _m_report_file.decisions_needed
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 from .get_task_init_context import SKILL_FILE, commands, documents, marked_part, marked_passages, model_part, plan_project, step_documents
-from modules.management.task.labels.task_kind import TaskKind
-from modules.management.task.primitive.task_id import TaskId
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 ANSWERING_COMMAND = 'get-task-answer-context'
 ENDING = f"You answer the questions of this task; you do not take it up. Its questions are the lines under `{REPORT.hand_back_part}` in its {REPORT_NAME} (above), each with the handoff entry it points to, if any.\nYour answering opens no task and creates none: run no `memar ai get-task-init-context`, `ensure`, `claim` or `claims`. It writes nothing: no file in this task's folder, in the checkout, or elsewhere; the task that handed you the questions writes what follows from your answers.\nFor each question, in the order asked: read the plan, the entry it points to, and the passages of the documents it concerns, found as the skill says; answer it with its reasons, citing the passages they rest on; and say whether you are sure. Say you are unsure where the documents do not settle it, and say so too where it is one of the kinds the Norm Application Points (above) send to the owner however well settled: those go to the owner.\nReturn the answers as your final text, one per question, each marked sure or unsure, and name the model you run on."
 

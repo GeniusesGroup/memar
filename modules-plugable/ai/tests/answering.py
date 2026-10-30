@@ -3,7 +3,7 @@
 
 """Tests for `memar ai get-task-answer-context`, in `modules-plugable/ai/services/get_task_answer_context.py`.
 
-    python modules/management/task/tests/answering.py
+    python modules-plugable/ai/tests/answering.py
 
 The subject is the one multi-part text an agent handed a task's questions
 reads first, named for the file that holds it per
@@ -11,7 +11,7 @@ reads first, named for the file that holds it per
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 How its parts are cut is `machine/console_parts.py`'s and pinned beside
-`start`'s, in `modules/management/task/tests/start.py`; here only that it prints in
+`start`'s, in `modules-plugable/management/task/tests/start.py`; here only that it prints in
 parts and names itself for the next one.
 
 Nothing here writes outside its scratch folder: the Memar root is patched onto
@@ -27,7 +27,8 @@ What is pinned, and what each pin is for:
                    `--without-skill` the skill is left out.
   ReadOnly         Printing it writes nothing anywhere: no report, no role
                    folder, no log line; it opens no task.
-  ModelPart        Answering is judgment: the strongest model is named.
+  ModelPart        The `answer` kind is the starting point, the rule that sets
+                   the model is cited by its path, and no level is fixed by kind.
   PlanAndReport    The plan and the report, whose `Decisions needed` holds the
                    questions, are printed whole.
   Documents        The sections the every-act and `answer` lists name, then
@@ -72,8 +73,11 @@ sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK
 answering = import_module('modules-plugable.ai.services.get_task_answer_context')
 commands = import_module('modules-plugable.computer.ui.command.command')
-from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_skeleton = _m_plan_file.plan_skeleton
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 _m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
 EVERY_ACT = _m_normative_references.EVERY_ACT
 lists = _m_normative_references.lists
@@ -81,7 +85,9 @@ memar_place = _m_normative_references.memar_place
 _m_task_context = import_module('modules-plugable.ai.services.task_context')
 context_text = _m_task_context.context_text
 from modules.knowledge.label.primitive.label import Label, Labels
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
+task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 SID = '20261011-T000000Z-9'
 ROOT = SCRIPTS.parent.parent
 SKILL = '# Skill\n- SKILL-TEXT, printed whole.\n'
@@ -171,11 +177,13 @@ class ReadOnly(Fixture):
 
 class ModelPart(Fixture):
 
-    def test_answering_is_judgment_and_names_the_strongest_model(self) -> None:
+    def test_answering_gives_its_kind_and_cites_the_rule_that_sets_the_model(self) -> None:
         self.task()
         part = self.parts()['model']
         self.assertIn('kind: answer', part)
-        self.assertIn('strongest model', part)
+        self.assertIn(task_plan_labels.MODEL_RULE, part)
+        self.assertNotIn('strongest', part)
+        self.assertNotIn('cheaper', part)
 
 class PlanAndReport(Fixture):
 

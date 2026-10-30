@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/folder.py — one task's folder as the other services read it.
+"""modules-plugable/management/task/services/folder.py — one task's folder as the other services read it.
 
 Finding, sweeping, and linking tasks all start from the same question — which
 folders are tasks, what their plan says, and how long nothing in them has
@@ -26,6 +26,7 @@ folder's own time does not move when a nested file is edited. Reading changes
 no modification time, so a folder that is only read still counts as idle.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 task_dir = _m_fs_memar.task_dir
@@ -34,12 +35,20 @@ import os
 import time
 from pathlib import Path
 from typing import NamedTuple
-from modules.management.task.primitive.task_id import TaskId
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 from modules.process.project.services.task_location import registered_locations
-from modules.management.task.services.plan_file import PLAN_NAME, plan_file_problem, read_plan
-from modules.management.task.plan.primitive.plan_key import PlanKey
-from modules.management.task.report.primitive.report_key import ReportKey
-from modules.management.task.services.report_file import REPORT_NAME, read_report_status
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_file_problem = _m_plan_file.plan_file_problem
+read_plan = _m_plan_file.read_plan
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+read_report_status = _m_report_file.read_report_status
 from modules.knowledge.status.primitive.status import Status
 DAY_SECONDS = 24 * 60 * 60
 

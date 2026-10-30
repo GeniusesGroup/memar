@@ -25,7 +25,7 @@ The obligation is [Approval Requires a Reviewer Who Did Not Do the Work](./chang
 The rule requires independence from the work, not a roster. In this project's practice that is a sub-agent given the four things above, because a sub-agent starts without the task's context and therefore without the task's model of what it meant. Two consequences follow and both are worth stating:
 
 - **The reviewer is a second cognitive system, not a second pass by the first.** Re-reading your own work carefully is not review; it is the same reader with the same model, and it will find what it expected. Where a runtime offers no second system, the honest outcome is no `approved`.
-- **A smaller or cheaper model is usually the right reviewer** for a bounded claim with named evidence, because the review is a comparison against a stated expectation rather than a design judgment, and independence matters more here than depth.
+- **The reviewer's model follows [the need rule](../../../management/task/rules/model-follows-need/model-follows-need.md); a lower level is usually enough** for a bounded claim with named evidence, because the review is a comparison against a stated expectation rather than a design judgment, and independence matters more here than depth.
 - **The same four-part request serves an in-task second opinion even when no `approved` tag is sought.** Claim, evidence, boundaries, verdict asked for — the verdict is then recorded into the handoff or the decision's reasoning rather than into a changelog entry.
 
 ## What this is not

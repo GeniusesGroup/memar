@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for what a task's dependencies do to it, in `modules/management/task/services/depends_on.py` and `modules/management/task/services/dependency.py`.
+"""Tests for what a task's dependencies do to it, in `modules-plugable/management/task/services/depends_on.py` and `modules-plugable/management/task/services/dependency.py`.
 
-    python modules/management/task/tests/depends.py
+    python modules-plugable/management/task/tests/depends.py
 
 The subject is the task-dependency design of task 20261016-T122241Z-23960
 with the owner's rulings of 2026-10-16, carried out by task
@@ -62,22 +62,24 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.dependency as depends_on
+depends_on = import_module('modules-plugable.management.task.services.dependency')
 import modules.process.project.services.registry as registry
 new_chats = import_module('modules-plugable.ai.services.get_new_chats_ask')
-import modules.management.task.services.claim as task_claim
-import modules.management.task.services.claims as task_claims
-import modules.management.task.services.depends as task_depends
-import modules.management.task.services.depends_on as task_depends_on
+task_claim = import_module('modules-plugable.management.task.services.claim')
+task_claims = import_module('modules-plugable.management.task.services.claims')
+task_depends = import_module('modules-plugable.management.task.services.depends')
+task_depends_on = import_module('modules-plugable.management.task.services.depends_on')
 task_digest = plugable_load('ai.services.task_get_decisions_digest')
-import modules.management.task.services.ensure as task_ensure
-import modules.management.task.services.list as task_find
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_find = import_module('modules-plugable.management.task.services.list')
 task_log = import_module('modules-plugable.computer.git.services.log')
-import modules.management.task.services.plan_file as task_plan
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
-from modules.management.task.services.folder import read_task
-from modules.management.task.primitive.claim import Claim
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+read_task = _m_folder.read_task
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
 
 def plan_text(status: str, project: Path, depends: str | None=None, title: str='T', other: str='') -> str:
     given = f'Depends_on: {depends}\n' if depends else ''

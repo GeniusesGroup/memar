@@ -16,13 +16,19 @@ The keys are the facets' own ([PlanKey](../plan/primitive/plan_key.py),
 from `Status`, so it stands here in the module's root and not in `primitive/`.
 """
 from __future__ import annotations
+from importlib import import_module
 from dataclasses import dataclass
-from modules.management.task.plan.primitive.plan_key import PlanKey
-from modules.management.task.plan.primitive.plan_part import PlanPart
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
+_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
+PlanPart = _m_plan_part.PlanPart
 from modules.knowledge.content.primitive.record_key import RecordKey
 from modules.knowledge.status.primitive.status import DocumentKind, Status
-from modules.management.task.report.primitive.report_key import ReportKey
-from modules.management.task.report.primitive.report_part import HAND_BACK_MAX_LINES, ReportPart
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
+_m_report_part = import_module('modules-plugable.knowledge.documentation.report.primitive.report_part')
+HAND_BACK_MAX_LINES = _m_report_part.HAND_BACK_MAX_LINES
+ReportPart = _m_report_part.ReportPart
 
 @dataclass(frozen=True)
 class Record:

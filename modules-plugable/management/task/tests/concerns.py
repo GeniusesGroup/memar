@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for what a task's plan gives away about finished-but-open and abandoned work, in `modules/management/task/services/concerns.py`.
+"""Tests for what a task's plan gives away about finished-but-open and abandoned work, in `modules-plugable/management/task/services/concerns.py`.
 
-    python modules/management/task/tests/concerns.py
+    python modules-plugable/management/task/tests/concerns.py
 
 The subject is the flags `list`, `gc`, and `digest` raise on a task that
 looks finished or abandoned yet is not complete: named for the file that holds it
@@ -37,6 +37,7 @@ What is pinned, and what each pin is for:
   NothingDeleted     Flagging moves and writes nothing.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -51,10 +52,12 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.concerns as task_concerns
-from modules.management.task.services.folder import read_task
-import modules.management.task.services.plan_file as task_plan
-from modules.management.task.services.plan_file import PLAN_NAME
+task_concerns = import_module('modules-plugable.management.task.services.concerns')
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+read_task = _m_folder.read_task
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
 DAY = 24 * 60 * 60
 
 def plan_text(status: str | None='active', request: str='Do the thing.', steps: str='- [ ] 1. a') -> str:

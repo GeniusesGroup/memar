@@ -3,7 +3,7 @@
 
 """Tests for the task log in `modules-plugable/computer/git/services/log.py`.
 
-    python modules/management/task/tests/log.py
+    python modules-plugable/management/task/tests/log.py
 
 The subject is the log a person reads for a folder that is gone, named for the
 file that holds it per

@@ -3,7 +3,7 @@
 
 """Tests for the task locations kept in the projects registry, in `modules/process/project/services/task_location.py` and `modules/process/project/services/registry.py`.
 
-    python modules/management/task/tests/location.py
+    python modules-plugable/management/task/tests/location.py
 
 The subject is where Memar remembers the task locations of the projects it
 has made folders in: no longer the file .agents/tasks/tasks.projects (one

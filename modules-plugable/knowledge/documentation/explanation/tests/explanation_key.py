@@ -35,7 +35,8 @@ class ExplanationKeyPins(unittest.TestCase):
             self.assertTrue(key.written)
 
     def test_id_and_start_date_are_the_fields_a_task_record_shares(self) -> None:
-        from modules.management.task.plan.primitive.plan_key import PlanKey
+        _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+        PlanKey = _m_plan_key.PlanKey
         self.assertEqual(ExplanationKey.ID.value, PlanKey.ID.value)
         self.assertEqual(ExplanationKey.START_DATE.value, PlanKey.START_DATE.value)
 if __name__ == '__main__':

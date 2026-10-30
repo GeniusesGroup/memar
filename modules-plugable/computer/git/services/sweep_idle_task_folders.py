@@ -94,12 +94,22 @@ from datetime import datetime, timedelta, timezone
 from typing import Callable, NamedTuple
 from machine.console import fail, note
 from .archive_task_records import Outcome, keep_records
-from modules.management.task.services.concerns import concerns
-from modules.management.task.services.folder import DAY_SECONDS, Task, last_change, queued_why, read_task, task_folders
+_m_concerns = import_module('modules-plugable.management.task.services.concerns')
+concerns = _m_concerns.concerns
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+DAY_SECONDS = _m_folder.DAY_SECONDS
+Task = _m_folder.Task
+last_change = _m_folder.last_change
+queued_why = _m_folder.queued_why
+read_task = _m_folder.read_task
+task_folders = _m_folder.task_folders
 from modules.process.project.services.task_location import prune_registry, registered_locations
 from .log import TASK_LOG_NAME, log_path, record
-from modules.management.task.services.plan_file import PLAN_NAME, is_complete
-from modules.management.task.primitive.task_id import TaskId
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+is_complete = _m_plan_file.is_complete
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 GC_COMMAND = 'sweep-idle-task-folders'
 TASK_IDLE_DAYS = 1
 GC_MIN_IDLE_DAYS = 1

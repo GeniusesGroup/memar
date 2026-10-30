@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the claim type in `modules/management/task/primitive/claim.py`.
+"""Tests for the claim type in `modules-plugable/management/task/primitive/claim.py`.
 
-    python modules/management/task/tests/primitive_claim.py
+    python modules-plugable/management/task/tests/primitive_claim.py
 
 The subject is the claim an agent leaves in a task's folder while it holds
 the task: the file's name, the name of the guard held while a stale claim is
@@ -29,6 +29,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 import os
 import sys
 import tempfile
@@ -40,7 +41,8 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.management.task.primitive.claim import Claim
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
 
 class Names(unittest.TestCase):
 

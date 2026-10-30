@@ -3,7 +3,7 @@
 
 """Tests for closing a task in `modules-plugable/computer/git/services/close.py`.
 
-    python modules/management/task/tests/close.py
+    python modules-plugable/management/task/tests/close.py
 
 The subject is `close`, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),

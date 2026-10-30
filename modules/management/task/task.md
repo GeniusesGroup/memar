@@ -22,7 +22,7 @@ Each domain does its own work. Task answers four questions about a piece of work
 | Time, calendars, notification, budget | their own domains | nothing |
 | How records are stored or exchanged | storage, and the adapters of the bridge to Memar | nothing; no file system or version-control concept is part of a Task |
 
-A Task never carries the text of a plan, a report or a timeline, and never decides how such text is kept. When a need seems to require that, the need belongs to content or text and is raised there.
+A Task never carries the text of a plan, a report or a timeline, and never decides how such text is kept. When a need seems to require that, the need belongs to content or text and is raised there. This module imports nothing of documentation: the Plan and Report facets are [Documentation's](../../../modules-plugable/knowledge/documentation/plan/plan.md), and the services that keep a task as a folder holding a `plan.md` and a `report.md` are the pluggable [task module's](../../../modules-plugable/management/task/) (owner, 2026-10-30; an earlier move of the facets into this module, to cut a cycle, was reversed because the dependence, not the facets, was what had to go).
 
 ## Model
 These elements make the kernel. Each is stated with who may create or remove it and what it triggers; an edge without those does not exist ([Modules → Placement](../../modules.md#placement)).

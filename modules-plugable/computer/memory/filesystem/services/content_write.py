@@ -11,6 +11,7 @@ reversible. The write is taken under the per-file lock, so a cooperating
 task writing the same file is serialized rather than interleaved.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
@@ -72,7 +73,8 @@ def refuse_kept_scratch(source: Path) -> None:
     the document written from it. Scratch goes in the task's temp/ folder,
     which is never archived.
     """
-    from modules.management.task.services.plan_file import PLAN_NAME
+    _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+    PLAN_NAME = _m_plan_file.PLAN_NAME
     try:
         resolved = source.resolve()
     except OSError:

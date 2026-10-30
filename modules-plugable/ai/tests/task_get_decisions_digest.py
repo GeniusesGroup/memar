@@ -83,9 +83,9 @@ import modules.process.project.services.preferences as project_preferences
 import modules.process.project.services.registry as registry
 task_digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
 import modules.process.project.services.task_location as task_location
-import modules.management.task.services.plan_file as task_plan
-import modules.management.task.services.plan_priority as task_plan_priority
-import modules.management.task.services.report_file as task_report
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
+task_report = import_module('modules-plugable.management.task.services.report_file')
 
 class Fixture(unittest.TestCase):
     ENDS = {'success': 'complete', 'blocked': 'blocked', 'approval-required': 'blocked', 'exhausted': 'active'}

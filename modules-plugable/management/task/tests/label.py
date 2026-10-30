@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a task's labels, in `modules/knowledge/label/services/label.py`, `modules/knowledge/label/services/labels.py` and `modules/management/task/services/plan_labels.py`.
+"""Tests for a task's labels, in `modules/knowledge/label/services/label.py`, `modules/knowledge/label/services/labels.py` and `modules-plugable/management/task/services/plan_labels.py`.
 
-    python modules/management/task/tests/label.py
+    python modules-plugable/management/task/tests/label.py
 
 The subject is the `Labels` field of a plan: the words that link it to other
 tasks outside the structure of their ids, each written `Kind: word`, as many
@@ -49,6 +49,7 @@ What is pinned, and what each pin is for:
                   listed; none says so.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -69,12 +70,12 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.process.project.services.registry as registry
-import modules.management.task.services.ensure as task_ensure
-import modules.management.task.services.label_add as task_label
-import modules.management.task.services.label_list as task_labels
-import modules.management.task.services.plan_file as task_plan
-import modules.management.task.services.plan_labels as task_plan_labels
-import modules.management.task.services.plan_priority as task_plan_priority
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_label = import_module('modules-plugable.management.task.services.label_add')
+task_labels = import_module('modules-plugable.management.task.services.label_list')
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
 from modules.knowledge.label.primitive.topic import Topic
 import re

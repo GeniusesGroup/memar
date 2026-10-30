@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/task.py — `memar task`: its help, which groups its verbs.
+"""modules-plugable/management/task/task.py — `memar task`: its help, which groups its verbs.
 
 **Two audiences, two texts, and this file is where each lives.** `DESCRIPTION`
 below is what `memar task --help` prints: it is addressed to whoever is about
@@ -46,17 +46,27 @@ of this domain: it lives in the task that does the change
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
-from modules.management.task.primitive.claim import Claim
-from modules.management.task.services.layout import TESTS_FOLDER, folders_listing, kinds_listing
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
+_m_layout = import_module('modules-plugable.management.task.services.layout')
+TESTS_FOLDER = _m_layout.TESTS_FOLDER
+folders_listing = _m_layout.folders_listing
+kinds_listing = _m_layout.kinds_listing
 _m_log = plugable_load('computer.git.services.log')
 TASK_LOG_NAME = _m_log.TASK_LOG_NAME
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.primitive.record import PLAN, REPORT
-from modules.management.task.report.primitive.report_key import ReportKey
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+PLAN = _m_record.PLAN
+REPORT = _m_record.REPORT
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 from modules.knowledge.status.primitive.status import Status
 
 def status_meanings(statuses: tuple[Status, ...]) -> str:

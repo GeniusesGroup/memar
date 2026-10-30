@@ -62,7 +62,7 @@ CODE_FOLDERS = ('services', 'primitive')
 # names a path that is listed and now stands right. Found by this check on 2026-10-26 (task 20261025-T160939Z-23124),
 # not allowed by the owner: they stand inside the pluggable module `knowledge/documentation`, which the move tasks of the
 # category rule place; each leaves this list when its move lands.
-UNMIRRORED = {path: 'placed by the move tasks of the category rule' for path in ('knowledge/documentation/changelog', 'knowledge/documentation/comparison', 'knowledge/documentation/explanation', 'knowledge/documentation/handoff', 'knowledge/documentation/practice', 'knowledge/documentation/research')}
+UNMIRRORED = {path: 'placed by the move tasks of the category rule' for path in ('knowledge/documentation/changelog', 'knowledge/documentation/comparison', 'knowledge/documentation/explanation', 'knowledge/documentation/handoff', 'knowledge/documentation/plan', 'knowledge/documentation/practice', 'knowledge/documentation/report', 'knowledge/documentation/research')}
 
 def module_folders(top: Path) -> dict[str, Path]:
     """Each module's dotted path, with its folder."""

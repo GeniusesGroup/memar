@@ -158,7 +158,7 @@ class TempIsTheMachines(unittest.TestCase):
         self.assertEqual(memar_fs.TEMP_FOLDER, 'temp')
         self.assertIs(ensure_folders.Role.TEMP.folder, memar_fs.TEMP_FOLDER)
         self.assertNotRegex(Path(ensure_folders.__file__).read_text(encoding='utf-8'), SPELLED_TEMP)
-        import modules.management.task.services.temp as task_temp
+        task_temp = import_module('modules-plugable.management.task.services.temp')
         self.assertIs(task_temp.TEMP_FOLDER, memar_fs.TEMP_FOLDER)
         source = Path(task_temp.__file__).read_text(encoding='utf-8')
         self.assertNotRegex(source, SPELLED_TEMP)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/priority.py — a task moved up or down the line queued tasks are taken in.
+"""modules-plugable/management/task/services/priority.py — a task moved up or down the line queued tasks are taken in.
 
 Why its own verb. A priority is set when a task is queued (`new --queued
 --priority N`), but what matters most changes after that: the owner reads the
@@ -18,14 +18,22 @@ later, and refusing to rank it until then would make the owner wait to say
 what they already know.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.plan_file import PLAN_NAME, read_plan
-from modules.management.task.plan.primitive.priority import Priority
-from modules.management.task.services.plan_priority import set_priority
-from modules.management.task.primitive.task_id import TaskId
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+read_plan = _m_plan_file.read_plan
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
+_m_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
+set_priority = _m_plan_priority.set_priority
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 PRIORITY_COMMAND = 'priority'
 
 def set_task_priority(task_id: str, value: str) -> None:

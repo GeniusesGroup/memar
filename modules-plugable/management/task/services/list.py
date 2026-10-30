@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/list.py — the task folders a caller asks for, listed.
+"""modules-plugable/management/task/services/list.py — the task folders a caller asks for, listed.
 
 A folder is found again by what its plan says — the id, the title, the project,
 the status — because an id says only when a task opened, not what it is
@@ -34,24 +34,46 @@ be misread — kept forever, or picked up as finished. What disagrees is
 `task_report`'s answer.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 from pathlib import Path
 from typing import Callable
 from machine.console import fail, note
-from modules.management.task.services.dependency import DEPENDS_FOR, Reader
-from modules.management.task.services.concerns import concerns
-from modules.management.task.services.depends import DEPENDS_COMMAND, concerns_for, notes_for, reconcile_all
-from modules.management.task.services.folder import Task, folder_of, measured_idle, read_task, task_folders
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+DEPENDS_FOR = _m_dependency.DEPENDS_FOR
+Reader = _m_dependency.Reader
+_m_concerns = import_module('modules-plugable.management.task.services.concerns')
+concerns = _m_concerns.concerns
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+DEPENDS_COMMAND = _m_depends.DEPENDS_COMMAND
+concerns_for = _m_depends.concerns_for
+notes_for = _m_depends.notes_for
+reconcile_all = _m_depends.reconcile_all
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+Task = _m_folder.Task
+folder_of = _m_folder.folder_of
+measured_idle = _m_folder.measured_idle
+read_task = _m_folder.read_task
+task_folders = _m_folder.task_folders
 from modules.process.project.services.find import add_project_flags, project_by_path, project_from_args
 from modules.process.project.services.task_location import locations_of, project_root, same_path
-from modules.management.task.services.plan_file import PLAN_NAME, status_word
-from modules.management.task.plan.primitive.priority import Priority
-from modules.management.task.services.plan_labels import labels_of
-from modules.management.task.primitive.record import PLAN
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+status_word = _m_plan_file.status_word
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
+_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+labels_of = _m_plan_labels.labels_of
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+PLAN = _m_record.PLAN
 from modules.knowledge.status.primitive.status import Status
-from modules.management.task.services.report_file import REPORT_NAME, disagreement, read_report_status
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+disagreement = _m_report_file.disagreement
+read_report_status = _m_report_file.read_report_status
 from modules.process.project.primitive.project_name import ProjectName
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 LIST_COMMAND = 'list'
 NO_PLAN = f'(no {PLAN_NAME})'
 NO_FRONT_MATTER = f'({PLAN_NAME} has no front matter)'

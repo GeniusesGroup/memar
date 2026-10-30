@@ -20,17 +20,27 @@ then telling the owner to say when each of those is done. `--blocking` marks
 more by hand, over what the plan says.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 import re
-from modules.management.task.plan.primitive.plan_part import PlanPart
+_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
+PlanPart = _m_plan_part.PlanPart
 from typing import Callable
 from machine.console import fail
-from modules.management.task.services.dependency import DependsOn
-from modules.management.task.primitive.task_id import TaskId
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+DependsOn = _m_dependency.DependsOn
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 from .get_task_plan_carry_out_brief import brief_text
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.plan_file import PLAN_NAME, part_text, read_plan
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+part_text = _m_plan_file.part_text
+read_plan = _m_plan_file.read_plan
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 NEW_CHATS_COMMAND = 'get-new-chats-ask'
 INTRO = 'Please run each task below in a completely new chat: open the chat, paste the text under its title, and let it end. A task marked "blocks" stops the work of the chat that asked until it is done; say "<id> is done" there when it ends. A task marked "independent" can run now, at the same time as the others, in its own chat.'
 

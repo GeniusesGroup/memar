@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a task's report.md in `modules/management/task/services/report_file.py`.
+"""Tests for a task's report.md in `modules-plugable/management/task/services/report_file.py`.
 
-    python modules/management/task/tests/report_file.py
+    python modules-plugable/management/task/tests/report_file.py
 
 The subject is the report format the task services read and write, named
 for the file that holds it per
@@ -39,6 +39,7 @@ Skeleton          A new report names the task it belongs to, then front
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -51,7 +52,7 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.report_file as task_report
+task_report = import_module('modules-plugable.management.task.services.report_file')
 from modules.knowledge.status.primitive.status import DocumentKind, Status
 NEW_PARTS = '# Report\n\n## What ran\nx\n'
 

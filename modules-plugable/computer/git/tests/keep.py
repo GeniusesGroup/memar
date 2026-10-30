@@ -3,7 +3,7 @@
 
 """Tests for which files of a task folder are kept, in `modules-plugable/computer/git/services/keep.py`.
 
-    python modules/management/task/tests/keep.py
+    python modules-plugable/management/task/tests/keep.py
 
 The subject is the owner's ruling of 2026-10-15 on what a task's records
 leave out, named for the file that holds it per

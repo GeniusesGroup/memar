@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for changing a task's priority, in `modules/management/task/services/priority.py`.
+"""Tests for changing a task's priority, in `modules-plugable/management/task/services/priority.py`.
 
-    python modules/management/task/tests/priority.py
+    python modules-plugable/management/task/tests/priority.py
 
 The subject is `memar task priority ID N` — anyone, a person or an agent,
 moving a task up or down the line `claims` takes from — named for the file
@@ -27,6 +27,7 @@ What is pinned, and what each pin is for:
                   task that is not there, is refused and nothing changes.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -44,10 +45,11 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.plan_file as task_plan
-import modules.management.task.services.plan_priority as task_plan_priority
-import modules.management.task.services.priority as task_priority
-from modules.management.task.plan.primitive.priority import Priority
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
+task_priority = import_module('modules-plugable.management.task.services.priority')
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
 
 class SetPriority(unittest.TestCase):
 

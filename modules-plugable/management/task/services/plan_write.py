@@ -1,20 +1,25 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/plan_write.py — a new plan.md written, and an existing one queued.
+"""modules-plugable/management/task/services/plan_write.py — a new plan.md written, and an existing one queued.
 
 The two acts on a plan that `task_ensure` asks of a task folder. A plan that is there is never
 written over; a plan is queued only while it is active and no agent has claimed it, so a task
 being worked, or one finished, is never put back in line.
 """
 from __future__ import annotations
+from importlib import import_module
 from datetime import datetime, timezone
 from pathlib import Path
 from machine.console import fail
-from machine.modules_import import load as modules_load
-is_claimed = modules_load('management', 'task', 'services', 'claim').is_claimed
-from modules.management.task.services.plan_file import PLAN_NAME, plan_file_problem, plan_skeleton, read_plan
-from modules.management.task.services.plan_status import set_status
+is_claimed = import_module('modules-plugable.management.task.services.claim').is_claimed
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_file_problem = _m_plan_file.plan_file_problem
+plan_skeleton = _m_plan_file.plan_skeleton
+read_plan = _m_plan_file.read_plan
+_m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
+set_status = _m_plan_status.set_status
 from modules.knowledge.label.primitive.label import Labels
 from modules.knowledge.status.primitive.status import Status
 

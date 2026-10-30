@@ -3,7 +3,7 @@
 
 """Tests for keeping a task's records in `modules-plugable/computer/git/services/archive_task_records.py`.
 
-    python modules/management/task/tests/archive.py
+    python modules-plugable/management/task/tests/archive.py
 
 The subject is keeping a task's records on a branch of its project's own
 repository — the owner's rulings of 2026-10-14 and 2026-10-15 that

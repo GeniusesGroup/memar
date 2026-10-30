@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for queuing a task and claiming it by its id, in `modules/management/task/services/claim.py`.
+"""Tests for queuing a task and claiming it by its id, in `modules-plugable/management/task/services/claim.py`.
 
-    python modules/management/task/tests/claim.py
+    python modules-plugable/management/task/tests/claim.py
 
 The subject is the claim — how a task that is planned but owned by no one
 (`queued`) comes to be owned by exactly one agent (`open`), by its id — named
@@ -15,7 +15,7 @@ The design it holds is the parent plan's, task 20261012T134849Z-25068-0,
 "Design", as the owner's rulings of 2026-10-12, recorded in task
 20261012T153414Z-28656-0, rework it: no runner and no launch; nothing keeps a
 claim fresh, so one lapses only after a day. Taking the N first in line is
-`modules/management/task/services/claims.py`'s, and its tests are `task_claims.py` here.
+`modules-plugable/management/task/services/claims.py`'s, and its tests are `task_claims.py` here.
 
 Nothing here writes outside its scratch folder: the Memar root the services
 resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
@@ -39,6 +39,7 @@ What is pinned, and what each pin is for:
                      says why one was not taken rather than failing.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -59,14 +60,16 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.claim as task_claim
-from modules.management.task.primitive.claim import Claim
-import modules.management.task.services.list as task_find
-import modules.management.task.services.temp as task_temp
-import modules.management.task.services.ensure as task_ensure
-import modules.management.task.services.plan_file as task_plan
-from modules.management.task.plan.primitive.priority import Priority
-import modules.management.task.services.report_file as task_report
+task_claim = import_module('modules-plugable.management.task.services.claim')
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
+task_find = import_module('modules-plugable.management.task.services.list')
+task_temp = import_module('modules-plugable.management.task.services.temp')
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
+task_report = import_module('modules-plugable.management.task.services.report_file')
 from modules.knowledge.status.primitive.status import DocumentKind, Status
 
 def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None) -> str:
@@ -209,7 +212,7 @@ class ClaimTakesOne(Fixture):
     def test_two_claims_at_once_yield_exactly_one_winner(self) -> None:
         folder = self.task('20261012T000033Z-1-0', 'queued')
         start = time.time() + 1.5
-        script = "import sys, time; sys.path.insert(0, sys.argv[1]); sys.path.insert(1, __import__('os').path.dirname(__import__('os').path.dirname(sys.argv[1]))); sys.dont_write_bytecode = True\nfrom pathlib import Path\nimport modules.management.task.services.claim as c\nwhile time.time() < float(sys.argv[3]): pass\nc.claim_folder(Path(sys.argv[2]))\n"
+        script = "import sys, time; sys.path.insert(0, sys.argv[1]); sys.path.insert(1, __import__('os').path.dirname(__import__('os').path.dirname(sys.argv[1]))); sys.dont_write_bytecode = True\nfrom pathlib import Path\nimport importlib; c = importlib.import_module('modules-plugable.management.task.services.claim')\nwhile time.time() < float(sys.argv[3]): pass\nc.claim_folder(Path(sys.argv[2]))\n"
         racers = [subprocess.Popen([sys.executable, '-c', script, str(SCRIPTS), str(folder), str(start)], stdout=subprocess.PIPE, stderr=subprocess.PIPE) for _ in range(2)]
         codes = sorted((racer.wait(timeout=60) for racer in racers))
         for racer in racers:
@@ -234,6 +237,6 @@ class ClaimTakesOne(Fixture):
             racer.stderr.close()
         self.assertEqual(sorted((code == 0 for code in codes)), [False, True], f'exit codes {codes}')
         self.assertEqual(self.status_of(folder), 'active')
-PACED_TAKER = '\nimport pathlib, sys, time\nsys.path.insert(0, sys.argv[1]); sys.path.insert(1, __import__(\'os\').path.dirname(__import__(\'os\').path.dirname(sys.argv[1]))); sys.dont_write_bytecode = True\nimport modules.management.task.services.claim as c\nfrom modules.management.task.primitive.claim import Claim\nfolder, signals, role = pathlib.Path(sys.argv[2]), pathlib.Path(sys.argv[3]), sys.argv[4]\n\ndef signal(name):\n    (signals / name).touch()\n\ndef wait(name, seconds=3.0):\n    deadline = time.time() + seconds\n    while not (signals / name).exists() and time.time() < deadline:\n        time.sleep(0.01)\n\nreal_open, real_unlink, real_is_claimed = pathlib.Path.open, pathlib.Path.unlink, c.is_claimed\nif role == "first":\n    seen = []\n    def is_claimed(f):\n        answer = real_is_claimed(f)\n        if not seen:\n            seen.append(answer)\n            signal("first_saw_stale")\n            wait("second_creating")\n        return answer\n    def unlink(self, *args, **kwargs):\n        if self.name == Claim.NAME:\n            signal("first_unlinking")\n            wait("second_created")\n        return real_unlink(self, *args, **kwargs)\n    c.is_claimed = is_claimed\n    pathlib.Path.unlink = unlink\nelse:\n    wait("first_saw_stale")\n    def open_(self, mode="r", *args, **kwargs):\n        if self.name == Claim.NAME and "x" in mode:\n            signal("second_creating")\n            wait("first_unlinking")\n            try:\n                return real_open(self, mode, *args, **kwargs)\n            finally:\n                signal("second_created")\n        return real_open(self, mode, *args, **kwargs)\n    pathlib.Path.open = open_\nc.claim_folder(folder)\n'
+PACED_TAKER = '\nimport pathlib, sys, time\nsys.path.insert(0, sys.argv[1]); sys.path.insert(1, __import__(\'os\').path.dirname(__import__(\'os\').path.dirname(sys.argv[1]))); sys.dont_write_bytecode = True\nimport importlib; c = importlib.import_module(\'modules-plugable.management.task.services.claim\')\nClaim = importlib.import_module(\'modules-plugable.management.task.primitive.claim\').Claim\nfolder, signals, role = pathlib.Path(sys.argv[2]), pathlib.Path(sys.argv[3]), sys.argv[4]\n\ndef signal(name):\n    (signals / name).touch()\n\ndef wait(name, seconds=3.0):\n    deadline = time.time() + seconds\n    while not (signals / name).exists() and time.time() < deadline:\n        time.sleep(0.01)\n\nreal_open, real_unlink, real_is_claimed = pathlib.Path.open, pathlib.Path.unlink, c.is_claimed\nif role == "first":\n    seen = []\n    def is_claimed(f):\n        answer = real_is_claimed(f)\n        if not seen:\n            seen.append(answer)\n            signal("first_saw_stale")\n            wait("second_creating")\n        return answer\n    def unlink(self, *args, **kwargs):\n        if self.name == Claim.NAME:\n            signal("first_unlinking")\n            wait("second_created")\n        return real_unlink(self, *args, **kwargs)\n    c.is_claimed = is_claimed\n    pathlib.Path.unlink = unlink\nelse:\n    wait("first_saw_stale")\n    def open_(self, mode="r", *args, **kwargs):\n        if self.name == Claim.NAME and "x" in mode:\n            signal("second_creating")\n            wait("first_unlinking")\n            try:\n                return real_open(self, mode, *args, **kwargs)\n            finally:\n                signal("second_created")\n        return real_open(self, mode, *args, **kwargs)\n    pathlib.Path.open = open_\nc.claim_folder(folder)\n'
 if __name__ == '__main__':
     unittest.main()

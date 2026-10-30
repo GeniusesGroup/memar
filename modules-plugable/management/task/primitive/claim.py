@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/primitive/claim.py — the claim an agent leaves in a task's folder while it holds the task, declared once.
+"""modules-plugable/management/task/primitive/claim.py — the claim an agent leaves in a task's folder while it holds the task, declared once.
 
 A claim is a file, created with exclusive create so that exactly one of two
 agents taking one task wins (`task_claim` does the taking). What the

@@ -3,7 +3,7 @@
 
 """Tests for reading a task's records in `modules-plugable/computer/git/services/show.py`.
 
-    python modules/management/task/tests/show.py
+    python modules-plugable/management/task/tests/show.py
 
 The subject is `memar git show-task-records`, which returns a task's plan and report,
 or the files an agent asks for, from the main repository's temp first and then

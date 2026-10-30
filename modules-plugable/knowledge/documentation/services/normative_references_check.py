@@ -48,7 +48,8 @@ read_list = _m_normative_references.read_list
 from modules.process.project.services.preferences import preferences_path
 _m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
 normative_reference_places = _m_normative_references.normative_reference_places
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 OUTSIDE_WARNING = 'not read: outside the declared places'
 CHANGED = 'changed since reviewed: re-read the section, then update the hash; if the section was split, add an entry for each part the act must read'
 EVERY_ACT_REFUSED = 'refused: the every-act sections cannot be dropped'

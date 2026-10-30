@@ -3,7 +3,7 @@
 
 """Tests for the prompt that hands a task's questions to an agent to answer, in `modules-plugable/ai/services/questions_brief.py`.
 
-    python modules/management/task/tests/questions_brief.py
+    python modules-plugable/ai/tests/questions_brief.py
 
 The subject is the one text a coordinating task hands to an agent that
 answers its questions, named for the file that holds it per
@@ -48,8 +48,11 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 questions_brief = import_module('modules-plugable.ai.services.get_task_questions_answer_brief')
-from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_skeleton = _m_plan_file.plan_skeleton
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 SID = '20261011-T000000Z-1'
 QUESTIONS_BRIEF = f'Your task is to answer the questions of task {SID}, not to take it up. Run `memar ai get-task-answer-context --task-id {SID}` first, before anything else, and follow what it prints.'
 REPORT_WITH_QUESTIONS = '---\nTitle: R\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n- Q1: which name?\n'

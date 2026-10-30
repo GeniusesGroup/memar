@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/plan/primitive/priority.py — a plan's priority, declared once: how soon a queued task is taken.
+"""modules-plugable/knowledge/documentation/plan/primitive/priority.py — a plan's priority, declared once: how soon a queued task is taken.
 
 A whole number from 1 to 10, the higher sooner. It is a type so that the
 bounds, the default and the words a help prints about them are written here and
@@ -17,9 +17,11 @@ and one typo must not stop the line (`of`). A value a person types to a command
 is another matter and is refused (`checked`).
 """
 from __future__ import annotations
+from importlib import import_module
 from typing import ClassVar
 from machine.console import fail
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 
 class Priority(int):
     """A plan's priority: a whole number from `LOWEST` to `HIGHEST`, the higher sooner."""

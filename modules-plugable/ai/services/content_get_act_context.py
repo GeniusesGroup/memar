@@ -35,8 +35,10 @@ from modules.process.project.services.find import add_project_flags
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE
-from modules.management.task.labels.task_kind import TaskKind
-from modules.management.task.primitive.task_id import TaskId
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 COMMAND = 'get-act-context'
 TASK_FLAG = '--task-id'
 AFTER_FLAG = '--after'
@@ -64,8 +66,7 @@ def run(args: argparse.Namespace) -> None:
     from modules.knowledge.content.services.reference import content_root
     from modules.process.project.services.find import project_from_args
     from modules.process.project.services.preferences import most_characters_preference
-    from machine.modules_import import load as modules_load
-    _folder = modules_load('management', 'task', 'services', 'folder')
+    _folder = import_module('modules-plugable.management.task.services.folder')
     folder_of, is_task_folder = (_folder.folder_of, _folder.is_task_folder)
     _m_task_context = import_module('modules-plugable.ai.services.task_context')
     context = _m_task_context.context

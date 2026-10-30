@@ -29,14 +29,28 @@ from machine.console import fail
 from . import branch as task_branch
 from modules.process.project.services.find import add_project_flags, project_from_args
 from .branch import folder_on_branch, reference
-from modules.management.task.services.dependency import Reader
-from modules.management.task.services.depends import concerns_for, home_of, notes_for
-from modules.management.task.services.list import find_tasks
-from modules.management.task.services.folder import folder_of, read_task
-from modules.management.task.services.plan_file import PLAN_NAME, read_plan
-from modules.management.task.services.report_file import REPORT_NAME, decisions_needed, handback_problem, read_report_status
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+Reader = _m_dependency.Reader
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+concerns_for = _m_depends.concerns_for
+home_of = _m_depends.home_of
+notes_for = _m_depends.notes_for
+_m_list = import_module('modules-plugable.management.task.services.list')
+find_tasks = _m_list.find_tasks
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+read_task = _m_folder.read_task
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+read_plan = _m_plan_file.read_plan
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+decisions_needed = _m_report_file.decisions_needed
+handback_problem = _m_report_file.handback_problem
+read_report_status = _m_report_file.read_report_status
 from modules.process.project.primitive.project_name import ProjectName
-from modules.management.task.primitive.task_id import TaskId
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 SHOW_COMMAND = 'show-task-records'
 PROJECT_REQUIRED = f"name the project the task belongs to with {ProjectName.either_words()}: the branch is the project's"
 

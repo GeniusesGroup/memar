@@ -28,6 +28,7 @@ A hit names its file so: `<branch>:.agents/tasks/<id>/<file>` for an archived on
 live folder's path, from the project when it lies inside it, for a live one.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_git_records = plugable_load('computer.git.services._git_records')
 git_records = _m_git_records
@@ -67,8 +68,10 @@ def _label(file: Path, root: Path) -> str:
 
 def _names_project(folder: Path, root: Path) -> bool:
     """Whether the plan in FOLDER names ROOT by its folder."""
-    from modules.management.task.plan.primitive.plan_key import PlanKey
-    from modules.management.task.services.plan_file import read_plan
+    _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+    PlanKey = _m_plan_key.PlanKey
+    _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+    read_plan = _m_plan_file.read_plan
     named = ((read_plan(folder / PLAN_FILE).front or {}).get(PlanKey.PROJECT.key) or '').strip()
     if not named:
         return False

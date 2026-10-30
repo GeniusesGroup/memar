@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/claim.py — a queued task made one agent's, by its id.
+"""modules-plugable/management/task/services/claim.py — a queued task made one agent's, by its id.
 
 Why a claim. A conversation queues tasks instead of working them in its own
 context (`queued`: planned, owned by no one), and an agent later takes some of
@@ -18,7 +18,7 @@ tried on several tasks in turn, so it takes each through `try_claim` here,
 which says why a task was not taken instead of failing; one place takes a
 task, not two that could take it two ways.
 
-What a claim is, and why it lapses, is the type's (`modules/management/task/primitive/claim.py`). A claim
+What a claim is, and why it lapses, is the type's (`modules-plugable/management/task/primitive/claim.py`). A claim
 still unfinished past its life is taken as a dead agent's: a later claim takes it
 over. A takeover is itself taken by exclusive create, and held from before the
 stale claim is dropped until the new claim exists, so two takers racing over one
@@ -32,6 +32,7 @@ agent holding it or, once the claim has lapsed, queued again
 (`new --task-id ID --queued`).
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 import os
 import socket
@@ -40,14 +41,24 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable
 from machine.console import fail, note
-from modules.management.task.primitive.claim import Claim
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
 from modules.knowledge.status.primitive.status import Status
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.temp import TEMP_SENTENCE
-from modules.management.task.services.plan_file import PLAN_NAME, plan_file_problem, read_plan
-from modules.management.task.services.plan_status import set_status
-from modules.management.task.services.depends import refusal as dependency_refusal
-from modules.management.task.primitive.task_id import TaskId
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_temp = import_module('modules-plugable.management.task.services.temp')
+TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_file_problem = _m_plan_file.plan_file_problem
+read_plan = _m_plan_file.read_plan
+_m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
+set_status = _m_plan_status.set_status
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+dependency_refusal = _m_depends.refusal
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 CLAIM_COMMAND = 'claim'
 
 def claim_path(folder: Path) -> Path:

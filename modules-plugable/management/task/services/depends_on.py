@@ -1,26 +1,46 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/depends_on.py — the verb `memar task depends-on`: a task's dependencies shown, added and dropped.
+"""modules-plugable/management/task/services/depends_on.py — the verb `memar task depends-on`: a task's dependencies shown, added and dropped.
 
-What a dependency is and when it is met is `modules/management/task/services/dependency.py`'s; the
+What a dependency is and when it is met is `modules-plugable/management/task/services/dependency.py`'s; the
 key is written by `task_plan_depends`; what it does to a task's Status
 is `task_depends`'s. This file is the verb's face over them: it checks what
 is added, writes the key, brings the Status up to date and says what is.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail, note
-from modules.management.task.services.dependency import DEPENDS_FOR, DependsOn, Reader, Ref, refused_for_writing
-from modules.management.task.services.depends import DEPENDS_COMMAND, concerns_for, home_of, notes_for, problems, reconcile
-from modules.management.task.services.list import find_tasks
-from modules.management.task.services.folder import folder_of, is_task_folder, read_task
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.services.plan_depends import set_depends_on
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+DEPENDS_FOR = _m_dependency.DEPENDS_FOR
+DependsOn = _m_dependency.DependsOn
+Reader = _m_dependency.Reader
+Ref = _m_dependency.Ref
+refused_for_writing = _m_dependency.refused_for_writing
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+DEPENDS_COMMAND = _m_depends.DEPENDS_COMMAND
+concerns_for = _m_depends.concerns_for
+home_of = _m_depends.home_of
+notes_for = _m_depends.notes_for
+problems = _m_depends.problems
+reconcile = _m_depends.reconcile
+_m_list = import_module('modules-plugable.management.task.services.list')
+find_tasks = _m_list.find_tasks
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+read_task = _m_folder.read_task
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_plan_depends = import_module('modules-plugable.management.task.services.plan_depends')
+set_depends_on = _m_plan_depends.set_depends_on
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.status.primitive.status import Status
-from modules.management.task.primitive.task_id import TaskId
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 
 def change(task_id: str, add: list[str], drop: list[str]) -> None:
     """`depends-on`: add and drop references in TASK_ID's key, checked, then bring its Status up to date and say what is."""

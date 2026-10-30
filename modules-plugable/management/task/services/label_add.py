@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/label_add.py — a task's label added or removed.
+"""modules-plugable/management/task/services/label_add.py — a task's label added or removed.
 
 Why a verb of its own, as `priority` is. What a task is about is known when it
 is queued, but is also seen later: the owner reads the labels in use
@@ -26,16 +26,26 @@ needs. Any status is accepted, as a priority is: a task open or blocked now may
 be queued later.
 """
 from __future__ import annotations
+from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail
-from machine.modules_import import load as modules_load
-_task_folder = modules_load('management', 'task', 'services', 'folder')
+_task_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _task_folder.folder_of
 is_task_folder = _task_folder.is_task_folder
-from modules.management.task.services.plan_file import PLAN_NAME, read_plan
-from modules.management.task.services.plan_labels import add_label, checked_label, kinds_listing, label_to_remove, labels_of, project_of, remove_label
-from modules.management.task.primitive.task_id import TaskId
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+read_plan = _m_plan_file.read_plan
+_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+add_label = _m_plan_labels.add_label
+checked_label = _m_plan_labels.checked_label
+kinds_listing = _m_plan_labels.kinds_listing
+label_to_remove = _m_plan_labels.label_to_remove
+labels_of = _m_plan_labels.labels_of
+project_of = _m_plan_labels.project_of
+remove_label = _m_plan_labels.remove_label
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 LABEL_COMMAND = 'add'
 
 def carried(task_id: str, plan: Path) -> str:

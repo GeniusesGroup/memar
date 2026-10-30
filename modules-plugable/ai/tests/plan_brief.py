@@ -3,7 +3,7 @@
 
 """Tests for the prompt that hands a task's plan to a sub-agent to carry out, in `modules-plugable/ai/services/plan_brief.py`.
 
-    python modules/management/task/tests/plan_brief.py
+    python modules-plugable/ai/tests/plan_brief.py
 
 The subject is the one text a delegating task hands over, named for the
 file that holds it per
@@ -50,7 +50,9 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 from modules.process.project.services.task_location import register
-from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_skeleton = _m_plan_file.plan_skeleton
 SID = '20261011-T000000Z-1'
 BRIEF = f'Your task is task {SID}. Run `memar ai get-task-init-context --task-id {SID}` first, before anything else, and follow what it prints.'
 

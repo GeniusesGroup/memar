@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/plan_labels.py — a plan's labels: the kinds a plan carries, the project's label registry, and writing one label in place.
+"""modules-plugable/management/task/services/plan_labels.py — a plan's labels: the kinds a plan carries, the project's label registry, and writing one label in place.
 
 A plan's `Labels` are the words that link it to other tasks outside the
 structure of their ids (`modules/knowledge/label/primitive/label.py`),
@@ -19,32 +19,38 @@ This file gathers the kinds a plan carries and adds none of its own. A plan
 takes as many labels as it needs and none it does not: a label is added only
 when another task is to be found by it.
 
-The rule `start` applies to say how able an agent a kind needs is transitional,
-with its reason below, until the plan names its own AI (the Labels design's
-`AIModel`, its own field, not done here).
+The model a task runs on follows what it needs, not its kind: the rule is
+written once, in `MODEL_RULE`, and a kind is only its starting point.
 
 A label is written one line at a time, as a priority is, through
 `task_plan_rewrite`: the block under the key is found, the label's line added
 or removed, and every other line kept as written.
 """
 from __future__ import annotations
+from importlib import import_module
 import time
 from pathlib import Path
 from machine.console import fail
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import FLAG_SEPARATOR, Label, LabelDefinition, LabelProblem, LabelRegistry, Labels
-from modules.management.task.labels import task_kind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+task_kind = _m_task_kind
 from modules.knowledge.label.primitive import topic
-from modules.management.task.labels.task_kind import TaskKind
-from modules.management.task.services.plan_file import front_matter
-from modules.management.task.services.plan_rewrite import key_of, line_end, rewrite
+TaskKind = _m_task_kind.TaskKind
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+front_matter = _m_plan_file.front_matter
+_m_plan_rewrite = import_module('modules-plugable.management.task.services.plan_rewrite')
+key_of = _m_plan_rewrite.key_of
+line_end = _m_plan_rewrite.line_end
+rewrite = _m_plan_rewrite.rewrite
 from modules.knowledge.label.services.declarations import FOLDER, NAME, Declared, declared, declaring_files
 KINDS = (task_kind.LABEL_KIND, topic.LABEL_KIND)
 TASK_KIND = task_kind.LABEL_KIND_NAME
 TOPIC = topic.LABEL_KIND_NAME
 TASK_KINDS = TaskKind.words(carried=True)
-CHEAPER_KINDS = (TaskKind.MECHANICAL.word,)
-STRONG_KINDS = tuple((word for word in TaskKind.words() if word not in CHEAPER_KINDS))
+MECHANICAL_KIND = TaskKind.MECHANICAL.word
+MODEL_RULE = '/modules-plugable/management/task/rules/model-follows-need/model-follows-need.md'
 NEAR_EDITS = 2
 RECHECK_SECONDS = 2.0
 _cache: dict[str, tuple[LabelRegistry, tuple[Declared, ...], tuple[tuple[str, float], ...], float]] = {}
@@ -110,11 +116,12 @@ def topics_of(front: dict[str, str] | None) -> tuple[str, ...]:
 def task_kind_of(front: dict[str, str] | None) -> str:
     """The task kind FRONT matter gives its plan, lower case as written; empty when it has none.
 
-    A plan with several task kinds is read as its first judgment kind, so that
-    a task that is also mechanical is not moved to a cheaper model.
+    A plan with several task kinds is read as its first kind that is not the
+    mechanical one, so that a task that is also mechanical does not start at the
+    mechanical level (`MODEL_RULE`).
     """
     words = [word.strip().lower() for word in registry_of(front).words(labels_of(front), TASK_KIND)]
-    return next((word for word in words if word in STRONG_KINDS), words[0] if words else '')
+    return next((word for word in words if word != MECHANICAL_KIND), words[0] if words else '')
 
 def edit_distance(one: str, two: str) -> int:
     """How many single-character insertions, deletions, or substitutions turn ONE into TWO."""

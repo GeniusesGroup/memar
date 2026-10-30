@@ -28,11 +28,17 @@ from typing import Callable
 from machine.console import fail
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
 from .get_task_answer_context import ANSWERING_COMMAND, questions_problem
-from modules.management.task.services.folder import folder_of, is_task_folder
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.primitive.record import REPORT
-from modules.management.task.services.report_file import REPORT_NAME
-from modules.management.task.primitive.task_id import TaskId
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+is_task_folder = _m_folder.is_task_folder
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+REPORT = _m_record.REPORT
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 QUESTIONS_BRIEF_COMMAND = 'get-task-questions-answer-brief'
 
 def questions_brief_text(task_id: str) -> str:

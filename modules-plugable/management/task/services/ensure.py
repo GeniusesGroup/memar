@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/ensure.py — one task's folder, plan and report ensured, wherever the project keeps its tasks.
+"""modules-plugable/management/task/services/ensure.py — one task's folder, plan and report ensured, wherever the project keeps its tasks.
 
 What `ensure` and `get-task-init-context` both ask: the folder is found or made in the location the project names, its
 plan is written or kept (`task_plan_write`), its report and its folders (`task_layout`) are made, and the id and
@@ -15,34 +15,58 @@ names (`task_location`), and the day's sweep runs when one is opened (`task_gc`)
 touching the task being opened or continued.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 task_dir = _m_fs_memar.task_dir
 from pathlib import Path
 from machine.console import fail
-from modules.management.task.services.dependency import DependsOn, Reader, Ref, refused_for_writing
-from modules.management.task.plan.primitive.priority import Priority
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+DependsOn = _m_dependency.DependsOn
+Reader = _m_dependency.Reader
+Ref = _m_dependency.Ref
+refused_for_writing = _m_dependency.refused_for_writing
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
 from modules.process.project.services.find import project_by_path
 from modules.process.project.services.preferences import TASKS_KEY, preferences_path
-from modules.management.task.services.folder import folder_of, project_folder_of, read_task
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+project_folder_of = _m_folder.project_folder_of
+read_task = _m_folder.read_task
 _m_gc = plugable_load('computer.git.services.sweep_idle_task_folders')
 reap_once_a_day = _m_gc.reap_once_a_day
-from modules.management.task.services.layout import ensure_folders
-from modules.management.task.primitive.task_id import TaskId
+_m_layout = import_module('modules-plugable.management.task.services.layout')
+ensure_folders = _m_layout.ensure_folders
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 from modules.process.project.services.task_location import in_project_location, project_location, project_root, register
 _m_log = plugable_load('computer.git.services.log')
 record = _m_log.record
-from modules.management.task.services.plan_file import PLAN_NAME, checked_title
-from modules.management.task.services.depends import BLOCKED_EVENT, reconcile
-from modules.management.task.services.plan_depends import set_depends_on
-from modules.management.task.services.plan_labels import add_label, checked_label, registry_for
-from modules.management.task.services.plan_priority import set_priority
-from modules.management.task.services.plan_write import queue_plan, write_plan
-from modules.management.task.services.report_file import write_report
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+checked_title = _m_plan_file.checked_title
+_m_depends = import_module('modules-plugable.management.task.services.depends')
+BLOCKED_EVENT = _m_depends.BLOCKED_EVENT
+reconcile = _m_depends.reconcile
+_m_plan_depends = import_module('modules-plugable.management.task.services.plan_depends')
+set_depends_on = _m_plan_depends.set_depends_on
+_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+add_label = _m_plan_labels.add_label
+checked_label = _m_plan_labels.checked_label
+registry_for = _m_plan_labels.registry_for
+_m_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
+set_priority = _m_plan_priority.set_priority
+_m_plan_write = import_module('modules-plugable.management.task.services.plan_write')
+queue_plan = _m_plan_write.queue_plan
+write_plan = _m_plan_write.write_plan
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+write_report = _m_report_file.write_report
 from modules.knowledge.label.primitive.label import Labels
 from modules.knowledge.status.primitive.status import Status
 from modules.process.project.primitive.project_name import ProjectName
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 ENSURE_COMMAND = 'ensure'
 PROJECT_REQUIRED = f'{ENSURE_COMMAND} needs {ProjectName.either_words()} to make a task folder: the project is always named, by a name `memar project find` resolves or by a folder, and the folder this runs in is never read; a task that is already there is continued without it'
 

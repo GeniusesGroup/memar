@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for taking the N queued tasks first in line, in `modules/management/task/services/claims.py`.
+"""Tests for taking the N queued tasks first in line, in `modules-plugable/management/task/services/claims.py`.
 
-    python modules/management/task/tests/claims.py
+    python modules-plugable/management/task/tests/claims.py
 
 The subject is `claims N` — how the queued tasks first in line come to be
 owned by exactly one agent each, each taken the way `claim` takes one
@@ -62,13 +62,14 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.process.project.services.registry as registry
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
-import modules.management.task.services.claim as task_claim
-from modules.management.task.primitive.claim import Claim
-import modules.management.task.services.claims as task_claims
-import modules.management.task.services.temp as task_temp
-import modules.management.task.services.ensure as task_ensure
-import modules.management.task.services.plan_file as task_plan
-import modules.management.task.services.plan_labels as task_plan_labels
+task_claim = import_module('modules-plugable.management.task.services.claim')
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
+task_claims = import_module('modules-plugable.management.task.services.claims')
+task_temp = import_module('modules-plugable.management.task.services.temp')
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 
 def declare_topic(project: Path, fresh) -> None:
     """Declare the topic FRESH in PROJECT, as a module of it would: a file of a `labels/` folder holding `LABELS`."""
@@ -251,7 +252,7 @@ class ClaimsTakesN(Fixture):
             "from importlib import import_module\n"
             "m = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')\n"
             "m.memar_root = lambda: Path(sys.argv[2])\n"
-            "import modules.management.task.services.claims as c\n"
+            "import importlib; c = importlib.import_module('modules-plugable.management.task.services.claims')\n"
             "while time.time() < float(sys.argv[3]): pass\n"
             "with contextlib.redirect_stdout(io.StringIO()): taken = c.claims(4, sys.argv[4])\n"
             "print(json.dumps(taken))\n"

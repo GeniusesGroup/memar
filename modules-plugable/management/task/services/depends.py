@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/services/depends.py — the verb `memar task depends-on`, and the Status a task's dependencies give it.
+"""modules-plugable/management/task/services/depends.py — the verb `memar task depends-on`, and the Status a task's dependencies give it.
 
 What a dependency is, when it is met, and how it is checked is the type's
-(`modules/management/task/services/dependency.py`); writing the key is `task_plan_depends`. This file
+(`modules-plugable/management/task/services/dependency.py`); writing the key is `task_plan_depends`. This file
 decides what the key does to a task, and says it.
 
 The Status of a task with dependencies. An unmet `Depends_on` makes the
@@ -37,17 +37,28 @@ each stands; one that no longer resolves keeps it unclaimable until the key is
 dropped, and the refusal says so.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 from pathlib import Path
 from typing import Iterable
-from modules.management.task.services.dependency import ARROW, DEPENDS_FOR, DependsOn, Reader, dependents
-from modules.management.task.services.folder import Task, read_task
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+ARROW = _m_dependency.ARROW
+DEPENDS_FOR = _m_dependency.DEPENDS_FOR
+DependsOn = _m_dependency.DependsOn
+Reader = _m_dependency.Reader
+dependents = _m_dependency.dependents
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+Task = _m_folder.Task
+read_task = _m_folder.read_task
 _m_log = plugable_load('computer.git.services.log')
 log_path = _m_log.log_path
 record = _m_log.record
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.services.plan_status import set_status
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
+set_status = _m_plan_status.set_status
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.status.primitive.status import Status
 DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace('_', '-')
 BLOCKED_EVENT = 'blocked-by-dependency'

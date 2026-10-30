@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the few lines that say what a task came to, in `modules/management/task/services/report_summary.py`.
+"""Tests for the few lines that say what a task came to, in `modules-plugable/management/task/services/report_summary.py`.
 
-    python modules/management/task/tests/summary.py
+    python modules-plugable/management/task/tests/summary.py
 
 The subject is the summary a day's review shows beside each task, named for
 the file that holds it per
@@ -19,6 +19,7 @@ What is pinned, and what each pin is for:
   Bounded        At most three lines, each cut to a terminal's width.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -31,8 +32,9 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.report_summary as task_summary
-from modules.management.task.services.report_file import REPORT_NAME
+task_summary = import_module('modules-plugable.management.task.services.report_summary')
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 
 class Fixture(unittest.TestCase):
 

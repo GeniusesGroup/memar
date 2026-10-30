@@ -3,7 +3,7 @@
 
 """Tests for the task record types in `record.py`.
 
-    python modules/management/task/tests/record.py
+    python modules-plugable/management/task/tests/record.py
 
 The subject is the shape of a task's plan.md and report.md, declared once,
 named for the file that holds it per
@@ -32,6 +32,7 @@ PlanRecord    plan.md: the front-matter keys in the order a new plan
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
@@ -41,9 +42,13 @@ SCRIPTS = TOP / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-from modules.management.task.primitive.record import PLAN, REPORT
-from modules.management.task.plan.primitive.plan_key import PlanKey
-from modules.management.task.report.primitive.report_key import ReportKey
+_m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
+PLAN = _m_record.PLAN
+REPORT = _m_record.REPORT
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
 from modules.knowledge.content.primitive.record_key import ID_FIELD
 from modules.knowledge.status.primitive.status import DocumentKind, Status
 

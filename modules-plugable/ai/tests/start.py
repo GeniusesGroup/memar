@@ -3,7 +3,7 @@
 
 """Tests for `memar ai get-task-init-context`, in `modules-plugable/ai/services/get_task_init_context.py`.
 
-    python modules/management/task/tests/start.py
+    python modules-plugable/ai/tests/start.py
 
 The subject is the one multi-part text a sub-agent reads first, named for the
 file that holds it per
@@ -27,10 +27,11 @@ What is pinned, and what each pin is for:
   TaskPart      The task's id, path, plan and report are printed, and
                    starting is `new --task-id`: the role folders and the
                    report are there afterwards.
-  ModelPart        A kind that is judgment names the strongest model and what
-                   to do on a weaker one; a mechanical kind a cheaper one; a
-                   plan with no kind, or one the plan's author mistyped, says
-                   the Request decides, and names the kinds.
+  ModelPart        A kind gives its word as the starting point and cites the
+                   rule that sets the model by its path, with what to do on a
+                   model too weak, and fixes no level by kind; a plan with no
+                   kind, or one the plan's author mistyped, says the Request
+                   decides, and names the kinds.
   PlanAndFolder    The plan is printed whole, and the folder's listing names
                    what is in it, folders marked.
   Documents        The sections the plan's Kind's normative references name
@@ -91,14 +92,18 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
-import modules.management.task.services.temp as task_temp
+task_temp = import_module('modules-plugable.management.task.services.temp')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
-import modules.management.task.services.plan_labels as task_plan_labels
+task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 commands = import_module('modules-plugable.computer.ui.command.command')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
-from modules.management.task.labels import task_kind
-from modules.management.task.services.plan_file import PLAN_NAME, plan_skeleton
-from modules.management.task.services.report_file import REPORT_NAME
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+task_kind = _m_task_kind
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+plan_skeleton = _m_plan_file.plan_skeleton
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 _m_content_get_section = import_module('modules-plugable.computer.codec.markdown.services.content_get_section')
 by_anchor = _m_content_get_section.by_anchor
 section_hash = _m_content_get_section.section_hash
@@ -111,7 +116,7 @@ memar_place = _m_normative_references.memar_place
 from modules.process.project.services.preferences import preferences_path, preferences_text
 _m_task_context = import_module('modules-plugable.ai.services.task_context')
 read_record = _m_task_context.read_record
-from modules.management.task.labels.task_kind import TaskKind
+TaskKind = _m_task_kind.TaskKind
 SID = '20261011-T000000Z-7'
 ROOT = SCRIPTS.parent.parent
 SKILL = '# Skill\n- SKILL-TEXT, printed whole.\n'
@@ -205,34 +210,29 @@ class TaskPart(Fixture):
 
 class ModelPart(Fixture):
 
-    def test_a_kind_that_is_judgment_names_the_strongest_model_and_the_block(self) -> None:
-        for kind in (word for word in task_plan_labels.STRONG_KINDS if word in task_plan_labels.TASK_KINDS):
+    def test_a_kind_gives_itself_cites_the_rule_and_keeps_the_block(self) -> None:
+        for kind in task_plan_labels.TASK_KINDS:
             with self.subTest(kind=kind):
                 part = self.parts(plan_with(kind))['model']
                 self.assertIn(f'kind: {kind}', part)
-                self.assertIn('strongest model', part)
+                self.assertIn(task_plan_labels.MODEL_RULE, part)
                 self.assertIn('end Blocked', part)
-
-    def test_a_refused_stronger_model_does_not_block_the_task(self) -> None:
-        part = self.parts(plan_with('design'))['model']
-        self.assertIn('strongest usable one is the right one', part)
-        self.assertIn('goes on', part)
-
-    def test_a_mechanical_kind_names_a_cheaper_model(self) -> None:
-        part = self.parts(plan_with('mechanical'))['model']
-        self.assertIn('kind: mechanical', part)
-        self.assertIn('cheaper model', part)
-        self.assertNotIn('strongest', part)
+                self.assertIn('ask for another agent one level above to take it up', part)
+                for word in ('strongest', 'cheaper', 'stronger'):
+                    self.assertNotIn(word, part)
 
     def test_a_plan_with_no_kind_leaves_it_to_the_request(self) -> None:
         part = self.parts(plan_with())['model']
         self.assertIn('the plan states no kind', part)
         self.assertIn('ideates, designs, or critiques', part)
+        self.assertIn(task_plan_labels.MODEL_RULE, part)
+        self.assertIn('end Blocked', part)
+        self.assertNotIn('strongest', part)
 
-    def test_a_label_that_is_no_task_kind_is_not_taken_for_a_cheaper_one(self) -> None:
+    def test_a_label_that_is_no_task_kind_is_not_taken_for_a_kind(self) -> None:
         part = self.parts(plan_with('modelling'))['model']
         self.assertIn('the plan states no kind', part)
-        self.assertNotIn('This task is mechanical', part)
+        self.assertNotIn('kind: mechanical', part)
 
 class PlanAndFolder(Fixture):
 

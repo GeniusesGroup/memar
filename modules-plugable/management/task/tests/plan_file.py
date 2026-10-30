@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a task's plan.md format in `modules/management/task/services/plan_file.py`.
+"""Tests for a task's plan.md format in `modules-plugable/management/task/services/plan_file.py`.
 
-    python modules/management/task/tests/plan_file.py
+    python modules-plugable/management/task/tests/plan_file.py
 
 The subject is the plan format every task service reads and writes, named
 for the file that holds it per
@@ -45,13 +45,13 @@ What is pinned, and what each pin is for:
                   refused.
   Kind            A plan's kind is one of the kinds `modules/management/task/labels/task_kind.py`
                   lets a plan carry, and one it does not let a plan carry is
-                  refused with the reason. For now every kind is judgment,
-                  the strongest model, but `mechanical`, a cheaper one
-                  (the transitional rule). A new plan writes it
+                  refused with the reason. The kind is only where the model a
+                  task needs starts (`MODEL_RULE`); a plan with several kinds
+                  reads as its first that is not `mechanical`. A new plan writes it
                   only when given; one set later replaces the key or adds it
                   at the end of the front matter and leaves every other line
                   as written; a word outside the list, so a misspelling is
-                  never read as a cheaper kind, is refused; a plan with a
+                  never read as the mechanical kind, is refused; a plan with a
                   hand-written kind outside the list still reads as written.
   Rewrite         Setting a status or a priority while another writer changes
                   the plan keeps both changes, not only the last; a status set
@@ -62,6 +62,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -75,18 +76,21 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.plan_file as task_plan
-import modules.management.task.services.plan_status as task_plan_status
-import modules.management.task.services.plan_priority as task_plan_priority
-import modules.management.task.services.plan_labels as task_plan_labels
+task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan_status = import_module('modules-plugable.management.task.services.plan_status')
+task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
+task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
-from modules.management.task.labels import task_kind as task_kind_module
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+task_kind_module = _m_task_kind
 DESIGN = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.word == 'design'))
 MECHANICAL = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.word == 'mechanical'))
-from modules.management.task.plan.primitive.priority import Priority as PlanPriority
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+PlanPriority = _m_priority.Priority
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.status.primitive.status import DocumentKind, Status
-from modules.management.task.labels.task_kind import TaskKind
+TaskKind = _m_task_kind.TaskKind
 TITLE = 'Parse the header'
 OPENED = '2026-10-01T00:00:00Z'
 TASK = '20261001T000000Z-1-0'
@@ -361,9 +365,11 @@ class KindOfTask(Fixture):
     def test_the_kinds_are_those_the_declaration_lets_a_plan_carry(self) -> None:
         self.assertEqual(task_plan_labels.TASK_KINDS, TaskKind.words(carried=True))
 
-    def test_every_kind_is_judgment_but_the_mechanical_one(self) -> None:
-        self.assertEqual(task_plan_labels.CHEAPER_KINDS, (TaskKind.MECHANICAL.word,))
-        self.assertEqual(set(task_plan_labels.STRONG_KINDS), {kind.word for kind in TaskKind if kind is not TaskKind.MECHANICAL})
+    def test_the_mechanical_kind_is_the_one_a_plan_with_other_kinds_is_not_read_as(self) -> None:
+        self.assertEqual(task_plan_labels.MECHANICAL_KIND, TaskKind.MECHANICAL.word)
+
+    def test_the_rule_the_model_follows_is_a_document_of_the_repository(self) -> None:
+        self.assertTrue((Path(__file__).resolve().parents[4] / task_plan_labels.MODEL_RULE.lstrip('/')).is_file())
 
     def test_a_kind_no_plan_carries_is_refused_with_why(self) -> None:
         for kind in (TaskKind.ANSWER, TaskKind.PLAN):

@@ -33,7 +33,7 @@ Open work for `documentation.md`. Entries are mutable current state - revised as
 ### Merged Status vocabulary: report-only values
 - State: the owner ruled that a task report's Outcome and Status are one concept in one vocabulary, the type `Status` ([documentation.md → Status](./documentation.md#status)), and accepts that some values are for reports only. The type now has none: a run that ended unmet reads `Active`, one that stopped at an approval reads `Blocked`, and `success` and `clean no-op` both read `Complete`, the report's Result part saying which. The cost is that `clean no-op` (the check passed because nothing needed doing, no artifact changed) is no longer machine-visible, and neither is `exhausted` against `no progress`.
 - Options: (1) keep the vocabulary as it is, the Result part carrying the difference (recommended: nothing reads the difference today, and the scripts keep the old words as a reading table, so a value is cheap to add later); (2) add `No-op` for the task report alone, leaving it a `Complete` variant that a plan never takes; (3) add `Exhausted` for the report alone, left Active in the plan, which breaks the rule that a plan and its report agree by equal Statuses.
-- Anchor: [documentation.md → Status](./documentation.md#status); `modules/management/task/services/report.py`, `LEGACY_OUTCOME_STATUS`.
+- Anchor: [documentation.md → Status](./documentation.md#status); `modules-plugable/management/task/services/report.py`, `LEGACY_OUTCOME_STATUS`.
 - Blocks: nothing. Assumed meanwhile: option 1; also provisional by the owner's ruling: the words `Active`/`Complete` for `open`/`done`, PascalCase keys, lazy migration.
 - Asked: 2026-10-13, task `20261013-T142914Z-28176`, for the owner.
 
@@ -73,7 +73,7 @@ Open work for `documentation.md`. Entries are mutable current state - revised as
 - Asked: 2026-10-16, found by task 20261016-T123037Z-21048, for Omid Hekayati; to be decided with the front matter conventions task 20261016-T095101Z-22960, which finds the same kind of contradiction.
 
 ### A task has one Status; the pairing of a plan's and a report's Status goes
-- State: the owner ruled on 2026-10-23 that a task holds the Status and a Request changes it, and that a task may hold several plans and reports ([plan.md → A task holds rounds of plans](../../../modules/management/task/plan/plan.md#a-task-holds-rounds-of-plans)). [Status](./documentation.md#status) still says a plan and a report agree when their Statuses are equal, and that the plan's Status is rewritten by the verbs; both change when the services are re-based on the memory port, and the pairing becomes the one rule that the agent ending a pass sets the task's Status to the one its report states.
+- State: the owner ruled on 2026-10-23 that a task holds the Status and a Request changes it, and that a task may hold several plans and reports ([plan.md → A task holds rounds of plans](plan/plan.md#a-task-holds-rounds-of-plans)). [Status](./documentation.md#status) still says a plan and a report agree when their Statuses are equal, and that the plan's Status is rewritten by the verbs; both change when the services are re-based on the memory port, and the pairing becomes the one rule that the agent ending a pass sets the task's Status to the one its report states.
 - Next: the task that re-bases the services; the programme is in `.agents/tasks/20261022-T185903Z-15504/docs/change-plan.md`.
 
 ## Anticipated Work

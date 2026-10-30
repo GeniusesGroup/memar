@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for opening a task in `modules/management/task/services/ensure.py`.
+"""Tests for opening a task in `modules-plugable/management/task/services/ensure.py`.
 
-    python modules/management/task/tests/new.py
+    python modules-plugable/management/task/tests/new.py
 
 The subject is how one task's folder and plan come to exist, named for the
 file that holds it per
@@ -117,24 +117,30 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import modules.process.project.services.preferences as project_preferences
-import modules.management.task.services.temp as task_temp
+task_temp = import_module('modules-plugable.management.task.services.temp')
 import modules.process.project.services.registry as registry
-import modules.management.task.services.ensure as task_ensure
-import modules.management.task.services.new as task_new
-from modules.management.task.services.layout import FOLDERS
-from modules.management.task.services.folder import read_task
-from modules.management.task.primitive.task_id import TaskId
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_new = import_module('modules-plugable.management.task.services.new')
+_m_layout = import_module('modules-plugable.management.task.services.layout')
+FOLDERS = _m_layout.FOLDERS
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+read_task = _m_folder.read_task
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 _m_plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 import modules.process.project.services.task_location as task_location
 import modules.process.project.services.registry as project_registry
 from modules.process.project.services.task_location import prune_registry, registered_locations
 _m_log = import_module('modules-plugable.computer.git.services.log')
 TASK_LOG_NAME = _m_log.TASK_LOG_NAME
 log_path = _m_log.log_path
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.services.report_file import REPORT_NAME
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 TITLE = 'Test the task services'
 REPORT = f'---\nID: s-report\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n'
 OPENED = '\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z'

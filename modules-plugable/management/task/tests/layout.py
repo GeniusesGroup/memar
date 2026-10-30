@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for what stands at a task folder's top, and where the rest goes, in `modules/management/task/services/layout.py`.
+"""Tests for what stands at a task folder's top, and where the rest goes, in `modules-plugable/management/task/services/layout.py`.
 
-    python modules/management/task/tests/layout.py
+    python modules-plugable/management/task/tests/layout.py
 
 The subject is the layout every task service reads,
 named for the file that holds it per
@@ -30,6 +30,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
@@ -41,12 +42,16 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.layout as task_layout
-import modules.management.task.services.temp as task_temp
-from modules.management.task.services.layout import FOLDERS
-from modules.management.task.primitive.claim import Claim
-from modules.management.task.services.plan_file import PLAN_NAME
-from modules.management.task.services.report_file import REPORT_NAME
+task_layout = import_module('modules-plugable.management.task.services.layout')
+task_temp = import_module('modules-plugable.management.task.services.temp')
+_m_layout = import_module('modules-plugable.management.task.services.layout')
+FOLDERS = _m_layout.FOLDERS
+_m_claim = import_module('modules-plugable.management.task.primitive.claim')
+Claim = _m_claim.Claim
+_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+REPORT_NAME = _m_report_file.REPORT_NAME
 
 class TopHoldsOnly(unittest.TestCase):
 

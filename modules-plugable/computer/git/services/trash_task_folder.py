@@ -35,10 +35,15 @@ from machine.console import fail, note
 from modules.process.project.services.preferences import TASKS_KEY
 from .archive_task_records import ARCHIVE_COMMAND, Kept, Outcome, State, standing
 from .branch import reference
-from modules.management.task.services.folder import folder_of, foreign_project_entry, queued_why, read_task
+_m_folder = import_module('modules-plugable.management.task.services.folder')
+folder_of = _m_folder.folder_of
+foreign_project_entry = _m_folder.foreign_project_entry
+queued_why = _m_folder.queued_why
+read_task = _m_folder.read_task
 from .sweep_idle_task_folders import GC_COMMAND
 from .log import record
-from modules.management.task.primitive.task_id import TaskId
+_m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
+TaskId = _m_task_id.TaskId
 CLOSE_COMMAND = 'trash-task-folder'
 DISCARD_RECORDS_FLAG = '--discard-records'
 

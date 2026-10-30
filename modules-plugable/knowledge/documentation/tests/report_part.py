@@ -3,7 +3,7 @@
 
 """Tests for `ReportPart` in `primitive/report_part.py`.
 
-    python modules/management/task/tests/report_part.py
+    python modules-plugable/management/task/tests/report_part.py
 
 The subject is the parts under a task report's front matter, in order, and the hand-back part a task adds when it needs a decision. Named for the file that holds it per
 [Test Naming](../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
@@ -12,6 +12,7 @@ The subject is the parts under a task report's front matter, in order, and the h
 What is pinned: the headings are those the specification names, in its order, each with a meaning; each is read back from its text in any case; any other text is no member.
 """
 from __future__ import annotations
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
@@ -20,7 +21,8 @@ TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p 
 sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-from modules.management.task.report.primitive.report_part import ReportPart
+_m_report_part = import_module('modules-plugable.knowledge.documentation.report.primitive.report_part')
+ReportPart = _m_report_part.ReportPart
 WORDS = ('What ran', 'Check', 'Result', 'Left open', 'Decisions needed')
 
 class ReportPartPins(unittest.TestCase):

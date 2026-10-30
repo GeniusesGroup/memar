@@ -69,7 +69,8 @@ Place = _m_normative_references.Place
 current_hash = _m_normative_references.current_hash
 lists = _m_normative_references.lists
 memar_place = _m_normative_references.memar_place
-from modules.management.task.labels.task_kind import TaskKind
+_m_task_kind = import_module('modules.management.task.labels.task_kind')
+TaskKind = _m_task_kind.TaskKind
 ROOT = SCRIPTS.parent.parent
 DOC = '# Doc\n\n## Abstract\nDOC-ABSTRACT\n\n## One\nONE-TEXT\n\n### Inner\nINNER-TEXT\n\n## Two\nTWO-TEXT\n'
 WORD = 'alpha'

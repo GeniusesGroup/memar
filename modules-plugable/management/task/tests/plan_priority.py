@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the priority type in `modules/management/task/plan/primitive/priority.py`.
+"""Tests for the priority type in `modules-plugable/knowledge/documentation/plan/primitive/priority.py`.
 
-    python modules/management/task/tests/plan_priority.py
+    python modules-plugable/management/task/tests/plan_priority.py
 
 The subject is a plan's priority, declared once: how soon a queued task is
 taken, a whole number from 1 to 10, the higher sooner, the middle value when a
@@ -29,6 +29,7 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
@@ -37,8 +38,10 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.management.task.plan.primitive.priority import Priority
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
+Priority = _m_priority.Priority
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 
 class Bounds(unittest.TestCase):
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/management/task/primitive/task_id.py — one task's identity: the id its folder and notes carry.
+"""modules-plugable/management/task/primitive/task_id.py — one task's identity: the id its folder and notes carry.
 
 An id, and nothing else. It is minted here rather than beside the scratch folder
 because a task is a task whichever tool asks for one: the task services

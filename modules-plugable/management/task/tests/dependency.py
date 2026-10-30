@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a plan's dependencies, in `modules/management/task/services/dependency.py`.
+"""Tests for a plan's dependencies, in `modules-plugable/management/task/services/dependency.py`.
 
-    python modules/management/task/tests/dependency.py
+    python modules-plugable/management/task/tests/dependency.py
 
 The subject is the process a plan's `Depends_on` names: the tasks it cannot
 start without, each an id or `project/id`, met when the cited task's plan
@@ -31,6 +31,7 @@ What is pinned, and what each pin is for:
              and one that makes a cycle of any length, naming the path.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
@@ -46,10 +47,15 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.management.task.services.dependency as depends_on
+depends_on = import_module('modules-plugable.management.task.services.dependency')
 import modules.process.project.services.registry as registry
-from modules.management.task.services.dependency import DependsOn, Reader, Ref, refused_for_writing
-from modules.management.task.plan.primitive.plan_key import PlanKey
+_m_dependency = import_module('modules-plugable.management.task.services.dependency')
+DependsOn = _m_dependency.DependsOn
+Reader = _m_dependency.Reader
+Ref = _m_dependency.Ref
+refused_for_writing = _m_dependency.refused_for_writing
+_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
+PlanKey = _m_plan_key.PlanKey
 
 def plan_text(status: str, depends: str | None=None, project: str='P') -> str:
     given = f'Depends_on: {depends}\n' if depends else ''
