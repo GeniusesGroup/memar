@@ -63,7 +63,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 depends_on = import_module('modules-plugable.management.task.services.dependency')
-import modules.process.project.services.registry as registry
+import modules.computer.software.services.project_registry as registry
 new_chats = import_module('modules-plugable.ai.services.get_new_chats_ask')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 task_claims = import_module('modules-plugable.management.task.services.claims')

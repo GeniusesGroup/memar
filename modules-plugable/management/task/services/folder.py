@@ -37,7 +37,8 @@ from pathlib import Path
 from typing import NamedTuple
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
-from modules.process.project.services.task_location import registered_locations
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+registered_locations = _m_task_location.registered_locations
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_file_problem = _m_plan_file.plan_file_problem

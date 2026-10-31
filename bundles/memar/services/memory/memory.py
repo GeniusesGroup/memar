@@ -35,7 +35,7 @@ def _shares(module: ModuleType, project: Path, other: str, adapter: Any) -> bool
         return False
 
 def open(project: Path, class_name: str, needs: Any) -> Any:
-    preferences = import_module('modules.process.project.services.preferences')
+    preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
     record = import_module(f'{STORE_CAPSULES}.record.record')
     where = preferences.preferences_path(project)
     bindings = preferences.memory_preference(project)

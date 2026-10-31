@@ -36,8 +36,8 @@ _m_plan_file = import_module('modules-plugable.management.task.services.plan_fil
 PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_files')
 has_plan = _m_task_files.has_plan
-from modules.process.project.primitive.project_name import ProjectName
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_path import ProjectPath
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
 from .get_task_init_context import START_COMMAND
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')

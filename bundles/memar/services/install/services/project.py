@@ -74,10 +74,10 @@ import re
 import sys
 from pathlib import Path
 from machine.env_location import VARIABLE, recorded_value
-from modules.process.project.services.preferences import BLOCK_KEY, PREFERENCES_RELATIVE
-from modules.process.project.services.registry import add_project, ensure_memar_entry, normalized, path_key, read_entries
-from modules.process.project.primitive.project_name import ProjectName
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.edges.manifest.services.preferences import BLOCK_KEY, PREFERENCES_RELATIVE
+from modules.computer.software.services.project_registry import add_project, ensure_memar_entry, normalized, path_key, read_entries
+from modules.computer.software.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_path import ProjectPath
 SCRIPTS_RAW = f'https://raw.githubusercontent.com/{PUBLISHED_REPOSITORY}/{PUBLISH_BRANCH}/{SCRIPTS_RELATIVE.as_posix()}'
 WINDOWS_BOOTSTRAP = f'powershell -ExecutionPolicy Bypass -Command "& ([scriptblock]::Create((irm {SCRIPTS_RAW}/install.ps1)))"'
 POSIX_BOOTSTRAP = f"""sh -c 'c=$(curl -fsSL {SCRIPTS_RAW}/install.sh); test -n "$c" && exec sh -c "$c" install.sh'"""

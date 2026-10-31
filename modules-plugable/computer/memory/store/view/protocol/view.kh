@@ -2,20 +2,23 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 tp String in "modules/computer/codec/string/protocol/string.kh"
-tp Project in "modules/process/project/protocol/project.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 tp Record in "modules-plugable/computer/memory/store/record/protocol/record.kh"
 tp View_Registry in "modules-plugable/computer/memory/store/view/protocol/view-registry.kh"
 tp View_Presentation in "modules-plugable/computer/memory/store/view/protocol/view-presentation.kh"
 tp View_Folder in "modules-plugable/computer/memory/store/view/protocol/view-folder.kh"
 tp View_Preference in "modules-plugable/computer/memory/store/view/protocol/view-preference.kh"
 tp View_BuildAnswer in "modules-plugable/computer/memory/store/view/protocol/view-build-answer.kh"
+tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
 
 tp View ab {
     View_Registry
+    Field_ProjectUUID
 }
 
 tp GetKey mt (self View) () (key String)
 
-tp GetPreference mt (self View) (project Project) (preference View_Preference, given Boolean, err Error)
+tp GetPreference mt (self View) () (preference View_Preference, given Boolean, err Error)
 
 tp Build mt (self View) (record Record, presentation View_Presentation, folder View_Folder) (answer View_BuildAnswer)

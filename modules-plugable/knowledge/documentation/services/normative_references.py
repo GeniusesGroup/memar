@@ -15,7 +15,7 @@ fixture or an example saved under a list's name binds nobody. Memar's place is
 one folder, `MEMAR_PLACE`, under Memar's checkout: a constant and not a
 preference, because Memar's lists bind every project and are found the same way
 from every one. A project's places are the folders its preference `PREFERENCE`
-names, read by `modules/process/project/services/preferences.py`; the places are always given
+names, read by `modules/computer/software/edges/manifest/services/preferences.py`; the places are always given
 to `lists`, never inferred from the folder a command runs in.
 
 **An entry** is one line at column 0, outside a fenced block: a list item whose
@@ -48,7 +48,7 @@ _m_content_get_section = import_module('modules-plugable.computer.codec.markdown
 _fenceless = _m_content_get_section._fenceless
 by_anchor = _m_content_get_section.by_anchor
 section_hash = _m_content_get_section.section_hash
-from modules.process.project.services.preferences import FOLDER_SEPARATOR, NORMATIVE_REFERENCES_KEY, preferences_path, read_preferences
+from modules.computer.software.edges.manifest.services.preferences import FOLDER_SEPARATOR, NORMATIVE_REFERENCES_KEY, preferences_path, read_preferences
 RULE = 'normative_references'
 MEMAR_PLACE = PurePosixPath('modules/knowledge/content/rules') / RULE
 LIST_NAME = f'{RULE}-{{word}}.md'

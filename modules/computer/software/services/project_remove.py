@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/services/remove.py — `memar project remove WORD`: a project forgotten, its folder untouched.
+"""modules/computer/software/services/project_remove.py — `memar project remove WORD`: a project forgotten, its folder untouched.
 
 WORD is an exact name or alias in any case, or the folder: a removal is never
 decided by similarity, because forgetting the wrong project is not undone by
@@ -11,7 +11,7 @@ from __future__ import annotations
 import argparse
 from typing import Callable
 from machine.console import note
-from modules.process.project.services.registry import remove_project
+from modules.computer.software.services.project_registry import remove_project
 REMOVE_COMMAND = 'remove'
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

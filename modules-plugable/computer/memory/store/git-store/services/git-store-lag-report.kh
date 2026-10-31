@@ -2,13 +2,15 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp Project in "modules/process/project/protocol/project.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 tp Service in "modules/process/service/protocol/service.kh"
 tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
 tp GitStore_Lag in "modules-plugable/computer/memory/store/git-store/protocol/git-store-lag.kh"
+tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
 
 tp GitStore_LagReport ab {
     Service
+    Field_ProjectUUID
 }
 
-tp Report mt (self GitStore_LagReport) (project Project, class Record_Class) (lag GitStore_Lag, replicated Boolean, err Error)
+tp Report mt (self GitStore_LagReport) (class Record_Class) (lag GitStore_Lag, replicated Boolean, err Error)

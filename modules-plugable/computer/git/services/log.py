@@ -22,7 +22,8 @@ tasks_root = _m_fs_memar.tasks_root
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from modules.process.project.services.task_location import in_project_location
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+in_project_location = _m_task_location.in_project_location
 TASK_LOG_NAME = 'tasks.log'
 
 def log_path(folder: Path | None=None) -> Path:

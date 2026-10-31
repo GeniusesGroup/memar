@@ -676,7 +676,7 @@ class InstallingRegistersTheProject(unittest.TestCase):
     """
 
     def setUp(self) -> None:
-        import modules.process.project.services.registry as registry
+        import modules.computer.software.services.project_registry as registry
         self.registry = registry
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
@@ -825,7 +825,7 @@ class BareRunInstallsEveryLayer(unittest.TestCase):
     def test_a_named_project_is_looked_up_by_name_and_a_path_in_its_place_is_refused(self):
         passed: list = []
         project_layer.into_project.side_effect = lambda project=None, **kwargs: passed.append(project)
-        with unittest.mock.patch('modules.process.project.services.find.resolve_project', return_value=SCRIPTS) as found:
+        with unittest.mock.patch('modules.computer.software.services.project_find.resolve_project', return_value=SCRIPTS) as found:
             self.run_verb('--project', 'khayyam', recorded=SCRIPTS)
         found.assert_called_once_with('khayyam')
         self.assertEqual(passed, [SCRIPTS])

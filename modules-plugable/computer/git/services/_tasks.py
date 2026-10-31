@@ -27,7 +27,7 @@ import subprocess
 import sys
 from importlib import import_module
 from pathlib import Path
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.primitive.project_path import ProjectPath
 from ._run import plumb
 TRAILER = 'Task'
 NO_TASK_FLAG = '--no-task'

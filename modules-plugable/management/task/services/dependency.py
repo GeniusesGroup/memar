@@ -41,8 +41,8 @@ import re
 from pathlib import Path
 from typing import ClassVar, Iterable, NamedTuple
 from machine.console import fail
-from modules.process.project.services.find import project_by_name
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.services.project_find import project_by_name
+from modules.computer.software.primitive.project_path import ProjectPath
 _m_branch = plugable_load('computer.git.services.branch')
 read_from_branch = _m_branch.read
 read_many_from_branch = _m_branch.read_many

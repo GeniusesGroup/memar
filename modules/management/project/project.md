@@ -1,5 +1,0 @@
-# Project
-
-## Model
-
-- `(task)-[:---]->(project)`

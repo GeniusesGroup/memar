@@ -69,7 +69,7 @@ Reader = _m_dependency.Reader
 _m_depends = import_module('modules-plugable.management.task.services.depends')
 problems = _m_depends.problems
 reconcile_all = _m_depends.reconcile_all
-from modules.process.project.services.find import add_project_flags, project_from_args
+from modules.computer.software.services.project_find import add_project_flags, project_from_args
 _m_task_get_decisions_digest = plugable_load('ai.services.task_get_decisions_digest')
 DIGEST_COMMAND = _m_task_get_decisions_digest.DIGEST_COMMAND
 _m_list = import_module('modules-plugable.management.task.services.list')
@@ -95,8 +95,8 @@ _m_report_file = import_module('modules-plugable.management.task.services.report
 REPORT_NAME = _m_report_file.REPORT_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_files')
 plan_path = _m_task_files.plan_path
-from modules.process.project.primitive.project_name import ProjectName
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_path import ProjectPath
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 CLAIMS_COMMAND = 'claims'

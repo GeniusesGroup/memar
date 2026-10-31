@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the task locations kept in the projects registry, in `modules/process/project/services/task_location.py` and `modules/process/project/services/registry.py`.
+"""Tests for the task locations kept in the projects registry, in `modules-plugable/management/task/services/task_location.py` and `modules/computer/software/services/project_registry.py`.
 
     python modules-plugable/management/task/tests/location.py
 
@@ -53,9 +53,14 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.registry as registry
-import modules.process.project.services.task_location as task_location
-from modules.process.project.services.task_location import locations_of, prune_registry, register, registered_locations
+import modules.computer.software.services.project_registry as registry
+from importlib import import_module
+task_location = import_module('modules-plugable.management.task.services.task_location')
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+locations_of = _m_task_location.locations_of
+prune_registry = _m_task_location.prune_registry
+register = _m_task_location.register
+registered_locations = _m_task_location.registered_locations
 
 def git_init(folder: Path) -> Path:
     folder.mkdir(parents=True, exist_ok=True)

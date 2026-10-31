@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/services/preferences.py — a project's Memar preferences: where they are, what they hold, and reading them.
+"""modules/computer/software/edges/manifest/services/preferences.py — a project's Memar preferences: where they are, what they hold, and reading them.
 
 What a project wants of Memar's tools is a `memar:` block in the project's own
 manifest, `manifest.yaml` at its top folder: one indented `key: value` line per

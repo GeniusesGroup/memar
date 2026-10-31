@@ -8,7 +8,7 @@ COMMAND = 'refresh'
 
 def describe(verbs):
     parser = verbs.add_parser(COMMAND, help="build the project's view again from the committed nodes of its class", description="Build the folder the project's `view` key names (`class=folder`, the folder relative to the\nproject's top) from the committed nodes of that class, as the class's presentation shows\nthem. Only the files the builder wrote before are touched: a file changed by hand is\nrestored and counted, a file no node shows any more is removed. A folder version control\ndoes not ignore, or one holding a file the builder did not write, is refused and nothing\nis written. Exit 1 when the build is refused or the class cannot be opened.")
-    import_module('modules.process.project.services.find').add_project_flags(parser, 'the project whose view to build', required=True)
+    import_module('modules.computer.software.services.project_find').add_project_flags(parser, 'the project whose view to build', required=True)
     return run
 
 def refresh(project):
@@ -17,7 +17,7 @@ def refresh(project):
         return errors.RefreshRefused(errors.RefreshRefusal.NO_PROJECT, 'name the project with --project or --project-path')
     view = import_module('modules-plugable.computer.memory.store.view.view')
     view_errors = import_module('modules-plugable.computer.memory.store.view.errors.errors')
-    preferences = import_module('modules.process.project.services.preferences')
+    preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
     where = preferences.preferences_path(project)
     chosen = view.view_preference(project)
     if chosen is None:
@@ -43,7 +43,7 @@ def _refuse(said: str) -> int:
     return 1
 
 def run(args: argparse.Namespace) -> int:
-    find = import_module('modules.process.project.services.find')
+    find = import_module('modules.computer.software.services.project_find')
     view = import_module('modules-plugable.computer.memory.store.view.view')
     memory = import_module('bundles.memar.services.memory.memory')
     project = find.project_from_args(args)

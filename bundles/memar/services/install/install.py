@@ -72,8 +72,8 @@ SUMMARY = 'put Memar on this machine, and into the project you name'
 
 def description() -> str:
     """What `memar install --help` prints; built when the verb runs, so the two project flags come from their types without a top-level import."""
-    from modules.process.project.primitive.project_name import ProjectName
-    from modules.process.project.primitive.project_path import ProjectPath
+    from modules.computer.software.primitive.project_name import ProjectName
+    from modules.computer.software.primitive.project_path import ProjectPath
     return f"memar install — put Memar on this machine, and into the project you name\n\nOne run installs three layers, in the only order that works:\n\n  - onto this machine: where Memar lives, the `memar` command on your PATH, and\n    the editor extensions this checkout ships;\n  - into the project you name with {ProjectName.either_words()}, if it is one,\n    and the project is registered with Memar under its folder's name (a project\n    already registered is left as it is; a name another project holds is\n    reported, and nothing is renamed);\n    the folder you run it from is never read, so with none named this layer says so;\n  - into the AI agent apps this machine has.\n\nEach layer prints what it did. Running it again is safe and costs nothing: a\nlayer with nothing to do says so.\n\nIf Memar is already installed, a bare run says where it is and stops.\n\nWhat you must do afterwards: **restart your shell and your editor.** Where Memar\nlives is written as an environment variable, and a program that was already\nrunning when it was written does not read it.\n\nThis needs Python 3 and a Memar checkout. If you do not have one, run\n`install.sh` (POSIX) or `install.ps1` (Windows) first — those fetch the\ncheckout, and this runs from inside it.\n\nGetting Memar somewhere else, or asking whether a folder would be accepted:\n\n    memar install --register ~/src/memar   point Memar at a checkout you already have\n    memar install --check /tmp/Memar       would an install there be refused? writes nothing\n    memar install --root                  print where Memar is, one line\n    memar install {ProjectName.FLAG} {ProjectName.METAVAR}           also put Memar into that project: a name `memar project`\n                                          knows\n    memar install {ProjectPath.FLAG} {ProjectPath.METAVAR}     also put Memar into the project whose folder is {ProjectPath.METAVAR}\n    memar install --machine-only          settle this machine and skip the project and the apps\n    memar install --developer             you develop Memar in this checkout: no update moves it\n"
 
 def ask_layer(answer: Callable[[], object]) -> int:
@@ -119,7 +119,7 @@ def into_project_and_apps(project=None, *, dry_run: bool=False) -> None:
 def run(args: argparse.Namespace) -> int:
     from machine.env_location import recorded_root
     from bundles.memar.services.install.services import machine
-    from modules.process.project.services.find import project_from_args
+    from modules.computer.software.services.project_find import project_from_args
     project = project_from_args(args)
     if args.check:
         machine.check(args.check)
@@ -151,7 +151,7 @@ def describe(verbs) -> Callable[[argparse.Namespace], int]:
     group.add_argument('--check', metavar='PATH', help='say whether PATH would be refused as temporary, and stop')
     group.add_argument('--root', action='store_true', help='print where Memar is, one line, and stop; for a program that needs to find it')
     group.add_argument('--developer', action='store_true', help='mark the checkout Memar is recorded at as one you develop, so the daily update never moves it, and stop')
-    from modules.process.project.services.find import add_project_flags
+    from modules.computer.software.services.project_find import add_project_flags
     add_project_flags(parser, 'the project to put Memar into; without either no project is written, and the folder the command runs in is not read')
     parser.add_argument('--machine-only', action='store_true', help='settle the machine and stop; skip this project and the agent apps')
     parser.add_argument('--dry-run', action='store_true', help='passed to the project and app layers, which print what they would write instead of writing it; the machine layer is never dry, because refusing to record a location is not a dry run of one')

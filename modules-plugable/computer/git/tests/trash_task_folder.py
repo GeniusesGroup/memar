@@ -68,8 +68,9 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 task_close = import_module('modules-plugable.computer.git.services.trash_task_folder')
-from modules.process.project.services.registry import add_project
-from modules.process.project.services.task_location import register
+from modules.computer.software.services.project_registry import add_project
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+register = _m_task_location.register
 TASK_LOG_NAME = import_module('modules-plugable.computer.git.services.log').TASK_LOG_NAME
 log_path = import_module('modules-plugable.computer.git.services.log').log_path
 

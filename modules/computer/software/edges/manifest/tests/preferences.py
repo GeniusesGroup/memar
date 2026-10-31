@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for reading a project's `normative_references` preference, in `modules/process/project/services/preferences.py`.
+"""Tests for reading a project's `normative_references` preference, in `modules/computer/software/edges/manifest/services/preferences.py`.
 
-    python modules/process/project/tests/preferences.py
+    python modules/computer/software/edges/manifest/tests/preferences.py
 
 The subject is the reader of the key that declares where a project's own lists
 of the rule [Normative References](../../rules/normative_references/normative_references.md)
@@ -48,7 +48,7 @@ _m_normative_references = plugable_load('knowledge.documentation.services.normat
 PREFERENCE = _m_normative_references.PREFERENCE
 Place = _m_normative_references.Place
 normative_reference_places = _m_normative_references.normative_reference_places
-from modules.process.project.services.preferences import BLOCK_KEY, preferences_path, preferences_text, read_preferences
+from modules.computer.software.edges.manifest.services.preferences import BLOCK_KEY, preferences_path, preferences_text, read_preferences
 
 class Fixture(unittest.TestCase):
 

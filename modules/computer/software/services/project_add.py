@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/services/add.py — `memar project add NAME PATH`: a folder given a name.
+"""modules/computer/software/services/project_add.py — `memar project add NAME PATH`: a folder given a name.
 
 The registry's rules (unique names without case, a real folder, merging into a
 folder already registered) are `project_registry`'s; this file declares the
@@ -12,7 +12,7 @@ from __future__ import annotations
 import argparse
 from typing import Callable
 from machine.console import note
-from modules.process.project.services.registry import add_project, ensure_memar_entry
+from modules.computer.software.services.project_registry import add_project, ensure_memar_entry
 ADD_COMMAND = 'add'
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

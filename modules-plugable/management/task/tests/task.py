@@ -109,7 +109,7 @@ task_find = import_module('modules-plugable.management.task.services.list')
 task_folder = import_module('modules-plugable.management.task.services.folder')
 task_gc = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
 task_id = import_module('modules-plugable.management.task.primitive.task_id')
-import modules.process.project.services.task_location as task_location
+task_location = import_module('modules-plugable.management.task.services.task_location')
 task_log = import_module('modules-plugable.computer.git.services.log')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
@@ -335,7 +335,7 @@ class VerbsDispatch(Fixture):
             argv = [str(folder) if word == '<F>' else word for word in argv]
             expected = tuple((folder.resolve() if value == '<F>' else value for value in expected))
             with self.subTest(argv=argv):
-                with unittest.mock.patch.object(module, name) as service, unittest.mock.patch('modules.process.project.services.find.resolve_project', return_value=folder.resolve()):
+                with unittest.mock.patch.object(module, name) as service, unittest.mock.patch('modules.computer.software.services.project_find.resolve_project', return_value=folder.resolve()):
                     self.assertEqual(command(*argv), 0)
                 service.assert_called_once_with(*expected)
 
@@ -345,7 +345,7 @@ class VerbsDispatch(Fixture):
         with unittest.mock.patch.object(task_new, 'open_task') as service:
             self.assertEqual(command('ensure', '--title', 'T', '--project-path', str(folder)), 0)
         service.assert_called_once_with(None, 'T', None, project=folder.resolve())
-        with unittest.mock.patch.object(task_new, 'open_task') as service, unittest.mock.patch('modules.process.project.services.find.resolve_project', return_value=folder.resolve()):
+        with unittest.mock.patch.object(task_new, 'open_task') as service, unittest.mock.patch('modules.computer.software.services.project_find.resolve_project', return_value=folder.resolve()):
             self.assertEqual(command('ensure', '--title', 'T', '--project', 'docs'), 0)
         service.assert_called_once_with(None, 'T', None, project=folder.resolve())
         with unittest.mock.patch.object(task_new, 'open_task') as service, contextlib.redirect_stderr(io.StringIO()):

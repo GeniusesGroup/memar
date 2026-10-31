@@ -25,7 +25,7 @@ import argparse
 from typing import Callable
 from machine.console import fail, note
 from modules.knowledge.status.primitive.status import Status
-from modules.process.project.services.find import add_project_flags, project_from_args
+from modules.computer.software.services.project_find import add_project_flags, project_from_args
 _task_list = import_module('modules-plugable.management.task.services.list')
 _task_folder = import_module('modules-plugable.management.task.services.folder')
 find_tasks = _task_list.find_tasks
@@ -35,7 +35,7 @@ _m_plan_labels = import_module('modules-plugable.management.task.services.plan_l
 TOPIC = _m_plan_labels.TOPIC
 labels_of = _m_plan_labels.labels_of
 registry_for = _m_plan_labels.registry_for
-from modules.process.project.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_name import ProjectName
 LABELS_COMMAND = 'list'
 UNDECLARED = 'undeclared'
 PROJECT_REQUIRED = f'{LABELS_COMMAND} needs {ProjectName.either_words()}: name the project whose labels to list'

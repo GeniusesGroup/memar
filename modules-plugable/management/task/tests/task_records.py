@@ -56,7 +56,7 @@ from modules.knowledge.text.primitive.corpus_source import CorpusSource
 from modules.knowledge.text.services import content_find
 from modules.knowledge.text.services import content_search
 from modules.knowledge.text.services.corpus import content_files
-from modules.process.project.services.preferences import preferences_path, preferences_text
+from modules.computer.software.edges.manifest.services.preferences import preferences_path, preferences_text
 ARCHIVED = '20261001-T000000Z-1'
 LIVE = '20261002-T000000Z-2'
 TERM = 'quokka'

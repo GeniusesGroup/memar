@@ -28,8 +28,8 @@ Ref = _m_dependency.Ref
 refused_for_writing = _m_dependency.refused_for_writing
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
-from modules.process.project.services.find import project_by_path
-from modules.process.project.services.preferences import TASKS_KEY, preferences_path
+from modules.computer.software.services.project_find import project_by_path
+from modules.computer.software.edges.manifest.services.preferences import TASKS_KEY, preferences_path
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 project_folder_of = _m_folder.project_folder_of
@@ -40,7 +40,11 @@ _m_layout = import_module('modules-plugable.management.task.services.layout')
 ensure_folders = _m_layout.ensure_folders
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
-from modules.process.project.services.task_location import in_project_location, project_location, project_root, register
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+in_project_location = _m_task_location.in_project_location
+project_location = _m_task_location.project_location
+project_root = _m_task_location.project_root
+register = _m_task_location.register
 _m_log = plugable_load('computer.git.services.log')
 record = _m_log.record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
@@ -69,7 +73,7 @@ _m_report_file = import_module('modules-plugable.management.task.services.report
 write_report = _m_report_file.write_report
 from modules.knowledge.label.primitive.label import Labels
 from modules.knowledge.status.primitive.status import Status
-from modules.process.project.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 ENSURE_COMMAND = 'ensure'

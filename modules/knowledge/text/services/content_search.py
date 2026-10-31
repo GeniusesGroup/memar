@@ -26,7 +26,7 @@ from modules.knowledge.content.services.reference import content_root, read_text
 
 def describe(verbs):
     from modules.knowledge.text.primitive.corpus_source import CorpusSource
-    from modules.process.project.services.find import add_project_flags
+    from modules.computer.software.services.project_find import add_project_flags
     parser = verbs.add_parser('search', help='regex search the content of the checkout', description="Print where in the content each PATTERN, a regular expression matched in any case, occurs.\nOne pattern prints each matching line as path:line:text; several print each file that\nholds all of them as path:all-matched. A path that begins with the records branch, or that\nlies in a task folder, is a task's record: what that task wrote, never a ruling.\nWhat is read is chosen with --from; what of the tasks could not be read is said on\nstandard error. To rank sections by how alike they are to a text, use `memar content find`.", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('patterns', nargs='+')
     CorpusSource.add_flag(parser)
@@ -35,7 +35,7 @@ def describe(verbs):
 
 def run(args: argparse.Namespace) -> None:
     from modules.knowledge.text.primitive.corpus_source import CorpusSource
-    from modules.process.project.services.find import project_from_args
+    from modules.computer.software.services.project_find import project_from_args
     project = project_from_args(args)
     root = project if project is not None else content_root()
     cmd_search(args, root, CorpusSource.chosen(args))

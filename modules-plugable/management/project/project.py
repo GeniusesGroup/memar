@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/project.py — `memar project`: the projects Memar knows by name.
+"""modules-plugable/management/project/project.py — `memar project`: the projects Memar knows by name.
 
 This file declares the verb and nothing else of its own. Each sub-verb is one
 service on this shelf: `project_add`, `project_list`, `project_remove`, and

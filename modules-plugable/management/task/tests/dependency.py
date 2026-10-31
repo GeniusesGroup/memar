@@ -48,7 +48,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 depends_on = import_module('modules-plugable.management.task.services.dependency')
-import modules.process.project.services.registry as registry
+import modules.computer.software.services.project_registry as registry
 _m_dependency = import_module('modules-plugable.management.task.services.dependency')
 DependsOn = _m_dependency.DependsOn
 Reader = _m_dependency.Reader

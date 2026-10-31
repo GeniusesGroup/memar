@@ -76,7 +76,7 @@ REPORT = _m_record.REPORT
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
 decisions_needed = _m_report_file.decisions_needed
-from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
+from modules.computer.software.edges.manifest.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 from .get_task_init_context import SKILL_FILE, commands, documents, marked_part, marked_passages, model_part, plan_project, step_documents
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 TaskKind = _m_task_kind.TaskKind

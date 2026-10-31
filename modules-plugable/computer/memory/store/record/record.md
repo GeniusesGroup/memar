@@ -69,7 +69,7 @@ The record folder holds a draft written for a database node: `Records` (named `R
 The draft's Go-era declarations in `protocol/` (`model.kh`, `save-options.kh`, `data_model.kh`) and `services/` still stand beside the Khayyam of this contract and are the owner's to replace or delete; the open question is recorded in [Memory Store Handoff](../../../../../modules/computer/memory/store/store.handoff.md). A declaration other modules import (`uuid.kh`, `uuid.observers.kh`, `data.kh`) stays and is repointed, so that the folder holds one record abstraction.
 
 ### Binding adapters to classes
-A project says which adapter serves which class in the `memar:` block of its `manifest.yaml`, the block the tools read and no agent loads, in the key `memory`, whose form is [`record-binding.eng.kh`](protocol/record-binding.eng.kh), declared once in [project preferences](../../../../../modules/process/project/services/preferences.py). The example is illustrative; the class names are the composition's, and Memar's own choice is written in its manifest and nowhere else.
+A project says which adapter serves which class in the `memar:` block of its `manifest.yaml`, the block the tools read and no agent loads, in the key `memory`, whose form is [`record-binding.eng.kh`](protocol/record-binding.eng.kh), declared once in [project preferences](../../../../../modules/computer/software/edges/manifest/services/preferences.py). The example is illustrative; the class names are the composition's, and Memar's own choice is written in its manifest and nowhere else.
 
 ```
 memar:

@@ -15,7 +15,7 @@
 - Tasks:
   - main:.agents/tasks/20261026-T181945Z-16468/: Done - step 3 of task `20261023-T074642Z-5420`
 - Propagates to:
-  - `modules/process/project/services/preferences.py`: Done - the form of a class's parameters, `class_values_preference`, which `memory` reads too
+  - `modules/computer/software/edges/manifest/services/preferences.py`: Done - the form of a class's parameters, `class_values_preference`, which `memory` reads too
   - `modules/computer/memory/store/store.md`: Done - the `durable` and `shared` cases are no longer owed
   - `modules-plugable/computer/memory/store/record/record.md`: Done - the cross-process case runs on `git-store`, and the `Owed` line leaves
   - `manifest.yaml`: Done - `memory: work-records=git-store`

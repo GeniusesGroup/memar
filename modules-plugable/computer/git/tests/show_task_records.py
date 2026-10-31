@@ -66,7 +66,7 @@ sys.dont_write_bytecode = True
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 task_files = import_module('modules-plugable.management.task.services.task_files')
-from modules.process.project.services.registry import add_project
+from modules.computer.software.services.project_registry import add_project
 NAME = 'example'
 SID = '20261015-T100000Z-1'
 

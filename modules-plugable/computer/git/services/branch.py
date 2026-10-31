@@ -31,7 +31,8 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
-from modules.process.project.services.task_location import same_path
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+same_path = _m_task_location.same_path
 GIT_MISSING = '`git` is not on PATH; run the Memar bootstrap for this machine (install.sh / install.ps1), which installs it'
 RECORD_VERB = 'record'
 

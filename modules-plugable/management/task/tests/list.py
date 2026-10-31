@@ -83,13 +83,14 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.find as project_find
-import modules.process.project.services.registry as registry
-import modules.process.project.services.preferences as project_preferences
+import modules.computer.software.services.project_find as project_find
+import modules.computer.software.services.project_registry as registry
+import modules.computer.software.edges.manifest.services.preferences as project_preferences
 task_find = import_module('modules-plugable.management.task.services.list')
-import modules.process.project.services.task_location as task_location
+task_location = import_module('modules-plugable.management.task.services.task_location')
 task_plan = import_module('modules-plugable.management.task.services.plan_file')
-from modules.process.project.services.task_location import register
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+register = _m_task_location.register
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_skeleton = _m_plan_file.plan_skeleton

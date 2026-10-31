@@ -80,7 +80,7 @@ def _names_project(folder: Path, root: Path) -> bool:
 
 def live_folders(root: Path) -> list[Path]:
     """The live task folders of the project at ROOT: each in its tasks folder, and each in Memar's own whose plan names ROOT; sorted by id."""
-    from modules.process.project.services.preferences import tasks_location
+    from modules.computer.software.edges.manifest.services.preferences import tasks_location
     own = tasks_location(root) or root / _m_fs_memar.AGENTS_DIRNAME / TASKS_DIRNAME
     memar = tasks_root()
     has_task = import_module('modules-plugable.management.task.services.task_files').has_task
@@ -110,7 +110,7 @@ def _live(root: Path, folder: Path) -> list[Record]:
 
 def archive_note(root: Path) -> str | None:
     """Why the project at ROOT has no archived records to read, or None when its records branch is there to read."""
-    from modules.process.project.services.preferences import Records, preferences_path, records_preference
+    from modules.computer.software.edges.manifest.services.preferences import Records, preferences_path, records_preference
     said = records_preference(root)
     if said is Records.OFF:
         return f'{root} keeps no archived task records: its preferences ({preferences_path(root)}) say `records: off`'

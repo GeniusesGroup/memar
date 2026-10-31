@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/services/registry.py — the file that says which folder a project's name is.
+"""modules/computer/software/services/project_registry.py — the file that says which folder a project's name is.
 
 Why a registry. A verb that acts on a project must be told which one: no script
 keeps a default project path, and none reads the folder it was started in,

@@ -86,12 +86,14 @@ SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent 
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.registry as project_registry
+import modules.computer.software.services.project_registry as project_registry
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 task_gc = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_plan = import_module('modules-plugable.management.task.services.plan_file')
-from modules.process.project.services.task_location import register, registered_locations
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+register = _m_task_location.register
+registered_locations = _m_task_location.registered_locations
 TASK_LOG_NAME = import_module('modules-plugable.computer.git.services.log').TASK_LOG_NAME
 log_path = import_module('modules-plugable.computer.git.services.log').log_path
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')

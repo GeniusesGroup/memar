@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for finding a project by name, in `modules/process/project/services/find.py` and the verb `memar project find`.
+"""Tests for finding a project by name, in `modules/computer/software/services/project_find.py` and the verb `memar project find`.
 
-    python modules/process/project/tests/find.py
+    python modules/computer/software/tests/project_find.py
 
 The subject is the lookup that turns a word into a project folder, so that no
 agent reasons about names or guesses a path. The rulings it holds are the
@@ -61,8 +61,8 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.find as project_find
-import modules.process.project.services.registry as registry
+import modules.computer.software.services.project_find as project_find
+import modules.computer.software.services.project_registry as registry
 
 class Fixture(unittest.TestCase):
 

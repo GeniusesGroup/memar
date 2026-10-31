@@ -49,7 +49,8 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
-from modules.process.project.services.task_location import register
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+register = _m_task_location.register
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_skeleton = _m_plan_file.plan_skeleton

@@ -73,7 +73,7 @@ task_files = import_module('modules-plugable.management.task.services.task_files
 
 def stores_over(path):
     return task_files.stores_at(Path(path).parent)
-import modules.process.project.services.registry as registry
+import modules.computer.software.services.project_registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_label = import_module('modules-plugable.management.task.services.label_add')
 task_labels = import_module('modules-plugable.management.task.services.label_list')

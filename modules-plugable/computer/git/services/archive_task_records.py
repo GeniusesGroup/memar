@@ -64,8 +64,8 @@ from pathlib import Path
 from typing import Callable, Iterable, NamedTuple
 from machine.console import fail, note
 from . import branch as task_branch
-from modules.process.project.services.preferences import RECORDS_KEY, Records, preferences_path, read_preferences, records_preference
-from modules.process.project.services.registry import read_entries
+from modules.computer.software.edges.manifest.services.preferences import RECORDS_KEY, Records, preferences_path, read_preferences, records_preference
+from modules.computer.software.services.project_registry import read_entries
 from .branch import RecordRefused, folder_on_branch, reference
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 Task = _m_folder.Task
@@ -73,7 +73,8 @@ folder_of = _m_folder.folder_of
 read_task = _m_folder.read_task
 task_folders = _m_folder.task_folders
 from .keep import KEEP_LIMIT_BYTES, Left, Selection, select
-from modules.process.project.services.task_location import same_path
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+same_path = _m_task_location.same_path
 from .log import record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME

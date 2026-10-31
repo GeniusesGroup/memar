@@ -35,7 +35,7 @@ NO_HEADING = '(before the first heading)'
 
 def describe(verbs):
     from modules.knowledge.text.primitive.corpus_source import CorpusSource
-    from modules.process.project.services.find import add_project_flags
+    from modules.computer.software.services.project_find import add_project_flags
     parser = verbs.add_parser(COMMAND, help="rank the sections of the checkout's content by word similarity to a text", description=f"{INFORMATIVE}.\n\nPrint the sections of the checkout's content most like TEXT, best first, one line each:\nroot:path#anchor | heading | first sentence | hash. The hash is the one\n`memar content get-section FILE '#anchor' --hash` prints. Under each hit are the sections it\nlinks by anchor, one level, each once, marked; --no-links leaves them out. Open a hit with\n`memar content get-section FILE '#anchor'`. The words are compared as they are written, with no\nstemming, and a section whose heading holds them ranks above one that mentions them. It\ndoes not find what an act must read: that is printed by `memar content get-act-context`. To see\nwhere a term occurs, use `memar content search`.\n\nWhat is read is chosen with --from. A hit from the tasks is a task's record, what\nthat task wrote and never a ruling: its path begins with the records branch, opened with\n`memar git show-task-records --task-id ID --file FILE`, or lies in a live task folder. A text\nfile of theirs that is not Markdown is ranked as one unit, named by its file. What of the\ntasks could not be read is said on standard error.", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('text', help='the words to look for: a subject, a question, a sentence')
     parser.add_argument('--top', type=int, default=TOP, metavar='N', help=f'how many hits to print (default {TOP})')
@@ -99,7 +99,7 @@ def run(args: argparse.Namespace) -> None:
     from machine.console import fail
     from modules.knowledge.text.primitive.corpus_source import CorpusSource
     from modules.knowledge.content.services.reference import content_root
-    from modules.process.project.services.find import project_from_args
+    from modules.computer.software.services.project_find import project_from_args
     if args.top < 1:
         fail('--top must be a positive whole number')
     project = project_from_args(args)

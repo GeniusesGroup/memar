@@ -53,7 +53,7 @@ sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import bundles.memar.services.install.services.project as project
-import modules.process.project.services.preferences as project_preferences
+import modules.computer.software.edges.manifest.services.preferences as project_preferences
 _REGISTRY_SCRATCH = tempfile.TemporaryDirectory(dir=suite_scratch())
 _MEMAR_ROOT = Path(_REGISTRY_SCRATCH.name)
 (_MEMAR_ROOT / 'temp').mkdir()

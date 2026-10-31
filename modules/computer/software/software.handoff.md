@@ -51,6 +51,7 @@ human text are deliberately unconverted, and the reasons are recorded below.
 
 ## Open Questions
 
+- **Which domain owns the Python that came from the project module, and what of it names a file?** Task 20261030-T163543Z-10624 moved, on the owner's word (2026-10-31), `project_registry.py`, `project_find.py`, `project_add.py`, `project_list.py`, `project_remove.py` and the primitives `project_name.py` and `project_path.py` into this module's `services/` and `primitive/`, as independent content (the `memar project` verbs still start in `modules-plugable/management/project/project.py`); `preferences.py`, which reads the `memar:` block, into `edges/manifest/services/`, until a better owner of the manifest is found; and `task_location.py` into the task domain. A project is a task with the label `project`, so the registry (a name to a folder) is not software's by subject; it is here until a better home exists. All of it names files, folders and paths, which [the filesystem rule](../../../modules-plugable/computer/memory/filesystem/rules/no-file-concept/no-file-concept.md) leaves to the filesystem, so each is a debt to remove, not a model.
 - **What does `Status()` return on the software↔language-human edge?** The Go declared
   `Status()` with an empty result. The captcha services use `protocol.Software_PreAlpha`, so a
   software status exists in the older library; nothing in this tree declares it. A

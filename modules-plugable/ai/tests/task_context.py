@@ -109,7 +109,7 @@ LIST_NAME = _m_normative_references.LIST_NAME
 MEMAR_PLACE = _m_normative_references.MEMAR_PLACE
 PREFERENCE = _m_normative_references.PREFERENCE
 memar_place = _m_normative_references.memar_place
-from modules.process.project.services.preferences import preferences_path, preferences_text
+from modules.computer.software.edges.manifest.services.preferences import preferences_path, preferences_text
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_skeleton = _m_plan_file.plan_skeleton

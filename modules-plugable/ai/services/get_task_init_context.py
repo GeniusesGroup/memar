@@ -58,7 +58,7 @@ returns at once; so it prints through `machine/console_parts.py`, in ordered
 parts under that bound, each mark's part and each block under it one passage a
 part is cut between, and each part names the command for the next. The bound,
 when the flag does not give it, is the preference of the project the plan
-names (`modules/process/project/services/preferences.py`), so the fixed brief carries it to a
+names (`modules/computer/software/edges/manifest/services/preferences.py`), so the fixed brief carries it to a
 cold agent without saying it.
 
 **Why the skill is printed whole.** The skill is the one thing every agent must
@@ -92,7 +92,7 @@ _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
 _m_ensure = import_module('modules-plugable.management.task.services.ensure')
 ensure_task = _m_ensure.ensure_task
-from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
+from modules.computer.software.edges.manifest.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_files')
@@ -118,8 +118,8 @@ context_places = _m_task_context.context_places
 write_record = _m_task_context.write_record
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 TaskKind = _m_task_kind.TaskKind
-from modules.process.project.primitive.project_name import ProjectName
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_path import ProjectPath
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 START_COMMAND = 'get-task-init-context'

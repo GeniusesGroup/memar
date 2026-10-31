@@ -11,7 +11,7 @@ repair. `content_check` calls it for every Markdown file.
 
 A file is judged as a list only where lists are read: in Memar's declared place,
 or in a folder the preference `normative_references` of the project it lies in
-declares (`modules/process/project/services/preferences.py`; the project is the nearest folder
+declares (`modules/computer/software/edges/manifest/services/preferences.py`; the project is the nearest folder
 above the file that holds a preferences file). A file named like a list anywhere
 else is not read, and is warned of, since a fixture or an example is legitimate
 there and an author who believed it binding learns otherwise. A missing file or
@@ -45,7 +45,7 @@ current_hash = _m_normative_references.current_hash
 lists = _m_normative_references.lists
 memar_place = _m_normative_references.memar_place
 read_list = _m_normative_references.read_list
-from modules.process.project.services.preferences import preferences_path
+from modules.computer.software.edges.manifest.services.preferences import preferences_path
 _m_normative_references = import_module('modules-plugable.knowledge.documentation.services.normative_references')
 normative_reference_places = _m_normative_references.normative_reference_places
 _m_task_kind = import_module('modules.management.task.labels.task_kind')

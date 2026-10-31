@@ -103,7 +103,9 @@ last_change = _m_folder.last_change
 queued_why = _m_folder.queued_why
 read_task = _m_folder.read_task
 task_folders = _m_folder.task_folders
-from modules.process.project.services.task_location import prune_registry, registered_locations
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+prune_registry = _m_task_location.prune_registry
+registered_locations = _m_task_location.registered_locations
 from .log import TASK_LOG_NAME, log_path, record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME

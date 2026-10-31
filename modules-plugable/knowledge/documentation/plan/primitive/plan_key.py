@@ -11,8 +11,8 @@ and writes by them.
 """
 from __future__ import annotations
 from modules.knowledge.content.primitive.record_key import ID_FIELD, START_DATE_FIELD, RecordKey
-from modules.process.project.primitive.project_name import ProjectName
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_path import ProjectPath
 
 class PlanKey(RecordKey):
     ID = ID_FIELD

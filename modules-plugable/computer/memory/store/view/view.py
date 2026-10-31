@@ -30,7 +30,7 @@ def presentation(class_name: str) -> Presentation | None:
     return _PRESENTATIONS.get(class_name)
 
 def view_preference(project: Path) -> dict[str, str] | None:
-    preferences = import_module('modules.process.project.services.preferences')
+    preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
     values = preferences.class_values_preference(Path(project), VIEW_KEY)
     return None if values is None or len(values) > 1 else values
 

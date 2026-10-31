@@ -116,7 +116,7 @@ LIST_NAME = _m_normative_references.LIST_NAME
 PREFERENCE = _m_normative_references.PREFERENCE
 lists = _m_normative_references.lists
 memar_place = _m_normative_references.memar_place
-from modules.process.project.services.preferences import preferences_path, preferences_text
+from modules.computer.software.edges.manifest.services.preferences import preferences_path, preferences_text
 _m_task_context = import_module('modules-plugable.ai.services.task_context')
 read_record = _m_task_context.read_record
 TaskKind = _m_task_kind.TaskKind

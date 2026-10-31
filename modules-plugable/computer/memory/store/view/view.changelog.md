@@ -63,7 +63,7 @@
 - Tasks:
   - main:.agents/tasks/20261026-T192807Z-36152/: Done - step 4 of task `20261023-T074642Z-5420`, part A
 - Propagates to:
-  - `modules/process/project/services/preferences.py`: Done - its docstring says a module that consumes a class declares its key too
+  - `modules/computer/software/edges/manifest/services/preferences.py`: Done - its docstring says a module that consumes a class declares its key too
 - Contributors:
   - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote the document's changes, the tests, the builder, the verb and the decisions; no `approved` is recorded
 

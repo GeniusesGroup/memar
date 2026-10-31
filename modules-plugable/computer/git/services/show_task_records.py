@@ -27,7 +27,7 @@ from pathlib import Path, PurePosixPath
 from typing import Callable
 from machine.console import fail
 from . import branch as task_branch
-from modules.process.project.services.find import add_project_flags, project_from_args
+from modules.computer.software.services.project_find import add_project_flags, project_from_args
 from .branch import folder_on_branch, reference
 _m_dependency = import_module('modules-plugable.management.task.services.dependency')
 Reader = _m_dependency.Reader
@@ -52,7 +52,7 @@ REPORT_NAME = _m_report_file.REPORT_NAME
 decisions_needed = _m_report_file.decisions_needed
 handback_problem = _m_report_file.handback_problem
 read_report_status = _m_report_file.read_report_status
-from modules.process.project.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_name import ProjectName
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 SHOW_COMMAND = 'show-task-records'

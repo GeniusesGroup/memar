@@ -74,7 +74,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
-from modules.process.project.services.registry import add_project
+from modules.computer.software.services.project_registry import add_project
 Outcome = import_module('modules-plugable.computer.git.services.archive_task_records').Outcome
 State = import_module('modules-plugable.computer.git.services.archive_task_records').State
 NAME = 'example'

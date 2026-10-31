@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the projects registry, in `modules/process/project/services/registry.py` and the verbs `project add`, `list`, `remove`.
+"""Tests for the projects registry, in `modules/computer/software/services/project_registry.py` and the verbs `project add`, `list`, `remove`.
 
-    python modules/process/project/tests/registry.py
+    python modules/computer/software/tests/project_registry.py
 
 The subject is Memar's record of the projects it is told about: temp/projects.log
 at the root of Memar's temp, one project a line, naming its folder and an array
@@ -60,10 +60,10 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.add as project_add
-import modules.process.project.services.list as project_list
-import modules.process.project.services.registry as registry
-import modules.process.project.services.remove as project_remove
+import modules.computer.software.services.project_add as project_add
+import modules.computer.software.services.project_list as project_list
+import modules.computer.software.services.project_registry as registry
+import modules.computer.software.services.project_remove as project_remove
 
 class Fixture(unittest.TestCase):
 

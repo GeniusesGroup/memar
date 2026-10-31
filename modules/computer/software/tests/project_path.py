@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the project path type in `modules/process/project/primitive/project_path.py`.
+"""Tests for the project path type in `modules/computer/software/primitive/project_path.py`.
 
-    python modules/process/project/tests/project_path.py
+    python modules/computer/software/tests/project_path.py
 
 The subject is a project given by its folder: the flag that carries it, how a
 text is told to be written as a path, and what a value must be to be taken as
@@ -38,7 +38,7 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-from modules.process.project.primitive.project_path import ProjectPath
+from modules.computer.software.primitive.project_path import ProjectPath
 
 class Flag(unittest.TestCase):
 

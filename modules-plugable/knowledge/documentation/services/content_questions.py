@@ -39,11 +39,11 @@ _YES = re.compile('\\byes\\b', re.I)
 NO_DATE = '9999-99-99'
 
 def describe(verbs):
-    from modules.process.project.primitive.project_name import ProjectName
-    from modules.process.project.primitive.project_path import ProjectPath
+    from modules.computer.software.primitive.project_name import ProjectName
+    from modules.computer.software.primitive.project_path import ProjectPath
     parser = verbs.add_parser('questions', help='list open handoff questions as path:line: heading hits', description=f'List the entries under `Open Questions` in `*.handoff.md` files as one `path:line: heading` hit per line, blocking entries first (marked [blocks]), then oldest Asked date first. SCOPE is a handoff file or a folder; {ProjectName.FLAG} {ProjectName.METAVAR} names a project by a name `memar project list` shows, {ProjectPath.FLAG} {ProjectPath.METAVAR} by its folder. No arguments means the whole checkout.', formatter_class=argparse.HelpFormatter)
     parser.add_argument('scope', nargs='?', default=None, help=f'a handoff file or a folder (inside the project, with {ProjectName.FLAG} or {ProjectPath.FLAG})')
-    from modules.process.project.services.find import add_project_flags
+    from modules.computer.software.services.project_find import add_project_flags
     add_project_flags(parser, 'read this project instead of the checkout')
     parser.add_argument('--blocking', action='store_true', help='list only entries that block')
     return run
@@ -112,7 +112,7 @@ def handoff_files(base: Path) -> list[Path]:
     return found
 
 def cmd_questions(args: argparse.Namespace, root: Path) -> None:
-    from modules.process.project.services.find import project_from_args
+    from modules.computer.software.services.project_find import project_from_args
     project = project_from_args(args)
     base = home = root
     if project is not None:

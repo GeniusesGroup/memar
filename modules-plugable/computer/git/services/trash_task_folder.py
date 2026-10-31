@@ -32,7 +32,7 @@ import argparse
 from pathlib import Path
 from typing import Callable, NamedTuple
 from machine.console import fail, note
-from modules.process.project.services.preferences import TASKS_KEY
+from modules.computer.software.edges.manifest.services.preferences import TASKS_KEY
 from .archive_task_records import ARCHIVE_COMMAND, Kept, Outcome, State, standing
 from .branch import reference
 _m_folder = import_module('modules-plugable.management.task.services.folder')

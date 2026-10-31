@@ -117,9 +117,9 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.preferences as project_preferences
+import modules.computer.software.edges.manifest.services.preferences as project_preferences
 task_temp = import_module('modules-plugable.management.task.services.temp')
-import modules.process.project.services.registry as registry
+import modules.computer.software.services.project_registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
 task_files = import_module('modules-plugable.management.task.services.task_files')
@@ -134,9 +134,11 @@ _m_plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_
 brief_text = _m_plan_brief.brief_text
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 TaskKind = _m_task_kind.TaskKind
-import modules.process.project.services.task_location as task_location
-import modules.process.project.services.registry as project_registry
-from modules.process.project.services.task_location import prune_registry, registered_locations
+task_location = import_module('modules-plugable.management.task.services.task_location')
+import modules.computer.software.services.project_registry as project_registry
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+prune_registry = _m_task_location.prune_registry
+registered_locations = _m_task_location.registered_locations
 _m_log = import_module('modules-plugable.computer.git.services.log')
 TASK_LOG_NAME = _m_log.TASK_LOG_NAME
 log_path = _m_log.log_path

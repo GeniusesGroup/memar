@@ -85,7 +85,7 @@ _m_day = import_module('modules-plugable.management.task.services.day')
 DAY_NAMES = _m_day.DAY_NAMES
 day_of = _m_day.day_of
 parse_day = _m_day.parse_day
-from modules.process.project.services.find import add_project_flags, project_from_args
+from modules.computer.software.services.project_find import add_project_flags, project_from_args
 _m_list = import_module('modules-plugable.management.task.services.list')
 find_tasks = _m_list.find_tasks
 project_of = _m_list.project_of
@@ -102,7 +102,7 @@ handback_problem = _m_report_file.handback_problem
 read_report_status = _m_report_file.read_report_status
 _m_report_summary = import_module('modules-plugable.management.task.services.report_summary')
 summary_lines = _m_report_summary.summary_lines
-from modules.process.project.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 OPEN_HEADING = 'Open handoff questions'

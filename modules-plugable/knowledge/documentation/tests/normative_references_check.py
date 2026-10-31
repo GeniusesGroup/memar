@@ -84,7 +84,7 @@ OUTSIDE_WARNING = _m_normative_references_check.OUTSIDE_WARNING
 list_drops = _m_normative_references_check.list_drops
 list_problems = _m_normative_references_check.list_problems
 list_warnings = _m_normative_references_check.list_warnings
-from modules.process.project.services.preferences import preferences_path, preferences_text
+from modules.computer.software.edges.manifest.services.preferences import preferences_path, preferences_text
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 TaskKind = _m_task_kind.TaskKind
 ROOT = SCRIPTS.parent.parent

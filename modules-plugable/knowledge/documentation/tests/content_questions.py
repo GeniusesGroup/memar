@@ -135,7 +135,7 @@ class QuestionsAreScoped(Scratch):
         project = self.root / 'other'
         project.mkdir()
         (project / 'p.handoff.md').write_text(HANDOFF.replace('Old and', 'Gamma and'), encoding='utf-8', newline='\n')
-        with unittest.mock.patch('modules.process.project.services.find.resolve_project', return_value=project) as found:
+        with unittest.mock.patch('modules.computer.software.services.project_find.resolve_project', return_value=project) as found:
             out = self.run_verb(namespace(project='other'))
         found.assert_called_once_with('other')
         self.assertIn('Gamma', out)

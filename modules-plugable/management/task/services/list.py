@@ -55,8 +55,11 @@ folder_of = _m_folder.folder_of
 measured_idle = _m_folder.measured_idle
 read_task = _m_folder.read_task
 task_folders = _m_folder.task_folders
-from modules.process.project.services.find import add_project_flags, project_by_path, project_from_args
-from modules.process.project.services.task_location import locations_of, project_root, same_path
+from modules.computer.software.services.project_find import add_project_flags, project_by_path, project_from_args
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+locations_of = _m_task_location.locations_of
+project_root = _m_task_location.project_root
+same_path = _m_task_location.same_path
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 status_word = _m_plan_file.status_word
@@ -71,7 +74,7 @@ _m_report_file = import_module('modules-plugable.management.task.services.report
 REPORT_NAME = _m_report_file.REPORT_NAME
 disagreement = _m_report_file.disagreement
 read_report_status = _m_report_file.read_report_status
-from modules.process.project.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 LIST_COMMAND = 'list'

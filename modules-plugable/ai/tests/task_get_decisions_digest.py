@@ -83,10 +83,10 @@ task_files = import_module('modules-plugable.management.task.services.task_files
 
 def stores_over(path):
     return task_files.stores_at(Path(path).parent)
-import modules.process.project.services.preferences as project_preferences
-import modules.process.project.services.registry as registry
+import modules.computer.software.edges.manifest.services.preferences as project_preferences
+import modules.computer.software.services.project_registry as registry
 task_digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
-import modules.process.project.services.task_location as task_location
+task_location = import_module('modules-plugable.management.task.services.task_location')
 task_plan = import_module('modules-plugable.management.task.services.plan_file')
 task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
 task_report = import_module('modules-plugable.management.task.services.report_file')

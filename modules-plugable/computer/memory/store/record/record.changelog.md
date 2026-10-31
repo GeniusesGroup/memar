@@ -189,7 +189,7 @@
 - Tasks:
   - main:.agents/tasks/20261026-T150608Z-8256/: Done - step 2 of task `20261023-T074642Z-5420`
 - Propagates to:
-  - `modules/process/project/services/preferences.py`: Done - the key `memory`, its form and its reader
+  - `modules/computer/software/edges/manifest/services/preferences.py`: Done - the key `memory`, its form and its reader
   - `bundles/memar/memar`: Done - declares `open`, written in `bundles/memar/services/memory/memory.py`
 - Contributors:
   - An AI agent (Claude, model claude-opus-5-5 as reported by the runtime; no CONTRIBUTORS.md entry) — wrote the code, the cases and the decisions; no `approved` is recorded

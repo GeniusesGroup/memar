@@ -60,7 +60,7 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-import modules.process.project.services.registry as registry
+import modules.computer.software.services.project_registry as registry
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')

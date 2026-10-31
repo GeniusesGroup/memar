@@ -31,10 +31,10 @@ from __future__ import annotations
 from importlib import import_module
 import argparse
 from machine.console_parts import add_part_arguments
-from modules.process.project.services.find import add_project_flags
-from modules.process.project.primitive.project_name import ProjectName
-from modules.process.project.primitive.project_path import ProjectPath
-from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE
+from modules.computer.software.services.project_find import add_project_flags
+from modules.computer.software.primitive.project_name import ProjectName
+from modules.computer.software.primitive.project_path import ProjectPath
+from modules.computer.software.edges.manifest.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 TaskKind = _m_task_kind.TaskKind
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
@@ -64,8 +64,8 @@ def run(args: argparse.Namespace) -> None:
     from machine.console import fail
     from machine.console_parts import bound, cut, next_command, print_part
     from modules.knowledge.content.services.reference import content_root
-    from modules.process.project.services.find import project_from_args
-    from modules.process.project.services.preferences import most_characters_preference
+    from modules.computer.software.services.project_find import project_from_args
+    from modules.computer.software.edges.manifest.services.preferences import most_characters_preference
     _folder = import_module('modules-plugable.management.task.services.folder')
     folder_of, is_task_folder = (_folder.folder_of, _folder.is_task_folder)
     _m_task_context = import_module('modules-plugable.ai.services.task_context')

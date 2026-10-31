@@ -861,7 +861,7 @@ class GitStoreAdapter:
         return GitStoreAdapter(str(folder / 'project'), self.reference, data_area=str(folder / 'data'), shared=self.shared, publish=self.publish)
 
 def bind(project: Path, class_name: str) -> GitStoreAdapter:
-    preferences = import_module('modules.process.project.services.preferences')
+    preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
     found: dict[str, dict[str, str]] = {}
     for key in (REFERENCE_KEY, SHARED_KEY, PUBLISH_KEY):
         values = preferences.class_values_preference(Path(project), key)

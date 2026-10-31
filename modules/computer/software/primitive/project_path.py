@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/primitive/project_path.py — a project given by its folder, declared once.
+"""modules/computer/software/primitive/project_path.py — a project given by its folder, declared once.
 
 A path is one of the two ways a verb is told which project it works for; the
-other is a name (`modules/process/project/primitive/project_name.py`). They are two types because a name
+other is a name (`modules/computer/software/primitive/project_name.py`). They are two types because a name
 is never taken for a path and a path is never looked up as a name: a caller who
 said it is a path (`FLAG`) gets a folder or a refusal, and no registry is asked.
 

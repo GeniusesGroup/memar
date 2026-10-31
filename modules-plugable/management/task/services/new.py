@@ -91,7 +91,7 @@ from machine.plugable_import import load as plugable_load
 import argparse
 from typing import Callable
 from machine.console import note
-from modules.process.project.services.find import add_project_flags, project_from_args
+from modules.computer.software.services.project_find import add_project_flags, project_from_args
 _m_plan_brief = plugable_load('ai.services.get_task_plan_carry_out_brief')
 PLAN_BRIEF_COMMAND = _m_plan_brief.PLAN_BRIEF_COMMAND
 brief_text = _m_plan_brief.brief_text
@@ -104,7 +104,11 @@ _m_depends = import_module('modules-plugable.management.task.services.depends')
 DEPENDS_COMMAND = _m_depends.DEPENDS_COMMAND
 _m_list = import_module('modules-plugable.management.task.services.list')
 LIST_COMMAND = _m_list.LIST_COMMAND
-from modules.process.project.services.task_location import in_project_location, memar_own_note, project_location_note, unignored_note
+_m_task_location = import_module('modules-plugable.management.task.services.task_location')
+in_project_location = _m_task_location.in_project_location
+memar_own_note = _m_task_location.memar_own_note
+project_location_note = _m_task_location.project_location_note
+unignored_note = _m_task_location.unignored_note
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')

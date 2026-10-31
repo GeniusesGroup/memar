@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/process/project/services/task_location.py — where a task's folder is made: Memar's own .agents/tasks/, or the project's own task location.
+"""modules-plugable/management/task/services/task_location.py — where a task's folder is made: Memar's own .agents/tasks/, or the project's own task location.
 
 A project keeps its own task folders. Unless it says otherwise with the
 `tasks` key of its preferences (`project_preferences`), they are made in
@@ -71,8 +71,8 @@ import subprocess
 import sys
 from pathlib import Path
 from machine.console import fail
-from modules.process.project.services.registry import add_location, forget_missing_locations, read_entries
-from modules.process.project.services.preferences import PREFERENCES_RELATIVE, TASKS_KEY, preferences_path, tasks_location
+from modules.computer.software.services.project_registry import add_location, forget_missing_locations, read_entries
+from modules.computer.software.edges.manifest.services.preferences import PREFERENCES_RELATIVE, TASKS_KEY, preferences_path, tasks_location
 EARLIER_RECORD_REMEDY = 'a location it lists is recorded again the next time `memar task ensure` makes or continues a task there'
 
 def _inside(path: Path, root: Path) -> bool:
