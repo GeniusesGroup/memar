@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+tp Project in "modules/process/project/protocol/project.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Task_Content_Store in "modules-plugable/management/task/protocol/task-content-store.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Task_Content_Add ab {
+	Service
+}
+
+tp AddText mt (self Task_Content_Add) (store Task_Content_Store, project Project, task ThingUUID, kind Label, text Text, author ThingUUID) (number W32, err Error)

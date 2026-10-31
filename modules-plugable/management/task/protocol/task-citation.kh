@@ -3,11 +3,11 @@
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Details in "modules/computer/type/protocol/detail.kh"
 tp Field_TaskID in "modules/management/task/protocol/dt-uuid.kh"
-tp Project_Name in "modules/process/project/protocol/project-name.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Task_Citation ab {
 	Details
 	Field_TaskID
 }
 
-tp GetProjectName mt (self Task_Citation) () (name Project_Name, named Boolean)
+tp GetProjectName mt (self Task_Citation) () (name String, named Boolean)

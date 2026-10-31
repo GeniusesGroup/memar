@@ -14,7 +14,7 @@ tp Summary mt (self Task_Citation) () (s String) {
 }
 
 tp Overview mt (self Task_Citation) () (s String) {
-    CharacterRun_From.FromCharacterRun("How a task holds a reference to another task: the task identifier, and the name of the project it is of when it is written, named being false when the task is of the same project. That a citation means depends-on or part-of is an edge of the task kernel, which this type does not declare; resolving the project, checking that the task exists and refusing a cycle are the task domain's and not this type's.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("How a task holds a reference to another task: the task identifier, and the name of the project it is of (a plain string, until the project module declares its name type) when it is written, named being false when the task is of the same project. That a citation means depends-on or part-of is an edge of the task kernel, which this type does not declare; resolving the project, checking that the task exists and refusing a cycle are the task domain's and not this type's.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Task_Citation) () (s String) {

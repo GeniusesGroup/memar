@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Content_Add in "modules-plugable/management/task/services/task-content-add/task-content-add.kh"
+
+tp Domain mt (self Task_Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Adds a text to the timeline of a task as a content of the given kind")(s, VoidError)
+}
+
+tp Overview mt (self Task_Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Takes any text, whatever template the caller wrote it to; choosing the template (a plan, a report, a change record, a message) and checking the text against it are the caller's, by the check service of that template. Reads the latest content of the kind, then adds the text after it, so a text is added and never written over one; the number returned is the new content's. Refused when another writer added a content of the kind meanwhile.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
