@@ -43,6 +43,7 @@ plan_file = import_module('modules-plugable.management.task.services.plan_file')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 placement_errors = import_module('modules.management.timeline.errors.placement')
 bytes_errors = import_module('modules.knowledge.text.errors.bytes')
+structure_errors = import_module('modules.knowledge.text.errors.structure')
 
 
 class Memory:
@@ -97,10 +98,17 @@ class Widget(unittest.TestCase):
             raise ValueError('not a plan')
         widget = conversation.Conversation(kind_checks={'plan': refuse})
         with self.assertRaises(ValueError):
-            widget.post(memory, memory, 'T', '# x\n', 'plan', 'u', 0)
-        self.assertEqual((seen, memory.contents), (['# x\n'], {}))
-        widget.post(memory, memory, 'T', '# x\n', 'message', 'u', 0)
-        self.assertEqual(seen, ['# x\n'])
+            widget.post(memory, memory, 'T', 'x\n', 'plan', 'u', 0)
+        self.assertEqual((seen, memory.contents), (['x\n'], {}))
+        widget.post(memory, memory, 'T', 'x\n', 'message', 'u', 0)
+        self.assertEqual(seen, ['x\n'])
+
+    def test_a_text_of_only_headings_and_blank_lines_creates_nothing(self) -> None:
+        memory = Memory()
+        for text in ('# Plan\n', '# Plan\n\n## Part\n', '\n', '\n\n'):
+            with self.assertRaises(structure_errors.Text_Error_Structure_Empty):
+                conversation.Conversation().post(memory, memory, 'T', text, 'message', 'u', 0)
+        self.assertEqual((memory.contents, memory.placements), ({}, []))
 
     def test_a_refused_placement_leaves_the_content_unplaced(self) -> None:
         memory = Memory()
@@ -162,16 +170,17 @@ class Verb(Fixture):
 
     def test_a_plan_is_posted_to_a_new_task_and_its_number_printed(self) -> None:
         self.made()
-        self.assertIn('3', self.posted('plan', '# Plan\n'))
+        self.assertIn('1', self.posted('plan', 'Plan text\n'))
         stored = timeline_files.latest_content(self.folder, 'plan')
-        self.assertEqual((stored.number, stored.body, stored.header['author'], stored.header['follows']), (3, '# Plan\n', 'memar', '1'))
+        self.assertEqual((stored.number, stored.body, stored.header['author']), (1, 'Plan text\n', 'memar'))
+        self.assertNotIn('follows', stored.header)
 
     def test_a_second_post_of_the_kind_follows_the_first(self) -> None:
         self.made()
         self.posted('plan', 'one\n')
         self.posted('plan', 'two\n')
         stored = timeline_files.latest_content(self.folder, 'plan')
-        self.assertEqual((stored.number, stored.header['follows']), (4, '3'))
+        self.assertEqual((stored.number, stored.header['follows']), (2, '1'))
 
     def test_a_kind_with_none_yet_is_posted_without_follows(self) -> None:
         self.made()
@@ -203,19 +212,36 @@ class Verb(Fixture):
             said = self.refused(self.posted, 'plan', 'mine\n')
         self.assertIn('T-1', said)
         self.assertEqual([c.body for c in timeline_files.read_contents(self.folder) if c.header['kind'] == 'plan'][-1], 'rival\n')
-        self.assertEqual(len(timeline_files.read_contents(self.folder)), 3)
+        self.assertEqual(len(timeline_files.read_contents(self.folder)), 1)
 
     def test_a_text_whose_bytes_are_refused_writes_nothing(self) -> None:
         self.made()
         said = self.refused(self.posted, 'plan', 'no newline')
         self.assertIn('newline', said)
-        self.assertEqual(len(timeline_files.read_contents(self.folder)), 2)
+        self.assertEqual(len(timeline_files.read_contents(self.folder)), 0)
 
     def test_a_kind_that_is_no_label_is_refused_and_nothing_is_written(self) -> None:
         self.made()
         said = self.refused(self.posted, 'no-such-kind-anywhere', 'x\n')
         self.assertIn('no-such-kind-anywhere', said)
-        self.assertEqual(len(timeline_files.read_contents(self.folder)), 2)
+        self.assertEqual(len(timeline_files.read_contents(self.folder)), 0)
+
+    def test_a_text_of_only_headings_and_blank_lines_is_refused_and_nothing_is_written(self) -> None:
+        self.made()
+        for text in ('# Plan\n', '# Plan\n\n## Part\n', '\n'):
+            said = self.refused(self.posted, 'plan', text)
+            self.assertIn('nothing was written', said)
+        self.assertEqual(len(timeline_files.read_contents(self.folder)), 0)
+
+    def test_the_kinds_of_the_templates_are_the_kinds_the_documentation_modules_declare(self) -> None:
+        self.assertEqual(post.FIXED_KINDS, ('message',))
+        self.assertEqual(set(post.template_kinds()), {'plan', 'report', 'changelog', 'question', 'decision', 'assumption', 'anticipated-work', 'research'})
+
+    def test_a_kind_with_no_declared_template_is_checked_as_a_label(self) -> None:
+        self.assertNotIn('no-such-kind-anywhere', post.template_kinds())
+        said = self.refused(post.checked_kind, 'no-such-kind-anywhere', self.project)
+        self.assertIn('no-such-kind-anywhere', said)
+        self.assertEqual(post.checked_kind('plan', self.project), 'plan')
 
     def test_a_task_in_the_old_shape_is_refused_by_name_and_untouched(self) -> None:
         self.old()

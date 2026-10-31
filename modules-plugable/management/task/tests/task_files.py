@@ -44,10 +44,10 @@ class Fixture(unittest.TestCase):
 
 class Facts(Fixture):
 
-    def test_a_task_made_new_has_task_yaml_and_two_contents_and_no_plan_md(self) -> None:
+    def test_a_task_made_new_has_task_yaml_and_no_content_and_no_plan_md(self) -> None:
         self.made()
         self.assertTrue((self.folder / 'task.yaml').is_file())
-        self.assertEqual([c.header['kind'] for c in timeline_files.read_contents(self.folder)], ['plan', 'report'])
+        self.assertEqual(timeline_files.read_contents(self.folder), [])
         self.assertFalse((self.folder / 'plan.md').exists())
 
     def test_a_folder_without_task_yaml_is_not_a_task_yet(self) -> None:
@@ -150,6 +150,8 @@ class Reading(Fixture):
         self.old()
         self.assertEqual((files.plan_path(self.folder), files.report_path(self.folder)), (self.folder / 'plan.md', self.folder / 'report.md'))
         new = self.other()
+        timeline_files.add_text(new, 'plan', 'first'+chr(10), 'agent')
+        timeline_files.add_text(new, 'report', 'done'+chr(10), 'agent')
         self.assertEqual((files.plan_path(new), files.report_path(new)), (new / 'content.00001.md', new / 'content.00002.md'))
         timeline_files.add_text(new, 'plan', 'revised\n', 'agent')
         self.assertEqual(files.plan_path(new), new / 'content.00003.md')

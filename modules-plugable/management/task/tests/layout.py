@@ -70,7 +70,7 @@ class TopHoldsOnly(unittest.TestCase):
 class OwnLayout(unittest.TestCase):
 
     def test_the_layout_is_the_kinds_folders_then_tests_and_temp(self) -> None:
-        self.assertEqual(FOLDERS, ('docs', 'services', 'tests', 'temp'))
+        self.assertEqual(FOLDERS, ('services', 'tests', 'temp'))
 
     def test_it_reads_no_module_profile(self) -> None:
         source = Path(task_layout.__file__).read_text(encoding='utf-8')
@@ -103,19 +103,19 @@ class KindsGoToRoles(unittest.TestCase):
             with self.subTest(kind=kind.name):
                 self.assertIn(kind.folder, FOLDERS)
 
-    def test_a_note_goes_in_docs_and_a_script_in_services(self) -> None:
-        for name, folder in (('entry.md', 'docs'), ('NOTES.MD', 'docs'), ('make_reviews.py', 'services'), ('probe.mjs', 'services'), ('run.js', 'services'), ('go.ps1', 'services'), ('go.sh', 'services')):
+    def test_a_script_goes_in_services_and_a_note_has_no_folder(self) -> None:
+        for name, folder in (('make_reviews.py', 'services'), ('probe.mjs', 'services'), ('run.js', 'services'), ('go.ps1', 'services'), ('go.sh', 'services')):
             with self.subTest(name=name):
                 kind = task_layout.kind_of(name)
                 self.assertIsNotNone(kind)
                 self.assertEqual(kind.folder, folder)
 
     def test_a_file_of_no_kind_named_here_has_none(self) -> None:
-        for name in ('msg1.txt', 'run.log', 'c1.plan.json', 'a.diff', 'claim.pyc', 'README'):
+        for name in ('entry.md', 'NOTES.MD', 'msg1.txt', 'run.log', 'c1.plan.json', 'a.diff', 'claim.pyc', 'README'):
             with self.subTest(name=name):
                 self.assertIsNone(task_layout.kind_of(name))
 
     def test_the_kinds_read_as_one_line_for_the_help(self) -> None:
-        self.assertEqual(task_layout.kinds_listing(), 'a note (.md) in docs/, a script (.py, .mjs, .js, .ps1, .sh) in services/')
+        self.assertEqual(task_layout.kinds_listing(), 'a script (.py, .mjs, .js, .ps1, .sh) in services/')
 if __name__ == '__main__':
     unittest.main(verbosity=2)

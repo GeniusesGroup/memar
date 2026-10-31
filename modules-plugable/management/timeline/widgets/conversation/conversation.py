@@ -28,6 +28,7 @@ class Conversation:
 
     def post(self, contents, placements, timeline, text: str, kind: str, placer: str, after: int) -> int:
         _m_check.check_text(text)
+        _m_check.check_substance(text)
         check = self.kind_checks.get(kind)
         if check is not None:
             check(text)

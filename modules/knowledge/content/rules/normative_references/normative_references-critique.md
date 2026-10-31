@@ -6,7 +6,7 @@ A critique judges work it did not make, so it reads what a design of that work o
 - [Modeling Practice → Stepping Back From the Requirement](../../../../../docs/modeling.practice.md#stepping-back-from-the-requirement) — whether the work answers the right problem is judged before its decomposition is. `reviewed 408975e950b5`
 - [Modeling Practice → Starting a New Requirement](../../../../../docs/modeling.practice.md#starting-a-new-requirement) — the questions a design with no prior model owed, which a critique checks were asked. `reviewed 57a7e845f0e8`
 - [Modeling Practice → The Modeling Workflow](../../../../../docs/modeling.practice.md#the-modeling-workflow) — the steps a design owed, the eighth being the gate a critique checks was taken. `reviewed c8900bbbb4cb`
-- [Protocol → Abstract](../../../../../docs/protocol.md#abstract) — what a protocol must be, for a critique of a contract. `reviewed 1688abdcc327`
+- [Protocol → Abstract](../../../protocol/protocol.md#abstract) — what a protocol must be, for a critique of a contract. `reviewed 2ab51295db0f`
 - [Cognition Practice → Where Critique Sits](../../../../../docs/cognition.practice.md#where-critique-sits) — critique is a composition of thinking's components whose end is a verdict on material. `reviewed b0dc9c51f3d2`
 - [Cognition Practice → Procedure](../../../../../docs/cognition.practice.md#procedure) — the steps of a critique, understanding before judging. `reviewed b3c5c68e42e7`
 - [Cognition Practice → Quality Standards](../../../../../docs/cognition.practice.md#quality-standards) — the bar a critique clears as a deliverable. `reviewed 0c04d5f4fa67`

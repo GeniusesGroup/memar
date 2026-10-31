@@ -16,7 +16,7 @@ profile's choice that no kernel module may import
 The folders are the ones its kinds go in, its tests, and its temporary files.
 
 A kind is told by the file's suffix, and only the kinds named in KINDS are
-told: a note is Markdown and goes in docs/, a script goes in services/. A file
+told: a script goes in services/; a note is a content of the task's timeline and has no folder. A file
 of any other suffix, and a folder, have no kind here, so nothing guesses where
 they belong; whoever made them files them.
 """
@@ -48,7 +48,7 @@ class Kind(NamedTuple):
 
     def takes(self, file_name: str) -> bool:
         return file_name.lower().endswith(self.suffixes)
-KINDS = (Kind('note', 'docs', ('.md',)), Kind('script', 'services', ('.py', '.mjs', '.js', '.ps1', '.sh')))
+KINDS = (Kind('script', 'services', ('.py', '.mjs', '.js', '.ps1', '.sh'))),
 TESTS_FOLDER = 'tests'
 "The folder a task's tests go in."
 FOLDERS = (*(kind.folder for kind in KINDS), TESTS_FOLDER, TEMP_FOLDER)
@@ -63,11 +63,11 @@ def kind_of(file_name: str) -> Kind | None:
     return next((kind for kind in KINDS if kind.takes(file_name)), None)
 
 def kinds_listing() -> str:
-    """KINDS as one line for a help text, e.g. `a note (.md) in docs/`."""
+    """KINDS as one line for a help text, e.g. `a script (.py) in services/`."""
     return ', '.join((f"a {kind.name} ({', '.join(kind.suffixes)}) in {kind.folder}/" for kind in KINDS))
 
 def folders_listing() -> str:
-    """FOLDERS as folder names, e.g. `docs/, services/`."""
+    """FOLDERS as folder names, e.g. `services/, tests/`."""
     return ', '.join((f'{folder}/' for folder in FOLDERS))
 
 def ensure_folders(path: Path) -> None:

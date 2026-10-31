@@ -4,5 +4,6 @@ Rules for the conditions a document is held to. The general Memar concept of Rul
 | Rule | Subject | Tier | What it is |
 | --- | --- | --- | --- |
 | [A Document Restates No Code](./document-restates-no-code/document-restates-no-code.md) | What a document may say of code | Governance | A section that only describes a file's members is a copy and goes |
+| [No Record Is Written Beside a Document](./no-record-beside-a-document/no-record-beside-a-document.md) | Where a change, a decision or a question is kept | Governance | A record is a content on a task's timeline, never a file beside the document |
 
-The Rule is governance-tier and is enforced by no check this repository runs today; an organization adopting this repository's Rules may keep, relax, or replace it without forking anything.
+The Rules are governance-tier and is enforced by no check this repository runs today; an organization adopting this repository's Rules may keep, relax, or replace it without forking anything.

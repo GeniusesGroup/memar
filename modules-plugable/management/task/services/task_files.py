@@ -222,11 +222,6 @@ def create_plan_md(folder: Path, task: str, title: str, parent, conversation, pr
 
 def create_task(folder: Path, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
     opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    plan_text = '\n'.join([f'# {title}', *(line for part in PLAN.parts for line in ('', f'## {part}'))]) + '\n'
-    report_text = '\n'.join([f'# {REPORT.heading}', '', *(f'## {part}' for part in REPORT.parts)]) + '\n'
-    if not _tl.numbers(folder):
-        write_content(folder, 'plan', plan_text, AUTHOR, placed_at=opened)
-        write_content(folder, 'report', report_text, AUTHOR, placed_at=opened)
     facts = {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened}
     path = folder / TASK_FACTS_NAME
     temporary = folder / f'.{TASK_FACTS_NAME}.{os.getpid()}.tmp'

@@ -4,8 +4,7 @@
 """modules/knowledge/content/services/reference.py — a reference in Memar's content, resolved to the file it names.
 
 Shared by every `memar content` verb that is handed a reference rather than a
-path: `path`, `meta`, `section`, `backlinks`, `obligations`, and
-`changelog-append`. One resolution, so two verbs never disagree about which file
+path: `path`, `meta`, `section`, `backlinks`, and `obligations`. One resolution, so two verbs never disagree about which file
 a reference means.
 
 **Where a reference resolves.** Every path Memar's own documents use —

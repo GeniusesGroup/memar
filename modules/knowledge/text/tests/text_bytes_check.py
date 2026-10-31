@@ -20,6 +20,7 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 check = import_module('modules.knowledge.text.services.text_bytes_check')
 errors = import_module('modules.knowledge.text.errors.bytes')
+structure = import_module('modules.knowledge.text.errors.structure')
 
 
 class Check(unittest.TestCase):
@@ -55,6 +56,18 @@ class Check(unittest.TestCase):
     def test_bytes_are_decoded_without_dropping_a_mark(self) -> None:
         self.assertEqual(check.decode_text(b'\xef\xbb\xbfx\n'), '﻿x\n')
         self.assertEqual(check.decode_text('a\n'.encode('utf-8')), 'a\n')
+
+
+class Substance(unittest.TestCase):
+
+    def test_a_text_with_a_line_that_is_no_heading_passes(self) -> None:
+        check.check_substance('# Plan\n\nBody\n')
+        check.check_substance('x\n')
+
+    def test_a_text_of_only_headings_and_blank_lines_is_refused(self) -> None:
+        for text in ('', '\n', '\n\n  \n', '# Plan\n', '# Plan\n\n## Part\n  ### Deep\n'):
+            with self.assertRaises(structure.Text_Error_Structure_Empty):
+                check.check_substance(text)
 
 
 if __name__ == '__main__':

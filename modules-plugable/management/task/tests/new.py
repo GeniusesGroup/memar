@@ -284,17 +284,24 @@ class TitleRequired(Fixture):
 
 class PlanWritten(Fixture):
 
-    def test_the_facts_and_the_plan_are_utf8_lf_no_bom_and_name_the_project(self) -> None:
+    def test_the_facts_are_utf8_lf_no_bom_and_name_the_project_and_no_plan_is_written(self) -> None:
         _, path = self.ensure('s-plan', TITLE)
-        for name in ('task.yaml', task_files.plan_path(path).name):
-            raw = (path / name).read_bytes()
-            self.assertFalse(raw.startswith(b'\xef\xbb\xbf'))
-            self.assertNotIn(b'\r', raw)
+        raw = (path / 'task.yaml').read_bytes()
+        self.assertFalse(raw.startswith(bytes([0xef, 0xbb, 0xbf])))
+        self.assertNotIn(bytes([13]), raw)
         facts = task_files.read_facts(path)
         self.assertEqual((facts['title'], facts['status']), (TITLE, 'active'))
         self.assertRegex(facts['start_date'], OPENED)
         self.assertEqual(Path(facts['project']), self.current)
-        self.assertTrue(task_files.plan_text(path).startswith(f'# {TITLE}' + chr(10) + chr(10) + '## Request'))
+        self.assertEqual(timeline_files.read_contents(path), [])
+
+    def test_a_plan_posted_after_the_task_is_utf8_lf_no_bom(self) -> None:
+        _, path = self.ensure('s-plan', TITLE)
+        timeline_files.add_text(path, 'plan', '# Plan' + chr(10) + 'Written.' + chr(10), 'agent')
+        raw = task_files.plan_path(path).read_bytes()
+        self.assertFalse(raw.startswith(bytes([0xef, 0xbb, 0xbf])))
+        self.assertNotIn(bytes([13]), raw)
+        self.assertEqual(task_files.plan_text(path), '# Plan' + chr(10) + 'Written.' + chr(10))
 
     def test_continuing_never_overwrites_the_plan(self) -> None:
         sid, path = self.ensure('s-keep', TITLE)
@@ -364,12 +371,13 @@ class KindWritten(Fixture):
 
 class ReportWritten(Fixture):
 
-    def test_a_report_skeleton_is_written_as_a_content_beside_the_plan(self) -> None:
+    def test_no_report_is_written_until_one_is_posted(self) -> None:
         _, path = self.ensure('s-report', TITLE)
+        self.assertEqual(timeline_files.read_contents(path), [])
+        timeline_files.add_text(path, 'report', '# Report' + chr(10) + 'Written.' + chr(10), 'agent')
         raw = task_files.report_path(path).read_bytes()
-        self.assertNotIn(b'\r', raw)
-        self.assertEqual(task_files.report_text(path), REPORT.split('---' + chr(10), 2)[2])
-        self.assertEqual(timeline_files.read_contents(path)[1].header['kind'], 'report')
+        self.assertNotIn(bytes([13]), raw)
+        self.assertEqual(timeline_files.read_contents(path)[0].header['kind'], 'report')
 
     def test_a_report_is_never_overwritten_by_ensuring_again(self) -> None:
         _, path = self.ensure('s-report', TITLE)
@@ -390,11 +398,11 @@ class RoleFoldersMade(Fixture):
     def test_every_run_makes_the_role_folders_that_are_missing(self) -> None:
         _, path = self.ensure('s-roles', TITLE)
         self.assertEqual(sorted((entry.name for entry in path.iterdir() if entry.is_dir())), sorted(FOLDERS))
-        (path / 'docs' / 'note.md').write_text('# Note\n', encoding='utf-8', newline='\n')
+        (path / 'services' / 'note.py').write_text('# Note\n', encoding='utf-8', newline='\n')
         (path / 'tests').rmdir()
         self.ensure('s-roles')
         self.assertTrue((path / 'tests').is_dir())
-        self.assertTrue((path / 'docs' / 'note.md').is_file())
+        self.assertTrue((path / 'services' / 'note.py').is_file())
 
 class ProjectLocation(Fixture):
     """A project gets its task folders in the location its preferences set, else in its own .agents/tasks/."""
@@ -783,14 +791,13 @@ class NewShapeVerbs(Fixture):
     def made(self, **options):
         return self.ensure(None, TITLE, None, queued=True, priority=7, **options)
 
-    def test_a_task_made_new_is_contents_and_facts_and_no_plan_md(self) -> None:
+    def test_a_task_made_new_is_facts_and_no_content_and_no_plan_md(self) -> None:
         sid, path = self.made()
         self.assertTrue((path / 'task.yaml').is_file())
-        self.assertTrue((path / 'content.00001.md').is_file())
+        self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_file()), ['task.yaml'])
         self.assertFalse((path / 'plan.md').exists())
         self.assertFalse((path / 'report.md').exists())
         task = read_task(path)
-        self.assertTrue(task.has_plan)
         self.assertEqual((task.status, task.front['title']), ('queued', TITLE))
 
     def test_priority_depends_on_list_and_claims_work_on_it(self) -> None:

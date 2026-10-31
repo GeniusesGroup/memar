@@ -7,4 +7,4 @@ A design decides what something is before anything is built from it, so it reads
 - [Modeling Practice → Starting a New Requirement](../../../../../docs/modeling.practice.md#starting-a-new-requirement) — the questions asked before any node is proposed, where no model exists yet. `reviewed 57a7e845f0e8`
 - [Modeling Practice → The Modeling Workflow](../../../../../docs/modeling.practice.md#the-modeling-workflow) — a design ends in a module's contract, and its eighth step is the gate. `reviewed c8900bbbb4cb`
 - [Modularity Rule — Kernel Neutrality → The rule](../../../modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule) — what a kernel module may fix, the test that tells its subject from an organization's choice, and the order placement is asked in. `reviewed cdbf1580d84d`
-- [Protocol → Abstract](../../../../../docs/protocol.md#abstract) — what a protocol is, since a design that decides a contract decides one. `reviewed 1688abdcc327`
+- [Protocol → Abstract](../../../protocol/protocol.md#abstract) — what a protocol is, since a design that decides a contract decides one. `reviewed 2ab51295db0f`

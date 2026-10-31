@@ -5,10 +5,11 @@ Start Date: 2026-10-30
 ---
 
 # Test Rule — Tests First and Scoped
-A rule of this repository, held for the [Test](../../test.md) protocol. Tests before the work is the protocol's own claim ([The Expectation Is Written Before the Work](../../test.md#the-expectation-is-written-before-the-work)); this rule adds how a run is bounded, which the protocol leaves to the organization. It applies only to work whose product is software; the protocol does not.
+A rule of this repository, held for the [Test](../../test.md) protocol. Tests before the work is the protocol's own claim ([The Expectation Is Written Before the Work](../../test.md#the-expectation-is-written-before-the-work)); this rule adds how a run is bounded, which the protocol leaves to the organization. It applies only to work whose product is software, a throwaway script included; the protocol does not.
 
 ## The rule
 - **Every service has its tests before its code, however small,** and the new tests are seen to fail before any line of the service ([Test Practice → The Cycle](../../test.practice.md#the-cycle)). A service with no test of its own is not done.
+- **The rule binds every script a task writes, not only Memar's own code.** A one-time script that moves, converts or repairs records is software: its pure parts (splitting, grouping, naming, the status it sets) are written as functions with their tests first, the tests are seen to fail, and only then the script that opens files and runs; the script runs a dry run before it changes anything. A task keeps such a script in its `services` folder and its tests in `tests` (never in a `docs` folder), and the delegating agent reads the red run before accepting the green one.
 - **The check after a change is scoped:** the tests of the module changed and of the modules whose files import it (found by searching the imports), never the project's whole suite. A whole-suite run is the owner's request or a release.
 - **A test file states its time budget** in seconds, as a constant `BUDGET_SECONDS`; a file without one is not done.
 - **A run longer than its budget is stopped and reported,** not waited on: it starts under a hard limit equal to the budget of the file it runs, at most 600 seconds (the tool's timeout, or the host's `timeout`), one file or class per command. A run that reaches the limit is a finding naming the test it was in. A run is never left for hours.

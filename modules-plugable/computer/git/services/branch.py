@@ -138,8 +138,9 @@ def record(project: Path, entries: dict[str, Path], replace: list[str], message:
     manifest.write_bytes(''.join((f'{target}\t{source}\n' for target, source in entries.items())).encode('utf-8'))
     message_file.write_bytes(message.encode('utf-8'))
     command = [sys.executable, str(record_script()), RECORD_VERB, '--repository', str(project), '--branch', RECORDS_BRANCH, '--manifest', str(manifest), '-F', str(message_file)]
-    for folder in replace:
-        command += ['--replace', folder]
+    replace_file = scratch / 'replace.txt'
+    replace_file.write_bytes(''.join((f'{folder}' + chr(10) for folder in replace)).encode('utf-8'))
+    command += ['--replace-file', str(replace_file)]
     done = subprocess.run(command, capture_output=True)
     if done.returncode != 0:
         said = (done.stderr or done.stdout).decode('utf-8', 'replace').strip()

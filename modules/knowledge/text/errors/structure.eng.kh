@@ -1,0 +1,173 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Error_Structure_Malformed in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Structure_NotEncodable in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Structure_Foreign in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Structure_Position in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Structure_Empty in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Place_Changed in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Place_Unavailable in "modules/knowledge/text/errors/structure.kh"
+tp Text_Error_Place_Refused in "modules/knowledge/text/errors/structure.kh"
+
+tp Domain mt (self Text_Error_Structure_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Structure_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text holds only headings and blank lines, so it says nothing")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Structure_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text with no line that is neither blank nor a heading is a template with nothing written in it, and a content is placed only when it has something to say.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Structure_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Write the text, then place it.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Structure_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Place a content only when it has real text; do not write a template ahead of its text.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Structure_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Structure_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text is not in the form the codec reads")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Structure_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text is not in the form the codec reads.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Structure_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Check the text and write it again.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Structure_Malformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Report the span the codec could not read.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Structure_NotEncodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Structure_NotEncodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A structure holds what the form cannot write, such as a child that is not of a greater level than its parent")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Structure_NotEncodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A structure holds what the form cannot write, such as a child that is not of a greater level than its parent.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Structure_NotEncodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Change the content so that the form can hold it.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Structure_NotEncodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Name the node that cannot be written.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Structure_Foreign) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Structure_Foreign) () (s String) {
+    CharacterRun_From.FromCharacterRun("The structure was not decoded from the text it is encoded against")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Structure_Foreign) () (s String) {
+    CharacterRun_From.FromCharacterRun("The structure was not decoded from the text it is encoded against.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Structure_Foreign) () (s String) {
+    CharacterRun_From.FromCharacterRun("Decode the text again and apply the change to the new structure.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Structure_Foreign) () (s String) {
+    CharacterRun_From.FromCharacterRun("The spans lie outside before or out of order; do not guess.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Structure_Position) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Structure_Position) () (s String) {
+    CharacterRun_From.FromCharacterRun("A position given to a change is out of range")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Structure_Position) () (s String) {
+    CharacterRun_From.FromCharacterRun("A position given to a change is out of range.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Structure_Position) () (s String) {
+    CharacterRun_From.FromCharacterRun("Give a position that exists.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Structure_Position) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was changed.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Place_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Place_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The named text has another version than expected, or exists although none was expected")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Place_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The named text has another version than expected, or exists although none was expected.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Place_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read the text again and repeat the change.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Place_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Re-read and retry a bounded number of times; this is the store conflict.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Place_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Place_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store could not answer and applied nothing")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Place_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store could not answer and applied nothing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Place_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Try again later.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Place_Unavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Stop; do not retry as a conflict. This is the store unavailable.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Place_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Place_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store refused the name or the size of the write")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Place_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store refused the name or the size of the write.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Place_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Use another name or a smaller text.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Place_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The store refused it as malformed or too large; nothing was applied.")(s, VoidError)
+}

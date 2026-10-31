@@ -39,7 +39,11 @@ def _inside_branch(path: str) -> bool:
     """Whether PATH is a plain relative path in a branch's tree: no empty, `.`, `..` or `.git` part, no backslash."""
     return '\\' not in path and (not any((part in ('', '.', '..') or part.lower() == '.git' for part in path.split('/'))))
 
-def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str], message_file: Path) -> None:
+def folders_to_replace(replace: list[str], replace_file: Path | None) -> list[str]:
+    listed = [line.strip().strip('/') for line in replace_file.read_bytes().decode('utf-8').splitlines()] if replace_file is not None else []
+    return [*(name.strip('/') for name in replace), *(name for name in listed if name)]
+
+def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str], message_file: Path, replace_file: Path | None=None) -> None:
     """Commit files onto BRANCH, a branch other than the one checked out, without moving HEAD, the shared index or the working tree.
 
     The tree is built in a private index from the branch's tip: the folders
@@ -55,7 +59,7 @@ def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str]
     if run_captured(['symbolic-ref', '-q', 'HEAD'], cwd=root).stdout.strip() == ref:
         sys.exit(f'error: {branch} is the branch checked out in {root}; moving it would leave the shared index and the working tree behind it. Nothing was written.')
     entries = _manifest_entries(manifest)
-    folders = [name.strip('/') for name in replace]
+    folders = folders_to_replace(replace, replace_file)
     for folder in folders:
         if not _inside_branch(folder):
             sys.exit(f'error: --replace {folder!r} is not a folder inside the branch')
@@ -111,5 +115,6 @@ def add_parser(sub: argparse._SubParsersAction) -> None:
     p_record.add_argument('--branch', required=True, metavar='NAME', help='the branch to commit on, made if it is missing')
     p_record.add_argument('--manifest', required=True, type=Path, metavar='FILE', help='a file of BRANCH-PATH, a tab, SOURCE-FILE lines, in UTF-8; write it with a file tool')
     p_record.add_argument('--replace', action='append', default=[], metavar='FOLDER', help="a folder of the branch to empty before the manifest's files are put in; may be given more than once")
+    p_record.add_argument('--replace-file', type=Path, default=None, metavar='FILE', help='a file of folders of the branch to empty, one per line, in UTF-8; for more folders than a command line holds')
     p_record.add_argument('-F', '--message-file', required=True, type=Path, help='the commit message, read from a file (write it with a file tool)')
-    p_record.set_defaults(run=lambda a: cmd_record(a.repository, a.branch, a.manifest, a.replace, a.message_file))
+    p_record.set_defaults(run=lambda a: cmd_record(a.repository, a.branch, a.manifest, a.replace, a.message_file, a.replace_file))
