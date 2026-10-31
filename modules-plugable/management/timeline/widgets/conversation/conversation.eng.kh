@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Conversation in "modules-plugable/management/timeline/widgets/conversation/conversation.kh"
+
+tp Domain mt (self Conversation) () (s String) {
+    CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)
+}
+
+tp Summary mt (self Conversation) () (s String) {
+    CharacterRun_From.FromCharacterRun("Places a content in one more timeline")(s, VoidError)
+}
+
+tp Overview mt (self Conversation) () (s String) {
+    CharacterRun_From.FromCharacterRun("The same content is placed in the timeline of a task and in the timeline of its parent, and has its own number in each. Reading, with the replies the parent sees, and saying wait for the timeline and content modules.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Conversation) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Conversation) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
