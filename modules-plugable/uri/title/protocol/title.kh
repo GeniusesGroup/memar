@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+
+tp Title ab {
+	Text
+	Details
+}
+
+tp Field_Title ab
+
+tp GetTitle mt (self Field_Title) () (t Title)

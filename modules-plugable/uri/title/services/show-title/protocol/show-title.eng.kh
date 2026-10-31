@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title_Show in "modules-plugable/uri/title/services/show-title/protocol/show-title.kh"
+
+tp Domain mt (self Title_Show) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Show) () (s String) {
+    CharacterRun_From.FromCharacterRun("Writes a title as the heading line it is shown as")(s, VoidError)
+}
+
+tp Overview mt (self Title_Show) () (s String) {
+    CharacterRun_From.FromCharacterRun("The title as one line of characters, with nothing added to it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Show) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Show) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

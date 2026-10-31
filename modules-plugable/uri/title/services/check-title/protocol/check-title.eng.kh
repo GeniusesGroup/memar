@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title_Check in "modules-plugable/uri/title/services/check-title/protocol/check-title.kh"
+
+tp Domain mt (self Title_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Decides whether a text is acceptable as a title")(s, VoidError)
+}
+
+tp Overview mt (self Title_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Removes the leading and trailing blanks of the text and returns it as a title. Refuses with Title_Error_Multiline a text that holds a line break, and with Title_Error_Empty a text of which nothing is left. Title_Error_Empty is the only signal of a blank text, and whether it is fatal is the caller's: a caller to which the title is optional treats Title_Error_Empty as no title given, and so needs no strip of its own.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Pure; it keeps nothing.")(s, VoidError)
+}

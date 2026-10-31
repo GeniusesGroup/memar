@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title_Label in "modules-plugable/uri/title/widgets/title-label/protocol/title-label.kh"
+
+tp Domain mt (self Title_Label) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Label) () (s String) {
+    CharacterRun_From.FromCharacterRun("Shows the title of a thing")(s, VoidError)
+}
+
+tp Overview mt (self Title_Label) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finds the title of the thing and writes it as a heading line; a thing without a title is answered as not found and nothing is shown.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Label) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Label) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

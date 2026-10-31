@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title_Model in "modules-plugable/uri/title/protocol/title-model.kh"
+
+tp Domain mt (self Title_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("The relation of a title to the thing it names")(s, VoidError)
+}
+
+tp Overview mt (self Title_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("A thing and its title. The title is the text the thing is named by, so the relation is the name the text is kept under, and no identifier of the text is held beside it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Model) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title_Keep in "modules-plugable/uri/title/services/keep-title/protocol/keep-title.kh"
+
+tp Domain mt (self Title_Keep) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Keep) () (s String) {
+    CharacterRun_From.FromCharacterRun("Keeps the title of a thing")(s, VoidError)
+}
+
+tp Overview mt (self Title_Keep) () (s String) {
+    CharacterRun_From.FromCharacterRun("Writes the title as the text named for the thing, in one write of the text domain's place, replacing the one the thing had; a store that cannot answer, refuses or finds the text changed is reported with the text domain's own errors.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Keep) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Keep) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

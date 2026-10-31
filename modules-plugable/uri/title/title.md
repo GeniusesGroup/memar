@@ -8,4 +8,9 @@
 ## Policies (rules)
 
 - or DisplayName or human usage name
-- `quiddity` CAN be any other domain e.g. `user`, `product`, `knowledge`, ...
+- `thing` CAN be any other domain e.g. `user`, `product`, `knowledge`, ...
+
+## Related Artifacts
+
+- [Title Handoff](title.handoff.md)
+- [`protocol/`](protocol/) - the abstraction, in Khayyam

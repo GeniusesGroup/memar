@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title in "modules-plugable/uri/title/protocol/title.kh"
+
+tp Domain mt (self Title) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title) () (s String) {
+    CharacterRun_From.FromCharacterRun("The name a thing is called by, in one line")(s, VoidError)
+}
+
+tp Overview mt (self Title) () (s String) {
+    CharacterRun_From.FromCharacterRun("A title is a text of one line that holds at least one visible character, written without leading and trailing blanks. It is the value that (uri(text))-[:title_for]->(thing) relates to a thing; the characters are the text domain's, and what makes a text acceptable as a title is Title_Check's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title) () (s String) {
+    CharacterRun_From.FromCharacterRun("Give a title that says in one line what the thing is.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title) () (s String) {
+    CharacterRun_From.FromCharacterRun("A value of Title has passed Title_Check; do not build one from a text that has not.")(s, VoidError)
+}

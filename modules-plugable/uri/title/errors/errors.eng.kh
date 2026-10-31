@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Title_Error_Empty in "modules-plugable/uri/title/errors/errors.kh"
+tp Title_Error_Multiline in "modules-plugable/uri/title/errors/errors.kh"
+
+tp Domain mt (self Title_Error_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Error_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A title holds no visible character")(s, VoidError)
+}
+
+tp Overview mt (self Title_Error_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A title is refused when nothing is left of it after its leading and trailing blanks are removed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Error_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Say in one line what the thing is.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Error_Empty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was kept. A caller to which the title is optional takes this error as no title given; one that requires a title reports it.")(s, VoidError)
+}
+
+tp Domain mt (self Title_Error_Multiline) () (s String) {
+    CharacterRun_From.FromCharacterRun("Title")(s, VoidError)
+}
+
+tp Summary mt (self Title_Error_Multiline) () (s String) {
+    CharacterRun_From.FromCharacterRun("A title holds a line break")(s, VoidError)
+}
+
+tp Overview mt (self Title_Error_Multiline) () (s String) {
+    CharacterRun_From.FromCharacterRun("A title is refused when it holds a line break, because it is shown as a heading and written as a value of one line.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Title_Error_Multiline) () (s String) {
+    CharacterRun_From.FromCharacterRun("Write the title in one line.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Title_Error_Multiline) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was kept. The title is not cut at the break.")(s, VoidError)
+}
