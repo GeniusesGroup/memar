@@ -98,3 +98,46 @@
 
 #### Considered and not done
 - A `Close` on the `Store` abstraction: a fresh reviewer found it declared for every store and required of none (volatile has nothing to release), returning an error no realization returned, and disagreeing with the `Close` that `git-store` declares. Closing stays the adapter's own declaration.
+
+---
+
+### Memory Store: the operations list, the held-range rule, NotAtomic and record's address are linked
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../modules-plugable/knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - second reduction of the remaining restatements
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: the list of operations from the Abstract (now [`protocol/store.kh`](protocol/store.kh)); the held-range mechanics and the refusal of a batch without an atomic batch from the "Why" bullets (now [`git-store-held.eng.kh`](../../../../modules-plugable/computer/memory/store/git-store/protocol/git-store-held.eng.kh) and [`errors/errors.kh`](errors/errors.kh)); the restated address of `record` from "What stands where" (now [`record-key.eng.kh`](../../../../modules-plugable/computer/memory/store/record/protocol/record-key.eng.kh)).
+- Kept: every heading, the reasons (one place orders the writes, a stale copy never competes, no floor) and the owner's rulings.
+
+---
+
+### Memory Store: the held-range rule is back as a reason
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../modules-plugable/knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - fixes after review
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - edited the document
+
+#### What changed
+- Corrects the previous record: the held-range rule lives in "Why one place orders the writes" of this document, as a reason (what a copy of a shared store holds, and why it can decide alone inside the ranges and ask outside them). [`git-store-held.eng.kh`](../../../../modules-plugable/computer/memory/store/git-store/protocol/git-store-held.eng.kh) holds only what `git-store` holds by default.
+
+---
+
+### The reduction of this document to concept, reasons and trade-offs is reviewed
+- Time: 2026-10-31T10:00:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - A fresh AI reviewer (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed, approved
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reduced the document, fixed the findings of two earlier reviewers
+
+#### What changed
+- Claim reviewed, quoted: "state the concept, the reasons and the trade-offs and restate no code or Khayyam; every fact they dropped has a home in a .kh / *.eng.kh, in code, or in a document or handoff they link to; and no reason, trade-off, owner ruling or placement decision was lost." Evidence: `memar content check` on the six folders (0 problems); the diff of each document against its base commit, each removed passage grepped for its new home; the three defects an earlier reviewer found were checked fixed. Verdict: permitted. The reviewer left minor notes: a few sentences in `record.md` and `git-store.md` still repeat an `*.eng.kh` while carrying a reason, and the requirement that a `get` of many addresses costs no process per address has its home only in `store-stats.eng.kh` and `git-store.md`.
