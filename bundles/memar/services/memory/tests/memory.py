@@ -27,6 +27,7 @@ sys.dont_write_bytecode = True
 _m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
 _m_store = import_module('modules.computer.memory.store.protocol.store')
+_m_store_errors = import_module('modules.computer.memory.store.errors.errors')
 _m_volatile = import_module('modules.computer.memory.volatile.volatile')
 _m_record = import_module('modules-plugable.computer.memory.store.record.record')
 _m_preferences = import_module('modules.process.project.services.preferences')
@@ -132,6 +133,15 @@ class SharedStore(Fixture):
         self.refused('drafts', OpeningRefusal.SHARED_STORE)
         self.stores = {}
         self.assertIsInstance(memory.open(self.project, 'drafts', Needs()), Record)
+
+class PeerRefused(Fixture):
+
+    def test_a_class_opens_when_only_another_class_of_the_adapter_is_refused_a_binding(self) -> None:
+        refused_peer = _m_store_errors.Raised(_m_store_errors.Refusal.MALFORMED, 'the peer is refused')
+        self.prefer('a=stand-in, a/b=stand-in')
+        module = types.SimpleNamespace(bind=lambda project, class_name: (_ for _ in ()).throw(refused_peer) if class_name == 'a/b' else StandIn(class_name, self.parameters, self.limits))
+        with unittest.mock.patch.object(memory, 'adapter_module', lambda name: module):
+            self.assertIsInstance(memory.open(self.project, 'a', Needs()), Record)
 
 class Malformed(Fixture):
 

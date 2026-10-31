@@ -9,6 +9,7 @@ from typing import Any
 STORE_CAPSULES = 'modules-plugable.computer.memory.store'
 BIND = 'bind'
 _m_errors = import_module('bundles.memar.services.memory.errors.errors')
+_m_store_errors = import_module('modules.computer.memory.store.errors.errors')
 OpeningRefusal = _m_errors.OpeningRefusal
 OpenRefused = _m_errors.OpenRefused
 CAPABILITY_NAME = re.compile('[a-z0-9]+(?:-[a-z0-9]+)*')
@@ -27,6 +28,12 @@ def _close(store: Any) -> None:
     if callable(close):
         close()
 
+def _shares(module: ModuleType, project: Path, other: str, adapter: Any) -> bool:
+    try:
+        return module.bind(project, other).store == adapter.store
+    except _m_store_errors.Raised:
+        return False
+
 def open(project: Path, class_name: str, needs: Any) -> Any:
     preferences = import_module('modules.process.project.services.preferences')
     record = import_module(f'{STORE_CAPSULES}.record.record')
@@ -42,7 +49,7 @@ def open(project: Path, class_name: str, needs: Any) -> Any:
     if module is None:
         return OpenRefused(OpeningRefusal.MALFORMED, f'the class `{class_name}` is bound to `{name}` in {where}, and no module at {STORE_CAPSULES} of that name offers `{BIND}`')
     adapter = module.bind(project, class_name)
-    others = sorted((other for other, bound in bindings.items() if other != class_name and bound == name and module.bind(project, other).store == adapter.store))
+    others = sorted((other for other, bound in bindings.items() if other != class_name and bound == name and _shares(module, project, other, adapter)))
     if others:
         return OpenRefused(OpeningRefusal.SHARED_STORE, f'the class `{class_name}` and {", ".join((f"`{other}`" for other in others))} are bound to one store of `{name}` in {where}')
     store = adapter.open()
