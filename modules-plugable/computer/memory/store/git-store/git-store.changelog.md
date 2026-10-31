@@ -56,3 +56,17 @@
 #### Considered and not done
 - Measuring Defender's CPU and setting or reading its exclusion: both need elevation, which the run did not have; the command the owner can run elevated is in the research's Methodology.
 - A bare-tree adapter: the variant is a second reference to the tree of the same state, which is all a transfer sees.
+
+---
+
+### Memory Git Store: the declarations, plumbing list and cases are linked, not described
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: from "What it declares" the capability and limit list; from "The plumbing it uses" the command list (kept as the constraint and its reasons); from "How it meets the suite" the list of cases per group; the file layout of the index and the constants of the retry and the lock age; the `lag` command. Their new home is `protocol/git-store*.kh`, `cases.py` and `tests/git-store.py`. Kept: one reference per class and the atomicity argument, the reference-namespace reasoning of 2026-10-30, the locks, the fallback, the publish and lag trade-offs, what it cannot do.
