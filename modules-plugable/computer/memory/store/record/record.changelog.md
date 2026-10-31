@@ -220,3 +220,17 @@
 
 #### What changed
 - "The contract suite" says the cross-process half of `one-process-sees-the-others-commit` runs on `record` laid over `git-store`, in that adapter's tests; `Owed: memory.port.contract-suite` is removed, and the mark leaves the case's docstring in `tests/record.py`.
+
+---
+
+### Memory Record: the operations, guarantees and bindings are linked, not restated
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: from "Definition" the id, domain-key, part and label forms; from "The operations" every answer, bound and refusal; from "What every adapter guarantees" the guarantees the contract owns; from "Capabilities and limits" the pointer to `store.py`; from "Binding adapters to classes" the list of refusals and the needs; from "The contract suite" the commands and the translation of addresses; from the Go-era section the file-by-file fate. Their new home is `protocol/record.kh` and the `record-*.kh` files, `errors/errors.kh` and the store contract. Kept: the reasons for the id, the token and the labels, the Go-era mapping, the placement, and the headings other documents link to. Stale text updated: protocol is Khayyam.

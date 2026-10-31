@@ -22,5 +22,5 @@ tp UserActionNote mt (self Record_ID) () (s String) {
 }
 
 tp DevActionNote mt (self Record_ID) () (s String) {
-    CharacterRun_From.FromCharacterRun("The port requires of an id equality, an existence instant (the milliseconds since the Unix epoch its first six bytes carry) and the byte order, which for this form is the order of existence instants and then of the remaining bytes. Sixteen bytes whose version and variant bits are other are refused. The record mints no id and never checks the instant against a clock.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("The store contract requires of an id equality, an existence instant (the milliseconds since the Unix epoch its first six bytes carry) and the byte order, which for this form is the order of existence instants and then of the remaining bytes. Sixteen bytes whose version and variant bits are other are refused. The record mints no id and never checks the instant against a clock.")(s, VoidError)
 }
