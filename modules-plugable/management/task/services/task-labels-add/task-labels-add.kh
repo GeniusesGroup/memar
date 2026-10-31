@@ -2,7 +2,6 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 tp Labels in "modules/knowledge/label/protocol/labels.kh"
-tp Project in "modules/process/project/protocol/project.kh"
 tp Service in "modules/process/service/protocol/service.kh"
 tp Task_Labels_Store in "modules-plugable/management/task/protocol/task-labels-store.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
@@ -11,4 +10,4 @@ tp Task_Labels_Add ab {
 	Service
 }
 
-tp AddLabels mt (self Task_Labels_Add) (store Task_Labels_Store, project Project, task ThingUUID, labels Labels) (err Error)
+tp AddLabels mt (self Task_Labels_Add) (store Task_Labels_Store, task ThingUUID, labels Labels) (err Error)

@@ -3,13 +3,15 @@
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Label in "modules/knowledge/label/protocol/label.kh"
-tp Project in "modules/process/project/protocol/project.kh"
 tp Text in "modules/knowledge/text/protocol/dt-text.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
 
-tp Task_Content_Store ab
+tp Task_Content_Store ab {
+	Field_ProjectUUID
+}
 
-tp ReadLatestContent mt (self Task_Content_Store) (project Project, task ThingUUID, kind Label) (number W32, text Text, found Boolean, err Error)
+tp ReadLatestContent mt (self Task_Content_Store) (task ThingUUID, kind Label) (number W32, text Text, found Boolean, err Error)
 
-tp AddContent mt (self Task_Content_Store) (project Project, task ThingUUID, kind Label, text Text, author ThingUUID, after W32) (number W32, err Error)
+tp AddContent mt (self Task_Content_Store) (task ThingUUID, kind Label, text Text, author ThingUUID, after W32) (number W32, err Error)

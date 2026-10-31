@@ -1,13 +1,15 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Error in "modules/process/error/protocol/error.kh"
-tp Project in "modules/process/project/protocol/project.kh"
 tp Task_Priority in "modules-plugable/management/task/protocol/task-priority.kh"
 tp Text_Version in "modules/knowledge/text/protocol/text-version.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
 
-tp Task_Priority_Store ab
+tp Task_Priority_Store ab {
+	Field_ProjectUUID
+}
 
-tp ReadPriority mt (self Task_Priority_Store) (project Project, task ThingUUID) (priority Task_Priority, version Text_Version, err Error)
+tp ReadPriority mt (self Task_Priority_Store) (task ThingUUID) (priority Task_Priority, version Text_Version, err Error)
 
-tp ReplacePriority mt (self Task_Priority_Store) (project Project, task ThingUUID, priority Task_Priority, expected Text_Version) (version Text_Version, err Error)
+tp ReplacePriority mt (self Task_Priority_Store) (task ThingUUID, priority Task_Priority, expected Text_Version) (version Text_Version, err Error)

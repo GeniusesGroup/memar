@@ -1,7 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Error in "modules/process/error/protocol/error.kh"
-tp Project in "modules/process/project/protocol/project.kh"
 tp Service in "modules/process/service/protocol/service.kh"
 tp Task_Citations in "modules-plugable/management/task/protocol/task-citations.kh"
 tp Task_Depends_Store in "modules-plugable/management/task/protocol/task-depends-store.kh"
@@ -11,4 +10,4 @@ tp Task_Depends_Set ab {
 	Service
 }
 
-tp SetDependsOn mt (self Task_Depends_Set) (store Task_Depends_Store, project Project, task ThingUUID, cited Task_Citations) (err Error)
+tp SetDependsOn mt (self Task_Depends_Set) (store Task_Depends_Store, task ThingUUID, cited Task_Citations) (err Error)
