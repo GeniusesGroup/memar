@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Field_TaskID in "modules/management/task/protocol/dt-uuid.kh"
+tp Project_Name in "modules/process/project/protocol/project-name.kh"
+
+tp Task_Citation ab {
+	Details
+	Field_TaskID
+}
+
+tp GetProjectName mt (self Task_Citation) () (name Project_Name, named Boolean)

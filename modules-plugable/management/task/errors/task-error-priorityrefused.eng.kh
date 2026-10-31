@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Error_PriorityRefused in "modules-plugable/management/task/errors/priority.kh"
+
+tp Domain mt (self Task_Error_PriorityRefused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Error_PriorityRefused) () (s String) {
+    CharacterRun_From.FromCharacterRun("A priority is not a whole number within the bounds")(s, VoidError)
+}
+
+tp Overview mt (self Task_Error_PriorityRefused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The value given is not a whole number from the lowest priority to the highest; the message names the bounds as Task_Priority_Bounds states them and the value given.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Error_PriorityRefused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Give a whole number within the bounds, the higher sooner.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Error_PriorityRefused) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}

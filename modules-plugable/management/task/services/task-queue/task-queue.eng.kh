@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Queue in "modules-plugable/management/task/services/task-queue/task-queue.kh"
+
+tp Domain mt (self Task_Queue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Queue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Queues an active task")(s, VoidError)
+}
+
+tp Overview mt (self Task_Queue) () (s String) {
+    CharacterRun_From.FromCharacterRun("An active task becomes queued and a queued task stays; a task in any other state is Task_Error_NotActive, so a task being worked or finished is never put back in line. Whether an agent has claimed the task is the claim's fact: the widget that queues asks the claim first and calls this only for an unclaimed task.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Queue) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Queue) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

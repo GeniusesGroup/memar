@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Priority_Check in "modules-plugable/management/task/services/task-priority-check/task-priority-check.kh"
+
+tp Domain mt (self Task_Priority_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Priority_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads the priority a person gave and refuses what is none")(s, VoidError)
+}
+
+tp Overview mt (self Task_Priority_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text is a priority only when it is a whole number within the bounds; otherwise the refusal is Task_Error_PriorityRefused, which says the bounds. Nothing is written.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Priority_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Priority_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

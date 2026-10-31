@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Plan in "modules-plugable/knowledge/documentation/plan/protocol/plan.kh"
+
+tp Domain mt (self Plan) () (s String) {
+    CharacterRun_From.FromCharacterRun("Plan")(s, VoidError)
+}
+
+tp Summary mt (self Plan) () (s String) {
+    CharacterRun_From.FromCharacterRun("The template of the text of an agreement about one task, written before the work")(s, VoidError)
+}
+
+tp Overview mt (self Plan) () (s String) {
+    CharacterRun_From.FromCharacterRun("The parts a plan asks for and what each is for: what was asked together with what checks the task is done, the reason in the writer's words, the steps each decided to be local or delegated, and what the next party does first. A plan is a template and nothing else: it is the text of a content of the kind plan on the timeline of a task, it names no file, and it holds no fact of the task. The title, status, priority, labels, what the task depends on, the task it came from, its conversation and its project are the task's, each from the module that owns it; a plan restates none of them.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Plan) () (s String) {
+    CharacterRun_From.FromCharacterRun("A plan is read to begin work already agreed.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Plan) () (s String) {
+    CharacterRun_From.FromCharacterRun("The closed set of parts is this type's methods and is written here once.")(s, VoidError)
+}

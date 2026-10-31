@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+
+tp Report ab {
+	Details
+}
+
+tp GetWhatRan mt (self Report) () (text Text)
+
+tp GetCheck mt (self Report) () (text Text)
+
+tp GetResult mt (self Report) () (text Text)
+
+tp GetLeftOpen mt (self Report) () (text Text)

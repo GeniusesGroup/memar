@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Priority_Bounds in "modules-plugable/management/task/protocol/task-priority-bounds.kh"
+
+tp Domain mt (self Task_Priority_Bounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Priority_Bounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("The range of a task priority and its default")(s, VoidError)
+}
+
+tp Overview mt (self Task_Priority_Bounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("The lowest and the highest priority and the one a task without a priority counts as. Written is the range as a help says it. Every message that says the range, and every check of it, reads these methods and writes no number of its own. The realization states 1, 10 and 5; the contract states only that the lowest is below the highest and the default lies between them.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Priority_Bounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Priority_Bounds) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Labels in "modules/knowledge/label/protocol/labels.kh"
+tp Project in "modules/process/project/protocol/project.kh"
+tp Text_Version in "modules/knowledge/text/protocol/text-version.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Task_Labels_Store ab
+
+tp ReadLabels mt (self Task_Labels_Store) (project Project, task ThingUUID) (labels Labels, version Text_Version, err Error)
+
+tp ReplaceLabels mt (self Task_Labels_Store) (project Project, task ThingUUID, labels Labels, expected Text_Version) (version Text_Version, err Error)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Report_Check in "modules-plugable/knowledge/documentation/report/services/report-check/report-check.kh"
+
+tp Domain mt (self Report_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Report")(s, VoidError)
+}
+
+tp Summary mt (self Report_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads a text as a report and refuses what does not follow the template")(s, VoidError)
+}
+
+tp Overview mt (self Report_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text that does not give the parts of a report in their order is Report_Error_Shape. Nothing is written.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Report_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Report_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

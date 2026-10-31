@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Plan_Error_RequestEmpty in "modules-plugable/knowledge/documentation/plan/errors/errors.kh"
+
+tp Domain mt (self Plan_Error_RequestEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Plan")(s, VoidError)
+}
+
+tp Summary mt (self Plan_Error_RequestEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A plan states nothing that was asked")(s, VoidError)
+}
+
+tp Overview mt (self Plan_Error_RequestEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("The part of what was asked and what checks the task done is empty, so the plan is not ready.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Plan_Error_RequestEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("State what was asked and what shows it done.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Plan_Error_RequestEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}

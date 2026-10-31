@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Error_Changed in "modules-plugable/management/task/errors/store.kh"
+
+tp Domain mt (self Task_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The fact changed since it was read")(s, VoidError)
+}
+
+tp Overview mt (self Task_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The version the caller expected is not the version the store holds; nothing was written over what another writer put.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read the fact again and decide again.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}

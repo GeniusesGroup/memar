@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Labels_Add in "modules-plugable/management/task/services/task-labels-add/task-labels-add.kh"
+
+tp Domain mt (self Task_Labels_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Labels_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Adds labels to a task, none twice")(s, VoidError)
+}
+
+tp Overview mt (self Task_Labels_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Each label is added last to the labels the store returned; the label module's Labels gives a task no label twice, and whether a label is allowed is its check, made before this. Only the store writes.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Labels_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Labels_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

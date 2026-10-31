@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+
+tp Plan ab {
+	Details
+}
+
+tp GetRequest mt (self Plan) () (text Text)
+
+tp GetWhy mt (self Plan) () (text Text)
+
+tp GetSteps mt (self Plan) () (text Text)
+
+tp GetNext mt (self Plan) () (text Text)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Plan_Error_Shape in "modules-plugable/knowledge/documentation/plan/errors/errors.kh"
+
+tp Domain mt (self Plan_Error_Shape) () (s String) {
+    CharacterRun_From.FromCharacterRun("Plan")(s, VoidError)
+}
+
+tp Summary mt (self Plan_Error_Shape) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text does not follow the plan template")(s, VoidError)
+}
+
+tp Overview mt (self Plan_Error_Shape) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text written in another shape is not read as a plan and no writer rewrites it into one.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Plan_Error_Shape) () (s String) {
+    CharacterRun_From.FromCharacterRun("Write the plan to the template.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Plan_Error_Shape) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}

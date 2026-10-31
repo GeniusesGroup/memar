@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Report in "modules-plugable/knowledge/documentation/report/protocol/report.kh"
+
+tp Domain mt (self Report) () (s String) {
+    CharacterRun_From.FromCharacterRun("Report")(s, VoidError)
+}
+
+tp Summary mt (self Report) () (s String) {
+    CharacterRun_From.FromCharacterRun("The template of the text of how the work on one task ended")(s, VoidError)
+}
+
+tp Overview mt (self Report) () (s String) {
+    CharacterRun_From.FromCharacterRun("The parts a report asks for: what ran, the check and its result, the result, and what is left open. It is a template and nothing else, the text of a content of the kind report on the timeline of a task. The Status the work reached is the task's fact from the status module, and the report restates none of the task's facts.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Report) () (s String) {
+    CharacterRun_From.FromCharacterRun("A report is read to account for work already done.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Report) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Priority in "modules-plugable/management/task/protocol/task-priority.kh"
+
+tp Domain mt (self Task_Priority) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Priority) () (s String) {
+    CharacterRun_From.FromCharacterRun("How soon a queued task is taken")(s, VoidError)
+}
+
+tp Overview mt (self Task_Priority) () (s String) {
+    CharacterRun_From.FromCharacterRun("A whole number from the lowest to the highest bound, the higher sooner. A task that states none has the default, so a task made before priorities existed waits as an ordinary one. The bounds and the default are Task_Priority_Bounds, written once; a value outside them is not a priority. A priority is a fact about the task, read wherever tasks are listed or ranked, and not a part of any text the task holds. A stored value that is not a priority is read by the priority store as the default, because the stored form may be edited by hand, while a value a person gives a command is refused by Task_Priority_Check.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Priority) () (s String) {
+    CharacterRun_From.FromCharacterRun("Choose a higher number for a task that must be taken sooner.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Priority) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Task_Priority in "modules-plugable/management/task/protocol/task-priority.kh"
+
+tp Task_Priority_Bounds ab {
+	Details
+}
+
+tp GetLowest mt (self Task_Priority_Bounds) () (priority Task_Priority)
+
+tp GetHighest mt (self Task_Priority_Bounds) () (priority Task_Priority)
+
+tp GetDefault mt (self Task_Priority_Bounds) () (priority Task_Priority)
+
+tp Written mt (self Task_Priority_Bounds) () (text String)

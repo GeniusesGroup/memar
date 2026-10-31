@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Priority_Store in "modules-plugable/management/task/protocol/task-priority-store.kh"
+
+tp Domain mt (self Task_Priority_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Priority_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Where the priority of a task is kept, read and replaced")(s, VoidError)
+}
+
+tp Overview mt (self Task_Priority_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("The only way a priority is read or replaced, given to a service; a store calls no other store. It keeps one fact of a task and nothing else of it, so a service that sets a priority neither knows nor writes any file. A task without a stored priority reads as the default of Task_Priority_Bounds, because the stored form may be edited by hand; a task that does not exist is Task_Error_NotFound; a replace expecting a version that changed meanwhile is Task_Error_Changed. How it is kept is the realization's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Priority_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Priority_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

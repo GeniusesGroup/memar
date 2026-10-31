@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Status_Store in "modules-plugable/management/task/protocol/task-status-store.kh"
+
+tp Domain mt (self Task_Status_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Status_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Where the status of a task is kept, read and replaced")(s, VoidError)
+}
+
+tp Overview mt (self Task_Status_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("The only way the status of a task is read or replaced; the vocabulary of statuses is the status module's. A change of status is a change of state which the Request records; this store is where the realization keeps the result.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Status_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Status_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

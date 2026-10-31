@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Plan_Check in "modules-plugable/knowledge/documentation/plan/services/plan-check/plan-check.kh"
+
+tp Domain mt (self Plan_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Plan")(s, VoidError)
+}
+
+tp Summary mt (self Plan_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads a text as a plan and refuses what does not follow the template")(s, VoidError)
+}
+
+tp Overview mt (self Plan_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text that does not give the parts of a plan in their order is Plan_Error_Shape, and a plan whose statement of what was asked is empty is Plan_Error_RequestEmpty and is not taken up. Nothing is written: placing the plan as a content is the timeline's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Plan_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Plan_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

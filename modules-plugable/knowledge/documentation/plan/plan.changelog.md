@@ -2,6 +2,30 @@
 
 ## Changelog
 
+### Gave the plan and report modules their abstraction in Khayyam, and placed their facts with the task
+- Time: 2026-10-31T00:00:00Z
+- Type: Added
+- Cited:
+  - [Software Rule — Abstraction First](../../../../modules/computer/software/rules/abstraction-first/abstraction-first.md) - Depends_on: the abstraction is written in Khayyam before any code of it.
+  - [Modularity Rule — A Concept Has One Owner Module](../../../../modules/knowledge/modularity/rules/one-owner/one-owner.md) - Depends_on: every fact is declared once, in the module whose subject it is.
+- Propagates to:
+  - modules-plugable/management/task: Pending - the task domain imports the priority, labels, depends-on, status and queue services and their stores that were declared there for it (task `20261030-T163541Z-10624`).
+  - modules/knowledge/status: Pending - `Field_Status` and the Status values in Khayyam.
+  - modules-plugable/management/task/services/ensure.py: Pending - its help says what each part of a plan is for.
+- Contributors:
+  - Claude Sonnet 5.5 - drafted, applied; a fresh reviewer's findings applied (no human approval yet)
+
+#### What changed
+- Wrote the plan and report modules' Khayyam: each a template of a text (its parts), one check service that reads a text as it, and the refusals of a text that does not follow it.
+- Wrote in the task domain the priority (with bounds, check, store, set and refusal), the citation of another task, the stores of labels, depends-on and status, and the services that add labels, set what a task depends on and queue a task, each over a store given to it, so that no service opens a file.
+- Replaced the section on the abstraction in `plan.md`; the owner's ruling of 2026-10-31 is that a fact of the task is the task's.
+
+#### Considered and not done
+- **Services in the plan module that write fields of the plan file:** the facts they wrote are the task's; the plan keeps a template.
+- **Whether a task has a plan, and writing a plan whole:** placing a content and finding one of a kind is the timeline's.
+
+---
+
 ### Created the Plan facet specification
 - Time: 2026-10-16T15:15:00Z
 - Type: Added

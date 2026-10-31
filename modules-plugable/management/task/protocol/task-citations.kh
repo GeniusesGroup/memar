@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Task_Citation in "modules-plugable/management/task/protocol/task-citation.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Task_Citations ab {
+	Details
+}
+
+tp GetCitationCount mt (self Task_Citations) () (count W32)
+
+tp GetCitationAt mt (self Task_Citations) (position W32) (citation Task_Citation)

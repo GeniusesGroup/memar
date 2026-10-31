@@ -8,7 +8,7 @@ Start Date: 2026-10-30
 A rule of this repository, held for [Modularity](../../modularity.md). It applies wherever an abstraction, a service or a widget is declared, in every language.
 
 ## The rule
-- **A concept is declared once, in the module whose subject it is, with everything that belongs to it:** its abstraction, how it is stored and retrieved, how it is validated, how it is shown, and the errors of its refusals. A title is the title module's; a priority, the plan's; a label, the label module's; a project and its name, the project module's.
+- **A concept is declared once, in the module whose subject it is, with everything that belongs to it:** its abstraction, how it is stored and retrieved, how it is validated, how it is shown, and the errors of its refusals. A title is the title module's; a priority, the task's; a label, the label module's; a project and its name, the project module's.
 - **Another module imports the owner's declaration and declares none of its own.** It does not wrap the concept in a type of its own, does not write again a member the owner declares (a field embeds the owner's `Field_` abstraction), and does not write again the check, the display or the refusal of the owner.
 - **Before declaring anything, search for its owner** (`memar content search`, `memar content find`, and the folders of `modules` and `modules-plugable`), by the term and by what it is. A thing found is imported.
 - **A missing abstraction of an owner is the owner's gap.** It is recorded as a task for the owner's module and waits there; the module that needed it does not fill it with a copy.

@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Report in "modules-plugable/knowledge/documentation/report/protocol/report.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+
+tp Report_Check ab {
+	Service
+}
+
+tp CheckReport mt (self Report_Check) (written Text) (report Report, err Error)
