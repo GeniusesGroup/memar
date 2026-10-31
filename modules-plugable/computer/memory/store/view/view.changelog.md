@@ -91,3 +91,46 @@
 
 #### What changed
 - Removed: from "The cases" the list of cases and the two the build added; from "Selected by preferences" the name of the preferences function and the details of the registry and the answer; they are `protocol/view.kh` and the `view-*.kh` files, `errors/errors.kh` and `tests/view.py`. Kept: placement, the reasons for a function of two things, never committed, built on demand, selected by preferences, never cleaning a folder in use.
+
+---
+
+### Memory View: the preference form and the folder-in-use mechanics are linked
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - second reduction of the remaining restatements
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: the `class=folder` form of the key `view` (now [`view-preference.eng.kh`](protocol/view-preference.eng.kh)) and the mechanics of the list the builder keeps (now [`view-listing.eng.kh`](protocol/view-listing.eng.kh)).
+- Kept: why the folder is never cleaned, and that a refused build leaves it as it was.
+
+---
+
+### Memory View: the preference and the never-committed mechanics are linked
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - fixes after review
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - edited the document
+
+#### What changed
+- "Never committed" keeps the reason; "Selected by preferences" links [`view-preference.eng.kh`](protocol/view-preference.eng.kh). The plan for the Task's presentation is now an entry in [`view.handoff.md`](view.handoff.md).
+
+---
+
+### The reduction of this document to concept, reasons and trade-offs is reviewed
+- Time: 2026-10-31T10:00:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - A fresh AI reviewer (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed, approved
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reduced the document, fixed the findings of two earlier reviewers
+
+#### What changed
+- Claim reviewed, quoted: "state the concept, the reasons and the trade-offs and restate no code or Khayyam; every fact they dropped has a home in a .kh / *.eng.kh, in code, or in a document or handoff they link to; and no reason, trade-off, owner ruling or placement decision was lost." Evidence: `memar content check` on the six folders (0 problems); the diff of each document against its base commit, each removed passage grepped for its new home; the three defects an earlier reviewer found were checked fixed. Verdict: permitted. The reviewer left minor notes: a few sentences in `record.md` and `git-store.md` still repeat an `*.eng.kh` while carrying a reason, and the requirement that a `get` of many addresses costs no process per address has its home only in `store-stats.eng.kh` and `git-store.md`.
