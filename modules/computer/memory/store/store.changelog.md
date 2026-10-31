@@ -67,3 +67,34 @@
 
 #### Considered and not done
 - The Khayyam was not compiled or parsed: no tool of this repository parses it, so what the review establishes is conformance to the rules and to the Python's behaviour, not that the files are valid Khayyam.
+
+---
+
+### Memory Store: the document states the concept and the reasons, and restates no contract
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../modules-plugable/knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed from "The contract": the operations and their answers, the parameters of each call, the list of batch outcomes, the guarantees as lists, the capabilities, limits and `stats`, the seam, the list of what an adapter document states, and the git plumbing command list; they stand in `protocol/*.kh` (with `*.eng.kh`) and `errors/errors.kh`. "The cases this module owes" lost its description of the cases (now the suite, `conformance.md`). Kept as reasons: why the contract is parametric, why one atomic batch, why `state` and `changes`, why SHA-256 and one algorithm, why Unavailable is not Absent, why one writer location, nothing is removed, why derived structures are rebuildable, why no floor, why the seam, why the caller closes the store (`Close`), and "What stands where".
+
+---
+
+### A `Close` of the contract was proposed and not added
+- Time: 2026-10-31T09:00:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - the redo of the memory store contract
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — decided after a fresh reviewer's finding; no `approved` is recorded
+
+#### What changed
+- The earlier record's remark that nothing reachable from a `Record` closes its store no longer holds: `Record.close` and the `memory` service close the store they opened when it has a `close`.
+- The contract declares no `Close`.
+
+#### Considered and not done
+- A `Close` on the `Store` abstraction: a fresh reviewer found it declared for every store and required of none (volatile has nothing to release), returning an error no realization returned, and disagreeing with the `Close` that `git-store` declares. Closing stays the adapter's own declaration.

@@ -10,6 +10,11 @@ Each is **Tentative**: taken by task `20261026-T144222Z-11720` (step 1 of `20261
 - **`changes-sees-other-process` is a case of the `shared` group**, since it needs a second process; on an adapter that does not declare `shared_between_processes` it does not run.
 - **The `lockable` group is coded in the module that declares the capability** (`modules-plugable/computer/memory/store/lockable/lockable.py`), as [Memory Handoff](../memory.handoff.md#the-division-of-the-memory-contract-into-modules-2026-10-26-tentative) says, and passed to the runner by an adapter's tests; the build task's plan listed it with the suite. Its protocol is `lockable/protocol/lockable.py`, over an address: `lock(address)` waits until the handle holds it and answers what it holds, `unlock(address, value)` writes the value when one is given and releases, a Conflict once the lease has lapsed; the lease is the store's limit `lease`, in seconds, since `lockable.kh` takes no lease and the record task found it is no parameter of `Lock`. `lock-refused-when-not-lockable` is read as "a store offers `lock` exactly when it declares `lockable`", because no reason names a capability not declared. `lockable.kh` beside it still takes a record id and is task `20261024-T052938Z-22844`'s file, not edited here. Changing it costs the protocol and the group.
 
+### Found during the redo (2026-10-30), Tentative notes
+Found by task `20261026-T200842Z-21460` (step S4d); notes, not questions.
+- **Task `20261030-T051847Z-13004` (critique of the `detail.kh` text) may change the text of the `*.eng.kh` files** that hold the human-facing text of the contract, since `Summary`, `Overview` and `DevActionNote` are written there; the documents of the memory layer link to those files and restate none of the text.
+- **The Khayyam has no enum, union, Optional, constant or generic**, so a union is written as a marker abstraction and an optional value as a (value, given) pair. The contract's answers (Found, Absent, Unavailable; Committed, Conflict, Refused) are marker abstractions for that reason, and changing that waits for the language.
+
 ## Open Questions
 
 ### Is the `lockable` capability built on a `Locker` that the sync module refuses as a concept?
@@ -25,3 +30,38 @@ Each is **Tentative**: taken by task `20261026-T144222Z-11720` (step 1 of `20261
 - Anchor: [Memory Store → The contract](store.md#the-contract).
 - Blocks: nothing now; a back edge into `store` would go unseen.
 - Asked: 2026-10-26, Claude (task `20261026-T144222Z-11720`), for Omid Hekayati.
+
+### What does `changes` answer: every written address, or only the addresses whose value changed?
+- State: `volatile` answers every written address, and `git-store` answers only the addresses whose value changed, because it compares trees, so an address rewritten with the value it held is missing. The contract does not say which.
+- Options: every written address, which `git-store` cannot give without a record of the batch (recommended against: it costs the adapter its tree comparison); or only the addresses whose value changed, which `volatile` gives by comparing the value before and after, and which no derived structure keyed by value misses anything by.
+- Anchor: [Memory Store → The contract](store.md#the-contract), "Why `state` and `changes`".
+- Blocks: nothing now; a derived structure that counts writes would differ between adapters.
+- Asked: 2026-10-30, Claude (task `20261026-T200842Z-21460`), for Omid Hekayati.
+
+### What does the contract say of a `since` the store does not know, and of `state` and `stats` on a replicated or fallback adapter?
+- State: the contract's Refused conditions for `changes` do not name a `since` the store does not know (the Tentative decision above reads it as Refused), and `state` and `stats` have no Unavailable answer, though an adapter that is replicated or has a fallback can fail to answer them.
+- Options: add the Refused condition and the Unavailable answers to the contract and its cases (recommended: the adapters already meet them in fact); or leave both to the adapter.
+- Anchor: [Memory Store → The contract](store.md#the-contract), "Why Unavailable is not Absent".
+- Blocks: the realization of the Khayyam, which cannot type an answer the contract lacks.
+- Asked: 2026-10-30, Claude (task `20261026-T200842Z-21460`), for Omid Hekayati.
+
+### What does the contract say of a held range when dense and capacity disagree with the address length?
+- State: `volatile` refuses at build, as Malformed, a held range when the store is dense and its capacity and the address length disagree; the contract is silent on it.
+- Options: state the refusal in the contract and add a case (recommended); or leave it to the adapter's build.
+- Anchor: [Memory Store → The contract](store.md#the-contract), "Why the contract is parametric".
+- Blocks: nothing now.
+- Asked: 2026-10-30, Claude (task `20261026-T200842Z-21460`), for Omid Hekayati.
+
+### Which of the stale Go-era `.kh` files of `record` and `lockable` are replaced, and which deleted?
+- State: `record/protocol/` (`model.kh`, `save-options.kh`, `data_model.kh`, the `gui-widget-*` files), `record/services/` and `lockable/protocol/lockable.kh` still declare the Go-era design beside the Khayyam of the redo; the redo edited and removed none of them.
+- Options: replace each by the Khayyam of the redo and delete the rest (recommended; `uuid.kh`, `uuid.observers.kh` and `data.kh` stay, repointed, since other modules import them); or keep them until the moves task.
+- Anchor: [Memory Record → The Go-era Record model this contract replaces](../../../../modules-plugable/computer/memory/store/record/record.md#the-go-era-record-model-this-contract-replaces).
+- Blocks: one record abstraction in the folder.
+- Asked: 2026-10-30, Claude (task `20261026-T200842Z-21460`), for Omid Hekayati.
+
+### The slow tier of `git-store` cannot finish within 900 seconds without shortening its rounds: what should its tests assert?
+- State: two runs of `batch-visible-whole` (about 7 minutes each), `model-equivalence` and `kill-during-batch-is-atomic` cannot finish within 900 s unless their rounds are shortened, which changes what the tests assert.
+- Options: shorten the rounds and state in the case what the shorter run still shows; or keep the rounds and raise the budget of the case; or move the slow tier to a separate, named run.
+- Anchor: [Memory Git Store → How it meets the suite](../../../../modules-plugable/computer/memory/store/git-store/git-store.md#how-it-meets-the-suite).
+- Blocks: a full green run of the `git-store` tests inside the bound.
+- Asked: 2026-10-30, Claude (task `20261026-T200842Z-21460`), for Omid Hekayati.
