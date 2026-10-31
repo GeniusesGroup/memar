@@ -139,7 +139,7 @@ Considered a generic `coding-style.md` as the eventual home for style-adjacent c
 - Cited:
   - [khayyam-design_philosophy.md] — Depends_on: this entry absorbs everything that remained in that document — its Summary and Motivation content, and its front-matter Citations and Contributors — completing its retirement. That document should now be deleted from the repository; nothing in it is not already reflected here or in khayyam-abstraction.md.
   - [Terminology](../terminology.md) — Depends_on: governs how capsule/abstraction/behavior are defined across Memar, carried forward from `khayyam-design_philosophy.md`'s own Citations.
-  - [Protocol](../protocol.md) — Depends_on: per Protocol's definition, Khayyam's method/abstraction model is itself an instance of a protocol; this framing is inherited even though "Protocol" is not named verbatim in this document's body, carried forward from `khayyam-design_philosophy.md`'s own Citations.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: per Protocol's definition, Khayyam's method/abstraction model is itself an instance of a protocol; this framing is inherited even though "Protocol" is not named verbatim in this document's body, carried forward from `khayyam-design_philosophy.md`'s own Citations.
   - [Framework](../framework.md) — Depends_on: the separation of encapsulation syntax from governance enforcement follows the framework/language/OS separation defined there, carried forward from `khayyam-design_philosophy.md`'s own Citations.
   - [Modeling](../modeling.md) — Depends_on: modeling is a recurring concept throughout this document's philosophy-derived content — system-modeling language, domain modeling — as a direct application of Modeling's definitions to language design, carried forward from `khayyam-design_philosophy.md`'s own Citations.
 - Contributors:
@@ -391,7 +391,7 @@ Considered placing the topic in `khayyam-runtime.md` instead, since Unikernel is
 - Time: 2026-09-23T05:38:39Z
 - Type: Fixed
 - Cited:
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract defines a contract as parties, obligations, and commitments; an abstraction names required behavior only.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract defines a contract as parties, obligations, and commitments; an abstraction names required behavior only.
   - [Abstraction in Khayyam](./abstraction.md) — Reference: the document-level conflation was corrected there first; this entry extends that correction to this document.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided

@@ -1,5 +1,5 @@
 # Protocol Handoff
-Open work for `protocol.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
+Open work for `protocol.md`. Entries are mutable current state — revised as each item moves, removed when it resolves or is dropped. See [documentation-handoff.md](../../../modules-plugable/knowledge/documentation/handoff/handoff.md) for what a handoff is.
 
 ## Open Questions
 
@@ -17,16 +17,20 @@ Open work for `protocol.md`. Entries are mutable current state — revised as ea
 - Next: examine an actual cross-organization case, a Memar protocol taken up outside Memar, before proposing any coordination mechanism.
 
 ### Runtime Conformance Checks
-- State: protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the [EBO principle](./type.md#explicit-behavior-ownership).
+- State: protocols are fundamentally static specifications. Should there ever be optional runtime conformance verification? Generally no, but some domains (e.g., security protocols) might benefit. This is a tooling question that interacts with the [EBO principle](../../../docs/type.md#explicit-behavior-ownership).
 - Next: revisit with the conformance document (see Anticipated Work).
 
 ### Protocol vs Standard boundary
-- State: the Protocol/Standard split and the rule that conformance is never inferred from a label are carried in the body ([Standard as third-party attestation](./protocol.md#protocol-vs-standard), [conformance is never inferred from a label](./protocol.md#protocols-and-external-observers)), and the same section now states how Memar's own vocabulary follows that definition. Two residues remain: whether [Terminology](./terminology.md) should carry that consequence as a statement of its own, and whether a dedicated document for it is wanted.
-- Next: settle in a terminology session ([Terminology](./terminology.md)).
+- State: the Protocol/Standard split and the rule that conformance is never inferred from a label are carried in the body ([Standard as third-party attestation](./protocol.md#protocol-vs-standard), [conformance is never inferred from a label](./protocol.md#protocols-and-external-observers)), and the same section now states how Memar's own vocabulary follows that definition. Two residues remain: whether [Terminology](../../../docs/terminology.md) should carry that consequence as a statement of its own, and whether a dedicated document for it is wanted.
+- Next: settle in a terminology session ([Terminology](../../../docs/terminology.md)).
 
 ### Attestation of Memar's own Protocols
 - State: protocol.md defines Standard as third-party attestation of institutionalization or maturity, but does not settle who plays the attesting role for protocols produced within the Memar ecosystem itself. Whether self-declaration by an implementing contributor is sufficient, whether a dedicated independent body is eventually required, and whether the answer may differ per protocol (a core ecosystem protocol versus a single organization's internal one) are all open. Until resolved, no conformance claim about a Memar protocol should be read as carrying standard status in the precise sense defined in protocol.md.
 - Next: decide when the first external conformance claim is made about a Memar protocol.
+
+### Existing `dt-*.kh` files and services without their own `protocol/`
+- State: the rule ([A Protocol Is Written in a `protocol/` Folder](./rules/protocol-folder/protocol-folder.md)) forbids the `dt-` prefix and asks each service and widget for its own `protocol/`. Existing modules (label, connection, device and others) still hold `dt-*.kh` files and services whose types stand in the main `protocol/`; no check runs the rule.
+- Next: rename and split module by module when each is next worked on; a check for the rule is a task of its own.
 
 ## Anticipated Work
 - **Protocol Conformance document:** a dedicated document defining how conformance to a protocol is verified, including the role of testing, formal verification, and tooling.

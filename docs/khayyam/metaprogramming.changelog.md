@@ -71,7 +71,7 @@ The body already conformed to `documentation-explanation.md` (Abstract; Introduc
 - Type: Fixed
 - Cited:
   - [Abstraction in Khayyam](./abstraction.md) — Reference: pure-specification wording.
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Mimo](../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../CONTRIBUTORS.md#opencode)) — applied

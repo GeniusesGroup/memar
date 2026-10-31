@@ -6,7 +6,7 @@
 - Time: 2026-07-10T00:00:00Z (approximated from Start Date; original drafting time not recorded)
 - Type: Added
 - Cited:
-  - [Protocol](../protocol.md) — Depends_on: Protocol's definition as a pure declarative specification underpins how abstraction inclusion creates requirement-inheritance relationships between abstractions.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol's definition as a pure declarative specification underpins how abstraction inclusion creates requirement-inheritance relationships between abstractions.
   - [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) — Depends_on: EBO is the principled foundation for rejecting behavior transfer between capsules; this document specifies its language-level consequences.
 - Propagates to:
   - khayyam.md: Done — khayyam.md's abstraction/conformance framing reflects this document's placement model of inheritance.
@@ -115,7 +115,7 @@
 - Time: 2026-09-23T05:38:39Z
 - Type: Fixed
 - Cited:
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract.
   - [Abstraction in Khayyam](./abstraction.md) — Reference: pure-specification wording.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided

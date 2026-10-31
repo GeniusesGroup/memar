@@ -98,7 +98,7 @@ Conceptually closest to Rust's explicit `impl Trait for Type` announcing intent 
 - Type: Fixed
 - Cited:
   - Abstraction in Khayyam (`docs/khayyam/abstraction.md`) — Reference: implicit structural satisfaction is specified there; this document now points at it instead of a heading khayyam.md no longer carries.
-  - [Protocol](../../../docs/protocol.md) — Depends_on: Protocol vs Contract.
+  - [Protocol](../../knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract.
 - Contributors:
   - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
   - [Mimo](../../../CONTRIBUTORS.md#mimo) (mimo-v2.6-flash via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — applied

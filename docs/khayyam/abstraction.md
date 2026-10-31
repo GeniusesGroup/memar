@@ -6,7 +6,7 @@ ID: "495493"
 ---
 
 # Abstraction in Khayyam
-Abstractions in Khayyam occupy a conceptual space closely related to [IDL (Interface Description Language)](https://en.wikipedia.org/wiki/Interface_description_language) as used in protocol packages: both describe behavioral requirements that specify *what* is required without prescribing implementation details. Just as an IDL defines the data and operations of a protocol's exchanges, a Khayyam abstraction defines the method signatures a capsule must expose — the language-level counterpart of a protocol's declared requirements. (The abstraction itself is not a contract: it names required behavior, not parties, obligations, or commitments — see [Protocol vs Contract](../protocol.md#protocol-vs-contract).)
+Abstractions in Khayyam occupy a conceptual space closely related to [IDL (Interface Description Language)](https://en.wikipedia.org/wiki/Interface_description_language) as used in protocol packages: both describe behavioral requirements that specify *what* is required without prescribing implementation details. Just as an IDL defines the data and operations of a protocol's exchanges, a Khayyam abstraction defines the method signatures a capsule must expose — the language-level counterpart of a protocol's declared requirements. (The abstraction itself is not a contract: it names required behavior, not parties, obligations, or commitments — see [Protocol vs Contract](../../modules/knowledge/protocol/protocol.md#protocol-vs-contract).)
 
 This document consolidates all design decisions and resolved policies related to the `ab` (abstraction) type in Khayyam into a single authoritative document.
 
@@ -42,7 +42,7 @@ Khayyam needs a single, coherent abstraction model that is consistent with its c
 ## Explanation
 
 ### What Is an Abstraction in Khayyam?
-Think of an abstraction as a **behavioral specification** — a declaration that a capsule will respond to certain method calls. The abstraction itself is inert: it has no state, no logic, and no runtime presence. It exists purely as a compile-time declaration of required behavior — not a contract: it creates no parties, no reciprocal obligations, and no commitments (see [Protocol vs Contract](../protocol.md#protocol-vs-contract)).
+Think of an abstraction as a **behavioral specification** — a declaration that a capsule will respond to certain method calls. The abstraction itself is inert: it has no state, no logic, and no runtime presence. It exists purely as a compile-time declaration of required behavior — not a contract: it creates no parties, no reciprocal obligations, and no commitments (see [Protocol vs Contract](../../modules/knowledge/protocol/protocol.md#protocol-vs-contract)).
 
 When you write `tp Reader ab`, you are declaring: "There exists a concept called `Reader`. The methods it requires are defined separately. Any capsule that provides those methods can be used wherever a `Reader` is expected."
 

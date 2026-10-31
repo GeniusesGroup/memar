@@ -7,7 +7,7 @@
 - Type: Added
 - Cited:
   - [Abstraction in Khayyam](./abstraction.md) — Extends: supplies the abstraction type and its mechanics; this document classifies the polymorphism it enables and the syntaxes Khayyam rejects.
-  - [Protocol](../protocol.md) — Depends_on: defines Protocol as a pure declarative specification used to explain why abstractions carry no behavior.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: defines Protocol as a pure declarative specification used to explain why abstractions carry no behavior.
   - [Type](../type.md) — Depends_on: the type model defines the concepts and categories on which polymorphism operates.
   - [Explicit Behavior Ownership](../type.md#explicit-behavior-ownership) — Depends_on: its requirement for a single visible behavior owner grounds the rejection of generic type-parameter syntax.
 - Propagates to:
@@ -255,7 +255,7 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 - Time: 2026-09-23T05:38:39Z
 - Type: Fixed
 - Cited:
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract — developer/compiler wording no longer uses "contract".
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract — developer/compiler wording no longer uses "contract".
   - [Abstraction in Khayyam](./abstraction.md) — Reference: the compiler-facing carrier named here is an abstraction, not a contract.
 - Contributors:
   - [Omid Hekayati](../../CONTRIBUTORS.md#omid-hekayati) — decided
@@ -276,7 +276,7 @@ This cost is partially mitigated by two factors. First, Khayyam's ecosystem incl
 - Time: 2026-09-23T08:28:49Z
 - Type: Fixed
 - Cited:
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract — *contract* is parties, obligations, and commitments, not the name of Khayyam's polymorphism model.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract — *contract* is parties, obligations, and commitments, not the name of Khayyam's polymorphism model.
   - [Abstraction in Khayyam](./abstraction.md) — Reference: an abstraction is a behavioral specification, not a contract.
 - Contributors:
   - [Grok](../../CONTRIBUTORS.md#grok) (Grok 4.7 via [Cursor](../../CONTRIBUTORS.md#cursor)) — reviewed, applied

@@ -96,7 +96,7 @@ Conversely, two Types with different structures but the same name in the same co
 
 **Contextual scoping**: The concept "Customer" in a billing context is not the same concept as "Customer" in a shipping context, even though they share a name. A type system must provide a mechanism — modules, namespaces, or explicit context declarations — to scope Type identity.
 
-A context is the [level at which a model is offered](./protocol.md#who-defines-a-protocol), so two organizations each declaring `Customer` are two Types in two contexts, not one naming conflict.
+A context is the [level at which a model is offered](../modules/knowledge/protocol/protocol.md#who-defines-a-protocol), so two organizations each declaring `Customer` are two Types in two contexts, not one naming conflict.
 
 **The nominal enforcement requirement**: If `Age` and `Height` are nominally distinct Types, the type system must prevent their conflation — you cannot pass an `Age` where a `Height` is expected, even though both share the same representation. If the type system cannot observe this distinction, nominal identity is merely a naming convention, not a semantic property.
 

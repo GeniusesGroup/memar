@@ -44,7 +44,7 @@ The definitions in this document are not arbitrary. They are selected to satisfy
 
 1. **Scientific grounding.** Each definition is grounded in established academic or philosophical traditions where such traditions exist, and is stated with enough precision to survive criticism. This is consistent with the Terminology document's preference for Scientific-layer terminology as the foundation for architectural reasoning.
 
-2. **Maximal generality.** Each definition is broad enough to encompass the full range of entities the term is used to describe across disciplines — physical systems, conceptual systems, social systems, computational systems, and organizational systems — without becoming so vague that it ceases to be useful. For Protocol this constraint is bounded rather than served, and the bound is the document's own: a discipline that cannot state a Protocol's input and the procedure by which a party that did not write its rules reaches a verdict is not made more general by being given the word. Memar declines the word there, and [Protocol → What is a Protocol?](./protocol.md#what-is-a-protocol) carries the definition that does apply.
+2. **Maximal generality.** Each definition is broad enough to encompass the full range of entities the term is used to describe across disciplines — physical systems, conceptual systems, social systems, computational systems, and organizational systems — without becoming so vague that it ceases to be useful. For Protocol this constraint is bounded rather than served, and the bound is the document's own: a discipline that cannot state a Protocol's input and the procedure by which a party that did not write its rules reaches a verdict is not made more general by being given the word. Memar declines the word there, and [Protocol → What is a Protocol?](../modules/knowledge/protocol/protocol.md#what-is-a-protocol) carries the definition that does apply.
 
 3. **Internal consistency.** The definitions are mutually consistent: System is defined independently of its implementation, and Architecture is defined in terms of System; Technology is defined as applied knowledge directed at systems, not as artifacts; and the relationships between all concepts form a coherent graph rather than a collection of independent assertions.
 
@@ -69,7 +69,7 @@ Before the detailed definitions, a brief orientation to how the key concepts rel
 - **Knowledge** and **Science** are the broader epistemic foundations from which technology is derived.
 - A **Model** is a simplified representation of a system or aspect of reality, used to reason about it.
 - An **Abstraction** is the mechanism by which models reduce complexity — preserving what matters and discarding what does not, relative to a specific purpose.
-- A **Protocol** (defined in detail in its [Protocol document](./protocol.md)) is a named set of declarative rules that governs processes within a system and can be checked against a stated input — a ruleset that makes interaction predictable to participants who did not write it.
+- A **Protocol** (defined in detail in its [Protocol document](../modules/knowledge/protocol/protocol.md)) is a named set of declarative rules that governs processes within a system and can be checked against a stated input — a ruleset that makes interaction predictable to participants who did not write it.
 - A **Framework** is a description of a system. It characteristically exists prior to, and independently from, any specific realization of the system it describes. A framework does not describe a particular realized system; it defines a space within which multiple systems may be created, understood, or evaluated. See the [Framework document](./framework.md) for Memar's specific application of this concept.
 - An **Implementation** is a concrete realization of a system's design, expressed in specific technologies, languages, and tools.
 - An **ecosystem** is a System whose constituents are themselves Systems, interacting within a shared environment, where no design fixes the Structure of the whole — it emerges from the interactions.
@@ -90,7 +90,7 @@ This definition is deliberately general. It is drawn from and consistent with th
 
 **Boundary.** A system has a boundary that distinguishes its internal elements from its external environment. The boundary is not necessarily a physical barrier; it is the point at which the criteria for system membership change. In a software system, the boundary may be defined by a deployment unit, a module, or an API surface. In an organizational system, the boundary may be defined by membership, role, or contractual relationship. The boundary is an analytical choice made by the observer, not an inherent property of the system's material — the same collection of elements may be analyzed as one system or as multiple overlapping systems depending on where the observer places the boundary.
 
-Where an organization develops its own model of a System, that level is its own Boundary: a model and the protocols it carries mean what they mean at the level of the organization that offers them ([Protocol → Who Defines a Protocol](./protocol.md#who-defines-a-protocol)), and two organizations' draws of the same elements are therefore two Systems, each internally consistent, neither a mis-drawn version of the other.
+Where an organization develops its own model of a System, that level is its own Boundary: a model and the protocols it carries mean what they mean at the level of the organization that offers them ([Protocol → Who Defines a Protocol](../modules/knowledge/protocol/protocol.md#who-defines-a-protocol)), and two organizations' draws of the same elements are therefore two Systems, each internally consistent, neither a mis-drawn version of the other.
 
 **Emergence.** A system exhibits behavior that emerges from the interaction of its elements but is not reducible to the properties of any individual element. This is a core insight of systems theory and is what distinguishes a system from a mere collection. A pile of sand is a collection; a sand dune — which has shape, stability properties, and responses to wind that no individual grain possesses — is a system.
 
@@ -281,7 +281,7 @@ One practical consequence follows directly: what any System knows of another Sys
 ### Protocol
 Protocols exist *within* systems. A protocol governs one or more processes within a system, and the system provides the boundary that gives the protocol its scope. This relationship is foundational rather than incidental: a system without protocols governing its internal processes is not a system in the systems-theory sense — it is merely a collection of independent elements with no defined interactions. Protocol, Process, and System co-arise; you cannot meaningfully discuss one without the others.
 
-Protocol's full definition, ontology, and relationship to Process are defined in the [Protocol document](./protocol.md).
+Protocol's full definition, ontology, and relationship to Process are defined in the [Protocol document](../modules/knowledge/protocol/protocol.md).
 
 ### Framework
 A **framework** is a description of a system.

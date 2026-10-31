@@ -6,11 +6,11 @@
 - Time: 2026-06-21T00:00:00Z
 - Type: Added
 - Cited:
-  - [Terminology](./terminology.md) — Foundation Alignment: terminology governs how concepts are understood across protocol.
+  - [Terminology](../../../docs/terminology.md) — Foundation Alignment: terminology governs how concepts are understood across protocol.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued, claimed
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — drafted, argued
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM, high effort) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued, claimed
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) (GPT-5.5) — drafted, argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM, high effort) — rewrote
 
 #### What changed
 - Claimed the core ontological definition of Protocol; the Protocol–Process–System relationship; the Protocol–Science–Methodology connection; the critique of "standard" as third-party attestation; the diplomatic and scientific protocol examples; the methodology-based distinction between Protocol and Specification (Omid Hekayati).
@@ -34,8 +34,8 @@
 - Time: 2026-06-25T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued.
-  - [Super Z](../CONTRIBUTORS.md#super-z) — rewrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued.
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) — rewrote.
 
 #### What changed
 - Established the inseparable relationship between protocols, processes, and systems, drawing on systems theory.
@@ -53,8 +53,8 @@
 - Time: 2026-07-01T00:00:00Z
 - Type: Fixed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Claude Sonnet 5, medium effort with thinking) — reviewed, rewrote
 
 #### What changed
 - Distinguished idea/discovery from structured lifecycle development within the "Methodologically produced" property, so it does not read as requiring committee-style production from the first moment of ideation, while still holding that an unrefined idea or draft does not by itself carry Protocol status.
@@ -71,8 +71,8 @@
 - Propagates to:
   - terminology.md: Done — the simplified, slightly inconsistent Protocol/API-specification treatment that previously lived in Terminology's worked examples was removed in favor of this document's fuller treatment.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) — rewrote.
 
 #### What changed
 - Added a dedicated "Protocol vs API Specification" section, migrating and substantially expanding the treatment that previously lived, in simplified form, inside Terminology's worked examples — keeping Terminology free of dependencies on other documents while giving the API-specification case a treatment grounded in this document's finalized definitions.
@@ -84,10 +84,10 @@
 - Time: 2026-07-14T00:00:00Z
 - Type: Fixed
 - Cited:
-  - [System](./system.md) — Depends_on: System is now formally defined; this document's Protocol-Process-System ontology depends on System being a defined concept.
+  - [System](../../../docs/system.md) — Depends_on: System is now formally defined; this document's Protocol-Process-System ontology depends on System being a defined concept.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote.
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) — rewrote.
 
 #### What changed
 - Restored a "Foundational Dependency" item under Unresolved Questions, narrowed to Process only, so the still-open half was not silently dropped.
@@ -100,12 +100,12 @@
 - Time: 2026-08-15T00:00:00Z
 - Type: refactor
 - Cited:
-  - [Process](../modules/process/process.md) — Depends_on: Process now has its own document; this document's Protocol-Process-System ontology depends on it the same way it depends on System.
+  - [Process](../../process/process.md) — Depends_on: Process now has its own document; this document's Protocol-Process-System ontology depends on it the same way it depends on System.
 - Propagates to:
   - process.md: Done — no new content needed there; process.md's existing Process Composition topic already covers the nesting behavior this document previously duplicated.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - Trimmed the process-nesting explanation in "What is a Protocol?" and the "Process-bound" property — both previously repeated the same nesting explanation now covered in full by process.md's Process Composition topic — to a pointer.
@@ -122,8 +122,8 @@
 - Time: 2026-08-15T00:00:00Z
 - Type: refactor
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) — rewrote
 
 #### What changed
 - Restructured this document from `Summary/Motivation/Guide-level Explanation/Reference-level Explanation/Drawbacks/Rationale and Alternatives/Prior Art/Unresolved Questions/Future Possibilities/Change Rationale` into the current template (`Abstract → Introduction → Explanation → Results → Discussion`), per `documentation-explanation.md`.
@@ -146,8 +146,8 @@ Considered leaving IETF's own "RFC 6410" and similar citations unchanged case-by
 - Propagates to:
   - modularity.md: Done — its "Module, Process, and Protocol" section and its "Module Among Related Concepts" table both described Protocol as governing "interactions within or between Systems," which does not match this document's actual chain (System contains Processes, governed by Protocols); both were corrected to route through Process, with a link back to this document's "What is a Protocol?" topic.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Claude](../CONTRIBUTORS.md#claude) — reviewed, rewrote
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Claude](../../../CONTRIBUTORS.md#claude) — reviewed, rewrote
 
 #### What changed
 - This document's own content needed only two changes:
@@ -167,9 +167,9 @@ Considered leaving the "Terminology Governance document" Future possibility in p
 - Time: 2026-08-25T00:00:00Z
 - Type: Changed
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — argued
-  - [ChatGPT](../CONTRIBUTORS.md#chatgpt) — argued
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — argued
+  - [ChatGPT](../../../CONTRIBUTORS.md#chatgpt) — argued
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — drafted, reviewed, applied
 - Propagates to:
   - agency.md: Done in this same pass — "From Observer to Agent" cross-links this topic.
 
@@ -192,8 +192,8 @@ Considered leaving the "Terminology Governance document" Future possibility in p
 - Time: 2026-08-25T00:00:00Z
 - Type: Added
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — requested
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — requested
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — reviewed, applied
 - Propagates to:
   - protocol.per.md: Done — item-by-item review recorded in this entry confirmed all substantive content present here in evolved form, transferred the two genuinely missing items, and the file is deleted (merged into this English document in language unification, not merely dropped).
 
@@ -218,7 +218,7 @@ Considered leaving the "Terminology Governance document" Future possibility in p
 - Propagates to:
   - protocol.handoff.md: Created - open questions and future possibilities moved there.
 - Contributors:
-  - [Super Z](../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
+  - [Super Z](../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash) — moved
 
 #### What changed
 - The body's fixed top-level sections are now `Abstract`, `Introduction`, `Explanation`, `Results` only (Super Z - applied the finalized documentation method).
@@ -259,7 +259,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 - Propagates to:
   - protocol.handoff.md: Done — the "Protocol vs Specification Identity" open question was deleted; its answer already stands in `protocol.md` (handoff: no entry of its own).
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, applied
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, applied
 
 #### What changed
 - `protocol.handoff.md` no longer carries the open question "Protocol vs Specification Identity" ("is a protocol identical to its specification, or does the conceptual protocol exist independently of any written document?"). [Protocol → Protocol vs Specification](./protocol.md#protocol-vs-specification) already answers it for this framework's purposes: "for practical purposes in Memar, they are treated as distinct: the protocol is the conceptual entity (the rules governing a process); the specification is its documentation", and the body names why the two cannot coincide — a protocol "requires a methodology for its production", so the methodology produces the protocol and the specification records it.
@@ -269,7 +269,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 #### Considered and not done
 - Narrowing the question rather than deleting it — not taken, as a reworded version of the same inquiry. What would remain undecided is the philosophical question the body already names as outside its practical ruling, and a handoff entry phrased that way would schedule a question no document asks as work.
 - Marking the entry Answered rather than deleting it — not taken. A resolved question is state the base document now carries; a marker here would duplicate the answer and guarantee drift.
-- Recording the residual philosophical question in [Terminology](./terminology.md)'s own open work — not taken. Whether protocol and specification are identical in general is a question about Memar's own vocabulary, but nothing in this chat examined it, and attributing an unexamined direction to a document this chat did not touch would put a claim in someone else's record.
+- Recording the residual philosophical question in [Terminology](../../../docs/terminology.md)'s own open work — not taken. Whether protocol and specification are identical in general is a question about Memar's own vocabulary, but nothing in this chat examined it, and attributing an unexamined direction to a document this chat did not touch would put a claim in someone else's record.
 
 ---
 
@@ -280,7 +280,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
   - protocol.handoff.md: Done — the cross-module and cross-organizational entry's unresolved clause removed, the external-consumer entry deleted as already answered, and the Standard-boundary entry's answered residual replaced by the two residues that remain
   - terminology.md: Pending — whether the Standard definition's consequence for Memar's own vocabulary is restated as a statement of Terminology's own, and whether a dedicated document for it is wanted, is not this document's to decide
 - Contributors:
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - `### Protocol, Process, and System` now states that a Protocol's boundary is the process it governs rather than the Module that process passes through: a process crossing several Modules is one process, and the Protocol governing it is one Protocol rather than one per Module.
@@ -307,8 +307,8 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
   - modeling.md: Pending — whether the definers claim as it applies to a model offered for a concept is restated as Modeling's own is not this document's to decide.
   - comparisons/llm-wiki.001.md: Pending — its survey of what Memar contributes to the Protocol concept says checkable conformance "remains a working hypothesis and open question in the current Proposed document", which is no longer what this document holds.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - The Abstract and [Protocol → What is a Protocol?](./protocol.md#what-is-a-protocol) now define a Protocol as a named set of declarative rules that govern one or more processes within a system **and that can be checked against a stated input**, the Abstract also carrying the boundary: requirements no procedure can settle are an opinion rather than a Protocol.
@@ -350,8 +350,8 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
   - protocols/computer/compiler.md: Done — the review-only enforcement sentence in *Methodology* now says what the directives decide and what is merely unchecked.
   - protocol.handoff.md: Done — the "Cross-Module and Cross-Organizational Protocols" entry carries the body's two answers and keeps only the coordination residue.
 - Contributors:
-  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — decided
-  - [Space Bunny Alpha](../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided
+  - [Space Bunny Alpha](../../../CONTRIBUTORS.md#space-bunny-alpha) (space-bunny via [OpenCode](../../../CONTRIBUTORS.md#opencode)) — argued, drafted, applied
 
 #### What changed
 - [Protocol → Conformance](./protocol.md#conformance) no longer defines conformance by a biconditional over signatures. An entity conforms when, against the stated input the Protocol names, it satisfies every requirement the Protocol declares; signatures are the instance verified statically, and the stated observable output the instance where the Protocol declares process behavior instead.
@@ -378,7 +378,7 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 - Time: 2026-10-12T09:45:00Z
 - Type: Reviewed
 - Contributors:
-  - [Claude](../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — reviewed
 
 #### What changed
 - Reviewed; no change needed. Checked the working tree against HEAD for `protocol.md` and `protocol.handoff.md`: the Abstract and *What is a Protocol?* (Verifiability as a fourth component), *Protocol Properties* (Verifiable), *Conformance* (decidable, per named Protocol, never joint), the new *Who Defines a Protocol* and the process-boundary paragraph, *Protocol vs Specification* (decidability, not production method), the scientific-method and diplomatic examples, the fifth consequence under *Protocol vs Standard*, the removal of *Protocol Ontology Candidates*, and the handoff's removed and narrowed entries.
@@ -387,3 +387,26 @@ Dissolved the Protocols-and-External-Observers topic's `#### Discussion` and the
 
 #### Considered and not done
 - The handoff's "Answered:" line in the cross-module entry restates answers the body holds, which an earlier entry here declined to mark. Not changed: the entry keeps a real residue, and the 2026-10-05 conformance entry records the pointer form as chosen.
+
+---
+
+### Protocol moves to its own module in the knowledge category
+- Time: 2026-10-31T14:30:00Z
+- Type: Moved
+- Cited:
+  - [Protocol Rule — A Protocol Is Written in a `protocol/` Folder](./rules/protocol-folder/protocol-folder.md) — the rule the move makes room for.
+- Contributors:
+  - [Omid Hekayati](../../../CONTRIBUTORS.md#omid-hekayati) — decided, argued
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) — drafted
+
+#### What changed
+- `docs/protocol.md`, `protocol.changelog.md` and `protocol.handoff.md` moved to `modules/knowledge/protocol/`, and every link that cited them, and every relative link they hold, was rewritten for the new place. The text of the body is unchanged.
+- The module gained a `README.md`, a `rules/` folder with the rule for writing a protocol, and `labels/topics.py`, which declares the label `protocol`.
+- The prose of the role `protocol/` in `module_ensure_folders.py` no longer says a service never has a `protocol/` of its own; it points at the rule. `modules/modules.md` names the module where it names the structural kind `protocol`.
+
+#### Deliberation
+- The owner ruled (2026-10-31) that the module is `modules/knowledge/protocol` (kernel, beside label and modularity), and that the label `protocol` is declared in its `labels/` and referred to from the skeleton and `modules/modules.md`, not defined again there.
+
+#### Considered and not done
+- **A pluggable placement (`modules-plugable/knowledge/protocol`) (rejected)**: the owner chose the kernel placement.
+- **Renaming the existing `dt-*.kh` files (not done)**: the rule forbids the prefix for new files; the existing ones are a separate rename.

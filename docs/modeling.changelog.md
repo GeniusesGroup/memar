@@ -7,7 +7,7 @@
 - Type: Added
 - Cited:
   - [Terminology](./terminology.md) — Depends_on: terminology governs how concepts are understood across all modeling discussions.
-  - [Protocol](./protocol.md) — Depends_on: defines Protocol as a pure declarative specification; modeling produces the domain structures that protocols then constrain.
+  - [Protocol](../modules/knowledge/protocol/protocol.md) — Depends_on: defines Protocol as a pure declarative specification; modeling produces the domain structures that protocols then constrain.
   - [System](./system.md) — Depends_on: defines Model and Abstraction at the conceptual level; this document builds on those definitions to specify how Memar performs modeling as an architectural activity.
 - Contributors:
   - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) — claimed

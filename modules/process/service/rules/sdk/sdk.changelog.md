@@ -80,7 +80,7 @@
 - Time: 2026-09-09T05:34:47Z
 - Type: Expanded
 - Cited:
-  - [Protocol](../../../../../docs/protocol.md) — Depends_on: the [Protocol vs Contract](../../../../../docs/protocol.md#protocol-vs-contract) distinction grounds the vocabulary rejection — a contract is a legal concept carrying parties and obligations; the SDK's subject is a declared interface, and calling it a contract imports obligations that do not exist here.
+  - [Protocol](../../../../knowledge/protocol/protocol.md) — Depends_on: the [Protocol vs Contract](../../../../knowledge/protocol/protocol.md#protocol-vs-contract) distinction grounds the vocabulary rejection — a contract is a legal concept carrying parties and obligations; the SDK's subject is a declared interface, and calling it a contract imports obligations that do not exist here.
   - [Networking](../../../../net/net.md) — Depends_on: the invocation reframing relies on Networking's scope position — a network exists wherever two computing entities exchange data ([Scope](../../../../net/net.md#scope)), not only between machines.
 - Propagates to:
   - gui.md: Done — the architecture position now says "keeps the service's declaration in exactly one place" (task 20261030-T151453Z-10624).

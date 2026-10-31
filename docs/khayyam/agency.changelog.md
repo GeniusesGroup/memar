@@ -184,7 +184,7 @@
 - Type: Fixed
 - Cited:
   - [Abstraction in Khayyam](./abstraction.md) — Depends_on: an abstraction names required behavior; it is not a contract.
-  - [Protocol](../protocol.md) — Depends_on: Protocol vs Contract.
+  - [Protocol](../../modules/knowledge/protocol/protocol.md) — Depends_on: Protocol vs Contract.
 - Propagates to:
   - abstraction.md: Done — the inbound anchor now names abstraction satisfaction.
   - agency.handoff.md: Done — both inbound anchors retargeted (handoff: no entry of its own).

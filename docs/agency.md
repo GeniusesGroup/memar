@@ -242,7 +242,7 @@ with:
 The same principle applies to software and organizations.
 
 #### From Observer to Agent
-Roles arise from relationships, and the same System may move between them. A common sequence: a System first observes another System from outside — frequently by coming to understand the protocols that govern the observed System's processes — and only afterwards enters a relationship in which it acts upon that System. Understanding a protocol ordinarily precedes acting under it; see [Protocol → Protocols and External Observers](./protocol.md#protocols-and-external-observers).
+Roles arise from relationships, and the same System may move between them. A common sequence: a System first observes another System from outside — frequently by coming to understand the protocols that govern the observed System's processes — and only afterwards enters a relationship in which it acts upon that System. Understanding a protocol ordinarily precedes acting under it; see [Protocol → Protocols and External Observers](../modules/knowledge/protocol/protocol.md#protocols-and-external-observers).
 
 The transition matters for modeling: "observer" and "agent" are positions relative to a relationship, not permanent types of the System occupying them. A patient who studies a hospital's complaint procedure and then files a complaint has not changed kind; the same System has moved from one role to another as new relationships formed. Modeling either role as an intrinsic property of the System freezes what is usually a fluid, repeatable shift.
 
