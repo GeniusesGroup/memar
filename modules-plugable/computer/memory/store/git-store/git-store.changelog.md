@@ -70,3 +70,32 @@
 
 #### What changed
 - Removed: from "What it declares" the capability and limit list; from "The plumbing it uses" the command list (kept as the constraint and its reasons); from "How it meets the suite" the list of cases per group; the file layout of the index and the constants of the retry and the lock age; the `lag` command. Their new home is `protocol/git-store*.kh`, `cases.py` and `tests/git-store.py`. Kept: one reference per class and the atomicity argument, the reference-namespace reasoning of 2026-10-30, the locks, the fallback, the publish and lag trade-offs, what it cannot do.
+
+---
+
+### Memory Git Store: namespace, publishing and limits are reduced to their reasons
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - second reduction of the remaining restatements
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: the names of the hosted namespaces and of the private references (now [`git-store-reference-namespace.eng.kh`](protocol/git-store-reference-namespace.eng.kh)); the push mechanics and the `now`/`soon` names (now [`git-store-publisher.eng.kh`](protocol/git-store-publisher.eng.kh) and [`git-store-publish-kinds.eng.kh`](protocol/git-store-publish-kinds.eng.kh)); the statement of the limits in "What it cannot do" (now [`git-store.eng.kh`](protocol/git-store.eng.kh)).
+- Kept: the opt-in fetch, client-owned multi-writer, gc and mirror, private references outside the public root, the lag trade-off, and the reasons for each limit.
+
+---
+
+### The reduction of this document to concept, reasons and trade-offs is reviewed
+- Time: 2026-10-31T10:00:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - A fresh AI reviewer (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed, approved
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reduced the document, fixed the findings of two earlier reviewers
+
+#### What changed
+- Claim reviewed, quoted: "state the concept, the reasons and the trade-offs and restate no code or Khayyam; every fact they dropped has a home in a .kh / *.eng.kh, in code, or in a document or handoff they link to; and no reason, trade-off, owner ruling or placement decision was lost." Evidence: `memar content check` on the six folders (0 problems); the diff of each document against its base commit, each removed passage grepped for its new home; the three defects an earlier reviewer found were checked fixed. Verdict: permitted. The reviewer left minor notes: a few sentences in `record.md` and `git-store.md` still repeat an `*.eng.kh` while carrying a reason, and the requirement that a `get` of many addresses costs no process per address has its home only in `store-stats.eng.kh` and `git-store.md`.
