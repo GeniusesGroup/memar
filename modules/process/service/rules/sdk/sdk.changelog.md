@@ -83,7 +83,7 @@
   - [Protocol](../../../../../docs/protocol.md) — Depends_on: the [Protocol vs Contract](../../../../../docs/protocol.md#protocol-vs-contract) distinction grounds the vocabulary rejection — a contract is a legal concept carrying parties and obligations; the SDK's subject is a declared interface, and calling it a contract imports obligations that do not exist here.
   - [Networking](../../../../net/net.md) — Depends_on: the invocation reframing relies on Networking's scope position — a network exists wherever two computing entities exchange data ([Scope](../../../../net/net.md#scope)), not only between machines.
 - Propagates to:
-  - gui.md: Pending — the architecture position's "keeps the service contract in exactly one place" phrase may adopt the declaration vocabulary when the SDK document stabilizes.
+  - gui.md: Done — the architecture position now says "keeps the service's declaration in exactly one place" (task 20261030-T151453Z-10624).
 - Contributors:
   - [Omid Hekayati](../../../../../CONTRIBUTORS.md#omid-hekayati) — claimed, argued
   - [Super Z](../../../../../CONTRIBUTORS.md#super-z) (GLM-5.3-Flash via [ZCode](../../../../../CONTRIBUTORS.md#zcode)) — recorded
@@ -223,3 +223,29 @@
 
 #### Considered and not done
 - Verifying the Organization design now: not done; it is the first step recorded under the new entry's Next.
+
+---
+
+### A service's SDK is the only place its answers are cached; aggregation is a widget's
+- Time: 2026-10-31T07:00:00Z
+- Type: Changed
+- Tasks:
+  - memar:.agents/tasks/20261030-T151453Z-10624/: Open - the owner asked for the boundary between a widget's state and the SDK cache
+- Contributors:
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) - recorded
+
+#### What changed
+- Working position 5 and the Caching and Composition bullets of "Aggregation and the cache": the SDK of a service is the only place its responses are cached; a composing consumer, in the UI a widget, calls the SDK each time and keeps no copy of an answer; composition is done by a widget, replacing "that GUI's code or a dedicated composing layer".
+
+---
+
+### The cache position is the rule sdk-caches-answers
+- Time: 2026-10-31T08:00:00Z
+- Type: Changed
+- Tasks:
+  - memar:.agents/tasks/20261030-T151453Z-10624/: Closed - the owner asked that rules live in their owner's rules folder
+- Contributors:
+  - [Claude](../../../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) - recorded
+
+#### What changed
+- The statement that only a service's SDK caches its answers is the rule [A Service's SDK Is the Only Place Its Answers Are Cached](../sdk-caches-answers/sdk-caches-answers.md); the Aggregation and the cache section and working position 5 link it.

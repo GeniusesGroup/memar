@@ -1,4 +1,4 @@
-# GUI Changelog
+# UI Changelog
 
 ## Changelog
 
@@ -82,7 +82,7 @@
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) — applied the critique's findings
 
 #### What changed
-- `ui.handoff.md`, decision "The first realization of the GUI, for a system delivered in Python": it stays Tentative; the rule that the GUI does not speak the network is said to hold for widget code by construction, and the browser-script bullet states that a hand-written script speaking HTTP departs from a premise of [Position on GUI Architecture](./ui.md#position-on-gui-architecture).
+- `ui.handoff.md`, decision "The first realization of the GUI, for a system delivered in Python": it stays Tentative; the rule that the GUI does not speak the network is said to hold for widget code by construction, and the browser-script bullet states that a hand-written script speaking HTTP departs from a premise of [Position on GUI Architecture](../../../modules-plugable/computer/ui/gui/gui.md#position-on-gui-architecture).
 - `ui.handoff.md` gained the open question "Does the GUI's browser script speak HTTP by hand, or is it generated from the SDK?", with the generated script as the recommended option.
 
 #### Deliberation
@@ -99,9 +99,56 @@
   - [Claude](../../../CONTRIBUTORS.md#claude) (Opus-5.5) - recorded
 
 #### What changed
-- `ui.handoff.md`, Tentative decision "The first realization of the GUI, for a system delivered in Python": the browser-script bullet now states that the script's network part is the generated realization of the page-event service, written by the SDK generator from that service's declaration, and that its hand-written part only applies returned document parts and knows no network, so the premise of [Position on GUI Architecture](./ui.md#position-on-gui-architecture) holds unchanged; the bullet carries its reasons and its cost, the SDK generator's browser-side network realization added to the GUI block of the delivery design.
+- `ui.handoff.md`, Tentative decision "The first realization of the GUI, for a system delivered in Python": the browser-script bullet now states that the script's network part is the generated realization of the page-event service, written by the SDK generator from that service's declaration, and that its hand-written part only applies returned document parts and knows no network, so the premise of [Position on GUI Architecture](../../../modules-plugable/computer/ui/gui/gui.md#position-on-gui-architecture) holds unchanged; the bullet carries its reasons and its cost, the SDK generator's browser-side network realization added to the GUI block of the delivery design.
 - The open entry "Does the GUI's browser script speak HTTP by hand, or is it generated from the SDK?" was removed, its answer being that bullet.
 
 #### Considered and not done
 - A hand-written script that speaks HTTP, as the one stated exception: it puts an exception into the premise and drops the shared validation shown as the person types.
 - No script, a full page per event by a plain HTML form: no validity shown as the person types.
+
+---
+
+### UI document says what it is; the GUI position moves to the GUI realization; Widget stated in full
+- Time: 2026-10-31T07:00:00Z
+- Type: Changed
+- Tasks:
+  - memar:.agents/tasks/20261030-T151453Z-10624/: Open - the owner reviewed the proposal in chat and approved it before it was applied
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) - recorded
+
+#### What changed
+- `ui.md` was titled and written as the GUI document while its module and file are `ui`, which led agents to read Widget as UI-only. It is now "UI - User Interface": it states that UI is how any agent meets services, that the GUI, VUI, command and CLI are its realizations, and that Widget and Page are its core parts. Its Widget section states the owner's ruling of 2026-10-30: a widget is the aggregator of services and of other domains' widgets, aggregation is done only in widgets, and a service does one definite thing and never aggregates.
+- The GUI position (three separations, the stances, Page ID and URN, resources, related projects) moved unchanged in substance to `modules-plugable/computer/ui/gui/gui.md`, the GUI realization's own document, with the Widget stance now naming the widget as the aggregator. The title of this changelog is now "UI Changelog"; the entries below record the GUI position's history before the move.
+- `widget/widget.md` states the concept in full: what a widget is (named, stateful, not bound to a screen, hosted by software), aggregation, composition, and operation as methods; it links the rules [A Widget Aggregates, a Service Does One Thing](./rules/widget-aggregates/widget-aggregates.md) and [A Concept Has One Owner Module](../../knowledge/modularity/rules/one-owner/one-owner.md).
+- Links to the GUI position in `sdk.md`, its changelog excepted, and in this module's handoff now point at `gui.md`.
+
+#### Considered and not done
+- Renaming the module and document to `gui`: the owner's rulings of 2026-10-20 to 2026-10-22 make ui the concept and the GUI one realization, and `modules-plugable/computer/ui/gui` already exists.
+- Keeping the GUI position in `ui.md` under a retitled document: it would leave the realization's position as the concept's own text.
+
+---
+
+### Widget state kept apart from the SDK cache; widget-related documents corrected
+- Time: 2026-10-31T07:00:00Z
+- Type: Changed
+- Tasks:
+  - memar:.agents/tasks/20261030-T151453Z-10624/: Open - the owner reviewed the applied result and asked for the precision
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) - recorded
+
+#### What changed
+- `widget/widget.md`: Stateful now means the state of the widget's own operation; a new section "State and the SDK cache" states that the SDK of a service is the only place its answers are cached and a widget never caches, with a test. `rules/widget-aggregates` carries the same bullet.
+- `widget/edges/types/types.md` and `software/edges/widget/widget.md` no longer say a widget is removable with the GUI layer or that no widget module exists; `ui.handoff.md` links the store contract where it linked a missing memory anchor.
+
+---
+
+### The cache boundary is a rule of the service domain; the explanations link it
+- Time: 2026-10-31T08:00:00Z
+- Type: Changed
+- Tasks:
+  - memar:.agents/tasks/20261030-T151453Z-10624/: Closed - the owner asked that rules live in their owner's rules folder
+- Contributors:
+  - [Claude](../../../CONTRIBUTORS.md#claude) (Sonnet-5.5) - recorded
+
+#### What changed
+- `widget/widget.md` states the widget's state and links the rule [A Service's SDK Is the Only Place Its Answers Are Cached](../../process/service/rules/sdk-caches-answers/sdk-caches-answers.md); `rules/widget-aggregates` and the Aggregation and Composition sections link their rules instead of restating them.

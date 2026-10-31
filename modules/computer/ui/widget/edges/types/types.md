@@ -11,7 +11,7 @@
 ## Placement
 
 - **Correct here — the widget module owns its own kind vocabulary** (source in this module's `edges/` folder; a flag-space is parameters, not processing — parameters vs semantics ⇒ one widget capability plus per-organization kind configuration; no new module).
-- **Not core `computer` kernel:** widget is a GUI fragment hosted by software, removable with the GUI layer (stated in [widget.md](../../widget.md)); its flags travel with it.
+- **Where the widget goes, its kinds go:** a widget is a core part of `computer/ui` and is not bound to a screen (stated in [widget.md](../../widget.md)), so its flags travel with it and not with a realization such as the GUI.
 - Not the `gui/page-*` instance pages: these kinds classify widgets, not pages.
 
 ## Open questions
