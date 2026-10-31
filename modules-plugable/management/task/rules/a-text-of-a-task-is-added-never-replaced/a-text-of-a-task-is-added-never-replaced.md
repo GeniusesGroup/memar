@@ -2,7 +2,7 @@
 Status: Draft
 
 ## The rule
-- **A text of a task (a plan, a report, a critique, an answer, a change record, a question) is added as a new content and never written over an earlier one.** A correction is a new content that replies to the one it corrects; the words the owner or a critic wrote stay as they stand.
+- **A text of a task is a content placed in its timeline, and is added and never written over ([A placement is added, never written over](../../../../../modules/management/timeline/rules/a-placement-is-added-never-written-over/a-placement-is-added-never-written-over.md)).** The task domain adds none itself: it has no view of a content.
 - **A fact of a task (its status, priority, labels, what it depends on) is changed through its store**, one fact at a time, and a service that changes it opens no file.
 - **Until the timeline holds the contents, the interim realization is the file adapter's alone:** a content is a numbered file written once and made read-only, the facts of the task are one YAML file, and no document or Khayyam names that layout.
 - **The same holds in Python:** a service core opens no file, and a service touched for any reason is brought to this shape by the agent that touches it.

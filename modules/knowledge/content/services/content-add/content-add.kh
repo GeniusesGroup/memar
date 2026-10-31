@@ -11,4 +11,4 @@ tp Content_Add ab {
 	Service
 }
 
-tp AddText mt (self Content_Add) (store Content_Store, text Text, kind Label) (content ThingUUID, err Error)
+tp AddContent mt (self Content_Add) (store Content_Store, text Text, kind Label) (content ThingUUID, err Error)

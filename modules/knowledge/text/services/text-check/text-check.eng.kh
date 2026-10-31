@@ -10,11 +10,11 @@ tp Domain mt (self Text_Check) () (s String) {
 }
 
 tp Summary mt (self Text_Check) () (s String) {
-    CharacterRun_From.FromCharacterRun("Checks a text against the template of its kind")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Checks the bytes of a text")(s, VoidError)
 }
 
 tp Overview mt (self Text_Check) () (s String) {
-    CharacterRun_From.FromCharacterRun("Reports what is wrong with a text: the fault of its bytes that holds for every text, and, when the kind names a template, the way the text departs from that template. A kind with no template is checked for its bytes alone. It changes nothing; the caller decides what a fault costs.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Reports the first fault of the bytes of a text that holds for every text whatever it is for: a byte-order mark, bytes that are not UTF-8, a replacement character, the marks of mojibake, mixed line endings, a missing final newline. Each fault is a refusal of the text module's errors. It checks no template and changes nothing; the caller decides what a fault costs.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Text_Check) () (s String) {

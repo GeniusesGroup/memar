@@ -14,7 +14,7 @@ tp Summary mt (self Content_Add) () (s String) {
 }
 
 tp Overview mt (self Content_Add) () (s String) {
-    CharacterRun_From.FromCharacterRun("Takes any text and the kind of the template the caller wrote it to, creates a content that holds it and returns the content's UUID. It places the content nowhere, takes no task and checks no template: choosing the kind, checking the text against it and placing the content are the caller's, by the services of the domains that own them.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Takes any text and the kind of the template the caller wrote it to, creates a content that holds it and returns the content's UUID. It places the content nowhere, takes no task and checks no template: choosing the kind, checking the text against it and placing the content are the caller's, by the services of the domains that own them. A content created and never placed is harmless: nothing reads it.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Content_Add) () (s String) {

@@ -79,7 +79,7 @@ Migrated from the organization's ephemeral KM seed, where it was parked.
 ### Does the content domain need nodes, parts and labels, or only addresses?
 - State: "When a check runs" in `content.md` speaks of a text node, a `blob` node and the label `legacy-unchecked`, which are `record`'s terms (a node, its parts under domain keys, its labels), and "How a Task is stored" in `task.md` makes a content a node with the part `content`. The owner ruled on 2026-10-24 that a kernel module's link to `record` is only the reference to an address ([Memory Address](../../computer/memory/address/address.md)). That a store holds bytes and is blind to their encoding is the memory contract's own and is repointed to it; the `labels` part and `scan` by label are only `record`'s (the concept of a label is [Label](../label/label.md)'s), and the node vocabulary and `legacy-unchecked` beside them are load-bearing for the check's attachment to texts, and were not edited.
 - Options: (1) Recommended: `content.md` states a text and a content by the address that holds them and says the check is attached by whatever classification the composition keeps, and the label `legacy-unchecked` and the node vocabulary are the composition's use of `record`; cost: a rewrite of the paragraph. (2) The paragraph stays, stated as the composition's use of `record`. (3) The content domain needs labels as its own subject.
-- Anchor: the bullet "When a check runs" of [content.md](content.md).
+- Anchor: the bullet "When a check runs" of [text.md → Checking text](../text/text.md#checking-text) (moved there on 2026-10-30).
 - Blocks: the move of the `record` capsule. Assumption meanwhile: option 2.
 - Asked: 2026-10-24, Claude (task `20261024-T160312Z-25344`), for Omid Hekayati.
 
@@ -98,10 +98,6 @@ Migrated from the organization's ephemeral KM seed, where it was parked.
 - Asked: 2026-10-19, by the session that carried the organization's text.
 - Ruled 2026-10-24 (owner, task 20261023-T164153Z-4608): the two readings are one concept; the organization's unit is the records of Content. The canonical definition of those records still has no home and is not written; see [Text Handoff](../text/text.handoff.md#owners-rulings-on-the-premises-of-text-content-and-representation-2026-10-24).
 
-### How do overlapping or nesting compound tokens behave?
-- State: moved 2026-09-11 from the same wrapper. Token composition (the polysemy mechanism) has not been tested against real multi-word phrases that overlap or nest.
-- Next: run real corpus cases through the composition rule.
-
 ### Does the project need a minimal, rendering-agnostic arrangement primitive?
 - State: moved 2026-09-11 from the Layout topic's retired Discussion wrapper. Whether even a minimal abstraction (ordering, grouping, priority — algorithms entirely left to renderers) is warranted, versus zero shared vocabulary, is unresolved; the body defers this to a dedicated document once sufficient concrete cases exist.
 - Next: see the dedicated Layout/Theme document under Anticipated Work.
@@ -114,17 +110,9 @@ Migrated from the organization's ephemeral KM seed, where it was parked.
 - State: moved 2026-09-11 from the Multi-Instance topic's retired Discussion wrapper. Current URL structure does not naturally accommodate arbitrarily deep addressability into a Composition graph; the question's recurrence across unstructured content and Composition is itself evidence that Addressability is one shared primitive, but the concrete mechanism is unresolved here.
 - Next: design the deep-addressing mechanism; coordinate with the Platform layer (PersiaOS) where cross-runtime synchronization is concerned.
 
-### Must the Authoring Model be a new syntax, or a disciplined HTML/Markdown subset?
-- State: moved 2026-09-11 from the Authoring Syntax topic's retired Discussion wrapper. Both remain live candidates — a new compact syntax, or a subset of HTML/Markdown compiled through an intermediate tool that strips scattered metadata (`title`, `property`, `content` attributes and similar) in favor of short `refers-to-type` edges resolved from a Type Definition. Neither is chosen.
-- Next: prototype both against real legacy templates (the invoice examples).
-
 ### What is the testable criterion for "Khayyam-manner"?
 - State: moved 2026-09-11 from the Khayyam-manner topic's retired Discussion wrapper. The two properties (no unwrapped primitives; absolute encapsulation) are stated informally; without a pass/fail test the label risks being claimed by any language.
 - Next: derive the criterion from concrete cases — see the anticipated short document below.
-
-### Where is the boundary between structural delimitation and embedded semantic tagging?
-- State: moved 2026-09-11 from the Structural Notation topic's retired Discussion wrapper. Flagged high-priority: the Position A/B question (pure delimiter vs. implicit semantic tagging, e.g. Markdown's `#`) is directly testable against this project's own YAML-front-matter-plus-inline-Markdown convention, and the document's own ASCII tree/graph diagrams already demonstrably exhibit Position-B behavior (recorded in the body).
-- Next: see the self-audit under Anticipated Work.
 
 ### Can one Content participate in multiple Timelines, and is Timeline a distinct concern?
 - State: narrowed 2026-10-04. The knowledge-management session modeled organizational history as Content units attached to one or more Timelines — the pattern where a post lives in its author's timeline and reaches others' timelines through re-entry, without duplicating the unit, and where one Task's outcome appears in several participants' views while remaining one Content. That part follows from relations the body already states: neither Composition membership nor arrangement is a property of a node, so one Content may appear in as many Timelines as there are consumers arranging it; the organization's decision that any content is attachable to one or more Timelines is under [Content & Timeline](#content--timeline). What remains open is the cross-Composition case — whether a Timeline spanning separate Compositions (a post reaching another's timeline by re-entry) is an arrangement at all — and whether Timeline is an independent entity or a projection of more primitive concepts (the organization's open entry under the same heading), together with the body's own deferral of any shared arrangement vocabulary to the dedicated Layout/Theme document. content.md names no Timeline concern, and none is claimed here; `knowledge.md` formerly pointed its scope boundary at a "Timeline" domain model here, which did not exist — that dangling reference was removed.
@@ -195,10 +183,6 @@ Each carries a recommended default and what it blocks; the full text is in the r
 
 ## Anticipated Work
 
-### A concrete Authoring Syntax prototype
-- State: from the retired document-level Future possibilities. Compile an Authoring Model to Khayyam graph calls and test against real legacy templates (the invoice examples referenced throughout the document) to validate the concept/implementation split claimed across the concern topics.
-- Next: after the Authoring-Model syntax question above narrows the candidate space.
-
 ### A dedicated Layout/Theme document
 - State: from the retired Future possibilities. Once enough real Composition examples exist across at least GUI and one non-visual modality (VUI or Braille) to test candidate rendering-agnostic arrangement vocabularies and the Theme/Layout/Launcher boundary.
 - Next: collect the cases; carry the two related Open Questions above.
@@ -206,10 +190,6 @@ Each carries a recommended default and what it blocks; the full text is in the r
 ### A testable "Khayyam-manner" criterion
 - State: from the retired Future possibilities. Likely its own short document, derived from concrete cases of languages that do and do not qualify.
 - Next: draft once implementation experience accumulates.
-
-### A self-audit of this project's own Markdown+front-matter convention
-- State: from the retired Future possibilities. Test the Position A/B question against the documentation format this very document is written in — directly testable against material already in daily use, unlike most other open questions.
-- Next: run when documentation-method work next touches the authoring format.
 
 ### Cross-modal rendering experiments
 - State: from the retired Future possibilities. Take a single Semantic Graph instance through both a GUI renderer and a VUI renderer, to empirically test whether the Semantic/Interaction/Rendering separation claimed throughout actually holds under real multi-modal pressure. A design-system-level variant was also proposed during research — one design system's tokens taken through multiple renderers — recorded in [content.changelog.md](./content.changelog.md)'s research-deletion entry.
@@ -230,7 +210,7 @@ Carried from the organization's `content.md`, where it stood as a section of the
 - **Review questions**: these reads are content's own lookup, not a GUI page. Does each read earn a module (analytics is always pluggable; a query with its own storage is a module), or are they one content read with parameters?
 
 ### The check dispatcher
-- State: `memar content check` becomes a dispatcher over the domains a node belongs to, as [Checking text](content.md#checking-text) states; the code that builds it asks each owning domain for its rules (text, documentation, an authoring syntax). Which module holds the Markdown conventions is open: the Authoring Syntax topic of the content document names none.
+- State: `memar content check` becomes a dispatcher over the domains a node belongs to, as [Checking a node](content.md#checking-a-node) states; the code that builds it asks each owning domain for its rules (text, documentation, an authoring syntax). Which module holds the Markdown conventions is open: the Authoring Syntax topic, now in [Text](../text/text.md#authoring-syntax), names none.
 - Next: build it in the task that re-bases the task verbs on the record contract; until then the verb stays as it is.
 - State (2026-10-24): the code was split before the dispatcher: the bytes half is `text/services/text_check.py`, and `content_check.py` in the documentation module composes it with the Markdown and documentation rules. The dispatcher proper (asking each domain a node belongs to by its label) is still owed.
 
@@ -259,3 +239,7 @@ Carried from the organization's `content.md`, where it stood as a section of the
 
 - An RFC (or any filed content) is **not knowledge itself** — it is a **representation / articulation** of knowledge. The filesystem critique asked whether knowledge can even be "containerized"; the Content domain must keep this distinction when defining boundaries of Content vs Document vs Knowledge. *(from brainstorm — status unsettled; full dialectic in KM handoff Discussion — Git, filesystem, and organizational knowledge)*
 - Related open: Is Repository itself a domain concept, or merely a filesystem-era projection / emergent grouping of Content linked to a common context? *(open — Timeline/Content decisions treat repository-shaped nodes as Content + Timeline; the deeper "domain concept?" question remains)*
+
+## Owed by the content domain (task 20261031-T132625Z-36332)
+- **A check by kind.** `Text_Check` checks bytes only. A check of a text against the template of its kind exists only as `Plan_Check` and `Report_Check`, which the conversation widget's `Post` composes by name; a general check that finds the template of any kind and applies it is owed here. **Tentative.**
+- **Where a content keeps its text.** The content keeps its text itself for now (`Content_Store.AddContent` takes the text); it should point to a text node written by the text domain's writer, so that a text has one owner. **Tentative.**

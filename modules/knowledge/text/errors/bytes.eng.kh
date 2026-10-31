@@ -1,0 +1,131 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Error_Bytes_Bom in "modules/knowledge/text/errors/bytes.kh"
+tp Text_Error_Bytes_NotUtf8 in "modules/knowledge/text/errors/bytes.kh"
+tp Text_Error_Bytes_Replacement in "modules/knowledge/text/errors/bytes.kh"
+tp Text_Error_Bytes_Mojibake in "modules/knowledge/text/errors/bytes.kh"
+tp Text_Error_Bytes_MixedEndings in "modules/knowledge/text/errors/bytes.kh"
+tp Text_Error_Bytes_NoFinalNewline in "modules/knowledge/text/errors/bytes.kh"
+
+tp Domain mt (self Text_Error_Bytes_Bom) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Bytes_Bom) () (s String) {
+    CharacterRun_From.FromCharacterRun("A byte-order mark begins the text")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Bytes_Bom) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text starts with a byte-order mark, which no tool of the project expects.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Bytes_Bom) () (s String) {
+    CharacterRun_From.FromCharacterRun("Remove the mark and write the text again.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Bytes_Bom) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Bytes_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Bytes_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text holds bytes that are not UTF-8")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Bytes_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("Some bytes of the text are not a valid UTF-8 sequence.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Bytes_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("Write the text again in UTF-8.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Bytes_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Bytes_Replacement) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Bytes_Replacement) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text holds a replacement character")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Bytes_Replacement) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text holds U+FFFD, the mark left where a decoder could not read a byte.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Bytes_Replacement) () (s String) {
+    CharacterRun_From.FromCharacterRun("Find where the bytes were damaged and write the original.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Bytes_Replacement) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Bytes_Mojibake) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Bytes_Mojibake) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text holds the marks of mojibake")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Bytes_Mojibake) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text holds a sequence that is what a character becomes when UTF-8 is decoded as Latin-1 and encoded again.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Bytes_Mojibake) () (s String) {
+    CharacterRun_From.FromCharacterRun("Write the original characters again, without a shell round trip.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Bytes_Mojibake) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Bytes_MixedEndings) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Bytes_MixedEndings) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text mixes line endings")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Bytes_MixedEndings) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text holds both CRLF and LF line endings.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Bytes_MixedEndings) () (s String) {
+    CharacterRun_From.FromCharacterRun("Use one line ending throughout.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Bytes_MixedEndings) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Bytes_NoFinalNewline) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Bytes_NoFinalNewline) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text does not end in a newline")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Bytes_NoFinalNewline) () (s String) {
+    CharacterRun_From.FromCharacterRun("The last line of the text has no line ending.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Bytes_NoFinalNewline) () (s String) {
+    CharacterRun_From.FromCharacterRun("End the text with one newline.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Bytes_NoFinalNewline) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; nothing was written.")(s, VoidError)
+}

@@ -6,9 +6,10 @@ tp Label in "modules/knowledge/label/protocol/label.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
 tp W32 in "modules/math/integer/unsigned-32.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
 
 tp Timeline_Placement_Store ab
 
 tp ReadLatestPlacement mt (self Timeline_Placement_Store) (timeline ThingUUID, kind Label) (number W32, content ThingUUID, found Boolean, err Error)
 
-tp AddPlacement mt (self Timeline_Placement_Store) (timeline ThingUUID, content ThingUUID, kind Label, placer UserUUID, after W32) (number W32, err Error)
+tp AddPlacement mt (self Timeline_Placement_Store) (timeline ThingUUID, content ThingUUID, kind Label, placer UserUUID, placedAt W64, after W32) (number W32, err Error)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Timeline_Latest in "modules/management/timeline/services/timeline-latest/timeline-latest.kh"
+
+tp Domain mt (self Timeline_Latest) () (s String) {
+    CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)
+}
+
+tp Summary mt (self Timeline_Latest) () (s String) {
+    CharacterRun_From.FromCharacterRun("Answers the latest placement of a kind in a timeline")(s, VoidError)
+}
+
+tp Overview mt (self Timeline_Latest) () (s String) {
+    CharacterRun_From.FromCharacterRun("Answers the number and the content of the latest placement of the kind in the timeline of the given UUID, found being false when none of that kind is placed. It reads the content of nothing and changes nothing. Timeline_Error_NotFound when the UUID is no node.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Timeline_Latest) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Timeline_Latest) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

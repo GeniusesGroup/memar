@@ -14,7 +14,7 @@ tp Summary mt (self Timeline_Place) () (s String) {
 }
 
 tp Overview mt (self Timeline_Place) () (s String) {
-    CharacterRun_From.FromCharacterRun("Places a content in the timeline of the given UUID, whatever the content holds and whoever the timeline is of: a task, a group or a person. The number returned is the placement's, after the placements of that kind already there. Refused with Timeline_Error_Changed when another placer placed one of the kind after the number the caller read, and with Timeline_Error_NotFound when the timeline does not exist; nothing is then placed.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Places a content in the timeline of the given UUID, whatever the content holds and whoever the timeline is of: a task, a group or a person. It stamps the instant of the placement and passes it to the store. The number returned is the placement's, the next number of the timeline across all kinds. Refused with Timeline_Error_Changed when another placer placed one of the same kind after the number the caller read, and with Timeline_Error_NotFound when the UUID is no node; nothing is then placed.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Timeline_Place) () (s String) {

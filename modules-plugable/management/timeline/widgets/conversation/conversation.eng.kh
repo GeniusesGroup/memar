@@ -14,7 +14,7 @@ tp Summary mt (self Conversation) () (s String) {
 }
 
 tp Overview mt (self Conversation) () (s String) {
-    CharacterRun_From.FromCharacterRun("Post checks a text against the template of its kind, creates the content, places it in the timeline by the placer and answers the placement's number; it is refused, and nothing is created, when the check refuses, and nothing is placed when the timeline changed since the caller read it. Latest answers the number and text of the latest content of a kind in a timeline, found being false when there is none. Share places a content that exists in one more timeline and answers its number there. Each operation composes the services of the text, content and timeline modules, given to it; none of them calls another.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Post checks the bytes of a text and, when the kind has a template of its own, the text against it (the plan check for a plan, the report check for a report, none for another kind), creates the content, places it in the timeline by the placer and answers the placement's number. When a check refuses, nothing is created. When the placement is refused because the timeline changed since the caller read it, the content stays unplaced and harmless: nothing reads it. Latest answers the number and text of the latest content of a kind in a timeline, found being false when there is none. Share reads a content that exists, with the kind it was created with, and places it in one more timeline, answering its number there. The services each operation uses are the widget's own parts; none of them calls another, and the stores are given.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Conversation) () (s String) {

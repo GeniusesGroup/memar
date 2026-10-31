@@ -15,7 +15,7 @@ tp Summary mt (self Timeline_Error_NotFound) () (s String) {
 }
 
 tp Overview mt (self Timeline_Error_NotFound) () (s String) {
-    CharacterRun_From.FromCharacterRun("No timeline with this UUID is kept, so nothing can be read from it or placed in it.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A timeline exists once its UUID is a node of any kind; this UUID is no node, so nothing can be read from it or placed in it.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Timeline_Error_NotFound) () (s String) {
@@ -35,7 +35,7 @@ tp Summary mt (self Timeline_Error_Changed) () (s String) {
 }
 
 tp Overview mt (self Timeline_Error_Changed) () (s String) {
-    CharacterRun_From.FromCharacterRun("A later placement of the kind exists than the one the caller read; nothing was placed over what another placer put.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A later placement of the same kind exists than the one the caller read; nothing was placed over what another placer put.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Timeline_Error_Changed) () (s String) {
@@ -43,5 +43,5 @@ tp UserActionNote mt (self Timeline_Error_Changed) () (s String) {
 }
 
 tp DevActionNote mt (self Timeline_Error_Changed) () (s String) {
-    CharacterRun_From.FromCharacterRun("A caller fault; nothing was placed.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Another placer placed first; nothing was placed.")(s, VoidError)
 }
