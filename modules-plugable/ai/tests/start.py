@@ -97,6 +97,7 @@ task_temp = import_module('modules-plugable.management.task.services.temp')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
 task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 commands = import_module('modules-plugable.computer.ui.command.command')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
@@ -216,7 +217,7 @@ class NewShape(Fixture):
         with contextlib.redirect_stdout(io.StringIO()):
             _, self.folder = task_ensure.ensure_task(SID, 'Delegated', project=str(self.fake_root))
         body = plan_with(request='Do the new thing.').split('---\n', 2)[2]
-        task_files.add_text(self.folder, 'plan', body, 'agent')
+        timeline_files.add_text(self.folder, 'plan', body, 'agent')
 
     def test_a_task_made_new_is_started_with_its_latest_plan_content_printed_whole(self) -> None:
         parts = self.parts()

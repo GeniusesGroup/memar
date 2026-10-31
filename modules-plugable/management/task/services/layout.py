@@ -35,7 +35,8 @@ _m_report_file = import_module('modules-plugable.management.task.services.report
 REPORT_NAME = _m_report_file.REPORT_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_files')
 TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
-is_content_file = _m_task_files.is_content_file
+_m_timeline_files = import_module('modules.management.timeline.services.timeline_files')
+is_content_file = _m_timeline_files.is_content_file
 TOP_NAMES = (PLAN_NAME, REPORT_NAME, TASK_FACTS_NAME, *Claim.NAMES)
 "The files a task folder's top holds besides its folders: the plan, the report, and Memar's claim."
 

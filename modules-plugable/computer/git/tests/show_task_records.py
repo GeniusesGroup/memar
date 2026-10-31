@@ -66,6 +66,7 @@ sys.dont_write_bytecode = True
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
 task_files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
 from modules.computer.software.services.project_registry import add_project
 NAME = 'example'
 SID = '20261015-T100000Z-1'
@@ -246,8 +247,8 @@ class NewShape(Fixture):
     def new_task(self) -> Path:
         folder = memar_fs.task_dir(SID, create=True)
         task_files.create_task(folder, SID, 'T', None, None, self.project, 'complete', None, None, None)
-        task_files.add_text(folder, 'plan', '# T\n\n## Request\nPlan text.\n', 'agent')
-        task_files.add_text(folder, 'report', '# Report\nBranch report.\n\n## Decisions needed\n- Q1 a | b (recommended).\n', 'agent', fields={'status': 'complete'})
+        timeline_files.add_text(folder, 'plan', '# T\n\n## Request\nPlan text.\n', 'agent')
+        timeline_files.add_text(folder, 'report', '# Report\nBranch report.\n\n## Decisions needed\n- Q1 a | b (recommended).\n', 'agent', fields={'status': 'complete'})
         return folder
 
     def test_the_facts_and_every_content_are_printed_by_default_from_the_folder(self) -> None:

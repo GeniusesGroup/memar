@@ -4,18 +4,20 @@
 from __future__ import annotations
 from importlib import import_module
 import hashlib
-import json
 import os
-import re
-import stat
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Callable, NamedTuple
+from typing import Callable
 from machine.console import fail
 _m_errors = import_module('modules-plugable.management.task.errors.errors')
 Task_Error_Changed = _m_errors.Task_Error_Changed
 Task_Error_NotFound = _m_errors.Task_Error_NotFound
+_tl = import_module('modules.management.timeline.services.timeline_files')
+_header = import_module('modules.knowledge.text.services.header_text')
+read_contents = _tl.read_contents
+latest_content = _tl.latest_content
+write_content = _tl.write_content
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 front_matter = _m_plan_file.front_matter
@@ -38,9 +40,6 @@ from modules.knowledge.label.primitive.label import Labels
 
 TASK_FACTS_NAME = 'task.yaml'
 REPORT_NAME = REPORT.file_name
-CONTENT_WIDTH = 5
-CONTENT_EXTENSION = '.md'
-CONTENT_PATTERN = re.compile(rf'^content\.(\d{{{CONTENT_WIDTH}}}){re.escape(CONTENT_EXTENSION)}$')
 OLD_SHAPE_READER = 'modules-plugable/management/task/services/plan_file.py'
 AUTHOR = 'memar'
 FACTS = ('title', 'status', 'priority', 'labels', 'depends_on', 'parent', 'conversation', 'project', 'participants', 'start_date')
@@ -49,60 +48,8 @@ BLOCK_FACTS = ('labels', 'participants')
 PLAIN_START = '"\'[]{}&*!|>%@`-?#,'
 
 
-class Content(NamedTuple):
-    number: int
-    header: dict
-    body: str
-
-
 def _version(text: str) -> str:
     return hashlib.sha256(text.encode('utf-8')).hexdigest()[:16]
-
-
-def _scalar(value: str) -> str:
-    if value == '' or value != value.strip() or ': ' in value or ' #' in value or value[0] in PLAIN_START or '\n' in value:
-        return json.dumps(value, ensure_ascii=False)
-    return value
-
-
-def _bare(item: str) -> str:
-    item = item.strip()
-    return item[2:] if item.startswith('- ') else item
-
-
-def _render(pairs: dict, blocks: tuple = BLOCK_FACTS) -> str:
-    lines = []
-    for key, value in pairs.items():
-        if value in (None, ''):
-            continue
-        value = str(value)
-        if key in blocks or '\n' in value:
-            lines.append(f'{key}:')
-            lines += [f'  - {_scalar(item) if key not in BLOCK_FACTS else _bare(item)}' for item in value.split('\n') if item]
-        else:
-            lines.append(f'{key}: {_scalar(value)}')
-    return '\n'.join(lines) + ('\n' if lines else '')
-
-
-def _parse(lines: list) -> dict:
-    found: dict = {}
-    current = None
-    for line in lines:
-        if line[:1] in (' ', '\t') and current is not None:
-            child = line.strip()
-            child = child[2:] if child.startswith('- ') else child
-            if child[:1] == '"':
-                child = json.loads(child)
-            if child:
-                found[current] = f'{found[current]}\n{child}' if found[current] else child
-        elif ':' in line and line.partition(':')[0].strip() and (line.partition(':')[2][:1] in ('', ' ')):
-            key, _, value = line.partition(':')
-            current = key.strip()
-            value = value.strip()
-            found[current] = json.loads(value) if value[:1] == '"' else value
-        else:
-            current = None
-    return {key: value for key, value in found.items() if value}
 
 
 def _replace_file(path: Path, make: Callable[[bytes], str]) -> None:
@@ -142,77 +89,6 @@ def line_end(line: str) -> str:
     return line[len(line.rstrip('\r\n')):] or '\n'
 
 
-def is_content_file(path: Path) -> bool:
-    return CONTENT_PATTERN.match(path.name) is not None
-
-
-def _content_name(number: int) -> str:
-    return f'content.{number:0{CONTENT_WIDTH}d}{CONTENT_EXTENSION}'
-
-
-def _numbers(folder: Path) -> list:
-    try:
-        names = [entry.name for entry in folder.iterdir()]
-    except OSError:
-        return []
-    return sorted(int(match.group(1)) for match in map(CONTENT_PATTERN.match, names) if match)
-
-
-def _content_of(number: int, data: bytes) -> Content:
-    text = data.decode('utf-8-sig')
-    lines = text.splitlines(keepends=True)
-    if lines and lines[0].strip() == '---':
-        for end in range(1, len(lines)):
-            if lines[end].strip() == '---':
-                return Content(number, _parse([line.rstrip('\r\n') for line in lines[1:end]]), ''.join(lines[end + 1:]))
-    return Content(number, {}, text)
-
-
-def _read_content(folder: Path, number: int) -> Content:
-    return _content_of(number, read_bytes(folder / _content_name(number)))
-
-
-def read_contents(folder: Path) -> list:
-    return [_read_content(folder, number) for number in _numbers(folder)]
-
-
-def latest_content(folder: Path, kind: str) -> Content | None:
-    found = [content for content in read_contents(folder) if content.header.get('kind') == kind]
-    return found[-1] if found else None
-
-
-def _newer_than(folder: Path, kind: str, follows: int, below: int | None = None) -> bool:
-    return any(content.header.get('kind') == kind and content.number > follows and (below is None or content.number < below) for content in read_contents(folder))
-
-
-def write_content(folder: Path, kind: str, text: str, author: str, follows: int | None = None, refs=(), fields: dict | None = None, placed_at: str | None = None) -> int:
-    header = {'kind': kind, 'author': author, 'placed_at': placed_at or datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}
-    if follows:
-        header['follows'] = str(follows)
-    if refs:
-        header['refs'] = '\n'.join(refs)
-    header.update({key: str(value) for key, value in (fields or {}).items()})
-    rendered = f'---\n{_render(header, ("refs",))}---\n{text}'
-    while True:
-        if follows is not None and _newer_than(folder, kind, follows):
-            raise Task_Error_Changed()
-        numbers = _numbers(folder)
-        number = (numbers[-1] if numbers else 0) + 1
-        path = folder / _content_name(number)
-        try:
-            handle = path.open('x', encoding='utf-8', newline='\n')
-        except FileExistsError:
-            continue
-        with handle:
-            handle.write(rendered)
-        os.chmod(path, stat.S_IREAD)
-        if follows is not None and _newer_than(folder, kind, follows, below=number):
-            os.chmod(path, stat.S_IREAD | stat.S_IWRITE)
-            path.unlink()
-            raise Task_Error_Changed()
-        return number
-
-
 def has_task(folder: Path) -> bool:
     return (folder / TASK_FACTS_NAME).is_file() or (folder / PLAN_NAME).is_file()
 
@@ -225,7 +101,7 @@ def read_facts(folder: Path) -> dict | None:
     path = folder / TASK_FACTS_NAME
     if not path.is_file():
         return None
-    return _parse(read_bytes(path).decode('utf-8-sig').splitlines())
+    return _header.parse(read_bytes(path).decode('utf-8-sig').splitlines())
 
 
 def _front_of(facts: dict, task: str | None) -> tuple:
@@ -249,7 +125,7 @@ def is_new(folder: Path) -> bool:
 
 def _latest_path(folder: Path, kind: str) -> Path:
     content = latest_content(folder, kind) if is_new(folder) else None
-    return folder / (_content_name(content.number) if content else TASK_FACTS_NAME)
+    return folder / (_tl.content_name(content.number) if content else TASK_FACTS_NAME)
 
 
 def plan_path(folder: Path) -> Path:
@@ -279,25 +155,18 @@ def has_report(folder: Path) -> bool:
     return (folder / REPORT_NAME).is_file()
 
 
-def add_text(folder: Path, kind: str, text: str, author: str, refs=(), fields: dict | None = None) -> int:
-    if not is_new(folder):
-        raise Task_Error_NotFound()
-    latest = latest_content(folder, kind)
-    return write_content(folder, kind, text, author, follows=latest.number if latest else None, refs=refs, fields=fields)
-
-
 def record_names(names) -> list:
     if TASK_FACTS_NAME in names:
-        return [TASK_FACTS_NAME, *sorted(name for name in names if CONTENT_PATTERN.match(name))]
+        return [TASK_FACTS_NAME, *sorted(name for name in names if _tl.CONTENT_PATTERN.match(name))]
     return [PLAN_NAME, REPORT_NAME]
 
 
 def record_of(held: dict) -> tuple | None:
     if TASK_FACTS_NAME not in held:
         return None
-    front, status = _front_of(_parse(held[TASK_FACTS_NAME].decode('utf-8-sig').splitlines()), None)
-    matches = [(CONTENT_PATTERN.match(name), data) for name, data in held.items()]
-    reports = [content for content in (_content_of(int(match.group(1)), data) for match, data in matches if match) if content.header.get('kind') == 'report']
+    front, status = _front_of(_header.parse(held[TASK_FACTS_NAME].decode('utf-8-sig').splitlines()), None)
+    matches = [(_tl.CONTENT_PATTERN.match(name), data) for name, data in held.items()]
+    reports = [content for content in (_tl.content_of(int(match.group(1)), data) for match, data in matches if match) if content.header.get('kind') == 'report']
     reports.sort(key=lambda content: content.number)
     return (front, status, status_word(reports[-1].header.get('status', '')) if reports else '')
 
@@ -306,7 +175,7 @@ def facts_named_project(data: bytes, name: str) -> bytes:
     lines = data.decode('utf-8-sig').splitlines(keepends=True)
     for index, line in enumerate(lines):
         if line.startswith('project:'):
-            lines[index] = f'project: {_scalar(name)}{line_end(line)}'
+            lines[index] = f'project: {_header.scalar(name)}{line_end(line)}'
             break
     return ''.join(lines).encode('utf-8')
 
@@ -355,14 +224,14 @@ def create_task(folder: Path, task: str, title: str, parent, conversation, proje
     opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     plan_text = '\n'.join([f'# {title}', *(line for part in PLAN.parts for line in ('', f'## {part}'))]) + '\n'
     report_text = '\n'.join([f'# {REPORT.heading}', '', *(f'## {part}' for part in REPORT.parts)]) + '\n'
-    if not _numbers(folder):
+    if not _tl.numbers(folder):
         write_content(folder, 'plan', plan_text, AUTHOR, placed_at=opened)
         write_content(folder, 'report', report_text, AUTHOR, placed_at=opened)
     facts = {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened}
     path = folder / TASK_FACTS_NAME
     temporary = folder / f'.{TASK_FACTS_NAME}.{os.getpid()}.tmp'
     with temporary.open('w', encoding='utf-8', newline='\n') as written:
-        written.write(_render({key: facts[key] for key in FACTS if key in facts}))
+        written.write(_header.render({key: facts[key] for key in FACTS if key in facts}, BLOCK_FACTS, BLOCK_FACTS))
     try:
         os.link(temporary, path)
     except FileExistsError:
@@ -430,12 +299,12 @@ def _yaml_write(folder: Path, fact: str, value: str, expected: str) -> str:
     path = folder / TASK_FACTS_NAME
 
     def make(data: bytes) -> str:
-        pairs = _parse(data.decode('utf-8-sig').splitlines())
+        pairs = _header.parse(data.decode('utf-8-sig').splitlines())
         if _version(pairs.get(fact, '')) != expected:
             raise Task_Error_Changed()
         pairs[fact] = value
         ordered = {key: pairs[key] for key in (*FACTS, *pairs) if key in pairs}
-        return _render(ordered)
+        return _header.render(ordered, BLOCK_FACTS, BLOCK_FACTS)
     _replace_file(path, make)
     return _version(value)
 
@@ -470,13 +339,6 @@ class FileTaskStores:
         if not is_new(folder):
             raise Task_Error_NotFound()
         return folder
-
-    def read_latest_content(self, project, task, kind: str) -> tuple:
-        content = latest_content(self._new_folder(project, task), kind)
-        return (content.number, content.body, True) if content else (0, '', False)
-
-    def add_content(self, project, task, kind: str, text: str, author: str, after: int) -> int:
-        return write_content(self._new_folder(project, task), kind, text, author, follows=after)
 
     def shape_problem(self, project, task) -> str | None:
         folder = self._folder(project, task)

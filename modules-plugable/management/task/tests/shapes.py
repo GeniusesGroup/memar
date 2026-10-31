@@ -23,6 +23,7 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 BUDGET_SECONDS = 30
 files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
 folder_module = import_module('modules-plugable.management.task.services.folder')
 task_concerns = import_module('modules-plugable.management.task.services.concerns')
 task_records = import_module('modules-plugable.management.task.services.task_records')
@@ -70,8 +71,8 @@ class Fixture(unittest.TestCase):
     def new(self, sid: str, status: str = 'active', request: str = 'Do the thing.', steps: str = '- [ ] 1. a', report: str | None = None, decisions: str = '- none') -> Path:
         folder = memar_fs.task_dir(sid, create=True)
         files.create_task(folder, sid, 'T', None, None, self.project, status, None, None, None)
-        files.add_text(folder, 'plan', plan_body(request, steps), 'agent')
-        files.add_text(folder, 'report', report_body(decisions), 'agent', fields={'status': report} if report else None)
+        timeline_files.add_text(folder, 'plan', plan_body(request, steps), 'agent')
+        timeline_files.add_text(folder, 'report', report_body(decisions), 'agent', fields={'status': report} if report else None)
         return folder
 
     def both(self, sid: str, **options):

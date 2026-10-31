@@ -32,6 +32,9 @@ def _mojibake_hints(text: str) -> list[str]:
             hits.append(f"{count} occurrence{('s' if count > 1 else '')} of {marker!r}, the signature of {source} having been decoded as Latin-1 and re-encoded — a shell read/write round trip, not the file's own text (a hint; the leading letter is a real letter in some languages, so judge before acting)")
     return hits
 
+mojibake_hints = _mojibake_hints
+
+
 def _is_link_stand_in(path: Path, raw: bytes) -> bool:
     """Whether PATH is a folder's README that git records as a symlink, as a checkout without symlink support writes it.
 

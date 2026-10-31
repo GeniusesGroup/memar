@@ -86,7 +86,7 @@ Which service holds each requirement today, so that a reader looking for the enf
 | the Status values a report may take | `modules/knowledge/status/primitive/status.py`, read through the record declaration |
 | a report that is there is never overwritten | `modules-plugable/management/task/services/report.py` |
 | what makes a hand-back | `modules-plugable/management/task/services/report.py`, read by the services that digest a day's decisions |
-| a report is a content of the task, added and never written over; the current report is the latest content of kind report | `modules-plugable/management/task/services/add_content.py` (the verb `memar task add-content`) over `modules-plugable/management/task/services/task_content_add.py` and the file adapter `modules-plugable/management/task/services/task_files.py` |
+| a report is a content of the task, added and never written over; the current report is the latest content of kind report | `modules-plugable/management/timeline/widgets/conversation/services/post.py` (the verb `memar conversation post`) over the widget `conversation.py`, `Content_Add`, `Timeline_Place` and the file adapter `modules/management/timeline/services/timeline_files.py` |
 | no companion of either kind | no code; the exemption below |
 | the task's identifier in the front matter | `modules/knowledge/content/primitive/record_key.py`, written by the report writer |
 

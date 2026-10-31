@@ -123,6 +123,7 @@ import modules.computer.software.services.project_registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
 task_files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
 task_report = import_module('modules-plugable.management.task.services.report_file')
 _m_layout = import_module('modules-plugable.management.task.services.layout')
 FOLDERS = _m_layout.FOLDERS
@@ -237,7 +238,7 @@ class CreatesFolder(Fixture):
         path = memar_fs.task_dir('s-2')
         self.assertIn('task_id: s-2', text)
         self.assertIn(f'path: {path}', text)
-        self.assertIn(f'memar task add-content --task-id s-2 --kind plan', text)
+        self.assertIn(f'memar conversation post --timeline s-2 --kind plan', text)
         self.assertIn(task_temp.TEMP_SENTENCE, text)
 
     def test_mints_an_id_when_none_is_given(self) -> None:
@@ -297,12 +298,12 @@ class PlanWritten(Fixture):
 
     def test_continuing_never_overwrites_the_plan(self) -> None:
         sid, path = self.ensure('s-keep', TITLE)
-        kept = [(content.number, content.header, content.body) for content in task_files.read_contents(path)]
+        kept = [(content.number, content.header, content.body) for content in timeline_files.read_contents(path)]
         stores = task_files.stores_at(path)
         stores.replace_status(None, sid, 'complete', stores.read_status(None, sid)[1])
         self.ensure(sid)
         self.ensure(sid, 'Another title')
-        self.assertEqual([(content.number, content.header, content.body) for content in task_files.read_contents(path)], kept)
+        self.assertEqual([(content.number, content.header, content.body) for content in timeline_files.read_contents(path)], kept)
         self.assertEqual(task_files.read_facts(path)['title'], TITLE)
 
     def test_the_project_is_the_git_top_level_else_the_folder_given_and_never_the_current_one(self) -> None:
@@ -368,21 +369,21 @@ class ReportWritten(Fixture):
         raw = task_files.report_path(path).read_bytes()
         self.assertNotIn(b'\r', raw)
         self.assertEqual(task_files.report_text(path), REPORT.split('---' + chr(10), 2)[2])
-        self.assertEqual(task_files.read_contents(path)[1].header['kind'], 'report')
+        self.assertEqual(timeline_files.read_contents(path)[1].header['kind'], 'report')
 
     def test_a_report_is_never_overwritten_by_ensuring_again(self) -> None:
         _, path = self.ensure('s-report', TITLE)
-        task_files.add_text(path, 'report', '# Report' + chr(10) + 'Written.' + chr(10), 'agent')
-        before = [content.body for content in task_files.read_contents(path)]
+        timeline_files.add_text(path, 'report', '# Report' + chr(10) + 'Written.' + chr(10), 'agent')
+        before = [content.body for content in timeline_files.read_contents(path)]
         self.ensure('s-report')
-        self.assertEqual([content.body for content in task_files.read_contents(path)], before)
+        self.assertEqual([content.body for content in timeline_files.read_contents(path)], before)
         self.assertEqual(task_files.report_text(path), '# Report' + chr(10) + 'Written.' + chr(10))
 
     def test_new_prints_where_the_report_is(self) -> None:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open('s-said', TITLE, None)
-        self.assertIn('memar task add-content --task-id s-said --kind report', out.getvalue())
+        self.assertIn('memar conversation post --timeline s-said --kind report', out.getvalue())
 
 class RoleFoldersMade(Fixture):
 
@@ -831,8 +832,8 @@ class OnlyTheNewShape(Fixture):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open(None, TITLE, None)
-        self.assertRegex(out.getvalue(), r'plan: write it with `memar task add-content --task-id \S+ --kind plan')
-        self.assertRegex(out.getvalue(), r'report: write it with `memar task add-content --task-id \S+ --kind report')
+        self.assertRegex(out.getvalue(), r'plan: write it with `memar conversation post --timeline \S+ --kind plan')
+        self.assertRegex(out.getvalue(), r'report: write it with `memar conversation post --timeline \S+ --kind report')
         self.assertNotIn('plan.md', out.getvalue())
 
     def test_ensuring_again_adds_nothing_to_a_task_made_new(self) -> None:

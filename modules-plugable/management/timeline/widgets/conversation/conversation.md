@@ -15,5 +15,5 @@ A conversation is a widget of the [timeline](../../../../../modules/management/t
 - A content may be placed in more than one timeline, and has its own number in each: the content that is number 128 in the timeline of a parent can be number 1 in the timeline of a child. A reply to it can be read by the parent, since the parent sees the contents replied to.
 - What is called joining a conversation is therefore the placing of a content in the timeline of a task and in the timeline of its parent. [`Share`](conversation.kh) places a content in one more timeline and answers its number there.
 
-## What Is Not Written Yet
-The reading and the saying are not declared, because timeline and content declare no Khayyam to compose. The requirements are in the [handoff](conversation.handoff.md).
+## Saying and Reading
+`Post` says a text into a timeline: it checks the text, creates its content and places it, and answers the placement's number; `Latest` reads the latest content of a kind. They are the verbs `memar conversation post` and `memar conversation latest`, whose helps say their words. The widget owns no check of a template: the check of a kind that has one is composed by name, and a general check by kind is owed by the [content domain](../../../../../modules/knowledge/content/content.handoff.md).

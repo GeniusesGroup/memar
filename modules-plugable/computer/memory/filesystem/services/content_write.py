@@ -20,8 +20,8 @@ edit_task = _m_fs_lock.edit_task
 import argparse
 import sys
 from pathlib import Path
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
-is_content_file = _m_task_files.is_content_file
+_m_timeline_files = import_module('modules.management.timeline.services.timeline_files')
+is_content_file = _m_timeline_files.is_content_file
 from modules.knowledge.content.services.reference import content_root
 from modules.knowledge.text.services.file_text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
 

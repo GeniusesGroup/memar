@@ -213,7 +213,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_new_says_what_it_writes_and_leaves_the_rest_to_the_file(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('a text is added and never written over', 'memar task add-content --task-id ID --kind plan|report', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', 'use it as printed', '`memar content write`'):
+        for phrase in ('a text is added and never written over', 'memar conversation post --timeline ID --kind plan|report', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', 'use it as printed', '`memar content write`'):
             self.assertIn(phrase, text)
         for phrase in ('Title: TITLE', 'written in PascalCase', 'Once a day', 'drive or filesystem root is refused'):
             self.assertNotIn(phrase, text)
@@ -324,7 +324,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             return dict(found[0].choices) if found else {}
         top, before = launcher.assemble(TASK_SERVICES)
         self.assertEqual(before, [])
-        self.assertEqual(sorted(verbs_of(verbs_of(top)['task'])), sorted(['add-content', 'claim', 'claims', 'depends-on', 'get-decisions-digest', 'list', 'ensure', 'priority']))
+        self.assertEqual(sorted(verbs_of(verbs_of(top)['task'])), sorted(['claim', 'claims', 'depends-on', 'get-decisions-digest', 'list', 'ensure', 'priority']))
 
 class VerbsDispatch(Fixture):
 
