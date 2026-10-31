@@ -105,5 +105,15 @@ class EditTakesTheLock(unittest.TestCase):
         self.target.write_text('# Notes\n\nBody\n', encoding='utf-8', newline='\n')
         content_edit.cmd_edit(self.args(old='Body', new='Text', newline='crlf'), self.root)
         self.assertEqual(self.target.read_bytes(), b'# Notes\r\n\r\nText\r\n')
+class RefusesAContent(EditTakesTheLock):
+
+    def test_an_edit_of_a_content_file_is_refused_and_leaves_it_as_it_is(self) -> None:
+        content = self.root / 'content.00001.md'
+        content.write_text('---\nkind: plan\n---\nkept\n', encoding='utf-8', newline='\n')
+        before = content.read_bytes()
+        with self.assertRaises(SystemExit):
+            content_edit.cmd_edit(self.args(file=str(content), old='kept', new='lost'), self.root)
+        self.assertEqual(content.read_bytes(), before)
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

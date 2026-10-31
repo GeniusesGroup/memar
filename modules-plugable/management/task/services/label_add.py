@@ -36,6 +36,9 @@ is_task_folder = _task_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 read_plan = _m_plan_file.read_plan
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+stores_at = _m_task_files.stores_at
+has_plan = _m_task_files.has_plan
 _m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 add_label = _m_plan_labels.add_label
 checked_label = _m_plan_labels.checked_label
@@ -57,7 +60,7 @@ def set_task_label(task_id: str, text: str, remove: bool) -> None:
     """`label`: add the label TEXT (`KIND=WORD`) to TASK_ID's plan, or with REMOVE take it out, and say what the plan carries now."""
     folder = folder_of(task_id)
     plan = folder / PLAN_NAME
-    if not is_task_folder(folder) or not plan.is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f"no task {task_id} with a {PLAN_NAME}, so there is no label to {('remove' if remove else 'add')}")
     front = read_plan(plan).front
     project = project_of(front)
@@ -67,12 +70,12 @@ def set_task_label(task_id: str, text: str, remove: bool) -> None:
             print(f"{task_id}  does not carry {text.partition('=')[2].strip()}")
         else:
             has = any((item.id == label.id for item in labels_of(front)))
-            remove_label(plan, label)
+            remove_label(stores_at(folder), None, task_id, label)
             print(f'{task_id}  removed {label.word}' if has else f'{task_id}  does not carry {label.word}')
     else:
         label = checked_label(text, project)
         has = any((item.id == label.id for item in labels_of(front)))
-        add_label(plan, label)
+        add_label(stores_at(folder), None, task_id, label)
         print(f'{task_id}  added {label.word}' if not has else f'{task_id}  already carries {label.word}')
     print(carried(task_id, plan))
 

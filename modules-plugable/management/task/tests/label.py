@@ -69,6 +69,10 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
+task_files = import_module('modules-plugable.management.task.services.task_files')
+
+def stores_over(path):
+    return task_files.stores_at(Path(path).parent)
 import modules.process.project.services.registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_label = import_module('modules-plugable.management.task.services.label_add')
@@ -279,7 +283,7 @@ class LabelVerb(Fixture):
     def test_the_other_front_matter_and_the_body_are_kept(self) -> None:
         folder = self.task('20261013T000012Z-1-0', 'queued')
         self.declare('docs')
-        task_plan_priority.set_priority(self.plan(folder), 8)
+        task_plan_priority.set_priority(stores_over(self.plan(folder)), None, 'T', 8)
         self.printed(task_label.set_task_label, folder.name, 'Topic=docs', False)
         front = self.front(folder)
         self.assertEqual((front['priority'], front['title']), ('8', 'T'))

@@ -28,6 +28,9 @@ is_task_folder = _m_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 read_plan = _m_plan_file.read_plan
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+stores_at = _m_task_files.stores_at
+has_plan = _m_task_files.has_plan
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
 _m_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
@@ -41,10 +44,10 @@ def set_task_priority(task_id: str, value: str) -> None:
     priority = Priority.checked(value)
     folder = folder_of(task_id)
     plan = folder / PLAN_NAME
-    if not is_task_folder(folder) or not plan.is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f'no task {task_id} with a {PLAN_NAME}, so there is no priority to set')
     was = Priority.of(read_plan(plan).front)
-    set_priority(plan, priority)
+    set_priority(stores_at(folder), None, task_id, priority)
     print(f'{task_id}  priority {priority}, was {was}')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

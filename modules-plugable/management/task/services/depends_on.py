@@ -34,6 +34,9 @@ is_task_folder = _m_folder.is_task_folder
 read_task = _m_folder.read_task
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+stores_at = _m_task_files.stores_at
+has_plan = _m_task_files.has_plan
 _m_plan_depends = import_module('modules-plugable.management.task.services.plan_depends')
 set_depends_on = _m_plan_depends.set_depends_on
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -46,7 +49,7 @@ def change(task_id: str, add: list[str], drop: list[str]) -> None:
     """`depends-on`: add and drop references in TASK_ID's key, checked, then bring its Status up to date and say what is."""
     folder = folder_of(task_id)
     plan = folder / PLAN_NAME
-    if not is_task_folder(folder) or not plan.is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f'no task {task_id} with a {PLAN_NAME}, so there is no {PlanKey.DEPENDS_ON.written} to set')
     task = read_task(folder)
     was = DependsOn.of(task.front)
@@ -59,7 +62,7 @@ def change(task_id: str, add: list[str], drop: list[str]) -> None:
         added = DependsOn.normalized((Ref.parse(word) for word in add))
         now = DependsOn.normalized([*(ref for ref in was if ref not in dropped), *added])
         refused_for_writing(task_id, now, reader, added)
-        set_depends_on(plan, now)
+        set_depends_on(stores_at(folder), None, task_id, now)
         task = read_task(folder)
         reconcile(task, reader)
         task = read_task(folder)

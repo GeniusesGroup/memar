@@ -17,8 +17,15 @@ edit_task = _m_fs_lock.edit_task
 import argparse
 import sys
 from pathlib import Path
+from importlib import import_module
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+is_content_file = _m_task_files.is_content_file
 from modules.knowledge.content.services.reference import content_root
 from modules.knowledge.text.services.file_text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
+
+def refuse_content_file(path: Path) -> None:
+    if is_content_file(path):
+        sys.exit(f'error: {path.name} is a content of a task: a text of a task is added as a new content, never written over. Nothing was written.')
 
 def describe(verbs):
     parser = verbs.add_parser('edit', help='replace exact text in a file, refusing an absent or ambiguous match', description='Replace exact text in FILE, refusing an absent or ambiguous match. Same encoding and newline guarantees as write; removes a BOM if it finds one. The read, the match, and the write happen under the per-file lock, so the text matched is the text written to.', formatter_class=argparse.HelpFormatter)
@@ -41,6 +48,7 @@ def run(args: argparse.Namespace) -> None:
 
 def cmd_edit(args: argparse.Namespace, root: Path) -> None:
     path = plain_path(args.file)
+    refuse_content_file(path)
     if not path.is_file():
         sys.exit(f'error: not a file: {path}')
     old = Path(args.old_file).expanduser().read_bytes().decode('utf-8') if args.old_file else args.old

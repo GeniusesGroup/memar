@@ -42,6 +42,7 @@ _m_plan_file = import_module('modules-plugable.management.task.services.plan_fil
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_file_problem = _m_plan_file.plan_file_problem
 read_plan = _m_plan_file.read_plan
+has_plan = import_module('modules-plugable.management.task.services.task_files').has_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
@@ -76,7 +77,7 @@ class Task(NamedTuple):
 
 def read_task(folder: Path) -> Task:
     plan = folder / PLAN_NAME
-    if not plan.is_file():
+    if not has_plan(folder):
         return Task(folder, False, None, '')
     try:
         read = read_plan(plan)
@@ -112,7 +113,7 @@ def is_task_folder(entry: Path) -> bool:
     if TaskId.is_form(entry.name):
         return True
     plan = entry / PLAN_NAME
-    if not plan.is_file():
+    if not has_plan(entry):
         return False
     try:
         front = read_plan(plan).front or {}

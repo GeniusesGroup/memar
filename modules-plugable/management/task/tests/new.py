@@ -773,5 +773,42 @@ class UnresolvableRoot(unittest.TestCase):
         with unittest.mock.patch.object(memar_fs, 'memar_root', side_effect=SystemExit('error: no root')):
             with self.assertRaises(SystemExit):
                 task_ensure.ensure_task('s-1', TITLE, project=str(Path(__file__).resolve().parent))
+class NewShapeVerbs(Fixture):
+
+    def made(self, **options):
+        return self.ensure(None, TITLE, None, queued=True, priority=7, new_shape=True, **options)
+
+    def test_a_task_made_new_is_contents_and_facts_and_no_plan_md(self) -> None:
+        sid, path = self.made()
+        self.assertTrue((path / 'task.yaml').is_file())
+        self.assertTrue((path / 'content.00001.md').is_file())
+        self.assertFalse((path / 'plan.md').exists())
+        self.assertFalse((path / 'report.md').exists())
+        task = read_task(path)
+        self.assertTrue(task.has_plan)
+        self.assertEqual((task.status, task.front['title']), ('queued', TITLE))
+
+    def test_priority_depends_on_list_and_claims_work_on_it(self) -> None:
+        sid, path = self.made()
+        task_priority = import_module('modules-plugable.management.task.services.priority')
+        task_list = import_module('modules-plugable.management.task.services.list')
+        task_depends_on = import_module('modules-plugable.management.task.services.depends_on')
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            task_priority.set_task_priority(sid, '3')
+            task_depends_on.change(sid, [], [])
+            task_list.list_tasks(status='queued', project=str(self.current))
+        self.assertIn('priority 3, was 7', out.getvalue())
+        self.assertIn(sid, out.getvalue())
+        self.assertEqual(read_task(path).front['priority'], '3')
+        self.assertIn(sid, [task.id for task in task_list.find_tasks(status='queued', project=self.current)])
+
+    def test_a_new_shape_task_is_claimed_and_its_status_set_in_task_yaml(self) -> None:
+        sid, path = self.made()
+        task_claim = import_module('modules-plugable.management.task.services.claim')
+        self.assertIsNone(task_claim.try_claim(path))
+        self.assertEqual(read_task(path).status, 'active')
+        self.assertTrue((path / 'claim').is_file())
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

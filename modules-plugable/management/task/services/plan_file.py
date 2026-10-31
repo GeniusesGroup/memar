@@ -210,6 +210,10 @@ def read_plan(path: Path) -> Plan:
     written; nothing else gives a plan a status. A plan in an earlier shape
     reads as one with no status, and `plan_shape_problem` says why.
     """
+    if not path.exists() and path.name == PLAN_NAME:
+        held = import_module('modules-plugable.management.task.services.task_files').plan_front(path.parent)
+        if held is not None:
+            return Plan(*held)
     lines = read_bytes(path).decode('utf-8-sig').splitlines()
     front, _ = front_matter(lines)
     if front is not None:
@@ -255,7 +259,10 @@ def plan_file_problem(path: Path) -> str | None:
 
 def part_text(path: Path, part: str) -> str:
     """What PATH says under its `## PART` heading, up to the next `##`, stripped; empty when it has none."""
-    lines = read_bytes(path).decode('utf-8-sig').splitlines()
+    held = None
+    if not path.exists() and path.name == PLAN_NAME:
+        held = import_module('modules-plugable.management.task.services.task_files').plan_body(path.parent)
+    lines = held.splitlines() if held is not None else read_bytes(path).decode('utf-8-sig').splitlines()
     found: list[str] | None = None
     for line in lines:
         if line.startswith('## '):

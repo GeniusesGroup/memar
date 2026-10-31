@@ -22,9 +22,7 @@ when another task is to be found by it.
 The model a task runs on follows what it needs, not its kind: the rule is
 written once, in `MODEL_RULE`, and a kind is only its starting point.
 
-A label is written one line at a time, as a priority is, through
-`task_plan_rewrite`: the block under the key is found, the label's line added
-or removed, and every other line kept as written.
+A label is added or removed through the labels store (`add_label`, `remove_label`); this file opens no file.
 """
 from __future__ import annotations
 from importlib import import_module
@@ -38,12 +36,7 @@ _m_task_kind = import_module('modules.management.task.labels.task_kind')
 task_kind = _m_task_kind
 from modules.knowledge.label.primitive import topic
 TaskKind = _m_task_kind.TaskKind
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-front_matter = _m_plan_file.front_matter
-_m_plan_rewrite = import_module('modules-plugable.management.task.services.plan_rewrite')
-key_of = _m_plan_rewrite.key_of
-line_end = _m_plan_rewrite.line_end
-rewrite = _m_plan_rewrite.rewrite
+change_fact = import_module('modules-plugable.management.task.services.fact_retry').change_fact
 from modules.knowledge.label.services.declarations import FOLDER, NAME, Declared, declared, declaring_files
 KINDS = (task_kind.LABEL_KIND, topic.LABEL_KIND)
 TASK_KIND = task_kind.LABEL_KIND_NAME
@@ -175,39 +168,9 @@ def label_to_remove(text: str, project: Path | None, carried: Labels) -> Label |
         return label
     return next((item for item in carried if item.word == fresh.label.word), None)
 
-def _block(lines: list[str], start: int) -> tuple[int, int] | None:
-    """Where the `Labels:` block lies among the front matter's LINES (before START): the header's index and the index after its last line; None without one."""
-    for index in range(1, start - 1):
-        if key_of(lines[index]) == PlanKey.LABELS.written and lines[index].split(':', 1)[1].strip() == '':
-            end = index + 1
-            while end < start - 1 and lines[end][:1] in (' ', '\t'):
-                end += 1
-            return (index, end)
-    return None
+def add_label(store, project, task, label: Label) -> None:
+    change_fact(task, 'labels', lambda: store.read_labels(project, task), lambda value, version: store.replace_labels(project, task, value, version), lambda was: None if any(item.id == label.id for item in was) else was.with_label(label))
 
-def _written(labels: Labels, newline: str) -> list[str]:
-    return [f'{PlanKey.LABELS.written}:{newline}', *(f'{line}{newline}' for line in labels.lines())] if labels else []
 
-def _change(path: Path, edit) -> None:
-    """Rewrite PATH's labels as EDIT makes them from the ones it holds; every other line is kept."""
-
-    def change(lines: list[str]) -> list[str]:
-        _, start = front_matter([line.rstrip('\r\n') for line in lines])
-        if not start:
-            fail(f'{path} has no front matter, so its labels cannot be set')
-        newline = line_end(lines[0])
-        found = _block(lines, start)
-        was = Labels.read('\n'.join((line.strip() for line in lines[found[0] + 1:found[1]]))) if found else Labels()
-        written = _written(edit(was), newline)
-        if found:
-            return [*lines[:found[0]], *written, *lines[found[1]:]]
-        return [*lines[:start - 1], *written, *lines[start - 1:]]
-    rewrite(path, change)
-
-def add_label(path: Path, label: Label) -> None:
-    """Add LABEL to PATH's labels, last; unchanged when the plan already carries it. LABEL has been checked (`checked_label`)."""
-    _change(path, lambda was: was.with_label(label))
-
-def remove_label(path: Path, label: Label) -> None:
-    """Remove LABEL from PATH's labels, the block with the last one; unchanged when the plan does not carry it."""
-    _change(path, lambda was: was.without(label))
+def remove_label(store, project, task, label: Label) -> None:
+    change_fact(task, 'labels', lambda: store.read_labels(project, task), lambda value, version: store.replace_labels(project, task, value, version), lambda was: None if not any(item.id == label.id for item in was) else was.without(label))

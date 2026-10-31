@@ -79,6 +79,10 @@ SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent 
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
+task_files = import_module('modules-plugable.management.task.services.task_files')
+
+def stores_over(path):
+    return task_files.stores_at(Path(path).parent)
 import modules.process.project.services.preferences as project_preferences
 import modules.process.project.services.registry as registry
 task_digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
@@ -137,7 +141,7 @@ class OneDigest(Fixture):
     def test_each_task_shows_its_priority(self) -> None:
         folder = self.task('20261012T050007Z-1-0', 'Ranked', 'blocked', ['- Q?'])
         plan = folder / task_plan.PLAN_NAME
-        task_plan_priority.set_priority(plan, 8)
+        task_plan_priority.set_priority(stores_over(plan), None, 'T', 8)
         self.assertIn('priority: 8', self.digest())
 
     def test_a_report_that_is_not_a_hand_back_is_marked(self) -> None:

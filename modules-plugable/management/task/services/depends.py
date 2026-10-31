@@ -55,6 +55,9 @@ log_path = _m_log.log_path
 record = _m_log.record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+stores_at = _m_task_files.stores_at
+has_plan = _m_task_files.has_plan
 _m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
 set_status = _m_plan_status.set_status
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -102,14 +105,13 @@ def reconcile(task: Task, reader: Reader) -> str:
     if not DependsOn.of(task.front) and (not (task.status == Status.BLOCKED.key and blocked_by_memar(task.path))):
         return task.status
     unmet = problems(task, reader)
-    plan = task.path / PLAN_NAME
     try:
         if unmet and task.status == Status.QUEUED.key:
-            set_status(plan, Status.BLOCKED.key, expected=(Status.QUEUED.key,))
+            set_status(stores_at(task.path), None, task.id, Status.BLOCKED.key, only_from=(Status.QUEUED.key,))
             record(BLOCKED_EVENT, task.id, '; '.join(unmet), folder=task.path)
             return Status.BLOCKED.key
         if not unmet and task.status == Status.BLOCKED.key and blocked_by_memar(task.path):
-            set_status(plan, Status.QUEUED.key, expected=(Status.BLOCKED.key,))
+            set_status(stores_at(task.path), None, task.id, Status.QUEUED.key, only_from=(Status.BLOCKED.key,))
             record(RELEASED_EVENT, task.id, '', folder=task.path)
             return Status.QUEUED.key
     except SystemExit:

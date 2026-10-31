@@ -53,6 +53,9 @@ _m_plan_file = import_module('modules-plugable.management.task.services.plan_fil
 PLAN_NAME = _m_plan_file.PLAN_NAME
 plan_file_problem = _m_plan_file.plan_file_problem
 read_plan = _m_plan_file.read_plan
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+stores_at = _m_task_files.stores_at
+has_plan = _m_task_files.has_plan
 _m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
 set_status = _m_plan_status.set_status
 _m_depends = import_module('modules-plugable.management.task.services.depends')
@@ -128,7 +131,7 @@ def try_claim(folder: Path) -> str | None:
     taken as an ordinary queued task (`task_depends`).
     """
     plan = folder / PLAN_NAME
-    if not plan.is_file():
+    if not has_plan(folder):
         return f'{folder} has no {PLAN_NAME}, so there is no task to claim'
     shape = plan_file_problem(plan)
     if shape:
@@ -147,7 +150,7 @@ def try_claim(folder: Path) -> str | None:
     if why:
         return why
     try:
-        set_status(plan, Status.ACTIVE.key, expected=(Status.QUEUED.key, Status.ACTIVE.key))
+        set_status(stores_at(folder), None, folder.name, Status.ACTIVE.key, only_from=(Status.QUEUED.key, Status.ACTIVE.key))
     except SystemExit as refused:
         claim.unlink(missing_ok=True)
         return str(refused.code).removeprefix('error: ')

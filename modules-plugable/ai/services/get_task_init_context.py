@@ -132,7 +132,7 @@ STEP_DOCUMENT = re.compile('(?<![\\w./-])/?((?:docs|modules|modules-plugable|bun
 NAMED_COMMAND = re.compile('`memar ([^`]+)`')
 COMMAND_WORD = re.compile('[a-z][a-z-]*$')
 MOST_COMMAND_WORDS = 3
-ENDING = f"Do what the plan's Request says, without rewriting that Request. A read-only step takes no development or modeling act, so beyond what this prints it reads only what its step needs.\nEnd with its {REPORT_NAME} and Status as `memar task --help` says. Where you may write files, write the report through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the task's temp/ folder, which is never archived, so the report is not kept twice. Where you may only return text, return the report as your final text, and the delegating task writes it as {REPORT_NAME} before its next step.\n{TEMP_SENTENCE}"
+ENDING = f"Do what the plan's Request says, without rewriting that Request. A read-only step takes no development or modeling act, so beyond what this prints it reads only what its step needs.\nEnd with its {REPORT_NAME} and Status as `memar task --help` says. Where you may write files, write the report through `memar content write --create FILE --content-file SCRATCHFILE`, SCRATCHFILE a file in the task's temp/ folder, which is never archived, so the report is not kept twice. Where you may only return text, return the report as your final text, and the delegating task writes it as {REPORT_NAME} before its next step.\n{TEMP_SENTENCE}\n- A text of a task is added as a new content, never written over; a fact of a task is changed through its store."
 
 def marked_part(name: str, body: str) -> str:
     return marked_passages(name, [body])[0]

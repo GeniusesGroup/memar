@@ -38,6 +38,7 @@ is routed by closing by type.
 from __future__ import annotations
 from importlib import import_module
 from pathlib import Path
+files = import_module('modules-plugable.management.task.services.task_files')
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 EARLIER_SHAPE_REMEDY = _m_plan_file.EARLIER_SHAPE_REMEDY
 EARLIER_STATUS_WORDS = _m_plan_file.EARLIER_STATUS_WORDS
@@ -68,19 +69,10 @@ def report_skeleton(task: str, title: str | None=None) -> str:
     return '\n'.join([*front, f'# {REPORT.heading}', '', *(f'## {part}' for part in REPORT.parts)]) + '\n'
 
 def write_report(folder: Path, task: str, title: str | None=None) -> None:
-    """Create FOLDER's report.md unless one is there; an existing report is never touched."""
-    try:
-        with (folder / REPORT_NAME).open('x', encoding='utf-8', newline='\n') as report:
-            report.write(report_skeleton(task, title))
-    except FileExistsError:
-        pass
+    files.create_report_md(folder, report_skeleton(task, title))
 
 def _lines(folder: Path) -> list[str]:
-    """FOLDER's report.md as lines; none when there is no readable report."""
-    try:
-        return (folder / REPORT_NAME).read_text(encoding='utf-8-sig').splitlines()
-    except (OSError, UnicodeDecodeError):
-        return []
+    return files.report_lines(folder)
 
 def _front(lines: list[str]) -> dict[str, str]:
     """The report's front matter, the keys written in PascalCase lowercased so callers ask for `status`; empty without one."""

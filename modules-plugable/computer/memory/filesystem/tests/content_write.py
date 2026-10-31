@@ -128,6 +128,26 @@ class WriteTakesTheLock(unittest.TestCase):
         self.assertFalse(lock.exists())
         self.assertFalse(edit_intent_path(lock).exists())
 
+class RefusesAContent(WriteTakesTheLock):
+
+    def test_a_write_over_a_content_file_is_refused_and_leaves_it_as_it_is(self) -> None:
+        content = self.root / 'content.00001.md'
+        content.write_text('---\nkind: plan\n---\nkept\n', encoding='utf-8', newline='\n')
+        before = content.read_bytes()
+        payload = self.root / 'payload.md'
+        payload.write_text('# New\n', encoding='utf-8', newline='\n')
+        with self.assertRaises(SystemExit):
+            content_write.cmd_write(self.args(file=str(content), content_file=str(payload)), self.root)
+        self.assertEqual(content.read_bytes(), before)
+
+    def test_a_new_content_file_is_not_made_by_hand_either(self) -> None:
+        content = self.root / 'content.00002.md'
+        payload = self.root / 'payload.md'
+        payload.write_text('# New\n', encoding='utf-8', newline='\n')
+        with self.assertRaises(SystemExit):
+            content_write.cmd_write(self.args(file=str(content), create=True, content_file=str(payload)), self.root)
+        self.assertFalse(content.exists())
+
 class ScratchBeyondTheArchive(unittest.TestCase):
     """A --content-file lying in a task's kept folders is refused; one in its temp/ is read."""
 

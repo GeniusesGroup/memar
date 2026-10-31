@@ -59,7 +59,13 @@ _m_plan_priority = import_module('modules-plugable.management.task.services.plan
 set_priority = _m_plan_priority.set_priority
 _m_plan_write = import_module('modules-plugable.management.task.services.plan_write')
 queue_plan = _m_plan_write.queue_plan
-write_plan = _m_plan_write.write_plan
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+stores_at = _m_task_files.stores_at
+has_plan = _m_task_files.has_plan
+create_plan_md = _m_task_files.create_plan_md
+create_task = _m_task_files.create_task
+_m_claim = import_module('modules-plugable.management.task.services.claim')
+is_claimed = _m_claim.is_claimed
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 write_report = _m_report_file.write_report
 from modules.knowledge.label.primitive.label import Labels
@@ -98,7 +104,7 @@ def linked_conversation(task_id: str, parent: str) -> str:
         fail(f'no task folder {parent}: --parent names a task that is there, the one this task came from')
     return read_task(folder).conversation
 
-def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
+def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None, new_shape: bool=False) -> tuple[str, Path]:
     """Ensure the task's folder, its plan.md and report.md, and its folders exist; return its id and path.
 
     TITLE is required when the folder has no plan.md yet, and unused when it
@@ -142,7 +148,7 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     if project is None and folder.is_dir():
         project = recorded_project(folder)
         location = project_location(project) if project is not None else None
-    if project is None and (not (folder.is_dir() and (folder / PLAN_NAME).is_file())):
+    if project is None and (not (folder.is_dir() and has_plan(folder))):
         fail(PROJECT_REQUIRED)
     if not folder.is_dir() and location is not None:
         folder = location / sid
@@ -154,19 +160,19 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         for text in labels:
             given = given.with_label(checked_label(text, project, registry))
     existed = folder.is_dir()
-    has_plan = (folder / PLAN_NAME).is_file()
-    title = checked_title(title, required=not has_plan)
+    has_plan_now = has_plan(folder)
+    title = checked_title(title, required=not has_plan_now)
     parent = (parent or '').strip() or None
     conversation = None
     if parent is not None:
-        if has_plan:
+        if has_plan_now:
             recorded = read_task(folder).parent
             if recorded != parent:
                 fail(f"task {sid} was opened with parent {recorded or '(none)'}; a task's link is written once, with its plan")
         else:
             conversation = linked_conversation(sid, parent)
     reader = Reader(project)
-    now = DependsOn.normalized([*(DependsOn.of(read_task(folder).front) if has_plan else ()), *cited])
+    now = DependsOn.normalized([*(DependsOn.of(read_task(folder).front) if has_plan_now else ()), *cited])
     if cited:
         refused_for_writing(sid, now, reader, cited)
     path = folder
@@ -179,21 +185,21 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         record('opened', sid, f'parent {parent}' if parent else '', folder=path)
     if in_project_location(path):
         register(path.parent, project)
-    if not has_plan:
+    if not has_plan_now:
         waits = bool(cited) and bool(reader.unmet(cited))
         status = Status.BLOCKED.key if waits else Status.QUEUED.key if queued else Status.ACTIVE.key
-        write_plan(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
+        (create_task if new_shape else create_plan_md)(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
         if waits:
             record(BLOCKED_EVENT, sid, '; '.join(reader.unmet(cited)), folder=path)
     else:
         if queued:
-            queue_plan(path)
+            queue_plan(stores_at(path), project, sid, is_claimed(path))
         if priority is not None:
-            set_priority(path / PLAN_NAME, priority)
+            set_priority(stores_at(path), project, sid, priority)
         for label in given or ():
-            add_label(path / PLAN_NAME, label)
+            add_label(stores_at(path), project, sid, label)
         if cited:
-            set_depends_on(path / PLAN_NAME, now)
+            set_depends_on(stores_at(path), project, sid, now)
             reconcile(read_task(path), reader)
     write_report(path, sid, (read_task(path).front or {}).get(PlanKey.TITLE.key))
     ensure_folders(path)

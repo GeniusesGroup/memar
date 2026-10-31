@@ -20,8 +20,14 @@ edit_task = _m_fs_lock.edit_task
 import argparse
 import sys
 from pathlib import Path
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+is_content_file = _m_task_files.is_content_file
 from modules.knowledge.content.services.reference import content_root
 from modules.knowledge.text.services.file_text import chosen_newline, plain_path, read_utf8_strict, write_utf8, writer_id
+
+def refuse_content_file(path: Path) -> None:
+    if is_content_file(path):
+        sys.exit(f'error: {path.name} is a content of a task: a text of a task is added as a new content, never written over. Nothing was written.')
 
 def describe(verbs):
     parser = verbs.add_parser('write', help='write a text file as UTF-8 without a BOM, preserving its newlines', description="Put text into FILE as UTF-8 with no BOM, keeping the file's own line endings (LF for a new file) and guaranteeing a final newline. Never put text into a file through a shell's own text handling. The write is taken under the per-file lock, so a cooperating task writing the same file is serialized rather than interleaved.", formatter_class=argparse.HelpFormatter)
@@ -99,6 +105,7 @@ def refuse_empty(path: Path, text: str, verb: str) -> None:
 
 def cmd_write(args: argparse.Namespace, root: Path) -> None:
     path = plain_path(args.file)
+    refuse_content_file(path)
     if not path.is_file() and (not args.create):
         sys.exit(f'error: {path} does not exist. Nothing was written.\n  Pass --create if you mean to add a new file. A mistyped path in a\n  write would otherwise leave a stray file with no complaint.')
     text = content_from(args)
