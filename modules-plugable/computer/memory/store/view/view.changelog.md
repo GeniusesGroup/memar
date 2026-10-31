@@ -77,3 +77,17 @@
 - A line in the entry point of `bundles/memar` naming the verb's module, as `open` is named: its test refuses a verb word in the router's strings, and the router finds a verb by `describe`.
 - Registering the Task's presentation: the task module's, task `20261023-T074643Z-5420`.
 - A `view` line in Memar's own manifest and its ignore-list entry: the migration's (P4).
+
+---
+
+### Memory View: the cases and the registry are linked, not described
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: from "The cases" the list of cases and the two the build added; from "Selected by preferences" the name of the preferences function and the details of the registry and the answer; they are `protocol/view.kh` and the `view-*.kh` files, `errors/errors.kh` and `tests/view.py`. Kept: placement, the reasons for a function of two things, never committed, built on demand, selected by preferences, never cleaning a folder in use.
