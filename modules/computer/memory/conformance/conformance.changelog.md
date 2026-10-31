@@ -39,3 +39,17 @@
 #### What changed
 - `conformance.py`: the eight cases of the `durable` and `shared` groups pass on `git-store` and carry `owed:memory.port.contract-suite` no longer; the module's docstring says so.
 - `conformance.md`, "Groups": `fallback` and `working-tree` are coded first in `git-store`'s `cases.py`, which also codes the `replicated` group until a second adapter declares it.
+
+---
+
+### Memory Conformance: the groups and cases are linked, not listed
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../modules-plugable/knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed from the Abstract: the description of `conformance.py`, its docstring-per-case and the runner `test_case`; new home `conformance-case.kh`, `conformance-runner.kh` and the other `conformance-*.kh`. Removed from "Groups": the sentences stating each fallback, held-only and working-tree case; they are the cases in `git-store/cases.py`, the kinds are `conformance-group-kinds.kh`. Kept: "Which cases are the contract's" and why each group is owed where it is.
