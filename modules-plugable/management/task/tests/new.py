@@ -235,7 +235,7 @@ class CreatesFolder(Fixture):
         path = memar_fs.task_dir('s-2')
         self.assertIn('task_id: s-2', text)
         self.assertIn(f'path: {path}', text)
-        self.assertIn(f'plan: {task_files.plan_path(path)}', text)
+        self.assertIn(f'memar task add-content --task-id s-2 --kind plan', text)
         self.assertIn(task_temp.TEMP_SENTENCE, text)
 
     def test_mints_an_id_when_none_is_given(self) -> None:
@@ -380,7 +380,7 @@ class ReportWritten(Fixture):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open('s-said', TITLE, None)
-        self.assertIn(f"report: {task_files.report_path(memar_fs.task_dir('s-said'))}", out.getvalue())
+        self.assertIn('memar task add-content --task-id s-said --kind report', out.getvalue())
 
 class RoleFoldersMade(Fixture):
 
@@ -829,8 +829,8 @@ class OnlyTheNewShape(Fixture):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open(None, TITLE, None)
-        self.assertRegex(out.getvalue(), r'plan: .*content\.00001\.md')
-        self.assertRegex(out.getvalue(), r'report: .*content\.00002\.md')
+        self.assertRegex(out.getvalue(), r'plan: write it with `memar task add-content --task-id \S+ --kind plan')
+        self.assertRegex(out.getvalue(), r'report: write it with `memar task add-content --task-id \S+ --kind report')
         self.assertNotIn('plan.md', out.getvalue())
 
     def test_ensuring_again_adds_nothing_to_a_task_made_new(self) -> None:

@@ -39,7 +39,9 @@ from modules.knowledge.label.primitive.label import Labels
 TASK_FACTS_NAME = 'task.yaml'
 REPORT_NAME = REPORT.file_name
 CONTENT_WIDTH = 5
-CONTENT_PATTERN = re.compile(r'^content\.(\d{5})\.md$')
+CONTENT_EXTENSION = '.md'
+CONTENT_PATTERN = re.compile(rf'^content\.(\d{{{CONTENT_WIDTH}}}){re.escape(CONTENT_EXTENSION)}$')
+OLD_SHAPE_READER = 'modules-plugable/management/task/services/plan_file.py'
 AUTHOR = 'memar'
 FACTS = ('title', 'status', 'priority', 'labels', 'depends_on', 'parent', 'conversation', 'project', 'participants', 'start_date')
 FRONT_KEY = {'title': PlanKey.TITLE, 'status': PlanKey.STATUS, 'priority': PlanKey.PRIORITY, 'labels': PlanKey.LABELS, 'depends_on': PlanKey.DEPENDS_ON, 'parent': PlanKey.PARENT, 'conversation': PlanKey.CONVERSATION, 'project': PlanKey.PROJECT, 'start_date': PlanKey.START_DATE}
@@ -145,7 +147,7 @@ def is_content_file(path: Path) -> bool:
 
 
 def _content_name(number: int) -> str:
-    return f'content.{number:0{CONTENT_WIDTH}d}.md'
+    return f'content.{number:0{CONTENT_WIDTH}d}{CONTENT_EXTENSION}'
 
 
 def _numbers(folder: Path) -> list:
@@ -185,7 +187,7 @@ def _newer_than(folder: Path, kind: str, follows: int, below: int | None = None)
 
 def write_content(folder: Path, kind: str, text: str, author: str, follows: int | None = None, refs=(), fields: dict | None = None, placed_at: str | None = None) -> int:
     header = {'kind': kind, 'author': author, 'placed_at': placed_at or datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}
-    if follows is not None:
+    if follows:
         header['follows'] = str(follows)
     if refs:
         header['refs'] = '\n'.join(refs)
@@ -462,6 +464,19 @@ class FileTaskStores:
         if (folder / TASK_FACTS_NAME).is_file():
             return _yaml_write(folder, fact, value, expected)
         return _plan_write(folder, fact, value, expected)
+
+    def _new_folder(self, project, task) -> Path:
+        folder = self._folder(project, task)
+        if not is_new(folder):
+            raise Task_Error_NotFound()
+        return folder
+
+    def read_latest_content(self, project, task, kind: str) -> tuple:
+        content = latest_content(self._new_folder(project, task), kind)
+        return (content.number, content.body, True) if content else (0, '', False)
+
+    def add_content(self, project, task, kind: str, text: str, author: str, after: int) -> int:
+        return write_content(self._new_folder(project, task), kind, text, author, follows=after)
 
     def shape_problem(self, project, task) -> str | None:
         folder = self._folder(project, task)

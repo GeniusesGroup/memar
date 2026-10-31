@@ -85,6 +85,7 @@ Which service holds each requirement today, so that a reader looking for the enf
 | the Status values a plan may take | `modules/knowledge/status/primitive/status.py`, read through the record declaration |
 | an earlier shape not read | `modules-plugable/management/task/services/plan.py` |
 | the Status line rewritten alone | `modules-plugable/management/task/services/plan_status.py` and `modules-plugable/management/task/services/plan_write.py` |
+| a plan is a content of the task, added and never written over; the current plan is the latest content of kind plan | `modules-plugable/management/task/services/add_content.py` (the verb `memar task add-content`) over `modules-plugable/management/task/services/task_content_add.py` and the file adapter `modules-plugable/management/task/services/task_files.py` |
 | no companion of either kind | no code; the exemption below |
 | the task's identifier in the front matter | `modules/knowledge/content/primitive/record_key.py`, written by the plan and report writers |
 
