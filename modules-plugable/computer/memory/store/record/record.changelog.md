@@ -234,3 +234,46 @@
 
 #### What changed
 - Removed: from "Definition" the id, domain-key, part and label forms; from "The operations" every answer, bound and refusal; from "What every adapter guarantees" the guarantees the contract owns; from "Capabilities and limits" the pointer to `store.py`; from "Binding adapters to classes" the list of refusals and the needs; from "The contract suite" the commands and the translation of addresses; from the Go-era section the file-by-file fate. Their new home is `protocol/record.kh` and the `record-*.kh` files, `errors/errors.kh` and the store contract. Kept: the reasons for the id, the token and the labels, the Go-era mapping, the placement, and the headings other documents link to. Stale text updated: protocol is Khayyam.
+
+---
+
+### Memory Record: the definition, operations and binding are linked; two reasons are restored
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - second reduction of the remaining restatements
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed: from "Definition" the forms of the id, domain key, part and label (now [`record-id.eng.kh`](protocol/record-id.eng.kh), [`record-domain-key.eng.kh`](protocol/record-domain-key.eng.kh), [`record-part.eng.kh`](protocol/record-part.eng.kh), [`record-labels.eng.kh`](protocol/record-labels.eng.kh)); from "The operations" the description of `parts`, `nodes` and `scan` (now [`record.eng.kh`](protocol/record.eng.kh)); from "Binding adapters to classes" the `class=adapter` form and the `open` signature (now [`record-binding.eng.kh`](protocol/record-binding.eng.kh) and [`memory-open.eng.kh`](../../../../../bundles/memar/services/memory/memory-open.eng.kh)).
+- Restored: that each adapter's tests run the suite on `record` laid over it, so the dependence runs toward the foundation, and that neither `git-store` nor `files` redoes the existing git and filesystem modules.
+
+---
+
+### Memory Record: the index, needs, paging and member list are linked
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - fixes after review
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - edited the document
+
+#### What changed
+- Reduced to the reason and linked: the index ([`record-index.eng.kh`](protocol/record-index.eng.kh)), the needs ([`record-needs.eng.kh`](protocol/record-needs.eng.kh)), paging ([`record-scan-query.eng.kh`](protocol/record-scan-query.eng.kh)), the operations added ([`record.eng.kh`](protocol/record.eng.kh)); the Id bullet keeps only the shard reason.
+
+---
+
+### The reduction of this document to concept, reasons and trade-offs is reviewed
+- Time: 2026-10-31T10:00:00Z
+- Type: Changed
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - A fresh AI reviewer (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reviewed, approved
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) — reduced the document, fixed the findings of two earlier reviewers
+
+#### What changed
+- Claim reviewed, quoted: "state the concept, the reasons and the trade-offs and restate no code or Khayyam; every fact they dropped has a home in a .kh / *.eng.kh, in code, or in a document or handoff they link to; and no reason, trade-off, owner ruling or placement decision was lost." Evidence: `memar content check` on the six folders (0 problems); the diff of each document against its base commit, each removed passage grepped for its new home; the three defects an earlier reviewer found were checked fixed. Verdict: permitted. The reviewer left minor notes: a few sentences in `record.md` and `git-store.md` still repeat an `*.eng.kh` while carrying a reason, and the requirement that a `get` of many addresses costs no process per address has its home only in `store-stats.eng.kh` and `git-store.md`.
