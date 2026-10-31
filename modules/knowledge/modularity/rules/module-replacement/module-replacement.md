@@ -1,0 +1,46 @@
+---
+Title: "Modularity Rule — A Module Is Replaced, Not Versioned"
+Status: Draft
+Start Date: 2026-10-31
+---
+
+# Modularity Rule — A Module Is Replaced, Not Versioned
+A rule of this repository, held for [Modularity](../../modularity.md). It applies to every module and every language, whenever the stored shape or the protocol a module declares changes in a way that data already written, or a party already implementing, cannot follow. It rests on the life cycle of a Type ([Type](../../../../computer/type/type.md)) and on no number of a version, and it assumes neither git nor a filesystem: a memory model and the adapters to a filesystem realize it, and the model is shaped by neither.
+
+## The rule
+- **A generation is a module.** A change is a generation when the stored shape the old module declares can hold a datum that the shape the new module declares cannot be read from. The test is made on the two declarations, not on the data present. The new module stands in the place the old one stood, with the same name and a new `Type_UUID`; the old module keeps its identity and takes the life-cycle position `EndOfLife`. A change that leaves every datum of the old declaration readable is an ordinary edit and makes no generation.
+- **Two generations are two modules, each with its one placement.** They share a name because the second serves the Responsibility of the first, and that is the explicit relationship [One Term, One Identity](../../modularity.md#one-term-one-identity) asks for between two identified things: the successor names its predecessor, and the Type's record of "the Type that replaces it" is the same edge read from the other side ([Type](../../../../computer/type/type.md)). The old module names nothing of the new one, so no dependence runs back ([Placement](../placement/placement.md)).
+- **The name never carries a generation.** No version number, no `v2`, no `_new`, no `_old`. The `Type_UUID` alone tells generations apart, in the datum, in the memory and in the chain. A domain that ends many times has a longer chain and nothing else.
+- **`EndOfLife` is a position, and the legacy home is a view of it:** the answer to "which modules are `EndOfLife`", shown to any agent, human or AI. A position of the life cycle and a placement are two labels, and a module may be pluggable and `EndOfLife`. The life cycle's owner offers the operation that changes a position; the Type module offers none today ([Type](../../../../computer/type/type.md)).
+- **A datum names the module that owns its shape.** Its current representation holds the `Type_UUID` of that module, so that any agent knows what the content is. A part of the datum that is another owner's embedded abstraction carries that owner's stamp. Every memory model holds the stamp, and a memory may keep a short key from a table that maps each `Type_UUID` to it; the table belongs to that memory, a key is never given to another `Type_UUID`, and the `Type_UUID` is restored wherever a datum leaves the memory. A datum with no stamp is counted as a datum of the first generation.
+- **Only the memory model, the adapter and the conversion service read the stamp.** The core of a module reads none. A read of a datum whose stamp is not the current module's goes to the adapter of the successor chain.
+- **The new module holds three things for the generation before it, and for that generation alone:**
+  - an **adapter**, the only entrance to the predecessor: it answers a read of an old datum by calling the predecessor's services that read, and gives the answer in the new module's shape. The predecessor's own adapter is its entrance to the generation before it, so a datum of the first generation reaches the third by a chain of adapters. The adapter answers or returns the error below and raises no other failure of its own;
+  - a **conversion service**, which reads an old datum through the adapter and writes its representation in the new shape, supplying a part the new shape requires and the old datum lacks by a stated rule; a background run of it converts the data;
+  - an **error**, which the new module's protocol declares by naming the owner's error and no copy ([One Owner](../one-owner/one-owner.md)), for a call that cannot be served on a datum because of its writer; it carries the writer's `Type_UUID`, its successor's and the conversion service. The adapter returns it when the new shape requires a part the old datum lacks.
+- **A write on the old structure is forbidden.** Nothing calls a service of an `EndOfLife` module except the adapter of its successor, and the adapter reaches only services that read. A change to an old datum is made after its conversion.
+- **A conversion keeps the meaning and changes the representation.** The datum keeps its place and its identity, which its memory gives it and its representation does not determine; the new representation carries the new stamp and an edge `converted_from` to the old one. A conversion is accepted when, for every service of the new module that reads the datum, the answer given before the conversion through the adapter and the answer given after it are equal in the members the service declares; a datum the adapter answered with the error is accepted by the new module's own validation of the shape. A change of meaning is not a conversion: it is made as the domain makes any change of a text.
+- **A memory that converts keeps the earlier representations as the datum's record**, each with the stamp it had, and retiring a module does not remove that record.
+- **A generation is retired as a whole,** when it and every generation before it have no current representation carrying their stamp (counting the unstamped data as the first generation's), and every party outside the project that depends on its contract has been given the successor's. The memory answers the count as a query. The adapter and the services that read stay until then, and the module's owner confirms the retirement, since it removes meaning a module states.
+- **A protocol is replaced the same way.** A protocol whose requirements change so that a former implementation no longer satisfies them is a new protocol with a new `Type_UUID`; the former is `EndOfLife`, and a module states the `Type_UUID` of the protocol it implements.
+- **No mode flag, no parameter that selects an older behaviour, no sign of a generation in a name.** A review finds one by four checks:
+  1. a declaration outside the legacy home has a generation token in its name (`v2`, `_new`, `_old`, `_legacy`), unless the token is part of the name of a standard outside the project;
+  2. a service has a parameter whose value chooses between two behaviours over the stored shape, such as a boolean or an enumeration whose branches read or write different structures;
+  3. a core reads a writer stamp;
+  4. a core serves two shapes by inspecting the form of the data it is given.
+  The first and third are decidable by a tool; the second and fourth are a reviewer's question.
+- **Migration of existing data is a sequence of reported steps,** each reporting the count left, the data that did not convert and the reason; never a step for one datum.
+
+## Why it exists
+A flag beside a default is a second module hidden in the first: it is never removed, and nothing in a datum says which code wrote it. A version number says nothing about whether any datum would be lost, while the stamp of the writer says which data a generation still holds. A module's stored shape will change after its first use, and an agent that decides how by its own taste leaves a flag or a version behind.
+
+## Keep it or drop it
+An organization may version a module by number and flags and remain conformant to Memar's concepts, at the cost that the writer of a datum is a guess, a flag is a second module, and a module cannot be set aside while a flag remains.
+
+## What this rule does not claim
+- It does not serve a module that changes every day. A module that gains and loses fields all the time (a large `User`) has a decomposition problem, and this rule is no remedy for it ([Module Identity and Responsibility](../../modularity.md#module-identity-and-responsibility)).
+- It does not fix the set of positions of the life cycle: only `EndOfLife` is used. [`life-cycle.kh`](../../../../computer/type/protocol/life-cycle.kh) declares no position yet, and [Type](../../../../computer/type/type.md) holds the set open.
+- It does not say how a memory keeps its history or counts an archive; that belongs to the memory modules.
+- It does not say how another organization that takes a module is told of a retirement.
+- It does not name a layout of the model. A realization may keep `EndOfLife` modules in a place of its own, and that place is its adapter's choice.
+- It is enforced by no check this repository runs today; a reviewer asks of a change, "can the new declaration read every datum the old one can hold, and if not, where is the generation?".
