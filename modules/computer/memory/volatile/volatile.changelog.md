@@ -21,3 +21,17 @@
 
 #### Considered and not done
 - Offering it to services as an in-process store: the question stays open in the memory handoff.
+
+---
+
+### Memory Volatile: the declarations are linked, not described
+- Type: Changed
+- Cited:
+  - [Documentation Rule: A Document Restates No Code](../../../../modules-plugable/knowledge/documentation/rules/document-restates-no-code/document-restates-no-code.md) - Reference: the rule the reduction applies
+- Tasks:
+  - main:.agents/tasks/20261026-T200842Z-21460/: Done - step S4d of the redo
+- Contributors:
+  - An AI agent (Claude, as reported by the runtime; no CONTRIBUTORS.md entry) - reduced the document
+
+#### What changed
+- Removed from the Abstract: the sentence that described what the docstring of `volatile.py` states (the parameters, limits and atomicity). Their new home is `volatile.kh`, `volatile-capabilities.kh` and `volatile-memory.kh`. Added: the refusal at build of a held range that dense and capacity disagree on, as an open point.
