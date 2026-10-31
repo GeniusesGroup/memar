@@ -19,9 +19,8 @@ The first design's suite was written for record ids ([Memory Record → The cont
 
 ### Groups
 A group is named by what calls for it, and a case runs on an adapter only when its group applies and the store's parameters let it be stated: an `absent` expectation is not asked of a dense store, nor an expectation of a store that cannot compare and write, beyond the case that it is refused. The kinds of group are [`conformance-group-kinds.kh`](conformance-group-kinds.kh) and the groups themselves [`conformance-groups.kh`](conformance-groups.kh). In words:
-- `core`, `dense`, `fixed-length` and `no-compare` follow the three parameters of the contract.
-- `durable` and `shared` follow the declared capabilities, and their cases reach a child process, which is why the adapter must say how to open itself there.
-- `model` runs for every adapter: the same random sequence on the adapter and on [`volatile`](../volatile/volatile.md) built with its declarations. This is why `volatile` is kernel and is the reference.
+- The groups that follow the parameters and the declared capabilities are named in the files above. The cases of `durable` and `shared` reach a child process, which is why the adapter must say how to open itself there.
+- `model` runs for every adapter against [`volatile`](../volatile/volatile.md), which is why `volatile` is kernel and is the reference.
 - `lockable`, `fallback` and `working-tree` are owed by the module that declares the capability, which codes them with the seam its adapter offers: [`lockable`](../../../../modules-plugable/computer/memory/store/lockable/lockable.py) and, for the other two, [`git-store`'s cases](../../../../modules-plugable/computer/memory/store/git-store/cases.py), which also code the group of `replicated` until a second adapter declares that capability. Owing them there keeps this module from growing with every optional capability and from knowing a medium.
 
 A case whose group no adapter yet declares is pending, as [Memory Store → The cases this module owes](../store/store.md#the-cases-this-module-owes) says.
