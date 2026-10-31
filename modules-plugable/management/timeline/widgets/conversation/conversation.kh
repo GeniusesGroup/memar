@@ -1,9 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Content_Add in "modules/knowledge/content/services/content-add/content-add.kh"
+tp Content_Store in "modules/knowledge/content/protocol/content-store.kh"
 tp Error in "modules/process/error/protocol/error.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp Text_Check in "modules/knowledge/text/services/text-check/text-check.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Timeline_Place in "modules/management/timeline/services/timeline-place/timeline-place.kh"
+tp Timeline_Placement_Store in "modules/management/timeline/protocol/timeline-placement-store.kh"
+tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
 
 tp Conversation ab
 
-tp Share mt (self Conversation) (content ThingUUID, timeline ThingUUID) (number W32, err Error)
+tp Post mt (self Conversation) (check Text_Check, add Content_Add, contents Content_Store, place Timeline_Place, placements Timeline_Placement_Store, timeline ThingUUID, text Text, kind Label, placer UserUUID, after W32) (number W32, err Error)
+
+tp Latest mt (self Conversation) (placements Timeline_Placement_Store, contents Content_Store, timeline ThingUUID, kind Label) (number W32, text Text, found Boolean, err Error)
+
+tp Share mt (self Conversation) (place Timeline_Place, placements Timeline_Placement_Store, content ThingUUID, timeline ThingUUID, kind Label, placer UserUUID, after W32) (number W32, err Error)

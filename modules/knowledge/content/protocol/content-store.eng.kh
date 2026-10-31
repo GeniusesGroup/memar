@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Content_Store in "modules/knowledge/content/protocol/content-store.kh"
+
+tp Domain mt (self Content_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Content")(s, VoidError)
+}
+
+tp Summary mt (self Content_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Where contents are kept, read and added")(s, VoidError)
+}
+
+tp Overview mt (self Content_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("The only way a content is read or added, given to a service; a store calls no other store. A content is any text: its kind is a label of the label module and names the template the caller wrote it to; the store reads none of it. AddContent keeps the text under a new UUID and never over a content that is there. ReadContent answers the kind and text of a UUID, found being false when none is kept. How a content is kept is the realization's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Content_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Content_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

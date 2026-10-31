@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Timeline_Placement_Store in "modules/management/timeline/protocol/timeline-placement-store.kh"
+
+tp Domain mt (self Timeline_Placement_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)
+}
+
+tp Summary mt (self Timeline_Placement_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("Where the placements of a timeline are kept, read and added")(s, VoidError)
+}
+
+tp Overview mt (self Timeline_Placement_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("The only way a placement is read or added, given to a service; a store calls no other store. A placement is the timeline's UUID, the content placed, the placer and the instant it was placed; its kind is the label of the content's template, so that the latest placement of a kind can be found. ReadLatestPlacement returns the number and content of the latest placement of a kind, found being false when the timeline holds none of that kind. AddPlacement puts the content as the next placement, ordered by instant and then by number, and never over one that is there; after is the number of the latest placement of that kind the caller read, zero when it read none, and a store that holds a later one of that kind refuses with Timeline_Error_Changed. A timeline that does not exist is Timeline_Error_NotFound. How a placement is kept is the realization's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Timeline_Placement_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Timeline_Placement_Store) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

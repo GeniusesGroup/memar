@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Content_Add in "modules/knowledge/content/services/content-add/content-add.kh"
+
+tp Domain mt (self Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Content")(s, VoidError)
+}
+
+tp Summary mt (self Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Creates a content from a text of any kind")(s, VoidError)
+}
+
+tp Overview mt (self Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("Takes any text and the kind of the template the caller wrote it to, creates a content that holds it and returns the content's UUID. It places the content nowhere, takes no task and checks no template: choosing the kind, checking the text against it and placing the content are the caller's, by the services of the domains that own them.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Content_Add) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

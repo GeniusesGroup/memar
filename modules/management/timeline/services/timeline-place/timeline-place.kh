@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Timeline_Placement_Store in "modules/management/timeline/protocol/timeline-placement-store.kh"
+tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Timeline_Place ab {
+	Service
+}
+
+tp PlaceContent mt (self Timeline_Place) (store Timeline_Placement_Store, timeline ThingUUID, content ThingUUID, kind Label, placer UserUUID, after W32) (number W32, err Error)

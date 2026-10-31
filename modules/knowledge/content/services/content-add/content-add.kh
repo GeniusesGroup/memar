@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Content_Store in "modules/knowledge/content/protocol/content-store.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+
+tp Content_Add ab {
+	Service
+}
+
+tp AddText mt (self Content_Add) (store Content_Store, text Text, kind Label) (content ThingUUID, err Error)

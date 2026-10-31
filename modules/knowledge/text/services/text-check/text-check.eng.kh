@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Check in "modules/knowledge/text/services/text-check/text-check.kh"
+
+tp Domain mt (self Text_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Checks a text against the template of its kind")(s, VoidError)
+}
+
+tp Overview mt (self Text_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reports what is wrong with a text: the fault of its bytes that holds for every text, and, when the kind names a template, the way the text departs from that template. A kind with no template is checked for its bytes alone. It changes nothing; the caller decides what a fault costs.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
