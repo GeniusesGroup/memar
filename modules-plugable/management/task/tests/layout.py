@@ -56,7 +56,7 @@ REPORT_NAME = _m_report_file.REPORT_NAME
 class TopHoldsOnly(unittest.TestCase):
 
     def test_the_top_holds_the_plan_the_report_and_the_claim(self) -> None:
-        self.assertEqual(task_layout.TOP_NAMES, (PLAN_NAME, REPORT_NAME, Claim.NAME, Claim.TAKEOVER_NAME))
+        self.assertEqual(task_layout.TOP_NAMES, (PLAN_NAME, REPORT_NAME, 'task.yaml', Claim.NAME, Claim.TAKEOVER_NAME))
         self.assertEqual((PLAN_NAME, REPORT_NAME, Claim.NAME), ('plan.md', 'report.md', 'claim'))
 
     def test_a_folder_of_the_layout_belongs_at_the_top_and_a_stray_does_not(self) -> None:

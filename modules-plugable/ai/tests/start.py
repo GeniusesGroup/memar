@@ -95,6 +95,8 @@ sys.dont_write_bytecode = True
 from machine.console_parts import CLOSING_MARK, MOST_CHARACTERS
 task_temp = import_module('modules-plugable.management.task.services.temp')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
+task_ensure = import_module('modules-plugable.management.task.services.ensure')
+task_files = import_module('modules-plugable.management.task.services.task_files')
 task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 commands = import_module('modules-plugable.computer.ui.command.command')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
@@ -203,6 +205,40 @@ class Fixture(unittest.TestCase):
             elif title is not None:
                 found[title] += line + '\n'
         return found
+
+class NewShape(Fixture):
+
+    def setUp(self) -> None:
+        super().setUp()
+        ensured = unittest.mock.patch.object(task_ensure, 'project_root', return_value=self.fake_root)
+        ensured.start()
+        self.addCleanup(ensured.stop)
+        with contextlib.redirect_stdout(io.StringIO()):
+            _, self.folder = task_ensure.ensure_task(SID, 'Delegated', project=str(self.fake_root))
+        body = plan_with(request='Do the new thing.').split('---\n', 2)[2]
+        task_files.add_text(self.folder, 'plan', body, 'agent')
+
+    def test_a_task_made_new_is_started_with_its_latest_plan_content_printed_whole(self) -> None:
+        parts = self.parts()
+        plan = task_files.plan_path(self.folder)
+        self.assertEqual(plan.name, 'content.00003.md')
+        self.assertEqual(list(parts), ['task', 'model', plan.name, 'folder', 'skill', 'documents', 'commands', 'help', 'ending'])
+        self.assertIn('Do the new thing.', parts[plan.name])
+
+    def test_the_task_part_names_the_latest_plan_and_report_contents(self) -> None:
+        part = self.parts()['task']
+        self.assertIn(f'plan: {task_files.plan_path(self.folder)}', part)
+        self.assertIn(f'report: {task_files.report_path(self.folder)}', part)
+
+    def test_starting_adds_no_file_to_the_task(self) -> None:
+        before = sorted(entry.name for entry in self.folder.iterdir())
+        self.text()
+        self.assertEqual(sorted(entry.name for entry in self.folder.iterdir() if entry.is_file()), [name for name in before if (self.folder / name).is_file()])
+        self.assertFalse((self.folder / PLAN_NAME).exists())
+        self.assertFalse((self.folder / REPORT_NAME).exists())
+
+    def test_the_project_the_facts_name_is_the_plan_project(self) -> None:
+        self.assertEqual(task_start.plan_project(SID), self.fake_root)
 
 class PartsInOrder(Fixture):
 

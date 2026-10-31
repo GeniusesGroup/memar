@@ -95,6 +95,11 @@ ensure_task = _m_ensure.ensure_task
 from modules.process.project.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+has_plan = _m_task_files.has_plan
+plan_path = _m_task_files.plan_path
+report_path = _m_task_files.report_path
+plan_text = _m_task_files.plan_text
 part_text = _m_plan_file.part_text
 read_plan = _m_plan_file.read_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -144,7 +149,7 @@ def marked_passages(name: str, blocks: list[str]) -> list[str]:
     return [block + '\n' for block in kept]
 
 def _task_part(task_id: str, folder: Path) -> str:
-    return marked_part('task', f'task_id: {task_id}\npath: {folder}\nplan: {folder / PLAN_NAME}\nreport: {folder / REPORT_NAME}')
+    return marked_part('task', f'task_id: {task_id}\npath: {folder}\nplan: {plan_path(folder)}\nreport: {report_path(folder)}')
 
 def model_part(kind: str) -> str:
     rule = f'The model a task runs on follows what it needs, not its kind alone: the rule is {MODEL_RULE} (`memar content resolve-path {MODEL_RULE}` gives its path); the plan states the facts it reads.'
@@ -219,20 +224,20 @@ def _help_part(plan: str) -> list[str]:
 def start_passages(task_id: str, with_skill: bool=True) -> list[str]:
     """The text that starts the task TASK_ID, as the passages a part is cut between, once its folder and its plan are there; the skill only WITH_SKILL."""
     folder = folder_of(task_id)
-    if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f'no task to start in {task_id}: it has no task folder with a {PLAN_NAME}. Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and write the task into its {PLAN_NAME} first')
     # The act, not the verb's name: the refusal reads "cannot be started".
     unmet = dependency_refusal(folder, 'start')
     if unmet:
         fail(unmet)
     _, folder = ensure_task(task_id)
-    plan_file = folder / PLAN_NAME
-    plan = plan_file.read_text(encoding='utf-8-sig')
-    kind = task_kind_of(read_plan(plan_file).front)
+    plan_file = plan_path(folder)
+    plan = plan_text(folder)
+    kind = task_kind_of(read_plan(folder / PLAN_NAME).front)
     root = content_root()
-    composed = documents(root, _kinds(kind), step_documents(root, part_text(plan_file, PlanPart.STEPS.heading)), plan_project(task_id))
+    composed = documents(root, _kinds(kind), step_documents(root, part_text(folder / PLAN_NAME, PlanPart.STEPS.heading)), plan_project(task_id))
     write_record(folder, composed.printed)
-    passages = [_task_part(task_id, folder), model_part(kind), marked_part(PLAN_NAME, plan), _folder_part(folder), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *marked_passages('documents', composed.blocks), *([] if called_through_mcp() else [marked_part('commands', commands.card_text()), *_help_part(plan)]), marked_part('ending', ENDING)]
+    passages = [_task_part(task_id, folder), model_part(kind), marked_part(plan_file.name, plan), _folder_part(folder), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *marked_passages('documents', composed.blocks), *([] if called_through_mcp() else [marked_part('commands', commands.card_text()), *_help_part(plan)]), marked_part('ending', ENDING)]
     return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
 def start_text(task_id: str, with_skill: bool=True) -> str:

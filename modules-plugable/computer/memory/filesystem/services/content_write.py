@@ -79,14 +79,14 @@ def refuse_kept_scratch(source: Path) -> None:
     the document written from it. Scratch goes in the task's temp/ folder,
     which is never archived.
     """
-    _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-    PLAN_NAME = _m_plan_file.PLAN_NAME
+    _m_plan_file_adapter = import_module('modules-plugable.management.task.services.task_files')
+    has_task = _m_plan_file_adapter.has_task
     try:
         resolved = source.resolve()
     except OSError:
         return
     for folder in resolved.parents:
-        if (folder / PLAN_NAME).is_file():
+        if has_task(folder):
             relative = resolved.relative_to(folder)
             if relative.parts[0] != TEMP_FOLDER:
                 sys.exit(f'error: --content-file {source} lies in task folder {folder.name} outside its {TEMP_FOLDER}/ folder, where it would be archived with the task as a second copy of what is written from it. Nothing was written. Put the scratch file in {folder / TEMP_FOLDER}/ and pass that.')

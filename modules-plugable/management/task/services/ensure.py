@@ -62,7 +62,6 @@ queue_plan = _m_plan_write.queue_plan
 _m_task_files = import_module('modules-plugable.management.task.services.task_files')
 stores_at = _m_task_files.stores_at
 has_plan = _m_task_files.has_plan
-create_plan_md = _m_task_files.create_plan_md
 create_task = _m_task_files.create_task
 _m_claim = import_module('modules-plugable.management.task.services.claim')
 is_claimed = _m_claim.is_claimed
@@ -104,10 +103,10 @@ def linked_conversation(task_id: str, parent: str) -> str:
         fail(f'no task folder {parent}: --parent names a task that is there, the one this task came from')
     return read_task(folder).conversation
 
-def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None, new_shape: bool=False) -> tuple[str, Path]:
-    """Ensure the task's folder, its plan.md and report.md, and its folders exist; return its id and path.
+def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
+    """Ensure the task's folder, its facts and its plan and report contents (a task made now is in the new shape: task.yaml and content.NNNNN.md; one in the old shape, plan.md and report.md, is continued as it is), and its folders exist; return its id and path.
 
-    TITLE is required when the folder has no plan.md yet, and unused when it
+    TITLE is required when the folder has no task yet, and unused when it
     has one. PARENT links a new plan to the task it came from; a plan that
     is there keeps the link it was written with, and a different one is
     refused rather than ignored. A rerun with the same id is idempotent: the
@@ -188,7 +187,7 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     if not has_plan_now:
         waits = bool(cited) and bool(reader.unmet(cited))
         status = Status.BLOCKED.key if waits else Status.QUEUED.key if queued else Status.ACTIVE.key
-        (create_task if new_shape else create_plan_md)(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
+        create_task(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
         if waits:
             record(BLOCKED_EVENT, sid, '; '.join(reader.unmet(cited)), folder=path)
     else:

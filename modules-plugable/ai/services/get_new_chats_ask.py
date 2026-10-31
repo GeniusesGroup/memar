@@ -37,6 +37,8 @@ folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+has_plan = _m_task_files.has_plan
 part_text = _m_plan_file.part_text
 read_plan = _m_plan_file.read_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -52,7 +54,7 @@ def _first_sentence(text: str) -> str:
 def own_task_blocking(own_task_id: str, task_ids: list[str]) -> list[str]:
     """The tasks among TASK_IDS that OWN_TASK_ID's plan cites in its Depends_on: the ones it cannot go on without."""
     folder = folder_of(own_task_id)
-    if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f'no task {own_task_id}: it has no task folder with a {PLAN_NAME}')
     cited = DependsOn.of(read_plan(folder / PLAN_NAME).front).ids()
     return [each for each in task_ids if each in cited]
@@ -72,7 +74,7 @@ def get_new_chats_ask(task_ids: list[str], blocking: list[str], own_task_id: str
     """Print the message for TASK_IDS, once each one's folder and plan are there and BLOCKING names only among them."""
     for task_id in task_ids:
         folder = folder_of(task_id)
-        if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
+        if not is_task_folder(folder) or not has_plan(folder):
             fail(f'no task to ask a chat for in {task_id}: it has no task folder with a {PLAN_NAME}')
     outside = [each for each in blocking if each not in task_ids]
     if outside:

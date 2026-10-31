@@ -42,6 +42,10 @@ folder_of = _m_folder.folder_of
 read_task = _m_folder.read_task
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+has_task = _m_task_files.has_task
+record_names = _m_task_files.record_names
+report_path = _m_task_files.report_path
 read_plan = _m_plan_file.read_plan
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
@@ -72,10 +76,14 @@ def listing(task_id: str, project_path: Path) -> list[str]:
         fail(f'no task {task_id}: not in temp, and {RECORDS_BRANCH} of {project_path} holds nothing for it')
     return found
 
+def default_names(folder: Path, task_id: str, project_path: Path) -> list[str]:
+    present = [each.name for each in folder.iterdir() if each.is_file()] if folder.is_dir() else list(task_branch.held(project_path, task_id))
+    return record_names(present)
+
 def show(task_id: str, project_path: Path, files: list[str]) -> None:
     """Print each of FILES (the plan and the report when none) of TASK_ID, its folder first and then the branch."""
     folder = folder_of(task_id)
-    names = [_relative(each) for each in files] or [PLAN_NAME, REPORT_NAME]
+    names = [_relative(each) for each in files] or default_names(folder, task_id, project_path)
     printed = 0
     for name in names:
         local = folder / name
@@ -96,7 +104,7 @@ def show(task_id: str, project_path: Path, files: list[str]) -> None:
             sys.stdout.write('\n')
         sys.stdout.write('\n')
         printed += 1
-    if not files and (folder / PLAN_NAME).is_file():
+    if not files and has_task(folder):
         dependency_lines(read_task(folder), project_path)
 
 def dependency_lines(task, project_path: Path) -> None:
@@ -117,7 +125,7 @@ def hand_back(task_id: str) -> None:
     if not folder.is_dir():
         fail(f'task {task_id} has no folder in temp, so there is no hand-back to read; `show --file {REPORT_NAME}` reads it from the branch')
     plan_status = read_plan(folder / PLAN_NAME).status
-    lines = [f"Status: {read_report_status(folder) or '(none)'}", f'Report: {folder / REPORT_NAME}', *decisions_needed(folder)]
+    lines = [f"Status: {read_report_status(folder) or '(none)'}", f'Report: {report_path(folder)}', *decisions_needed(folder)]
     problem = handback_problem(folder, plan_status)
     if problem:
         lines.append(f'Not a hand-back: {problem}')

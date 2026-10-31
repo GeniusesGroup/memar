@@ -50,6 +50,7 @@ memar_fs = _m_fs_memar
 import argparse
 import contextlib
 import io
+import os
 import shutil
 import subprocess
 import sys
@@ -64,6 +65,7 @@ sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
 task_show = import_module('modules-plugable.computer.git.services.show_task_records')
+task_files = import_module('modules-plugable.management.task.services.task_files')
 from modules.process.project.services.registry import add_project
 NAME = 'example'
 SID = '20261015-T100000Z-1'
@@ -239,5 +241,56 @@ class HandBack(Fixture):
         said, stopped = self.show('--hand-back')
         self.assertEqual(said, '')
         self.assertIn('no folder in temp', stopped)
+class NewShape(Fixture):
+
+    def new_task(self) -> Path:
+        folder = memar_fs.task_dir(SID, create=True)
+        task_files.create_task(folder, SID, 'T', None, None, self.project, 'complete', None, None, None)
+        task_files.add_text(folder, 'plan', '# T\n\n## Request\nPlan text.\n', 'agent')
+        task_files.add_text(folder, 'report', '# Report\nBranch report.\n\n## Decisions needed\n- Q1 a | b (recommended).\n', 'agent', fields={'status': 'complete'})
+        return folder
+
+    def test_the_facts_and_every_content_are_printed_by_default_from_the_folder(self) -> None:
+        folder = self.new_task()
+        said, stopped = self.show()
+        self.assertIsNone(stopped)
+        self.assertIn('=== task.yaml', said)
+        self.assertIn('Plan text.', said)
+        self.assertIn('Branch report.', said)
+        self.assertIn(str(folder / 'content.00004.md'), said)
+
+    def test_a_folder_gone_is_read_from_the_branch_with_the_project_by_its_name(self) -> None:
+        folder = self.new_task()
+        self.assertEqual(task_archive.keep_records([folder])[0].outcome, task_archive.Outcome.KEPT)
+        shutil.rmtree(folder, onexc=lambda remove, path, error: (os.chmod(path, 0o600), remove(path)))
+        said, stopped = self.show()
+        self.assertIsNone(stopped)
+        self.assertIn('Branch report.', said)
+        self.assertIn(f'project: {NAME}', said)
+        self.assertNotIn(str(self.project), said)
+
+    def test_a_folder_gone_is_listed_from_the_branch(self) -> None:
+        folder = self.new_task()
+        task_archive.keep_records([folder])
+        shutil.rmtree(folder, onexc=lambda remove, path, error: (os.chmod(path, 0o600), remove(path)))
+        said, stopped = self.show('--list')
+        self.assertIsNone(stopped)
+        self.assertEqual(said.splitlines(), ['content.00001.md', 'content.00002.md', 'content.00003.md', 'content.00004.md', 'task.yaml'])
+
+    def test_the_records_stand_as_archived_once_kept(self) -> None:
+        folder = self.new_task()
+        self.assertEqual(task_archive.standing(folder).state, task_archive.State.WAITING)
+        task_archive.keep_records([folder])
+        self.assertEqual(task_archive.standing(folder).state, task_archive.State.ARCHIVED)
+
+    def test_the_hand_back_is_read_from_the_latest_report_content(self) -> None:
+        folder = self.new_task()
+        said, stopped = self.show('--hand-back')
+        self.assertIsNone(stopped)
+        lines = said.splitlines()
+        self.assertEqual(lines[0], 'Status: complete')
+        self.assertEqual(lines[1], f"Report: {folder / 'content.00004.md'}")
+        self.assertEqual(lines[2:], ['- Q1 a | b (recommended).'])
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

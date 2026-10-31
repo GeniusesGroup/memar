@@ -122,6 +122,8 @@ task_temp = import_module('modules-plugable.management.task.services.temp')
 import modules.process.project.services.registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
+task_files = import_module('modules-plugable.management.task.services.task_files')
+task_report = import_module('modules-plugable.management.task.services.report_file')
 _m_layout = import_module('modules-plugable.management.task.services.layout')
 FOLDERS = _m_layout.FOLDERS
 _m_folder = import_module('modules-plugable.management.task.services.folder')
@@ -233,7 +235,7 @@ class CreatesFolder(Fixture):
         path = memar_fs.task_dir('s-2')
         self.assertIn('task_id: s-2', text)
         self.assertIn(f'path: {path}', text)
-        self.assertIn(f'plan: {path / PLAN_NAME}', text)
+        self.assertIn(f'plan: {task_files.plan_path(path)}', text)
         self.assertIn(task_temp.TEMP_SENTENCE, text)
 
     def test_mints_an_id_when_none_is_given(self) -> None:
@@ -269,9 +271,9 @@ class TitleRequired(Fixture):
         bare = memar_fs.task_dir('s-bare', create=True)
         with self.assertRaises(SystemExit):
             self.ensure('s-bare')
-        self.assertFalse((bare / PLAN_NAME).exists())
+        self.assertFalse((bare / 'task.yaml').exists())
         self.ensure('s-bare', TITLE)
-        self.assertTrue((bare / PLAN_NAME).is_file())
+        self.assertTrue((bare / 'task.yaml').is_file())
 
     def test_a_folder_with_a_plan_is_continued_without_one(self) -> None:
         sid, path = self.ensure('s-plan', TITLE)
@@ -279,25 +281,27 @@ class TitleRequired(Fixture):
 
 class PlanWritten(Fixture):
 
-    def test_the_plan_is_utf8_lf_no_bom_and_names_the_project(self) -> None:
+    def test_the_facts_and_the_plan_are_utf8_lf_no_bom_and_name_the_project(self) -> None:
         _, path = self.ensure('s-plan', TITLE)
-        raw = (path / PLAN_NAME).read_bytes()
-        self.assertFalse(raw.startswith(b'\xef\xbb\xbf'))
-        self.assertNotIn(b'\r', raw)
-        text = raw.decode('utf-8')
-        title = re.escape(TITLE)
-        self.assertRegex(text, f'\\A---\\nID: s-plan\\nTitle: {title}\\nStatus: Active\\nStart Date: {OPENED}\\nProject: .+\\n---\\n# {title}\\n\\n## Request\\n')
-        project = Path(re.search('^Project: (.+)$', text, re.MULTILINE).group(1))
-        self.assertEqual(project, self.current)
+        for name in ('task.yaml', task_files.plan_path(path).name):
+            raw = (path / name).read_bytes()
+            self.assertFalse(raw.startswith(b'\xef\xbb\xbf'))
+            self.assertNotIn(b'\r', raw)
+        facts = task_files.read_facts(path)
+        self.assertEqual((facts['title'], facts['status']), (TITLE, 'active'))
+        self.assertRegex(facts['start_date'], OPENED)
+        self.assertEqual(Path(facts['project']), self.current)
+        self.assertTrue(task_files.plan_text(path).startswith(f'# {TITLE}' + chr(10) + chr(10) + '## Request'))
 
     def test_continuing_never_overwrites_the_plan(self) -> None:
         sid, path = self.ensure('s-keep', TITLE)
-        plan = path / PLAN_NAME
-        kept = plan.read_text(encoding='utf-8').replace('Status: Active', 'Status: Complete')
-        plan.write_text(kept, encoding='utf-8', newline='\n')
+        kept = [(content.number, content.header, content.body) for content in task_files.read_contents(path)]
+        stores = task_files.stores_at(path)
+        stores.replace_status(None, sid, 'complete', stores.read_status(None, sid)[1])
         self.ensure(sid)
         self.ensure(sid, 'Another title')
-        self.assertEqual(plan.read_text(encoding='utf-8'), kept)
+        self.assertEqual([(content.number, content.header, content.body) for content in task_files.read_contents(path)], kept)
+        self.assertEqual(task_files.read_facts(path)['title'], TITLE)
 
     def test_the_project_is_the_git_top_level_else_the_folder_given_and_never_the_current_one(self) -> None:
         found = subprocess.CompletedProcess([], 0, stdout=f'{self.fake_root}\n', stderr='')
@@ -317,13 +321,13 @@ class KindWritten(Fixture):
 
     def test_a_kind_is_written_into_a_new_plan_and_set_on_one_that_is_there(self) -> None:
         _, path = self.ensure('s-kind', TITLE, labels=['TaskKind=Design'])
-        self.assertRegex((path / PLAN_NAME).read_text(encoding='utf-8'), 'Labels:\\n  - design\\([0-9a-f-]{36}\\)\\n---')
+        self.assertRegex(task_files.read_facts(path)['labels'], r'\Adesign\([0-9a-f-]{36}\)\Z')
         self.ensure('s-kind', labels=['TaskKind=mechanical'])
-        self.assertRegex((path / PLAN_NAME).read_text(encoding='utf-8'), '  - design\\([0-9a-f-]{36}\\)\\n  - mechanical\\([0-9a-f-]{36}\\)\\n---')
+        self.assertRegex(task_files.read_facts(path)['labels'], r'\Adesign\([0-9a-f-]{36}\)' + chr(10) + r'mechanical\([0-9a-f-]{36}\)\Z')
 
     def test_a_plan_made_without_a_kind_has_none(self) -> None:
         _, path = self.ensure('s-nokind', TITLE)
-        self.assertNotIn('Kind', (path / PLAN_NAME).read_text(encoding='utf-8'))
+        self.assertNotIn('Kind', task_files.read_facts(path).get('labels', ''))
 
     def label_help(self) -> str:
         parser = argparse.ArgumentParser()
@@ -357,27 +361,26 @@ class KindWritten(Fixture):
 
 class ReportWritten(Fixture):
 
-    def test_a_report_skeleton_is_written_beside_the_plan(self) -> None:
+    def test_a_report_skeleton_is_written_as_a_content_beside_the_plan(self) -> None:
         _, path = self.ensure('s-report', TITLE)
-        raw = (path / REPORT_NAME).read_bytes()
+        raw = task_files.report_path(path).read_bytes()
         self.assertNotIn(b'\r', raw)
-        self.assertEqual(raw.decode('utf-8'), REPORT)
+        self.assertEqual(task_files.report_text(path), REPORT.split('---' + chr(10), 2)[2])
+        self.assertEqual(task_files.read_contents(path)[1].header['kind'], 'report')
 
-    def test_a_report_is_never_overwritten_and_one_missing_is_written(self) -> None:
+    def test_a_report_is_never_overwritten_by_ensuring_again(self) -> None:
         _, path = self.ensure('s-report', TITLE)
-        report = path / REPORT_NAME
-        report.write_text('# Report\nStop: success\n', encoding='utf-8', newline='\n')
+        task_files.add_text(path, 'report', '# Report' + chr(10) + 'Written.' + chr(10), 'agent')
+        before = [content.body for content in task_files.read_contents(path)]
         self.ensure('s-report')
-        self.assertEqual(report.read_text(encoding='utf-8'), '# Report\nStop: success\n')
-        report.unlink()
-        self.ensure('s-report')
-        self.assertEqual(report.read_text(encoding='utf-8'), REPORT)
+        self.assertEqual([content.body for content in task_files.read_contents(path)], before)
+        self.assertEqual(task_files.report_text(path), '# Report' + chr(10) + 'Written.' + chr(10))
 
     def test_new_prints_where_the_report_is(self) -> None:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open('s-said', TITLE, None)
-        self.assertIn(f"report: {memar_fs.task_dir('s-said') / REPORT_NAME}", out.getvalue())
+        self.assertIn(f"report: {task_files.report_path(memar_fs.task_dir('s-said'))}", out.getvalue())
 
 class RoleFoldersMade(Fixture):
 
@@ -463,8 +466,8 @@ class ProjectLocation(Fixture):
         sid, path, printed = self.open(None, TITLE, None)
         location = self.project / 'work' / 'tasks'
         self.assertEqual(path, location / sid)
-        self.assertTrue((path / PLAN_NAME).is_file())
-        self.assertTrue((path / REPORT_NAME).is_file())
+        self.assertTrue(task_files.plan_path(path).is_file())
+        self.assertTrue(task_files.report_path(path).is_file())
         self.assertTrue(all(((path / folder).is_dir() for folder in FOLDERS)))
         self.assertFalse(memar_fs.task_dir(sid).exists())
         self.assertIn(f"location: {location} is a project's own task location", printed)
@@ -556,7 +559,7 @@ class ProjectLocation(Fixture):
         self.prefer(self.project, 'tasks')
         self.open(None, TITLE, None)
         location = (self.project / 'tasks').resolve()
-        shutil.rmtree(location)
+        shutil.rmtree(location, onexc=lambda remove, path, error: (os.chmod(path, 0o600), remove(path)))
         self.assertEqual(prune_registry(), [location])
         self.assertEqual(registered_locations(), [])
         self.open(None, TITLE, None)
@@ -614,8 +617,7 @@ class ProjectNamed(Fixture):
                 text = self.cli('--title', TITLE, '--project', word)
                 path = Path(re.search('^\\s*path: (.+)$', text, re.M).group(1))
                 self.assertEqual(path.parent, self.work.resolve() / '.agents' / 'tasks')
-                plan = (path / PLAN_NAME).read_text(encoding='utf-8')
-                self.assertIn(f'Project: {self.work.resolve()}', plan)
+                self.assertEqual(Path(task_files.read_facts(path)['project']), self.work.resolve())
 
     def test_a_folder_is_given_by_its_own_flag_and_never_in_place_of_a_name(self) -> None:
         text = self.cli('--title', TITLE, '--project-path', str(self.work))
@@ -776,7 +778,7 @@ class UnresolvableRoot(unittest.TestCase):
 class NewShapeVerbs(Fixture):
 
     def made(self, **options):
-        return self.ensure(None, TITLE, None, queued=True, priority=7, new_shape=True, **options)
+        return self.ensure(None, TITLE, None, queued=True, priority=7, **options)
 
     def test_a_task_made_new_is_contents_and_facts_and_no_plan_md(self) -> None:
         sid, path = self.made()
@@ -809,6 +811,56 @@ class NewShapeVerbs(Fixture):
         self.assertIsNone(task_claim.try_claim(path))
         self.assertEqual(read_task(path).status, 'active')
         self.assertTrue((path / 'claim').is_file())
+
+class OnlyTheNewShape(Fixture):
+
+    def test_ensure_and_new_take_no_flag_that_selects_the_shape(self) -> None:
+        import inspect
+        self.assertNotIn('new_shape', inspect.signature(task_ensure.ensure_task).parameters)
+        self.assertNotIn('new_shape', inspect.signature(task_new.open_task).parameters)
+
+    def test_a_task_made_by_ensure_is_in_the_new_shape(self) -> None:
+        _, path = self.ensure(None, TITLE)
+        self.assertTrue((path / 'task.yaml').is_file())
+        self.assertFalse((path / 'plan.md').exists())
+        self.assertFalse((path / 'report.md').exists())
+
+    def test_open_prints_the_latest_plan_and_report_contents(self) -> None:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.call_open(None, TITLE, None)
+        self.assertRegex(out.getvalue(), r'plan: .*content\.00001\.md')
+        self.assertRegex(out.getvalue(), r'report: .*content\.00002\.md')
+        self.assertNotIn('plan.md', out.getvalue())
+
+    def test_ensuring_again_adds_nothing_to_a_task_made_new(self) -> None:
+        sid, path = self.ensure(None, TITLE)
+        before = sorted(entry.name for entry in path.iterdir())
+        self.ensure(sid)
+        self.assertEqual(sorted(entry.name for entry in path.iterdir()), before)
+
+class OldShapeIsKept(Fixture):
+
+    def made_old(self, sid: str) -> Path:
+        path = memar_fs.task_dir(sid, create=True)
+        task_files.create_plan_md(path, sid, TITLE, None, None, self.project, 'queued', None, None, None)
+        (path / 'report.md').write_text(task_report.report_skeleton(sid, TITLE), encoding='utf-8', newline=chr(10))
+        return path
+
+    def test_ensuring_an_old_task_again_never_rewrites_it_into_the_new_shape(self) -> None:
+        path = self.made_old('old-1')
+        before = {entry.name: entry.read_bytes() for entry in path.iterdir() if entry.is_file()}
+        self.ensure('old-1')
+        after = {entry.name: entry.read_bytes() for entry in path.iterdir() if entry.is_file()}
+        self.assertEqual(after, before)
+        self.assertFalse((path / 'task.yaml').exists())
+
+    def test_ensuring_an_old_task_with_a_priority_edits_plan_md_alone(self) -> None:
+        path = self.made_old('old-2')
+        self.ensure('old-2', priority=4)
+        self.assertIn('Priority: 4', (path / 'plan.md').read_text(encoding='utf-8'))
+        self.assertFalse((path / 'task.yaml').exists())
+        self.assertEqual(list(path.glob('content.*')), [])
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

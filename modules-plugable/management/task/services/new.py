@@ -127,6 +127,9 @@ _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanKey = _m_plan_key.PlanKey
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+plan_path = _m_task_files.plan_path
+report_path = _m_task_files.report_path
 _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
 _m_label_add = import_module('modules-plugable.management.task.services.label_add')
@@ -144,8 +147,8 @@ def open_task(task_id: str | None, title: str | None, parent: str | None, queued
     sid, path = ensure_task(task_id, title, parent, queued, priority, labels, project, depends_on)
     note(f'task_id: {sid}')
     note(f'path: {path}')
-    note(f'plan: {path / PLAN_NAME}')
-    note(f'report: {path / REPORT_NAME}')
+    note(f'plan: {plan_path(path)}')
+    note(f'report: {report_path(path)}')
     note(TEMP_SENTENCE)
     if in_project_location(path):
         note(project_location_note(path))

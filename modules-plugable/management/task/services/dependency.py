@@ -46,6 +46,12 @@ from modules.process.project.primitive.project_path import ProjectPath
 _m_branch = plugable_load('computer.git.services.branch')
 read_from_branch = _m_branch.read
 read_many_from_branch = _m_branch.read_many
+held_on_branch = _m_branch.held
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
+has_task = _m_task_files.has_task
+record_names = _m_task_files.record_names
+record_of = _m_task_files.record_of
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
@@ -189,13 +195,17 @@ class Reader:
             folder = folder_of(ref.id)
         except SystemExit as refused:
             return str(refused.code).removeprefix('error: ')
-        if folder.is_dir() and (folder / PLAN_NAME).is_file():
+        if folder.is_dir() and has_task(folder):
             plan = read_plan(folder / PLAN_NAME)
             named = (plan.front or {}).get(PlanKey.PROJECT.key, '').strip()
             return Found(ref.id, plan.front, plan.status, read_report_status(folder), Path(named) if named else where)
         if where is not None:
             # TODO(memory-port): one git start per cited task is still one start per record; read all cited tasks in one batch (task 20261023-T074643Z-5420).
-            held = read_many_from_branch(where, ref.id, [PLAN_NAME, REPORT_NAME])
+            held = read_many_from_branch(where, ref.id, [PLAN_NAME, REPORT_NAME, TASK_FACTS_NAME])
+            if TASK_FACTS_NAME in held:
+                held = read_many_from_branch(where, ref.id, record_names(held_on_branch(where, ref.id)))
+                record = record_of(held)
+                return Found(ref.id, record[0], record[1], record[2], where)
             kept = held.get(PLAN_NAME)
             if kept is not None:
                 front, status = _front_status(kept, PlanKey)

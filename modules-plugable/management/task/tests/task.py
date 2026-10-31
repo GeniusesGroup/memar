@@ -411,7 +411,7 @@ class CommandEndToEnd(Fixture):
         path = memar_fs.task_dir('20261003T000000Z-1-0')
         self.assertIn('task_id: 20261003T000000Z-1-0', text)
         self.assertIn(f'path: {path}', text)
-        self.assertTrue((path / task_plan.PLAN_NAME).is_file())
+        self.assertTrue((path / 'task.yaml').is_file())
         listed = self.run_main('list', '--status', 'active')
         self.assertIn(f'20261003T000000Z-1-0  {TITLE}', listed)
 

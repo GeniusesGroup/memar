@@ -184,5 +184,92 @@ class TodaysShape(Fixture):
         files.create_plan_md(self.folder, 'T-1', 'Other', None, None, Path('/work'), 'active', None, None, None)
         self.assertEqual((self.folder / 'plan.md').read_text(encoding='utf-8'), first)
 
+_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+
+class Reading(Fixture):
+
+    def old(self, status: str = '') -> None:
+        files.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
+        text = _m_report_file.report_skeleton('T-1', 'Title')
+        (self.folder / 'report.md').write_text(text.replace('Status:\n', f'Status: {status}\n'), encoding='utf-8', newline='\n')
+
+    def other(self) -> Path:
+        folder = self.folder.parent / 'T-2'
+        folder.mkdir()
+        files.create_task(folder, 'T-2', 'Title', None, None, Path('/work'), 'active', None, None, None)
+        return folder
+
+    def test_the_path_of_a_plan_and_a_report_is_the_file_in_the_old_shape_and_the_latest_content_in_the_new(self) -> None:
+        self.old()
+        self.assertEqual((files.plan_path(self.folder), files.report_path(self.folder)), (self.folder / 'plan.md', self.folder / 'report.md'))
+        new = self.other()
+        self.assertEqual((files.plan_path(new), files.report_path(new)), (new / 'content.00001.md', new / 'content.00002.md'))
+        files.add_text(new, 'plan', 'revised\n', 'agent')
+        self.assertEqual(files.plan_path(new), new / 'content.00003.md')
+
+    def test_the_text_of_a_plan_and_a_report_is_the_file_in_the_old_shape_and_the_latest_body_in_the_new(self) -> None:
+        self.old()
+        self.assertIn('## Request', files.plan_text(self.folder))
+        self.assertTrue(files.report_text(self.folder).startswith('---\n'))
+        new = self.other()
+        files.add_text(new, 'report', '# Report\n\n## Result\ndone\n', 'agent', fields={'status': 'complete'})
+        self.assertEqual(files.report_text(new), '# Report\n\n## Result\ndone\n')
+        self.assertTrue(files.has_report(new))
+        self.assertTrue(files.has_report(self.folder))
+
+    def test_a_report_status_is_read_from_the_header_of_the_latest_report_content(self) -> None:
+        self.made()
+        self.assertEqual(_m_report_file.read_report_status(self.folder), '')
+        files.add_text(self.folder, 'report', '# Report\n\n## Decisions needed\n- one\n', 'agent', fields={'status': 'Complete'})
+        self.assertEqual(_m_report_file.read_report_status(self.folder), 'complete')
+        self.assertEqual(_m_report_file.decisions_needed(self.folder), ['- one'])
+
+    def test_a_report_status_in_the_old_shape_is_read_from_its_front_matter(self) -> None:
+        self.old('Complete')
+        self.assertEqual(_m_report_file.read_report_status(self.folder), 'complete')
+
+    def test_the_names_a_record_is_read_from_are_the_old_pair_or_the_facts_and_every_content(self) -> None:
+        self.assertEqual(files.record_names(['plan.md', 'report.md', 'docs/a.md']), ['plan.md', 'report.md'])
+        self.assertEqual(files.record_names(['content.00002.md', 'task.yaml', 'content.00001.md', 'docs/a.md']), ['task.yaml', 'content.00001.md', 'content.00002.md'])
+
+    def test_a_record_is_read_from_the_bytes_of_its_files(self) -> None:
+        self.made()
+        files.add_text(self.folder, 'report', '# Report\n', 'agent', fields={'status': 'complete'})
+        held = {name: (self.folder / name).read_bytes() for name in files.record_names([p.name for p in self.folder.iterdir()])}
+        front, plan_status, report_status = files.record_of(held)
+        self.assertEqual((front['title'], plan_status, report_status), ('A: title', 'queued', 'complete'))
+        self.assertIsNone(files.record_of({'docs/a.md': b'x'}))
+
+    def test_the_project_in_the_facts_is_replaced_by_its_name_and_every_other_byte_kept(self) -> None:
+        self.made()
+        data = (self.folder / 'task.yaml').read_bytes()
+        line = b'project: ' + os.fspath(Path('/work')).encode() + b'\n'
+        self.assertIn(line, data)
+        named = files.facts_named_project(data, 'memar')
+        self.assertEqual(named, data.replace(line, b'project: memar\n'))
+
+class AddingText(Fixture):
+
+    def test_a_text_is_added_as_a_new_content_that_follows_the_latest_of_its_kind_and_never_written_over(self) -> None:
+        self.made()
+        before = (self.folder / 'content.00001.md').read_bytes()
+        number = files.add_text(self.folder, 'plan', 'revised\n', 'agent')
+        self.assertEqual(number, 3)
+        added = files.read_contents(self.folder)[2]
+        self.assertEqual((added.header['kind'], added.header['follows'], added.body), ('plan', '1', 'revised\n'))
+        self.assertEqual((self.folder / 'content.00001.md').read_bytes(), before)
+        self.assertEqual(files.plan_text(self.folder), 'revised\n')
+
+    def test_a_text_of_a_kind_with_no_content_yet_follows_none(self) -> None:
+        self.made()
+        number = files.add_text(self.folder, 'critique', 'c\n', 'agent')
+        self.assertNotIn('follows', files.read_contents(self.folder)[number - 1].header)
+
+    def test_a_task_in_the_old_shape_takes_no_added_text(self) -> None:
+        files.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
+        with self.assertRaises(errors.Task_Error_NotFound):
+            files.add_text(self.folder, 'plan', 'x\n', 'agent')
+        self.assertEqual(sorted(p.name for p in self.folder.iterdir()), ['plan.md'])
+
 if __name__ == '__main__':
     unittest.main()

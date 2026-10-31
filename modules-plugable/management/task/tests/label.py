@@ -175,7 +175,7 @@ class LabelsField(Fixture):
         self.assertEqual(self.words(path, 'Topic'), ('khayyam-lsp',))
         self.assertEqual(self.words(path, 'TaskKind'), ('design',))
         declared = task_plan_labels.registry_for(self.project).resolve('Topic=khayyam-lsp')[0]
-        self.assertIn(f'Labels:\n  - {declared}\n  - design(', self.plan(path).read_text(encoding='utf-8'))
+        self.assertTrue(task_files.read_facts(path)['labels'].startswith(f'{declared}' + chr(10) + 'design('))
 
     def test_a_topic_nobody_declares_is_refused_with_its_declaration_and_nothing_is_made(self) -> None:
         self.declare('docs')
@@ -196,7 +196,7 @@ class LabelsField(Fixture):
     def test_new_without_labels_writes_no_block(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
             _, path = task_ensure.ensure_task('20261013T000003Z-1-0', 'Title', None, project=str(self.project))
-        self.assertNotIn('Labels', self.plan(path).read_text(encoding='utf-8'))
+        self.assertNotIn('labels', task_files.read_facts(path))
         self.assertFalse(self.labels(path))
 
     def test_new_adds_labels_to_a_plan_that_is_there(self) -> None:

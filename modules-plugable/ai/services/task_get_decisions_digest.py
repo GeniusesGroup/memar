@@ -95,6 +95,8 @@ _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primi
 Priority = _m_priority.Priority
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+report_path = _m_task_files.report_path
 decisions_needed = _m_report_file.decisions_needed
 handback_problem = _m_report_file.handback_problem
 read_report_status = _m_report_file.read_report_status
@@ -174,7 +176,7 @@ def print_task(task: Task, entries: list[str], problem: str | None, flags: list[
         note(f'failed hand-back: {problem}')
     for flag in flags:
         note(f'concerns: {flag}')
-    note(f'report: {task.path / REPORT_NAME}')
+    note(f'report: {report_path(task.path)}')
     if review:
         for line in summary_lines(task.path):
             note(line)

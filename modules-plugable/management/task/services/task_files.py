@@ -30,6 +30,8 @@ PLAN = _m_record.PLAN
 REPORT = _m_record.REPORT
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
+_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
+ReportKey = _m_report_key.ReportKey
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
 from modules.knowledge.label.primitive.label import Labels
@@ -61,6 +63,11 @@ def _scalar(value: str) -> str:
     return value
 
 
+def _bare(item: str) -> str:
+    item = item.strip()
+    return item[2:] if item.startswith('- ') else item
+
+
 def _render(pairs: dict, blocks: tuple = BLOCK_FACTS) -> str:
     lines = []
     for key, value in pairs.items():
@@ -69,7 +76,7 @@ def _render(pairs: dict, blocks: tuple = BLOCK_FACTS) -> str:
         value = str(value)
         if key in blocks or '\n' in value:
             lines.append(f'{key}:')
-            lines += [f'  - {_scalar(item) if key not in BLOCK_FACTS else item}' for item in value.split('\n') if item]
+            lines += [f'  - {_scalar(item) if key not in BLOCK_FACTS else _bare(item)}' for item in value.split('\n') if item]
         else:
             lines.append(f'{key}: {_scalar(value)}')
     return '\n'.join(lines) + ('\n' if lines else '')
@@ -149,14 +156,18 @@ def _numbers(folder: Path) -> list:
     return sorted(int(match.group(1)) for match in map(CONTENT_PATTERN.match, names) if match)
 
 
-def _read_content(folder: Path, number: int) -> Content:
-    text = read_bytes(folder / _content_name(number)).decode('utf-8-sig')
+def _content_of(number: int, data: bytes) -> Content:
+    text = data.decode('utf-8-sig')
     lines = text.splitlines(keepends=True)
     if lines and lines[0].strip() == '---':
         for end in range(1, len(lines)):
             if lines[end].strip() == '---':
                 return Content(number, _parse([line.rstrip('\r\n') for line in lines[1:end]]), ''.join(lines[end + 1:]))
     return Content(number, {}, text)
+
+
+def _read_content(folder: Path, number: int) -> Content:
+    return _content_of(number, read_bytes(folder / _content_name(number)))
 
 
 def read_contents(folder: Path) -> list:
@@ -215,15 +226,87 @@ def read_facts(folder: Path) -> dict | None:
     return _parse(read_bytes(path).decode('utf-8-sig').splitlines())
 
 
-def plan_front(folder: Path) -> tuple | None:
-    facts = read_facts(folder)
-    if facts is None:
-        return None
-    front = {PlanKey.ID.key: folder.name}
+def _front_of(facts: dict, task: str | None) -> tuple:
+    front = {PlanKey.ID.key: task} if task else {}
     for key, value in facts.items():
         if key in FRONT_KEY:
             front[FRONT_KEY[key].key] = value
     return (front, status_word(facts.get('status', '')))
+
+
+def plan_front(folder: Path) -> tuple | None:
+    facts = read_facts(folder)
+    if facts is None:
+        return None
+    return _front_of(facts, folder.name)
+
+
+def is_new(folder: Path) -> bool:
+    return (folder / TASK_FACTS_NAME).is_file()
+
+
+def _latest_path(folder: Path, kind: str) -> Path:
+    content = latest_content(folder, kind) if is_new(folder) else None
+    return folder / (_content_name(content.number) if content else TASK_FACTS_NAME)
+
+
+def plan_path(folder: Path) -> Path:
+    return _latest_path(folder, 'plan') if is_new(folder) else folder / PLAN_NAME
+
+
+def report_path(folder: Path) -> Path:
+    return _latest_path(folder, 'report') if is_new(folder) else folder / REPORT_NAME
+
+
+def plan_text(folder: Path) -> str:
+    if is_new(folder):
+        return plan_body(folder) or ''
+    return read_bytes(folder / PLAN_NAME).decode('utf-8-sig')
+
+
+def report_text(folder: Path) -> str:
+    if is_new(folder):
+        content = latest_content(folder, 'report')
+        return content.body if content else ''
+    return read_bytes(folder / REPORT_NAME).decode('utf-8-sig')
+
+
+def has_report(folder: Path) -> bool:
+    if is_new(folder):
+        return latest_content(folder, 'report') is not None
+    return (folder / REPORT_NAME).is_file()
+
+
+def add_text(folder: Path, kind: str, text: str, author: str, refs=(), fields: dict | None = None) -> int:
+    if not is_new(folder):
+        raise Task_Error_NotFound()
+    latest = latest_content(folder, kind)
+    return write_content(folder, kind, text, author, follows=latest.number if latest else None, refs=refs, fields=fields)
+
+
+def record_names(names) -> list:
+    if TASK_FACTS_NAME in names:
+        return [TASK_FACTS_NAME, *sorted(name for name in names if CONTENT_PATTERN.match(name))]
+    return [PLAN_NAME, REPORT_NAME]
+
+
+def record_of(held: dict) -> tuple | None:
+    if TASK_FACTS_NAME not in held:
+        return None
+    front, status = _front_of(_parse(held[TASK_FACTS_NAME].decode('utf-8-sig').splitlines()), None)
+    matches = [(CONTENT_PATTERN.match(name), data) for name, data in held.items()]
+    reports = [content for content in (_content_of(int(match.group(1)), data) for match, data in matches if match) if content.header.get('kind') == 'report']
+    reports.sort(key=lambda content: content.number)
+    return (front, status, status_word(reports[-1].header.get('status', '')) if reports else '')
+
+
+def facts_named_project(data: bytes, name: str) -> bytes:
+    lines = data.decode('utf-8-sig').splitlines(keepends=True)
+    for index, line in enumerate(lines):
+        if line.startswith('project:'):
+            lines[index] = f'project: {_scalar(name)}{line_end(line)}'
+            break
+    return ''.join(lines).encode('utf-8')
 
 
 def plan_body(folder: Path) -> str | None:
@@ -234,11 +317,16 @@ def plan_body(folder: Path) -> str | None:
 
 
 def report_lines(folder: Path) -> list:
+    if is_new(folder):
+        content = latest_content(folder, 'report')
+        if content is None:
+            return []
+        front = ['---', f'{ReportKey.ID.written}: {folder.name}', f"{ReportKey.STATUS.written}: {content.header.get('status', '')}", '---']
+        return [*front, *content.body.splitlines()]
     try:
         return (folder / REPORT_NAME).read_text(encoding='utf-8-sig').splitlines()
     except (OSError, UnicodeDecodeError):
-        content = latest_content(folder, 'report') if read_facts(folder) is not None else None
-        return content.body.splitlines() if content else []
+        return []
 
 
 def create_report_md(folder: Path, text: str) -> None:

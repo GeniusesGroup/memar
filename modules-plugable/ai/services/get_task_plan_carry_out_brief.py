@@ -34,6 +34,8 @@ folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+has_plan = _m_task_files.has_plan
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
@@ -49,7 +51,7 @@ def brief_text(task_id: str) -> str:
 def get_task_plan_carry_out_brief(task_id: str) -> None:
     """Print TASK_ID's brief alone, once its folder and its plan are there."""
     folder = folder_of(task_id)
-    if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f'no task to hand over in {task_id}: it has no task folder with a {PLAN_NAME}. Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and write the task into its {PLAN_NAME} first')
     print(brief_text(task_id))
 

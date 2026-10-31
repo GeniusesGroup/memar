@@ -83,13 +83,14 @@ def live_folders(root: Path) -> list[Path]:
     from modules.process.project.services.preferences import tasks_location
     own = tasks_location(root) or root / _m_fs_memar.AGENTS_DIRNAME / TASKS_DIRNAME
     memar = tasks_root()
+    has_task = import_module('modules-plugable.management.task.services.task_files').has_task
     found: dict[str, Path] = {}
     for location in (own, memar):
         if not location.is_dir():
             continue
         whole = _same(location, own)
         for folder in location.iterdir():
-            if folder.name in found or not (folder / PLAN_FILE).is_file():
+            if folder.name in found or not has_task(folder):
                 continue
             if whole or _names_project(folder, root):
                 found[folder.name] = folder

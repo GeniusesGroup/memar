@@ -33,6 +33,8 @@ folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+has_plan = _m_task_files.has_plan
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 REPORT = _m_record.REPORT
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
@@ -48,7 +50,7 @@ def questions_brief_text(task_id: str) -> str:
 def get_task_questions_answer_brief(task_id: str) -> None:
     """Print the text that hands TASK_ID's questions over, once its folder, its plan and a question under its report's hand-back part are there."""
     folder = folder_of(task_id)
-    if not is_task_folder(folder) or not (folder / PLAN_NAME).is_file():
+    if not is_task_folder(folder) or not has_plan(folder):
         fail(f'no questions to answer in {task_id}: it has no task folder with a {PLAN_NAME}')
     problem = questions_problem(folder)
     if problem:

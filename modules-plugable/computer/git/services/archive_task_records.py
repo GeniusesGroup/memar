@@ -77,6 +77,9 @@ from modules.process.project.services.task_location import same_path
 from .log import record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
+facts_named_project = _m_task_files.facts_named_project
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
@@ -180,6 +183,11 @@ def _entries(owing: Owed, workdir: Path) -> dict[str, Path]:
             named = workdir / sid / PLAN_NAME
             named.parent.mkdir(parents=True, exist_ok=True)
             named.write_bytes(_named_plan(source.read_bytes(), owing.name))
+            source = named
+        elif relative == TASK_FACTS_NAME:
+            named = workdir / sid / TASK_FACTS_NAME
+            named.parent.mkdir(parents=True, exist_ok=True)
+            named.write_bytes(facts_named_project(source.read_bytes(), owing.name))
             source = named
         entries[f'{folder_on_branch(sid)}/{relative}'] = source
     return entries

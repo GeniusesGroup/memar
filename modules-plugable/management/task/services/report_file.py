@@ -154,7 +154,7 @@ def handback_problem(folder: Path, status: str) -> str | None:
         return shape
     report_status = read_report_status(folder)
     if not report_status:
-        return f'{REPORT_NAME} has no Status'
+        return f'{files.report_path(folder).name} has no Status'
     why = disagreement(status, report_status)
     if why:
         return why

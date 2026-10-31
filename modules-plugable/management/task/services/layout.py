@@ -33,7 +33,10 @@ _m_plan_file = import_module('modules-plugable.management.task.services.plan_fil
 PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
-TOP_NAMES = (PLAN_NAME, REPORT_NAME, *Claim.NAMES)
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
+is_content_file = _m_task_files.is_content_file
+TOP_NAMES = (PLAN_NAME, REPORT_NAME, TASK_FACTS_NAME, *Claim.NAMES)
 "The files a task folder's top holds besides its folders: the plan, the report, and Memar's claim."
 
 class Kind(NamedTuple):
@@ -52,7 +55,7 @@ FOLDERS = (*(kind.folder for kind in KINDS), TESTS_FOLDER, TEMP_FOLDER)
 
 def belongs_at_top(name: str) -> bool:
     """Whether an entry named NAME may stand at a task folder's top: a top file or one of its folders."""
-    return name in TOP_NAMES or name in FOLDERS
+    return name in TOP_NAMES or name in FOLDERS or is_content_file(Path(name))
 
 def kind_of(file_name: str) -> Kind | None:
     """The kind a file named FILE_NAME is, by its suffix; None when it is of no kind named here."""

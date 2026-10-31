@@ -93,6 +93,8 @@ _m_record = import_module('modules-plugable.knowledge.documentation.primitive.re
 REPORT = _m_record.REPORT
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+plan_path = _m_task_files.plan_path
 from modules.process.project.primitive.project_name import ProjectName
 from modules.process.project.primitive.project_path import ProjectPath
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -211,7 +213,7 @@ def claims(count: int, project: str | None, topic: str | None=None, fill: bool=F
         note(f'priority: {Priority.of(task.front)}')
         if topics_of(task.front):
             note(f"topics: {', '.join(topics_of(task.front))}")
-        note(f'plan: {task.path / PLAN_NAME}')
+        note(f'plan: {plan_path(task.path)}')
         note(f'brief: {brief_text(task.id)}')
     return [task.id for task in taken]
 
