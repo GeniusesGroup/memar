@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Display_DumpShape in "modules-plugable/computer/memory/display/errors/errors.kh"
+tp Error_Display_InterpretFields in "modules-plugable/computer/memory/display/errors/errors.kh"
+
+tp Domain mt (self Error_Display_DumpShape) () (s String) {
+    CharacterRun_From.FromCharacterRun("Display dump shape")(s, VoidError)
+}
+
+tp Summary mt (self Error_Display_DumpShape) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused to emit an aggregating dump wrapper")(s, VoidError)
+}
+
+tp Overview mt (self Error_Display_DumpShape) () (s String) {
+    CharacterRun_From.FromCharacterRun("Pack or Format refused because the text would introduce domains, placements, or sibling relation/reverse dump metadata.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Display_DumpShape) () (s String) {
+    CharacterRun_From.FromCharacterRun("Call Graph or store services and format their typed answers.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Display_DumpShape) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Error_Display_InterpretFields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Display interpret fields")(s, VoidError)
+}
+
+tp Summary mt (self Error_Display_InterpretFields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Refused to interpret opaque Fields or part bytes as a domain schema")(s, VoidError)
+}
+
+tp Overview mt (self Error_Display_InterpretFields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Display renders opaque buffers as encoding tokens only; the owning domain gives meaning.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Display_InterpretFields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Ask the owning domain for Field meaning.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Display_InterpretFields) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

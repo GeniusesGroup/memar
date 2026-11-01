@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Display_Opaque_Token in "modules-plugable/computer/memory/display/protocol/display-opaque-token.kh"
+
+tp Domain mt (self Display_Opaque_Token) () (s String) {
+    CharacterRun_From.FromCharacterRun("Display Opaque Token")(s, VoidError)
+}
+
+tp Summary mt (self Display_Opaque_Token) () (s String) {
+    CharacterRun_From.FromCharacterRun("One opaque buffer rendered for eyes without domain schema")(s, VoidError)
+}
+
+tp Overview mt (self Display_Opaque_Token) () (s String) {
+    CharacterRun_From.FromCharacterRun("Encoding name, the encoded bytes, and the original length. The only allowed rendering of Field or part bytes in display text. Default encoding name is the ASCII run base64.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Display_Opaque_Token) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Display_Opaque_Token) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

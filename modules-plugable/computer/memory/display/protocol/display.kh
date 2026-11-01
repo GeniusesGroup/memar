@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Graph_ListSidesAnswer in "modules-plugable/computer/memory/store/graph/protocol/graph-list-sides-answer.kh"
+tp Graph_Side in "modules-plugable/computer/memory/store/graph/protocol/graph-side.kh"
+tp Graph_GetSideAnswer in "modules-plugable/computer/memory/store/graph/protocol/graph-get-side-answer.kh"
+tp Files_Parts in "modules-plugable/computer/memory/store/files/protocol/files-parts.kh"
+tp Display_Text_Codec in "modules-plugable/computer/memory/display/protocol/display-text-codec.kh"
+
+tp Display ab {
+    Display_Text_Codec
+}
+
+tp FormatSides mt (self Display) (answer Graph_ListSidesAnswer) (text Computer_Buffer, err Error)
+
+tp FormatSide mt (self Display) (side Graph_Side) (text Computer_Buffer, err Error)
+
+tp FormatGetSide mt (self Display) (answer Graph_GetSideAnswer) (text Computer_Buffer, err Error)
+
+tp FormatParts mt (self Display) (parts Files_Parts) (text Computer_Buffer, err Error)

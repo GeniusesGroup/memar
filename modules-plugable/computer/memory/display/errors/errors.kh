@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Error_Display_Refusal ab {
+    Error
+}
+
+tp Error_Display_DumpShape ab {
+    Error_Display_Refusal
+}
+
+tp Error_Display_InterpretFields ab {
+    Error_Display_Refusal
+}

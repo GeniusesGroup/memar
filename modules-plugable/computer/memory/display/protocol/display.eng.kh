@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Display in "modules-plugable/computer/memory/display/protocol/display.kh"
+
+tp Domain mt (self Display) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Display")(s, VoidError)
+}
+
+tp Summary mt (self Display) () (s String) {
+    CharacterRun_From.FromCharacterRun("Formats Graph and store service answers as text for a human or agent to read")(s, VoidError)
+}
+
+tp Overview mt (self Display) () (s String) {
+    CharacterRun_From.FromCharacterRun("Formats Graph and store service answers as text for a human or agent to read. Not storage, not Path encoding, not Memory View.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Display) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Display) () (s String) {
+    CharacterRun_From.FromCharacterRun("Holds a Display_Text_Codec. FormatSides, FormatSide, FormatGetSide and FormatParts turn typed service answers into text. Fields and part bytes stay opaque. Must not invent dump wrappers. Not Files_Body_Codec and not Graph_Layout_Value_Codec.")(s, VoidError)
+}
