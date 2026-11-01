@@ -249,7 +249,8 @@ class ErrorsFolder(unittest.TestCase):
 class NoComments(unittest.TestCase):
 
     def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
-        for path in (_m_graph.__file__, _m_errors.__file__, __file__):
+        _m_layout = import_module('modules-plugable.computer.memory.store.graph.codecs.layout_value')
+        for path in (_m_graph.__file__, _m_errors.__file__, _m_layout.__file__, __file__):
             with self.subTest(path=Path(path).name):
                 self.assertEqual(bare(path), ([], []))
 if __name__ == '__main__':

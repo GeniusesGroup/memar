@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Graph_Stored_Sides in "modules-plugable/computer/memory/store/graph/protocol/graph-stored-sides.kh"
+tp Graph_Stored_Edge_Value in "modules-plugable/computer/memory/store/graph/protocol/graph-stored-edge-value.kh"
+
+tp Graph_Layout_Value_Codec ab
+
+tp PackCompact mt (self Graph_Layout_Value_Codec) (sides Graph_Stored_Sides) (value Computer_Buffer, err Error)
+
+tp UnpackCompact mt (self Graph_Layout_Value_Codec) (value Computer_Buffer) (sides Graph_Stored_Sides, err Error)
+
+tp PackPerEdge mt (self Graph_Layout_Value_Codec) (edge Graph_Stored_Edge_Value) (value Computer_Buffer, err Error)
+
+tp UnpackPerEdge mt (self Graph_Layout_Value_Codec) (value Computer_Buffer) (edge Graph_Stored_Edge_Value, err Error)

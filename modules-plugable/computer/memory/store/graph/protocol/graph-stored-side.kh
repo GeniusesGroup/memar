@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+
+tp Graph_Stored_Side ab
+
+tp GetSlot mt (self Graph_Stored_Side) () (slot W64)
+
+tp GetEnded mt (self Graph_Stored_Side) () (ended Boolean)
+
+tp GetTo mt (self Graph_Stored_Side) () (to Computer_Buffer)
+
+tp GetFields mt (self Graph_Stored_Side) () (fields Computer_Buffer)
+
+tp GetReverseRef mt (self Graph_Stored_Side) () (ref Computer_Buffer)
+
+tp GetInboundRef mt (self Graph_Stored_Side) () (ref Computer_Buffer)

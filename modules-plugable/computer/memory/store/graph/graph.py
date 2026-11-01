@@ -7,6 +7,7 @@ from importlib import import_module
 from typing import Any, Sequence
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.graph.errors.errors')
+_m_layout_value = import_module('modules-plugable.computer.memory.store.graph.codecs.layout_value')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
 Committed = _m_store.Committed
@@ -19,6 +20,9 @@ Unavailable = _m_store.Unavailable
 token = _m_store.token
 Bad = _m_errors.Bad
 NotLayable = _m_errors.NotLayable
+Graph_Default_Layout_Value_Codec = _m_layout_value.Graph_Default_Layout_Value_Codec
+Stored_Side = _m_layout_value.Stored_Side
+Stored_Edge_Value = _m_layout_value.Stored_Edge_Value
 LAYOUT_COMPACT = 1
 LAYOUT_PER_EDGE = 2
 DIRECTION_OUT = 1
@@ -33,6 +37,7 @@ _TAG_IN_COMPACT = 3
 _TAG_IN_PER_EDGE = 4
 _U16 = struct.Struct('>H')
 _U64 = struct.Struct('>Q')
+_LAYOUT_VALUES = Graph_Default_Layout_Value_Codec()
 
 def layable(store: Any) -> bool:
     p = store.parameters
@@ -124,56 +129,6 @@ class Graph_Binding:
     Vertex: bytes
     Side: bytes = b''
     HasSide: bool = False
-
-@dataclass
-class _Side:
-    slot: int
-    to: bytes
-    fields: bytes
-    ended: bool = False
-    reverse_ref: bytes = b''
-    inbound_ref: bytes = b''
-
-def _encode_sides(sides: Sequence[_Side]) -> bytes:
-    out = bytearray()
-    for each in sides:
-        out += _U64.pack(each.slot)
-        out.append(1 if each.ended else 0)
-        out += _U16.pack(len(each.to))
-        out += each.to
-        out += _U16.pack(len(each.fields))
-        out += each.fields
-        out += _U16.pack(len(each.reverse_ref))
-        out += each.reverse_ref
-        out += _U16.pack(len(each.inbound_ref))
-        out += each.inbound_ref
-    return bytes(out)
-
-def _decode_sides(value: bytes) -> list[_Side]:
-    sides: list[_Side] = []
-    at = 0
-    while at < len(value):
-        slot = _U64.unpack_from(value, at)[0]
-        at += 8
-        ended = bool(value[at])
-        at += 1
-        to, at = _take(value, at)
-        fields, at = _take(value, at)
-        reverse_ref, at = _take(value, at)
-        inbound_ref, at = _take(value, at)
-        sides.append(_Side(slot, to, fields, ended, reverse_ref, inbound_ref))
-    return sides
-
-def _encode_edge_value(to: bytes, fields: bytes, ended: bool, reverse_ref: bytes=b'', inbound_ref: bytes=b'') -> bytes:
-    return bytes([1 if ended else 0]) + _U16.pack(len(to)) + to + _U16.pack(len(fields)) + fields + _U16.pack(len(reverse_ref)) + reverse_ref + _U16.pack(len(inbound_ref)) + inbound_ref
-
-def _decode_edge_value(value: bytes) -> tuple[bool, bytes, bytes, bytes, bytes]:
-    ended = bool(value[0])
-    to, at = _take(value, 1)
-    fields, at = _take(value, at)
-    reverse_ref, at = _take(value, at)
-    inbound_ref, _ = _take(value, at)
-    return (ended, to, fields, reverse_ref, inbound_ref)
 
 class Graph_Store:
 
@@ -269,7 +224,7 @@ class Graph_Store:
         markers[key] = held.value
         return None
 
-    def _next_slot_compact(self, sides: Sequence[_Side]) -> int:
+    def _next_slot_compact(self, sides: Sequence[Stored_Side]) -> int:
         return max((each.slot for each in sides), default=0) + 1
 
     def _next_slot_per_edge(self, tag: int, frm: bytes, relation: bytes) -> int | Any:
@@ -292,7 +247,7 @@ class Graph_Store:
             planned[key] = []
             tokens[key] = expect_token if expect_token else ABSENT
         else:
-            planned[key] = _decode_sides(held.value)
+            planned[key] = _LAYOUT_VALUES.unpack_compact(held.value)
             tokens[key] = expect_token if expect_token else held.token
         return key
 
@@ -316,7 +271,7 @@ class Graph_Store:
 
     def _put_edges_compact(self, edges: Sequence[Graph_PutEdge]) -> Any:
         markers: dict[bytes, bytes] = {}
-        planned: dict[bytes, list[_Side]] = {}
+        planned: dict[bytes, list[Stored_Side]] = {}
         tokens: dict[bytes, Any] = {}
         refs: list[bytes] = []
         for each in edges:
@@ -344,9 +299,9 @@ class Graph_Store:
                     return rev_key
                 rev_slot = self._next_slot_compact(planned[rev_key])
                 reverse_ref = self._side_ref(_TAG_COMPACT, each.To, each.ReverseRelation, rev_slot)
-                planned[rev_key].append(_Side(rev_slot, each.From, each.Fields, False, out_ref, b''))
-            planned[out_key].append(_Side(out_slot, each.To, each.Fields, False, reverse_ref, in_ref))
-            planned[in_key].append(_Side(in_slot, each.From, each.Fields, False, out_ref, b''))
+                planned[rev_key].append(Stored_Side(rev_slot, each.From, each.Fields, False, out_ref, b''))
+            planned[out_key].append(Stored_Side(out_slot, each.To, each.Fields, False, reverse_ref, in_ref))
+            planned[in_key].append(Stored_Side(in_slot, each.From, each.Fields, False, out_ref, b''))
             refs.append(out_ref)
         expect: list = []
         write: list = []
@@ -357,7 +312,7 @@ class Graph_Store:
                 write.append((key, value))
         for key, sides in planned.items():
             expect.append((key, tokens[key]))
-            write.append((key, _encode_sides(sides)))
+            write.append((key, _LAYOUT_VALUES.pack_compact(sides)))
         answer = self.store.batch(expect, write)
         if answer != Committed():
             return answer
@@ -403,11 +358,11 @@ class Graph_Store:
                     return rev_slot
                 reverse_ref = self._per_edge_key(_TAG_PER_EDGE, each.To, each.ReverseRelation, rev_slot)
                 expect.append((reverse_ref, each.ExpectTo if each.ExpectTo else ABSENT))
-                write.append((reverse_ref, _encode_edge_value(each.From, each.Fields, False, out_ref, b'')))
+                write.append((reverse_ref, _LAYOUT_VALUES.pack_per_edge(Stored_Edge_Value(each.From, each.Fields, False, out_ref, b''))))
             expect.append((out_ref, each.ExpectFrom if each.ExpectFrom else ABSENT))
-            write.append((out_ref, _encode_edge_value(each.To, each.Fields, False, reverse_ref, in_ref)))
+            write.append((out_ref, _LAYOUT_VALUES.pack_per_edge(Stored_Edge_Value(each.To, each.Fields, False, reverse_ref, in_ref))))
             expect.append((in_ref, ABSENT))
-            write.append((in_ref, _encode_edge_value(each.From, each.Fields, False, out_ref, b'')))
+            write.append((in_ref, _LAYOUT_VALUES.pack_per_edge(Stored_Edge_Value(each.From, each.Fields, False, out_ref, b''))))
             refs.append(out_ref)
         for key, value in markers.items():
             held = self._read(key)
@@ -463,7 +418,7 @@ class Graph_Store:
             return held
         if isinstance(held, Absent):
             return ()
-        sides = [each for each in _decode_sides(held.value) if not each.ended]
+        sides = [each for each in _LAYOUT_VALUES.unpack_compact(held.value) if not each.ended]
         sides.sort(key=lambda s: s.slot, reverse=descending)
         items = [Graph_Side(self._side_ref(tag, frm, relation, each.slot), each.to, each.fields, held.token) for each in sides]
         if after:
@@ -491,10 +446,10 @@ class Graph_Store:
                 return held
             if isinstance(held, Absent):
                 continue
-            ended, to, fields, _, _ = _decode_edge_value(held.value)
-            if ended:
+            edge = _LAYOUT_VALUES.unpack_per_edge(held.value)
+            if edge.ended:
                 continue
-            items.append(Graph_Side(key, to, fields, held.token))
+            items.append(Graph_Side(key, edge.to, edge.fields, held.token))
             if limit is not None and len(items) >= limit:
                 break
         return tuple(items)
@@ -541,7 +496,7 @@ class Graph_Store:
             return held
         if isinstance(held, Absent):
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
-        sides = _decode_sides(held.value)
+        sides = _LAYOUT_VALUES.unpack_compact(held.value)
         target = next((each for each in sides if each.slot == slot and not each.ended), None)
         if target is None:
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
@@ -550,7 +505,7 @@ class Graph_Store:
         else:
             target.fields = fields
         expects = [(key, expect if expect else held.token)]
-        writes = [(key, _encode_sides(sides))]
+        writes = [(key, _LAYOUT_VALUES.pack_compact(sides))]
         for linked in (target.reverse_ref, target.inbound_ref):
             if not linked:
                 continue
@@ -568,7 +523,7 @@ class Graph_Store:
         for i, (at, data) in enumerate(writes):
             if at != key:
                 continue
-            sides = _decode_sides(data)
+            sides = _LAYOUT_VALUES.unpack_compact(data)
             target = next((each for each in sides if each.slot == slot), None)
             if target is None:
                 return Refused(Refusal.MALFORMED, Bad.REF.summary())
@@ -576,14 +531,14 @@ class Graph_Store:
                 target.ended = True
             else:
                 target.fields = fields
-            writes[i] = (key, _encode_sides(sides))
+            writes[i] = (key, _LAYOUT_VALUES.pack_compact(sides))
             return None
         held = self._read(key)
         if isinstance(held, (Refused, Unavailable)):
             return held
         if isinstance(held, Absent):
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
-        sides = _decode_sides(held.value)
+        sides = _LAYOUT_VALUES.unpack_compact(held.value)
         target = next((each for each in sides if each.slot == slot and not each.ended), None)
         if target is None:
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
@@ -592,7 +547,7 @@ class Graph_Store:
         else:
             target.fields = fields
         expects.append((key, held.token))
-        writes.append((key, _encode_sides(sides)))
+        writes.append((key, _LAYOUT_VALUES.pack_compact(sides)))
         return None
 
     def _mutate_per_edge(self, ref: bytes, fields: bytes, expect: bytes, end: bool) -> Any:
@@ -601,13 +556,13 @@ class Graph_Store:
             return held
         if isinstance(held, Absent):
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
-        ended, to, old_fields, reverse_ref, inbound_ref = _decode_edge_value(held.value)
-        if ended:
+        edge = _LAYOUT_VALUES.unpack_per_edge(held.value)
+        if edge.ended:
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
-        new_fields = old_fields if end else fields
+        new_fields = edge.fields if end else fields
         expects = [(ref, expect if expect else held.token)]
-        writes = [(ref, _encode_edge_value(to, new_fields, end, reverse_ref, inbound_ref))]
-        for linked in (reverse_ref, inbound_ref):
+        writes = [(ref, _LAYOUT_VALUES.pack_per_edge(Stored_Edge_Value(edge.to, new_fields, end, edge.reverse_ref, edge.inbound_ref)))]
+        for linked in (edge.reverse_ref, edge.inbound_ref):
             if not linked:
                 continue
             rheld = self._read(linked)
@@ -615,11 +570,11 @@ class Graph_Store:
                 return rheld
             if isinstance(rheld, Absent):
                 return Refused(Refusal.MALFORMED, Bad.REF.summary())
-            rended, rto, rfields, rreverse, rinbound = _decode_edge_value(rheld.value)
-            if rended:
+            redge = _LAYOUT_VALUES.unpack_per_edge(rheld.value)
+            if redge.ended:
                 return Refused(Refusal.MALFORMED, Bad.REF.summary())
             expects.append((linked, rheld.token))
-            writes.append((linked, _encode_edge_value(rto, new_fields if not end else rfields, end, rreverse, rinbound)))
+            writes.append((linked, _LAYOUT_VALUES.pack_per_edge(Stored_Edge_Value(redge.to, new_fields if not end else redge.fields, end, redge.reverse_ref, redge.inbound_ref))))
         return self.store.batch(expects, writes)
 
     def match(self, pattern: Graph_Pattern) -> Any:

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Graph_Layout_Value_Codec in "modules-plugable/computer/memory/store/graph/protocol/graph-layout-value-codec.kh"
+
+tp Domain mt (self Graph_Layout_Value_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Graph Store")(s, VoidError)
+}
+
+tp Summary mt (self Graph_Layout_Value_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Packs and unpacks graph layout state as memory-contract value-bytes")(s, VoidError)
+}
+
+tp Overview mt (self Graph_Layout_Value_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Packs and unpacks compact-adjacency and per-edge layout state as store value-bytes. Domain Fields remain opaque bytes.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Graph_Layout_Value_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Graph_Layout_Value_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("PackCompact and UnpackCompact frame every current side of one (vertex, relation) under the compact layout. PackPerEdge and UnpackPerEdge frame one per-edge side value. Fields, far-vertex bytes, and ref bytes are carried without interpretation. The Graph_Store spine calls only this type for layout value encode and decode; address tags for (vertex, relation) are outside this seam. One default realization ships; there is no bind-time codec registry.")(s, VoidError)
+}

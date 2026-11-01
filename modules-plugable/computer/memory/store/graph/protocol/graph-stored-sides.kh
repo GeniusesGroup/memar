@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Graph_Stored_Side in "modules-plugable/computer/memory/store/graph/protocol/graph-stored-side.kh"
+
+tp Graph_Stored_Sides ab
+
+tp GetCount mt (self Graph_Stored_Sides) () (count W32)
+
+tp GetAt mt (self Graph_Stored_Sides) (index W32) (side Graph_Stored_Side, err Error)
+
+tp Append mt (self Graph_Stored_Sides) (side Graph_Stored_Side) (err Error)

@@ -33,6 +33,13 @@ What it **does** add is a **capsule of layouts and services** over that contract
 
 The abstract datatype of a graph (primary node, secondary node, edge) stays at [`modules/computer/adt/graph/`](../../../../../modules/computer/adt/graph/protocol/graph.kh). Relations live in each domain’s `edges/` folders ([Modules → Edge folder](../../../../../modules/modules.md#edge-folder)). This module stores them.
 
+### What stays opaque, what Graph frames, what a medium adapter does
+Three responsibilities must not be collapsed:
+
+1. **Domain edge Fields** are opaque caller bytes. Graph does not interpret them as JSON, YAML, FlatBuffers, or any domain schema. Domains give Fields meaning; Graph only carries them under a side.
+2. **Layout-value framing** — how compact-adjacency state and per-edge side state become the **value-bytes** of the memory contract — is Graph’s. It is a named Pack/Unpack seam ([`Graph_Layout_Value_Codec`](protocol/graph-layout-value-codec.kh)), not private helpers locked inside the capsule spine. One default realization holds today’s framing; there is no bind-time family of interchangeable layout codecs. Address tags that name `(vertex, relation)` under a layout are address layout, not this seam’s subject.
+3. **Medium adapters** (files or other) map store addresses and value-bytes onto a medium. They store and retrieve; they do not invent relation vocabulary, nest edges under a domain map, or decide edge-field meaning. Graph is developed against the memory contract without fixing which medium holds the bytes; when Graph needs a capability of the store below (variable-length values, listable key prefixes, compare-and-swap), it declares that need on the contract / layability rules so the lower layer can provide it.
+
 ## Layouts for many edges of one relation
 A vertex may hold **many edges of the same relation**, added over time. The capsule offers more than one layout; **the consumer chooses** which fits its degree, append pattern and read shape. Graph states the costs; it does not pick for the domain.
 

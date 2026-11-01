@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Graph_Layout_Value_Codec in "modules-plugable/computer/memory/store/graph/protocol/graph-layout-value-codec.kh"
+
+tp Graph_Default_Layout_Value_Codec ab {
+    Graph_Layout_Value_Codec
+}
