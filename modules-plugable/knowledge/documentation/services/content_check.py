@@ -53,6 +53,8 @@ is_declared = _m_normative_references_check.is_declared
 list_drops = _m_normative_references_check.list_drops
 list_problems = _m_normative_references_check.list_problems
 list_warnings = _m_normative_references_check.list_warnings
+_m_temp_duplicate = import_module('modules-plugable.knowledge.documentation.services.temp_duplicate')
+temp_duplicate_problems = _m_temp_duplicate.temp_duplicate_problems
 CHECKED_SUFFIXES = ('.md', '.kh', '.py', '.ts', '.json', '.yaml', '.yml', '.txt', '.ps1', '.sh', '.bat', '.cmd')
 def describe(verbs):
     parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files; a folder also reports undischarged propagations', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, an Open Questions entry missing a field, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; given a folder it also reports undischarged propagations. Neither is counted as a problem.", formatter_class=argparse.HelpFormatter)
@@ -100,6 +102,8 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
         problems.extend(link_problems(path, visible, cache, root))
     if path.suffix == '.md':
         problems.extend(list_problems(path, root))
+    if memar_rules:
+        problems.extend(temp_duplicate_problems(path))
     return problems
 
 def upward_warnings(path: Path, link_cache: dict | None=None) -> list[str]:

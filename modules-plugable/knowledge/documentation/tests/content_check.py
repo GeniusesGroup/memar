@@ -664,5 +664,70 @@ class HandoffEntriesAreWarnedAbout(LinkFixture):
         self.write('a.handoff.md', '# A handoff\n\n' + self.ENTRY)
         out, _ = self.run_check(memar_rules=False)
         self.assertNotIn('lacks', out)
+class TempHoldsNoContent(LinkFixture):
+    FRONT = '---\nkind: plan\nauthor: memar\nplaced_at: 2026-11-01T06:08:50Z\ncontent: cccb33f5-d955-467e-bb6a-39cedd3e0d77\n---\n'
+    BODY_ONE = '# One\nfirst body\n'
+    BODY_TWO = '# Two\nsecond body\n'
+    TASK = '.agents/tasks/20261101-T060801Z-24804'
+    OTHER = '.agents/tasks/20261101-T070000Z-1'
+
+    def run_check(self) -> tuple[str, int]:
+        import argparse
+        import contextlib
+        import io
+        args = argparse.Namespace(files=[str(self.root)], verbose=False, memar_rules=True)
+        out = io.StringIO()
+        code = 0
+        with contextlib.redirect_stdout(out):
+            try:
+                content_check.cmd_check(args, self.root)
+            except SystemExit as stop:
+                code = stop.code or 0
+        return (out.getvalue(), code)
+
+    def task_with_two_contents(self, task: str=None) -> str:
+        task = task or self.TASK
+        self.write(f'{task}/content.00001.md', self.FRONT + self.BODY_ONE)
+        self.write(f'{task}/content.00002.md', self.FRONT + self.BODY_TWO)
+        return task
+
+    def test_a_temp_file_equal_to_a_content_body_is_reported(self) -> None:
+        task = self.task_with_two_contents()
+        self.write(f'{task}/temp/draft.txt', self.BODY_TWO)
+        out, code = self.run_check()
+        self.assertIn('draft.txt', out)
+        self.assertIn('content.00002.md', out)
+        self.assertEqual(code, 1)
+
+    def test_a_final_newline_is_ignored(self) -> None:
+        task = self.task_with_two_contents()
+        self.write(f'{task}/temp/draft.txt', self.BODY_ONE.rstrip('\n'))
+        out, code = self.run_check()
+        self.assertIn('draft.txt', out)
+        self.assertIn('content.00001.md', out)
+        self.assertEqual(code, 1)
+
+    def test_a_temp_file_that_differs_is_not_reported(self) -> None:
+        task = self.task_with_two_contents()
+        self.write(f'{task}/temp/draft.txt', self.BODY_ONE + 'one more line\n')
+        out, code = self.run_check()
+        self.assertNotIn('draft.txt', out)
+        self.assertEqual(code, 0)
+
+    def test_a_temp_file_equal_to_a_content_of_another_task_is_not_reported(self) -> None:
+        self.task_with_two_contents()
+        other = self.task_with_two_contents(self.OTHER)
+        self.write(f'{self.TASK}/temp/draft.txt', 'a body only the other task holds\n')
+        self.write(f'{other}/content.00003.md', self.FRONT + 'a body only the other task holds\n')
+        out, code = self.run_check()
+        self.assertNotIn('draft.txt', out)
+        self.assertEqual(code, 0)
+
+    def test_a_task_with_no_temp_folder_is_not_reported(self) -> None:
+        self.task_with_two_contents()
+        out, code = self.run_check()
+        self.assertNotIn('temp', out)
+        self.assertEqual(code, 0)
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
