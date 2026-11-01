@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Files_Parts in "modules-plugable/computer/memory/store/files/protocol/files-parts.kh"
+
+tp Files_Body_Codec ab
+
+tp GetName mt (self Files_Body_Codec) () (name String)
+
+tp Pack mt (self Files_Body_Codec) (parts Files_Parts) (body Computer_Buffer, stored Files_Parts, err Error)
+
+tp Unpack mt (self Files_Body_Codec) (body Computer_Buffer) (parts Files_Parts, err Error)

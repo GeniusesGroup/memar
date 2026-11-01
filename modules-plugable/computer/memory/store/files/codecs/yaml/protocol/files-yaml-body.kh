@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Files_Body_Codec in "modules-plugable/computer/memory/store/files/protocol/files-body-codec.kh"
+
+tp Files_YAML_Body_Codec ab {
+    Files_Body_Codec
+}

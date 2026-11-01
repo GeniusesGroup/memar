@@ -8,6 +8,7 @@ tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
 tp Record_Bound in "modules-plugable/computer/memory/store/record/protocol/record-bound.kh"
 tp Files_Seam in "modules-plugable/computer/memory/store/files/protocol/files-seam.kh"
 tp Files_Path in "modules-plugable/computer/memory/store/files/protocol/files-path.kh"
+tp Files_Body_Codec in "modules-plugable/computer/memory/store/files/protocol/files-body-codec.kh"
 tp Storage_Directory in "modules-plugable/computer/memory/filesystem/directory/protocol/directory.kh"
 tp Storage_File in "modules-plugable/computer/memory/filesystem/file/protocol/file.kh"
 
@@ -17,6 +18,8 @@ tp Files_Adapter ab {
 }
 
 tp GetMemoryRoot mt (self Files_Adapter) () (root Storage_Directory)
+
+tp GetBodyCodec mt (self Files_Adapter) () (codec Files_Body_Codec)
 
 tp GetShardThreshold mt (self Files_Adapter) () (count W64, given Boolean)
 

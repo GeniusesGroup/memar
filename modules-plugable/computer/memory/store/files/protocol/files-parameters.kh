@@ -10,6 +10,8 @@ tp Files_Parameters ab
 
 tp GetMemoryRoot mt (self Files_Parameters) (class Record_Class) (root String)
 
+tp GetBodyCodecName mt (self Files_Parameters) (class Record_Class) (name String)
+
 tp GetShardThreshold mt (self Files_Parameters) (class Record_Class) (count W64, given Boolean)
 
 tp GetShardPrefixLength mt (self Files_Parameters) (class Record_Class) (length W32)

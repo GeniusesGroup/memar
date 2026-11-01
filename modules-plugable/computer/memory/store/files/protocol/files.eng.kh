@@ -22,5 +22,5 @@ tp UserActionNote mt (self Files) () (s String) {
 }
 
 tp DevActionNote mt (self Files) () (s String) {
-    CharacterRun_From.FromCharacterRun("Knows addresses only. One store is one memory root and one batch order. Path encoding is Files_Path. Each node file body is one UTF-8 JSON object of domain keys to part values, not a binary length-prefix map. Declares leaves_working_tree_untouched false. Declares durable and owes the working-tree group. Removes nothing. Close ends what the medium holds open in this process.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Knows addresses only. One store is one memory root and one batch order. Path encoding is Files_Path. Each node file body is produced by the bound Files_Body_Codec (default json). Declares leaves_working_tree_untouched false. Declares durable and owes the working-tree group. Removes nothing. Close ends what the medium holds open in this process.")(s, VoidError)
 }

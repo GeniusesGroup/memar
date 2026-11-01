@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-import base64
 import bisect
 import json
 import os
@@ -20,6 +19,7 @@ if str(TOP) not in sys.path:
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.files.errors.errors')
 _m_storage = import_module('modules-plugable.computer.memory.filesystem.storage')
+_m_codecs = import_module('modules-plugable.computer.memory.store.files.codecs.registry')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
 Capability = _m_store.Capability
@@ -36,6 +36,7 @@ Unavailable = _m_store.Unavailable
 token = _m_store.token
 BadAddress = _m_errors.BadAddress
 BadParameter = _m_errors.BadParameter
+BadCodec = _m_errors.BadCodec
 Lost = _m_errors.Lost
 RootCollision = _m_errors.RootCollision
 URI_Path = _m_storage.URI_Path
@@ -45,9 +46,11 @@ directory_at = _m_storage.directory_at
 TOKEN_LENGTH = len(token(b''))
 MODULE = 'modules-plugable.computer.memory.store.files.files'
 MEMORY_ROOT_KEY = 'files-memory-root'
+BODY_CODEC_KEY = 'files-body-codec'
 SHARD_THRESHOLD_KEY = 'files-shard-threshold'
 SHARD_PREFIX_KEY = 'files-shard-prefix-length'
 DEFAULT_MEMORY_ROOT = '.agents/memar/memory'
+DEFAULT_BODY_CODEC = 'json'
 DEFAULT_SHARD_PREFIX = 4
 META_FOLDER = '.files-store'
 RECORD_ID_LENGTH = 16
@@ -81,54 +84,6 @@ def is_record_key(address: object) -> bool:
     except UnicodeDecodeError:
         return False
     return True
-
-TEXT_ENVELOPE = '$files.text'
-BYTES_ENVELOPE = '$files.bytes'
-
-def part_to_json(data: bytes) -> Any:
-    try:
-        text = data.decode('utf-8')
-    except UnicodeDecodeError:
-        return {BYTES_ENVELOPE: base64.b64encode(data).decode('ascii')}
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        return {TEXT_ENVELOPE: text}
-
-def part_from_json(value: Any) -> bytes:
-    if isinstance(value, dict):
-        if set(value.keys()) == {BYTES_ENVELOPE} and isinstance(value[BYTES_ENVELOPE], str):
-            return base64.b64decode(value[BYTES_ENVELOPE])
-        if set(value.keys()) == {TEXT_ENVELOPE} and isinstance(value[TEXT_ENVELOPE], str):
-            return value[TEXT_ENVELOPE].encode('utf-8')
-    return json.dumps(value, separators=(',', ':'), ensure_ascii=False).encode('utf-8')
-
-def stored_part_bytes(data: bytes) -> bytes:
-    return part_from_json(part_to_json(data))
-
-def pack_parts(parts: dict[bytes, bytes]) -> bytes:
-    body: dict[str, Any] = {}
-    for key in sorted(parts):
-        body[key.decode('ascii')] = part_to_json(parts[key])
-    return (json.dumps(body, ensure_ascii=False, indent=2, sort_keys=True) + '\n').encode('utf-8')
-
-def unpack_parts(data: bytes) -> dict[bytes, bytes] | None:
-    try:
-        body = json.loads(data.decode('utf-8'))
-    except (UnicodeDecodeError, json.JSONDecodeError):
-        return None
-    if not isinstance(body, dict):
-        return None
-    parts: dict[bytes, bytes] = {}
-    for key, value in body.items():
-        if not isinstance(key, str):
-            return None
-        try:
-            domain = key.encode('ascii')
-        except UnicodeEncodeError:
-            return None
-        parts[domain] = part_from_json(value)
-    return parts
 
 class Files_Path:
 
@@ -275,6 +230,7 @@ class _Medium:
         self.root.ensure()
         self.meta = self.root.directory(META_FOLDER).ensure()
         self.path = adapter.path
+        self.codec = adapter.body_codec
         self.shard_threshold = adapter.shard_threshold
         self.shard_prefix_length = adapter.shard_prefix_length
         self.writer = _WriterLock(self.meta.host_path() / 'lock')
@@ -310,7 +266,7 @@ class _Medium:
             body = file.get_file_data()
             self.files_opened += 1
             if is_node:
-                parts = unpack_parts(body)
+                parts = self.codec.unpack(body)
                 if parts is None:
                     continue
                 for domain, value in parts.items():
@@ -413,11 +369,12 @@ class _Medium:
             if is_node:
                 parts = {at[RECORD_ID_LENGTH:]: value for at, value in self.values.items() if is_record_key(at) and at[:RECORD_ID_LENGTH] == identity}
                 for at, data in group:
-                    parts[at[RECORD_ID_LENGTH:]] = stored_part_bytes(bytes(data))
-                target.replace_bytes(pack_parts(parts))
+                    parts[at[RECORD_ID_LENGTH:]] = bytes(data)
+                body, stored = self.codec.pack(parts)
+                target.replace_bytes(body)
                 self.files_opened += 1
                 for at, data in group:
-                    self._set_value(at, parts[at[RECORD_ID_LENGTH:]])
+                    self._set_value(at, stored[at[RECORD_ID_LENGTH:]])
             else:
                 data = bytes(group[-1][1])
                 target.replace_bytes(data)
@@ -563,7 +520,7 @@ class Files:
 
 class FilesAdapter:
 
-    def __init__(self, project: str | Path, memory_root: str | Path | Storage_Directory | None=None, shard_threshold: int | None=None, shard_prefix_length: int=DEFAULT_SHARD_PREFIX) -> None:
+    def __init__(self, project: str | Path, memory_root: str | Path | Storage_Directory | None=None, shard_threshold: int | None=None, shard_prefix_length: int=DEFAULT_SHARD_PREFIX, body_codec: Any | None=None) -> None:
         self.project = Path(project).resolve()
         if isinstance(memory_root, Storage_Directory):
             self.memory_root = memory_root
@@ -573,6 +530,12 @@ class FilesAdapter:
             self.memory_root = directory_at(absolute.resolve())
         self.shard_threshold = shard_threshold
         self.shard_prefix_length = shard_prefix_length
+        if isinstance(body_codec, str):
+            self.body_codec = _m_codecs.resolve(body_codec)
+        elif body_codec is not None:
+            self.body_codec = body_codec
+        else:
+            self.body_codec = _m_codecs.resolve(DEFAULT_BODY_CODEC)
         self.path = Files_Path()
         self.store = os.path.normcase(str(self.memory_root.host_path()))
         self._medium: _Medium | None = None
@@ -588,6 +551,9 @@ class FilesAdapter:
 
     def get_shard_prefix_length(self) -> int:
         return self.shard_prefix_length
+
+    def get_body_codec(self) -> Any:
+        return self.body_codec
 
     def shard_for(self, address: bytes) -> tuple[int, bool]:
         return self._medium_of().shard_for(address)
@@ -616,7 +582,7 @@ class FilesAdapter:
         return handle
 
     def opener(self) -> tuple[str, str, dict]:
-        return (MODULE, type(self).__name__, {'project': str(self.project), 'memory_root': str(self.memory_root.host_path()), 'shard_threshold': self.shard_threshold, 'shard_prefix_length': self.shard_prefix_length})
+        return (MODULE, type(self).__name__, {'project': str(self.project), 'memory_root': str(self.memory_root.host_path()), 'shard_threshold': self.shard_threshold, 'shard_prefix_length': self.shard_prefix_length, 'body_codec': self.body_codec.get_name()})
 
     def close(self) -> None:
         if self._medium is not None:
@@ -634,7 +600,7 @@ class FilesAdapter:
         folder = self.project.parent / f'sibling-{uuid.uuid4().hex[:8]}'
         folder.mkdir(parents=True)
         root = folder / DEFAULT_MEMORY_ROOT
-        return FilesAdapter(folder, memory_root=root, shard_threshold=self.shard_threshold, shard_prefix_length=self.shard_prefix_length)
+        return FilesAdapter(folder, memory_root=root, shard_threshold=self.shard_threshold, shard_prefix_length=self.shard_prefix_length, body_codec=self.body_codec)
 
 def _resolve_root(project: Path, value: str) -> Path:
     path = Path(value)
@@ -648,6 +614,11 @@ def bind(project: Path, class_name: str) -> FilesAdapter:
         if values is None:
             raise BadParameter(f'`{key}` in {preferences.preferences_path(Path(project))} is not `class=value` pairs separated by commas, each class once')
         found[key] = values
+    codec_values = preferences.class_values_preference(Path(project), BODY_CODEC_KEY)
+    if codec_values is not None and class_name in codec_values and codec_values[class_name] == '':
+        raise BadParameter(f'an empty `{BODY_CODEC_KEY}` for `{class_name}`')
+    codec_name = DEFAULT_BODY_CODEC if codec_values is None else codec_values.get(class_name, DEFAULT_BODY_CODEC)
+    body_codec = _m_codecs.resolve(codec_name)
     root_text = found[MEMORY_ROOT_KEY].get(class_name, DEFAULT_MEMORY_ROOT)
     root = _resolve_root(Path(project), root_text)
     threshold_text = found[SHARD_THRESHOLD_KEY].get(class_name)
@@ -683,4 +654,4 @@ def bind(project: Path, class_name: str) -> FilesAdapter:
             return one != under
         if _nests(root, theirs) or _nests(theirs, root):
             raise RootCollision(f'the memory root of `{class_name}`, {root}, and that of `{other}`, {theirs}, nest')
-    return FilesAdapter(Path(project), memory_root=root, shard_threshold=threshold, shard_prefix_length=prefix)
+    return FilesAdapter(Path(project), memory_root=root, shard_threshold=threshold, shard_prefix_length=prefix, body_codec=body_codec)

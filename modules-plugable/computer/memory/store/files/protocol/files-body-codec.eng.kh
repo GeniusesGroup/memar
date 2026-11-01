@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_Body_Codec in "modules-plugable/computer/memory/store/files/protocol/files-body-codec.kh"
+
+tp Domain mt (self Files_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Packs and unpacks one node parts map as a medium body")(s, VoidError)
+}
+
+tp Overview mt (self Files_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Packs and unpacks one node parts map as a medium body.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("GetName is the files-body-codec parameter word (json, yaml, …). Pack writes body bytes and the stored parts map (normalized part bytes for get and token). Unpack reads body bytes into parts. Embedding of part bytes inside the body is this codec's private policy. The adapter spine calls only Pack and Unpack; it imports no serialization format. Domains never see this type.")(s, VoidError)
+}

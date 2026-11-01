@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+
+tp Files_Parts ab
+
+tp GetCount mt (self Files_Parts) () (count W32)
+
+tp GetKey mt (self Files_Parts) (index W32) (key Computer_Buffer, err Error)
+
+tp GetValue mt (self Files_Parts) (index W32) (value Computer_Buffer, err Error)
+
+tp Put mt (self Files_Parts) (key Computer_Buffer, value Computer_Buffer) (err Error)

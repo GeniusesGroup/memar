@@ -7,6 +7,8 @@ tp Error_Files_BadParameter in "modules-plugable/computer/memory/store/files/err
 tp Error_Files_BadAddress in "modules-plugable/computer/memory/store/files/errors/errors.kh"
 tp Error_Files_RootCollision in "modules-plugable/computer/memory/store/files/errors/errors.kh"
 tp Error_Files_Lost in "modules-plugable/computer/memory/store/files/errors/errors.kh"
+tp Error_Files_BadBody in "modules-plugable/computer/memory/store/files/errors/errors.kh"
+tp Error_Files_BadCodec in "modules-plugable/computer/memory/store/files/errors/errors.kh"
 
 tp Domain mt (self Error_Files_BadParameter) () (s String) {
     CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
@@ -25,8 +27,49 @@ tp UserActionNote mt (self Error_Files_BadParameter) () (s String) {
 }
 
 tp DevActionNote mt (self Error_Files_BadParameter) () (s String) {
-    CharacterRun_From.FromCharacterRun("A key other than files-memory-root, files-shard-threshold and files-shard-prefix-length, or a value those keys cannot parse.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A key other than files-memory-root, files-body-codec, files-shard-threshold and files-shard-prefix-length, or a value those keys cannot parse.")(s, VoidError)
 }
+
+tp Domain mt (self Error_Files_BadBody) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Error_Files_BadBody) () (s String) {
+    CharacterRun_From.FromCharacterRun("A node body the bound body codec cannot unpack")(s, VoidError)
+}
+
+tp Overview mt (self Error_Files_BadBody) () (s String) {
+    CharacterRun_From.FromCharacterRun("A node body the bound body codec cannot unpack.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Files_BadBody) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Files_BadBody) () (s String) {
+    CharacterRun_From.FromCharacterRun("Returned when Files_Body_Codec.Unpack refuses the bytes of a node file under the bound codec. The adapter does not sniff another codec.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Files_BadCodec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Error_Files_BadCodec) () (s String) {
+    CharacterRun_From.FromCharacterRun("A files-body-codec name that is not registered")(s, VoidError)
+}
+
+tp Overview mt (self Error_Files_BadCodec) () (s String) {
+    CharacterRun_From.FromCharacterRun("A files-body-codec name that is not registered.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Files_BadCodec) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Files_BadCodec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Bind refuses a files-body-codec value that is not the GetName of a registered Files_Body_Codec (json at first ship; yaml when that codec is added).")(s, VoidError)
+}
+
 
 tp Domain mt (self Error_Files_BadAddress) () (s String) {
     CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)

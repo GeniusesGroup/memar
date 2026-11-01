@@ -39,3 +39,19 @@ class Lost(Raised):
 
     def summary(self) -> str:
         return 'The files medium lost a committed batch the adapter expected to hold'
+
+class BadBody(Raised):
+
+    def __init__(self, detail: str='') -> None:
+        super().__init__(Refusal.MALFORMED, detail)
+
+    def summary(self) -> str:
+        return 'A node file body the bound codec cannot unpack'
+
+class BadCodec(BadParameter):
+
+    def __init__(self, name: str='') -> None:
+        super().__init__(name)
+
+    def summary(self) -> str:
+        return 'A files-body-codec name that is not registered'

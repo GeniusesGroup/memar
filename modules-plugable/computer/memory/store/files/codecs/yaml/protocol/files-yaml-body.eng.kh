@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_YAML_Body_Codec in "modules-plugable/computer/memory/store/files/codecs/yaml/protocol/files-yaml-body.kh"
+
+tp Domain mt (self Files_YAML_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_YAML_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Body codec proof: one YAML mapping per node")(s, VoidError)
+}
+
+tp Overview mt (self Files_YAML_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Body codec proof: one YAML mapping per node.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_YAML_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_YAML_Body_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("GetName returns yaml. Body is a UTF-8 YAML mapping of domain keys to part values. Embedding policy is private to this codec and proves a second Files_Body_Codec can register without rewriting the adapter spine.")(s, VoidError)
+}

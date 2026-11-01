@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_Parts in "modules-plugable/computer/memory/store/files/protocol/files-parts.kh"
+
+tp Domain mt (self Files_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("The domain-key to part-bytes map of one node for the body codec")(s, VoidError)
+}
+
+tp Overview mt (self Files_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("The domain-key to part-bytes map of one node for the body codec.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_Parts) () (s String) {
+    CharacterRun_From.FromCharacterRun("Keys are ASCII domain-key bytes; values are opaque part bytes. The map knows no domain vocabulary. Pack may return a stored map whose values are the bytes the store will hold and hash after write.")(s, VoidError)
+}

@@ -22,5 +22,5 @@ tp UserActionNote mt (self Files_Adapter) () (s String) {
 }
 
 tp DevActionNote mt (self Files_Adapter) () (s String) {
-    CharacterRun_From.FromCharacterRun("GetMemoryRoot is a Storage_Directory from the filesystem module, resolved at bind from the files-memory-root parameter string. FileAt maps the address through Files_Path to the node id file then opens or creates that Storage_File; domain parts live as properties of one UTF-8 JSON object in that file, not as separate paths and not as binary length-prefix frames. It does not define File. SameStore is true when two adapters share the same root directory. Close ends what this handle holds open.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("GetMemoryRoot is a Storage_Directory from the filesystem module, resolved at bind from the files-memory-root parameter string. GetBodyCodec is the Files_Body_Codec bound from files-body-codec (default json). FileAt maps the address through Files_Path to the node id file then opens or creates that Storage_File; domain parts in that file are packed and unpacked only through GetBodyCodec. It does not define File. SameStore is true when two adapters share the same root directory. Close ends what this handle holds open.")(s, VoidError)
 }

@@ -22,6 +22,9 @@ _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_conformance = import_module('modules.computer.memory.conformance.conformance')
 _m_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
 _m_files = import_module('modules-plugable.computer.memory.store.files.files')
+_m_json = import_module('modules-plugable.computer.memory.store.files.codecs.json.body')
+_m_yaml = import_module('modules-plugable.computer.memory.store.files.codecs.yaml.body')
+_m_registry = import_module('modules-plugable.computer.memory.store.files.codecs.registry')
 _m_cases = import_module('modules-plugable.computer.memory.store.files.cases')
 _m_record = import_module('modules-plugable.computer.memory.store.record.record')
 _m_record_tests = import_module('modules-plugable.computer.memory.store.record.tests.record')
@@ -139,7 +142,7 @@ class Medium(unittest.TestCase):
         task, timeline = (identity + b'task', identity + b'timeline')
         self.assertEqual(store.batch([], [(task, b'T'), (timeline, b'L')]), Committed())
         self.assertEqual(adapter.file_at(task).host_path(), adapter.file_at(timeline).host_path())
-        parts = _m_files.unpack_parts(adapter.file_at(task).get_file_data())
+        parts = _m_json.Files_JSON_Body_Codec().unpack(adapter.file_at(task).get_file_data())
         self.assertEqual(parts, {b'task': b'T', b'timeline': b'L'})
         self.assertEqual(store.get([task, timeline]), [Found(b'T', token(b'T')), Found(b'L', token(b'L'))])
 
@@ -157,8 +160,8 @@ class Medium(unittest.TestCase):
         self.assertNotIn(b'\x00\x04task', body)
         on_disk = json.loads(body.decode('utf-8'))
         self.assertEqual(on_disk, {'task': {'Status': 'Active', 'Title': 'sample'}, 'timeline': [{'kind': 'plan'}]})
-        self.assertNotIn(_m_files.BYTES_ENVELOPE, json.dumps(on_disk))
-        self.assertNotIn(_m_files.TEXT_ENVELOPE, json.dumps(on_disk))
+        self.assertNotIn(_m_json.BYTES_ENVELOPE, json.dumps(on_disk))
+        self.assertNotIn(_m_json.TEXT_ENVELOPE, json.dumps(on_disk))
         canonical_task = json.dumps(on_disk['task'], separators=(',', ':'), ensure_ascii=False).encode('utf-8')
         canonical_timeline = json.dumps(on_disk['timeline'], separators=(',', ':'), ensure_ascii=False).encode('utf-8')
         self.assertEqual(store.get([task, timeline]), [Found(canonical_task, token(canonical_task)), Found(canonical_timeline, token(canonical_timeline))])
@@ -210,12 +213,67 @@ class Binding(unittest.TestCase):
         with self.assertRaises(errors_module().BadParameter):
             _m_files.bind(project, 'work-records')
 
+    def test_body_codec_defaults_to_json(self) -> None:
+        project = self.project_with('memar:\n  memory: work-records=files\n')
+        adapter = _m_files.bind(project, 'work-records')
+        self.assertEqual(adapter.get_body_codec().get_name(), 'json')
+        adapter.close()
+
+    def test_body_codec_is_read_from_its_key(self) -> None:
+        project = self.project_with('memar:\n  memory: work-records=files\n  files-body-codec: work-records=yaml\n')
+        adapter = _m_files.bind(project, 'work-records')
+        self.assertEqual(adapter.get_body_codec().get_name(), 'yaml')
+        adapter.close()
+
+    def test_an_unknown_body_codec_is_refused(self) -> None:
+        project = self.project_with('memar:\n  memory: work-records=files\n  files-body-codec: work-records=unknown\n')
+        with self.assertRaises(errors_module().BadCodec):
+            _m_files.bind(project, 'work-records')
+
+class BodyCodec(unittest.TestCase):
+
+    def tearDown(self) -> None:
+        clean_up()
+
+    def test_json_codec_pack_and_unpack_round_trip(self) -> None:
+        codec = _m_json.Files_JSON_Body_Codec()
+        parts = {b'task': b'{"Status":"Active"}', b'timeline': b'plain'}
+        body, stored = codec.pack(parts)
+        self.assertEqual(stored, {b'task': b'{"Status":"Active"}', b'timeline': b'plain'})
+        self.assertEqual(codec.unpack(body), stored)
+
+    def test_yaml_codec_pack_and_unpack_round_trip(self) -> None:
+        codec = _m_yaml.Files_YAML_Body_Codec()
+        parts = {b'task': b'{"Title":"x"}', b'note': b'hello'}
+        body, stored = codec.pack(parts)
+        self.assertEqual(codec.unpack(body), stored)
+
+    def test_yaml_bound_store_writes_yaml_not_json(self) -> None:
+        folder, project = scratch_project()
+        (project / 'manifest.yaml').write_text('memar:\n  memory: work-records=files\n  files-body-codec: work-records=yaml\n', encoding='utf-8')
+        adapter = _m_files.bind(project, 'work-records')
+        MADE.append((adapter, folder))
+        store = adapter.open()
+        identity = bytes.fromhex('0190000000007000800000000000000c')
+        task = identity + b'task'
+        self.assertEqual(store.batch([], [(task, b'value')]), Committed())
+        body = adapter.file_at(task).get_file_data()
+        self.assertFalse(body.startswith(b'{'))
+        self.assertIn(b'task:', body)
+        adapter.close()
+
+    def test_the_spine_has_no_node_body_json_helpers(self) -> None:
+        source = (_m_files.HERE / 'files.py').read_text(encoding='utf-8')
+        self.assertNotIn('def pack_parts', source)
+        self.assertNotIn('def unpack_parts', source)
+        self.assertNotIn('def part_to_json', source)
+
 class Errors(unittest.TestCase):
 
     def test_the_errors_are_in_the_errors_folder_and_say_what_they_are(self) -> None:
         errors = errors_module()
         raised = import_module('modules.computer.memory.store.errors.errors')
-        for name in ('BadParameter', 'BadAddress', 'RootCollision', 'Lost'):
+        for name in ('BadParameter', 'BadAddress', 'RootCollision', 'Lost', 'BadBody', 'BadCodec'):
             with self.subTest(name=name):
                 self.assertTrue(getattr(errors, name)().summary())
         self.assertEqual(errors.BadAddress().reason, raised.Refusal.MALFORMED)
@@ -241,7 +299,7 @@ class NoComments(unittest.TestCase):
     def test_the_files_carry_no_comment_and_no_docstring(self) -> None:
         here = Path(__file__).resolve().parent
         module = here.parent
-        for path in (module / 'files.py', module / 'cases.py', module / 'errors' / 'errors.py', here / 'files.py'):
+        for path in (module / 'files.py', module / 'cases.py', module / 'errors' / 'errors.py', module / 'codecs' / 'registry.py', module / 'codecs' / 'json' / 'body.py', module / 'codecs' / 'yaml' / 'body.py', here / 'files.py'):
             with self.subTest(path=path.name):
                 self.assertEqual(bare(str(path)), ([], []))
 

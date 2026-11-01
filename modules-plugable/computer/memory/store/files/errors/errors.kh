@@ -19,3 +19,11 @@ tp Error_Files_RootCollision ab {
 tp Error_Files_Lost ab {
     Error_Store_Failed
 }
+
+tp Error_Files_BadBody ab {
+    Error_Store_Malformed
+}
+
+tp Error_Files_BadCodec ab {
+    Error_Files_BadParameter
+}
