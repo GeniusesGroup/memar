@@ -1,14 +1,2 @@
 # Edited
-
-## Model
-
-- `(status)-[:edited]->(---)`
-
-## Policies (rules)
-
-- when a record edit e.g. comment, transaction, ...
-
-## Methods
-
-- LastModificationTime
-- LastModifierId
+**Retired folder.** Declared in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).

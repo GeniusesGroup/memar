@@ -2,10 +2,8 @@
 
 ## Model
 
-- `(thing)-[:request_by]->(user)`
-- `(thing)-[:request_by]->(group)`
-- `(user)-[:request]->(thing)`
-- `(group)-[:request]->(thing)`
+- **Not Status attachment.** Candidate edges to a party, not a Status-kind label. Status-kind attach stays [Label edge](../../../label/edges/label/label.md).
+- Candidate (unconfirmed): `(thing)-[:request_by]->(user|group)` / inverse `(user|group)-[:request]->(thing)`
 
 ## Policies (rules)
 

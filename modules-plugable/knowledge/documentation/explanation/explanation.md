@@ -32,17 +32,16 @@ Content meant to be *studied* to understand something: specifications, analyses,
 A short, unique, human-readable name for the document, in double quotes. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
 
 ### Status
-An Explanation-facet document carries its Status in the front-matter `Status` field. The values it may take, their meanings, and whether each is safe to depend on are the type `Status` ([documentation.md → Status](../documentation.md#status)), asked with `Status.for_kind`. A `Superseded` document names its successor through [`Superseded by`](../documentation.md#citations).
+An Explanation-facet document carries its Status as a Status-kind [label](../../../../modules/knowledge/label/label.md) on the document record — `(document)-[:label]->(Draft)` — not as a front-matter key. `ExplanationKey` has no `STATUS`. Values and meanings are the type `Status` ([documentation.md → Status](../documentation.md#status); [Status](../../../../modules/knowledge/status/status.md#what-a-status-is)), asked with `Status.for_kind`. A `Superseded` document names its successor through [`Superseded by`](../documentation.md#citations).
 
 Rules specific to this facet:
-- `ID` is never reused, regardless of status, including Rejected.
-- Move `Status` to `Proposed` once discussion converges.
-- Move to `Final` once it's reflected in canonical documentation.
-- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not read `Status`. A reader who disagrees records the disagreement rather than moving the field.
+- `ID` is never reused, regardless of which Status-kind label the document carries, including Rejected.
+- Attach `Proposed` once discussion converges; attach `Final` once it is reflected in canonical documentation (withdraw the previous Status-kind label when the move is exclusive).
+- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not read Status labels as a special key.
 - Nothing before `Final` should be treated as settled by anyone depending on the document.
 - Moving a Final document's substance requires a new, superseding document, not an in-place edit.
 - A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the `Cited` field of the changelog content that records it (see [changelog.md → Cited](../changelog/changelog.md#cited)).
-- `Status` reflects canonical-documentation status only, never informal or practical usage. A document can be in active, wide practical use while still `Proposed`; that does not change its `Status`. (This document is itself an example: in active use as the working specification while `Proposed`.)
+- Status-kind labels reflect canonical-documentation maturity only, never informal or practical usage.
 
 ### Start Date
 The calendar date (`YYYY-MM-DD`, UTC) the document file was first drafted. Set once, never changed. Should agree with the date implied by `ID`, since both are meant to be captured at the same moment.
@@ -113,11 +112,10 @@ Each building block is declared, with what it is for, where it goes and how it d
 
 ### Making a document
 The steps that produce a document under this specification, in order. What each field and section means is stated above; the section types are the types of [`./primitive/`](./primitive/).
-1. Start from the skeleton: the front matter fields `Title`, `Status`, `Start Date` and `ID`, then one top heading and the fixed body sections.
+1. Start from the skeleton: the front matter fields `Title`, `Start Date` and `ID`, then one top heading and the fixed body sections. Status is not a front-matter key — attach the Status-kind label `Draft` on the document record ([Status](#status)).
    ```
    ---
    Title: ""
-   Status: Draft
    Start Date: ""
    ID: ""
    ---
@@ -139,7 +137,7 @@ The steps that produce a document under this specification, in order. What each 
    #### {Sub topic}
    ```
 2. Set `ID` once to the current UTC hour-count that `memar content hour-id` prints, and never change it.
-3. Fill the rest of the front matter: a short, unique `Title` in quotes, `Status` starting at `Draft`, and `Start Date` as today's UTC date, matching the moment `ID` was generated.
+3. Fill the rest of the front matter: a short, unique `Title` in quotes, and `Start Date` as today's UTC date, matching the moment `ID` was generated; attach `Draft` (then `Proposed` / `Final` as the rules above say).
 4. Write the body. `Abstract` and `Introduction` stay unified, document-wide prose; `Explanation` is split into topics, with a sub topic where finer structure helps. Premise evidence for a claim is cited inline at the claim. Document-wide optional sections sit directly under the body's top level, not inside a topic.
 5. Filter the Abstract, the Motivation and the Methodology before leaving them ([Framing Sections State the Subject, Not the Writing](./rules/framing-sections-state-the-subject-not-the-writing/framing-sections-state-the-subject-not-the-writing.md)), and keep alternatives, open questions and anticipated work out of the body ([The Body Holds No Alternatives, Questions or Plans](./rules/the-body-holds-no-alternatives-questions-or-plans/the-body-holds-no-alternatives-questions-or-plans.md)).
 6. Hold the draft to the [standards of cognitive material](../../../../docs/cognition.md#standards-of-cognitive-material) while writing, clarity first, and examine each claim as it is drafted and not in a later phase.

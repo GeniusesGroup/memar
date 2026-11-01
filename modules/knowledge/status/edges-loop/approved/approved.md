@@ -2,10 +2,8 @@
 
 ## Model
 
-- `(thing)-[:approved_by]->(user)`
-- `(thing)-[:approved_by]->(group)`
-- `(user)-[:approved]->(thing)`
-- `(group)-[:approved]->(thing)`
+- **Not Status attachment.** These are candidate edges to a party (user/group), not a Status-kind label on the thing. Do not rewrite them as `(thing)-[:label]->(approved)` and do not keep them under a Status attach path. Attachment of Status-kind words stays [Label edge](../../../label/edges/label/label.md). Home of approval-as-capability is still open (Label Research 001 split).
+- Candidate (unconfirmed): `(thing)-[:approved_by]->(user|group)` / inverse `(user|group)-[:approved]->(thing)`
 
 ## Policies (rules)
 

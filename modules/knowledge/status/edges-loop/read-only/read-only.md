@@ -1,10 +1,2 @@
 # Read only
-
-## Model
-
-- `(thing)-[:---]->(read_only)`
-
-## Policies (rules)
-
-- When this label assign to any quiddity like text or transaction, ...,
-- even owner of the text can't remove this label or edit the text
+**Retired folder.** Word `read_only` in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).

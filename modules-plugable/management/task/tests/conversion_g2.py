@@ -1,22 +1,23 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
 import json
 import sys
 import tempfile
 import unittest
 import uuid
+from importlib import import_module
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
-sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))
-sys.path.insert(2, str(TESTS))
+TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
+SCRIPTS = TOP / 'bundles' / 'memar'
+sys.path.insert(0, str(SCRIPTS / 'services'))
+sys.path.insert(1, str(SCRIPTS))
+sys.path.insert(2, str(TOP))
+sys.path.insert(3, str(TESTS))
 sys.dont_write_bytecode = True
+from machine.plugable_import import load as plugable_load
+suite_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch').suite_scratch
 import earlier_shape
 BUDGET_SECONDS = 60
 _m_store = import_module('modules.computer.memory.store.protocol.store')
@@ -80,7 +81,7 @@ class Fixture(unittest.TestCase):
 
 class EqualAnswers(Fixture):
 
-    def test_title_and_priority_on_task_status_as_loop_edge(self) -> None:
+    def test_title_and_priority_on_task_status_as_label_edge(self) -> None:
         folder = self.g1_yaml(priority=9, status='active')
         before = conversion.answers(folder)
         task_id = self.convert(folder)
@@ -88,7 +89,7 @@ class EqualAnswers(Fixture):
         self.assertEqual(part['title'], before['facts']['title'])
         self.assertEqual(part['priority'], int(before['facts']['priority']))
         self.assertNotIn('status', part)
-        self.assertEqual(g2_convert.read_status_loop(self.open_store(), task_id), before['facts']['status'])
+        self.assertEqual(g2_convert.read_status_label(self.open_store(), task_id), before['facts']['status'])
 
     def test_plan_md_facts_match_the_adapter(self) -> None:
         folder = self.g1_plan_md(priority=3, status='complete')
@@ -98,7 +99,7 @@ class EqualAnswers(Fixture):
         self.assertEqual(part['title'], before['facts']['title'])
         self.assertEqual(part['priority'], int(before['facts']['priority']))
         self.assertNotIn('status', part)
-        self.assertEqual(g2_convert.read_status_loop(self.open_store(), task_id), before['facts']['status'])
+        self.assertEqual(g2_convert.read_status_label(self.open_store(), task_id), before['facts']['status'])
 
 
 class Events(Fixture):
@@ -135,13 +136,16 @@ class Events(Fixture):
 
 class Layout(Fixture):
 
-    def test_each_record_node_id_is_one_file_under_the_memory_root(self) -> None:
+    def test_record_nodes_are_addressable_without_counting_adapter_files(self) -> None:
         folder = self.g1_yaml()
-        self.convert(folder)
-        names = sorted(path.name for path in self.node_id_files() if len(path.name) == 36 and path.name.count('-') == 4)
-        contents = len(timeline_files.read_contents(folder))
-        self.assertEqual(len(names), len(set(names)))
-        self.assertEqual(len(names), 1 + 2 * contents)
+        task_id = self.convert(folder)
+        store = self.open_store()
+        self.assertIsInstance(store.get([record_key(task_id, g2_encode.TASK)])[0], _m_store.Found)
+        sides = g2_convert.list_event_is(store, task_id)
+        self.assertEqual(len(sides), len(timeline_files.read_contents(folder)))
+        for side in sides:
+            content_id = uuid.UUID(side['to']).bytes
+            self.assertIsInstance(store.get([record_key(content_id, g2_encode.CONTENT)])[0], _m_store.Found)
 
 
 class Legacy(Fixture):
@@ -172,7 +176,7 @@ class Inspection(Fixture):
         task_id = self.convert(self.g1_yaml())
         store = self.open_store()
         part = g2_convert.dump_task_part(store, task_id)
-        status = g2_convert.read_status_loop(store, task_id)
+        status = g2_convert.read_status_label(store, task_id)
         sides = g2_convert.list_event_is(store, task_id)
         self.assertNotIn('domains', part)
         self.assertNotIn('placements', part)
@@ -182,6 +186,11 @@ class Inspection(Fixture):
         for side in sides:
             self.assertNotIn('relation', side)
             self.assertNotIn('reverse', side)
+
+    def test_conversion_writes_no_labels_record_part(self) -> None:
+        task_id = self.convert(self.g1_yaml())
+        answer = self.open_store().get([record_key(task_id, g2_encode.LABELS)])[0]
+        self.assertNotIsInstance(answer, _m_store.Found)
 
 
 if __name__ == '__main__':

@@ -1,9 +1,2 @@
 # Incompatibility
-
-## Model
-
-- `(status)-[:incompatibility]->(---)`
-
-## Policies (rules)
-
-- Usually use within other status like rule enforcement
+**Retired folder.** Declared in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).

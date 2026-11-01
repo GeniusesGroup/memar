@@ -11,7 +11,7 @@
 ## Placement
 
 - These names are filed on the status module.
-- [status.md](../../status.md) gives a domain's own statuses to that domain (`<domain>/status/<name>/`) and keeps this module for what a status is, plus loop-edges shared by every domain. Reserved, Occupied, Vacant, and Closed name estate occupancy, not a vocabulary every record shares.
+- [status.md](../../status.md) keeps what a status is (kind+rule+event); attachment is [Label edge](../../../label/edges/label/label.md). A domain declares its Status-kind labels in `labels/`. Reserved, Occupied, Vacant, and Closed name estate occupancy, not a vocabulary every record shares.
 - The doc stays here until that move is decided. The overlap with estate identity work is the open question below.
 
 ## Open questions

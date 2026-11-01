@@ -1,10 +1,2 @@
 # Block
-
-## Model
-
-- `(status)-[:block]->(---)`
-
-## Policies (rules)
-
-- by justice(admins) or fraud detection mechanism
-- Blocked (BlockByJustice)
+**Retired folder.** Declared in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).

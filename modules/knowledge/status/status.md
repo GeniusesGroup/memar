@@ -1,31 +1,23 @@
 # Status
-All quiddities even `label` itself CAN get `status` labels.
-
-Status indicate base record status
-It is like labeling records But it is systematic labels.
-Labels check in business rules logic(Async), but status check in services logic(Sync).
 
 ## What a status is
-A status is a [label](../label/label.md) combined with a [rule](../../process/rule/rule.md). A label may carry a rule or none; a status almost always carries one, and when it attaches to a node it makes an [Event](../../process/event/event.md) spread and work start: a Task made Queued is taken by an agent in the order of its priority. A label that starts nothing is a label, not a status. A status is not a [Role](../../management/role/role.md), which is authorization; in a module it has its own main folder, `status/`, beside `edges/` and `protocol/` ([Modules → Edge buckets](../../modules.md#edge-buckets)).
+A status is a [label](../label/label.md) combined with a [rule](../../process/rule/rule.md). A label may carry a rule or none; a status almost always carries one, and when it attaches to a node it makes an [Event](../../process/event/event.md) spread and work start: a Task made Queued is taken by an agent in the order of its priority. A label that starts nothing is a label, not a status. A status is not a [Role](../../management/role/role.md), which is authorization.
 
-In the graph a status is a loop-edge. The edge type is the status, and the edge terminates on the record it marks: `(record)-[:draft]->(---)`. Code uses that edge type.
+Attachment is not this module's. Every status value is a label that takes the label `Status` on its definition ([Label → A name is one label](../label/label.md#a-name-is-one-label)), and a record takes that value only through Label's edge: `(thing)-[:label]->(queued)` with `(queued)-[:label]->(Status)`. This module does not introduce `:draft`, `:complete`, `:status`, or any other relation for the same fact. A second attach path is a duplicate and is refused ([A Fact in Code Is Written Once](../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)). Intrinsic / Neo4j-style labels on a vertex with no edge are the same refusal.
 
-Memar's [classification test](../../../docs/modeling.md#classification-emerges-from-rules-and-relations-not-from-intrinsic-labels) keeps a status as a loop-edge. A marker such as active or archived has no lifecycle of its own, so it stays the edge rather than becoming a node on the far side of a generic `status` edge. A generic `(record)-[:status]->(draft-node)` would promote the marker into a concept it does not independently carry.
-
-The move from one status to another is an event. A rule may allow or block that event. The rule lives with the event.
+What this module owns is the kind, the rule that may run on attach or on a move, and the event of a move. The move from one status to another is an event. A rule may allow or block that event. The rule lives with the event.
 
 ### Where a status is defined
-This module holds the account of what a status is, and the shared loop-edges whose type is the same for every domain, under `edges-loop/`. A domain defines the statuses that belong to it as loop-edges under `<domain>/status/<name>/`. The domain's main document states the record. It does not repeat the status list.
+This module holds the account of what a status is. Shared Status-kind words are declared as code under this module's `labels/` (see `labels/status_values.py`, `labels/shared_markers.py`). A domain declares the Status-kind labels that belong to it in that domain's `labels/` — never in a parallel `status/` vocabulary tree ([Label → Where labels are declared](../label/label.md#where-labels-are-declared)). Prose beside a word may stay in a subfolder of `labels/`; its Model cites Label's attachment and does not restate a relation. The domain's main document states the record. It does not repeat the status list.
 
 ### Asking which records carry a status
-All laws that carry draft are the laws with that loop-edge:
+All laws that carry draft are the laws that took the draft label:
 
-`MATCH (law)-[:draft]->()`
+`(law)-[:label]->(draft)` where `(draft)-[:label]->(Status)`
 
-The rows are laws. Draft is the predicate: the edge type. That type is already the code identity of the status. The query reads it. It does not add a draft node to the graph.
-
-A status becomes a node when other records take the status itself as their subject — a lifecycle of draft apart from the records that carry the edge. A scan for those records is the edge type used as a type.
+The identity of draft is the label's identifier. A scan that must not walk that path every time is an [edges-shortcut](../../modules.md#edge-buckets) recomputed from those Label edges; the shortcut is never the source of truth.
 
 ## Policies (rules)
-- all edges e,g, `draft` MUST have `status` label.
-- All edges CAN indicate which `user` set the status, When the status set, and the chain of changes to specific status
+- A word used as a status takes the label `Status` on its definition, never beside every record that carries the word.
+- Attachment of a status value uses only Label's `(thing)-[:label]->(label)`. No Status-owned edge type.
+- Who set a status, when, and the chain of changes, if recorded, ride the event of the move — not a second attach mechanism.

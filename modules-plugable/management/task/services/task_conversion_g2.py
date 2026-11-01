@@ -15,15 +15,16 @@ _tl = import_module('modules.management.timeline.services.timeline_files')
 _encode = import_module('modules-plugable.management.task.services.task_g2_encode')
 _place = import_module('modules.management.timeline.services.timeline_place')
 _timeline_graph = import_module('modules.management.timeline.services.timeline_graph')
+_attach = import_module('modules.knowledge.label.services.attach')
+_status = import_module('modules.knowledge.status.primitive.status')
 ABSENT = _m_store.ABSENT
 Committed = _m_store.Committed
 Found = _m_store.Found
 record_key = _m_record.key
 Graph_Store = _m_graph.Graph_Store
-Graph_PutEdge = _m_graph.Graph_PutEdge
 Graph_ListSidesQuery = _m_graph.Graph_ListSidesQuery
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
-STATUS_WORDS = ('queued', 'active', 'blocked', 'complete')
+TASK_STATUSES = (_status.Status.QUEUED, _status.Status.ACTIVE, _status.Status.BLOCKED, _status.Status.COMPLETE)
 
 
 class RecordContents:
@@ -112,20 +113,25 @@ def _placed_at_unix(header: dict) -> int:
         return 0
 
 
-def _set_status_loop(graph, task_id: bytes, status: str) -> None:
+def _set_status_label(graph, task_id: bytes, status: str) -> None:
     word = _task_files.status_word(status) or 'queued'
-    relation = word.encode('ascii')
-    result = graph.put_edge(Graph_PutEdge(LAYOUT_COMPACT, task_id, relation, task_id, b'', b''))
-    if isinstance(result, (_m_store.Refused, _m_store.Unavailable, _m_store.Conflict)):
-        raise RuntimeError(f'status loop-edge refused: {result!r}')
+    value = _status.Status.read(word) or _status.Status.QUEUED
+    _attach.put_label(graph, task_id, value.label)
 
 
-def read_status_loop(store, task_id: bytes) -> str:
+def _attach_plan_labels(graph, facts: dict, task_id: bytes) -> None:
+    from modules.knowledge.label.primitive.label import Labels
+    raw = facts.get('labels') or ''
+    for label in Labels.read(raw):
+        _attach.put_label(graph, task_id, label)
+
+
+def read_status_label(store, task_id: bytes) -> str:
     graph = Graph_Store(store, LAYOUT_COMPACT)
-    for word in STATUS_WORDS:
-        count = graph.count_sides(task_id, word.encode('ascii'))
-        if isinstance(count, int) and count > 0:
-            return word
+    held = set(_attach.list_label_ids(graph, task_id))
+    for value in TASK_STATUSES:
+        if _attach.id_bytes(value.label) in held:
+            return value.key
     return ''
 
 
@@ -155,13 +161,13 @@ def convert_g1_folder(folder: Path, store) -> bytes:
     timeline = _timeline_graph.GraphTimeline(graph, store, contents)
     task_writes = [
         (record_key(task_id, _encode.TASK), _encode.json_bytes(_task_part(folder, facts))),
-        (record_key(task_id, _encode.LABELS), b''),
     ]
     expect = [(at, ABSENT) for at, _ in task_writes]
     result = store.batch(expect, task_writes)
     if not isinstance(result, Committed):
         raise RuntimeError(f'task batch refused: {result!r}')
-    _set_status_loop(graph, task_id, facts.get('status') or 'queued')
+    _set_status_label(graph, task_id, facts.get('status') or 'queued')
+    _attach_plan_labels(graph, facts, task_id)
     after_by_kind: dict[str, int] = {}
     for content in _tl.read_contents(folder):
         kind = (content.header.get('kind') or '').strip() or 'message'

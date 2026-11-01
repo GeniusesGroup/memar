@@ -1,15 +1,2 @@
 # Deleted
-
-## Model
-
-- `(status)-[:deleted]->(---)`
-
-## Policies (rules)
-
-- Soft Deleted
-
-## Methods
-
-- IsDeleted
-- DeletionTime
-- DeleterID
+**Retired folder.** Declared in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).

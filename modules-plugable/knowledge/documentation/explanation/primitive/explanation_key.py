@@ -6,6 +6,5 @@ from modules.knowledge.content.primitive.record_key_set import RecordKeySet
 
 class ExplanationKey(RecordKeySet):
     TITLE = RecordKey('title', 'a short, unique, human-readable name for the document, in double quotes', 'Title')
-    STATUS = RecordKey('status', "the document's maturity: one of the Status words of an Explanation-facet document", 'Status')
     START_DATE = START_DATE_FIELD
     ID = ID_FIELD
