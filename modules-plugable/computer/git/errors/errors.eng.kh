@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Sweep_Error_NotMoved in "modules-plugable/computer/git/errors/errors.kh"
+tp Sweep_Error_LimitTooShort in "modules-plugable/computer/git/errors/errors.kh"
+
+tp Domain mt (self Sweep_Error_NotMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("Git")(s, VoidError)
+}
+
+tp Summary mt (self Sweep_Error_NotMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("A folder could not be moved")(s, VoidError)
+}
+
+tp Overview mt (self Sweep_Error_NotMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("The recycle bin refused the folder, so it stays where it was.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Sweep_Error_NotMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("Free the folder, or move it by hand.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Sweep_Error_NotMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Sweep_Error_LimitTooShort) () (s String) {
+    CharacterRun_From.FromCharacterRun("Git")(s, VoidError)
+}
+
+tp Summary mt (self Sweep_Error_LimitTooShort) () (s String) {
+    CharacterRun_From.FromCharacterRun("The idle limit is too short")(s, VoidError)
+}
+
+tp Overview mt (self Sweep_Error_LimitTooShort) () (s String) {
+    CharacterRun_From.FromCharacterRun("A folder opened a moment ago would be judged before the work in it had begun to change anything.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Sweep_Error_LimitTooShort) () (s String) {
+    CharacterRun_From.FromCharacterRun("Give a longer limit.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Sweep_Error_LimitTooShort) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

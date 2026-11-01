@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Duration in "modules/time/duration/protocol/duration.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Sweep_Reaped in "modules-plugable/computer/git/protocol/sweep-reaped.kh"
+
+tp Sweep_Idle ab {
+	Service
+}
+
+tp Sweep mt (self Sweep_Idle) (candidates MemoryAddress, limit Duration, keep MemoryAddress) (reaped Sweep_Reaped, err Error)

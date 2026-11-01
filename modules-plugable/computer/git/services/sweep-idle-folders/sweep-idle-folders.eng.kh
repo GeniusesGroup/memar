@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Sweep_Idle in "modules-plugable/computer/git/services/sweep-idle-folders/sweep-idle-folders.kh"
+
+tp Domain mt (self Sweep_Idle) () (s String) {
+    CharacterRun_From.FromCharacterRun("Git")(s, VoidError)
+}
+
+tp Summary mt (self Sweep_Idle) () (s String) {
+    CharacterRun_From.FromCharacterRun("Moves idle finished folders to the recycle bin")(s, VoidError)
+}
+
+tp Overview mt (self Sweep_Idle) () (s String) {
+    CharacterRun_From.FromCharacterRun("Moves to the recycle bin each candidate folder in which nothing has changed for longer than the limit, and leaves alone the one folder named to keep. The caller chooses the candidates, so which folders are finished, which have their records kept and how often it runs are the caller own. A limit shorter than the least the module allows is refused as Sweep_Error_LimitTooShort; a folder it cannot move stays where it is and is refused as Sweep_Error_NotMoved.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Sweep_Idle) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing to do; a folder left in place is kept, not lost.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Sweep_Idle) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

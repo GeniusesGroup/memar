@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Log_Error_NotRecorded in "modules/process/log/errors/errors.kh"
+
+tp Domain mt (self Log_Error_NotRecorded) () (s String) {
+    CharacterRun_From.FromCharacterRun("Log")(s, VoidError)
+}
+
+tp Summary mt (self Log_Error_NotRecorded) () (s String) {
+    CharacterRun_From.FromCharacterRun("An event could not be recorded")(s, VoidError)
+}
+
+tp Overview mt (self Log_Error_NotRecorded) () (s String) {
+    CharacterRun_From.FromCharacterRun("The log could not be written, so the event is not in it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Log_Error_NotRecorded) () (s String) {
+    CharacterRun_From.FromCharacterRun("Make the log writable, or go on without the record if the event does not need one.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Log_Error_NotRecorded) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

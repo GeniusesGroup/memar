@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Plan_Brief_Compose in "modules-plugable/ai/services/compose-plan-brief/compose-plan-brief.kh"
+
+tp Domain mt (self Plan_Brief_Compose) () (s String) {
+    CharacterRun_From.FromCharacterRun("Ai")(s, VoidError)
+}
+
+tp Summary mt (self Plan_Brief_Compose) () (s String) {
+    CharacterRun_From.FromCharacterRun("Composes the text that hands the plan of a task to a sub-agent")(s, VoidError)
+}
+
+tp Overview mt (self Plan_Brief_Compose) () (s String) {
+    CharacterRun_From.FromCharacterRun("Returns the same text for every task, with only the address of the task in it: Your task is task ID. Run the command that gets the task init context with the task id first, before anything else, and follow what it prints; where the tools of Memar are listed, call the tool of the same name with the same arguments instead. The task itself is not in it, it is in the plan the delegating task has written. Whether the plan is there is checked by the caller.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Plan_Brief_Compose) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing to do; paste the text to the sub-agent.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Plan_Brief_Compose) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

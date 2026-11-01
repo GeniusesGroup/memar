@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Address_Mint in "modules/computer/memory/address/services/mint-address/mint-address.kh"
+
+tp Domain mt (self Address_Mint) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory")(s, VoidError)
+}
+
+tp Summary mt (self Address_Mint) () (s String) {
+    CharacterRun_From.FromCharacterRun("Mints a new address")(s, VoidError)
+}
+
+tp Overview mt (self Address_Mint) () (s String) {
+    CharacterRun_From.FromCharacterRun("Returns an address no earlier mint of this service returned, of the kind its realization is bound to. The address is bytes; the way a person reads it is shown by the text domain and is never what is kept. A later mint never precedes an earlier one.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Address_Mint) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing to do; a caller names a thing retained with the address it is given.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Address_Mint) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

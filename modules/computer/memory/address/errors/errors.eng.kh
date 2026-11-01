@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Address_Error_NotMinted in "modules/computer/memory/address/errors/errors.kh"
+
+tp Domain mt (self Address_Error_NotMinted) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory")(s, VoidError)
+}
+
+tp Summary mt (self Address_Error_NotMinted) () (s String) {
+    CharacterRun_From.FromCharacterRun("An address could not be minted")(s, VoidError)
+}
+
+tp Overview mt (self Address_Error_NotMinted) () (s String) {
+    CharacterRun_From.FromCharacterRun("The source an address is minted from was unavailable, so no address was made and none was returned.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Address_Error_NotMinted) () (s String) {
+    CharacterRun_From.FromCharacterRun("Ask again once the source is available.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Address_Error_NotMinted) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Logger in "modules/process/log/protocol/log.kh"
+tp ProcessLog_Event in "modules/process/log/protocol/log-event.kh"
+
+tp Log_Record ab {
+	Service
+}
+
+tp Record mt (self Log_Record) (logger Logger, event ProcessLog_Event) (err Error)
