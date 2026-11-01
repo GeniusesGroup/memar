@@ -20,9 +20,11 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import earlier_shape
 BUDGET_SECONDS = 30
-files = import_module('modules-plugable.management.task.services.task_files')
+files = import_module('modules-plugable.management.task.services.task_memory')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 folder_module = import_module('modules-plugable.management.task.services.folder')
 task_concerns = import_module('modules-plugable.management.task.services.concerns')
@@ -61,7 +63,7 @@ class Fixture(unittest.TestCase):
 
     def old(self, sid: str, status: str = 'active', request: str = 'Do the thing.', steps: str = '- [ ] 1. a', report: str | None = None, decisions: str = '- none') -> Path:
         folder = memar_fs.task_dir(sid, create=True)
-        files.create_plan_md(folder, sid, 'T', None, None, self.project, status, None, None, None)
+        earlier_shape.create_plan_md(folder, sid, 'T', None, None, self.project, status, None, None, None)
         text = (folder / 'plan.md').read_text(encoding='utf-8')
         (folder / 'plan.md').write_text(text.replace('## Request\n', f'## Request\n{request}\n').replace('## Steps\n', f'## Steps\n{steps}\n'), encoding='utf-8', newline='\n')
         status_line = f'Status: {report.capitalize()}' if report else 'Status:'
@@ -191,20 +193,21 @@ class OldShapeStays(Fixture):
         self.assertEqual(self.snapshot(folder), before)
         self.assertFalse((folder / 'task.yaml').exists())
 
-    def test_a_writer_keeps_an_old_task_in_its_shape(self) -> None:
+    def test_a_writer_refuses_an_old_task_and_leaves_it_as_it_is(self) -> None:
         folder = self.old('writer', status='queued')
+        before = self.snapshot(folder)
         priority = import_module('modules-plugable.management.task.services.priority')
-        with contextlib.redirect_stdout(io.StringIO()):
+        with self.assertRaises(SystemExit) as refused:
             priority.set_task_priority('writer', '3')
-            task_ensure.ensure_task('writer', project=str(self.project))
+        self.assertIn('EndOfLife', str(refused.exception.code))
+        self.assertEqual(self.snapshot(folder), before)
         self.assertFalse((folder / 'task.yaml').exists())
         self.assertEqual(list(folder.glob('content.*')), [])
-        self.assertIn('Priority: 3', (folder / 'plan.md').read_text(encoding='utf-8'))
 
 class Claims(Fixture):
 
     def test_claims_name_the_plan_of_a_task_of_either_shape(self) -> None:
-        for shape, build in (('old', self.old), ('new', self.new)):
+        for shape, build in (('new', self.new),):
             folder = build(f'20261031T000000Z-{shape}-0', status='queued')
             out = io.StringIO()
             with contextlib.redirect_stdout(out), unittest.mock.patch.object(task_claims, 'brief_text', return_value='brief'):
@@ -214,7 +217,6 @@ class Claims(Fixture):
             stores = files.stores_at(folder)
             stores.replace_status(None, folder.name, 'complete', stores.read_status(None, folder.name)[1])
             (folder / 'claim').unlink(missing_ok=True)
-        self.assertEqual(files.plan_path(folder).name, 'content.00003.md')
 
 class Digest(Fixture):
 

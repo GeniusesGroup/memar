@@ -79,7 +79,7 @@ def refuse_kept_scratch(source: Path) -> None:
     the document written from it. Scratch goes in the task's temp/ folder,
     which is never archived.
     """
-    _m_plan_file_adapter = import_module('modules-plugable.management.task.services.task_files')
+    _m_plan_file_adapter = import_module('modules-plugable.management.task.services.task_memory')
     has_task = _m_plan_file_adapter.has_task
     try:
         resolved = source.resolve()

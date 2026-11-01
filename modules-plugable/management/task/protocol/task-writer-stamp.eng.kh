@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Writer_Stamp in "modules-plugable/management/task/protocol/task-writer-stamp.kh"
+
+tp Domain mt (self Task_Writer_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Writer_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("Which module wrote a task")(s, VoidError)
+}
+
+tp Overview mt (self Task_Writer_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Type_UUID of the module that owns the shape a task was written in. A task with no stamp is counted as written by the first generation. Only the memory model, the adapter and the conversion service read it; the count is what retiring a generation asks.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Writer_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Writer_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("The core of the task module reads no stamp.")(s, VoidError)
+}

@@ -63,14 +63,13 @@ _m_plan_priority = import_module('modules-plugable.management.task.services.plan
 set_priority = _m_plan_priority.set_priority
 _m_plan_write = import_module('modules-plugable.management.task.services.plan_write')
 queue_plan = _m_plan_write.queue_plan
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 stores_at = _m_task_files.stores_at
 has_plan = _m_task_files.has_plan
 create_task = _m_task_files.create_task
 _m_claim = import_module('modules-plugable.management.task.services.claim')
 is_claimed = _m_claim.is_claimed
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
-write_report = _m_report_file.write_report
 from modules.knowledge.label.primitive.label import Labels
 from modules.knowledge.status.primitive.status import Status
 from modules.computer.software.primitive.project_name import ProjectName
@@ -204,7 +203,6 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         if cited:
             set_depends_on(stores_at(path), project, sid, now)
             reconcile(read_task(path), reader)
-    write_report(path, sid, (read_task(path).front or {}).get(PlanKey.TITLE.key))
     ensure_folders(path)
     reap_once_a_day(keep=sid)
     return (sid, path)

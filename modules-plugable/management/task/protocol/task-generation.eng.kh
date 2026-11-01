@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Field_TaskTypeUUID in "modules-plugable/management/task/protocol/task-generation.kh"
+tp Field_PredecessorTypeUUID in "modules-plugable/management/task/protocol/task-generation.kh"
+
+tp Domain mt (self Field_TaskTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Field_TaskTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("The identity of the current task module")(s, VoidError)
+}
+
+tp Overview mt (self Field_TaskTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Type_UUID of the module that owns the shape a task is written in today; the stamp of every task it writes. Khayyam has no literal for a Type_UUID, so the value is given by the realization, in one place.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Field_TaskTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Field_TaskTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Field_PredecessorTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Field_PredecessorTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("The identity of the generation before the current task module")(s, VoidError)
+}
+
+tp Overview mt (self Field_PredecessorTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Type_UUID of the module that owned the shape of a task before the current one, the module that is EndOfLife; a task with no stamp is counted as written by it. The value is given by the realization, in one place.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Field_PredecessorTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Field_PredecessorTypeUUID) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

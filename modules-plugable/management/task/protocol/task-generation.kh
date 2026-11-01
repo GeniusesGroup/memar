@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Type_UUID in "modules/computer/type/protocol/uuid.kh"
+
+tp Field_TaskTypeUUID ab
+
+tp TaskTypeUUID mt (self Field_TaskTypeUUID) () (u Type_UUID)
+
+tp Field_PredecessorTypeUUID ab
+
+tp PredecessorTypeUUID mt (self Field_PredecessorTypeUUID) () (u Type_UUID)

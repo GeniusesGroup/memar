@@ -61,7 +61,9 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import shape
 depends_on = import_module('modules-plugable.management.task.services.dependency')
 import modules.computer.software.services.project_registry as registry
 new_chats = import_module('modules-plugable.ai.services.get_new_chats_ask')
@@ -105,20 +107,14 @@ class Fixture(unittest.TestCase):
     def task(self, sid: str, status: str, depends: str | None=None, report: str | None=None, **more) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        (folder / 'plan.md').write_text(plan_text(status, self.project, depends, **more), encoding='utf-8', newline='\n')
+        shape.from_plan_text(folder, plan_text(status, self.project, depends, **more))
         if report is not None:
-            (folder / 'report.md').write_text(f'---\nTitle: T\nStatus: {report.capitalize()}\n---\n# Report\n', encoding='utf-8', newline='\n')
+            shape.add_report(folder, report)
         return folder
 
     def finish(self, folder: Path) -> None:
-        """Make the task at FOLDER Complete, plan and report."""
-        for name, status in (('plan.md', 'Complete'), ('report.md', 'Complete')):
-            path = folder / name
-            if path.exists():
-                text = path.read_text(encoding='utf-8')
-                path.write_text(text.replace('Status: Active', f'Status: {status}').replace('Status: Queued', f'Status: {status}'), encoding='utf-8', newline='\n')
-            else:
-                path.write_text(f'---\nTitle: T\nStatus: {status}\n---\n# Report\n', encoding='utf-8', newline='\n')
+        shape.set_status(folder, 'complete')
+        shape.add_report(folder, 'complete')
 
     def status_of(self, folder: Path) -> str:
         return task_plan.read_plan(folder / task_plan.PLAN_NAME).status
@@ -234,15 +230,15 @@ class Writing(Fixture):
     def test_add_and_drop_write_one_key_and_keep_every_other_line(self) -> None:
         self.task('one', 'active')
         two = self.task('two', 'queued', other='Priority: 7\n')
-        before = (two / 'plan.md').read_text(encoding='utf-8')
+        before = (two / 'task.yaml').read_text(encoding='utf-8')
         out = self.printed(task_depends_on.change, 'two', ['one'], [])
         self.assertIn('Depends_on: one, was (none)', out)
-        text = (two / 'plan.md').read_text(encoding='utf-8')
-        self.assertEqual(text.replace('Status: Blocked', 'Status: Queued').replace('Depends_on: one\n', ''), before)
+        text = (two / 'task.yaml').read_text(encoding='utf-8')
+        self.assertEqual(text.replace('status: blocked', 'status: queued').replace('depends_on: one\n', ''), before)
         self.assertEqual(self.status_of(two), 'blocked')
         self.assertIn('one (active)', out)
         self.printed(task_depends_on.change, 'two', [], ['one'])
-        self.assertNotIn('Depends_on', (two / 'plan.md').read_text(encoding='utf-8'))
+        self.assertNotIn('depends_on', (two / 'task.yaml').read_text(encoding='utf-8'))
         self.assertEqual(self.status_of(two), 'queued')
 
     def test_it_refuses_itself_an_unknown_id_a_drop_that_is_not_there_and_a_cycle(self) -> None:
@@ -252,7 +248,7 @@ class Writing(Fixture):
         self.assertIn('cannot be found', self.refused(task_depends_on.change, 'a', ['ghost'], []))
         self.assertIn('is not in', self.refused(task_depends_on.change, 'a', [], ['b']))
         self.assertIn('a → b → a', self.refused(task_depends_on.change, 'a', ['b'], []))
-        self.assertNotIn('Depends_on', (memar_fs.task_dir('a') / 'plan.md').read_text(encoding='utf-8'))
+        self.assertNotIn('depends_on', (memar_fs.task_dir('a') / 'task.yaml').read_text(encoding='utf-8'))
 
     def test_a_dependency_on_a_task_of_another_project_is_written_as_project_and_id(self) -> None:
         other = self.fake_root / 'organization'
@@ -261,7 +257,7 @@ class Writing(Fixture):
         self.task('theirs', 'active')
         mine = self.task('mine', 'queued')
         self.printed(task_depends_on.change, 'mine', ['organization/theirs'], [])
-        self.assertIn('Depends_on: organization/theirs', (mine / 'plan.md').read_text(encoding='utf-8'))
+        self.assertIn('depends_on: organization/theirs', (mine / 'task.yaml').read_text(encoding='utf-8'))
         self.assertEqual(self.status_of(mine), 'blocked')
         why = self.refused(task_depends_on.change, 'mine', ['nowhere-at-all/theirs'], [])
         self.assertIn('project nowhere-at-all does not resolve', why)

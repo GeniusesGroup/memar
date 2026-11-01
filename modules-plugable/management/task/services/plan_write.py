@@ -9,9 +9,6 @@ from modules.knowledge.status.primitive.status import Status
 
 
 def queue_plan(store, project, task, claimed: bool) -> None:
-    shape = store.shape_problem(project, task)
-    if shape:
-        fail(f'task {task}: {shape}')
     status, _ = store.read_status(project, task)
     if status == Status.QUEUED.key:
         return

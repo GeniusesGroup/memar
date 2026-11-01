@@ -212,46 +212,6 @@ class ShapeProblem(Fixture):
 
 class WritersRefuse(Fixture):
 
-    def test_every_writer_refuses_a_plan_in_an_earlier_shape_and_leaves_it_byte_for_byte(self) -> None:
-        for text in (old_plan('queued'), new_plan('open')):
-            path = self.path(text)
-            for write in (lambda: task_plan_status.set_status(stores_over(path), None, 'T', 'active'), lambda: task_plan_priority.set_priority(stores_over(path), None, 'T', 3), lambda: task_plan_labels.add_label(stores_over(path), None, 'T', DESIGN)):
-                with self.subTest(text=text[:40]):
-                    with self.assertRaises(SystemExit) as refused:
-                        write()
-                    self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, str(refused.exception.code))
-                    self.assertEqual(path.read_bytes(), text.encode('utf-8'))
-
-    def test_on_todays_shape_only_the_line_set_changes(self) -> None:
-        path = self.path(new_plan('Queued'))
-        task_plan_status.set_status(stores_over(path), None, 'T', 'active', only_from=('queued',))
-        self.assertEqual(path.read_text(encoding='utf-8'), new_plan('Active'))
-
-    def test_setting_a_priority_and_a_label_keep_the_status_and_removing_the_last_label_removes_the_block(self) -> None:
-        path = self.path(new_plan('Blocked'))
-        task_plan_priority.set_priority(stores_over(path), None, 'T', 3)
-        label = DESIGN
-        task_plan_labels.add_label(stores_over(path), None, 'T', label)
-        text = path.read_text(encoding='utf-8')
-        self.assertIn('\nStatus: Blocked\n', text)
-        self.assertIn('\nPriority: 3\n', text)
-        self.assertIn(f'\nLabels:\n  - {DESIGN}\n---\n', text)
-        task_plan_labels.remove_label(stores_over(path), None, 'T', label)
-        self.assertNotIn('abels', path.read_text(encoding='utf-8'))
-
-    def test_a_plan_with_front_matter_and_no_status_is_given_one_and_without_front_matter_is_refused(self) -> None:
-        path = self.path(f'---\nTitle: {TITLE}\n---\n# {TITLE}\n\n## Request\n')
-        task_plan_status.set_status(stores_over(path), None, 'T', 'active')
-        self.assertEqual(task_plan.read_plan(path).status, 'active')
-        bare = self.path('# T\n\n## Request\n')
-        with self.assertRaises(SystemExit):
-            task_plan_status.set_status(stores_over(bare), None, 'T', 'complete')
-
-    def test_line_endings_are_kept(self) -> None:
-        path = self.path(new_plan('Queued').replace('\n', '\r\n'))
-        task_plan_status.set_status(stores_over(path), None, 'T', 'active')
-        self.assertNotIn(b'\n', path.read_bytes().replace(b'\r\n', b''))
-
     def test_the_old_word_is_not_accepted_as_a_status_to_set_or_expect(self) -> None:
         path = self.path(new_plan('Queued'))
         with self.assertRaises(SystemExit):
@@ -324,29 +284,6 @@ class Priority(Fixture):
         self.assertIn('\nPriority: 8\n---\n', text)
         self.assertEqual(PlanPriority.of(self.read(text).front), 8)
 
-    def test_setting_a_priority_replaces_or_adds_the_key_and_keeps_every_other_line(self) -> None:
-        path = self.folder / task_plan.PLAN_NAME
-        original = task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'), status='queued').replace('\n', '\r\n')
-        path.write_bytes(original.encode('utf-8'))
-        task_plan_priority.set_priority(stores_over(path), None, 'T', 9)
-        text = path.read_bytes().decode('utf-8')
-        self.assertEqual(text, original.replace('\r\n---\r\n#', '\r\nPriority: 9\r\n---\r\n#', 1))
-        task_plan_priority.set_priority(stores_over(path), None, 'T', 2)
-        self.assertEqual(PlanPriority.of(task_plan.read_plan(path).front), 2)
-        self.assertEqual(path.read_bytes().decode('utf-8').count('riority:'), 1)
-        self.assertEqual(task_plan.read_plan(path).status, 'queued')
-
-    def test_a_priority_outside_1_to_10_or_a_plan_without_front_matter_is_refused(self) -> None:
-        for value in ('0', '11', 'x', '5.0'):
-            with self.subTest(value=value):
-                with self.assertRaises(SystemExit):
-                    PlanPriority.checked(value)
-        self.assertEqual(PlanPriority.checked('10'), 10)
-        path = self.folder / task_plan.PLAN_NAME
-        path.write_text('# T\nStatus: open\n', encoding='utf-8')
-        with self.assertRaises(SystemExit):
-            task_plan_priority.set_priority(stores_over(path), None, 'T', 3)
-
 class FrontMatterBlocks(Fixture):
     """A key with nothing after it and indented lines below is a block: its value is their text, one line each, without the `- `."""
 
@@ -395,18 +332,6 @@ class KindOfTask(Fixture):
             task_plan_labels.checked_label('TaskKind=modelling', None)
         self.assertIn(f"a kind is one of {', '.join(TaskKind.words(carried=True))}", str(refused.exception.code))
 
-    def test_adding_a_label_adds_a_block_last_and_keeps_every_other_line(self) -> None:
-        path = self.path(new_plan('Active'))
-        task_plan_labels.add_label(stores_over(path), None, 'T', DESIGN)
-        self.assertEqual(path.read_text(encoding='utf-8'), new_plan('Active').replace('Priority: 7\n', f'Priority: 7\nLabels:\n  - {DESIGN}\n'))
-        task_plan_labels.add_label(stores_over(path), None, 'T', MECHANICAL)
-        self.assertIn(f'\n  - {DESIGN}\n  - {MECHANICAL}\n---\n', path.read_text(encoding='utf-8'))
-        self.assertEqual(path.read_text(encoding='utf-8').count('Labels:'), 1)
-
-    def test_a_plan_without_front_matter_cannot_be_given_a_label(self) -> None:
-        with self.assertRaises(SystemExit):
-            task_plan_labels.add_label(stores_over(self.path('# T\n\n## Request\n')), None, 'T', DESIGN)
-
     def test_a_hand_written_kind_reads_as_written_in_lower_case(self) -> None:
         self.assertEqual(task_plan_labels.task_kind_of({'labels': f'  {DESIGN} '}), 'design')
         self.assertEqual(task_plan_labels.task_kind_of({'labels': f'modelling({new_id()})'}), '')
@@ -434,31 +359,5 @@ class Rewrite(Fixture):
             return data
         return unittest.mock.patch.object(Path, 'read_bytes', read_bytes)
 
-    def test_a_priority_set_while_the_status_changes_keeps_both(self) -> None:
-        path = self.plan('queued')
-        with self.changed_once_after_reading(path, 'Status: Queued', 'Status: Active'):
-            task_plan_priority.set_priority(stores_over(path), None, 'T', 9)
-        plan = task_plan.read_plan(path)
-        self.assertEqual((plan.status, PlanPriority.of(plan.front)), ('active', 9))
-
-    def test_a_status_set_while_the_priority_changes_keeps_both(self) -> None:
-        path = self.plan('queued')
-        with self.changed_once_after_reading(path, f'Start Date: {OPENED}\n', f'Start Date: {OPENED}\nPriority: 8\n'):
-            task_plan_status.set_status(stores_over(path), None, 'T', 'active')
-        plan = task_plan.read_plan(path)
-        self.assertEqual((plan.status, PlanPriority.of(plan.front)), ('active', 8))
-
-    def test_a_status_no_longer_the_expected_one_is_left_as_it_is(self) -> None:
-        path = self.plan('queued')
-        with self.changed_once_after_reading(path, 'Status: Queued', 'Status: Complete'):
-            with self.assertRaises(SystemExit):
-                task_plan_status.set_status(stores_over(path), None, 'T', 'active', only_from=('queued',))
-        self.assertEqual(task_plan.read_plan(path).status, 'complete')
-
-    def test_a_rewrite_leaves_only_the_plan_in_its_folder(self) -> None:
-        path = self.plan('queued')
-        task_plan_priority.set_priority(stores_over(path), None, 'T', 3)
-        task_plan_status.set_status(stores_over(path), None, 'T', 'active')
-        self.assertEqual([entry.name for entry in self.folder.iterdir()], [task_plan.PLAN_NAME])
 if __name__ == '__main__':
     unittest.main(verbosity=2)

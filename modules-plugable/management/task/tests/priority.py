@@ -44,7 +44,9 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import shape
 task_plan = import_module('modules-plugable.management.task.services.plan_file')
 task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
 task_priority = import_module('modules-plugable.management.task.services.priority')
@@ -63,8 +65,7 @@ class SetPriority(unittest.TestCase):
     def task(self, sid: str, status: str) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        (folder / task_plan.PLAN_NAME).write_text(f'---\nTitle: T\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n---\n# T\n\n## Request\nx\n', encoding='utf-8', newline='\n')
-        return folder
+        return shape.new_task(folder, status=status, start_date='2026-10-12T00:00:00Z', plan='# T\n\n## Request\nx\n')
 
     def plan(self, folder: Path) -> task_plan.Plan:
         return task_plan.read_plan(folder / task_plan.PLAN_NAME)
@@ -84,12 +85,12 @@ class SetPriority(unittest.TestCase):
 
     def test_a_priority_outside_1_to_10_or_a_missing_task_is_refused(self) -> None:
         folder = self.task('20261012T060010Z-1-0', 'queued')
-        before = (folder / task_plan.PLAN_NAME).read_bytes()
+        before = (folder / shape.FACTS_NAME).read_bytes()
         for value in ('0', '11', 'soon'):
             with self.subTest(value=value):
                 with self.assertRaises(SystemExit):
                     task_priority.set_task_priority(folder.name, value)
-        self.assertEqual((folder / task_plan.PLAN_NAME).read_bytes(), before)
+        self.assertEqual((folder / shape.FACTS_NAME).read_bytes(), before)
         with self.assertRaises(SystemExit):
             task_priority.set_task_priority('20261012T060011Z-1-0', '3')
 if __name__ == '__main__':

@@ -83,7 +83,7 @@ def live_folders(root: Path) -> list[Path]:
     from modules.computer.software.edges.manifest.services.preferences import tasks_location
     own = tasks_location(root) or root / _m_fs_memar.AGENTS_DIRNAME / TASKS_DIRNAME
     memar = tasks_root()
-    has_task = import_module('modules-plugable.management.task.services.task_files').has_task
+    has_task = import_module('modules-plugable.management.task.services.task_memory').has_task
     found: dict[str, Path] = {}
     for location in (own, memar):
         if not location.is_dir():

@@ -78,7 +78,7 @@ same_path = _m_task_location.same_path
 from .log import record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
 facts_named_project = _m_task_files.facts_named_project
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')

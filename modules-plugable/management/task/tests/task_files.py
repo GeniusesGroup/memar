@@ -23,7 +23,9 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import earlier_shape
 BUDGET_SECONDS = 30
 files = import_module('modules-plugable.management.task.services.task_files')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
@@ -98,45 +100,12 @@ class Facts(Fixture):
         with self.assertRaises(errors.Task_Error_NotFound):
             files.stores_at(self.folder).read_priority(None, 'T-1')
 
-class TodaysShape(Fixture):
-
-    def plan(self) -> Path:
-        text = _m_plan_file.plan_skeleton('T-1', 'Title', '2026-10-01T00:00:00Z', Path('/work'), priority=4)
-        path = self.folder / 'plan.md'
-        path.write_text(text, encoding='utf-8', newline='\n')
-        return path
-
-    def test_a_plan_md_task_is_read_and_one_field_is_rewritten_with_every_other_line_kept(self) -> None:
-        path = self.plan()
-        before = path.read_text(encoding='utf-8')
-        stores = files.stores_at(self.folder)
-        priority, version = stores.read_priority(None, 'T-1')
-        self.assertEqual(priority, 4)
-        stores.replace_priority(None, 'T-1', 9, version)
-        self.assertEqual(path.read_text(encoding='utf-8'), before.replace('Priority: 4', 'Priority: 9'))
-        with self.assertRaises(errors.Task_Error_Changed):
-            stores.replace_priority(None, 'T-1', 1, version)
-
-    def test_a_status_is_read_and_written_in_the_front_matter(self) -> None:
-        path = self.plan()
-        stores = files.stores_at(self.folder)
-        status, version = stores.read_status(None, 'T-1')
-        self.assertEqual(status, 'active')
-        stores.replace_status(None, 'T-1', 'queued', version)
-        self.assertIn('Status: Queued', path.read_text(encoding='utf-8'))
-
-    def test_creating_a_plan_in_todays_shape_writes_plan_md_and_never_over_one(self) -> None:
-        files.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
-        first = (self.folder / 'plan.md').read_text(encoding='utf-8')
-        files.create_plan_md(self.folder, 'T-1', 'Other', None, None, Path('/work'), 'active', None, None, None)
-        self.assertEqual((self.folder / 'plan.md').read_text(encoding='utf-8'), first)
-
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 
 class Reading(Fixture):
 
     def old(self, status: str = '') -> None:
-        files.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
+        earlier_shape.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
         text = _m_report_file.report_skeleton('T-1', 'Title')
         (self.folder / 'report.md').write_text(text.replace('Status:\n', f'Status: {status}\n'), encoding='utf-8', newline='\n')
 
@@ -145,26 +114,6 @@ class Reading(Fixture):
         folder.mkdir()
         files.create_task(folder, 'T-2', 'Title', None, None, Path('/work'), 'active', None, None, None)
         return folder
-
-    def test_the_path_of_a_plan_and_a_report_is_the_file_in_the_old_shape_and_the_latest_content_in_the_new(self) -> None:
-        self.old()
-        self.assertEqual((files.plan_path(self.folder), files.report_path(self.folder)), (self.folder / 'plan.md', self.folder / 'report.md'))
-        new = self.other()
-        timeline_files.add_text(new, 'plan', 'first'+chr(10), 'agent')
-        timeline_files.add_text(new, 'report', 'done'+chr(10), 'agent')
-        self.assertEqual((files.plan_path(new), files.report_path(new)), (new / 'content.00001.md', new / 'content.00002.md'))
-        timeline_files.add_text(new, 'plan', 'revised\n', 'agent')
-        self.assertEqual(files.plan_path(new), new / 'content.00003.md')
-
-    def test_the_text_of_a_plan_and_a_report_is_the_file_in_the_old_shape_and_the_latest_body_in_the_new(self) -> None:
-        self.old()
-        self.assertIn('## Request', files.plan_text(self.folder))
-        self.assertTrue(files.report_text(self.folder).startswith('---\n'))
-        new = self.other()
-        timeline_files.add_text(new, 'report', '# Report\n\n## Result\ndone\n', 'agent', fields={'status': 'complete'})
-        self.assertEqual(files.report_text(new), '# Report\n\n## Result\ndone\n')
-        self.assertTrue(files.has_report(new))
-        self.assertTrue(files.has_report(self.folder))
 
     def test_a_report_status_is_read_from_the_header_of_the_latest_report_content(self) -> None:
         self.made()
@@ -176,10 +125,6 @@ class Reading(Fixture):
     def test_a_report_status_in_the_old_shape_is_read_from_its_front_matter(self) -> None:
         self.old('Complete')
         self.assertEqual(_m_report_file.read_report_status(self.folder), 'complete')
-
-    def test_the_names_a_record_is_read_from_are_the_old_pair_or_the_facts_and_every_content(self) -> None:
-        self.assertEqual(files.record_names(['plan.md', 'report.md', 'docs/a.md']), ['plan.md', 'report.md'])
-        self.assertEqual(files.record_names(['content.00002.md', 'task.yaml', 'content.00001.md', 'docs/a.md']), ['task.yaml', 'content.00001.md', 'content.00002.md'])
 
     def test_a_record_is_read_from_the_bytes_of_its_files(self) -> None:
         self.made()

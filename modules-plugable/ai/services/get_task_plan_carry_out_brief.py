@@ -34,7 +34,7 @@ folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 has_plan = _m_task_files.has_plan
 from modules.computer.software.primitive.project_name import ProjectName
 from modules.computer.software.primitive.project_path import ProjectPath

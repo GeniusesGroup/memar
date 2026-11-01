@@ -59,7 +59,11 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import earlier_shape
+import shape
+task_files = import_module('modules-plugable.management.task.services.task_memory')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
@@ -92,7 +96,13 @@ class Fixture(unittest.TestCase):
     def task(self, sid: str, status: str, **plan) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        (folder / task_plan.PLAN_NAME).write_text(plan_text(status, **plan), encoding='utf-8', newline='\n')
+        shape.from_plan_text(folder, plan_text(status, **plan))
+        return folder
+
+    def root_old(self, sid: str) -> Path:
+        folder = memar_fs.task_dir(sid)
+        folder.mkdir(parents=True)
+        earlier_shape.create_plan_md(folder, sid, 'T', None, None, self.fake_root, 'queued', None, None, None)
         return folder
 
     def status_of(self, folder: Path) -> str:
@@ -133,7 +143,7 @@ class QueuedIsAStatus(Fixture):
             task_ensure.ensure_task(folder.name, None, None, queued=True)
             task_ensure.ensure_task(folder.name, None, None, queued=True)
         self.assertEqual(self.status_of(folder), 'queued')
-        self.assertIn('Do the thing.', (folder / task_plan.PLAN_NAME).read_text(encoding='utf-8'))
+        self.assertIn('Do the thing.', task_files.plan_text(folder))
 
     def test_new_queued_refuses_a_done_or_claimed_task(self) -> None:
         done = self.task('20261012T000004Z-1-0', 'complete')
@@ -150,19 +160,20 @@ class ClaimTakesOne(Fixture):
         self.assertEqual(self.status_of(folder), 'active')
         self.assertTrue((folder / Claim.NAME).is_file())
 
-    def test_a_claim_leaves_the_rest_of_the_plan_and_a_plan_in_an_earlier_shape_is_refused_naming_the_script(self) -> None:
+    def test_a_claim_changes_the_status_and_leaves_the_rest_of_the_facts(self) -> None:
         folder = self.task('20261012T000012Z-1-0', 'queued')
-        plan = folder / task_plan.PLAN_NAME
-        before = plan.read_text(encoding='utf-8')
+        facts = folder / shape.FACTS_NAME
+        before = facts.read_text(encoding='utf-8')
         task_claim.claim_folder(folder)
-        self.assertEqual(plan.read_text(encoding='utf-8'), before.replace('Status: Queued', 'Status: Active'))
-        old = self.task('20261012T000013Z-1-0', 'queued')
-        old_plan = old / task_plan.PLAN_NAME
-        old_plan.write_text('---\ntitle: T\nopened: 2026-10-12T00:00:00Z\nproject: P\n---\n# T\nStatus: queued\n\n## Request\n', encoding='utf-8', newline='\n')
-        written = old_plan.read_bytes()
-        self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, self.refused(task_claim.claim_folder, old))
-        self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, task_claim.try_claim(old))
-        self.assertEqual(old_plan.read_bytes(), written)
+        self.assertEqual(facts.read_text(encoding='utf-8'), before.replace('status: queued', 'status: active'))
+
+    def test_a_task_of_the_generation_before_is_refused_naming_its_writer_and_the_conversion_and_is_left_as_it_is(self) -> None:
+        old = self.root_old('20261012T000013Z-1-0')
+        written = (old / 'plan.md').read_bytes()
+        text = self.refused(task_claim.claim_folder, old)
+        self.assertIn('EndOfLife', text)
+        self.assertIn('task_conversion', text)
+        self.assertEqual((old / 'plan.md').read_bytes(), written)
         self.assertFalse((old / Claim.NAME).exists())
 
     def test_the_claim_verb_claims_by_id(self) -> None:

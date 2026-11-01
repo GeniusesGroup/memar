@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Task_Reader in "modules-plugable/management/task/protocol/task-reader.kh"
+
+tp Task_Predecessor_Adapter ab {
+	Task_Reader
+}

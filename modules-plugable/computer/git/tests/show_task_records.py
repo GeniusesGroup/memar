@@ -258,7 +258,7 @@ class NewShape(Fixture):
         self.assertIn('=== task.yaml', said)
         self.assertIn('Plan text.', said)
         self.assertIn('Branch report.', said)
-        self.assertIn(str(folder / 'content.00004.md'), said)
+        self.assertIn(str(folder / 'content.00002.md'), said)
 
     def test_a_folder_gone_is_read_from_the_branch_with_the_project_by_its_name(self) -> None:
         folder = self.new_task()
@@ -276,7 +276,7 @@ class NewShape(Fixture):
         shutil.rmtree(folder, onexc=lambda remove, path, error: (os.chmod(path, 0o600), remove(path)))
         said, stopped = self.show('--list')
         self.assertIsNone(stopped)
-        self.assertEqual(said.splitlines(), ['content.00001.md', 'content.00002.md', 'content.00003.md', 'content.00004.md', 'task.yaml'])
+        self.assertEqual(said.splitlines(), ['content.00001.md', 'content.00002.md', 'task.yaml'])
 
     def test_the_records_stand_as_archived_once_kept(self) -> None:
         folder = self.new_task()
@@ -290,7 +290,7 @@ class NewShape(Fixture):
         self.assertIsNone(stopped)
         lines = said.splitlines()
         self.assertEqual(lines[0], 'Status: complete')
-        self.assertEqual(lines[1], f"Report: {folder / 'content.00004.md'}")
+        self.assertEqual(lines[1], f"Report: {folder / 'content.00002.md'}")
         self.assertEqual(lines[2:], ['- Q1 a | b (recommended).'])
 
 if __name__ == '__main__':

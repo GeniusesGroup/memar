@@ -38,7 +38,7 @@ is routed by closing by type.
 from __future__ import annotations
 from importlib import import_module
 from pathlib import Path
-files = import_module('modules-plugable.management.task.services.task_files')
+files = import_module('modules-plugable.management.task.services.task_memory')
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 EARLIER_SHAPE_REMEDY = _m_plan_file.EARLIER_SHAPE_REMEDY
 EARLIER_STATUS_WORDS = _m_plan_file.EARLIER_STATUS_WORDS
@@ -67,9 +67,6 @@ def report_skeleton(task: str, title: str | None=None) -> str:
     """
     front = ['---', f'{ReportKey.ID.written}: {task}', *([f'{ReportKey.TITLE.written}: {title}'] if title else []), f'{ReportKey.STATUS.written}:', '---']
     return '\n'.join([*front, f'# {REPORT.heading}', '', *(f'## {part}' for part in REPORT.parts)]) + '\n'
-
-def write_report(folder: Path, task: str, title: str | None=None) -> None:
-    files.create_report_md(folder, report_skeleton(task, title))
 
 def _lines(folder: Path) -> list[str]:
     return files.report_lines(folder)

@@ -68,7 +68,9 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import shape
 task_files = import_module('modules-plugable.management.task.services.task_files')
 
 def stores_over(path):
@@ -109,9 +111,8 @@ class Fixture(unittest.TestCase):
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
         where = project or self.project
-        block = 'Labels:\n' + ''.join((self.label_line(label, where) for label in labels)) if labels else ''
-        (folder / task_plan.PLAN_NAME).write_text(f'---\nTitle: T\nStatus: {status.capitalize()}\nStart Date: 2026-10-13T00:00:00Z\nProject: {project or self.project}\n{block}---\n# T\n\n## Request\nx\n\n## Why\n\n## Steps\n\n## Next\n', encoding='utf-8', newline='\n')
-        return folder
+        held = '\n'.join(self.label_line(label, where).strip()[2:] for label in labels)
+        return shape.new_task(folder, status=status, project=where, labels=held or None)
 
     def declare(self, *words: str, project: Path | None=None, ended: str='', replaced_by: str='') -> None:
         """Declare each topic of WORDS in PROJECT, as a module of it would: a file of a `labels/` folder holding `LABELS`."""
@@ -136,10 +137,10 @@ class Fixture(unittest.TestCase):
         return task_plan_labels.registry_of(front).words(task_plan_labels.labels_of(front), kind)
 
     def plan(self, folder: Path) -> Path:
-        return folder / task_plan.PLAN_NAME
+        return folder / shape.FACTS_NAME
 
     def front(self, folder: Path) -> dict[str, str]:
-        return task_plan.read_plan(self.plan(folder)).front or {}
+        return task_plan.read_plan(folder / task_plan.PLAN_NAME).front or {}
 
     def labels(self, folder: Path) -> Labels:
         return task_plan_labels.labels_of(self.front(folder))
@@ -205,7 +206,7 @@ class LabelsField(Fixture):
         with contextlib.redirect_stdout(io.StringIO()):
             task_ensure.ensure_task(folder.name, None, None, labels=['Topic=more', 'Topic=docs'])
         self.assertEqual(self.words(folder, 'Topic'), ('docs', 'more'))
-        self.assertEqual(task_plan.read_plan(self.plan(folder)).status, 'active')
+        self.assertEqual(task_plan.read_plan(folder / task_plan.PLAN_NAME).status, 'active')
 
     def test_several_labels_of_one_kind_are_kept_and_none_is_twice(self) -> None:
         self.declare('a', 'b')
@@ -270,7 +271,7 @@ class LabelVerb(Fixture):
         after = self.plan(folder).read_text(encoding='utf-8')
         self.assertEqual(after, re.sub('  - docs\\([0-9a-f-]{36}\\)\\n', '', before))
         self.printed(task_label.set_task_label, folder.name, 'TaskKind=design', True)
-        self.assertEqual(self.plan(folder).read_text(encoding='utf-8'), re.sub('Labels:\\n(  - [^\\n]*\\n)+', '', before))
+        self.assertEqual(self.plan(folder).read_text(encoding='utf-8'), re.sub('labels:\\n(  - [^\\n]*\\n)+', '', before))
         self.assertFalse(self.labels(folder))
 
     def test_removing_a_label_the_plan_lacks_changes_nothing(self) -> None:
@@ -287,36 +288,11 @@ class LabelVerb(Fixture):
         self.printed(task_label.set_task_label, folder.name, 'Topic=docs', False)
         front = self.front(folder)
         self.assertEqual((front['priority'], front['title']), ('8', 'T'))
-        self.assertEqual(task_plan.read_plan(self.plan(folder)).status, 'queued')
-        self.assertTrue(self.plan(folder).read_text(encoding='utf-8').endswith('## Next\n'))
-
-    def test_a_crlf_plan_keeps_its_line_endings(self) -> None:
-        folder = self.task('20261013T000018Z-1-0', 'queued')
-        self.declare('docs')
-        text = self.plan(folder).read_text(encoding='utf-8').replace('\n', '\r\n')
-        self.plan(folder).write_bytes(text.encode('utf-8'))
-        self.printed(task_label.set_task_label, folder.name, 'Topic=docs', False)
-        data = self.plan(folder).read_bytes()
-        self.assertRegex(data, b'Labels:\\r\\n  - docs\\([0-9a-f-]{36}\\)\\r\\n---')
-        self.assertNotIn(b'\n', data.replace(b'\r\n', b''))
+        self.assertEqual(task_plan.read_plan(folder / task_plan.PLAN_NAME).status, 'queued')
+        self.assertTrue(task_files.plan_text(folder).endswith('## Next\n'))
 
     def test_a_task_that_is_not_there_is_refused(self) -> None:
         self.assertIn('no task', self.refused(task_label.set_task_label, '20261013T000013Z-1-0', 'Topic=docs', False))
-
-class EarlierShape(Fixture):
-
-    def test_a_plan_holding_a_topic_or_kind_key_is_in_an_earlier_shape_and_is_not_rewritten(self) -> None:
-        self.declare('x')
-        for key in ('Topic: docs', 'Kind: design'):
-            with self.subTest(key=key):
-                folder = self.task(f"20261013T0000{(19 if key.startswith('Topic') else 20)}Z-9-0", 'queued')
-                text = self.plan(folder).read_text(encoding='utf-8').replace('---\n# T', f'{key}\n---\n# T', 1)
-                self.plan(folder).write_text(text, encoding='utf-8', newline='\n')
-                problem = task_plan.plan_file_problem(self.plan(folder))
-                self.assertIn('earlier shape', problem)
-                self.assertIn('labels', problem)
-                self.assertIn('earlier shape', self.refused(task_label.set_task_label, folder.name, 'Topic=x', False))
-                self.assertEqual(self.plan(folder).read_text(encoding='utf-8'), text)
 
 class NearMatch(Fixture):
 
@@ -355,7 +331,7 @@ class NearMatch(Fixture):
 
     def test_a_label_the_plan_carries_but_nobody_declares_can_still_be_removed(self) -> None:
         folder = self.task('20261013T000054Z-1-0', 'queued')
-        text = self.plan(folder).read_text(encoding='utf-8').replace('---\n# T', f'Labels:\n  - stray({new_id()})\n---\n# T', 1)
+        text = self.plan(folder).read_text(encoding='utf-8').replace('start_date:', f'labels:\n  - stray({new_id()})\nstart_date:', 1)
         self.plan(folder).write_text(text, encoding='utf-8', newline='\n')
         self.assertIn('removed stray', self.printed(task_label.set_task_label, folder.name, 'Topic=stray', True))
         self.assertFalse(self.labels(folder))
@@ -392,7 +368,7 @@ class LabelsListing(Fixture):
     def test_a_label_nobody_declares_is_listed_as_undeclared(self) -> None:
         folder = self.task('20261013T000065Z-1-0', 'queued')
         stray = f'stray({new_id()})'
-        text = self.plan(folder).read_text(encoding='utf-8').replace('---\n# T', f'Labels:\n  - {stray}\n---\n# T', 1)
+        text = self.plan(folder).read_text(encoding='utf-8').replace('start_date:', f'labels:\n  - {stray}\nstart_date:', 1)
         self.plan(folder).write_text(text, encoding='utf-8', newline='\n')
         self.assertIn(f'{task_labels.UNDECLARED}: {stray}  1 task, 1 queued', self.listed())
 

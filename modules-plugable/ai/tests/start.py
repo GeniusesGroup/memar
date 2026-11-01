@@ -222,7 +222,7 @@ class NewShape(Fixture):
     def test_a_task_made_new_is_started_with_its_latest_plan_content_printed_whole(self) -> None:
         parts = self.parts()
         plan = task_files.plan_path(self.folder)
-        self.assertEqual(plan.name, 'content.00003.md')
+        self.assertEqual(plan.name, 'content.00001.md')
         self.assertEqual(list(parts), ['task', 'model', plan.name, 'folder', 'skill', 'documents', 'commands', 'help', 'ending'])
         self.assertIn('Do the new thing.', parts[plan.name])
 
@@ -269,11 +269,11 @@ class TaskPart(Fixture):
         for line in (f'task_id: {SID}', f'path: {folder}', f'plan: {folder / PLAN_NAME}', f'report: {folder / REPORT_NAME}'):
             self.assertIn(line, part)
 
-    def test_starting_leaves_the_report_and_the_role_folders_there(self) -> None:
+    def test_starting_leaves_the_role_folders_there(self) -> None:
         self.text(plan_with())
         folder = memar_fs.task_dir(SID)
-        self.assertTrue((folder / REPORT_NAME).is_file())
-        self.assertTrue((folder / 'docs').is_dir())
+        self.assertFalse((folder / REPORT_NAME).exists())
+        self.assertTrue((folder / 'temp').is_dir())
 
 class ModelPart(Fixture):
 
@@ -305,14 +305,13 @@ class PlanAndFolder(Fixture):
 
     def test_the_plan_is_printed_whole(self) -> None:
         plan = plan_with(request='Unique request words.')
-        self.assertIn(plan.strip(), self.parts(plan)[PLAN_NAME])
+        self.assertIn(plan.split('---\n', 2)[2].strip(), self.parts(plan)[PLAN_NAME])
 
     def test_the_folder_listing_names_files_and_marks_folders(self) -> None:
         part = self.parts(plan_with())['folder']
         lines = part.splitlines()
         self.assertIn(PLAN_NAME, lines)
-        self.assertIn(REPORT_NAME, lines)
-        self.assertIn('docs/', lines)
+        self.assertIn('temp/', lines)
 
 def headers(part: str) -> list[str]:
     """The passage headers of a documents part, as `path#anchor`, without a range's end."""
@@ -492,7 +491,7 @@ class Ending(Fixture):
 
     def test_the_folder_rule_is_said_once_in_the_task_help(self) -> None:
         parts = self.parts(plan_with())
-        self.assertIn('holds only plan.md and report.md', parts['help'])
+        self.assertIn('holds only task.yaml and its numbered contents', parts['help'])
         self.assertNotIn('plan.md and report.md', parts['ending'])
 
 class TaskHelp(Fixture):

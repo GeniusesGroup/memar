@@ -120,13 +120,6 @@ class Queue(unittest.TestCase):
         write_core.queue_plan(store, None, 'T', claimed=True)
         self.assertEqual(store.writes, [])
 
-    def test_a_plan_in_an_earlier_shape_is_refused_with_its_problem(self) -> None:
-        store = Memory(status='active')
-        store.problem = 'its plan is in an earlier shape'
-        with self.assertRaises(SystemExit):
-            write_core.queue_plan(store, None, 'T', claimed=False)
-        self.assertEqual(store.writes, [])
-
     def test_a_claimed_task_is_refused(self) -> None:
         store = Memory(status='active')
         with self.assertRaises(SystemExit):

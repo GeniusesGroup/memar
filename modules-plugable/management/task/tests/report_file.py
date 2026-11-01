@@ -51,7 +51,9 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import earlier_shape
 task_report = import_module('modules-plugable.management.task.services.report_file')
 from modules.knowledge.status.primitive.status import DocumentKind, Status
 NEW_PARTS = '# Report\n\n## What ran\nx\n'
@@ -84,14 +86,14 @@ class Skeleton(Fixture):
         self.assertEqual(task_report.report_skeleton('s-1'), '---\nID: s-1\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n')
 
     def test_an_empty_skeleton_says_nothing(self) -> None:
-        task_report.write_report(self.folder, 's-1', 'The task')
+        earlier_shape.create_report_md(self.folder, task_report.report_skeleton('s-1', 'The task'))
         self.assertEqual(task_report.read_report_status(self.folder), '')
         self.assertIsNone(task_report.disagreement('active', task_report.read_report_status(self.folder)))
         self.assertIsNone(task_report.report_shape_problem(self.folder))
 
     def test_a_report_that_is_there_is_never_overwritten(self) -> None:
         self.new('Complete')
-        task_report.write_report(self.folder, 's-1', 'The task')
+        earlier_shape.create_report_md(self.folder, task_report.report_skeleton('s-1', 'The task'))
         self.assertEqual(task_report.read_report_status(self.folder), 'complete')
 
     def test_a_report_may_state_the_statuses_the_table_gives_a_task_report(self) -> None:

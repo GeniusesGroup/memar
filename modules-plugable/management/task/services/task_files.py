@@ -19,9 +19,7 @@ read_contents = _tl.read_contents
 latest_content = _tl.latest_content
 write_content = _tl.write_content
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-front_matter = _m_plan_file.front_matter
-plan_shape_problem = _m_plan_file.plan_shape_problem
+_generation = import_module('modules-plugable.management.task.services.task_generation')
 plan_skeleton = _m_plan_file.plan_skeleton
 read_bytes = _m_plan_file.read_bytes
 status_word = _m_plan_file.status_word
@@ -39,10 +37,8 @@ Priority = _m_priority.Priority
 from modules.knowledge.label.primitive.label import Labels
 
 TASK_FACTS_NAME = 'task.yaml'
-REPORT_NAME = REPORT.file_name
-OLD_SHAPE_READER = 'modules-plugable/management/task/services/plan_file.py'
 AUTHOR = 'memar'
-FACTS = ('title', 'status', 'priority', 'labels', 'depends_on', 'parent', 'conversation', 'project', 'participants', 'start_date')
+FACTS = ('title', 'status', 'priority', 'labels', 'depends_on', 'parent', 'conversation', 'project', 'participants', 'start_date', 'writer', 'converted_from')
 FRONT_KEY = {'title': PlanKey.TITLE, 'status': PlanKey.STATUS, 'priority': PlanKey.PRIORITY, 'labels': PlanKey.LABELS, 'depends_on': PlanKey.DEPENDS_ON, 'parent': PlanKey.PARENT, 'conversation': PlanKey.CONVERSATION, 'project': PlanKey.PROJECT, 'start_date': PlanKey.START_DATE}
 BLOCK_FACTS = ('labels', 'participants')
 PLAIN_START = '"\'[]{}&*!|>%@`-?#,'
@@ -70,27 +66,12 @@ def _replace_file(path: Path, make: Callable[[bytes], str]) -> None:
     fail(f'{path} kept changing while it was being rewritten, so nothing was written; try again')
 
 
-def rewrite(path: Path, change: Callable[[list], list]) -> None:
-    def make(data: bytes) -> str:
-        lines = data.decode('utf-8-sig').splitlines(keepends=True)
-        problem = plan_shape_problem([line.rstrip('\r\n') for line in lines])
-        if problem:
-            fail(f'{path}: {problem}; nothing was written')
-        return ''.join(change(lines))
-    _replace_file(path, make)
-
-
-def key_of(line: str) -> str:
-    key, colon, _ = line.partition(':')
-    return key.strip() if colon else ''
-
-
 def line_end(line: str) -> str:
     return line[len(line.rstrip('\r\n')):] or '\n'
 
 
 def has_task(folder: Path) -> bool:
-    return (folder / TASK_FACTS_NAME).is_file() or (folder / PLAN_NAME).is_file()
+    return (folder / TASK_FACTS_NAME).is_file()
 
 
 def has_plan(folder: Path) -> bool:
@@ -119,46 +100,36 @@ def plan_front(folder: Path) -> tuple | None:
     return _front_of(facts, folder.name)
 
 
-def is_new(folder: Path) -> bool:
-    return (folder / TASK_FACTS_NAME).is_file()
-
-
 def _latest_path(folder: Path, kind: str) -> Path:
-    content = latest_content(folder, kind) if is_new(folder) else None
+    content = latest_content(folder, kind)
     return folder / (_tl.content_name(content.number) if content else TASK_FACTS_NAME)
 
 
 def plan_path(folder: Path) -> Path:
-    return _latest_path(folder, 'plan') if is_new(folder) else folder / PLAN_NAME
+    return _latest_path(folder, 'plan')
 
 
 def report_path(folder: Path) -> Path:
-    return _latest_path(folder, 'report') if is_new(folder) else folder / REPORT_NAME
+    return _latest_path(folder, 'report')
 
 
 def plan_text(folder: Path) -> str:
-    if is_new(folder):
-        return plan_body(folder) or ''
-    return read_bytes(folder / PLAN_NAME).decode('utf-8-sig')
+    return plan_body(folder) or ''
 
 
 def report_text(folder: Path) -> str:
-    if is_new(folder):
-        content = latest_content(folder, 'report')
-        return content.body if content else ''
-    return read_bytes(folder / REPORT_NAME).decode('utf-8-sig')
+    content = latest_content(folder, 'report')
+    return content.body if content else ''
 
 
 def has_report(folder: Path) -> bool:
-    if is_new(folder):
-        return latest_content(folder, 'report') is not None
-    return (folder / REPORT_NAME).is_file()
+    return latest_content(folder, 'report') is not None
 
 
 def record_names(names) -> list:
     if TASK_FACTS_NAME in names:
         return [TASK_FACTS_NAME, *sorted(name for name in names if _tl.CONTENT_PATTERN.match(name))]
-    return [PLAN_NAME, REPORT_NAME]
+    return []
 
 
 def record_of(held: dict) -> tuple | None:
@@ -188,41 +159,14 @@ def plan_body(folder: Path) -> str | None:
 
 
 def report_lines(folder: Path) -> list:
-    if is_new(folder):
-        content = latest_content(folder, 'report')
-        if content is None:
-            return []
-        front = ['---', f'{ReportKey.ID.written}: {folder.name}', f"{ReportKey.STATUS.written}: {content.header.get('status', '')}", '---']
-        return [*front, *content.body.splitlines()]
-    try:
-        return (folder / REPORT_NAME).read_text(encoding='utf-8-sig').splitlines()
-    except (OSError, UnicodeDecodeError):
+    content = latest_content(folder, 'report')
+    if content is None:
         return []
+    front = ['---', f'{ReportKey.ID.written}: {folder.name}', f"{ReportKey.STATUS.written}: {content.header.get('status', '')}", '---']
+    return [*front, *content.body.splitlines()]
 
 
-def create_report_md(folder: Path, text: str) -> None:
-    if (folder / TASK_FACTS_NAME).exists():
-        return
-    try:
-        with (folder / REPORT_NAME).open('x', encoding='utf-8', newline='\n') as report:
-            report.write(text)
-    except FileExistsError:
-        pass
-
-
-def create_plan_md(folder: Path, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
-    opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    text = plan_skeleton(task, title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority, labels=labels, depends_on=depends_on)
-    try:
-        with (folder / PLAN_NAME).open('x', encoding='utf-8', newline='\n') as plan:
-            plan.write(text)
-    except FileExistsError:
-        pass
-
-
-def create_task(folder: Path, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
-    opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    facts = {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened}
+def write_facts(folder: Path, facts: dict) -> None:
     path = folder / TASK_FACTS_NAME
     temporary = folder / f'.{TASK_FACTS_NAME}.{os.getpid()}.tmp'
     with temporary.open('w', encoding='utf-8', newline='\n') as written:
@@ -235,59 +179,9 @@ def create_task(folder: Path, task: str, title: str, parent, conversation, proje
         temporary.unlink(missing_ok=True)
 
 
-def _block(lines: list, start: int, key: str) -> tuple | None:
-    for index in range(1, start - 1):
-        if key_of(lines[index]) == key and lines[index].split(':', 1)[1].strip() == '':
-            end = index + 1
-            while end < start - 1 and lines[end][:1] in (' ', '\t'):
-                end += 1
-            return (index, end)
-    return None
-
-
-def _plan_read(folder: Path, fact: str) -> str:
-    front, _ = front_matter(read_bytes(folder / PLAN_NAME).decode('utf-8-sig').splitlines())
-    front = front or {}
-    key = FRONT_KEY[fact].written
-    if fact == 'labels':
-        return '\n'.join(Labels.read(front.get(key, '')).lines())
-    value = front.get(key, '')
-    return status_word(value) if fact == 'status' else value.strip()
-
-
-def _plan_write(folder: Path, fact: str, value: str, expected: str) -> str:
-    path = folder / PLAN_NAME
-    key = FRONT_KEY[fact].written
-
-    def change(lines: list) -> list:
-        _, start = front_matter([line.rstrip('\r\n') for line in lines])
-        if not start:
-            fail(f'{path} has no front matter, so its {key if fact == "depends_on" else fact} cannot be set')
-        newline = line_end(lines[0])
-        if fact == 'labels':
-            found = _block(lines, start, key)
-            was = '\n'.join(Labels.read('\n'.join(line.strip() for line in lines[found[0] + 1:found[1]])).lines()) if found else ''
-            if _version(was) != expected:
-                raise Task_Error_Changed()
-            written = [f'{key}:{newline}', *(f'{line}{newline}' for line in value.split('\n') if line)] if value else []
-            if found:
-                return [*lines[:found[0]], *written, *lines[found[1]:]]
-            return [*lines[:start - 1], *written, *lines[start - 1:]]
-        for index in range(1, start - 1):
-            if key_of(lines[index]) == key:
-                current = lines[index].partition(':')[2]
-                current = status_word(current) if fact == 'status' else current.strip()
-                if _version(current) != expected:
-                    raise Task_Error_Changed()
-                text = value.capitalize() if fact == 'status' else value
-                written = [f'{key}: {text}{line_end(lines[index])}'] if value else []
-                return [*lines[:index], *written, *lines[index + 1:]]
-        if _version('') != expected:
-            raise Task_Error_Changed()
-        text = value.capitalize() if fact == 'status' else value
-        return [*lines[:start - 1], *([f'{key}: {text}{newline}'] if value else []), *lines[start - 1:]]
-    rewrite(path, change)
-    return _version(value)
+def create_task(folder: Path, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
+    opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+    write_facts(folder, {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened, 'writer': _generation.TASK_TYPE_UUID})
 
 
 def _yaml_write(folder: Path, fact: str, value: str, expected: str) -> str:
@@ -316,31 +210,11 @@ class FileTaskStores:
         return folder
 
     def _read(self, project, task, fact: str) -> tuple:
-        folder = self._folder(project, task)
-        if (folder / TASK_FACTS_NAME).is_file():
-            text = (read_facts(folder) or {}).get(fact, '')
-        else:
-            text = _plan_read(folder, fact)
+        text = (read_facts(self._folder(project, task)) or {}).get(fact, '')
         return (text, _version(text))
 
     def _replace(self, project, task, fact: str, value: str, expected: str) -> str:
-        folder = self._folder(project, task)
-        if (folder / TASK_FACTS_NAME).is_file():
-            return _yaml_write(folder, fact, value, expected)
-        return _plan_write(folder, fact, value, expected)
-
-    def _new_folder(self, project, task) -> Path:
-        folder = self._folder(project, task)
-        if not is_new(folder):
-            raise Task_Error_NotFound()
-        return folder
-
-    def shape_problem(self, project, task) -> str | None:
-        folder = self._folder(project, task)
-        path = folder / PLAN_NAME
-        if (folder / TASK_FACTS_NAME).is_file() or not path.is_file():
-            return None
-        return _plan_shape(path)
+        return _yaml_write(self._folder(project, task), fact, value, expected)
 
     def read_priority(self, project, task) -> tuple:
         text, version = self._read(project, task, 'priority')
@@ -369,10 +243,6 @@ class FileTaskStores:
 
     def replace_depends_on(self, project, task, cited, expected: str) -> str:
         return self._replace(project, task, 'depends_on', cited.text() if cited else '', expected)
-
-
-def _plan_shape(path: Path) -> str | None:
-    return _m_plan_file.plan_file_problem(path)
 
 
 def stores_at(folder: Path) -> FileTaskStores:

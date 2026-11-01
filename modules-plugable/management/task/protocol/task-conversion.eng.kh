@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Conversion in "modules-plugable/management/task/protocol/task-conversion.kh"
+
+tp Domain mt (self Task_Conversion) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Conversion) () (s String) {
+    CharacterRun_From.FromCharacterRun("Moves the tasks of the previous generation into this module's shape")(s, VoidError)
+}
+
+tp Overview mt (self Task_Conversion) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads a task through the adapter and writes its representation in the new shape, stamped with this module, with an edge converted_from to the old representation; a part the new shape requires and the old task lacks is supplied by a stated rule. A task is accepted when every read of this module gives the same answer before the conversion, through the adapter, and after it. ConvertTasks is one reported step of a migration: the count converted, the count left and the count refused.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Conversion) () (s String) {
+    CharacterRun_From.FromCharacterRun("Ask again after the task is converted.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Conversion) () (s String) {
+    CharacterRun_From.FromCharacterRun("A task is never converted by a step for one datum alone; the step reports what it did not convert and why.")(s, VoidError)
+}

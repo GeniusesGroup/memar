@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_Error_WrittenByPredecessor in "modules-plugable/management/task/errors/predecessor.kh"
+
+tp Domain mt (self Task_Error_WrittenByPredecessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Task_Error_WrittenByPredecessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("The call cannot be served on this task because of its writer")(s, VoidError)
+}
+
+tp Overview mt (self Task_Error_WrittenByPredecessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("The task was written by a module that is EndOfLife, and this module's shape requires a part the task lacks. It carries the Type_UUID of the writer, of its successor, and the conversion service.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Task_Error_WrittenByPredecessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Convert this task with the conversion service named, and ask again.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Task_Error_WrittenByPredecessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Returned by the adapter alone; the adapter raises no other failure of its own.")(s, VoidError)
+}

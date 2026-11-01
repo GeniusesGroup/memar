@@ -171,7 +171,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_the_domain_help_says_the_top_holds_only_the_plan_and_the_report_and_where_the_rest_goes(self) -> None:
         text = flat(run_help())
-        for phrase in ("The folder's top holds only plan.md and report.md", 'the `claim` file Memar writes there', 'Put nothing else at the top', 'a note (.md) in docs/, a script (.py, .mjs, .js, .ps1, .sh) in services/', 'a test in tests/', 'besides its folders, docs/, services/, tests/, temp/,', 'a file of another kind, or what the record does not need, in temp/'):
+        for phrase in ("The folder's top holds only task.yaml and its numbered contents", 'the `claim` file Memar writes there', 'Put nothing else at the top', 'a script (.py, .mjs, .js, .ps1, .sh) in services/', 'a test in tests/', 'besides its folders, services/, tests/, temp/,', 'a file of another kind, or what the record does not need, in temp/'):
             self.assertIn(phrase, text)
 
     def test_the_domain_help_gives_the_status_words_and_how_a_task_ends(self) -> None:

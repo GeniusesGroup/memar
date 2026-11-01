@@ -85,13 +85,13 @@ class WriteTakesTheLock(unittest.TestCase):
 
     def test_a_write_takes_the_lock_too(self) -> None:
         taken: list[Path] = []
-        saved = fs_lock.edit_task
+        saved = content_write.edit_task
 
         def record(target, **keywords):
             taken.append(target)
             return saved(target, **keywords)
-        fs_lock.edit_task = record
-        self.addCleanup(setattr, fs_lock, 'edit_task', saved)
+        content_write.edit_task = record
+        self.addCleanup(setattr, content_write, 'edit_task', saved)
         new_file = self.root / 'fresh.md'
         payload = self.root / 'payload.md'
         payload.write_text('# Fresh\n', encoding='utf-8', newline='\n')

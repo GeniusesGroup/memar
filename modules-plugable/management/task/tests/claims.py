@@ -59,7 +59,10 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import shape
+task_files = import_module('modules-plugable.management.task.services.task_memory')
 import modules.computer.software.services.project_registry as registry
 plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 task_claim = import_module('modules-plugable.management.task.services.claim')
@@ -108,7 +111,7 @@ class Fixture(unittest.TestCase):
     def task(self, sid: str, status: str, **plan) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        (folder / task_plan.PLAN_NAME).write_text(plan_text(status, **plan), encoding='utf-8', newline='\n')
+        shape.from_plan_text(folder, plan_text(status, **plan))
         return folder
 
     def status_of(self, folder: Path) -> str:
@@ -160,7 +163,7 @@ class ClaimsTakesN(Fixture):
         self.assertEqual(taken, [folder.name])
         self.assertIn(f'{folder.name}  Write the parser', text)
         self.assertIn('priority: 7', text)
-        self.assertIn(f'plan: {folder / task_plan.PLAN_NAME}', text)
+        self.assertIn(f'plan: {task_files.plan_path(folder)}', text)
         self.assertIn(f'brief: {plan_brief.brief_text(folder.name)}', text)
         self.assertIn(task_temp.TEMP_SENTENCE, text)
 

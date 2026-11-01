@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Type_UUID in "modules/computer/type/protocol/uuid.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+
+tp Task_Error_WrittenByPredecessor cp {
+	Error
+}
+
+tp Writer mt (self Task_Error_WrittenByPredecessor) () (writer Type_UUID)
+
+tp Successor mt (self Task_Error_WrittenByPredecessor) () (successor Type_UUID)
+
+tp Conversion mt (self Task_Error_WrittenByPredecessor) () (service String)
+
+tp Task_Error_NotConvertible cp {
+	Error
+}
+
+tp Reason mt (self Task_Error_NotConvertible) () (reason String)
