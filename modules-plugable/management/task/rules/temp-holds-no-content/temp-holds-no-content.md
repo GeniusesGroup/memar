@@ -7,14 +7,14 @@ Status: Draft
 ## Why it exists
 The owner's ruling, given in chat on 2026-11-01 while task 20261026-T200843Z-21460 was running, and recorded in the plan of task 20261101-T060801Z-24804. The reason below is the writer's inference, not the owner's: a text written to `temp/` and then posted from it leaves two copies of the same text.
 
-## How a check would run
-A file in a task's `temp/` whose body equals the body of a numbered content of the same task breaks the rule. Today nothing runs this check. Its scope is identical copies only: a text that differs, or was never posted, is not decided by it.
+## How the check runs
+A file in a task's `temp/` whose body equals the body of a numbered content of the same task breaks the rule, and `memar content check` reports it. Its scope is identical copies only: a text that differs, or was never posted, is not decided by it.
 
 ## Owed
-Each item is owed by task 20261101-T060801Z-24804; the ids after `Owed:` are labels, not tasks. None is done.
-- `memar content check` is to report the file described above. Owed: task.temp-duplicate-check.
+Each item is owed by task 20261101-T060801Z-24804; the ids after `Owed:` are labels, not tasks.
+- Done: `memar content check` reports the file described above. Owed: task.temp-duplicate-check.
   - The writer's specification, to be confirmed by the owner: the body is the text after the front matter block, and a final newline is ignored.
-- The parameter `stdin` of the MCP verbs is to be renamed `text`, by the owner's ruling. Owed: task.verb-text-parameter.
+- Done: the MCP property that carries a verb's standard input is named `text`, by the owner's ruling, on the verbs that read standard input only; a verb with a `text` argument of its own keeps it and has no such property. Owed: task.verb-text-parameter.
 
 ## Open points
 These are the writer's inference, not the owner's ruling. Whether the verbs keep their file options is not ruled, so neither is what follows from it.
@@ -23,4 +23,4 @@ These are the writer's inference, not the owner's ruling. Whether the verbs keep
 - Whether either string is to change is open.
 
 ## What this rule does not claim
-- It does not claim any owed item is done.
+- It does not claim the open points are settled.

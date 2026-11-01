@@ -8,8 +8,9 @@ help says (the router's docstring), so a tool is generated from it and nothing a
 written here. A tool is one leaf verb: its name the verb's words joined by `_`; its description the
 summary the verb declared and its overview; its input one property per argument, named by the
 argument's own word (`--no-links` is `no_links`), typed by what the argument takes, and described by
-the argument's own help. One property more, `stdin`, is what the verb reads on standard input,
-because a verb such as `content write` takes its text there.
+the argument's own help. A verb that reads standard input (an argument of it says so in its help, as `--content-file`
+says "standard input when not given") has one property more, `text`, what it reads there; a verb
+that has an argument `text` of its own keeps it and has no such property.
 
 A call is turned into the arguments the CLI would be typed with, and run by the same parser: a value
 the verb would refuse is refused by the verb, in its own words, as the CLI refuses it.
@@ -17,7 +18,8 @@ the verb would refuse is refused by the verb, in its own words, as the CLI refus
 from __future__ import annotations
 import argparse
 from typing import NamedTuple
-STDIN = 'stdin'
+TEXT = 'text'
+STANDARD_INPUT_WORDS = ('standard input', 'stdin')
 NAME_SEPARATOR = '_'
 JSON_TYPES = {int: 'integer', float: 'number'}
 
@@ -48,6 +50,11 @@ class Tool(NamedTuple):
     @property
     def name(self) -> str:
         return NAME_SEPARATOR.join(self.words)
+
+    @property
+    def standard_input(self) -> bool:
+        reads = any((word in (argument.action.help or '').lower() for argument in self.arguments for word in STANDARD_INPUT_WORDS))
+        return reads and all((argument.name != TEXT for argument in self.arguments))
 
 class Refused(ValueError):
     """A call whose arguments do not fit the tool's input; its message says which and why."""
@@ -112,7 +119,8 @@ def _required(argument: Argument) -> bool:
 def definition(tool: Tool) -> dict:
     """TOOL as `tools/list` gives it."""
     properties = {argument.name: _schema_of(argument, tool.parser) for argument in tool.arguments}
-    properties[STDIN] = {'type': 'string', 'description': 'text the verb reads on standard input; empty when not given'}
+    if tool.standard_input:
+        properties[TEXT] = {'type': 'string', 'description': 'text the verb reads on standard input; empty when not given'}
     description = tool.summary
     if tool.parser.description and tool.parser.description.strip() != tool.summary.strip():
         description = f'{tool.summary}\n\n{tool.parser.description}' if tool.summary else tool.parser.description
@@ -130,13 +138,13 @@ def argv(tool: Tool, given: dict) -> tuple[list[str], str]:
     """The arguments the CLI would be typed with for a call of TOOL with GIVEN, and the text for its stdin."""
     if not isinstance(given, dict):
         raise Refused('the arguments of a tool are an object')
-    known = {argument.name for argument in tool.arguments} | {STDIN}
+    known = {argument.name for argument in tool.arguments} | ({TEXT} if tool.standard_input else set())
     unknown = sorted(set(given) - known)
     if unknown:
         raise Refused(f"{tool.name} takes no argument named {', '.join(unknown)}")
-    stdin = given.get(STDIN) or ''
+    stdin = (given.get(TEXT) or '') if tool.standard_input else ''
     if not isinstance(stdin, str):
-        raise Refused(f'{STDIN} is a string')
+        raise Refused(f'{TEXT} is a string')
     options: list[str] = []
     positionals: list[str] = []
     separate = False

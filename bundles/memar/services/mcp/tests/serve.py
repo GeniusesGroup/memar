@@ -159,7 +159,7 @@ class ToolsAreTheVerbs(WithServer):
         self.assertEqual(find['required'], ['text'])
         self.assertEqual(find['properties']['top']['type'], 'integer')
         self.assertEqual(find['properties']['no_links']['type'], 'boolean')
-        self.assertIn('stdin', find['properties'])
+        self.assertNotIn('stdin', find['properties'])
         self.assertIn('rank the sections', tools['content_find']['description'])
 
 class SeesEditsWithoutRestart(unittest.TestCase):
@@ -316,5 +316,43 @@ class ArgumentsAsTyped(unittest.TestCase):
             _tools.argv(self.tools['content_find'], {'text': 'a', 'nothing': 1})
         with self.assertRaisesRegex(_tools.Refused, 'true or false'):
             _tools.argv(self.tools['content_find'], {'text': 'a', 'no_links': 'yes'})
+
+class TextIsTheStandardInput(WithServer):
+    TAKES_STANDARD_INPUT = ('conversation_post', 'content_write')
+
+    def test_the_schemas_carry_text_and_no_stdin(self):
+        tools = {tool['name']: tool for tool in self.server.request('tools/list')['tools']}
+        for name in self.TAKES_STANDARD_INPUT:
+            with self.subTest(tool=name):
+                properties = tools[name]['inputSchema']['properties']
+                self.assertIn('text', properties)
+                self.assertEqual(properties['text']['type'], 'string')
+        for name, tool in tools.items():
+            with self.subTest(tool=name):
+                self.assertNotIn('stdin', tool['inputSchema']['properties'])
+
+    def test_a_call_with_stdin_is_refused(self):
+        with self.assertRaisesRegex(AssertionError, 'no argument named stdin'):
+            self.server.call('content_write', {'file': 'unused.md', 'stdin': 'x'})
+
+    def test_text_reaches_the_verb_as_its_standard_input(self):
+        scratch = Path(suite_scratch()) / 'text-as-stdin'
+        scratch.mkdir(parents=True, exist_ok=True)
+        self.addCleanup(remove_tree, scratch)
+        target = scratch / 'out.md'
+        stdout, stderr, status = self.server.call('content_write', {'file': str(target), 'create': True, 'text': 'from text\n'})
+        self.assertEqual(status, 0, stderr)
+        self.assertEqual(target.read_text(encoding='utf-8'), 'from text\n')
+
+    def test_argv_hands_text_back_as_the_standard_input(self):
+        from mcp.services._worker import _load_router
+        router = _load_router(SCRIPTS)
+        parser, _ = router.assemble(router.services())
+        tools = {tool.name: tool for tool in _tools.tools(parser)}
+        words, standard_input = _tools.argv(tools['content_write'], {'file': 'a.md', 'text': 'body'})
+        self.assertEqual(standard_input, 'body')
+        self.assertNotIn('body', words)
+        with self.assertRaisesRegex(_tools.Refused, 'no argument named stdin'):
+            _tools.argv(tools['content_write'], {'file': 'a.md', 'stdin': 'body'})
 if __name__ == '__main__':
     unittest.main()
