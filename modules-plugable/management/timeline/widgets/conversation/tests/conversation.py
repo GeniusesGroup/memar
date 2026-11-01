@@ -22,6 +22,7 @@ _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_
 suite_scratch = _m_fs_test_scratch.suite_scratch
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
 memar_fs = _m_fs_memar
+import argparse
 import contextlib
 import io
 import sys
@@ -38,7 +39,7 @@ base = 'modules-plugable.management.timeline.widgets.conversation'
 conversation = import_module(f'{base}.conversation')
 post = import_module(f'{base}.services.post')
 latest = import_module(f'{base}.services.latest')
-task_files = import_module('modules-plugable.management.task.services.task_files')
+task_files = import_module('modules-plugable.management.task.services.task_memory')
 plan_file = import_module('modules-plugable.management.task.services.plan_file')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 placement_errors = import_module('modules.management.timeline.errors.placement')
@@ -154,10 +155,10 @@ class Fixture(unittest.TestCase):
     def old(self) -> None:
         (self.folder / plan_file.PLAN_NAME).write_text('---\nTitle: T\nStatus: Queued\nStart Date: 2026-10-13T00:00:00Z\n---\n# T\n', encoding='utf-8', newline='\n')
 
-    def posted(self, kind: str, text: str, author: str | None = None) -> str:
+    def posted(self, kind: str, text: str, author: str | None = None, refs: tuple = ()) -> str:
         out = io.StringIO()
         with contextlib.redirect_stdout(out), unittest.mock.patch.object(sys, 'stdin', io.StringIO(text)):
-            post.post_text('T-1', kind, None, author)
+            post.post_text('T-1', kind, None, author, refs)
         return out.getvalue()
 
     def refused(self, call, *args) -> str:
@@ -186,6 +187,30 @@ class Verb(Fixture):
         self.made()
         self.posted('message', 'hello\n')
         self.assertNotIn('follows', timeline_files.latest_content(self.folder, 'message').header)
+
+    def test_refs_are_written_to_the_header_a_bare_number_meaning_this_timeline(self) -> None:
+        self.made()
+        self.posted('message', 'r\n', None, ('5', 'OTHER-2:3'))
+        self.assertEqual(timeline_files.latest_content(self.folder, 'message').header['refs'], 'T-1:5\nOTHER-2:3')
+
+    def test_a_post_without_refs_has_no_refs_field(self) -> None:
+        self.made()
+        self.posted('message', 'r\n')
+        self.assertNotIn('refs', timeline_files.latest_content(self.folder, 'message').header)
+
+    def test_a_ref_that_is_no_number_is_refused_and_nothing_is_written(self) -> None:
+        self.made()
+        for bad in ('abc', 'T-2:x', 'T-2:0', ':4', '-1'):
+            with self.subTest(bad=bad):
+                self.refused(self.posted, 'message', 'r\n', None, (bad,))
+        self.assertEqual(timeline_files.read_contents(self.folder), [])
+
+    def test_the_verb_declares_a_repeatable_refs_argument(self) -> None:
+        parser = argparse.ArgumentParser()
+        verbs = parser.add_subparsers()
+        post.describe(verbs)
+        given = parser.parse_args(['post', '--timeline', 'T-1', '--kind', 'message', '--refs', '5', '--refs', 'X:2'])
+        self.assertEqual(given.refs, ['5', 'X:2'])
 
     def test_the_placer_is_the_one_given(self) -> None:
         self.made()
@@ -235,7 +260,7 @@ class Verb(Fixture):
 
     def test_the_kinds_of_the_templates_are_the_kinds_the_documentation_modules_declare(self) -> None:
         self.assertEqual(post.FIXED_KINDS, ('message',))
-        self.assertEqual(set(post.template_kinds()), {'plan', 'report', 'changelog', 'question', 'decision', 'assumption', 'anticipated-work', 'research'})
+        self.assertEqual(set(post.template_kinds()), {'plan', 'report', 'changelog', 'question', 'decision', 'assumption', 'anticipated-work', 'research', 'approval'})
 
     def test_a_kind_with_no_declared_template_is_checked_as_a_label(self) -> None:
         self.assertNotIn('no-such-kind-anywhere', post.template_kinds())

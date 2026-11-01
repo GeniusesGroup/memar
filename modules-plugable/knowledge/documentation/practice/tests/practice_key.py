@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for `PracticeKey` in `primitive/practice_key.py`.
-
-    python modules-plugable/knowledge/documentation/practice/tests/practice_key.py
-
-The subject is the front-matter keys a Practice-facet document carries. Named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
-
-What is pinned: the keys are the specification's, in its order, each with a description and a written form.
-"""
 from __future__ import annotations
 from importlib import import_module
 import sys

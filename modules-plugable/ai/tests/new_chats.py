@@ -3,7 +3,7 @@
 
 """Tests for the prompt that asks the owner to run tasks each in a new chat, in `modules-plugable/ai/services/new_chats.py`.
 
-    python modules/management/task/tests/new_chats.py
+    python modules-plugable/ai/tests/new_chats.py
 
 Named for the file that holds the subject per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),

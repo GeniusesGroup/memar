@@ -3,7 +3,7 @@
 
 """Tests for the task verbs that print a prompt: which service declares each and what each reaches.
 
-    python modules/management/task/tests/prompt_verbs.py
+    python modules-plugable/ai/tests/prompt_verbs.py
 
 What each prompt's text is, is pinned by its own service's suite beside this
 one; a behavior pinned in two files is one of them to forget. Nothing here

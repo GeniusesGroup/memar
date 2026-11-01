@@ -105,7 +105,8 @@ def add_text(folder: Path, kind: str, text: str, author: str, refs=(), fields: d
 
 class FileTimeline:
 
-    def __init__(self, resolve: Callable, exists: Callable, home: Path | None = None) -> None:
+    def __init__(self, resolve: Callable, exists: Callable, home: Path | None = None, refs=()) -> None:
+        self.refs = tuple(refs)
         self.resolve = resolve
         self.exists = exists
         self.home = home
@@ -142,6 +143,6 @@ class FileTimeline:
         if not found:
             raise Timeline_Error_NotFound()
         instant = datetime.fromtimestamp(placed_at, timezone.utc).strftime(INSTANT_FORMAT)
-        number = write_content(folder, kind, text, placer, follows=after, fields={'content': content}, placed_at=instant)
+        number = write_content(folder, kind, text, placer, follows=after, refs=self.refs, fields={'content': content}, placed_at=instant)
         self.pending.pop(content, None)
         return number

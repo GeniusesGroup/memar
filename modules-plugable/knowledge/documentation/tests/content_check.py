@@ -63,10 +63,8 @@ What is pinned, and what each pin is for:
   MemarRulesAutoDetect  Without a flag the folder decides: inside a Memar
                        repository the Markdown conventions apply, outside only
                        encoding and newlines do; an explicit flag wins.
-  HandoffEntriesAreWarnedAbout  An Open Questions entry missing State, Options,
-                      Anchor or Blocks is a warning printed apart from the
-                      problems and never changing the exit; inside a Memar
-                      repository and in `*.handoff.md` only.
+  HandoffFilesAreNotJudgedByName  A `*.handoff.md` file is checked as any
+                      Markdown file; no decision is made by its name.
   CitationDirection   A relative link from the base to the modules is a
                       warning, per Documentation -> Citation Direction: a
                       debt, never a problem and never a changed exit; a
@@ -578,6 +576,13 @@ class OwedMarkIsAHint(LinkFixture):
                 code = stop.code or 0
         return (out.getvalue(), code)
 
+    def test_a_changelog_file_is_not_read_for_propagations(self) -> None:
+        self.write('docs/a.changelog.md', '# Log\n- Propagates to:\n  - x.md: Pending - owed\n')
+        out, code = self.run_check()
+        self.assertNotIn('undischarged propagations', out)
+        self.assertNotIn('x.md', out)
+        self.assertEqual(code, 0)
+
     def test_an_id_on_both_sides_is_not_reported(self) -> None:
         self.write('a.md', '# A\nOwed: khayyam.js-backend-runs\n')
         self.write('t/a.test.ts', "test('owed:khayyam.js-backend-runs runs', { todo: true }, () => {});\n")
@@ -622,10 +627,8 @@ class OwedMarkIsAHint(LinkFixture):
         self.assertNotIn('owed marks', out)
         self.assertEqual(code, 0)
 
-class HandoffEntriesAreWarnedAbout(LinkFixture):
-    """An Open Questions entry missing State, Options, Anchor or Blocks is a warning, apart from the problems."""
+class HandoffFilesAreNotJudgedByName(LinkFixture):
     ENTRY = '## Open Questions\n### Q?\n- **State**: x\n'
-    FULL = '## Open Questions\n### Q?\n- State: x\n- Options: a\n- Anchor: y\n- Blocks: no\n'
 
     def run_check(self, memar_rules: bool=True) -> tuple[str, int]:
         import argparse
@@ -641,29 +644,16 @@ class HandoffEntriesAreWarnedAbout(LinkFixture):
                 code = stop.code or 0
         return (out.getvalue(), code)
 
-    def test_a_short_entry_warns_and_is_not_a_problem(self) -> None:
+    def test_a_short_entry_in_a_handoff_file_gives_no_warning(self) -> None:
         self.write('a.handoff.md', '# A handoff\n\n' + self.ENTRY)
         out, code = self.run_check()
-        self.assertIn('warnings (not counted as problems):', out)
-        self.assertIn("a.handoff.md:4: entry 'Q?' lacks Options, Anchor, Blocks", out)
-        self.assertIn('0 problems', out)
-        self.assertIn('1 warning', out)
+        self.assertNotIn('lacks', out)
+        self.assertNotIn('warning', out)
         self.assertEqual(code, 0)
 
-    def test_check_file_itself_does_not_return_it(self) -> None:
-        path = self.write('a.handoff.md', '# A handoff\n\n' + self.ENTRY)
-        self.assertEqual(content_check.check_file(path, {}, True, root=self.root), [])
+    def test_the_check_no_longer_names_the_entry_lint(self) -> None:
+        self.assertFalse(hasattr(content_check, 'entry_warnings'))
 
-    def test_a_complete_entry_and_other_documents_do_not_warn(self) -> None:
-        self.write('a.handoff.md', '# A handoff\n\n' + self.FULL)
-        self.write('b.md', '# B\n\n' + self.ENTRY)
-        out, _ = self.run_check()
-        self.assertNotIn('warning', out)
-
-    def test_outside_a_memar_repository_it_is_not_judged(self) -> None:
-        self.write('a.handoff.md', '# A handoff\n\n' + self.ENTRY)
-        out, _ = self.run_check(memar_rules=False)
-        self.assertNotIn('lacks', out)
 class TempHoldsNoContent(LinkFixture):
     FRONT = '---\nkind: plan\nauthor: memar\nplaced_at: 2026-11-01T06:08:50Z\ncontent: cccb33f5-d955-467e-bb6a-39cedd3e0d77\n---\n'
     BODY_ONE = '# One\nfirst body\n'

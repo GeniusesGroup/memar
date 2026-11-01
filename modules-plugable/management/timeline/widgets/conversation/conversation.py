@@ -14,9 +14,9 @@ _m_files = import_module('modules.management.timeline.services.timeline_files')
 _m_errors = import_module('modules.management.timeline.errors.placement')
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 has_task = _m_task_files.has_task
-is_new = _m_task_files.is_new
+accepts_contents = _m_task_files.accepts_contents
 DOMAIN = 'conversation'
 
 
@@ -49,9 +49,9 @@ class Conversation:
         return _m_place.place_content(placements, timeline, content, kind, placer, after, clock=self.clock)
 
 
-def file_timeline(timeline: str):
+def file_timeline(timeline: str, refs=()):
     folder = folder_of(timeline)
-    return _m_files.FileTimeline(lambda held: folder, lambda held: is_new(held), home=folder)
+    return _m_files.FileTimeline(lambda held: folder, lambda held: accepts_contents(held), home=folder, refs=refs)
 
 
 def not_found_reason(timeline: str) -> str:

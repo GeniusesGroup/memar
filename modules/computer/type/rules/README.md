@@ -4,5 +4,6 @@ Rules for the conditions a type and the code that declares it are held to. The g
 | Rule | Subject | Tier | What it is |
 | --- | --- | --- | --- |
 | [No Comments in Code](./no-comments-in-code/no-comments-in-code.md) | Where a type says what it is | Governance | A type's text is written by its own methods, never by a comment, in every language |
+| [One Type per File](./one-type-per-file/one-type-per-file.md) | What a file declares | Governance | A file declares one type and is named for it; a catalog of members with definitions of their own is a set of types, one file each |
 
 The Rule is governance-tier and is enforced by no check this repository runs today; an organization adopting this repository's Rules may keep, relax, or replace it without forking anything.

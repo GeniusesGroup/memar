@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for `ContributorRole` in `primitive/contributor_role.py`.
-
-    python modules-plugable/knowledge/documentation/changelog/tests/contributor_role.py
-
-The subject is role tags of a changelog entry's Contributors bullet that code or the documents name; the vocabulary is open, so another tag is written freely. Named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
-
-What is pinned: the words are those the specification names, in its order, each with a meaning; each is read back from its text in any case; any other text is no member.
-"""
 from __future__ import annotations
 from importlib import import_module
 import sys
@@ -21,25 +10,43 @@ TOP = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
 sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-_m_contributor_role = import_module('modules-plugable.knowledge.documentation.changelog.primitive.contributor_role')
-ContributorRole = _m_contributor_role.ContributorRole
-WORDS = ('claimed', 'argued', 'reviewed', 'rewrote', 'tested', 'requested', 'approved')
+Catalog = import_module('modules.knowledge.content.primitive.catalog').Catalog
+BUDGET_SECONDS = 10
+FOLDER = TESTS.parent / 'primitive'
+CATALOG = Catalog(FOLDER, 'contributor-role')
+NAMES = ('approved',)
 
 class ContributorRolePins(unittest.TestCase):
 
-    def test_the_words_are_the_specifications_in_its_order(self) -> None:
-        self.assertEqual(ContributorRole.words(), WORDS)
+    def test_the_names_are_the_specifications_in_its_order(self) -> None:
+        self.assertEqual(CATALOG.words(), NAMES)
 
-    def test_each_has_a_meaning(self) -> None:
-        for member in ContributorRole:
-            with self.subTest(member=member.name):
+    def test_each_is_a_type_declared_in_a_file_of_the_folder(self) -> None:
+        base = import_module('modules.knowledge.content.primitive.word').Word
+        for member in CATALOG:
+            with self.subTest(member=member.__name__):
+                self.assertTrue(isinstance(member, type) and issubclass(member, base))
+                self.assertEqual(Path(sys.modules[member.__module__].__file__).parent, FOLDER)
+                self.assertIn('contributor-role', member.labels)
+
+    def test_each_says_what_it_means(self) -> None:
+        for member in CATALOG:
+            with self.subTest(member=member.__name__):
                 self.assertTrue(member.meaning)
 
+    def test_each_carries_its_own_order(self) -> None:
+        self.assertEqual([member.order for member in CATALOG], sorted(member.order for member in CATALOG))
+        self.assertEqual(len({member.order for member in CATALOG}), len(CATALOG))
+
     def test_each_is_read_back_in_any_case(self) -> None:
-        for member in ContributorRole:
-            self.assertIs(ContributorRole.read(' ' + member.word.upper() + ' '), member)
+        for member in CATALOG:
+            self.assertIs(CATALOG.read(' ' + member.word.upper() + ' '), member)
 
     def test_any_other_text_is_no_member(self) -> None:
-        self.assertIsNone(ContributorRole.read('no such word'))
+        self.assertIsNone(CATALOG.read('no such word'))
+
+    def test_the_words_read_as_a_sentence(self) -> None:
+        self.assertEqual(CATALOG.listing(), 'approved')
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -53,7 +53,7 @@ class OneVerbHoldsThemAll(unittest.TestCase):
     hash, because argparse wraps help to the terminal width and a byte pin is a
     property of the machine as much as of the file.
     """
-    EVERY_VERB = ('add-human-approval-to-changelog-record', 'backlinks', 'check', 'edit', 'find', 'get-act-context', 'get-meta', 'get-section', 'hour-id', 'list-ai-only-changelog-records', 'list-undischarged-propagations', 'meta', 'obligations', 'path', 'questions', 'resolve-path', 'search', 'section', 'write')
+    EVERY_VERB = ('backlinks', 'check', 'edit', 'find', 'get-act-context', 'get-meta', 'get-section', 'hour-id', 'list-ai-only-changelog-records', 'list-undischarged-propagations', 'meta', 'path', 'questions', 'resolve-path', 'search', 'section', 'write')
 
     def test_every_verb_is_accepted_under_content(self) -> None:
         for verb in self.EVERY_VERB:

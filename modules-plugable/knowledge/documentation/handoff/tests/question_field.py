@@ -1,16 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for `QuestionField` in `primitive/question_field.py`.
-
-    python modules-plugable/knowledge/documentation/handoff/tests/question_field.py
-
-The subject is the six fields an Open Questions entry carries. Named for the file that holds it per
-[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
-
-What is pinned: the six fields in the specification's order, each with a meaning; the four `content check` warns about are State, Options, Anchor and Blocks; a field is read back in any case.
-"""
 from __future__ import annotations
 from importlib import import_module
 import sys
@@ -21,20 +10,43 @@ TOP = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
 sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-_m_question_field = import_module('modules-plugable.knowledge.documentation.handoff.primitive.question_field')
-QuestionField = _m_question_field.QuestionField
+Catalog = import_module('modules.knowledge.content.primitive.catalog').Catalog
+BUDGET_SECONDS = 10
+FOLDER = TESTS.parent / 'primitive'
+CATALOG = Catalog(FOLDER, 'question-field')
+NAMES = ('Heading', 'State', 'Options', 'Anchor', 'Blocks', 'Asked')
 
 class QuestionFieldPins(unittest.TestCase):
 
-    def test_the_six_fields_in_the_specifications_order(self) -> None:
-        self.assertEqual(QuestionField.words(), ('Heading', 'State', 'Options', 'Anchor', 'Blocks', 'Asked'))
+    def test_the_names_are_the_specifications_in_its_order(self) -> None:
+        self.assertEqual(CATALOG.headings(), NAMES)
 
-    def test_four_are_warned_about(self) -> None:
-        self.assertEqual([f.word for f in QuestionField if f.warned], ['State', 'Options', 'Anchor', 'Blocks'])
+    def test_each_is_a_type_declared_in_a_file_of_the_folder(self) -> None:
+        base = import_module('modules.knowledge.content.primitive.section').Section
+        for member in CATALOG:
+            with self.subTest(member=member.__name__):
+                self.assertTrue(isinstance(member, type) and issubclass(member, base))
+                self.assertEqual(Path(sys.modules[member.__module__].__file__).parent, FOLDER)
+                self.assertIn('question-field', member.labels)
 
-    def test_each_has_a_meaning_and_is_read_back(self) -> None:
-        for field in QuestionField:
-            self.assertTrue(field.meaning)
-            self.assertIs(QuestionField.read(field.word.upper()), field)
+    def test_each_says_what_it_means(self) -> None:
+        for member in CATALOG:
+            with self.subTest(member=member.__name__):
+                self.assertTrue(member.purpose)
+
+    def test_each_carries_its_own_order(self) -> None:
+        self.assertEqual([member.order for member in CATALOG], sorted(member.order for member in CATALOG))
+        self.assertEqual(len({member.order for member in CATALOG}), len(CATALOG))
+
+    def test_each_is_read_back_in_any_case(self) -> None:
+        for member in CATALOG:
+            self.assertIs(CATALOG.read(' ' + member.heading.upper() + ' '), member)
+
+    def test_any_other_text_is_no_member(self) -> None:
+        self.assertIsNone(CATALOG.read('no such heading'))
+
+    def test_four_carry_the_label_warned(self) -> None:
+        self.assertEqual(Catalog(FOLDER, 'warned').headings(), ('State', 'Options', 'Anchor', 'Blocks'))
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

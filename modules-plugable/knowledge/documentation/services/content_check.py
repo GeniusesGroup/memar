@@ -11,10 +11,7 @@ a heading — are Memar's own conventions and apply only inside a Memar
 repository, which is asked of `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` rather than
 assumed.
 
-Given a folder it also prints the undischarged propagations its ledgers hold,
-apart from the problems and not counted among them: a `Pending` entry is the
-correct content of the changelog that holds it, and a gate that is always red
-is not a gate. A link that points up the layers of the written content is a
+A link that points up the layers of the written content is a
 warning for the same kind of reason: it is a debt, repaid when its text is
 upgraded, and never a defect a link is deleted to clear.
 
@@ -41,10 +38,6 @@ _m_markdown = import_module('modules-plugable.computer.codec.markdown.services.m
 without_code = _m_markdown.without_code
 _m_owed = import_module('modules-plugable.knowledge.documentation.services.owed')
 owed_hints = _m_owed.owed_hints
-_m_propagation = import_module('modules-plugable.knowledge.documentation.services.propagation')
-undischarged_propagations = _m_propagation.undischarged_propagations
-_m_questions_lint = import_module('modules-plugable.knowledge.documentation.services.questions_lint')
-entry_warnings = _m_questions_lint.entry_warnings
 from modules.knowledge.content.services.reference import content_root
 from modules.knowledge.text.services.file_text import plain_path
 from modules.knowledge.text.services.text_check import file_problems
@@ -57,7 +50,7 @@ _m_temp_duplicate = import_module('modules-plugable.knowledge.documentation.serv
 temp_duplicate_problems = _m_temp_duplicate.temp_duplicate_problems
 CHECKED_SUFFIXES = ('.md', '.kh', '.py', '.ts', '.json', '.yaml', '.yml', '.txt', '.ps1', '.sh', '.bat', '.cmd')
 def describe(verbs):
-    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files; a folder also reports undischarged propagations', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, an Open Questions entry missing a field, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; given a folder it also reports undischarged propagations. Neither is counted as a problem.", formatter_class=argparse.HelpFormatter)
+    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
     parser.add_argument('files', nargs='+', help='files or folders (any path)')
     parser.add_argument('-v', '--verbose', action='store_true', help='also print clean files')
     parser.add_argument('--memar-rules', dest='memar_rules', action='store_true', default=None, help="apply Memar's Markdown conventions; the default asks whether the folder is a Memar repository")
@@ -159,13 +152,6 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             print(f'{shown}:')
             for problem in problems:
                 print(f'  - {problem}')
-    outstanding: list[tuple[Path, int, str]] = []
-    if directories:
-        outstanding = undischarged_propagations(files)
-    if outstanding:
-        print('\nundischarged propagations:')
-        for _, _, report in outstanding:
-            print(f'  - {report}')
     warnings: list[str] = []
     if memar_rules:
         for path in files:
@@ -173,8 +159,6 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
                 shown = path.relative_to(root)
             except ValueError:
                 shown = path
-            if path.name.endswith('.handoff.md'):
-                warnings.extend((f"{shown}:{text.removeprefix('line ')}" for text in entry_warnings(path)))
             warnings.extend((f"{shown}:{text.removeprefix('line ')}" for text in upward_warnings(path, link_cache)))
             if path.suffix == '.md':
                 warnings.extend((f'{shown}: {text}' for text in list_warnings(path, root)))
@@ -193,7 +177,7 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             for hint in hints:
                 print(f'  - {hint}')
     dropped = sum((list_drops(path, root) for path in files if path.suffix == '.md'))
-    print(f"\nchecked {len(files)} file{('s' if len(files) != 1 else '')}, {total} problem{('s' if total != 1 else '')}" + (f", {len(outstanding)} undischarged propagation{('s' if len(outstanding) != 1 else '')}" if outstanding else '') + (f", {len(warnings)} warning{('s' if len(warnings) != 1 else '')}" if warnings else '') + (f", {dropped} passage{('s' if dropped != 1 else '')} of Memar dropped by this project's lists" if dropped else ''))
+    print(f"\nchecked {len(files)} file{('s' if len(files) != 1 else '')}, {total} problem{('s' if total != 1 else '')}" + (f", {len(warnings)} warning{('s' if len(warnings) != 1 else '')}" if warnings else '') + (f", {dropped} passage{('s' if dropped != 1 else '')} of Memar dropped by this project's lists" if dropped else ''))
     if not memar_rules:
         print("not a Memar repository, so Memar's Markdown conventions were not applied: encoding, newlines, and decoding damage only")
     if total:

@@ -1,45 +1,49 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for `PlanPart` in `primitive/plan_part.py`.
-
-    python modules-plugable/management/task/tests/plan_part.py
-
-The subject is the parts under a task plan's front matter, in order. Named for the file that holds it per
-[Test Naming](../../../process/test/rules/test-naming/test-naming.md), in the `tests/` folder of the module that owns it per
-[Test Placement](../../../process/test/rules/test-placement/test-placement.md).
-
-What is pinned: the headings are those the specification names, in its order, each with a meaning; each is read back from its text in any case; any other text is no member.
-"""
 from __future__ import annotations
 from importlib import import_module
 import sys
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
+TOP = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
 sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services')); sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
-PlanPart = _m_plan_part.PlanPart
-WORDS = ('Request', 'Why', 'Steps', 'Next')
+Catalog = import_module('modules.knowledge.content.primitive.catalog').Catalog
+BUDGET_SECONDS = 10
+FOLDER = TESTS.parent / 'plan' / 'primitive'
+CATALOG = Catalog(FOLDER, 'plan-part')
+NAMES = ('Request', 'Why', 'Steps', 'Next')
 
 class PlanPartPins(unittest.TestCase):
 
-    def test_the_headings_are_the_specifications_in_its_order(self) -> None:
-        self.assertEqual(PlanPart.headings(), WORDS)
+    def test_the_names_are_the_specifications_in_its_order(self) -> None:
+        self.assertEqual(CATALOG.headings(), NAMES)
 
-    def test_each_has_a_meaning(self) -> None:
-        for member in PlanPart:
-            with self.subTest(member=member.name):
+    def test_each_is_a_type_declared_in_a_file_of_the_folder(self) -> None:
+        base = import_module('modules.knowledge.content.primitive.section').Section
+        for member in CATALOG:
+            with self.subTest(member=member.__name__):
+                self.assertTrue(isinstance(member, type) and issubclass(member, base))
+                self.assertEqual(Path(sys.modules[member.__module__].__file__).parent, FOLDER)
+                self.assertIn('plan-part', member.labels)
+
+    def test_each_says_what_it_means(self) -> None:
+        for member in CATALOG:
+            with self.subTest(member=member.__name__):
                 self.assertTrue(member.purpose)
 
+    def test_each_carries_its_own_order(self) -> None:
+        self.assertEqual([member.order for member in CATALOG], sorted(member.order for member in CATALOG))
+        self.assertEqual(len({member.order for member in CATALOG}), len(CATALOG))
+
     def test_each_is_read_back_in_any_case(self) -> None:
-        for member in PlanPart:
-            self.assertIs(PlanPart.read(' ' + member.heading.upper() + ' '), member)
+        for member in CATALOG:
+            self.assertIs(CATALOG.read(' ' + member.heading.upper() + ' '), member)
 
     def test_any_other_text_is_no_member(self) -> None:
-        self.assertIsNone(PlanPart.read('no such heading'))
+        self.assertIsNone(CATALOG.read('no such heading'))
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

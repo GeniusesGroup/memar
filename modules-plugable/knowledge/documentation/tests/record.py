@@ -1,36 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for the task record types in `record.py`.
-
-    python modules-plugable/management/task/tests/record.py
-
-The subject is the shape of a task's plan.md and report.md, declared once,
-named for the file that holds it per
-[Test Naming](../../../process/test/rules/test-naming/test-naming.md),
-in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../process/test/rules/test-placement/test-placement.md).
-
-Nothing here writes.
-
-What is pinned, and what each pin is for:
-
-PlanRecord    plan.md: the front-matter keys in the order a new plan
-                 writes them, each with a description, and the four parts; its
-                 Statuses are those the table gives a task plan.
-  ReportRecord  report.md: the task's id, the Title and Status keys, the
-                 four parts, the `Decisions needed` hand-back part and its
-                 ten-line limit; its Statuses are those the table gives a
-                 task report.
-  TheId         Both records open with one field, ID (the Explanation's ID and
-                 a task's `Task` are one), from the one declaration;
-                 the plan's Start Date replaces `Opened`, and a file written
-                 with an earlier name is still read as the current key.
-  Outline       The shape rendered for a help text names every key and every
-                 part, produced from the record and kept nowhere else.
-
-Usage is the interface. Do not duplicate these recipes as prose catalogs.
-"""
 from __future__ import annotations
 from importlib import import_module
 import sys
@@ -112,15 +81,14 @@ class ReportRecord(unittest.TestCase):
         self.assertEqual(REPORT.statuses, (Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
 
 class TheId(unittest.TestCase):
-    """Task (plan, report) and ID (Explanation) are one field, named ID (owner, 2026-10-16)."""
 
     def test_both_records_open_with_the_id_of_the_record_they_belong_to(self) -> None:
         self.assertIs(PLAN.keys[0], PlanKey.ID)
         self.assertIs(REPORT.keys[0], ReportKey.ID)
 
     def test_the_field_is_declared_once_and_written_ID(self) -> None:
-        self.assertEqual(PlanKey.ID.value, ID_FIELD)
-        self.assertEqual(ReportKey.ID.value, ID_FIELD)
+        self.assertIs(PlanKey.ID, ID_FIELD)
+        self.assertIs(ReportKey.ID, ID_FIELD)
         self.assertEqual(PlanKey.ID.written, 'ID')
         self.assertEqual(ReportKey.ID.written, 'ID')
         self.assertFalse(hasattr(PlanKey, 'TASK'))

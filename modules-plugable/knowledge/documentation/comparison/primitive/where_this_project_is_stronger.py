@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+from __future__ import annotations
+from modules.knowledge.content.primitive.section import Section
+
+class WhereThisProjectIsStronger(Section):
+    heading = 'Where this project is stronger'
+    purpose = "the examining project's strengths"
+    order = 4
+    labels = ('essay-stage',)

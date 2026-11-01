@@ -1,46 +1,24 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""record.py — the shape of a documentation record, and the two a task writes, declared once.
-
-A plan and a report are records: a file name, a fixed set of front-matter keys,
-the parts under the front matter in order, and the Status values the file may
-carry ([Status](../../../knowledge/status/primitive/status.py), [Status](../../../../modules-plugable/knowledge/documentation/documentation.md#status)).
-That shape is a closed set, so it is code and is written here and nowhere else
-([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)):
-`task_plan` and `task_report` read and write by it, and `task_new`
-prints it in its help by calling `Record.outline`.
-
-The keys are the facets' own ([PlanKey](../plan/primitive/plan_key.py),
-[ReportKey](../report/primitive/report_key.py)). A record is built from them and
-from `Status`, so it stands here in the module's root and not in `primitive/`.
-"""
 from __future__ import annotations
 from importlib import import_module
 from dataclasses import dataclass
+from pathlib import Path
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-_m_plan_part = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_part')
-PlanPart = _m_plan_part.PlanPart
 from modules.knowledge.content.primitive.record_key import RecordKey
 from modules.knowledge.status.primitive.status import DocumentKind, Status
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
-_m_report_part = import_module('modules-plugable.knowledge.documentation.report.primitive.report_part')
-HAND_BACK_MAX_LINES = _m_report_part.HAND_BACK_MAX_LINES
-ReportPart = _m_report_part.ReportPart
+from modules.knowledge.content.primitive.catalog import Catalog
+_m_decisions_needed = import_module('modules-plugable.knowledge.documentation.report.primitive.decisions_needed')
+DecisionsNeeded = _m_decisions_needed.DecisionsNeeded
+HAND_BACK_MAX_LINES = DecisionsNeeded.max_lines
+PLAN_PARTS = Catalog(Path(__file__).resolve().parent.parent / 'plan' / 'primitive', 'plan-part')
+REPORT_PARTS = Catalog(Path(__file__).resolve().parent.parent / 'report' / 'primitive', 'report-part')
 
 @dataclass(frozen=True)
 class Record:
-    """A task file's shape: its name, its front-matter keys, its parts in order, and the DocumentKind its Status is drawn from.
-
-    HEADING is the heading under the front matter as the help shows it: the
-    task's title for a plan, the word Report for a report.
-
-    HAND_BACK_PART is the part a task adds when it needs someone's
-    decision, and HAND_BACK_MAX_LINES the most lines it may hold for the file
-    to be a hand-back; a record without such a part has neither.
-    """
     file_name: str
     kind: DocumentKind
     keys: tuple[RecordKey, ...]
@@ -51,16 +29,9 @@ class Record:
 
     @property
     def statuses(self) -> tuple[Status, ...]:
-        """The Statuses this record's file may carry."""
         return Status.for_kind(self.kind)
 
     def current(self, front: dict[str, str]) -> dict[str, str]:
-        """FRONT with each key an earlier name still carries read as the key: `Opened` as `Start Date`, `Task` as `ID`.
-
-        FRONT is the record's front matter with its keys lower case. A key
-        already there under its current name wins over an earlier one. The
-        argument is not changed.
-        """
         read = dict(front)
         for key in self.keys:
             if key.key not in read:
@@ -70,8 +41,7 @@ class Record:
         return read
 
     def outline(self) -> str:
-        """The record as a help text shows it: front matter with a line per key saying what it holds, the heading, the parts."""
         front = [f'{key.written}: {key.description}' for key in self.keys]
         return '\n'.join(['---', *front, '---', f'# {self.heading}', '', *(f'## {part}' for part in self.parts)]) + '\n'
-PLAN = Record('plan.md', DocumentKind.PLAN, tuple(PlanKey), PlanPart.every_plan(), 'TITLE')
-REPORT = Record('report.md', DocumentKind.REPORT, tuple(ReportKey), ReportPart.every_report(), 'Report', hand_back_part=ReportPart.DECISIONS_NEEDED.heading, hand_back_max_lines=HAND_BACK_MAX_LINES)
+PLAN = Record('plan.md', DocumentKind.PLAN, tuple(PlanKey), PLAN_PARTS.headings(), 'TITLE')
+REPORT = Record('report.md', DocumentKind.REPORT, tuple(ReportKey), tuple(part.heading for part in REPORT_PARTS if 'hand-back' not in part.labels), 'Report', hand_back_part=DecisionsNeeded.heading, hand_back_max_lines=HAND_BACK_MAX_LINES)

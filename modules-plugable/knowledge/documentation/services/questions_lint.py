@@ -1,51 +1,28 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""modules-plugable/knowledge/documentation/services/questions_lint.py — the fields an Open Questions entry carries, checked.
-
-An entry written during a task stands alone by carrying State, Options, Anchor
-and Blocks ([Open Questions](../../../modules-plugable/knowledge/documentation/handoff/handoff.md#open-questions)).
-`content check` warns, never errors, on an entry missing one, because entries
-written before the rule are still valid. The entries are the ones
-`content_questions` lists: a heading one level below `Open Questions`.
-"""
 from __future__ import annotations
-from importlib import import_module
 import re
 from pathlib import Path
-_m_question_field = import_module('modules-plugable.knowledge.documentation.handoff.primitive.question_field')
-QuestionField = _m_question_field.QuestionField
-_m_content_questions = import_module('modules-plugable.knowledge.documentation.services.content_questions')
-SECTION = _m_content_questions.SECTION
-_FENCE = _m_content_questions._FENCE
-_HEADING = _m_content_questions._HEADING
-FIELDS = tuple((field.word for field in QuestionField if field.warned))
+from modules.knowledge.content.primitive.catalog import Catalog
+QUESTION_KIND = 'question'
+FIELDS = Catalog(Path(__file__).resolve().parent.parent / 'handoff' / 'primitive', 'warned').headings()
+_FENCE = re.compile('^\\s*(```|~~~)')
 _FIELD = re.compile('^\\s*(?:[-*]\\s+)?\\*{0,2}(' + '|'.join(FIELDS) + ')(?: continuation)?(?::\\*{0,2}|\\*{0,2}\\s*:)', re.I)
 
-def entry_warnings(path: Path) -> list[str]:
-    """One `line N: entry 'HEADING' lacks FIELDS` for each entry of PATH missing a field."""
-    entries: list[list] = []
-    section_level = entry_level = 0
+
+def question_warnings(content) -> list:
+    if content.header.get('kind') != QUESTION_KIND:
+        return []
+    have = set()
     fenced = False
-    for number, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
+    for line in content.body.splitlines():
         if _FENCE.match(line):
             fenced = not fenced
             continue
         if fenced:
             continue
-        heading = _HEADING.match(line)
-        if heading:
-            level, title = (len(heading.group(1)), heading.group(2))
-            if section_level and level <= section_level:
-                section_level = 0
-            if not section_level:
-                if title == SECTION:
-                    section_level, entry_level = (level, level + 1)
-            elif level == entry_level:
-                entries.append([number, title, set()])
-            continue
-        if section_level and entries:
-            field = _FIELD.match(line)
-            if field:
-                entries[-1][2].add(field.group(1).capitalize())
-    return [f"line {number}: entry '{title}' lacks {', '.join(missing)}" for number, title, have in entries if (missing := [name for name in FIELDS if name not in have])]
+        field = _FIELD.match(line)
+        if field:
+            have.add(field.group(1).capitalize())
+    missing = [name for name in FIELDS if name not in have]
+    return [f"question lacks {', '.join(missing)}"] if missing else []

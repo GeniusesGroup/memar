@@ -1,48 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the work-list of open propagations in `modules-plugable/knowledge/documentation/services/propagation.py`.
-
-    python modules-plugable/knowledge/documentation/tests/propagation.py
-
-The subject is the reading of a changelog's `Propagates to` field, named for the
-file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
-in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-
-Nothing here writes outside its scratch folder. Every ledger is written into
-one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
-again, and no test reads the repository's own ledgers.
-
-What is pinned, and what each pin is for:
-
-  PendingPropagation   A `Propagates to` entry in state `Pending` is
-                      outstanding work the facet defined a searchable state
-                      for, and this is the only surface that reports it:
-                      `search` excludes changelog files by design, so the
-                      work-list is otherwise invisible.
-  SettledPropagation  `Done` and `Rejected` are closed states by the facet's
-                      own definition, `Rejected` permanently, and neither is
-                      outstanding work. Reporting them would train a reader to
-                      ignore the section.
-  PropagationIsAField The state is read from the entry's own field, so a
-                      sentence that merely mentions `Pending` is not an open
-                      obligation.
-  LedgerNotSpec      `changelog.md` specifies the field and shows
-                      its shape; `cognition.changelog.md` records entries in it.
-                      Reading the first as the second reports the project's own
-                      rules as its outstanding work.
-
-Usage is the interface. Do not duplicate these recipes as prose catalogs.
-"""
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
 import sys
-import tempfile
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
@@ -50,87 +11,71 @@ SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent 
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-content_propagation = import_module('modules-plugable.knowledge.documentation.services.propagation')
+BUDGET_SECONDS = 10
+propagation = import_module('modules-plugable.knowledge.documentation.services.propagation')
+Content = import_module('modules.management.timeline.services.timeline_files').Content
 
-class LedgerFixture(unittest.TestCase):
-    """A scratch tree to write ledgers into, cleaned up however the run ends."""
 
-    def setUp(self) -> None:
-        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
-        self.addCleanup(self.scratch.cleanup)
-        self.root = Path(self.scratch.name)
+def changelog(number: int, items: str, kind: str = 'changelog') -> Content:
+    return Content(number, {'kind': kind}, f'### A change\n- Propagates to:\n{items}\n#### What changed\nx\n')
 
-    def write(self, relative: str, text: str) -> Path:
-        path = self.root / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(text, encoding='utf-8', newline='\n')
-        return path
 
-class PendingPropagation(LedgerFixture):
-    ENTRY = '# Log\n\n## Changelog\n\n### A change\n- Propagates to:\n  - [modeling.md](./modeling.md): Pending - its local reasoning should\n    reference this document instead.\n'
+class OpenPropagations(unittest.TestCase):
 
-    def write_entry(self, text: str=ENTRY) -> Path:
-        return self.write('docs/cognition.changelog.md', text)
+    def test_a_pending_item_is_open_with_its_task_content_line_and_text(self) -> None:
+        found = propagation.open_propagations([('T-1', changelog(3, '  - modeling.md: Pending - reference this.'))])
+        self.assertEqual(found, [('T-1', 3, 3, 'modeling.md: Pending - reference this.')])
 
-    def found(self) -> list[tuple[Path, int, str]]:
-        path = self.write_entry()
-        return content_propagation.undischarged_propagations([path])
-
-    def test_a_pending_entry_is_reported(self) -> None:
-        found = self.found()
-        self.assertEqual(len(found), 1, found)
-        self.assertIn('modeling.md', found[0][2])
-        self.assertEqual(found[0][1], 7)
-
-    def test_the_report_names_the_entry_not_only_the_file(self) -> None:
-        found = self.found()
-        self.assertIn('Pending', found[0][2])
-        self.assertIn('cognition.changelog.md', found[0][2])
-
-    def test_a_wrapped_continuation_line_is_not_a_second_entry(self) -> None:
-        found = self.found()
+    def test_a_wrapped_continuation_line_is_not_a_second_item(self) -> None:
+        found = propagation.open_propagations([('T-1', changelog(1, '  - [m.md](./m.md): Pending - reference\n    this instead.'))])
         self.assertEqual(len(found), 1, found)
 
-    def test_a_file_without_the_field_reports_nothing(self) -> None:
-        path = self.write('docs/cognition.md', '# Cognition\n- Propagates to nothing\n')
-        self.assertEqual(content_propagation.undischarged_propagations([path]), [])
-
-    def test_a_field_named_beside_the_artifact_is_not_an_entry(self) -> None:
-        path = self.write('docs/cognition.changelog.md', '# Log\nSee the Propagates to field for the states.\n')
-        self.assertEqual(content_propagation.undischarged_propagations([path]), [])
-
-    def test_a_non_changelog_file_is_not_scanned(self) -> None:
-        path = self.write('docs/cognition.md', '# Cognition\n- other.md: Pending - owed\n')
-        self.assertEqual(content_propagation.undischarged_propagations([path]), [])
-
-    def test_the_facet_specification_is_not_read_as_a_ledger(self) -> None:
-        path = self.write('modules-plugable/knowledge/documentation/changelog/changelog.md', '# Documentation Changelog\n\n## Changelog\n\n### Structure\n- Propagates to:\n  - {Other artifact}: Pending - {what needs to happen}\n')
-        self.assertEqual(content_propagation.undischarged_propagations([path]), [])
+    def test_a_state_written_as_a_phrase_is_still_pending(self) -> None:
+        found = propagation.open_propagations([('T-1', changelog(1, '  - p.md: Pending deletion - superseded.'))])
+        self.assertEqual(len(found), 1, found)
 
     def test_a_state_word_later_in_the_description_is_not_the_state(self) -> None:
-        path = self.write('docs/cognition.changelog.md', '# Log\n- Propagates to:\n  - modeling.md: Done - the entry it removed was Pending until this run.\n')
-        self.assertEqual(content_propagation.undischarged_propagations([path]), [])
+        self.assertEqual(propagation.open_propagations([('T-1', changelog(1, '  - m.md: Done - it was Pending until now.'))]), [])
 
-    def test_a_pending_state_written_as_a_phrase_is_still_pending(self) -> None:
-        path = self.write('docs/cognition.changelog.md', '# Log\n- Propagates to:\n  - protocol.per.md: Pending deletion - fully superseded by this document.\n')
-        self.assertEqual(len(content_propagation.undischarged_propagations([path])), 1)
+    def test_done_and_rejected_are_not_open(self) -> None:
+        items = '  - a.md: Done - landed\n  - b.md: Rejected - not wanted\n  - c.md: Pending - owed'
+        found = propagation.open_propagations([('T-1', changelog(1, items))])
+        self.assertEqual([entry[3].split(':')[0] for entry in found], ['c.md'])
 
-class SettledPropagation(LedgerFixture):
+    def test_a_line_outside_the_propagates_to_field_is_not_an_item(self) -> None:
+        body = '### A change\n- Type: x\n  - m.md: Pending - not in the field\n'
+        self.assertEqual(propagation.open_propagations([('T-1', Content(1, {'kind': 'changelog'}, body))]), [])
 
-    def settled(self, state: str) -> list[tuple[Path, int, str]]:
-        path = self.write('docs/cognition.changelog.md', f'# Log\n- Propagates to:\n  - modeling.md: {state} - why it was or was not done\n')
-        return content_propagation.undischarged_propagations([path])
+    def test_only_contents_of_kind_changelog_are_read(self) -> None:
+        self.assertEqual(propagation.open_propagations([('T-1', changelog(1, '  - m.md: Pending - owed', 'report'))]), [])
 
-    def test_done_is_not_outstanding(self) -> None:
-        self.assertEqual(self.settled('Done'), [])
+    def test_a_later_content_naming_the_item_done_closes_it(self) -> None:
+        first = ('T-1', changelog(1, '  - m.md: Pending - owed'))
+        later = ('T-2', changelog(4, '  - m.md: Done - landed'))
+        self.assertEqual(propagation.open_propagations([first, later]), [])
 
-    def test_rejected_is_not_outstanding(self) -> None:
-        self.assertEqual(self.settled('Rejected'), [])
+    def test_a_later_content_naming_the_item_rejected_closes_it(self) -> None:
+        first = ('T-1', changelog(1, '  - m.md: Pending - owed'))
+        later = ('T-1', changelog(2, '  - m.md: Rejected - not wanted'))
+        self.assertEqual(propagation.open_propagations([first, later]), [])
 
-    def test_the_states_are_distinguished_in_the_matching_not_by_exclusion(self) -> None:
-        path = self.write('docs/cognition.changelog.md', '# Log\n- Propagates to:\n  - one.md: Pending - owed\n  - two.md: Done - landed\n  - three.md: Rejected - considered and deliberately not done\n  - four.md: Partial - some of it landed\n')
-        found = content_propagation.undischarged_propagations([path])
-        self.assertEqual(len(found), 1, found)
-        self.assertIn('one.md', found[0][2])
+    def test_a_later_pending_reopens_a_closed_item(self) -> None:
+        contents = [('T-1', changelog(1, '  - m.md: Done - landed')), ('T-1', changelog(2, '  - m.md: Pending - again'))]
+        self.assertEqual([entry[1] for entry in propagation.open_propagations(contents)], [2])
+
+    def test_closing_one_item_leaves_the_others_open(self) -> None:
+        first = ('T-1', changelog(1, '  - a.md: Pending - owed\n  - b.md: Pending - owed'))
+        later = ('T-1', changelog(2, '  - a.md: Done - landed'))
+        found = propagation.open_propagations([first, later])
+        self.assertEqual([(entry[1], entry[3].split(':')[0]) for entry in found], [(1, 'b.md')])
+
+    def test_code_in_a_body_is_not_read(self) -> None:
+        body = '### A change\n```\n- Propagates to:\n  - m.md: Pending - shown\n```\n'
+        self.assertEqual(propagation.open_propagations([('T-1', Content(1, {'kind': 'changelog'}, body))]), [])
+
+    def test_the_states_are_those_of_the_propagation_state_catalog(self) -> None:
+        self.assertEqual(propagation.STATES, ('Pending', 'Done', 'Rejected'))
+
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

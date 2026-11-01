@@ -1,63 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/ai/services/task_get_decisions_digest.py — every decision the tasks hand back, gathered into one digest.
-
-Why one digest. The owner's attention is one of the two bottlenecks of the
-work, and a question asked in each of a hundred tasks is a hundred
-interruptions. A task that needs someone's decision writes it in its report
-under `Decisions needed` — each entry the question, its options, and a
-recommendation — and ends; `digest` gathers those entries across the tasks'
-reports into one text, so the owner reads every open decision at once, each
-beside the task and the report it came from. What a report's decisions are
-is `task_report`'s answer, and so is whether the report is a hand-back at
-all (`handback_problem`).
-
-Why the hand-back is checked here. With no launcher, the digest is where the
-agent that handed tasks out reads what came back, and so where a report
-that is not a hand-back — longer than the delegating side may read, or with a
-Status its plan's status disagrees with — has to be said: it is marked as a
-failed hand-back beside its entries, for the owner to see, rather than
-trusted. Each task's priority is shown too, since the owner answering
-decisions answers the most pressing first.
-
-Which tasks. Memar's own, newest first as `list` shows them, a project's
-with `--project` — its own location included, which is where a project's
-tasks lie by default (`.agents/tasks/` inside it) — or one conversation's
-with `--conversation`, wherever its tasks lie; the task that handed
-a conversation's tasks out asks for that one. Of those, a task is in the
-digest when its report has entries, is a failed hand-back (even with no
-entries, since a task that handed back nothing usable is itself what the
-owner has to see), or looks finished or abandoned though it is not complete
-(`task_concerns`). A complete task is in it too when it has entries: its
-decisions are still the owner's to read. A queued task is left out, which no
-one has worked yet and which has handed nothing back; one with no entries, no
-flag, and a sound hand-back is left out too.
-
-The review. With `--day` the digest is the owner's review of that day instead:
-every task not queued that changed on that day (`task_day`), whatever
-it holds, one by one, each with its status, report status, flags, a summary of its
-Result (`task_summary`), its entries, and the command that closes it. The
-owner and an agent read it together; the owner confirms which tasks really
-finished, and the agent runs `close` (`task_close`) for those. The review
-never closes: closing is the owner's word, spoken once per task, and one
-service that both reads and removes would let a misread day remove work. What
-a project wants kept of its finished tasks it keeps through `tasks` in its
-own preferences; Memar's concern is the lasting summary in the changelog and
-the final output, so a reviewed task leaves no folder behind.
-
-Open handoff questions. A question only the owner can answer lives as an entry
-under `Open Questions` in a handoff ([Questions Found During a
-Task](../../../modules-plugable/knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
-not in a report, so the digest ends with those entries as `content_questions`
-lists them (blocking first, then oldest `Asked`), read from Memar's checkout or
-from `--project`'s. An entry a report's `Decisions needed` line already points
-to (the handoff's path with the entry's heading or line) is shown there and not
-again here. A pointer to a handoff, or to a line of it, that holds no open
-question is a failed hand-back: the question the task said it left is not
-where it said. With `--day` only the entries asked that day are listed;
-`--conversation` is about tasks, and leaves the entries out.
-"""
 from __future__ import annotations
 from importlib import import_module
 import argparse
@@ -71,8 +14,9 @@ REPORT = _m_record.REPORT
 from modules.knowledge.status.primitive.status import Status
 _m_content_questions = import_module('modules-plugable.knowledge.documentation.services.content_questions')
 BLOCKING_MARK = _m_content_questions.BLOCKING_MARK
-handoff_files = _m_content_questions.handoff_files
 open_questions = _m_content_questions.open_questions
+_m_contents = import_module('modules-plugable.knowledge.documentation.services.contents_of_tasks')
+contents_of_tasks = _m_contents.contents_of_tasks
 from modules.knowledge.content.services.reference import content_root
 _m_dependency = import_module('modules-plugable.management.task.services.dependency')
 Reader = _m_dependency.Reader
@@ -95,7 +39,7 @@ _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primi
 Priority = _m_priority.Priority
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 report_path = _m_task_files.report_path
 decisions_needed = _m_report_file.decisions_needed
 handback_problem = _m_report_file.handback_problem
@@ -105,68 +49,51 @@ summary_lines = _m_report_summary.summary_lines
 from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-OPEN_HEADING = 'Open handoff questions'
+OPEN_HEADING = 'Open questions'
+DECISION_KIND = 'decision'
 DIGEST_COMMAND = 'get-decisions-digest'
-_POINTER = re.compile('([\\w./\\\\~:-]*?[\\w.-]+\\.handoff\\.md)(?::(\\d+))?')
+_POINTER = re.compile(r'\b(\d{8}-?T\d{6}Z[\w-]*)#(\d+)')
+_FIELD = re.compile(r'^\s*-\s+\*{0,2}(Decided|Confidence|Reason)\*{0,2}\s*:\s*(.*)$', re.I)
 CLOSE_LINE = 'close, once the owner confirms it is finished: memar git trash-task-folder --task-id'
 
-def open_entries(base: Path) -> list[tuple[bool, str, str, int, str, bool, Path]]:
-    """The open entries under BASE, in `content questions` order: (not blocking, asked, shown path, line, heading, blocking, path)."""
-    found = []
-    for path in handoff_files(base):
-        try:
-            shown = path.relative_to(base).as_posix()
-        except ValueError:
-            shown = path.as_posix()
-        for line, heading, blocking, asked in open_questions(path):
-            found.append((not blocking, asked, shown, line, heading, blocking, path))
-    found.sort(key=lambda hit: hit[:4])
+def decision_lines(content) -> list[str]:
+    found = {}
+    for line in content.body.splitlines():
+        match = _FIELD.match(line)
+        if match:
+            found.setdefault(match.group(1).lower(), match.group(2).strip())
+    return [('decision' if name == 'decided' else name) + f': {found[name]}' for name in ('decided', 'confidence', 'reason') if name in found]
+
+def decisions_by_task(contents: list) -> dict[str, list[str]]:
+    found: dict[str, list[str]] = {}
+    for task_id, content in contents:
+        if content.header.get('kind') == DECISION_KIND:
+            found.setdefault(task_id, []).extend(decision_lines(content))
     return found
 
-def pointer_problem(lines: list[str], bases: list[Path]) -> str | None:
-    """Why a `Decisions needed` line points to an entry that is not there; None when none does.
-
-    A line naming `X.handoff.md` (with `:LINE` or not) points to the handoff
-    at X, found under one of BASES; it fails when the file is missing, holds
-    no open question, or holds none at that line.
-    """
+def pointer_problem(lines: list[str], open_keys: set[str]) -> str | None:
     for line in lines:
         for match in _POINTER.finditer(line):
-            name, at = (match.group(1), match.group(2))
-            relative = Path(name.replace('\\', '/'))
-            file = next((base / relative for base in bases if (base / relative).is_file()), None)
-            if relative.is_absolute() and relative.is_file():
-                file = relative
-            if file is None:
-                return f'{REPORT.hand_back_part} points to {name}, which does not exist'
-            lines_found = [entry[0] for entry in open_questions(file)]
-            if at is not None and int(at) not in lines_found:
-                return f'{REPORT.hand_back_part} points to {name}:{at}, which holds no open question there'
-            if not lines_found:
-                return f'{REPORT.hand_back_part} points to {name}, which holds no open question'
+            key = f'{match.group(1)}#{match.group(2)}'
+            if key not in open_keys:
+                return f'{REPORT.hand_back_part} points to {key}, which holds no open question'
     return None
 
-def points_to(lines: list[str], shown: str, line: int, heading: str) -> bool:
-    """Whether a `Decisions needed` line names the entry: its handoff's path, and its heading or its line."""
-    for text in lines:
-        flat = text.replace('\\', '/')
-        if shown in flat and (heading.lower() in text.lower() or f'{shown}:{line}' in flat):
-            return True
-    return False
+def points_to(lines: list[str], task_id: str, number: int) -> bool:
+    key = f'{task_id}#{number}'
+    return any((key in text for text in lines))
 
-def print_open_questions(base: Path, decisions: list[str], wanted: date | None) -> int:
-    """The `Open handoff questions` section for BASE; the entries listed, 0 and nothing printed when none are."""
-    shown_entries = [entry for entry in open_entries(base) if (wanted is None or entry[1] == wanted.isoformat()) and (not points_to(decisions, entry[2], entry[3], entry[4]))]
+def print_open_questions(entries: list, decisions: list[str], wanted: date | None) -> int:
+    shown_entries = [entry for entry in entries if (wanted is None or entry[4] == wanted.isoformat()) and (not points_to(decisions, entry[0], entry[1]))]
     if not shown_entries:
         return 0
     print()
     print(f"{OPEN_HEADING} — {len(shown_entries)} {('entry' if len(shown_entries) == 1 else 'entries')}")
-    for _, _, shown, line, heading, blocking, _ in shown_entries:
-        note(f'{shown}:{line}: {heading}' + (f' {BLOCKING_MARK}' if blocking else ''))
+    for task_id, number, heading, blocking, _ in shown_entries:
+        note(f'{task_id}#{number}: {heading}' + (f' {BLOCKING_MARK}' if blocking else ''))
     return len(shown_entries)
 
-def print_task(task: Task, entries: list[str], problem: str | None, flags: list[str], *, review: bool) -> None:
-    """One task of the digest: its title, where it stands, what it came to when REVIEW, and what it asks."""
+def print_task(task: Task, entries: list[str], problem: str | None, flags: list[str], recorded: list[str], *, review: bool) -> None:
     print()
     print(f"{task.id}  {(task.front or {}).get('title', '')}")
     note(f"status: {task.status or 'none'}")
@@ -183,18 +110,18 @@ def print_task(task: Task, entries: list[str], problem: str | None, flags: list[
     for entry in entries:
         note(entry)
     if review:
+        for line in recorded:
+            note(line)
         note(f'{CLOSE_LINE} {task.id}')
 
 def get_decisions_digest(conversation: str | None=None, project: str | None=None, day: str | None=None) -> None:
-    """`digest`: print the decisions and failed hand-backs, or with DAY every task of that day, in one text.
-
-    PROJECT, as `list --project` takes it, reads that project's tasks
-    wherever they lie; it is a name or a folder, and an empty one is refused.
-    """
     wanted = parse_day(day) if day is not None else None
     root = project_of(project)
     base = root if root is not None else content_root()
-    bases = [base]
+    contents = list(contents_of_tasks(base))
+    questions = open_questions(contents)
+    open_keys = {f'{task_id}#{number}' for task_id, number, _, _, _ in questions}
+    recorded = decisions_by_task(contents)
     gathered = []
     decisions: list[str] = []
     reconcile_all(find_tasks(conversation=conversation, project=project_of(project)))
@@ -207,8 +134,7 @@ def get_decisions_digest(conversation: str | None=None, project: str | None=None
         entries = decisions_needed(task.path)
         problem = handback_problem(task.path, task.status)
         decisions.extend(entries)
-        owned = (task.front or {}).get(PlanKey.PROJECT.key, '')
-        lying = pointer_problem(entries, [Path(owned), *bases] if owned and Path(owned).is_dir() else bases)
+        lying = pointer_problem(entries, open_keys)
         if lying:
             problem = f'{problem}; {lying}' if problem else lying
         flags = [*concerns(task), *concerns_for(task, reader)]
@@ -217,7 +143,7 @@ def get_decisions_digest(conversation: str | None=None, project: str | None=None
     listed = 0 if conversation is not None else None
     if not gathered:
         if listed is None:
-            listed = print_open_questions(base, decisions, wanted)
+            listed = print_open_questions(questions, decisions, wanted)
         if not listed:
             note(f'no task changed on {wanted.isoformat()}' if wanted else 'no decisions needed, and no failed hand-back')
         return
@@ -227,13 +153,19 @@ def get_decisions_digest(conversation: str | None=None, project: str | None=None
     else:
         print(f'{REPORT.hand_back_part} — {len(gathered)} tasks, {count} entries')
     for task, entries, problem, flags in gathered:
-        print_task(task, entries, problem, flags, review=wanted is not None)
+        print_task(task, entries, problem, flags, recorded.get(task.id, []), review=wanted is not None)
     if listed is None:
-        print_open_questions(base, decisions, wanted)
+        print_open_questions(questions, decisions, wanted)
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar task get-decisions-digest`."""
-    digester = verbs.add_parser(DIGEST_COMMAND, help="gather every task's decisions needed into one digest, or review a day's tasks", description=f"""Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the tasks'\n{REPORT_NAME}s: each task with entries, its title, status, priority, report status, and\nentries as written. A report that is not a short hand-back is in it too, marked `failed\nhand-back` with why, and so is a task not complete that looks finished or abandoned,\nmarked `concerns`; so is a task Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\ndependency that cannot be found or makes a cycle. Queued tasks are left out; a complete task is in only when it has\nentries or a failed hand-back. A short hand-back is a {REPORT_NAME} whose Status equals its\nplan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\neach the question, its options, and the one it recommends.\n\nWith --day: the review, for when the owner asks to "review today's tasks with me and\nclose the ones I confirm". Every task not queued that changed on that day, one by one,\nwith the command that closes it. Read each with the owner; run that\n`memar git trash-task-folder --task-id ID` only for those the owner confirms finished, and for\nnone of a project that keeps its tasks (its preferences set `tasks`). The review closes\nnothing itself.\n\nAfter the tasks it lists the open handoff entries, as `memar content questions` does:\nblocking first, then oldest Asked; with --day only those asked that day; none with\n--conversation. A pointer to a handoff or line that holds no open question is a failed\nhand-back.\n\nWithout a project flag it reads Memar's own tasks; {ProjectName.FLAG} reads a project's wherever\nthey lie; --conversation one conversation's, by the id of a task in it.""")
+    digester = verbs.add_parser(DIGEST_COMMAND, help="gather every task's decisions needed into one digest, or review a day's tasks", description=f"""Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the tasks'\n{REPORT_NAME}s: each task with entries, its title, status, priority, report status, and\nentries as written. A report that is not a short hand-back is in it too, marked `failed\nhand-back` with why, and so is a task not complete that looks finished or abandoned,\nmarked `concerns`; so is a task Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\ndependency that cannot be found or makes a cycle. Queued tasks are left out; a complete task is in only when it has\nentries or a failed hand-back. A short hand-back is a {REPORT_NAME} whose Status equals its\nplan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\neach the question, its options, and the one it recommends.\n\nWith --day: the review, for when the owner asks to "review today's tasks with me and\nclose the ones I confirm". Every task not queued that changed on that day, one by one,\nwith the command that closes it. Read each with the owner; run that\n`memar git trash-task-folder --task-id ID` only for those the owner confirms finished, and for\nnone of a project that keeps its tasks (its preferences set `tasks`). The review closes\nnothing itself.\n\nAfter the tasks it lists the open questions (contents of kind question that no later content
+refers to), as `memar content questions` does: blocking first, then by task and number; with
+--day only those asked that day; none with --conversation. A `{REPORT.hand_back_part}` line
+naming `task#number` shows that question there and not again; one naming a question that is
+not open is a failed hand-back. With --day each task also shows its decision contents: the
+Decided, Confidence and Reason fields.
+
+Without a project flag it reads Memar's own tasks; {ProjectName.FLAG} reads a project's wherever\nthey lie; --conversation one conversation's, by the id of a task in it.""")
     add_project_flags(digester, 'read the tasks of the project')
     digester.add_argument('--day', default=None, metavar='DAY', help=f'review the tasks that changed on DAY: {DAY_NAMES}')
     digester.add_argument('--conversation', default=None, metavar='ID', help='gather only the tasks of the conversation the task ID belongs to')

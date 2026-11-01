@@ -44,14 +44,15 @@ What is pinned, and what each pin is for:
                      flags, and the one command that closes it once the owner
                      confirms it finished. The review closes nothing; a day
                      that is not one is refused; a day with no task is said.
-  OpenHandoffQuestions  The open entries `content questions` lists form one
-                     section, blocking first and oldest first; an entry a
-                     `Decisions needed` line points to (its path with the
-                     heading or the line) is shown there only; a pointer to a
-                     file or line holding no open question is a failed
-                     hand-back; `--day` keeps the entries asked that day;
-                     `--project` reads that project's handoffs; a
-                     `--conversation` digest leaves them out.
+  OpenQuestions      The open `question` contents of the tasks (those no later
+                     content refers to) form one section, blocking first, then
+                     by task and number; a question a `Decisions needed` line
+                     names as `task#number` is shown there only; a `task#number`
+                     naming no open question is a failed hand-back; `--day`
+                     keeps the questions asked that day; `--project` reads that
+                     project's tasks; a `--conversation` digest leaves them out.
+  DecisionContents   The review shows each task's `decision` contents with their
+                     Decided, Confidence and Reason fields.
   ProjectScope       `--project` reads a project's tasks in its own
                      location, as `list --project` does; the default does not.
 """
@@ -141,7 +142,7 @@ class OneDigest(Fixture):
     def test_each_task_shows_its_priority(self) -> None:
         folder = self.task('20261012T050007Z-1-0', 'Ranked', 'blocked', ['- Q?'])
         plan = folder / task_plan.PLAN_NAME
-        task_plan_priority.set_priority(stores_over(plan), None, 'T', 8)
+        plan.write_text(plan.read_text(encoding='utf-8').replace('Project: P\n', 'Project: P\nPriority: 8\n', 1), encoding='utf-8', newline='\n')
         self.assertIn('priority: 8', self.digest())
 
     def test_a_report_that_is_not_a_hand_back_is_marked(self) -> None:
@@ -280,82 +281,80 @@ class ProjectScope(Fixture):
             command(parser.parse_args(['get-decisions-digest', '--project', 'theproject']))
         self.assertIn('- In the project?', out.getvalue())
 
-class OpenHandoffQuestions(Fixture):
-    """The digest's `Open handoff questions` section: the entries `content questions` lists, beside the decisions."""
+class OpenQuestions(Fixture):
+    """The digest's `Open questions` section: the open `question` contents, beside the decisions."""
 
-    def handoff(self, relative: str, entries: list[tuple[str, str, str]], root: Path | None=None) -> Path:
-        """A handoff at RELATIVE holding ENTRIES, each (heading, Blocks text, Asked date)."""
-        path = (root or Path(self.scratch.name)) / relative
-        path.parent.mkdir(parents=True, exist_ok=True)
-        body = ''.join((f'### {heading}\n- Blocks: {blocks}\n- Asked: {asked}, Claude\n\n' for heading, blocks, asked in entries))
-        path.write_text(f'# X handoff\n\n## Open Questions\n{body}', encoding='utf-8', newline='\n')
-        return path
+    def content(self, folder: Path, number: int, kind: str, body: str, refs: str='', placed: str='2026-10-01T00:00:00Z') -> None:
+        refs_line = f'refs: {refs}\n' if refs else ''
+        (folder / f'content.{number:05d}.md').write_text(f'---\nkind: {kind}\nplaced_at: {placed}\n{refs_line}---\n{body}', encoding='utf-8', newline='\n')
 
-    def test_open_entries_are_listed_blocking_first_oldest_first(self) -> None:
-        self.handoff('docs/x.handoff.md', [('Later free?', 'no', '2026-10-02'), ('Early free?', 'nothing', '2026-10-01'), ('Late blocker?', 'the lint', '2026-10-05'), ('Early blocker?', 'the gate', '2026-10-03')])
+    def ask(self, folder: Path, number: int, heading: str, blocks: str, asked: str) -> None:
+        self.content(folder, number, 'question', f'### {heading}\n- Blocks: {blocks}\n- Asked: {asked}, Claude\n')
+
+    def test_open_questions_are_listed_blocking_first_then_by_task_and_number(self) -> None:
+        folder = self.task('20261012T080000Z-1-0', 'Asker', 'success', [])
+        self.ask(folder, 1, 'Later free?', 'no', '2026-10-02')
+        self.ask(folder, 2, 'Early blocker?', 'the gate', '2026-10-03')
+        self.ask(folder, 3, 'Other free?', 'no', '2026-10-01')
         text = self.digest()
-        self.assertIn('Open handoff questions', text)
-        self.assertIn('4 entries', text)
-        order = [text.index(name) for name in ('Early blocker?', 'Late blocker?', 'Early free?', 'Later free?')]
+        self.assertIn('Open questions', text)
+        self.assertIn('3 entries', text)
+        order = [text.index(name) for name in ('Early blocker?', 'Later free?', 'Other free?')]
         self.assertEqual(order, sorted(order))
-        self.assertIn('docs/x.handoff.md:16: Early blocker? [blocks]', text.replace('\\', '/'))
-        self.assertNotIn('Early free? [blocks]', text)
+        self.assertIn(f'{folder.name}#2: Early blocker? [blocks]', text)
+        self.assertNotIn('Later free? [blocks]', text)
 
-    def test_no_entries_no_section(self) -> None:
-        self.task('20261012T080000Z-1-0', 'Asks', 'blocked', ['- Q?'])
-        self.assertNotIn('Open handoff questions', self.digest())
+    def test_no_questions_no_section(self) -> None:
+        self.task('20261012T080001Z-1-0', 'Asks', 'blocked', ['- Q?'])
+        self.assertNotIn('Open questions', self.digest())
 
-    def test_entries_show_even_when_no_task_asks(self) -> None:
-        self.handoff('docs/x.handoff.md', [('Lone?', 'no', '2026-10-02')])
+    def test_a_question_shows_even_when_no_task_asks_for_a_decision(self) -> None:
+        folder = self.task('20261012T080002Z-1-0', 'Quiet', 'success', [])
+        self.ask(folder, 1, 'Lone?', 'no', '2026-10-02')
         text = self.digest()
         self.assertIn('Lone?', text)
         self.assertNotIn('no decisions needed', text)
 
-    def test_an_entry_a_decision_points_to_is_listed_once_in_the_decision(self) -> None:
-        self.handoff('docs/x.handoff.md', [('Pointed to?', 'the gate', '2026-10-03'), ('Not pointed to?', 'no', '2026-10-04')])
-        self.task('20261012T080001Z-1-0', 'Asks', 'blocked', ['- Pointed to? Recommend yes. See docs/x.handoff.md'])
+    def test_an_answered_question_is_not_listed(self) -> None:
+        folder = self.task('20261012T080003Z-1-0', 'Answered', 'success', [])
+        self.ask(folder, 1, 'Settled?', 'no', '2026-10-02')
+        self.content(folder, 2, 'decision', '### Settled\n- Decided: yes\n', refs='1', placed='2026-10-03T00:00:00Z')
+        self.assertNotIn('Settled?', self.digest())
+
+    def test_a_question_a_decision_line_points_to_is_listed_once_in_the_decision(self) -> None:
+        folder = self.task('20261012T080004Z-1-0', 'Asks', 'blocked', ['- Pointed to? Recommend yes. See 20261012T080004Z-1-0#1'])
+        self.ask(folder, 1, 'Pointed to?', 'the gate', '2026-10-03')
+        self.ask(folder, 2, 'Not pointed to?', 'no', '2026-10-04')
         text = self.digest()
         self.assertEqual(text.count('Pointed to?'), 1)
         self.assertIn('Not pointed to?', text)
         self.assertNotIn('failed hand-back', text)
 
-    def test_a_pointer_by_line_hides_the_entry_at_that_line(self) -> None:
-        path = self.handoff('docs/x.handoff.md', [('Worded otherwise?', 'no', '2026-10-04')])
-        self.task('20261012T080002Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. docs/x.handoff.md:4'])
-        self.assertEqual(self.digest().count('Worded otherwise?'), 0, path)
+    def test_a_pointer_to_a_question_that_is_not_open_is_a_failed_hand_back(self) -> None:
+        self.task('20261012T080005Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. 20261012T080099Z-1-0#4'])
+        self.assertIn('failed hand-back: Decisions needed points to 20261012T080099Z-1-0#4, which holds no open question', self.digest())
 
-    def test_a_pointer_to_a_file_that_is_not_there_is_a_failed_hand_back(self) -> None:
-        self.task('20261012T080003Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. docs/gone.handoff.md'])
-        text = self.digest()
-        self.assertIn('failed hand-back: Decisions needed points to docs/gone.handoff.md, which does not exist', text)
-
-    def test_a_pointer_to_a_line_with_no_entry_is_a_failed_hand_back(self) -> None:
-        self.handoff('docs/x.handoff.md', [('Real?', 'no', '2026-10-04')])
-        self.task('20261012T080004Z-1-0', 'Asks', 'blocked', ['- Q? Recommend yes. docs/x.handoff.md:99'])
-        self.assertIn('failed hand-back: Decisions needed points to docs/x.handoff.md:99, which holds no open question there', self.digest())
-
-    def test_a_pointer_to_a_file_with_no_open_question_is_a_failed_hand_back(self) -> None:
-        path = Path(self.scratch.name) / 'docs' / 'empty.handoff.md'
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text('# E\n\n## Open Questions\nNone.\n', encoding='utf-8')
-        self.task('20261012T080005Z-1-0', 'Asks', 'blocked', ['- Q? docs/empty.handoff.md'])
-        self.assertIn('docs/empty.handoff.md, which holds no open question', self.digest())
-
-    def test_day_review_lists_only_entries_asked_that_day(self) -> None:
+    def test_day_review_lists_only_questions_asked_that_day(self) -> None:
         today = datetime.now().date().isoformat()
-        self.handoff('docs/x.handoff.md', [('Asked today?', 'no', today), ('Asked long ago?', 'no', '2020-01-01')])
+        folder = self.task('20261012T080006Z-1-0', 'Asker', 'success', [])
+        self.ask(folder, 1, 'Asked today?', 'no', today)
+        self.ask(folder, 2, 'Asked long ago?', 'no', '2020-01-01')
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             task_digest.get_decisions_digest(day='today')
         self.assertIn('Asked today?', out.getvalue())
         self.assertNotIn('Asked long ago?', out.getvalue())
 
-    def test_project_reads_that_projects_handoffs_and_not_memars(self) -> None:
+    def test_project_reads_that_projects_questions_and_not_memars(self) -> None:
         project = Path(self.scratch.name) / 'project'
         project.mkdir()
         subprocess.run(['git', 'init', '-q', str(project)], check=True, capture_output=True)
-        self.handoff('docs/x.handoff.md', [('In memar?', 'no', '2026-10-02')])
-        self.handoff('docs/y.handoff.md', [('In project?', 'no', '2026-10-02')], root=project)
+        memar_task = self.task('20261012T080007Z-1-0', 'Memar asker', 'success', [])
+        self.ask(memar_task, 1, 'In memar?', 'no', '2026-10-02')
+        there = project / '.agents' / 'tasks' / '20261012T080008Z-1-0'
+        there.mkdir(parents=True)
+        (there / task_plan.PLAN_NAME).write_text(f'---\nTitle: There\nStatus: Complete\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n# There\n\n## Request\nx\n', encoding='utf-8')
+        self.ask(there, 1, 'In project?', 'no', '2026-10-02')
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             task_digest.get_decisions_digest(project=str(project))
@@ -363,10 +362,28 @@ class OpenHandoffQuestions(Fixture):
         self.assertNotIn('In memar?', out.getvalue())
 
     def test_a_conversation_digest_leaves_them_out(self) -> None:
-        root = self.task('20261012T080006Z-1-0', 'Root', 'success', [])
-        self.task('20261012T080007Z-1-0', 'Inside', 'blocked', ['- In?'], conversation=root.name)
-        self.handoff('docs/x.handoff.md', [('Unrelated?', 'no', '2026-10-02')])
+        root = self.task('20261012T080009Z-1-0', 'Root', 'success', [])
+        self.task('20261012T080010Z-1-0', 'Inside', 'blocked', ['- In?'], conversation=root.name)
+        self.ask(root, 1, 'Unrelated?', 'no', '2026-10-02')
         self.assertNotIn('Unrelated?', self.digest(root.name))
+
+class DecisionContents(Fixture):
+    """The review shows each task's `decision` contents beside its entries."""
+
+    def test_the_review_shows_a_tasks_decision_contents_with_their_fields(self) -> None:
+        folder = self.task('20261012T090100Z-1-0', 'Decider', 'success', [])
+        (folder / 'content.00001.md').write_text('---\nkind: decision\n---\n### Naming\n- Decided: keep the name\n- Confidence: strong\n- Reason: it is already used\n', encoding='utf-8', newline='\n')
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            task_digest.get_decisions_digest(day='today')
+        self.assertIn('decision: keep the name', out.getvalue())
+        self.assertIn('confidence: strong', out.getvalue())
+        self.assertIn('reason: it is already used', out.getvalue())
+
+    def test_the_default_digest_does_not_list_a_quiet_tasks_decisions(self) -> None:
+        folder = self.task('20261012T090101Z-1-0', 'Decider', 'success', [])
+        (folder / 'content.00001.md').write_text('---\nkind: decision\n---\n### Naming\n- Decided: keep the name\n', encoding='utf-8', newline='\n')
+        self.assertNotIn('keep the name', self.digest())
 
 class EarlierShapes(Fixture):
 

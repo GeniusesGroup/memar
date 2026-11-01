@@ -1,47 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the reading of a changelog record in `modules-plugable/knowledge/documentation/services/changelog_record.py`,
-and for the two verbs a human reviewer runs on it:
-`modules-plugable/knowledge/documentation/services/content_list_ai_only_changelog_records.py` and
-`modules-plugable/knowledge/documentation/services/content_add_human_approval_to_changelog_record.py`.
-
-    python modules-plugable/knowledge/documentation/tests/changelog_record.py
-
-The subject is one: a record's `Contributors` field read as changelog.md
-defines it, and the human's approval added to it. The two verbs are tested here
-beside the reading they share, per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md).
-
-Nothing here writes outside its scratch folder: the ledger, its
-CONTRIBUTORS.md, and the Memar root the lock lives under are all inside one.
-
-What is pinned, and what each pin is for:
-
-  ReadingTheRecords     Records are the `###` entries under `## Changelog`;
-                        a heading inside a code fence is not one; each
-                        contributor is the first link of a sub-bullet.
-  WhoIsWho              A `##` section without `Full Legal Name` is a natural
-                        person, one with it a legal entity, a `###` a brand or
-                        tool; the Template is no one.
-  ListingOneLedger      Only records every contributor of which is a brand or
-                        tool are listed, with their number and line; a record
-                        naming an unknown contributor is counted, not listed.
-  OfferingTheNextLedger Without a file, the first ledger in path order that
-                        holds such a record is offered; `--after` moves past one.
-  AddingTheApproval     The approval is one sub-bullet appended to exactly the
-                        chosen record's Contributors; every other byte stays;
-                        the file's line endings are kept; a reviewer who is not
-                        a natural person, a record that is not AI-only, and a
-                        number out of range are refused with nothing written.
-"""
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
 import contextlib
 import io
 import sys
@@ -55,148 +19,131 @@ SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent 
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-approve = import_module('modules-plugable.knowledge.documentation.services.content_add_human_approval_to_changelog_record')
+BUDGET_SECONDS = 30
 record = import_module('modules-plugable.knowledge.documentation.services.changelog_record')
 listing = import_module('modules-plugable.knowledge.documentation.services.content_list_ai_only_changelog_records')
+task_records = import_module('modules-plugable.management.task.services.task_records')
+Content = import_module('modules.management.timeline.services.timeline_files').Content
 CONTRIBUTORS = '# Contributors\n\n## Template\n- Full Legal Name: Legal entity name (legal persons only).\n\n### {Brand}\n- **Bio**: One line.\n\n## Omid Hekayati\n- **Bio**: Architect.\n\n## Anthropic\n- Full Legal Name: Anthropic, PBC\n\n### Claude\n- **Bio**: A model.\n\n### Claude Code\n- **Bio**: A tool.\n\n## Zhipu\n- Full Legal Name: Zhipu AI\n\n### Super Z\n- **Bio**: A model.\n'
-LEDGER = '# Thing Changelog\nIntro.\n\n## Changelog\n\n### First, by a person and a model\n- Time: 2026-01-01T00:00:00Z\n- Contributors:\n  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided\n  - [Super Z](../CONTRIBUTORS.md#super-z) - rewrote\n\n#### What changed\n- One.\n\n---\n\n### Second, by a model alone\n- Time: 2026-01-02T00:00:00Z\n- Contributors:\n  - [Claude](../CONTRIBUTORS.md#claude) (claude-x via [Claude Code](../CONTRIBUTORS.md#claude-code)) - drafted\n\n#### What changed\n```\n### Not a record, inside a fence\n- Contributors:\n  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - decided\n```\n\n---\n\n### Third, by an unknown name\n- Contributors:\n  - [Ghost](../CONTRIBUTORS.md#ghost) - wrote\n\n---\n\n### Fourth, by two models\n- Contributors:\n  - [Super Z](../CONTRIBUTORS.md#super-z) - argued\n  - [Claude](../CONTRIBUTORS.md#claude) - applied\n\n#### What changed\n- Four.\n'
+
+
+def changelog(number: int, author: str, title: str = 'A change', placed_at: str = '2026-10-01T00:00:00Z') -> Content:
+    return Content(number, {'kind': 'changelog', 'author': author, 'placed_at': placed_at}, f'### {title}\n- Type: x\n')
+
+
+def approval(number: int, author: str, refs: str, verdict: str = 'approved') -> Content:
+    return Content(number, {'kind': 'approval', 'author': author, 'refs': refs}, f'### Approval\n- Judges: x\n- Verdict: {verdict}\n- Examined: y\n')
+
 
 class Scratch(unittest.TestCase):
-    """A checkout with `docs/`, a CONTRIBUTORS.md at its top, and ledgers under `docs/`."""
 
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.root = Path(self.scratch.name)
-        (self.root / 'docs').mkdir()
         (self.root / 'CONTRIBUTORS.md').write_text(CONTRIBUTORS, encoding='utf-8', newline='\n')
-        self.ledger = self.write('docs/thing.changelog.md', LEDGER)
-        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=self.root)
-        patched.start()
-        self.addCleanup(patched.stop)
+        self.sections = record.contributor_sections(self.root / 'CONTRIBUTORS.md')
 
-    def write(self, name: str, text: str, newline: str='\n') -> Path:
-        path = self.root / name
-        path.write_text(text, encoding='utf-8', newline=newline)
-        return path
-
-    def run_quietly(self, function, args) -> str:
-        out = io.StringIO()
-        with contextlib.redirect_stdout(out):
-            function(args)
-        return out.getvalue()
-
-class ReadingTheRecords(Scratch):
-
-    def test_records_are_the_entries_under_the_changelog_heading(self) -> None:
-        records = record.changelog_records(LEDGER)
-        self.assertEqual([item.title for item in records], ['First, by a person and a model', 'Second, by a model alone', 'Third, by an unknown name', 'Fourth, by two models'])
-        self.assertEqual([item.number for item in records], [1, 2, 3, 4])
-
-    def test_each_contributor_is_the_first_link_of_a_sub_bullet(self) -> None:
-        second = record.changelog_records(LEDGER)[1]
-        self.assertEqual([(c.name, c.anchor) for c in second.contributors], [('Claude', 'claude')])
-        self.assertEqual(second.contributors[0].target, '../CONTRIBUTORS.md')
 
 class WhoIsWho(Scratch):
 
     def test_a_section_is_typed_by_its_level_and_its_legal_name(self) -> None:
-        sections = record.contributor_sections(self.root / 'CONTRIBUTORS.md')
-        self.assertEqual(sections['omid-hekayati'].kind, record.NATURAL_PERSON)
-        self.assertEqual(sections['anthropic'].kind, record.LEGAL_ENTITY)
-        self.assertEqual(sections['claude'].kind, record.BRAND_OR_TOOL)
-        self.assertEqual(sections['claude-code'].kind, record.BRAND_OR_TOOL)
-        self.assertNotIn('template', sections)
-        self.assertNotIn('brand', sections)
+        self.assertEqual(self.sections['omid-hekayati'].kind, record.NATURAL_PERSON)
+        self.assertEqual(self.sections['anthropic'].kind, record.LEGAL_ENTITY)
+        self.assertEqual(self.sections['claude'].kind, record.BRAND_OR_TOOL)
+        self.assertEqual(self.sections['claude-code'].kind, record.BRAND_OR_TOOL)
+        self.assertNotIn('template', self.sections)
+        self.assertNotIn('brand', self.sections)
 
-class ListingOneLedger(Scratch):
+    def test_an_author_is_an_ai_contributor_by_name_or_anchor(self) -> None:
+        self.assertTrue(record.is_ai_author('Claude', self.sections))
+        self.assertTrue(record.is_ai_author('super-z', self.sections))
+        self.assertFalse(record.is_ai_author('Omid Hekayati', self.sections))
+        self.assertFalse(record.is_ai_author('Anthropic', self.sections))
+        self.assertFalse(record.is_ai_author('ghost', self.sections))
+        self.assertFalse(record.is_ai_author(None, self.sections))
 
-    def test_only_records_with_only_brand_or_tool_contributors_are_listed(self) -> None:
-        found = record.ai_only_records(self.ledger)
-        self.assertEqual([item.number for item in found.listed], [2, 4])
-        self.assertEqual(found.total, 4)
-        self.assertEqual([item.number for item in found.unknown], [3])
 
-    def test_the_listing_names_number_line_and_title(self) -> None:
-        text = self.run_quietly(listing.run, Namespace(file=str(self.ledger), after=None))
-        self.assertIn('2 of 4 records have only AI contributors', text)
-        self.assertIn(':17: 2 Second, by a model alone', text)
-        self.assertIn(': 4 Fourth, by two models', text)
-        self.assertNotIn('First', text)
-        self.assertNotIn('Not a record', text)
-        self.assertIn('1 record names a contributor CONTRIBUTORS.md does not hold: 3', text)
+class AiOnlyChangelogs(Scratch):
 
-class OfferingTheNextLedger(Scratch):
+    def listed(self, contents) -> list:
+        return [(task, number) for task, number, _, _ in record.ai_only_changelogs(contents, self.sections)]
+
+    def test_a_changelog_by_a_model_with_no_approval_is_listed_with_its_title(self) -> None:
+        found = record.ai_only_changelogs([('T-1', changelog(2, 'Claude', 'Fixed the lint'))], self.sections)
+        self.assertEqual(found, [('T-1', 2, 'Fixed the lint', '2026-10-01T00:00:00Z')])
+
+    def test_a_changelog_by_a_person_or_an_unknown_name_is_not_listed(self) -> None:
+        contents = [('T-1', changelog(1, 'Omid Hekayati')), ('T-1', changelog(2, 'ghost'))]
+        self.assertEqual(self.listed(contents), [])
+
+    def test_only_contents_of_kind_changelog_are_listed(self) -> None:
+        self.assertEqual(self.listed([('T-1', Content(1, {'kind': 'report', 'author': 'Claude'}, 'x'))]), [])
+
+    def test_an_approved_by_a_person_removes_it(self) -> None:
+        contents = [('T-1', changelog(1, 'Claude')), ('T-1', approval(2, 'Omid Hekayati', '1'))]
+        self.assertEqual(self.listed(contents), [])
+
+    def test_an_approval_in_another_task_by_a_timeline_ref_removes_it(self) -> None:
+        contents = [('T-1', changelog(1, 'Claude')), ('T-2', approval(1, 'Omid Hekayati', 'T-1:1'))]
+        self.assertEqual(self.listed(contents), [])
+
+    def test_an_approval_by_a_model_does_not_remove_it(self) -> None:
+        contents = [('T-1', changelog(1, 'Claude')), ('T-1', approval(2, 'Super Z', '1'))]
+        self.assertEqual(self.listed(contents), [('T-1', 1)])
+
+    def test_a_withheld_verdict_does_not_remove_it(self) -> None:
+        contents = [('T-1', changelog(1, 'Claude')), ('T-1', approval(2, 'Omid Hekayati', '1', 'withheld'))]
+        self.assertEqual(self.listed(contents), [('T-1', 1)])
+
+    def test_an_approval_of_another_content_does_not_remove_it(self) -> None:
+        contents = [('T-1', changelog(1, 'Claude')), ('T-1', changelog(2, 'Claude')), ('T-1', approval(3, 'Omid Hekayati', '2'))]
+        self.assertEqual(self.listed(contents), [('T-1', 1)])
+
+    def test_a_title_falls_back_to_the_first_line(self) -> None:
+        content = Content(1, {'kind': 'changelog', 'author': 'Claude'}, 'Plain first line\nmore\n')
+        self.assertEqual(record.ai_only_changelogs([('T-1', content)], self.sections)[0][2], 'Plain first line')
+
+
+class TheVerb(Scratch):
 
     def setUp(self) -> None:
         super().setUp()
-        self.clean = self.write('docs/a.changelog.md', '# A Changelog\n\n## Changelog\n\n### Only a person\n- Contributors:\n  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - wrote\n')
-        self.later = self.write('docs/z.changelog.md', LEDGER)
+        elsewhere = self.root / 'memar-tasks'
+        elsewhere.mkdir()
+        patched = unittest.mock.patch.object(task_records, 'tasks_root', return_value=elsewhere)
+        patched.start()
+        self.addCleanup(patched.stop)
 
-    def test_the_first_ledger_holding_one_is_offered(self) -> None:
-        text = self.run_quietly(listing.run, Namespace(file=None, after=None))
-        self.assertIn('thing.changelog.md: 2 of 4', text)
-        self.assertNotIn('a.changelog.md', text)
-        self.assertIn('1 more ledger after it holds such records', text)
+    def task(self, task_id: str, number: int, text: str) -> None:
+        folder = self.root / '.agents' / 'tasks' / task_id
+        folder.mkdir(parents=True, exist_ok=True)
+        (folder / 'task.yaml').write_text('title: t\n', encoding='utf-8', newline='\n')
+        (folder / f'content.{number:05d}.md').write_text(text, encoding='utf-8', newline='\n')
 
-    def test_after_moves_past_a_ledger(self) -> None:
-        text = self.run_quietly(listing.run, Namespace(file=None, after=str(self.ledger)))
-        self.assertIn('z.changelog.md: 2 of 4', text)
+    def run_verb(self, after=None) -> str:
+        with contextlib.redirect_stdout(io.StringIO()) as printed:
+            listing.list_ai_only(Namespace(after=after), self.root)
+        return printed.getvalue()
 
-    def test_none_left_says_so(self) -> None:
-        text = self.run_quietly(listing.run, Namespace(file=None, after=str(self.later)))
-        self.assertIn('no ledger', text)
+    def test_the_verb_prints_task_hash_number_title(self) -> None:
+        self.task('T-1', 1, '---\nkind: changelog\nauthor: Claude\nplaced_at: 2026-10-01T00:00:00Z\n---\n### Fixed the lint\n')
+        self.task('T-1', 2, '---\nkind: approval\nauthor: Omid Hekayati\nrefs: 1\n---\n- Verdict: approved\n')
+        self.task('T-2', 1, '---\nkind: changelog\nauthor: Super Z\nplaced_at: 2026-10-02T00:00:00Z\n---\n### Moved the rule\n')
+        self.assertEqual(self.run_verb().splitlines(), ['T-2#1: Moved the rule'])
 
-class AddingTheApproval(Scratch):
+    def test_after_keeps_only_what_was_placed_later(self) -> None:
+        self.task('T-1', 1, '---\nkind: changelog\nauthor: Claude\nplaced_at: 2026-10-01T00:00:00Z\n---\n### Early\n')
+        self.task('T-1', 2, '---\nkind: changelog\nauthor: Claude\nplaced_at: 2026-10-03T00:00:00Z\n---\n### Late\n')
+        self.assertEqual(self.run_verb(after='2026-10-02T00:00:00Z').splitlines(), ['T-1#2: Late'])
 
-    def args(self, **overrides) -> Namespace:
-        values = dict(file=str(self.ledger), record=2, reviewer='omid-hekayati')
-        values.update(overrides)
-        return Namespace(**values)
+    def test_none_listed_prints_the_marker(self) -> None:
+        self.assertEqual(self.run_verb().strip(), '(no changelog record has only AI authors)')
 
-    def test_the_approval_is_one_line_in_exactly_the_chosen_record(self) -> None:
-        self.run_quietly(approve.run, self.args())
-        line = '  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - approved\n'
-        after = self.ledger.read_text(encoding='utf-8')
-        anchor = '(claude-x via [Claude Code](../CONTRIBUTORS.md#claude-code)) - drafted\n'
-        self.assertEqual(after, LEDGER.replace(anchor, anchor + line, 1))
-        self.assertEqual([item.number for item in record.ai_only_records(self.ledger).listed], [4])
+    def test_the_ledger_reading_and_the_approval_writer_are_gone(self) -> None:
+        self.assertFalse(hasattr(record, 'changelog_records'))
+        self.assertFalse(hasattr(record, 'ai_only_records'))
 
-    def test_the_last_record_takes_it_too(self) -> None:
-        self.run_quietly(approve.run, self.args(record=4))
-        after = self.ledger.read_text(encoding='utf-8')
-        self.assertIn('  - [Claude](../CONTRIBUTORS.md#claude) - applied\n  - [Omid Hekayati](../CONTRIBUTORS.md#omid-hekayati) - approved\n\n#### What changed\n- Four.\n', after)
 
-    def test_the_line_endings_of_the_file_are_kept(self) -> None:
-        self.write('docs/thing.changelog.md', LEDGER, newline='\r\n')
-        self.run_quietly(approve.run, self.args())
-        raw = self.ledger.read_bytes()
-        self.assertNotIn(b'\n', raw.replace(b'\r\n', b''))
-        self.assertIn(b'- approved\r\n', raw)
-
-    def refused(self, **overrides) -> None:
-        before = self.ledger.read_bytes()
-        with self.assertRaises(SystemExit):
-            self.run_quietly(approve.run, self.args(**overrides))
-        self.assertEqual(self.ledger.read_bytes(), before)
-        self.assertEqual(list((self.root / 'temp').rglob('*.lock')) if (self.root / 'temp').exists() else [], [])
-
-    def test_a_model_is_not_a_reviewer(self) -> None:
-        self.refused(reviewer='claude')
-
-    def test_a_legal_entity_is_not_a_reviewer(self) -> None:
-        self.refused(reviewer='anthropic')
-
-    def test_an_unknown_reviewer_is_refused(self) -> None:
-        self.refused(reviewer='ghost')
-
-    def test_a_record_a_person_contributed_to_is_refused(self) -> None:
-        self.refused(record=1)
-
-    def test_a_record_naming_an_unknown_contributor_is_refused(self) -> None:
-        self.refused(record=3)
-
-    def test_a_number_out_of_range_is_refused(self) -> None:
-        self.refused(record=5)
 if __name__ == '__main__':
     unittest.main(verbosity=2)

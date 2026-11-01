@@ -16,7 +16,7 @@ _m_errors = import_module('modules.management.timeline.errors.placement')
 _m_bytes = import_module('modules.knowledge.text.errors.bytes')
 _m_check = import_module('modules.knowledge.text.services.text_bytes_check')
 _m_structure = import_module('modules.knowledge.text.errors.structure')
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 AUTHOR = _m_task_files.AUTHOR
 read_facts = _m_task_files.read_facts
 _m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
@@ -68,8 +68,19 @@ def read_text(content_file: str | None) -> str:
     return _m_check.decode_text(sys.stdin.buffer.read() if hasattr(sys.stdin, 'buffer') else sys.stdin.read().encode('utf-8'))
 
 
-def post_text(timeline: str, kind: str, content_file: str | None, author: str | None) -> int:
-    files = _m_conversation.file_timeline(timeline)
+def checked_refs(values, timeline: str) -> tuple:
+    found = []
+    for value in values or ():
+        held, separator, number = value.strip().rpartition(':')
+        if (separator and not held.strip()) or not number.isascii() or not number.isdigit() or int(number) < 1:
+            fail(f'the reference {value} is neither NUMBER nor TIMELINE:NUMBER with a number of one or more, so nothing was written')
+        found.append(f'{held.strip() or timeline}:{int(number)}')
+    return tuple(found)
+
+
+def post_text(timeline: str, kind: str, content_file: str | None, author: str | None, refs=()) -> int:
+    held = checked_refs(refs, timeline)
+    files = _m_conversation.file_timeline(timeline, held)
     folder = _m_conversation.folder_of(timeline)
     project = (read_facts(folder) or {}).get('project', '').strip()
     word = checked_kind(kind, Path(project) if project else None)
@@ -95,8 +106,9 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     poster.add_argument('--kind', required=True, metavar='KIND', help='the label word of the template the text is written to: message, a kind a documentation module declares for its template (plan, report, changelog, question, decision, assumption, anticipated-work, research), or a word the project declares')
     poster.add_argument('--content-file', default=None, metavar='FILE', help='the file holding the text; standard input when not given')
     poster.add_argument('--author', default=None, metavar='USERUUID', help=f"who places the text; the agent name '{AUTHOR}' when not given")
+    poster.add_argument('--refs', action='append', default=None, metavar='TIMELINE:NUMBER', help='a content this one refers to, written to its refs; TIMELINE:NUMBER, or only NUMBER for a content of this timeline; give the flag again for each reference')
     return run
 
 
 def run(args: argparse.Namespace) -> None:
-    post_text(args.timeline, args.kind, args.content_file, args.author)
+    post_text(args.timeline, args.kind, args.content_file, args.author, tuple(args.refs or ()))
