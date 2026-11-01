@@ -25,3 +25,15 @@ tp Error_Graph_BadPattern ab {
 tp Error_Graph_BadEdge ab {
     Error_Store_Malformed
 }
+
+tp Error_Graph_BadRelation ab {
+    Error_Store_Malformed
+}
+
+tp Error_Graph_BadSide ab {
+    Error_Store_Malformed
+}
+
+tp Error_Graph_BadFields ab {
+    Error_Store_Malformed
+}

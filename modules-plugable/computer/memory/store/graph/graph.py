@@ -9,6 +9,7 @@ _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.graph.errors.errors')
 _m_layout_value = import_module('modules-plugable.computer.memory.store.graph.codecs.layout_value')
 _m_address = import_module('modules-plugable.computer.memory.store.graph.address')
+_m_side = import_module('modules-plugable.computer.memory.store.graph.side_structural')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
 Committed = _m_store.Committed
@@ -255,6 +256,12 @@ class Graph_Store:
                 return Refused(Refusal.MALFORMED, Bad.LAYOUT.summary())
             if not isinstance(each.From, bytes) or not isinstance(each.Relation, bytes) or not isinstance(each.To, bytes):
                 return Refused(Refusal.MALFORMED, Bad.EDGE.summary())
+            if not _m_side.is_relation_type_uuid(each.Relation):
+                return Refused(Refusal.MALFORMED, Bad.RELATION.summary())
+            if each.ReverseRelation and not _m_side.is_relation_type_uuid(each.ReverseRelation):
+                return Refused(Refusal.MALFORMED, Bad.RELATION.summary())
+            if _m_side.fields_map_or_refuse(each.Fields if isinstance(each.Fields, bytes) else b'') is None:
+                return Refused(Refusal.MALFORMED, Bad.FIELDS.summary())
         if self.layout == LAYOUT_COMPACT:
             return self._put_edges_compact(edges)
         return self._put_edges_per_edge(edges)
@@ -471,6 +478,8 @@ class Graph_Store:
         parsed = self._parse_side_ref(ref)
         if parsed is None:
             return Refused(Refusal.MALFORMED, Bad.REF.summary())
+        if not end and _m_side.fields_map_or_refuse(fields if isinstance(fields, bytes) else b'') is None:
+            return Refused(Refusal.MALFORMED, Bad.FIELDS.summary())
         tag = parsed[0]
         if tag in (_TAG_COMPACT, _TAG_IN_COMPACT):
             return self._mutate_compact(ref, fields, expect, end)

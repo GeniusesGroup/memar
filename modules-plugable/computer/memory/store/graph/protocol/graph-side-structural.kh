@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Type_UUID in "modules/computer/type/protocol/uuid.kh"
+
+tp Graph_Side_Structural ab
+
+tp GetSlotTypeUUID mt (self Graph_Side_Structural) () (id Type_UUID)
+
+tp GetToTypeUUID mt (self Graph_Side_Structural) () (id Type_UUID)
+
+tp GetFieldsTypeUUID mt (self Graph_Side_Structural) () (id Type_UUID)
+
+tp GetEndedTypeUUID mt (self Graph_Side_Structural) () (id Type_UUID)

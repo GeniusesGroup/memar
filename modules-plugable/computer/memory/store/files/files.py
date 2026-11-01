@@ -80,6 +80,8 @@ def _parse_id_segment(segment: str) -> bytes | None:
 def is_record_key(address: object) -> bool:
     if not isinstance(address, bytes) or not RECORD_ID_LENGTH < len(address) <= RECORD_ID_LENGTH + 64:
         return False
+    if _m_graph_files.parse_graph_address(address) is not None:
+        return False
     try:
         address[RECORD_ID_LENGTH:].decode('ascii')
     except UnicodeDecodeError:
@@ -279,12 +281,11 @@ class _Medium:
                     continue
                 for at, value in _m_graph_files.restore_from_parts(identity, parts).items():
                     values[at] = value
-                    bisect.insort(order, at)
             else:
                 values[identity] = body
-                bisect.insort(order, identity)
-        self.order = order
+        _m_graph_files.apply_derived_graph(values)
         self.values = values
+        self.order = sorted(values.keys())
         self._recover_journal()
 
     def bring_up_to_date(self) -> None:
@@ -368,15 +369,14 @@ class _Medium:
     def _apply_pairs(self, pairs: Sequence[tuple[bytes, bytes]]) -> None:
         by_file: dict[tuple[bytes, bool], list[tuple[bytes, bytes]]] = {}
         for at, data in pairs:
-            if is_record_key(at):
+            graph = _m_graph_files.parse_graph_address(at)
+            if graph is not None:
+                _tag, frm, _relation = graph
+                key = (frm, True)
+            elif is_record_key(at):
                 key = (at[:RECORD_ID_LENGTH], True)
             else:
-                graph = _m_graph_files.parse_graph_address(at)
-                if graph is not None:
-                    _tag, frm, _relation = graph
-                    key = (frm, True)
-                else:
-                    key = (at, False)
+                key = (at, False)
             by_file.setdefault(key, []).append((at, data))
         for (identity, is_node), group in by_file.items():
             sample = group[0][0]
@@ -396,6 +396,8 @@ class _Medium:
                 target.replace_bytes(data)
                 self.files_opened += 1
                 self._set_value(identity, data)
+        _m_graph_files.apply_derived_graph(self.values)
+        self.order = sorted(self.values.keys())
 
     def _recover_journal(self) -> None:
         journal = self._journal_file()

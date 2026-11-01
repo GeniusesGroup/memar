@@ -159,25 +159,27 @@ class Medium(unittest.TestCase):
         self.assertNotIn('relation', body)
         self.assertNotIn('reverse', body)
 
-    def test_node_file_body_is_a_json_object_without_binary_length_prefix(self) -> None:
+    def test_free_form_domain_object_parts_are_refused(self) -> None:
         adapter = make_local()
         store = adapter.open()
         identity = bytes.fromhex('0190000000007000800000000000000b')
-        task, timeline = (identity + b'task', identity + b'timeline')
+        task = identity + b'task'
         task_value = b'{"Status":"Active","Title":"sample"}'
-        timeline_value = b'[{"kind":"plan"}]'
-        self.assertEqual(store.batch([], [(task, task_value), (timeline, timeline_value)]), Committed())
-        body = adapter.file_at(task).get_file_data()
+        with self.assertRaises(errors_module().BadBody):
+            store.batch([], [(task, task_value)])
+
+    def test_opaque_string_parts_still_round_trip_in_json_body(self) -> None:
+        adapter = make_local()
+        store = adapter.open()
+        identity = bytes.fromhex('0190000000007000800000000000000d')
+        note = identity + b'note'
+        self.assertEqual(store.batch([], [(note, b'plain')]), Committed())
+        body = adapter.file_at(note).get_file_data()
         self.assertTrue(body.startswith(b'{'))
         self.assertTrue(body.endswith(b'\n'))
-        self.assertNotIn(b'\x00\x04task', body)
         on_disk = json.loads(body.decode('utf-8'))
-        self.assertEqual(on_disk, {'task': {'Status': 'Active', 'Title': 'sample'}, 'timeline': [{'kind': 'plan'}]})
-        self.assertNotIn(_m_json.BYTES_ENVELOPE, json.dumps(on_disk))
-        self.assertNotIn(_m_json.TEXT_ENVELOPE, json.dumps(on_disk))
-        canonical_task = json.dumps(on_disk['task'], separators=(',', ':'), ensure_ascii=False).encode('utf-8')
-        canonical_timeline = json.dumps(on_disk['timeline'], separators=(',', ':'), ensure_ascii=False).encode('utf-8')
-        self.assertEqual(store.get([task, timeline]), [Found(canonical_task, token(canonical_task)), Found(canonical_timeline, token(canonical_timeline))])
+        self.assertEqual(on_disk, {'note': {'$files.text': 'plain'}})
+        self.assertEqual(store.get([note]), [Found(b'plain', token(b'plain'))])
 
     def test_uses_storage_directory_and_file(self) -> None:
         adapter = make_local()
