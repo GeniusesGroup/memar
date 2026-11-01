@@ -28,7 +28,7 @@ type UUID thing_p.UUID
 — the author had already written and commented the line that makes the identity memar's, and
 this conversion records that decision rather than reverting it.
 
-A Request retained through the memory contract is named by the address through which it is retained ([Memory Address](../memory/address/address.md), the reference to an address; [Recording a change of state](#recording-a-change-of-state) says how it is written); whether that address is also the identity above is decision 2 of the handoff's memory-port decisions, taken Tentatively.
+A Request retained through the memory contract is named by the address through which it is retained ([Memory Address](../../computer/memory/address/address.md), the reference to an address; [Recording a change of state](#recording-a-change-of-state) says how it is written); whether that address is also the identity above is decision 2 of the handoff's memory-port decisions, taken Tentatively.
 
 ## Storage
 A request record is stored under two keys of the same identity, which the Go source named
@@ -39,7 +39,7 @@ handoff).
 
 A request record is also found by the user who made it, paged. The find-by-service-id pair
 exists in the Go source and is not converted here, because `Field_ServiceID` belongs to the
-`computer/service` domain, which is not converted yet.
+`process/service` domain; `Field_ServiceID` still lives as a stub in `protocol/dt-uuid.kh` there.
 
 ## Request data and signature
 The `data` edge carries the encoded payload of the request: `RequestData` decodes by the service
@@ -49,13 +49,12 @@ together with the service that wrote it.
 The `signature` edge carries the evidence that the user asked for the change: a byte sequence
 kept on the record so that a later reader can prove the request was not invented after the fact.
 
-## Retired sources
-`_import/` holds four copies of the retired `modules/user-request*` domains
-(`user-request`, `user-request-chain`, `user-request-data`, `user-request-metric`). They are
-excluded from every build by the leading underscore and their Go import paths
+## Services from retired user-request sources
+`services/` holds four service stubs moved from the retired `modules/user-request*` domains
+(`user-request`, `user-request-chain`, `user-request-data`, `user-request-metric`). Their Go
+bodies remain under `TODO(go-migrate)` until converted; their Go import paths
 (`modules/user-request/protocol`) name a tree this repository no longer has. This domain
-supersedes them. Their content is not converted here; what they held that still reads as current
-intent is recorded in the handoff.
+supersedes those domains. Development of the stubs continues here.
 
 ## Recording a change of state
 A domain holds the current value of what it is about, as a part on its node ([Memory Record → Definition](../../../modules-plugable/computer/memory/store/record/record.md#definition)). A change to that value is recorded by a Request, a node of its own that holds the change; the domain holds nothing of it. No domain keeps a history, the chain of its Requests is the history, and that chain is the audit log. The timeline is for discussion and is not where a change of state is recorded.
@@ -63,7 +62,7 @@ A domain holds the current value of what it is about, as a part on its node ([Me
 ### What is a change of state
 A change of state is a change to the current value of a part whose value is acquired data ([Modeling → Acquired Data vs. Discovered Data](../../../docs/modeling.md#acquired-data-vs-discovered-data)): a primary fact that nothing else in the model can recompute. Every such change is recorded, by the rule below. These are not changes of state, and no Request records them:
 - **A discovered value.** Whether a task is blocked by the tasks it depends on, the order of a queue, a count, an index: each is recomputed from acquired data and is never stored as acquired.
-- **A liveness signal.** A heartbeat has no use after the interval it covers, so it is held in volatile memory with a lease and never in the store ([Memory → Volatility: the real classifier](../memory/memory.md#volatility-the-real-classifier)). No task has one today, since a claim older than a day is taken as a dead agent's. If one is introduced, the change recorded is the takeover of the claim it failed to keep, which changes the holder.
+- **A liveness signal.** A heartbeat has no use after the interval it covers, so it is held in volatile memory with a lease and never in the store ([Memory → Volatility: the real classifier](../../computer/memory/memory.md#volatility-the-real-classifier)). No task has one today, since a claim older than a day is taken as a dead agent's. If one is introduced, the change recorded is the takeover of the claim it failed to keep, which changes the holder.
 - **The creation of an immutable node.** A content, a text, a placement or a Request is written once and carries its own author and time; the node is its own record.
 - **A reading, and a refusal.** A listing or a read changes nothing. A refused asking changed no value, so this rule records none; whether the Request domain records refusals is its own open question (Request Handoff).
 

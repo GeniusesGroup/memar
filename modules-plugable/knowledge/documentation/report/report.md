@@ -26,7 +26,7 @@ A **report** is one pass of work accounted for: what ran, what the task's own ch
 - **A report accounts for a pass, not for a subject.** It does not state what was learned about the world; the finding graduates into the document that owns its subject, and what the report keeps is that the work ran and what it showed. A negative result belongs here because the pass that produced it would otherwise leave nothing.
 - **A report is scratch, not a document of record.** What outlives it is routed by type to the documents that own the material. What is left open is a `question`, `assumption` or `anticipated-work` content of the task ([Handoff → The kinds](../handoff/handoff.md#the-kinds)).
 
-The task's identifier is not a field of the report: the task is the timeline that holds it. A task has one Status, held by the task and changed only by a Request ([Request](../../../../modules/computer/request/request.md)); a report does not repeat it.
+The task's identifier is not a field of the report: the task is the timeline that holds it. A task has one Status, held by the task and changed only by a Request ([Request](../../../../modules/process/request/request.md)); a report does not repeat it.
 
 ### Rounds
 A report is bound to a pass of work, not to the task for good: each round of critique ends in a report of what ran and what is to be done, so one task may hold several, as it may hold several plans ([Plan → Rounds](../plan/plan.md#rounds)). The owner ruled so on 2026-10-23.

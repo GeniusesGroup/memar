@@ -26,7 +26,7 @@ A **plan** is one agreement about one task, in writing, made before the work is 
 - **A plan is one agreement of one task, not of a conversation.** A conversation holds several tasks, each one thing asked with one check. A plan that gives each request its own section makes one content carry several agreements, and the reader has no single one to read.
 - **A plan is scratch, not a document of record.** What outlives it is routed by type to the documents that own the material. What is left open is a `question`, `assumption` or `anticipated-work` content of the task ([Handoff → The kinds](../handoff/handoff.md#the-kinds)).
 
-The task's identifier is not a field of the plan: the task is the timeline that holds it. A task has one Status, held by the task and changed only by a Request ([Request](../../../../modules/computer/request/request.md)); a plan does not repeat it.
+The task's identifier is not a field of the plan: the task is the timeline that holds it. A task has one Status, held by the task and changed only by a Request ([Request](../../../../modules/process/request/request.md)); a plan does not repeat it.
 
 ### Rounds
 Each round of critique can end in a separate plan, so one task may hold several; the same holds for its reports ([Report → Rounds](../report/report.md#rounds)). The owner ruled so on 2026-10-23.

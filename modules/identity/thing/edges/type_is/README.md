@@ -1,1 +1,1 @@
-datatype.md
+type_is.md
