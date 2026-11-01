@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_Limits in "modules-plugable/computer/memory/store/files/protocol/files-limits.kh"
+
+tp Domain mt (self Files_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the files store declares of its limits")(s, VoidError)
+}
+
+tp Overview mt (self Files_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the files store declares of its limits.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("It declares none: no count of writes, no bytes of a batch and no bytes of a value is limited by the adapter. Sharding threshold is a parameter, not a limit of the contract.")(s, VoidError)
+}

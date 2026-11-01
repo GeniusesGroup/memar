@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files in "modules-plugable/computer/memory/store/files/protocol/files.kh"
+
+tp Domain mt (self Files) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files) () (s String) {
+    CharacterRun_From.FromCharacterRun("A handle on a store kept as files under one memory root in the project tree")(s, VoidError)
+}
+
+tp Overview mt (self Files) () (s String) {
+    CharacterRun_From.FromCharacterRun("A handle on a store kept as files under one memory root in the project tree.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files) () (s String) {
+    CharacterRun_From.FromCharacterRun("Knows addresses only. One store is one memory root and one batch order. Path encoding is Files_Path. Each node file body is one UTF-8 JSON object of domain keys to part values, not a binary length-prefix map. Declares leaves_working_tree_untouched false. Declares durable and owes the working-tree group. Removes nothing. Close ends what the medium holds open in this process.")(s, VoidError)
+}

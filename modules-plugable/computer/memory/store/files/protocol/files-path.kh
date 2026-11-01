@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp URI_Path in "modules-plugable/net/uri/protocol/path.kh"
+
+tp Files_Path ab
+
+tp RelativePath mt (self Files_Path) (address MemoryAddress, shardPrefixLength W32, shardEnabled Boolean) (relative URI_Path, err Error)

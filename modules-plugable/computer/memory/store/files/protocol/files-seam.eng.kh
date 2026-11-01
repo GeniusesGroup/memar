@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_Seam in "modules-plugable/computer/memory/store/files/protocol/files-seam.kh"
+
+tp Domain mt (self Files_Seam) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_Seam) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the conformance suite reaches on a files adapter beyond the store seam")(s, VoidError)
+}
+
+tp Overview mt (self Files_Seam) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the conformance suite reaches on a files adapter beyond the store seam.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_Seam) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_Seam) () (s String) {
+    CharacterRun_From.FromCharacterRun("GetWorkingTree answers the project working tree as a Storage_Directory when the suite asks; given is false only when the adapter was opened with no tree. Sibling opens another handle on the same store. Byte I/O uses filesystem File/Directory; this seam does not restate them.")(s, VoidError)
+}

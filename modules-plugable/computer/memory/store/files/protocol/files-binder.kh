@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Record_Binder in "modules-plugable/computer/memory/store/record/protocol/record-binder.kh"
+
+tp Files_Binder ab {
+    Record_Binder
+}

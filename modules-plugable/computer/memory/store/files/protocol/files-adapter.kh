@@ -1,0 +1,29 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Record_Bound in "modules-plugable/computer/memory/store/record/protocol/record-bound.kh"
+tp Files_Seam in "modules-plugable/computer/memory/store/files/protocol/files-seam.kh"
+tp Files_Path in "modules-plugable/computer/memory/store/files/protocol/files-path.kh"
+tp Storage_Directory in "modules-plugable/computer/memory/filesystem/directory/protocol/directory.kh"
+tp Storage_File in "modules-plugable/computer/memory/filesystem/file/protocol/file.kh"
+
+tp Files_Adapter ab {
+    Record_Bound
+    Files_Seam
+}
+
+tp GetMemoryRoot mt (self Files_Adapter) () (root Storage_Directory)
+
+tp GetShardThreshold mt (self Files_Adapter) () (count W64, given Boolean)
+
+tp GetShardPrefixLength mt (self Files_Adapter) () (length W32)
+
+tp GetPath mt (self Files_Adapter) () (path Files_Path)
+
+tp FileAt mt (self Files_Adapter) (address MemoryAddress) (file Storage_File, err Error)
+
+tp Close mt (self Files_Adapter) () ()

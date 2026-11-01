@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Store_Seam in "modules/computer/memory/store/protocol/store-seam.kh"
+tp Files_Capabilities in "modules-plugable/computer/memory/store/files/protocol/files-capabilities.kh"
+tp Files_Limits in "modules-plugable/computer/memory/store/files/protocol/files-limits.kh"
+
+tp Files ab {
+    Store
+    Store_Seam
+}
+
+tp GetDeclared mt (self Files) () (capabilities Files_Capabilities)
+
+tp GetDeclaredLimits mt (self Files) () (limits Files_Limits)
+
+tp Close mt (self Files) () ()

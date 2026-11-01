@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_Parameters in "modules-plugable/computer/memory/store/files/protocol/files-parameters.kh"
+
+tp Domain mt (self Files_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("The keys of the memar block of the manifest the files adapter declares")(s, VoidError)
+}
+
+tp Overview mt (self Files_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("The keys of the memar block of the manifest the files adapter declares.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_Parameters) () (s String) {
+    CharacterRun_From.FromCharacterRun("Each key is written class equals value pairs separated by commas, each class once, in the form the preferences module declares. The key files-memory-root is a configuration string naming the memory root for a class and defaults to .agents/memar/memory/ relative to the project; bind resolves it to a Storage_Directory from the filesystem module. The key files-shard-threshold names the file count under that root at which an optional id-hex prefix directory is enabled and has no default: absent means the layout stays flat. The key files-shard-prefix-length names how many hex characters of the id prefix form that directory and defaults to 4. Sharding is never by domain. A key in another form is Error_Files_BadParameter.")(s, VoidError)
+}

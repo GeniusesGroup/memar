@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Files_Capabilities in "modules-plugable/computer/memory/store/files/protocol/files-capabilities.kh"
+
+tp Domain mt (self Files_Capabilities) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory Files Store")(s, VoidError)
+}
+
+tp Summary mt (self Files_Capabilities) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the files store declares of what it is")(s, VoidError)
+}
+
+tp Overview mt (self Files_Capabilities) () (s String) {
+    CharacterRun_From.FromCharacterRun("What the files store declares of what it is.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Files_Capabilities) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Files_Capabilities) () (s String) {
+    CharacterRun_From.FromCharacterRun("A sparse store of addresses and values of any length that can compare and write; atomic batch and durable. It declares leaves_working_tree_untouched false: its medium is files under the memory root in the project tree. It is not lockable, not fallback and not replicated in this generation: the expectation is the control of writers.")(s, VoidError)
+}
