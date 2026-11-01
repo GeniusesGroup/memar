@@ -1,10 +1,8 @@
 ---
 Title: "Family"
-Status: Draft
 Start Date: 2026-09-22
 ID: 497240
 ---
-
 # Family
 An optional contract draft for people who opt into a household together.
 

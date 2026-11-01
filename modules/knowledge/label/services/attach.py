@@ -9,8 +9,10 @@ _m_store = import_module('modules.computer.memory.store.protocol.store')
 Graph_PutEdge = _m_graph.Graph_PutEdge
 Graph_ListSidesQuery = _m_graph.Graph_ListSidesQuery
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
-LABEL = b'label'
-LABEL_OF = b'label_of'
+_NS = uuid.NAMESPACE_URL
+_BASE = 'memar://modules/knowledge/label/relation/'
+LABEL = uuid.uuid5(_NS, _BASE + 'label').bytes
+LABEL_OF = uuid.uuid5(_NS, _BASE + 'label_of').bytes
 
 
 def id_bytes(label: Label) -> bytes:

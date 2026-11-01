@@ -1,10 +1,8 @@
 ---
 Title: "Documentation — Handoff"
-Status: Proposed
 Start Date: 2026-08-04
 ID: 496041
 ---
-
 # Documentation — Handoff
 This document specifies the Handoff concept and its templates: the shapes of the contents of kind `question`, `decision`, `assumption` and `anticipated-work` that carry the state of an ongoing discussion across a session boundary, so the discussion can continue from stable ground instead of restarting. `handoff` is the name of the concept and is not a kind of content; each of the four kinds is a template with fields of its own. The module names no file, directory, path or file name ([No Record Is Written Beside a Document](../rules/no-record-beside-a-document/no-record-beside-a-document.md)). See [Documentation](../documentation.md) for what a template is, and [Cognition → A Conversation as Two Cognitive Systems Connected Through a Medium](../../../../docs/cognition.md#a-conversation-as-two-cognitive-systems-connected-through-a-medium) for the model this specification builds on: a session is one stretch of an exchange between cognitive systems, and the material traveling between sessions degrades unless something carries it.
 

@@ -1,10 +1,8 @@
 ---
 Title: "Framework"
-Status: Proposed
 Start Date: "2026-06-21"
 ID: 495003
 ---
-
 # Framework
 
 ## Abstract

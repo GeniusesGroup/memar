@@ -1,10 +1,8 @@
 ---
 Title: "Documentation — Approval"
-Status: Proposed
 Start Date: 2026-10-31
 ID: 502810
 ---
-
 # Documentation — Approval
 This document specifies the Approval template: the shape of a content of kind `approval` placed in the timeline of a task, in which a reviewer who did not do the work gives a verdict on another content of the timeline. It names no file, directory, path or file name. An approval is its own kind and not a part of the content it judges: it is a judgement about that content's correctness, made by another party at another time, and the content it judges is never edited to carry it.
 

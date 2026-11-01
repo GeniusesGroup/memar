@@ -65,6 +65,8 @@ def _run(path: Path) -> tuple[LabelDefinition, ...]:
     labels = getattr(module, NAME, ())
     if not isinstance(labels, tuple) or not all((isinstance(item, LabelDefinition) for item in labels)):
         fail(f'{path}: {NAME} is a tuple of LabelDefinition, as `topic()` returns; it holds something else')
+    if len(labels) != 1:
+        fail(f'{path}: {NAME} declares one label per file; this file holds {len(labels)}')
     return labels
 
 def declared(project: Path) -> tuple[Declared, ...]:

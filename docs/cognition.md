@@ -1,10 +1,8 @@
 ---
 Title: "Cognition"
-Status: Draft
 Start Date: 2026-09-01
 ID: 496735
 ---
-
 # Cognition
 
 ## Abstract

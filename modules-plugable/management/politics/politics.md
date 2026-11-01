@@ -1,10 +1,8 @@
 ---
 Title: "Politics"
-Status: Draft
 Start Date: 2026-09-21
 ID: 497224
 ---
-
 # Politics
 Politics is who gets what, when, and how, when people with different interests make one choice together.
 

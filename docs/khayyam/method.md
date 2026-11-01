@@ -1,10 +1,8 @@
 ---
 Title: "Method in Khayyam"
-Status: Draft
 Start Date: "2026-07-28"
 ID: "495900"
 ---
-
 # Method in Khayyam
 
 ## Abstract

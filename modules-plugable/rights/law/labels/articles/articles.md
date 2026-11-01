@@ -1,10 +1,8 @@
 ---
 Title: "Articles"
-Status: Draft
 Start Date: 2026-09-23
 ID: 497272
 ---
-
 # Articles
 A comment label for a law of an organization.
 

@@ -1,6 +1,5 @@
 ---
 Title: "Modularity Rule — A Concept Has One Owner Module"
-Status: Draft
 Start Date: 2026-10-30
 ---
 

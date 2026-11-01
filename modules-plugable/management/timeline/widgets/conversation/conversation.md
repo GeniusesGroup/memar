@@ -1,9 +1,7 @@
 ---
 Title: "Conversation"
-Status: Draft
 Start Date: 2026-10-31
 ---
-
 # Conversation
 
 ## Abstract

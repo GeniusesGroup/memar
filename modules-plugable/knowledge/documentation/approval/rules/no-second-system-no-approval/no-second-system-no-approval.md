@@ -1,9 +1,7 @@
 ---
 Title: "Approval Rule — No Second System, No Approval"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Approval Rule — No Second System, No Approval
 A rule of this repository, held for [Approval](../../approval.md), which owns the claim in [Approval Requires a Reviewer Who Did Not Do the Work](../../approval.md#approval-requires-a-reviewer-who-did-not-do-the-work). This rule states what counts as a reviewer.
 

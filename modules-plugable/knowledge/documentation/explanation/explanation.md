@@ -1,10 +1,8 @@
 ---
 Title: "Documentation — Explanation"
-Status: Proposed
 Start Date: 2026-06-21
 ID: 495000
 ---
-
 # Documentation — Explanation
 This document specifies the canonical documentation structure every formal explanation document must follow.
 

@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — Tasks Are Split at Decisions and Merged on Shared Reading"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — Tasks Are Split at Decisions and Merged on Shared Reading
 A rule of this repository for how large a delegated or queued task should be. Moved on 2026-11-01 from the Handoff Practice; provisional until a real task's cost has been measured. How a step is delegated is [delegate by size of reading](../delegate-by-size-of-reading/delegate-by-size-of-reading.md), and a step is judged by [its cost over the whole work](../step-cost-over-the-whole-work/step-cost-over-the-whole-work.md).
 

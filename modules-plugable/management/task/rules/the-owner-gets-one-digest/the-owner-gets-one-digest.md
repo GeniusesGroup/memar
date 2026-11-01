@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — The Owner Gets One Digest, Not a Question per Task"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — The Owner Gets One Digest, Not a Question per Task
 A rule of this repository for what a delegating agent brings the owner when its tasks end. Moved on 2026-11-01 from the Handoff Practice.
 

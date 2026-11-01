@@ -1,10 +1,8 @@
 ---
 Title: "Encapsulation in Khayyam"
-Status: Draft
 Start Date: "2026-07-15"
 ID: "495592"
 ---
-
 # Encapsulation in Khayyam
 
 ## Abstract

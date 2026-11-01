@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — Old Task Folders Are Swept by the Owner's Ruling"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — Old Task Folders Are Swept by the Owner's Ruling
 A rule of this repository for the folders the daily sweep leaves behind. The statements are the owner's, 2026-10-13.
 

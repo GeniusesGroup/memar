@@ -1,10 +1,8 @@
 ---
 Title: "Reevaluating HTTP as a Default Application Protocol"
-Status: Draft
 Start Date: 2026-09-21
 ID: 497223
 ---
-
 # Reevaluating HTTP as a Default Application Protocol
 This document deconstructs the default validity of HTTP as an application, session, and addressing model; shareable locators remain a real job and are not the target of the deconstruction.
 

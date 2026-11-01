@@ -1,10 +1,8 @@
 ---
 Title: "Polymorphism in Khayyam"
-Status: Proposed
 Start Date: 2026-07-11
 ID: 495494
 ---
-
 # Polymorphism in Khayyam
 
 ## Abstract

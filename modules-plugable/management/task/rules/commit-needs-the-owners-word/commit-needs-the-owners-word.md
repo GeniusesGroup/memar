@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Commit Needs the Owner's Word, and a Small Commit Needs No Task"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Commit Needs the Owner's Word, and a Small Commit Needs No Task
 A rule of this repository for committing the work of a task. The statements are the owner's, 2026-10-13 and 2026-10-15.
 

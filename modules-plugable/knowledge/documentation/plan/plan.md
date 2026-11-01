@@ -1,6 +1,5 @@
 ---
 Title: "Documentation — Plan"
-Status: Draft
 Start Date: 2026-10-16
 ID: 497822
 ---

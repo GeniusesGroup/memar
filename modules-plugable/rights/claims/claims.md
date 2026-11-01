@@ -1,10 +1,8 @@
 ---
 Title: "Claims"
-Status: Draft
 Start Date: 2026-09-23
 ID: 497268
 ---
-
 # Claims
 Optional kinds of dispute. Not the case type.
 

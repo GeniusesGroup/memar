@@ -1,9 +1,7 @@
 ---
 Title: "Documentation Rule — No Record Is Written Beside a Document"
-Status: Draft
 Start Date: 2026-10-31
 ---
-
 # Documentation Rule — No Record Is Written Beside a Document
 A rule of this repository, held for [Documentation](../../documentation.md). The owner's ruling of 2026-10-31, made while task 20261025-T141522Z-25344 was taken up: the history and the open questions of a document are not a file beside it.
 

@@ -1,10 +1,8 @@
 ---
 Title: "Terminology"
-Status: Proposed
 Start Date: 2026-06-21
 ID: 495001
 ---
-
 # Terminology
 
 ## Abstract

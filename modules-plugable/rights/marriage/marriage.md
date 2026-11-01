@@ -1,10 +1,8 @@
 ---
 Title: "Marriage"
-Status: Draft
 Start Date: 2026-09-22
 ID: 497241
 ---
-
 # Marriage
 An optional contract draft for the people who marry.
 

@@ -1,10 +1,8 @@
 ---
 Title: "Laws"
-Status: Draft
 Start Date: 2026-09-23
 ID: 497262
 ---
-
 # Laws
 Basic statutes an organization may adopt. Not the law type.
 

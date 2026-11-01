@@ -1,10 +1,8 @@
 ---
 Title: "Label Rule — Category Depth"
-Status: Draft
 Start Date: 2026-10-17
 ID: 497843
 ---
-
 # Label Rule — Category Depth
 Label's rules live one rule per directory under [`modules/knowledge/label/rules/`](../README.md), and this is the rule for how many levels stand between a placement and a module, and for where a pluggable module stands. It is a governance rule of this repository, held for [Category](../../labels/category.md).
 

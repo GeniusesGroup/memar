@@ -1,9 +1,7 @@
 ---
 Title: "Documentation Rule — A README Is a Link to the Main Document"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Documentation Rule — A README Is a Link to the Main Document
 A rule of this repository, held for [Documentation](../../documentation.md), which owns the claim in [A README Points; Content Gets a Document](../../documentation.md#a-readme-points-content-gets-a-document). This rule states the check applied to every README a change creates, moves or rewrites.
 

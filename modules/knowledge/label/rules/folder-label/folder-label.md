@@ -1,10 +1,8 @@
 ---
 Title: "Label Rule — A Folder Is a Label"
-Status: Draft
 Start Date: 2026-10-22
 ID: 497843
 ---
-
 # Label Rule — A Folder Is a Label
 Label's rules live one rule per directory under [`modules/knowledge/label/rules/`](../README.md), and this is the rule for what making a folder is, and what a reader may conclude from a path. It is held for every folder of every project built with Memar, and it applies [Label → A name is one label](../../label.md#a-name-is-one-label) to the file system: a folder's name is a label, and a path is a way of labelling.
 

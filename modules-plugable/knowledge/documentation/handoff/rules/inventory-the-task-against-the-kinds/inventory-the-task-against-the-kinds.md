@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — Inventory the Task Against the Kinds"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — Inventory the Task Against the Kinds
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [Analysis, Not Transcription](../../handoff.md#analysis-not-transcription). This rule states how the writer chooses what to place.
 

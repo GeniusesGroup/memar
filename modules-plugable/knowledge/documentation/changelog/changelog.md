@@ -1,10 +1,8 @@
 ---
 Title: "Documentation — Changelog"
-Status: Proposed
 Start Date: 2026-08-03
 ID: 496040
 ---
-
 # Documentation — Changelog
 This document specifies the Changelog template: the shape of a content of kind `changelog` placed in the timeline of a task, recording why and how what the task changed came to change. It names no file, directory, path or file name: where a content is kept is the store's concern, and a record is a content of a task, never written beside the thing it concerns ([No Record Is Written Beside a Document](../rules/no-record-beside-a-document/no-record-beside-a-document.md)). See [Documentation](../documentation.md) for what a template is.
 

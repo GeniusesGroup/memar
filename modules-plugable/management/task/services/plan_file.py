@@ -139,7 +139,7 @@ def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: 
     the type that checked it (`modules-plugable/management/task/services/dependency.py`).
     """
     given = {PlanKey.ID: task, PlanKey.TITLE: title, PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.PRIORITY: priority, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
-    front = ['---', f'{STATUS_WRITTEN}: {status_word(status).capitalize()}']
+    front = ['---']
     for key in PLAN.keys:
         if key is PlanKey.LABELS:
             if given[key]:

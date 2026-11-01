@@ -1,9 +1,7 @@
 ---
 Title: "Documentation Rule — A Document Restates No Code"
-Status: Draft
 Start Date: 2026-10-30
 ---
-
 # Documentation Rule — A Document Restates No Code
 A rule of this repository, held for [Documentation](../../documentation.md), which owns the claim in [A Fact in Code Is Written Once](../../documentation.md#a-fact-in-code-is-written-once). This rule states the check a reviewer applies to a document.
 

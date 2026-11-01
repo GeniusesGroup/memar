@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Task Is for Work"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Task Is for Work
 A rule of this repository for what may be a task of its own. The statement is the owner's, 2026-10-22.
 

@@ -1,2 +1,1 @@
-# Read only
-**Retired folder.** Word `read_only` in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).
+**Retired folder.** Declared in [`../../labels/read_only.py`](../../labels/read_only.py). Attachment: [Label edge](../../../label/edges/label/label.md).

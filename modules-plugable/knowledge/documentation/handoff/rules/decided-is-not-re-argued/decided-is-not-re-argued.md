@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — A Decided Point Is Not Re-Argued"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — A Decided Point Is Not Re-Argued
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [Analysis, Not Transcription](../../handoff.md#analysis-not-transcription). This rule states how a receiving task treats a decision by its confidence.
 

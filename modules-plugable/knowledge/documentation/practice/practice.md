@@ -1,10 +1,8 @@
 ---
 Title: "Documentation — Practice"
-Status: Proposed
 Start Date: 2026-07-25
 ID: 495821
 ---
-
 # Documentation — Practice
 This document specifies the Practice facet. See [Documentation](../documentation.md) for what a facet is and why Practice is governed separately from Explanation.
 

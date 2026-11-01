@@ -131,12 +131,13 @@ class Fixture(unittest.TestCase):
 
 class Skeleton(Fixture):
 
-    def test_a_new_plan_names_its_task_then_has_front_matter_with_its_status_the_title_and_four_parts(self) -> None:
+    def test_a_new_plan_names_its_task_then_has_front_matter_with_the_title_and_four_parts(self) -> None:
         text = task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'))
-        self.assertEqual(text, f"---\nID: {TASK}\nTitle: {TITLE}\nStatus: Active\nStart Date: {OPENED}\nProject: {Path('/work')}\n---\n# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n")
+        self.assertEqual(text, f"---\nID: {TASK}\nTitle: {TITLE}\nStart Date: {OPENED}\nProject: {Path('/work')}\n---\n# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n")
         self.assertEqual(text.count(TITLE), 2)
         plan = self.read(text)
-        self.assertEqual(plan.status, 'active')
+        self.assertEqual(plan.status, '')
+        self.assertNotIn('status', plan.front or {})
         self.assertEqual(plan.front[PlanKey.ID.key], TASK)
         self.assertEqual(plan.front[PlanKey.START_DATE.key], OPENED)
         self.assertNotIn(PlanKey.PARENT.key, plan.front)

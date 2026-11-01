@@ -1,10 +1,8 @@
 ---
 Title: "Abstraction in Khayyam"
-Status: Proposed
 Start Date: "2026-07-11"
 ID: "495493"
 ---
-
 # Abstraction in Khayyam
 Abstractions in Khayyam occupy a conceptual space closely related to [IDL (Interface Description Language)](https://en.wikipedia.org/wiki/Interface_description_language) as used in protocol packages: both describe behavioral requirements that specify *what* is required without prescribing implementation details. Just as an IDL defines the data and operations of a protocol's exchanges, a Khayyam abstraction defines the method signatures a capsule must expose — the language-level counterpart of a protocol's declared requirements. (The abstraction itself is not a contract: it names required behavior, not parties, obligations, or commitments — see [Protocol vs Contract](../../modules/knowledge/protocol/protocol.md#protocol-vs-contract).)
 

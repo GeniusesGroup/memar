@@ -1,9 +1,7 @@
 ---
 Title: "Approval Rule — Changed Work Gets a New Reviewer"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Approval Rule — Changed Work Gets a New Reviewer
 A rule of this repository, held for [Approval](../../approval.md), which owns the claim in [Approval Requires a Reviewer Who Did Not Do the Work](../../approval.md#approval-requires-a-reviewer-who-did-not-do-the-work). This rule states who reviews work that was reviewed once and then changed.
 

@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — Mark Confidence While It Is Fresh"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — Mark Confidence While It Is Fresh
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [Analysis, Not Transcription](../../handoff.md#analysis-not-transcription). This rule states when and with what vocabulary a content is marked.
 

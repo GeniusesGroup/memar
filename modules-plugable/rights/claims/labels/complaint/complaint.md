@@ -1,10 +1,8 @@
 ---
 Title: "Complaint"
-Status: Draft
 Start Date: 2026-09-27
 ID: 497368
 ---
-
 # Complaint
 A claim-type label that groups claim types.
 

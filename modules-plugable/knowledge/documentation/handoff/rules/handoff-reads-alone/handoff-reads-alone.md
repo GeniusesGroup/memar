@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — A Handoff Reads Alone"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — A Handoff Reads Alone
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [The kinds](../../handoff.md#the-kinds). This rule states the check the writer applies before the task ends.
 

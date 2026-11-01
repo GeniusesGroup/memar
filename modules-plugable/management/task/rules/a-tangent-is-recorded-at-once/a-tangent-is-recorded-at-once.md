@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Tangent Is Recorded at Once, Not Followed"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Tangent Is Recorded at Once, Not Followed
 A rule of this repository for a task that meets a request outside its own work. Moved on 2026-11-01 from the Handoff Practice.
 

@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — Read the Whole Handoff, Then State It"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — Read the Whole Handoff, Then State It
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [Reader relationship](../../handoff.md#reader-relationship). This rule states how a task that continues from a handoff begins.
 

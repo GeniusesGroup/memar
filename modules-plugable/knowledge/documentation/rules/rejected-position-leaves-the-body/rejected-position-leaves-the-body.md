@@ -1,9 +1,7 @@
 ---
 Title: "Documentation Rule — A Rejected Position Leaves the Body"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Documentation Rule — A Rejected Position Leaves the Body
 A rule of this repository, held for [Documentation](../../documentation.md), which owns the claim in [Written surface](../../documentation.md#written-surface), where the body affirms what holds. This rule states the check a reviewer applies to a body and the three steps taken when the owner rejects a position.
 

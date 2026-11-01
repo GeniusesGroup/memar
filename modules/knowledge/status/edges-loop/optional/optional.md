@@ -1,2 +1,1 @@
-# Optional
-**Retired folder.** Declared in [`../../labels/shared_markers.py`](../../labels/shared_markers.py). Attachment: [Label edge](../../../label/edges/label/label.md).
+**Retired folder.** Declared in [`../../labels/optional.py`](../../labels/optional.py). Attachment: [Label edge](../../../label/edges/label/label.md).

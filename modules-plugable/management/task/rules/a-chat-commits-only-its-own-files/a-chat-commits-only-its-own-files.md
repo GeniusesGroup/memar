@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Chat Commits Only the Files It Changed"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Chat Commits Only the Files It Changed
 A rule of this repository for a tree that several chats work in. The statement is the owner's, 2026-10-16.
 

@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — Where a Task Runs Follows Two Questions"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — Where a Task Runs Follows Two Questions
 A rule of this repository for a conversation that hands a task to another agent. Moved on 2026-11-01 from the Handoff Practice.
 

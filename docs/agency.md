@@ -1,10 +1,8 @@
 ---
 Title: "Agency"
-Status: Draft
 Start Date: 2026-08-15
 ID: 496330
 ---
-
 # Agency
 
 ## Abstract

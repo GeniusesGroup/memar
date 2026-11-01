@@ -1,9 +1,7 @@
 ---
 Title: "Documentation Rule — A Template Document and Its Rules Trace Both Ways"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Documentation Rule — A Template Document and Its Rules Trace Both Ways
 A rule of this repository, held for [Documentation](../../documentation.md), which owns the claim in [Relationship between this document and its facet specifications](../../documentation.md#relationship-between-this-document-and-its-facet-specifications). This rule states the check a reviewer applies to a template document and to the rules of its module.
 

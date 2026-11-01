@@ -1,10 +1,8 @@
 ---
 Title: "Domain-Driven Design"
-Status: Draft
 Start Date: "2026-09-16"
 ID: "497102"
 ---
-
 # Domain-Driven Design
 
 ## Abstract

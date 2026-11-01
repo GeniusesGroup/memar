@@ -1,9 +1,7 @@
 ---
 Title: "Explanation Rule — Framing Sections State the Subject, Not the Writing"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Explanation Rule — Framing Sections State the Subject, Not the Writing
 A rule of this repository, held for [Explanation](../../explanation.md), which owns the claim in [Relevance discipline](../../explanation.md#relevance-discipline). This rule states the check a reviewer applies to the Abstract, the Motivation and the Methodology of a document before it is left.
 

@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — A Decision Carries Its Reasons"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — A Decision Carries Its Reasons
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [Analysis, Not Transcription](../../handoff.md#analysis-not-transcription). This rule states what a `decision` content holds beyond the verdict.
 

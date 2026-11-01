@@ -1,10 +1,8 @@
 ---
 Title: "Forked Sub-Agent"
-Status: Draft
 Start Date: 2026-10-15
 ID: 497795
 ---
-
 # Forked Sub-Agent
 
 ## Abstract

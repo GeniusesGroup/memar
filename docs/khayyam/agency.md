@@ -1,10 +1,8 @@
 ---
 Title: "Agency in Khayyam"
-Status: Proposed
 Start Date: 2026-06-29
 ID: 495210
 ---
-
 # Agency in Khayyam
 
 ## Abstract

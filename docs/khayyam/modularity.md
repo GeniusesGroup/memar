@@ -1,10 +1,8 @@
 ---
 Title: "Modularity in Khayyam"
-Status: Draft
 Start Date: 2026-07-29
 ID: 495930
 ---
-
 # Modularity in Khayyam
 
 ## Abstract

@@ -1,10 +1,8 @@
 ---
 Title: "Documentation — Comparison"
-Status: Draft
 Start Date: 2026-10-06
 ID: 497579
 ---
-
 # Documentation — Comparison
 This document specifies the fair-comparison essay: the method a project follows when it examines a neighbouring project that people offer as its substitute. The method lives here; an essay is a content of a task, a template this document governs, and it names no file, directory, path or file name ([No Record Is Written Beside a Document](../rules/no-record-beside-a-document/no-record-beside-a-document.md)).
 

@@ -1,10 +1,8 @@
 ---
 Title: "Constitution"
-Status: Draft
 Start Date: 2026-09-23
 ID: 497271
 ---
-
 # Constitution
 A comment label for a law the commenter treats as foundational.
 

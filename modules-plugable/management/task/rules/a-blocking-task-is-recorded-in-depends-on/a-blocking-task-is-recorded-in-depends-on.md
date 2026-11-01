@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Blocking Task Is Recorded in Depends_on"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Blocking Task Is Recorded in Depends_on
 A rule of this repository for a conversation that cannot go on without another task. Moved on 2026-11-01 from the Handoff Practice.
 

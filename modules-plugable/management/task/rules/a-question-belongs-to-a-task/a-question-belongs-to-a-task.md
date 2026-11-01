@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Question Belongs to a Task, and a Related Question Keeps It Open"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Question Belongs to a Task, and a Related Question Keeps It Open
 A rule of this repository for a question a task turns up that only the owner can answer. The statement is the owner's, 2026-10-31, with the 2026-10-15 ruling on the skill and the scripts. It replaces the older lines that "a question is its own task" and that a question is "an entry, never a task".
 

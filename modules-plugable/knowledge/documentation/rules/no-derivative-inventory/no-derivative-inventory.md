@@ -1,9 +1,7 @@
 ---
 Title: "Documentation Rule — No Derivative Inventory"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Documentation Rule — No Derivative Inventory
 A rule of this repository, held for [Documentation](../../documentation.md), which owns the claim in [Content Rule: No Fabricated or Redundant Provenance](../../documentation.md#content-rule-no-fabricated-or-redundant-provenance). This rule states the check applied to what a document lists and to what the doer reads.
 

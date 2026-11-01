@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Priority Change States Its Reason"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Priority Change States Its Reason
 A rule of this repository for the priority a plan carries to order the queue. Moved on 2026-11-01 from the Handoff Practice.
 

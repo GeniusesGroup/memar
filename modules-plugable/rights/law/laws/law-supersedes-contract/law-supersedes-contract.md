@@ -1,10 +1,8 @@
 ---
 Title: "Law supersedes contract"
-Status: Draft
 Start Date: 2026-09-23
 ID: 497269
 ---
-
 # Law supersedes contract
 An organization may let a law take the place of a contract.
 

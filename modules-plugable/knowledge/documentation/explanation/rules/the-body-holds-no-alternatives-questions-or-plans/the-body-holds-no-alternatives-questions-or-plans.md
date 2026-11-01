@@ -1,9 +1,7 @@
 ---
 Title: "Explanation Rule — The Body Holds No Alternatives, Questions or Plans"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Explanation Rule — The Body Holds No Alternatives, Questions or Plans
 A rule of this repository, held for [Explanation](../../explanation.md), which owns the claim in [Relevance discipline](../../explanation.md#relevance-discipline). This rule states where the matter a body must not hold is placed.
 

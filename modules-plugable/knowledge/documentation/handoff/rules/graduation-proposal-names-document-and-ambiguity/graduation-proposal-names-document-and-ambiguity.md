@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — A Graduation Proposal Names the Document and the Ambiguity"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — A Graduation Proposal Names the Document and the Ambiguity
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [What a Handoff Is](../../handoff.md#what-a-handoff-is), where a concluded discussion graduates into the governing document. This rule states the proposal made when a decision has hardened.
 

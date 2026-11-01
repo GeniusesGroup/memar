@@ -1,6 +1,5 @@
 ---
 Title: "Documentation — Research"
-Status: Draft
 Start Date: 2026-09-08
 ID: 496903
 ---
@@ -28,7 +27,7 @@ Two boundary statements sharpen the definition:
 - **A research is not a draft of the governing document.** When an inquiry settles something, the settled content graduates into the governing document through that document's own revision, and the research remains as the record of how the answer was reached, the evidence and method trail a change record can cite.
 - **A research is not a discussion transcript.** It records the inquiry's distilled state, questions, goals, method, findings, conclusion, not the conversation that produced them; the [analysis-not-transcription](../handoff/handoff.md#analysis-not-transcription) discipline applies here.
 
-A research is a task labelled with the topic `research` ([labels](./labels/topics.py)). The task holds the Status of the inquiry, changed only by a Request ([Request](../../../../modules/process/request/request.md)), and the placers of its contents; the research repeats neither.
+A research is a task labelled with the topic `research` ([research topic](./labels/topics.py)). The task holds the Status of the inquiry, changed only by a Request ([Request](../../../../modules/process/request/request.md)), and the placers of its contents; the research repeats neither.
 
 ### Reader relationship
 A research is **examined to evaluate an inquiry**: what was asked, why it mattered, how it was conducted, what it found, and how firm the outcome stands. That is told apart from the reader relationship of each other template by what the reader is expected to do, which each of [Explanation](../explanation/explanation.md#reader-relationship), [Changelog](../changelog/changelog.md#reader-relationship) and [Handoff](../handoff/handoff.md#reader-relationship) states for itself.

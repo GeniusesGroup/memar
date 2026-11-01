@@ -1,10 +1,8 @@
 ---
 Title: "Variable in Khayyam"
-Status: Draft
 Start Date: 2026-07-15
 ID: 495591
 ---
-
 # Variable in Khayyam
 
 ## Abstract

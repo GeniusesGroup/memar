@@ -1,10 +1,8 @@
 ---
 Title: "Contract within law"
-Status: Draft
 Start Date: 2026-09-23
 ID: 497267
 ---
-
 # Contract within law
 A contract binds the people who made it, unless it explicitly contradicts a law in force.
 

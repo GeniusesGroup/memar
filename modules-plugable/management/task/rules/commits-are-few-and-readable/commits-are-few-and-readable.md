@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — Commits Are Few and Readable"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — Commits Are Few and Readable
 A rule of this repository for the shape of a task's commits. The statements are the owner's, 2026-10-14 and 2026-10-15.
 

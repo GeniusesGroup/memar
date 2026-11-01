@@ -1,10 +1,8 @@
 ---
 Title: "Khayyam - Programming Language"
-Status: Proposed
 Start Date: 2025-04-24
 ID: 484848
 ---
-
 # Khayyam - Programming Language
 This language is ideal for developers who want clean, spoken code capable of writing high-performance libraries and applications without fighting the compiler.
 

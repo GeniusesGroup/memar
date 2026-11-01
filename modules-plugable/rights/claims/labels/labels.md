@@ -1,10 +1,8 @@
 ---
 Title: "Claim labels"
-Status: Draft
 Start Date: 2026-09-27
 ID: 497367
 ---
-
 # Claim labels
 Registered meanings of the words people attach when they name a kind of claim.
 

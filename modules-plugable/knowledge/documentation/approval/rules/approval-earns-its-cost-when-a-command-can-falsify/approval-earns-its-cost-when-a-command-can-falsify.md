@@ -1,9 +1,7 @@
 ---
 Title: "Approval Rule — An Approval Earns Its Cost When a Command Can Falsify the Claim"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Approval Rule — An Approval Earns Its Cost When a Command Can Falsify the Claim
 A rule of this repository, held for [Approval](../../approval.md), which owns the claim in [Approval Requires a Reviewer Who Did Not Do the Work](../../approval.md#approval-requires-a-reviewer-who-did-not-do-the-work). This rule states the check a task applies before it asks for an approval.
 

@@ -1,10 +1,8 @@
 ---
 Title: "Metaprogramming in Khayyam"
-Status: Draft
 Start Date: 2026-07-30
 ID: 495955
 ---
-
 # Metaprogramming in Khayyam
 
 ## Abstract

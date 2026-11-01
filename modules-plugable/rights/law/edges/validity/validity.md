@@ -1,10 +1,8 @@
 ---
 Title: "Law Validity"
-Status: Draft
 Start Date: 2026-09-13
 ID: 497081
 ---
-
 # Law Validity
 
 ## Abstract

@@ -1,10 +1,8 @@
 ---
 Title: "Documentation"
-Status: Proposed
 Start Date: 2026-07-25
 ID: 495820
 ---
-
 # Documentation
 This document defines what a Facet is, says where the facets in use are specified and how one is added, and carries the cross-cutting conventions that span facets (file naming, documentation language, written surface, results routing, citations, URI). It does not itself specify the structure of any facet — that is each facet's own document's job. One further specification sits beside the facets rather than among them: [Documentation — Comparison](./comparison/comparison.md), which governs a kind of document that belongs to no facet.
 

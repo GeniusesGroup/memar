@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — Queued Work Is Taken for One Project and Handed Out by One Topic"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — Queued Work Is Taken for One Project and Handed Out by One Topic
 A rule of this repository for an agent asked to do some of the queued tasks. Moved on 2026-11-01 from the Handoff Practice.
 

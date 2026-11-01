@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — Another Task's Work Is Corrected Only After It Ends, and the Correction Is Reported"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — Another Task's Work Is Corrected Only After It Ends, and the Correction Is Reported
 A rule of this repository for a task that finds another task's work in the shared medium wrong: a claim its source does not support, a deleted record, a question closed without an answer. The statement is the owner's, 2026-10-13.
 

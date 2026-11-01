@@ -10,7 +10,7 @@ from zlib import crc32
 from modules.knowledge.content.primitive.section import Section
 from modules.knowledge.content.primitive.word import Word
 
-DECLARES = re.compile(r'^class\s+\w+\((?:Section|Word)\)', re.M)
+DECLARES = re.compile(r'^class\s+\w+\(', re.M)
 
 class Catalog:
     __slots__ = ('_members',)

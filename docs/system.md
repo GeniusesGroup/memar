@@ -1,10 +1,8 @@
 ---
 Title: "System"
-Status: Proposed
 Start Date: 2026-07-14
 ID: 495570
 ---
-
 # System
 
 ## Abstract

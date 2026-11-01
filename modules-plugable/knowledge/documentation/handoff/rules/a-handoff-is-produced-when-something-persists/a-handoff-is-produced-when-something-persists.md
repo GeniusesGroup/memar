@@ -1,9 +1,7 @@
 ---
 Title: "Handoff Rule — A Handoff Is Produced When Something Persists"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Handoff Rule — A Handoff Is Produced When Something Persists
 A rule of this repository, held for [Handoff](../../handoff.md), which owns the claim in [What a Handoff Is](../../handoff.md#what-a-handoff-is). This rule states when a task places the contents that carry a discussion's state.
 

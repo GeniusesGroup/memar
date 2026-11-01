@@ -1,10 +1,8 @@
 ---
 Title: "Law — optional parts"
-Status: Draft
 Start Date: 2026-10-20
 ID: 497910
 ---
-
 # Law — optional parts
 The optional parts an organization attaches to the [law](../../../modules/rights/law/law.md) type, held as one pluggable module.
 

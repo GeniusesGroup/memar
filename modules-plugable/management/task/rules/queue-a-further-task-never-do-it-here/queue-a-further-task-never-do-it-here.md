@@ -1,9 +1,7 @@
 ---
 Title: "Task Rule — A Further Task Is Queued, Never Done in the Conversation"
-Status: Draft
 Start Date: 2026-11-01
 ---
-
 # Task Rule — A Further Task Is Queued, Never Done in the Conversation
 A rule of this repository for a conversation that turns up work beyond its own task. Moved on 2026-11-01 from the Handoff Practice.
 

@@ -1,10 +1,8 @@
 ---
 Title: "Inheritance in Khayyam"
-Status: Proposed
 Start Date: "2026-07-10"
 ID: 495467
 ---
-
 # Inheritance in Khayyam
 This document specifies how Khayyam models inheritance at the language level: where the relationship legitimately exists, and what replaces the mechanisms other languages label "inheritance."
 

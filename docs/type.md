@@ -1,10 +1,8 @@
 ---
 Title: "Type"
-Status: Draft
 Start Date: 2026-07-19
 ID: 495685
 ---
-
 # Type
 
 ## Abstract
