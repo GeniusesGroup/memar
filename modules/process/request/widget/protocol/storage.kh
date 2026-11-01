@@ -9,7 +9,7 @@ import (
 	request_p "memar/process/request/protocol"
 
 	// bm_p "org/modules/computer/module/protocol"
-	computer_service_p "org/modules/computer/service/protocol"
+	computer_service_p "org/modules/process/service/protocol"
 	user_p "org/modules/identity/user/protocol"
 )
 

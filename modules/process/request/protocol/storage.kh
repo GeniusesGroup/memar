@@ -33,7 +33,7 @@ import (
 	container_p "memar/computer/adt/container/protocol"
 	request_p "memar/process/request/protocol"
 
-	computer_service_p "org/modules/computer/service/protocol"
+	computer_service_p "org/modules/process/service/protocol"
 	user_p "org/modules/identity/user/protocol"
 )
 

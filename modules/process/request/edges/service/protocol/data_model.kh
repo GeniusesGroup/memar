@@ -5,7 +5,7 @@
 package request_p
 
 import (
-	"org/modules/computer/service/protocol"
+	"org/modules/process/service/protocol"
 )
 
 type DataModel interface {
