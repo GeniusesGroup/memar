@@ -146,6 +146,19 @@ class Medium(unittest.TestCase):
         self.assertEqual(parts, {b'task': b'T', b'timeline': b'L'})
         self.assertEqual(store.get([task, timeline]), [Found(b'T', token(b'T')), Found(b'L', token(b'L'))])
 
+    def test_body_keys_are_only_domain_keys_not_dump_wrappers(self) -> None:
+        adapter = make_local()
+        store = adapter.open()
+        identity = bytes.fromhex('0190000000007000800000000000000c')
+        alpha, beta = (identity + b'alpha', identity + b'beta')
+        self.assertEqual(store.batch([], [(alpha, b'A'), (beta, b'B')]), Committed())
+        body = json.loads(adapter.file_at(alpha).get_file_data().decode('utf-8'))
+        self.assertEqual(set(body), {'alpha', 'beta'})
+        self.assertNotIn('domains', body)
+        self.assertNotIn('placements', body)
+        self.assertNotIn('relation', body)
+        self.assertNotIn('reverse', body)
+
     def test_node_file_body_is_a_json_object_without_binary_length_prefix(self) -> None:
         adapter = make_local()
         store = adapter.open()
