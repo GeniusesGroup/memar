@@ -23,4 +23,4 @@ An organization may keep this rule or drop it, and dropping it is a real option 
 - It does not change what this toolchain does. [core/src/parse.ts](../../core/src/parse.ts) still refuses a top-level `sc` with the label `scope-placement`, [core/test/refusal.test.ts](../../core/test/refusal.test.ts) still carries the top-level refuse row under that label, and [core/test/form.test.ts](../../core/test/form.test.ts) the in-body accept row.
 
 ## Open questions
-This rule's own open state — including the M1 limitation on what the accept row actually proves — lives in its [handoff](./scope-placement.handoff.md).
+This rule's own open state — including the M1 limitation on what the accept row actually proves — lives in its handoff.

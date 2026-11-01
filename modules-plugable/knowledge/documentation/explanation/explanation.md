@@ -111,5 +111,39 @@ This catalog — rather than a separate template per document purpose ([`RFC - R
 
 Each building block is declared, with what it is for, where it goes and how it differs from the others, one type each in [`./primitive/`](./primitive/), carrying the label `optional-section`.
 
+### Making a document
+The steps that produce a document under this specification, in order. What each field and section means is stated above; the section types are the types of [`./primitive/`](./primitive/).
+1. Start from the skeleton: the front matter fields `Title`, `Status`, `Start Date` and `ID`, then one top heading and the fixed body sections.
+   ```
+   ---
+   Title: ""
+   Status: Draft
+   Start Date: ""
+   ID: ""
+   ---
+
+   # Document Title
+
+   ## Abstract
+
+   ## Introduction
+
+   ### Motivation
+
+   ### Methodology
+
+   ## Explanation
+
+   ### {Topic}
+
+   #### {Sub topic}
+   ```
+2. Set `ID` once to the current UTC hour-count that `memar content hour-id` prints, and never change it.
+3. Fill the rest of the front matter: a short, unique `Title` in quotes, `Status` starting at `Draft`, and `Start Date` as today's UTC date, matching the moment `ID` was generated.
+4. Write the body. `Abstract` and `Introduction` stay unified, document-wide prose; `Explanation` is split into topics, with a sub topic where finer structure helps. Premise evidence for a claim is cited inline at the claim. Document-wide optional sections sit directly under the body's top level, not inside a topic.
+5. Filter the Abstract, the Motivation and the Methodology before leaving them ([Framing Sections State the Subject, Not the Writing](./rules/framing-sections-state-the-subject-not-the-writing/framing-sections-state-the-subject-not-the-writing.md)), and keep alternatives, open questions and anticipated work out of the body ([The Body Holds No Alternatives, Questions or Plans](./rules/the-body-holds-no-alternatives-questions-or-plans/the-body-holds-no-alternatives-questions-or-plans.md)).
+6. Hold the draft to the [standards of cognitive material](../../../../docs/cognition.md#standards-of-cognitive-material) while writing, clarity first, and examine each claim as it is drafted and not in a later phase.
+7. Place a `changelog` content on the task that made the document ([Changelog](../changelog/changelog.md)); the document keeps no provenance of its own. For a revision of a document written under an earlier version, bring it in line at this edit ([Progressive migration](#progressive-migration)) and carry any `Citations`, `Contributors` or `Applied to` fields and any `Change Rationale` body content of the old version into changelog contents.
+
 ### Progressive migration
 A document written under an earlier version of this specification is not required to be updated immediately when this specification changes. Instead, it is brought in line with the current structure the next time that file is naturally edited for any reason - not as a dedicated, separate migration pass. This applies to structural changes (section names, nesting) as much as to front-matter field changes.

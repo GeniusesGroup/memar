@@ -20,4 +20,4 @@ Container, array, list, graph, hash table, queue, stack, and marker protocols ar
 - An associative map is realized as `Array_Associative` (`modules/computer/adt/array/protocol/associative.kh`).
 - The unconstrained element position in a raw ADT protocol is `Container_Element` only (`modules/computer/adt/container/protocol/element.kh`); domain protocols take and return their own element types, not `Container_Element`.
 
-Open questions on whether these declarations belong under `computer` or under `math` are tracked in the paired [handoff](adt.handoff.md).
+Open questions on whether these declarations belong under `computer` or under `math` are tracked in the paired handoff.

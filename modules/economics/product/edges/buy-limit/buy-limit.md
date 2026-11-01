@@ -14,7 +14,7 @@
 
 - **Not core-by-necessity** — products and invoices work without purchase windows; ubiquitous ≠ core (payroll/VAT/POS precedent).
 - **Proposed: pluggable.** Carrying its own protocol = processing semantics = module candidate (edge becomes a module when it carries independent semantics; pluggable owns edge + processing together). Two candidate homes, decide before migrating:
-  1. **Rule attachment** — express as generic `(product)-[:condition_is]->(rule)` / `(user)-[:condition_is]->(rule)` with a time-window rule; then *no* dedicated module, consistent with Core never knows Rule ([rule.handoff.md](../../../../computer/rule/rule.handoff.md)). Cheapest and most consistent with [customable](../customable/customable.md) / [sell-limit](../sell-limit/sell-limit.md).
+  1. **Rule attachment** — express as generic `(product)-[:condition_is]->(rule)` / `(user)-[:condition_is]->(rule)` with a time-window rule; then *no* dedicated module, consistent with Core never knows Rule (`rule.handoff.md`). Cheapest and most consistent with [customable](../customable/customable.md) / [sell-limit](../sell-limit/sell-limit.md).
   2. **Own pluggable module** (e.g. `modules-plugable/economics/buy-limit` or an eligibility capability) — chosen only if the embargo needs storage/processing beyond what a rule already provides (partial windows, per-user grants, waiting lists).
 - Not [restriction](../../../../../modules-plugable/economics/restriction/restriction.md): that module is quantity constraints, not time windows.
 - Evidence of original pluggable intent: package name `pbl_p` in the source (vs `ppp` used by the core price protocol).

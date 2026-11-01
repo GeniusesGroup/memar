@@ -12,4 +12,4 @@
 
 ## Open questions
 
-- This priority already prefers the batch to the product; if a price moves to the batch, as the owner leans, is the settlement account always read from the same node the price was read from? — [Pricing Research 001](../../../../../modules-plugable/economics/pricing/pricing.research.001.md#open-questions).
+- This priority already prefers the batch to the product; if a price moves to the batch, as the owner leans, is the settlement account always read from the same node the price was read from? — Pricing Research 001.

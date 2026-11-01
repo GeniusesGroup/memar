@@ -116,7 +116,9 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+import earlier_shape
 import modules.computer.software.edges.manifest.services.preferences as project_preferences
 task_temp = import_module('modules-plugable.management.task.services.temp')
 import modules.computer.software.services.project_registry as registry
@@ -358,6 +360,16 @@ class KindWritten(Fixture):
         self.assertIn(', '.join(TaskKind.words(carried=True)), help_text)
         self.assertIn(f'{TaskKind.ANSWER.word}, {TaskKind.PLAN.word} are refused', help_text)
         self.assertIn('TaskKind, Topic', help_text)
+
+    def test_the_description_sends_findings_and_questions_to_the_contents_of_a_task(self) -> None:
+        text = ' '.join(task_new.DESCRIPTION.split())
+        self.assertIn("what it finds is a content of that task", text)
+        self.assertNotIn("research note", text)
+        self.assertNotIn("docs/", text)
+        self.assertIn("is a `research` task of its own, recorded as a Research document", text)
+        self.assertNotIn("write its plan.md, then leave it", text)
+        self.assertIn("A question only the owner can answer is a `question` content of the task it concerns, and a large unrelated one a task of its own.", text)
+        self.assertNotIn("in the handoff of the document it concerns", text)
 
     def test_a_kind_no_plan_carries_is_refused_and_makes_nothing(self) -> None:
         with self.assertRaises(SystemExit):
@@ -826,8 +838,8 @@ class OnlyTheNewShape(Fixture):
 
     def test_ensure_and_new_take_no_flag_that_selects_the_shape(self) -> None:
         import inspect
-        self.assertNotIn('new_shape', inspect.signature(task_ensure.ensure_task).parameters)
-        self.assertNotIn('new_shape', inspect.signature(task_new.open_task).parameters)
+        self.assertFalse([name for name in inspect.signature(task_ensure.ensure_task).parameters if 'shape' in name])
+        self.assertFalse([name for name in inspect.signature(task_new.open_task).parameters if 'shape' in name])
 
     def test_a_task_made_by_ensure_is_in_the_new_shape(self) -> None:
         _, path = self.ensure(None, TITLE)
@@ -853,7 +865,7 @@ class OldShapeIsKept(Fixture):
 
     def made_old(self, sid: str) -> Path:
         path = memar_fs.task_dir(sid, create=True)
-        task_files.create_plan_md(path, sid, TITLE, None, None, self.project, 'queued', None, None, None)
+        earlier_shape.create_plan_md(path, sid, TITLE, None, None, self.project, 'queued', None, None, None)
         (path / 'report.md').write_text(task_report.report_skeleton(sid, TITLE), encoding='utf-8', newline=chr(10))
         return path
 
@@ -865,10 +877,12 @@ class OldShapeIsKept(Fixture):
         self.assertEqual(after, before)
         self.assertFalse((path / 'task.yaml').exists())
 
-    def test_ensuring_an_old_task_with_a_priority_edits_plan_md_alone(self) -> None:
+    def test_ensuring_an_old_task_with_a_priority_refuses_and_leaves_plan_md_alone(self) -> None:
         path = self.made_old('old-2')
-        self.ensure('old-2', priority=4)
-        self.assertIn('Priority: 4', (path / 'plan.md').read_text(encoding='utf-8'))
+        before = (path / 'plan.md').read_bytes()
+        with self.assertRaises(SystemExit):
+            self.ensure('old-2', priority=4)
+        self.assertEqual((path / 'plan.md').read_bytes(), before)
         self.assertFalse((path / 'task.yaml').exists())
         self.assertEqual(list(path.glob('content.*')), [])
 

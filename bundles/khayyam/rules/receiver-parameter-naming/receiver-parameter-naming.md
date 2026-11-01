@@ -22,4 +22,4 @@ An organization may require `self`, forbid it, or use another convention (`this`
 - It does not govern method names on the receiver; those are the [method verb phrases rule](../method-verb-phrases/method-verb-phrases.md) and [receiver method names rule](../receiver-method-names/receiver-method-names.md).
 
 ## Open questions
-This rule's own open state lives in its [handoff](./receiver-parameter-naming.handoff.md).
+This rule's own open state lives in its handoff.

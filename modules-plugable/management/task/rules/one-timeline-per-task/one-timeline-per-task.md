@@ -8,4 +8,4 @@ Each Task has one timeline, owned by content, that every participant, human or n
 A separate chat or memory per agent is the shape of today's agent tools that this model does not copy, and it hides from the others what one participant knew.
 
 ## How a check would run
-A Task with more than one timeline, or a participant's texts kept outside the Task's timeline, breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-rulings-the-second-round-2026-10-18); this repository runs no automatic check of it today.
+A Task with more than one timeline, or a participant's texts kept outside the Task's timeline, breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

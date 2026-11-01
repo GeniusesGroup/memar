@@ -21,5 +21,5 @@
 ## Open questions
 
 - Should a supplier outside the graph rather be registered as its own organization with its own product node, so that its price is a price edge and a [source](../source/source.md) points at it, leaving this edge for one-off offers only?
-- A purchase between two organizations re-evaluates replacement cost as an event, at the price agreed at its issue ([invoice exchange](../../../../../modules/economics/invoice/invoice.handoff.md)), and needs no quote. Still open: may a fresh purchase from a supplier truly outside the graph be recorded as a dated quote, under the same maximum age, so that it is evidence of today's price rather than the historical cost of stock held?
+- A purchase between two organizations re-evaluates replacement cost as an event, at the price agreed at its issue (invoice exchange), and needs no quote. Still open: may a fresh purchase from a supplier truly outside the graph be recorded as a dated quote, under the same maximum age, so that it is evidence of today's price rather than the historical cost of stock held?
 - Who authorizes a feed integration, and is its quote distinguishable from one a staff member recorded?

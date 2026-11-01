@@ -24,7 +24,7 @@ to make the necessary arrangements so that an activity can happen effectively
 
 ## Idea backlog
 
-Review discipline per [vocabulary-discipline.handoff.md](vocabulary-discipline.handoff.md). Nothing below is ratified. The organization module has no module.md of its own yet, so its items are held here at the category level.
+Review discipline per `vocabulary-discipline.handoff.md`. Nothing below is ratified. The organization module has no module.md of its own yet, so its items are held here at the category level.
 
 ### Organization lifecycle
 - **Idea**: organizations can just have a finish date and can't be deleted — "Organizations can just have finish date, and can't be delete data! Due some legal complexity we think delete org is not reality and must warn user on register service!!"; reopening is restricted: "Just justice MS can do this operation.".

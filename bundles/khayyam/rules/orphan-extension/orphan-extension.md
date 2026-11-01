@@ -28,4 +28,4 @@ An organization may allow orphan extension for adapters, test doubles, or genera
 - It does not claim the compiler participates in the check; this is linter governance.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./orphan-extension.handoff.md).
+This rule's own open state lives in its handoff.

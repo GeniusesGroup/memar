@@ -23,7 +23,7 @@ A path is the first label every reader meets, and the only one an agent sees wit
 An organization may keep or drop this rule for its own tree. Dropping it is coherent for a tree one team reads and nobody searches. Memar keeps it because its tree is read by organizations and agents that did not make it.
 
 ## What this rule does not claim
-- It does not decide what kinds Memar's tree carries. Which kinds the path holds (placement, subject, role) and which the manifest holds is for the documents that own them: [Placements](../../../modularity/placements.md) for the placement labels, and the domain's own documents for the rest ([Label Handoff](../../label.handoff.md)).
+- It does not decide what kinds Memar's tree carries. Which kinds the path holds (placement, subject, role) and which the manifest holds is for the documents that own them: [Placements](../../../modularity/placements.md) for the placement labels, and the domain's own documents for the rest (Label Handoff).
 - It does not forbid depth. A module may hold facets or parts, and a part below a module is a part of it because that module's document says so.
 - It does not make the folder the only label of its content. A content has as many labels as are true of it ([Label](../../label.md#a-name-is-one-label)).
 - It does not say how a name is written. That is [Documentation → File Naming](../../../../../modules-plugable/knowledge/documentation/documentation.md#file-naming).

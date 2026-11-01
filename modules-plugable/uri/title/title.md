@@ -12,5 +12,5 @@
 
 ## Related Artifacts
 
-- [Title Handoff](title.handoff.md)
+- Title Handoff
 - [`protocol/`](protocol/) - the abstraction, in Khayyam

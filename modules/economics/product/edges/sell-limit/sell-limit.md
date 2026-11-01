@@ -11,7 +11,7 @@
 
 ## Placement
 
-- **Core `product` keeps only a structural rule attachment; the semantics belong to the rule domain.** Who-may-buy is organization policy, not product identity — the kernel must not learn it (Core never knows Rule, decided in [rule.handoff.md](../../../../computer/rule/rule.handoff.md)). The precedent already filed in this folder is [customable](../customable/customable.md): `(product)-[:customable_by]->(rule)` with the rules-engine deciding.
+- **Core `product` keeps only a structural rule attachment; the semantics belong to the rule domain.** Who-may-buy is organization policy, not product identity — the kernel must not learn it (Core never knows Rule, decided in `rule.handoff.md`). The precedent already filed in this folder is [customable](../customable/customable.md): `(product)-[:customable_by]->(rule)` with the rules-engine deciding.
 - No dedicated module: "which groups may buy" is a *parameter* list, not a processing semantics (parameters-vs-semantics ⇒ one rules module + configuration). The three `Type_SellLimit_*` flags should migrate into rule configuration — this answers the standing review question in [product.md](../../product.md) ("Do SellLimit flags belong here or to the rule domain?") toward **rule domain**.
 - Not [restriction](../../../../../modules-plugable/economics/restriction/restriction.md): that module is quantity constraints on a target, not sales audience.
 

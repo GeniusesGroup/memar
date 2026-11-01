@@ -8,7 +8,7 @@ ID: 497407
 # Rule
 
 ## Abstract
-A **Rule** in Memar is a stated condition — on structure, flow, naming, or behavior — that an owner introduces for a subject they govern. A Rule is not part of a language's grammar, not part of a protocol's wire contract by default, and not universal truth: it is an authored, replaceable claim whose normative statement cites the document that owns its subject, and whose executable form lives in a Module's `rules/` folder beside that Module's `protocol/` folder. A **rule engine** is the mechanism that evaluates Rule artifacts against runtime or analysis input; a **linter** is one enforcement surface for governance-tier Rules on source. This document defines the concept; [Rule Research 001](./rule.research.001.md) records the terminology inquiry that informed it.
+A **Rule** in Memar is a stated condition — on structure, flow, naming, or behavior — that an owner introduces for a subject they govern. A Rule is not part of a language's grammar, not part of a protocol's wire contract by default, and not universal truth: it is an authored, replaceable claim whose normative statement cites the document that owns its subject, and whose executable form lives in a Module's `rules/` folder beside that Module's `protocol/` folder. A **rule engine** is the mechanism that evaluates Rule artifacts against runtime or analysis input; a **linter** is one enforcement surface for governance-tier Rules on source. This document defines the concept; Rule Research 001 records the terminology inquiry that informed it.
 
 ## Introduction
 
@@ -18,7 +18,7 @@ The term *rule* is used throughout Memar — in modularity, modeling, type theor
 Rule is described in two places, once as a node in a model ([Modeling → Separating Structure (Code) from Policy (Rule)](../../../docs/modeling.md#separating-structure-code-from-policy-rule)) and once as a Module attached to another Module ([Modularity → Rules as a Provisional Term](../../knowledge/modularity/modularity.md#rules-as-a-provisional-term)), and each of those documents needs a definition that will not collapse under the other's lens. This document supplies one: [One Concept, Two Lenses](#one-concept-two-lenses) states that the two are one concept seen through two lenses, that neither lens is primary, and what each lens owes a Rule that claims it. Placement, ownership, and enforcement follow from that; the two subject documents keep only their own consequence and link here.
 
 ### Methodology
-The definition is derived from practice already exercised in this repository: Khayyam's rules catalog (`bundles/khayyam/rules/README.md`), the [Linter](../../computer/linter/linter.md) protocol's compiler-versus-governance split and authorship members, `modules/process/rule/` and `modules/process/rules-engine/` as evaluation abstractions, and the owner's position that any Module may carry a `rules/` folder the way every Module carries `protocol/`. Terminology was checked against external prior art in [Rule Research 001](./rule.research.001.md) (SBVR, the Business Rules Group, production-rule literature).
+The definition is derived from practice already exercised in this repository: Khayyam's rules catalog (`bundles/khayyam/rules/README.md`), the [Linter](../../computer/linter/linter.md) protocol's compiler-versus-governance split and authorship members, `modules/process/rule/` and `modules/process/rules-engine/` as evaluation abstractions, and the owner's position that any Module may carry a `rules/` folder the way every Module carries `protocol/`. Terminology was checked against external prior art in Rule Research 001 (SBVR, the Business Rules Group, production-rule literature).
 
 ## Explanation
 
@@ -64,7 +64,7 @@ Consequences:
 
 - Another organization may define a different Rule set for the same language, protocol, or codebase. That is a supported outcome, not a fork of the subject (Khayyam rules → This set is a floor, not a ceiling (`bundles/khayyam/rules/README.md#this-set-is-a-floor-not-a-ceiling`)).
 - A Rule's normative claim states *what* is required and *why*; the owner's identity is recorded in the Rule artifact and its changelog, not inferred from toolchain behavior.
-- Concept and protocol documents own **definitions** of their subjects. When they also state Rules at document level, those Rules are **candidates for relocation** to a Module `rules/` folder (see [Handoff → Follow-up work](./rule.handoff.md#follow-up-work-relocate-document-level-rules)).
+- Concept and protocol documents own **definitions** of their subjects. When they also state Rules at document level, those Rules are **candidates for relocation** to a Module `rules/` folder (see Handoff → Follow-up work).
 
 A grammar's well-formedness condition is a Rule, and its being part of the language does not stop it being one. A condition is outside a language, protocol, or concept until an owner elevates it by stating it in that subject's own document, and a well-formedness condition is elevated exactly there by the owner of the language it constrains.
 
@@ -102,10 +102,10 @@ A Rule has two parts that must stay linked:
 
 The [Linter → A rule's home is its subject's document](../../computer/linter/linter.md#a-rules-home-is-its-subjects-document) principle applies to the **normative claim**. The linter (or other tool) owns the **check**, not the claim. As Rules migrate into `rules/` folders, the claim may remain in the subject document with a pointer to the executable Rule, or move with the Rule while the subject document links back — but the two must not drift apart.
 
-Until a shared notation exists ([Linter handoff → rule-authorship notation](../../computer/linter/linter.handoff.md#the-rule-authorship-notation)), governance Rules authored for linter consumption should carry the members stated in [Linter → How a governance rule is authored](../../computer/linter/linter.md#how-a-governance-rule-is-authored): Subject, Tier, Default, Override. Those members describe the authoring form a Rule takes; the claim itself is a Type on the subject it governs ([Type](../../../docs/type.md)), and a notation is one rendering of that statement rather than its carrier.
+Until a shared notation exists (Linter handoff → rule-authorship notation), governance Rules authored for linter consumption should carry the members stated in [Linter → How a governance rule is authored](../../computer/linter/linter.md#how-a-governance-rule-is-authored): Subject, Tier, Default, Override. Those members describe the authoring form a Rule takes; the claim itself is a Type on the subject it governs ([Type](../../../docs/type.md)), and a notation is one rendering of that statement rather than its carrier.
 
 ### The Abstraction of a Rule
-The abstraction is as small as [Logger](../log/protocol/log.kh) is, declared in [`rule.kh`](./protocol/rule.kh): a Rule is an [EventListener](../event/event.md#the-eventlistener-contract) that cites its claim ([`claim.kh`](./protocol/claim.kh)) and says which kinds of event it listens to (`IsListeningTo`). Everything else a rule has is written in the Rule's own body and is not an abstraction, because Memar treats a service's request and its response as events: a rule that listens to a request event is already in the place where it can see the act and answer it. The abstractions a larger draft declared (condition, trigger, subject, verdict, finding events, set, configuration, enforcer, severity) were withdrawn for that reason ([changelog](./rule.changelog.md)).
+The abstraction is as small as [Logger](../log/protocol/log.kh) is, declared in [`rule.kh`](./protocol/rule.kh): a Rule is an [EventListener](../event/event.md#the-eventlistener-contract) that cites its claim ([`claim.kh`](./protocol/claim.kh)) and says which kinds of event it listens to (`IsListeningTo`). Everything else a rule has is written in the Rule's own body and is not an abstraction, because Memar treats a service's request and its response as events: a rule that listens to a request event is already in the place where it can see the act and answer it. The abstractions a larger draft declared (condition, trigger, subject, verdict, finding events, set, configuration, enforcer, severity) were withdrawn for that reason (changelog).
 
 ### How a Rule Is Written and Invoked
 - **Which events.** The Rule states the kinds of event it listens to. Whoever composes the system registers it with `AddEventListener` on the targets that dispatch those kinds; a commit, a closed task, a changed file and a service request are each their own kind of event, declared by the module that owns that subject, never by the Rule module.
@@ -123,7 +123,7 @@ In this repository:
 
 - `modules/process/rules-engine/` and `modules/process/rule/` expose engine-shaped abstractions (`loadRules`, `assertFact`, `fireRules`, `Evaluate`, `GetDecision`) aligned with common business-rule-engine surfaces (facts, agenda, decision keys).
 - [Modeling → Separating Structure (Code) from Policy (Rule)](../../../docs/modeling.md#separating-structure-code-from-policy-rule) treats graph-stored Rule nodes as the model; the engine is the **interpreter** of those nodes, not part of the structural model.
-- Production-rule systems (forward chaining, RETE-style agendas) are **implementation families** for rule engines — useful prior art, not Memar's definition. See [Rule Research 001 → Findings](./rule.research.001.md#findings).
+- Production-rule systems (forward chaining, RETE-style agendas) are **implementation families** for rule engines — useful prior art, not Memar's definition. See Rule Research 001 → Findings.
 
 A linter is **not** a rule engine in the general sense: it is a specialized analysis system that enforces governance-tier Rules on programs, usually by subscribing to compiler events rather than maintaining a separate fact base ([Linter → Analysis consumes compiler events](../../computer/linter/linter.md#analysis-consumes-compiler-events-not-library-names)). A rule engine may consume modeled Rules at runtime; a linter consumes authored Rules at analysis time. A toolchain may combine both.
 
@@ -133,5 +133,5 @@ At the modular boundary, a Rule is a Module developed on its own, related to the
 At the modeling boundary, [Type → Type and Rules](../../../docs/type.md#type-and-rules) separates invariants, constraints, behavioral rules, and business rules by volatility and checking strategy. Those categories describe **what** is being ruled; this document describes **where and how** authored Rules are introduced and enforced. [Modeling → Constraints Belong to the Constraining Concern](../../../docs/modeling.md#constraints-belong-to-the-constraining-concern) places constraint ownership on the constraining concern — consistent with Rule ownership by subject, not by every touched endpoint.
 
 ### What This Document Does Not Define
-- The final notation for linter-checkable Rules (open in [Linter handoff](../../computer/linter/linter.handoff.md)).
-- Per-subject Rule catalogs — those live in each Module's `rules/` folder and in the paired [handoff inventory](./rule.handoff.md#follow-up-work-relocate-document-level-rules).
+- The final notation for linter-checkable Rules (open in Linter handoff).
+- Per-subject Rule catalogs — those live in each Module's `rules/` folder and in the paired handoff inventory.

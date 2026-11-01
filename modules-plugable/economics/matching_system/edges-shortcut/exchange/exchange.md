@@ -25,7 +25,7 @@
 ## Open questions
 
 - Source packages were `bank`/`services` under the economics-root `_import/exchange/` — does cross-bank payout ("to other banks") belong to this matching capability, or to a distinct banking/transfer capability? No existing module clearly owns outbound bank rails; nearest neighbor is [settlement](../../../settlement/).
-- Transfer-failure redo "to the owner": built into the service, or a rule compensating the transactions (core never knows Rule — [rule.handoff.md](../../../../../modules/computer/rule/rule.handoff.md))?
+- Transfer-failure redo "to the owner": built into the service, or a rule compensating the transactions (core never knows Rule — `rule.handoff.md`)?
 - Authentication level: which methods require the strong token — per-organization rule configuration rather than fixed edge state?
 - `## Fields` remains empty — no ratified fields.
 

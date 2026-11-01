@@ -12,4 +12,4 @@ Status: Draft
 A chat is not a record ([One timeline per Task](../one-timeline-per-task/one-timeline-per-task.md)), so what a participant owes cannot live in a chat's memory or in a message sent outside the timeline; the timeline's own replies are the one place every participant already reads.
 
 ## How a check would run
-For a participant, list the contents addressed to it with no later reply of its own on the chain; each is an open ask. A Task whose asks cannot be found this way breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#critique-as-a-content-on-the-timeline-2026-10-30-tentative); this repository runs no automatic check of it today.
+For a participant, list the contents addressed to it with no later reply of its own on the chain; each is an open ask. A Task whose asks cannot be found this way breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

@@ -8,4 +8,4 @@ The only thing always held in a worker's context is the first content of the Tas
 Each Task is independent; the context bound belongs to the reader, and the search finds what the Task needs.
 
 ## How a check would run
-A required inheritance field, or a view that depends on the edges walked to reach a Task, breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-rulings-the-second-round-2026-10-18); this repository runs no automatic check of it today.
+A required inheritance field, or a view that depends on the edges walked to reach a Task, breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

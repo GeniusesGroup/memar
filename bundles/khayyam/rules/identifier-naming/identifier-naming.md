@@ -35,4 +35,4 @@ An organization may keep any convention it likes here — ASCII only, one script
 - It does not claim utility-oriented capsule names (`Utils`, `Helpers`, `Common`) are forbidden; that is the [domain capsule naming rule](../domain-capsule-naming/domain-capsule-naming.md).
 
 ## Open questions
-This rule's own open state lives in its [handoff](./identifier-naming.handoff.md).
+This rule's own open state lives in its handoff.

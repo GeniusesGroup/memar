@@ -11,4 +11,4 @@ Status: Draft
 A Task made only to judge a part of another Task has no state, acceptor or check of its own, fills the graph with nothing it carries, and cuts the critique away from the timeline where its subject, and the answer to it, are.
 
 ## How a check would run
-Find a Task whose Request is to judge a named output of one other Task and whose check is that the judgment was written: it breaks the rule unless it answers yes to one of the three questions. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#critique-as-a-content-on-the-timeline-2026-10-30-tentative); this repository runs no automatic check of it today.
+Find a Task whose Request is to judge a named output of one other Task and whose check is that the judgment was written: it breaks the rule unless it answers yes to one of the three questions. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

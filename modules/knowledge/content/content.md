@@ -40,7 +40,7 @@ Several methodological commitments shaped this document, consistent with the pro
 
 **A semantic model must not depend on how a human ultimately perceives or interacts with content.** This principle, arrived at through repeated correction of GUI-centric bias (e.g., "Input is Data Entry" — a GUI framing rejected in favor of "Input is a Receive action"), applies uniformly whether the eventual consumer is a sighted GUI user, a voice interface, a Braille display, a search engine, or an AI agent.
 
-**Numeric claims from AI-generated research are qualitative judgments, not measured data**, and are never cited as such in this document. See [Documentation — Research → Findings](../../../modules-plugable/knowledge/documentation/research/research.md#findings).
+**Numeric claims from AI-generated research are qualitative judgments, not measured data**, and are never cited as such in this document. See Documentation — Research → Findings.
 
 ---
 
@@ -119,7 +119,7 @@ This was deliberately phrased as **Addressable Entity**, not "Thing," because it
 
 **Addressability is recursive and applies to content of any medium.** The same reasoning that motivates addressing a part of a recording applies unchanged to addressing a Widget inside a Page (deep-linking to a specific dialog; a comment that targets one specific component, not the whole page; a partial-page refresh). This suggests Addressability is a **general primitive shared between unstructured content and Composition**, not two separate concepts that happen to look similar — see [Composition](#composition) and [Multi-Instance and Addressable Runtime Identity](#multi-instance-and-addressable-runtime-identity) for the composition-side consequences.
 
-**Each medium states its own address.** The address of a part is meaningful only against one immutable value and differs by medium (a range of a written text in a stated unit, a region of an image, a time range of audio or video); a domain that needs it introduces its own protocol and abstraction for it, and a shared one is kept only if it states a requirement common to all (see [Text → Handoff](../text/text.handoff.md)).
+**Each medium states its own address.** The address of a part is meaningful only against one immutable value and differs by medium (a range of a written text in a stated unit, a region of an image, a time range of audio or video); a domain that needs it introduces its own protocol and abstraction for it, and a shared one is kept only if it states a requirement common to all (see Text → Handoff).
 
 **Unstructured media are covered by this same primitive rather than by one of their own.** An image region or a video time range that needs to carry an independent relation becomes an independently addressable entity, and meaning attaches to it as Reference edges exactly as it does to a span of free text.
 

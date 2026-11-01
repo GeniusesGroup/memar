@@ -9,7 +9,7 @@ The reason is the one the Go source recorded: a calendar record's ID is *usually
 
 ## Idea backlog
 
-Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified.
+Review discipline per `vocabulary-discipline.handoff.md`. Nothing below is ratified.
 
 ### Reason edges - moved to the pluggable module
 

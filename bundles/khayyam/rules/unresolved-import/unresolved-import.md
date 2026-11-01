@@ -19,8 +19,8 @@ An organization may keep this rule or drop it, and the honest form of dropping i
 
 ## What this rule does not claim
 - It does not claim the language refuses an unresolvable `in`. The language states the path's meaning; the refusal is this toolchain's.
-- It does not claim what a missing file means for a build — whether it is a compile error, a fetch, or a cache miss is a build policy, and the [manifest handoff](../../../../docs/khayyam/modularity.handoff.md) is where that is being worked out.
+- It does not claim what a missing file means for a build — whether it is a compile error, a fetch, or a cache miss is a build policy, and the manifest handoff is where that is being worked out.
 - It does not claim a diagnostic message, a diagnostic code, or a recovery behavior. The diagnostics contract is deferred, so the label above is an implementation label and nothing more.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./unresolved-import.handoff.md).
+This rule's own open state lives in its handoff.

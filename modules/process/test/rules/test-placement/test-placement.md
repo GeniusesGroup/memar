@@ -31,4 +31,4 @@ An organization may keep a Test beside what it tests, gather all Tests at the re
 - It does not claim the module folder itself is a module's unit of ownership in the abstract sense; that is [Modularity](../../../../knowledge/modularity/modularity.md), and this rule follows the representation this repository uses.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./test-placement.handoff.md).
+This rule's own open state lives in its handoff.

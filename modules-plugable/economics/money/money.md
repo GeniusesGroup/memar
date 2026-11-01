@@ -5,7 +5,7 @@ Money is pluggable: a count unit like any other. Currencies are declared through
 ## Model
 
 - `Money` = `Field_Amount` + `currency_p.Field_FinancialCurrencyID` — a typed pairing of quantity and currency for GUI/service convenience, not a new accounting primitive.
-- `Amount` is the kernel's quantity (`decimal_p.Quantity`), not a second quantity type; the currency's decimal convention (e.g. `8099` → `80.99$`) is per-currency code inside this module, not a graph edge and not part of the amount's type. Settled 2026-10-03 — the legacy representation was an `int64` scaled by a power of ten, and the reconciliation with the quantity representation bookkeeping already uses is recorded in [money.handoff.md](money.handoff.md) together with its costs.
+- `Amount` is the kernel's quantity (`decimal_p.Quantity`), not a second quantity type; the currency's decimal convention (e.g. `8099` → `80.99$`) is per-currency code inside this module, not a graph edge and not part of the amount's type. Settled 2026-10-03 — the legacy representation was an `int64` scaled by a power of ten, and the reconciliation with the quantity representation bookkeeping already uses is recorded in `money.handoff.md` together with its costs.
 
 ## Discussion
 

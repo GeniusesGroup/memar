@@ -6,7 +6,7 @@ An account is the bookkeeping holder of one countable quantity. It is not financ
 - The kernel of this domain is exactly one edge: [bookkeeping](edges/bookkeeping/README.md) — the realized effect of a transaction on this account.
 
 ## Policies (rules)
-- Balance is not stored on the account node; it is the `Balance` snapshot of the account's latest bookkeeping record ([bookkeeping](edges/bookkeeping/README.md) §8; [account.handoff.md](account.handoff.md)).
+- Balance is not stored on the account node; it is the `Balance` snapshot of the account's latest bookkeeping record ([bookkeeping](edges/bookkeeping/README.md) §8; `account.handoff.md`).
 - Availability (blocked/holdable amounts) is NOT account state. It is evaluated from active rules (see `modules-plugable/economics/restriction`); there is deliberately no `AvailableBalance` field.
 - A bookkeeping balance expresses holding/possession, not legal title. Legal ownership is modeled once in `rights/ownership` and may attach to any node, including accounts.
 - Negative balance is neither allowed nor forbidden by the kernel; it is governed by pluggable rules (credit, overdraft policies).

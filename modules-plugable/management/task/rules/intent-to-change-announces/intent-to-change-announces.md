@@ -8,4 +8,4 @@ Before it changes a content, a Task is related to that content by an edge so tha
 It is a version-control commit made visible before the change, not after it.
 
 ## How a check would run
-A Task that changes a content with no such edge on it breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-six-questions-2026-10-18); this repository runs no automatic check of it today.
+A Task that changes a content with no such edge on it breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

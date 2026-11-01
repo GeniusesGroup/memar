@@ -8,4 +8,4 @@ A Task may be created when the organization is, and hundreds of Tasks may be mad
 A model tied to a short job breaks on the work an organization exists for.
 
 ## How a check would run
-A field or status that expires a Task by age alone breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-six-questions-2026-10-18); this repository runs no automatic check of it today.
+A field or status that expires a Task by age alone breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

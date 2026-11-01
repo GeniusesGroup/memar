@@ -11,7 +11,7 @@ Also indicate which modules include in any type of applications e.g. GUI, server
 A module's identifier is its **domain** — the name the application knows it by,
 e.g. `product`, `content`. It is the module node's identity in the graph, so
 `Field_ModuleID` returns the same `ThingUUID` every other node identifier in this
-repository returns. See [module.handoff.md](./module.handoff.md) for the Go
+repository returns. See `module.handoff.md` for the Go
 comment this came from and for the field the Go left commented out.
 
 ## Runtime surface

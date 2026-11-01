@@ -10,7 +10,7 @@
 
 ## Placement
 
-- **Contract (the domain) owns its lifecycle vocabulary; ratification form is loop-edge folders under `contract/status/<name>/`, read through [status](../../../../knowledge/status/status.md)** — status.md: "A domain defines the statuses that belong to it as loop-edges under `<domain>/status/<name>/`"; the precedent is [voting](../../../law/status/voting/voting.md) for laws (and the owner decided the same for law in [law.handoff.md](../../../law/law.handoff.md)). Ratified states move to the loop-edge folders — not a bare `edges/status/` flag family.
+- **Contract (the domain) owns its lifecycle vocabulary; ratification form is loop-edge folders under `contract/status/<name>/`, read through [status](../../../../knowledge/status/status.md)** — status.md: "A domain defines the statuses that belong to it as loop-edges under `<domain>/status/<name>/`"; the precedent is [voting](../../../law/status/voting/voting.md) for laws (and the owner decided the same for law in `law.handoff.md`). Ratified states move to the loop-edge folders — not a bare `edges/status/` flag family.
 - **Not a new module:** six labels are a value list, not processing (parameters vs semantics) — configuration for the status reader.
 - Transitions are rule decisions (core never knows Rule): who may advance, and what each step triggers, must come from rules before any label is ratified (no bare edges).
 

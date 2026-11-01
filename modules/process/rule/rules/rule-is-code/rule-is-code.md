@@ -20,5 +20,5 @@ The owner, on 2026-10-30, after seven rules were added in one task as text: Mema
 An organization may hold its rules as prose alone; it then relies on every reader to apply them.
 
 ## What this rule does not claim
-- It does not claim the notation of a rule as code; that is open in [Rule](../../rule.handoff.md) and the linter's authoring notation.
+- It does not claim the notation of a rule as code; that is open in Rule and the linter's authoring notation.
 - It is enforced by no check this repository runs today.

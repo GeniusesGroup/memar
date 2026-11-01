@@ -11,4 +11,4 @@ Status: Draft
 Handoffs and changelogs written as documents were appended to by every task: 1294 changelog entries and 256 handoffs, written by racing writers into files that outgrow one reading. A record that is a message on a task has one writer, one place on the timeline and an edge to its subject, and a design made on files would have to be rewritten as soon as the task and text stores settle.
 
 ## How a check would run
-A Task rule, document or service that names a file or folder for a record, or an agent that appends a decision or a question to a document's handoff after the removal of handoffs, breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#critique-as-a-content-on-the-timeline-2026-10-30-tentative); this repository runs no automatic check of it today.
+A Task rule, document or service that names a file or folder for a record, or an agent that appends a decision or a question to a document's handoff after the removal of handoffs, breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

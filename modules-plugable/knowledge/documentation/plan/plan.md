@@ -52,7 +52,7 @@ Each part is for one job: to carry what was asked together with what checks the 
 Each requirement is decidable from a stated input by a party that did not write the plan. None names a part or a count, because those are the declaration's. The shape is declared once in code ([plan/protocol](protocol/plan.kh), [record.py](../primitive/record.py), [content_kinds.py](content_kinds.py)).
 
 1. **The plan states what was asked and what checks the task is done.** A plan whose statement of what was asked is empty is not ready and is not taken up.
-2. **The plan's check is that something was done**: a change applied, or a decision recorded where it governs. A task whose outcome would be a finding or a proposal is a step of the plan of the work it improves ([A task is for work](../handoff/handoff.practice.md#a-task-is-for-work)), and a plan whose only check is a proposal is not ready.
+2. **The plan's check is that something was done**: a change applied, or a decision recorded where it governs. A task whose outcome would be a finding or a proposal is a step of the plan of the work it improves ([A task is for work](../../../management/task/rules/a-task-is-for-work/a-task-is-for-work.md)), and a plan whose only check is a proposal is not ready.
 3. **A task may hold several plans, and a plan is never rewritten into an earlier one** ([Rounds](#rounds)).
 4. **A plan receives no record beside it** ([No Record Is Written Beside a Document](../rules/no-record-beside-a-document/no-record-beside-a-document.md)).
 

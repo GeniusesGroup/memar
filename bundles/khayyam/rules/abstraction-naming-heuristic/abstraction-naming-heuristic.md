@@ -23,4 +23,4 @@ An organization may require capability-style abstraction names, forbid them outr
 - It does not govern capsule names, method names, or variable names; those live under sibling rules.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./abstraction-naming-heuristic.handoff.md).
+This rule's own open state lives in its handoff.

@@ -33,4 +33,4 @@ An organization may write every such method by hand, or keep the generic paramet
 - It does not claim the resolved type is the one the author would choose; it is the one the constraint names.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./commented-generic-bindings.handoff.md).
+This rule's own open state lives in its handoff.

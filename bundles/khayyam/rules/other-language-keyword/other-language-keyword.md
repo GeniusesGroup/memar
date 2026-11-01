@@ -28,4 +28,4 @@ An organization may keep the vocabulary and the wording, narrow it, or drop the 
 - **It does not claim anything about what any body of Khayyam source does.** No file or count in this repository is evidence for or against it, and none is cited.
 
 ## Open questions
-This Rule's own open state — how much of the refusal the report covers, and how an organization states its vocabulary — lives in its [handoff](./other-language-keyword.handoff.md).
+This Rule's own open state — how much of the refusal the report covers, and how an organization states its vocabulary — lives in its handoff.

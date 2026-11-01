@@ -38,4 +38,4 @@ It does not belong there when its subject is something measured or encoded in nu
 - an address in memory — `modules/computer/memory/address/` (`modules/computer/memory/address/README.md`);
 - a character or an octet of an encoding — `modules/computer/codec/`.
 
-Open questions on the tower, common numeric abstractions, and owner notes on library-implemented types are tracked in the paired [handoff](math.handoff.md).
+Open questions on the tower, common numeric abstractions, and owner notes on library-implemented types are tracked in the paired handoff.

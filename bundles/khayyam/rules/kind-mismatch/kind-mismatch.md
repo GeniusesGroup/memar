@@ -23,4 +23,4 @@ An organization may keep this rule or drop it, and the way to drop it is to wide
 - It does not claim a diagnostic message, a code, or a recovery behavior; the diagnostics contract is deferred and the label is an implementation label.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./kind-mismatch.handoff.md).
+This rule's own open state lives in its handoff.

@@ -8,4 +8,4 @@ Asking someone for an opinion makes a child Task only if the ask needs its own d
 Many consultations are one answer in a discussion; making each a Task fills the graph without carrying anything. This rule may be amended at any time.
 
 ## How a check would run
-For a given ask, answer the three questions; one yes makes a Task. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-six-questions-2026-10-18); this repository runs no automatic check of it today.
+For a given ask, answer the three questions; one yes makes a Task. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

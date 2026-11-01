@@ -34,4 +34,4 @@ An organization may require a full word, forbid one-letter names, or leave gener
 - It does not claim anything about names an author wrote.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./result-parameter-names.handoff.md).
+This rule's own open state lives in its handoff.

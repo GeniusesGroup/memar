@@ -11,7 +11,7 @@ The Case / Dispute Resolution domain is only partially modeled. Candidate umbrel
 
 Key principle already established: avoid words that imply certainty/finality (e.g., "final ruling", "settled") unless the state they describe is modeled with an explicit state machine. Real-world legal outcomes labeled "final" are frequently not actually final - e.g., a third party's claim can overturn a supposedly final ruling years later, even under legal doctrines (such as Iranian law) that formally use the word "final" (qat'i). Modeling must use precise, revisable states rather than terminology suggesting permanence.
 
-Related but distinct: the enforcement/coercion capability question (who can enforce an outcome and to what extent - see [case.handoff.md](case.handoff.md)) is separate from the dispute-resolution *process* modeled here.
+Related but distinct: the enforcement/coercion capability question (who can enforce an outcome and to what extent - see `case.handoff.md`) is separate from the dispute-resolution *process* modeled here.
 
 ### Open questions
 - What triggers the creation of a Case node (a disputed Invoice, a violated Rule, something else)?
@@ -35,9 +35,9 @@ The case stays unconnected to Organization as a domain edge. Kinds stay in claim
 
 After a ruling exists, a third party's attack is a new case, and the claim type is annulment of that ruling. During the proceeding, a third-party objection is a linked claim heard together. Each of those reasons is its own edge. They are pluggable. They are not one generic related edge. A vote on one case is never a vote on the other.
 
-He says this UUID is at once a group, so it can be a timeline, and a task, so a judge can assign an expert. That is a premise. It is not the type identity of this node. What would falsify it is [case.research.001.md](case.research.001.md).
+He says this UUID is at once a group, so it can be a timeline, and a task, so a judge can assign an expert. That is a premise. It is not the type identity of this node. What would falsify it is `case.research.001.md`.
 
 The arbitrator line above is the evening decision: one judge edge, and who may sit is pluggable, for an organization that calls itself arbitration, a state court, or a social network. Whether any person may be a judge stays open. The falsifier is a query one of those three must answer that this graph cannot express.
 - What would falsify the no-generic-related-edge rule: one edge whose meaning is only that two claims are related, used both for a third-party objection and for annulment. Model v4 point 9. Each of those reasons stays its own edge, as the paragraph above states.
 - What would falsify the rule that links between claims stay pluggable: a kernel ban on a repeated claim; or a kernel edge whose meaning is only that two claims are related. Model v4 point 13. Whether a repeated claim is allowed at all is an organization choice, and the surface of an earlier claim is evidence.
-- What would falsify the label decision, if that test is run and fails: a second adjudication model, with different vote edges or a different ruling shortcut, required because the label is civil or criminal. Model v4 point 8. The test is not settled. The civil-versus-criminal subtlety was reopened on 2026-10-07 and is open on the [claim labels handoff](../../../modules-plugable/rights/claims/labels/labels.handoff.md). What the line above says today is the standing label decision; this falsifier is the standing test of it, not a record that the split is closed.
+- What would falsify the label decision, if that test is run and fails: a second adjudication model, with different vote edges or a different ruling shortcut, required because the label is civil or criminal. Model v4 point 8. The test is not settled. The civil-versus-criminal subtlety was reopened on 2026-10-07 and is open on the claim labels handoff. What the line above says today is the standing label decision; this falsifier is the standing test of it, not a record that the split is closed.

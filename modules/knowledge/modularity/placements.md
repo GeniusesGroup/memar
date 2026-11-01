@@ -41,4 +41,4 @@ The rule for how many levels a category may have, and for the mirror a pluggable
 | [Modularity](./modularity.md) | Depends_on — module, optional module, pluggable behavior and foundational status | None (read) |
 | [`modules/README.md`](../../README.md) | Reference — the layer these placements apply to | None (read) |
 | [Label](../label/label.md) | Depends_on — what a label is, and the labels a module's manifest carries | None (read) |
-| [`placements.handoff.md`](./placements.handoff.md) | Base — this document's open state | Follows this document |
+| `placements.handoff.md` | Base — this document's open state | Follows this document |

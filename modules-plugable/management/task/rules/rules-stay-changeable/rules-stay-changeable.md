@@ -8,4 +8,4 @@ Rules of the Task module can be created, amended and removed at any time. A rule
 The owner agreed to several rules while much was unclear to him.
 
 ## How a check would run
-Every rule here cites where the owner's word is recorded. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-six-questions-2026-10-18); this repository runs no automatic check of it today.
+Every rule here cites where the owner's word is recorded. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

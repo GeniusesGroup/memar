@@ -20,4 +20,4 @@ The text of why this complaint should be accepted.
 
 ## Open questions
 
-- None for a reason field on a vote. Judge reasons are timeline texts. Whether the case UUID is the group that can carry that timeline is the premise in [case.research.001.md](../../case.research.001.md).
+- None for a reason field on a vote. Judge reasons are timeline texts. Whether the case UUID is the group that can carry that timeline is the premise in `case.research.001.md`.

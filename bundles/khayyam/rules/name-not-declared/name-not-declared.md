@@ -21,8 +21,8 @@ An organization may keep this rule or drop it, and the way to drop it is to make
 
 ## What this rule does not claim
 - It does not claim the language refuses an import of an undeclared name. The language states what `in` means; what a tool does about a name that is not there is the tool's own condition.
-- It does not claim a file publishes a surface. There is no such concept here, and the old label's error was naming one; how much of a module belongs to it is a module-membership question, and [the dependency-management handoff](../../../../docs/modules/computer/module-dependency.handoff.md) is where that is being worked out.
+- It does not claim a file publishes a surface. There is no such concept here, and the old label's error was naming one; how much of a module belongs to it is a module-membership question, and the dependency-management handoff is where that is being worked out.
 - It does not claim a diagnostic message, a code, or a recovery behavior; the diagnostics contract is deferred and the label is an implementation label — though a label that a reader has to ask about is a label that has failed at the one job it has.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./name-not-declared.handoff.md).
+This rule's own open state lives in its handoff.

@@ -8,10 +8,10 @@ Economics is a **browsing namespace** for bookkeeping of any countable quantity:
 
 A domain is core only if removing it would force the kernel to fabricate or distort another foundational concept (core-by-necessity). Importance or prevalence is not the test. Current economics cores (subject to a future repo-wide placement audit; that chat's working brief is ephemeral and must not live under `modules/`):
 
-- [account](account/README.md) — holds the bookkeeping state of one quantity with one count unit. Decisions: [account.handoff.md](account/account.handoff.md).
-- [transaction](transaction/README.md) — a request by one or more users for a bookkeeping change; not an operation. Decisions: [transaction.handoff.md](transaction/transaction.handoff.md).
-- [invoice](invoice/README.md) — a statement of what is claimable between parties; a common cause/reference of transactions. Decisions: [invoice.handoff.md](invoice/invoice.handoff.md).
-- [product](product/README.md) — anything that can be priced; the subject an invoice bills and a transaction settles. Decisions: [product.handoff.md](product/product.handoff.md).
+- [account](account/README.md) — holds the bookkeeping state of one quantity with one count unit. Decisions: `account.handoff.md`.
+- [transaction](transaction/README.md) — a request by one or more users for a bookkeeping change; not an operation. Decisions: `transaction.handoff.md`.
+- [invoice](invoice/README.md) — a statement of what is claimable between parties; a common cause/reference of transactions. Decisions: `invoice.handoff.md`.
+- [product](product/README.md) — anything that can be priced; the subject an invoice bills and a transaction settles. Decisions: `product.handoff.md`.
 
 Kernel edge: [bookkeeping](account/edges/bookkeeping/README.md). Cross-domain UUID references follow that edge's rule. Cross-unit exchange: [matching_system](../../modules-plugable/economics/matching_system/README.md). Availability/restrictions: [restriction](../../modules-plugable/economics/restriction/README.md). Fees/rules: [rule](../computer/rule/README.md).
 
@@ -24,7 +24,7 @@ Kernel edge: [bookkeeping](account/edges/bookkeeping/README.md). Cross-domain UU
 Order settled in the modeling chats (2026-08/09); each step's findings land in the module docs:
 
 1. Finalize the [bookkeeping](account/edges/bookkeeping/README.md) edge: fields, sign convention, cardinality, ordering/concurrency, reversal/finality, TransactionIndex as contract-or-detail.
-2. Cross-check rule-engine mechanics (triggers, authority/priority, idempotency, races, dependent transactions) — see [rule README](../computer/rule/README.md) and [rule.handoff.md](../computer/rule/rule.handoff.md).
+2. Cross-check rule-engine mechanics (triggers, authority/priority, idempotency, races, dependent transactions) — see [rule README](../computer/rule/README.md) and `rule.handoff.md`.
 3. Design [restriction](../../modules-plugable/economics/restriction/README.md) on top of the settled rule mechanics.
 4. Keep [settlement](../../modules-plugable/economics/settlement/README.md) separated from clearing and matching; test against bank, warehouse, and securities scenarios.
 5. Re-review [invoice](invoice/README.md)/[product](product/README.md)/[money](../../modules-plugable/economics/money/README.md) against tax, rent, penalties, and rounding contracts.

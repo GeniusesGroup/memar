@@ -31,4 +31,4 @@ An organization may keep every clue block whole until a person removes it, or dr
 - It does not claim a removed block means the Go file is fully ported. Whether a Go file is transferred is the port's ledger's to state, from the Go source, not from the block.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./go-clue-residue.handoff.md).
+This rule's own open state lives in its handoff.

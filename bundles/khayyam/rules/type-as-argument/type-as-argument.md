@@ -26,4 +26,4 @@ An organization may allow closure-style method values or bare-type calls in gene
 - It does not replace the closures-as-implicit-capsule language decision; it reinforces it at the linter layer.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./type-as-argument.handoff.md).
+This rule's own open state lives in its handoff.

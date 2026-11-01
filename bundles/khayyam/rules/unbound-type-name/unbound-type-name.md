@@ -19,8 +19,8 @@ An organization may keep this rule or drop it, and the way to drop it is to make
 
 ## What this rule does not claim
 - It does not claim the language refuses an unbound name, nor that the language defines name resolution at all; the toolchain's resolver is a reading, and this document is where the reading is on record.
-- It does not claim what a qualified reference means. `pkg.Type` is accepted without a binding check, and its resolution semantics are undecided — they are one of the open questions the [toolchain handoff](../../khayyam.handoff.md) carries.
+- It does not claim what a qualified reference means. `pkg.Type` is accepted without a binding check, and its resolution semantics are undecided — they are one of the open questions the toolchain handoff carries.
 - It does not claim a diagnostic message, a code, or a recovery behavior; the diagnostics contract is deferred and the label is an implementation label.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./unbound-type-name.handoff.md).
+This rule's own open state lives in its handoff.

@@ -39,4 +39,4 @@ An organization may separate every declaration, separate nothing, or group metho
 - It does not claim that the clue block's Go text follows any layout.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./method-separation.handoff.md).
+This rule's own open state lives in its handoff.

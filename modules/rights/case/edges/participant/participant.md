@@ -25,7 +25,7 @@
 
 - Are participant roles the same mechanism as [management/role](../../../../management/role/role.md), or case-specific?
 - Do decision types need an explicit state machine (the no-finality principle in [case.md](../../case.md))?
-- Liability vocabulary intersects the rights-domain-boundaries handoff open question ([rights-domain-boundaries.handoff.md](../../../rights-domain-boundaries.handoff.md)).
+- Liability vocabulary intersects the rights-domain-boundaries handoff open question (`rights-domain-boundaries.handoff.md`).
 - Is `Suspect` (commented out) a planned role or a deliberately rejected one?
 - Direction and naming unconfirmed — nothing ratified.
 - None of Jury, Suspect, Lawyer, TrialAttorney, Counsellor, JudicialOfficer, and Witness is a kernel edge. Each may be a pluggable edge when its own reason is stated. The glosses are not that reason.

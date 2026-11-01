@@ -205,7 +205,7 @@ The Invoice model does not need to acquire a new field or branch for every organ
 The example does not prescribe a particular event broker, queue, callback mechanism, or programming construct. Those are implementation mechanisms whose suitability depends on the actual Process and System constraints.
 
 ### Module, Process, and Protocol
-Module, Process, and Protocol describe different dimensions: a Module provides a structural boundary for capabilities or responsibilities; a Process describes progression, interaction, and change; a Protocol describes declarative rules that govern one or more Processes within a System — see [Protocol](../../../docs/protocol.md#what-is-a-protocol) for the full chain (System contains Processes, governed by Protocols). None of these should be substituted for another merely because a particular implementation represents them using the same programming construct.
+Module, Process, and Protocol describe different dimensions: a Module provides a structural boundary for capabilities or responsibilities; a Process describes progression, interaction, and change; a Protocol describes declarative rules that govern one or more Processes within a System — see [Protocol](../protocol/protocol.md#what-is-a-protocol) for the full chain (System contains Processes, governed by Protocols). None of these should be substituted for another merely because a particular implementation represents them using the same programming construct.
 
 The Module-specific consequence is this document's own to state: a Module boundary is not automatically a Process boundary, and a Process is not automatically bounded by any single Module — the same Process may cross several Modules, and the same Module may contain or participate in many Processes. [Process → Process and Boundary](../../process/process.md#process-and-boundary) and [Process → Process Composition](../../process/process.md#process-composition) give the fuller, Process-side treatment of why an implementation boundary (module, function, service, deployment unit) must not be assumed to coincide with a Process boundary; this document does not restate that reasoning, only the corresponding claim from Module's own side.
 
@@ -229,7 +229,7 @@ Module shares tools such as abstraction and encapsulation with several other Mem
 | Rule | Behavior attachable to a Module without becoming part of its essential identity; see [Rule](../../process/rule/rule.md) |
 | Module | A System considered as a bounded part of a larger System, identified by its Responsibility |
 
-This document does not yet place Module relative to every System-level concept in Memar — Framework in particular is not addressed here even though it was raised as a candidate for the same level as Module during the discussion that led to this document. That omission is intentional rather than an oversight; see [Open Questions in the paired handoff](./modularity.handoff.md#open-questions).
+This document does not yet place Module relative to every System-level concept in Memar — Framework in particular is not addressed here even though it was raised as a candidate for the same level as Module during the discussion that led to this document. That omission is intentional rather than an oversight; see Open Questions in the paired handoff.
 
 ### Modularity Is Not Deployment
 A Module is independent of the mechanism used to deploy it.

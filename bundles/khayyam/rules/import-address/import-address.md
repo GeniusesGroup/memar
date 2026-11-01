@@ -31,4 +31,4 @@ An organization may keep this rule, replace it with a stricter one, or drop it. 
 - It does not change what the toolchain does. The toolchain does not yet consult a manifest, because where one is looked for is undecided; what it does is refuse with a sentence naming what is missing, and the sentence names a manifest rather than a file.
 
 ## Open questions
-This rule's own open state — including whether a URI may carry more than a name, and what a resolver may complete — lives in its [handoff](./import-address.handoff.md).
+This rule's own open state — including whether a URI may carry more than a name, and what a resolver may complete — lives in its handoff.

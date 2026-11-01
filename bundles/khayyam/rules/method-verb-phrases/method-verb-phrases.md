@@ -15,7 +15,7 @@ Query methods — those whose influenced variables receive data and whose implem
 
 The receiver supplies context for what is acted on; the method name does not repeat the owner's or field abstraction's name unless the bare verb is ambiguous in the sources ([receiver method names rule](../receiver-method-names/receiver-method-names.md)).
 
-`Get…` and `Set…` prefixes are neither required nor forbidden by this rule. Whether they belong in this repository is an open question — see the [handoff](./method-verb-phrases.handoff.md).
+`Get…` and `Set…` prefixes are neither required nor forbidden by this rule. Whether they belong in this repository is an open question — see the handoff.
 
 A generic `Read` on a `Field_X` accessor is not recommended: when one abstraction composes several field abstractions, each would offer `Read` and the call site loses which field is queried; `Read` is also a homonym of stream I/O read (Deißenböck & Pizka 2005). How a field abstraction's query method is named is open in the handoff.
 
@@ -33,7 +33,7 @@ tp Time mt (self Field_Time) () (t Time)                // noun only
 ```
 
 ## Research
-Literature review, implicit-rules inventory, and accessor options (including rejected `Read`): [Method Verb Phrases Research 001](./method-verb-phrases.research.001.md).
+Literature review, implicit-rules inventory, and accessor options (including rejected `Read`): Method Verb Phrases Research 001.
 
 ## Why it exists
 Callable identifiers in professional practice and in corpus studies predominantly follow verb-phrase grammar (Newman et al., J. Systems & Software 2020; Alsuhaibani et al., ICSE 2021). Noun-only method names risk linguistic antipatterns — a name that says more than the method does, or less (Arnaoudova et al., CSMR 2013). Method phrases in Programmer English are natural-language behaviour descriptions whose first token is typically verbal (Høst & Østvold, ECOOP 2009). Separating query from command at the name supports command–query separation (Meyer, *Object-Oriented Software Construction*). Names should map concisely and consistently to concepts (Deißenböck & Pizka, IWPC 2005).
@@ -43,9 +43,9 @@ An organization may require `Get`/`Set`, allow bare nouns when the receiver is a
 
 ## What this rule does not claim
 - It does not claim the grammar rejects non-verb method names.
-- It does not forbid or require `Get`/`Set` prefixes — that question is open in the [handoff](./method-verb-phrases.handoff.md).
+- It does not forbid or require `Get`/`Set` prefixes — that question is open in the handoff.
 - It does not prescribe `Read` as the default field accessor.
 - It does not override the [receiver method names rule](../receiver-method-names/receiver-method-names.md) or the [qualified names rule](../qualified-names/qualified-names.md).
 
 ## Open questions
-This rule's own open state lives in its [handoff](./method-verb-phrases.handoff.md).
+This rule's own open state lives in its handoff.

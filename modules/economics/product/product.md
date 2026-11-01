@@ -5,7 +5,7 @@ In marketing, a [product](https://en.wikipedia.org/wiki/Product_(business)) is a
 
 Product is core by necessity: an invoice claims something, and that something must be identifiable and priceable. The test is a capability, not a relation: any node in the graph can become a product if it can be priced (`price`; independently evolving `pricing` lives in [pricing](../../../modules-plugable/economics/pricing/edges/pricing/README.md)). Good and service are NOT core — each organization may draw those boundaries differently, so they are pluggable specializations. Multi-typing applies: a product node can simultaneously be a `thing` with a name, unit, or any other identity edge.
 
-Confirmed positions from the boundary discussion (2026-08-05..09; argument and evidence in [product.handoff.md](product.handoff.md)):
+Confirmed positions from the boundary discussion (2026-08-05..09; argument and evidence in `product.handoff.md`):
 
 - **Product ≠ Sellable/Commercial Product.** A product may never enter formal sale and still need warehousing, transfer, location, and history (museum pieces, an organization's furniture — the industry's separate "asset management" modules). "Sellable" is a status/identity from another domain, not a product subtype.
 - **Product ≠ physical good.** A service is a product (the marketing definition above already says so) and may have no physical realization ever; "does it need physical realization?" is not a product boundary question.
@@ -17,7 +17,7 @@ Confirmed positions from the boundary discussion (2026-08-05..09; argument and e
 
 We need this module due to some product have many relation product e.g. same product have different color or size! Because each specific product **MUST** track individually for e.g. price or inventory.
 
-Open question (from [product.handoff.md](product.handoff.md)): the confirmed model is **parent/child products without a Variant/SKU entity** — same shoe differing only in size = parent product + one child *product* per size (same for car color/trim). Children are independent product nodes; the parent is itself a product even with no direct realization/transaction. Still open: is the product-to-product relation a single parent/child edge, or do several relations hide here — split for review across the per-edge docs [variant](edges/variant/variant.md), [optional](edges/optional/optional.md), [material](edges/material/material.md), [supplier](edges/supplier/supplier.md).
+Open question (from `product.handoff.md`): the confirmed model is **parent/child products without a Variant/SKU entity** — same shoe differing only in size = parent product + one child *product* per size (same for car color/trim). Children are independent product nodes; the parent is itself a product even with no direct realization/transaction. Still open: is the product-to-product relation a single parent/child edge, or do several relations hide here — split for review across the per-edge docs [variant](edges/variant/variant.md), [optional](edges/optional/optional.md), [material](edges/material/material.md), [supplier](edges/supplier/supplier.md).
 
 ## Part Number
 
@@ -43,10 +43,10 @@ For example, when specifying a screw, it is easier to refer to "HSC0424PP" than 
 ### Unresolved questions
 
 - Are `price`/`pricing` kernel edges of product or rule-driven capabilities?
-- Does a price belong to the product or to the batch? The owner leans to the batch (2026-10-10); if it does, what does "priceable" mean in the capability test above, and what plays the batch's part for a service? — [Pricing Research 001](../../../modules-plugable/economics/pricing/pricing.research.001.md#open-questions), [price](edges/price/price.md#open-questions).
+- Does a price belong to the product or to the batch? The owner leans to the batch (2026-10-10); if it does, what does "priceable" mean in the capability test above, and what plays the batch's part for a service? — Pricing Research 001, [price](edges/price/price.md#open-questions).
 - Relation of product to `count_unit`: is pricing always expressed in the account's unit?
 - Core-ness must survive contact with non-retail priceables: tax lines, rent, penalties, pure services (an invoice billing only a fee/penalty). If these can be billed without a `product` node, the capability test ("anything priceable") needs tightening or the node becomes a catch-all.
-- **Capability test vs asset-management reading** (from [product.handoff.md](product.handoff.md)): the confirmed position says products may never be sold nor priced (museum pieces, an organization's furniture — the industry's separate "asset management" modules) while remaining products for warehousing/transfer/history. If pricing is the core test, what carries the asset-management half — product itself, or the inventory/asset pluggable? Converge with the product handoff's open #6.
+- **Capability test vs asset-management reading** (from `product.handoff.md`): the confirmed position says products may never be sold nor priced (museum pieces, an organization's furniture — the industry's separate "asset management" modules) while remaining products for warehousing/transfer/history. If pricing is the core test, what carries the asset-management half — product itself, or the inventory/asset pluggable? Converge with the product handoff's open #6.
 
 ### Future possibilities
 

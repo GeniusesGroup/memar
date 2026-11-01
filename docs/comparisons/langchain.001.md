@@ -152,7 +152,7 @@ The owner's ruling of 2026-10-12 applies and is not re-litigated: no candidate b
 - The Corridor block, the model-name lists and the beta import warnings as artifacts: packaging.
 
 ### Guest adaptation
-LangChain is a library a Memar-built Python system may depend on, as it depends on any third-party library: declared, at a pinned revision, through the dependency's own interface, with what leaves the machine stated by the project. Its MCP adapter makes no change to the standing the MCP essay gave the protocol. The Knowledge handoff already carries the question of what an agent does when it lacks a third-party library's shape ([Knowledge Handoff](../../modules/knowledge/knowledge.handoff.md)); this essay adds nothing to it.
+LangChain is a library a Memar-built Python system may depend on, as it depends on any third-party library: declared, at a pinned revision, through the dependency's own interface, with what leaves the machine stated by the project. Its MCP adapter makes no change to the standing the MCP essay gave the protocol. The Knowledge handoff already carries the question of what an agent does when it lacks a third-party library's shape (Knowledge Handoff); this essay adds nothing to it.
 
 ### Questions for the owner
 1. ~~Is the declared effect of a call a property of the SDK declaration, of the authority granting the call, or neither yet?~~ Answered 2026-10-13: neither. The SDK is a method of calling; the effect is what the caller does with the answer, under its own authority. Nothing is placed.

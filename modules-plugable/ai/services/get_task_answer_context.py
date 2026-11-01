@@ -12,9 +12,9 @@ asks for before a question reaches the owner, given a fixed route.
 
 The questions are the lines under `Decisions needed` in the task's report:
 that is where a task's questions for the owner already stand, one line
-each, pointing to the handoff entry that holds a question at length
-([Questions Found During a
-Task](../../knowledge/documentation/handoff/handoff.practice.md#questions-found-during-a-task)),
+each, pointing to the question content that holds a question at length
+([A Question Belongs to a
+Task](../../management/task/rules/a-question-belongs-to-a-task/a-question-belongs-to-a-task.md)),
 and where the digest gathers them. A task with no such line has no
 question, and is refused; why is said by `questions_problem` here, which the
 questions' brief asks too, so the two refuse alike.
@@ -65,7 +65,7 @@ folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 has_plan = _m_task_files.has_plan
 plan_path = _m_task_files.plan_path
 report_path = _m_task_files.report_path

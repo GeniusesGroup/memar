@@ -8,4 +8,4 @@ A requirement of documentation, as Memar's documentation sets it, is used as a t
 The requirement is about text, and text is the domain's to hold.
 
 ## How a check would run
-Neither route may make Task or content hold the text. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-six-questions-2026-10-18); this repository runs no automatic check of it today.
+Neither route may make Task or content hold the text. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

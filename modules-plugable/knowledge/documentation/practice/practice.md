@@ -20,6 +20,9 @@ An earlier draft tried to govern Skill files with the same schema as Explanation
 ### Reader relationship
 Content meant to be *followed* to accomplish something: step-by-step procedures, agent instructions, Skill files, and any document whose primary purpose is for a reader — human or AI agent — to execute a sequence of actions and produce a result. The reader of such a document is acting rather than interpreting, which is why its front matter is two fields and its body is a procedure; the facet that sits nearest it, and the one it is most often confused with, states its own reader relationship in [Explanation](../explanation/explanation.md#reader-relationship).
 
+### Practice and Rule
+A practice is the textual part of a rule: the structure in which the text of a rule is written so that a reader can follow it. It does not replace the concept of [Rule](../../../../modules/process/rule/rule.md), which is the normative claim and its executable form; a rule holds its claim, a practice holds how its text says what to do. A procedure that was once kept as a file beside a document is written as the text of a rule of the module that owns the subject ([How a Rule Is Written and Invoked](../../../../modules/process/rule/rule.md#how-a-rule-is-written-and-invoked)). The name `practice` is provisional and may change with a better proposal.
+
 ### Frontmatter
 Exactly two fields, both required:
 - **name**: the skill's name, lowercase with hyphens (e.g. `write-a-document`), and the name of the folder that holds the `SKILL.md` it heads (`.agents/skills/memar/SKILL.md` is named `memar`). A `name` that differs from its folder is a second name for one thing: a reader who meets it cannot find the skill by it.

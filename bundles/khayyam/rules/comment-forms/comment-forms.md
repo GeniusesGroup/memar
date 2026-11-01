@@ -26,4 +26,4 @@ An organization may keep this rule, answer it differently, or drop it: a second 
 - It does not claim this repository's forms are the right ones. It records the ones this toolchain uses.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./comment-forms.handoff.md).
+This rule's own open state lives in its handoff.

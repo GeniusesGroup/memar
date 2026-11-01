@@ -8,4 +8,4 @@ Task-to-Task relations are those with a trigger. `part_of`, `blocks` and `supers
 A relation with no trigger is vocabulary.
 
 ## How a check would run
-Each relation names who creates and removes it and what it triggers. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-six-questions-2026-10-18); this repository runs no automatic check of it today.
+Each relation names who creates and removes it and what it triggers. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

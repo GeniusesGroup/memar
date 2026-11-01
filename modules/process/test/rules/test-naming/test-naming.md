@@ -29,4 +29,4 @@ An organization that keeps a Test beside what it tests will find this Rule unusa
 - It does not govern another language's ecosystem. A runner that comes from outside Memar and finds Tests only by a marker — `node --test` over `*.test.ts`, Python's `unittest` over `test_*.py` — imposes that marker on the files it runs, and this rule makes no claim about that convention; what it claims is that nothing in Memar's own naming needs one.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./test-naming.handoff.md).
+This rule's own open state lives in its handoff.

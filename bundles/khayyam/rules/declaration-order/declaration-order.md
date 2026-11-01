@@ -27,7 +27,7 @@ Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../REA
 ## Why this exists
 The reader of a `.kh` file meets declarations in the order the file writes them, and the name in `self` is the one name in a method declaration that the file itself is responsible for introducing. A method above its owner inverts that: the reader arrives at `(self Event)` holding a type they have not been shown, and has to look downward to learn what the method is attached to. The [import address rule](../import-address/import-address.md) makes this repository's files addressable units, and a file that cannot be read from its top without jumping is a file whose address does not tell the reader what it costs to read.
 
-The sources are close to unanimous and not unanimous, which is why the rule is stated as a rule and not as a description. Of the 752 `mt` declarations under `modules/`, 745 name an owner their own file declares, and 734 of those put the owner first. The eleven that do not are named in this rule's [handoff](./declaration-order.handoff.md), because a governance rule that cannot say where its own sources stand is asserting rather than holding.
+The sources are close to unanimous and not unanimous, which is why the rule is stated as a rule and not as a description. Of the 752 `mt` declarations under `modules/`, 745 name an owner their own file declares, and 734 of those put the owner first. The eleven that do not are named in this rule's handoff, because a governance rule that cannot say where its own sources stand is asserting rather than holding.
 
 The observer and mutator families are the clearest case: across the 125 `mt` declarations in the `*.observers.kh` and `*.mutators.kh` companion files, none stands above its owner.
 
@@ -38,8 +38,8 @@ An organization may write every method before every type, or may let a tool's or
 - It does not claim the grammar requires this order. Both orders analyze; nothing in [Method Structure](../../../../docs/khayyam/method.md#method-structure) bears on it, and the [file layout rule](../file-layout/file-layout.md) says in terms that the grammar requires no declaration order at all.
 - It does not claim anything checks it. Satisfaction in this language is structural and by method name ([Abstraction → Abstraction Realization](../../../../docs/khayyam/abstraction.md#abstraction-realization-implicit-satisfaction)), so a method reaches its owner through the name in `self` and not through where the owner was written; the same source answers "Where it is judged" as wherever an abstraction type is required. This rule is about how a reader meets the source, and no tool reports a violation of it.
 - It does not claim a method may not be declared before a type it does not name, nor that a file's declarations fall into two blocks. Each method is ordered against its own owner.
-- It does not claim anything about the order of a type's **composition block** against its own methods, which the sources do not agree on, nor about a method attached to a method. Both are open questions in this rule's [handoff](./declaration-order.handoff.md), and stating either as a rule here would state a condition the sources do not hold themselves to.
+- It does not claim anything about the order of a type's **composition block** against its own methods, which the sources do not agree on, nor about a method attached to a method. Both are open questions in this rule's handoff, and stating either as a rule here would state a condition the sources do not hold themselves to.
 - It does not replace the [file layout rule](../file-layout/file-layout.md), whose contracts-first order this one refines rather than restates: that rule is about contracts against bodies and about file size, and it stops at the declaration.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./declaration-order.handoff.md).
+This rule's own open state lives in its handoff.

@@ -26,5 +26,5 @@ The parts stood as siblings of one another under `modules-plugable/rights/` (`la
 
 ## Related Artifacts
 - [Law](../../../modules/rights/law/law.md) — the kernel type these parts attach to (Depends_on)
-- [Law Handoff](../../../modules/rights/law/law.handoff.md) — the type's working state and the ruling that placed these parts here (Related)
+- Law Handoff — the type's working state and the ruling that placed these parts here (Related)
 - [Claims](../claims/claims.md) — optional kinds of dispute, a separate module (Related)

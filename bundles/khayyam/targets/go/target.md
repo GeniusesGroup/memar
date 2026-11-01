@@ -7,7 +7,7 @@ ID: 497622
 
 # Khayyam Go Target
 ## Abstract
-This document is the Go target of the Khayyam toolchain: what the bridge between the archived Go reference and this repository's Khayyam sources does today, what it reads, what it still owes, and what may sit beside it. The target exists because the owner ruled on 2026-10-05 that Go stays a target of the toolchain — a folder named for the emit output it is to produce, beside [`js/`](../js/target.md), and not a place where the language's design is decided. It is not yet an emit target in the sense the pipeline uses that word: nothing here produces a Go artifact, and no Go artifact exists. What it does produce is Khayyam. [`abstraction_bridge.py`](./abstraction_bridge.py) reads Go sources and writes the declarations that have a Khayyam form; every construct that has none stays in the destination as a residue carrying its original Go text, with the whole Go file kept verbatim as comments at the end of the file it produced; and the three Rules that govern that residue are applied here by `tidy --rule`. What the port did, what it measured, and what it left undecided are recorded in the paired [research](./target.research.001.md).
+This document is the Go target of the Khayyam toolchain: what the bridge between the archived Go reference and this repository's Khayyam sources does today, what it reads, what it still owes, and what may sit beside it. The target exists because the owner ruled on 2026-10-05 that Go stays a target of the toolchain — a folder named for the emit output it is to produce, beside [`js/`](../js/target.md), and not a place where the language's design is decided. It is not yet an emit target in the sense the pipeline uses that word: nothing here produces a Go artifact, and no Go artifact exists. What it does produce is Khayyam. [`abstraction_bridge.py`](./abstraction_bridge.py) reads Go sources and writes the declarations that have a Khayyam form; every construct that has none stays in the destination as a residue carrying its original Go text, with the whole Go file kept verbatim as comments at the end of the file it produced; and the three Rules that govern that residue are applied here by `tidy --rule`. What the port did, what it measured, and what it left undecided are recorded in the paired research.
 
 ## Introduction
 ### Motivation
@@ -18,9 +18,9 @@ Each statement below is read from the code it names: the two directions and the 
 
 ## Explanation
 ### What this target owns
-The toolchain's pipeline is source → frontend → semantic representation → target → artifact → host ([Khayyam Handoff → Pipeline](../../khayyam.handoff.md#pipeline)). The frontend and the representation under [`core/`](../../core/) are target-independent and are not this target's. This target holds the other side of that seam as it stands for Go: the bridge that reads a Go source and writes a Khayyam one, the readers that give that bridge the Go text and the Khayyam text it works on, and the three Rules that say what the residue must become.
+The toolchain's pipeline is source → frontend → semantic representation → target → artifact → host (Khayyam Handoff → Pipeline). The frontend and the representation under [`core/`](../../core/) are target-independent and are not this target's. This target holds the other side of that seam as it stands for Go: the bridge that reads a Go source and writes a Khayyam one, the readers that give that bridge the Go text and the Khayyam text it works on, and the three Rules that say what the residue must become.
 
-The [research](./target.research.001.md) beside this document is where the port's own record lives — the two archives, where they disagree, which side the sources took, and the subjects with no home. It is a record of one inquiry, not the target's current state; this document is that.
+The research beside this document is where the port's own record lives — the two archives, where they disagree, which side the sources took, and the subjects with no home. It is a record of one inquiry, not the target's current state; this document is that.
 
 ### The bridge
 [`abstraction_bridge.py`](./abstraction_bridge.py) is the entry point, and it carries two directions and five sub-commands.
@@ -59,10 +59,10 @@ A file belongs under `targets/go/` when it is the bridge between Go and Khayyam,
 
 - **The bridge and its readers** — [`abstraction_bridge.py`](./abstraction_bridge.py) and the modules it is one call into: the Go lexer and parser, the Khayyam reader, the comment reader, the residue block, the naming tables, the frontend check, and their tests.
 - **The residue rules** — [`rules/`](./rules/README.md), whose subject is what the port left in a `.kh` file. A Rule whose subject is a Khayyam program is the [language catalog's](../../rules/README.md) whatever tool applies it; enforcement does not decide a Rule's home ([Rule → Which Module a Rule Belongs To](../../../../docs/rule.md#which-module-a-rule-belongs-to)).
-- **This folder's own records** — this document and the [research](./target.research.001.md) that carries the port's measurement.
+- **This folder's own records** — this document and the research that carries the port's measurement.
 
 What does **not** belong here:
 - **A mechanism whose subject is Khayyam rather than the port** — the declaration-rename service reads Khayyam names and outlives this folder, so it is [`services/rename/`](../../services/rename/), not here.
 - **The language's own rules and specification** — [`rules/` at the module root](../../rules/README.md) and [`docs/khayyam/`](../../../../docs/khayyam/README.md).
-- **The port's record at large** — what the port measured and what it left undecided is [research](./target.research.001.md), one bounded inquiry beside this document rather than material spread through this one.
+- **The port's record at large** — what the port measured and what it left undecided is research, one bounded inquiry beside this document rather than material spread through this one.
 - **Anything about the Go language itself** — a condition on a Go source file is Go's to state, not this folder's.

@@ -20,11 +20,11 @@ Memar owns the *concept* of knowledge and its modeling principles (`docs/knowled
 
 Structural / holding:
 
-- [`modules/knowledge/content`](../../modules/knowledge/content/README.md) (+ [content.handoff.md](../../modules/knowledge/content/content.handoff.md)) — Content units, timelines attachment, document-model blocks, knowledge-capture decisions
-- [`modules/knowledge/text`](../../modules/knowledge/text/README.md) (+ [text.handoff.md](../../modules/knowledge/text/text.handoff.md)) — human-readable tokens; other domains relate, do not own text bodies
+- [`modules/knowledge/content`](../../modules/knowledge/content/README.md) (+ `content.handoff.md`) — Content units, timelines attachment, document-model blocks, knowledge-capture decisions
+- [`modules/knowledge/text`](../../modules/knowledge/text/README.md) (+ `text.handoff.md`) — human-readable tokens; other domains relate, do not own text bodies
 - [`modules/knowledge/status`](../../modules/knowledge/status/README.md) — shared status machinery (including review/RFC-as-phase)
-- [`modules/management/task`](../../modules/management/task/) (+ [task.handoff.md](../../modules/management/task/task.handoff.md)) — Task as work/knowledge unit; Discussion/Decision/Change association
-- [`modules/management/timeline`](../../modules/management/timeline/) (+ [timeline.handoff.md](../../modules/management/timeline/timeline.handoff.md))
+- [`modules/management/task`](../../modules/management/task/) (+ `task.handoff.md`) — Task as work/knowledge unit; Discussion/Decision/Change association
+- [`modules/management/timeline`](../../modules/management/timeline/) (+ `timeline.handoff.md`)
 - [`modules/management/group`](../../modules/management/group/README.md) — membership; Task is additive over Group
 
 Pluggable / temporary add-ons that the practice may install:
@@ -33,7 +33,7 @@ Pluggable / temporary add-ons that the practice may install:
 
 GUI / projection (consumers of the same graph):
 
-- [`modules-plugable/gui`](../../modules-plugable/gui/) (+ [gui.handoff.md](../../modules-plugable/gui/gui.handoff.md))
+- [`modules-plugable/gui`](../../modules-plugable/gui/) (+ `gui.handoff.md`)
 
 Also composed / related (seed mapping — grow as sessions land):
 
@@ -43,4 +43,4 @@ Also composed / related (seed mapping — grow as sessions land):
 
 ## Active design state
 
-See [knowledge-management.handoff.md](knowledge-management.handoff.md) — migrated seed + brainstorm material awaiting dedicated design chats. Design dialectic lives in that handoff's Discussion sections. Nothing in that handoff is fully ratified as a finished Explanation-facet document yet.
+See `knowledge-management.handoff.md` — migrated seed + brainstorm material awaiting dedicated design chats. Design dialectic lives in that handoff's Discussion sections. Nothing in that handoff is fully ratified as a finished Explanation-facet document yet.

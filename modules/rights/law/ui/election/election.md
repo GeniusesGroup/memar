@@ -1,7 +1,7 @@
 # Election
 The widget that records two separate acts on a proposition: public critique, and a binding signature. The acts can run in the same period. A reaction in the critique is a reading signal. A signature is the vote.
 
-Placement of this widget relative to the law folder is open in [law.handoff.md](../../law.handoff.md).
+Placement of this widget relative to the law folder is open in `law.handoff.md`.
 
 ## Critique
 Critique is the public discussion of a proposition. A person publishes a reason. Others react to that reason (like, dislike, and the same family of reactions). Each reader sees those reactions through the people they already treat as worth reading. When a person values A, and A liked a reason that sits beside a visible signature, that reason ranks higher for that reader.

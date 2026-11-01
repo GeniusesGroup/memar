@@ -10,7 +10,7 @@
 
 ## Placement
 
-- **Verdict: not an edge — GUI projection only; belongs to pluggable GUI, never task kernel.** The source itself says "visual aid ... in GUI"; projection ≠ domain model, and the handoff already fixed the same point ("A GitHub-Issues-style GUI for tasks is optional and must not influence the model" — [task.handoff.md](../../task.handoff.md)).
+- **Verdict: not an edge — GUI projection only; belongs to pluggable GUI, never task kernel.** The source itself says "visual aid ... in GUI"; projection ≠ domain model, and the handoff already fixed the same point ("A GitHub-Issues-style GUI for tasks is optional and must not influence the model" — `task.handoff.md`).
 - Recorded here only because the comment sat in the module's `edges-loop/` — the folder documents the source, it does not promote boards to a stored grouping.
 - If a board ever becomes persisted state (a saved grouping users create), that would be a stored node/edge and a new review — nothing in the source says so.
 

@@ -36,4 +36,4 @@ An organization may disable scaffolding, require hand-written delegation only, o
 - It does not claim searchable `impl` blocks exist; discovery is tool-assisted graph traversal.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./abstraction-scaffolding.handoff.md).
+This rule's own open state lives in its handoff.

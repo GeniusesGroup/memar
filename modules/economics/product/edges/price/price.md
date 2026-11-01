@@ -20,7 +20,7 @@
 
 ## Open questions
 
-- Does a price belong to the product or to the batch? The owner leans to the batch; what plays the batch's part for a service (a barber charging by time and place; a slot of staff × place × time) is unsettled — [Pricing Research 001](../../../../../modules-plugable/economics/pricing/pricing.research.001.md#open-questions).
+- Does a price belong to the product or to the batch? The owner leans to the batch; what plays the batch's part for a service (a barber charging by time and place; a slot of staff × place × time) is unsettled — Pricing Research 001.
 - Is a sale price stated by a rule reacting to `replacement_cost_changed` or `price_index_divergence` written into this edge on the owner's behalf, or carried by `(product)-[:pricing]->(count_unit)`? — [pricing open questions](../../../../../modules-plugable/economics/pricing/edges/pricing/pricing.md#open-questions).
-- Must every product show a price? May a product instead declare a display basis — a [count unit](../../../../identity/thing/edges/count_unit/count_unit.md), compound where needed (kg·km, t·km, passenger-km, per hour, per month), or a state ("on request", "negotiable", "market") — [Pricing Research 001](../../../../../modules-plugable/economics/pricing/pricing.research.001.md#must-every-product-show-a-price)?
+- Must every product show a price? May a product instead declare a display basis — a [count unit](../../../../identity/thing/edges/count_unit/count_unit.md), compound where needed (kg·km, t·km, passenger-km, per hour, per month), or a state ("on request", "negotiable", "market") — Pricing Research 001?
 - Does a stated price version carry a valid-until, as a [quote](../../../../../modules-plugable/economics/replacement-cost/edges/quote/quote.md) does, and how old may it be before a buyer's replacement cost marks it stale ([replacement cost policies](../../../../../modules-plugable/economics/replacement-cost/replacement-cost.md#policies-rules))?

@@ -13,7 +13,7 @@ The user who brings this case. One edge per such user, on this case. Any user ty
 - A user is not plaintiff and [judge](../judge/judge.md) on the same case.
 - Organization and group are user types. An organization that brings the claim is the plaintiff at this edge's end. A group may be that end as well. The case still has no domain edge to Organization.
 - One or more plaintiff edges may leave one case. A second user with the same part is a second edge of this type. A different part is a different edge type.
-- Who may create the edge, other than the user at its end, is not recorded. Proposal, model v1, not ratified: a user who files for another user leaves this edge ending at the party, and the authorization to file for that party is [delegate](../../../delegate/delegate.md). That note is open on the [delegate handoff](../../../delegate/delegate.handoff.md).
+- Who may create the edge, other than the user at its end, is not recorded. Proposal, model v1, not ratified: a user who files for another user leaves this edge ending at the party, and the authorization to file for that party is [delegate](../../../delegate/delegate.md). That note is open on the delegate handoff.
 
 ## Placement
 

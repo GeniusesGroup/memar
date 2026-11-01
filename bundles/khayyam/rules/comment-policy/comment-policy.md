@@ -24,4 +24,4 @@ An organization may drop the header and allow comments; it then keeps a second p
 - It does not claim that a comment is a bad way to write prose. It claims which prose lives where in this repository, today.
 
 ## Open questions
-This rule's own open state — including the documentation-density question — lives in its [handoff](./comment-policy.handoff.md).
+This rule's own open state — including the documentation-density question — lives in its handoff.

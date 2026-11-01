@@ -39,4 +39,4 @@ handoff.
 
 ## Open questions
 What this conversion left undecided, and what belongs to another domain, is in
-[`language-human.handoff.md`](language-human.handoff.md).
+`language-human.handoff.md`.

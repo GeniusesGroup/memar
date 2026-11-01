@@ -25,4 +25,4 @@ An organization may keep utility capsules for transitional code, generated ports
 - It does not govern abstraction or method naming; see sibling rules.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./domain-capsule-naming.handoff.md).
+This rule's own open state lives in its handoff.

@@ -40,7 +40,7 @@ tp Mutator_SetMemoryAddress mt (self Mutator_SetMemoryAddress) (a Memory_Address
 ```
 
 ## Research
-Observer accessor naming options and literature grounding: [Method Verb Phrases Research 001](../../../../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.research.001.md) (F3–F4). Observer vs `Mutator_*` counterpart: [Observer and Mutator Research 001](./observer-mutator.research.001.md).
+Observer accessor naming options and literature grounding: Method Verb Phrases Research 001 (F3–F4). Observer vs `Mutator_*` counterpart: Observer and Mutator Research 001.
 
 ## Why it exists
 Separating the query contract (`Observer_X`) from the command contract (`Mutator_X`) supports command–query separation (Meyer, *OOSC* Ch. 23; Liskov & Guttag, *Abstraction and Specification in Program Development*, MIT Press, 1986 — creators, producers, observers, mutators). The names also agree with [Agency → From Observer to Agent](../../../../../docs/agency.md#from-observer-to-agent), where an observer sees a System without acting on it. Fields are not public; only methods on these abstractions cross the boundary ([Encapsulation in Khayyam](../../../../../docs/khayyam/encapsulation.md)). `modules/computer/capsule/protocol/field.kh` is the meta-model for capsule-held state.
@@ -51,8 +51,8 @@ An organization may expose state through owner methods only, use another prefix,
 ## What this rule does not claim
 - It does not claim Khayyam has a `field` keyword or enforced privacy.
 - It does not claim every piece of state needs an `Observer_X` abstraction.
-- Whether `Get…` / `Set…` prefixes are discouraged **outside** observer and mutator families remains open in the [method verb phrases handoff](../../../../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.handoff.md).
+- Whether `Get…` / `Set…` prefixes are discouraged **outside** observer and mutator families remains open in the method verb phrases handoff.
 - `Observer_` here is not the GoF Observer pattern (event subscriber); the event module must not reuse the name.
 
 ## Open questions
-This rule's own open state lives in its [handoff](./observer-mutator.handoff.md).
+This rule's own open state lives in its handoff.

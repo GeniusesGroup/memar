@@ -8,4 +8,4 @@ A summary is discovered from related content, not acquired. It is recomputed whe
 Its authority lies in its sources.
 
 ## How a check would run
-A summary stored as the only place a fact is stated breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#owners-answers-to-the-review-2026-10-18); this repository runs no automatic check of it today.
+A summary stored as the only place a fact is stated breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

@@ -16,5 +16,5 @@
 
 ## Open questions
 
-- reconcile with memar process/request lifecycle; is Compensated the transaction-side link ([transaction.handoff.md](../../../../economics/transaction/transaction.handoff.md) §6)?
+- reconcile with memar process/request lifecycle; is Compensated the transaction-side link (`transaction.handoff.md` §6)?
 

@@ -51,7 +51,7 @@
 
 ## Idea backlog
 
-Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified.
+Review discipline per `vocabulary-discipline.handoff.md`. Nothing below is ratified.
 
 ### Group deletion
 - **Idea**: only users of ancestor groups may delete a child group — "Just Father (father of father, ...) groups users can delete their childs.".

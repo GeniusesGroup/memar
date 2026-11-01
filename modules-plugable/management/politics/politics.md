@@ -9,7 +9,7 @@ ID: 497224
 Politics is who gets what, when, and how, when people with different interests make one choice together.
 
 ## Abstract
-Harold Lasswell's sentence, as [OpenStax](https://openstax.org/books/introduction-political-science/pages/1-1-defining-politics-who-gets-what-when-where-how-and-why) uses it, places this activity in a family deciding where to live and in a government deciding a tax. Michael Laver's line, as [Politics](https://en.wikipedia.org/wiki/Politics) quotes it, is the boundary: pure conflict is war, pure cooperation is love, and politics is the mixture. The weekly host and the road with a later spur are that mixture. The reading is [politics.research.002.md](politics.research.002.md).
+Harold Lasswell's sentence, as [OpenStax](https://openstax.org/books/introduction-political-science/pages/1-1-defining-politics-who-gets-what-when-where-how-and-why) uses it, places this activity in a family deciding where to live and in a government deciding a tax. Michael Laver's line, as [Politics](https://en.wikipedia.org/wiki/Politics) quotes it, is the boundary: pure conflict is war, pure cooperation is love, and politics is the mixture. The weekly host and the road with a later spur are that mixture. The reading is `politics.research.002.md`.
 
 ## Introduction
 

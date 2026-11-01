@@ -17,7 +17,7 @@
 
 ## Open questions
 
-- Does the deposit posting happen via a rule reacting to tax calculation (fees-as-rules, [rule.handoff.md](../../../../../modules/computer/rule/rule.handoff.md) §9), or is this a static account pointer? Record before ratifying (no bare edges).
+- Does the deposit posting happen via a rule reacting to tax calculation (fees-as-rules, `rule.handoff.md` §9), or is this a static account pointer? Record before ratifying (no bare edges).
 - One deposit account per tax kind, or one per organization? "up to two tax labels" in [tax](../tax/tax.md) — does each label settle to its own account?
 - Shared account-role vocabulary with [financial-account](../../../pos/edges/financial-account/financial-account.md) (DepositAccount vs TaxDepositAccount — same idea, different owner)?
 - Direction/naming unconfirmed — nothing ratified.

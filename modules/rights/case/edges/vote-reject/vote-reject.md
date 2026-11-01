@@ -35,5 +35,5 @@ One seated person's recorded rejection of this case. It stays in the pool when l
 ## Open questions
 
 - **The draft request has no home edge.** `computer/request` exists and carries the edges listed above. The request the proposal calls "the draft request attached to the case" has no edge attaching it: not `computer/request` via `sub_request_of`, and not `claim_service`, whose endpoint is a service rather than a request. Who may edit it, and after votes exist, is not recorded either.
-- **The owning module of the vote-to-request edge is not stated.** [case.handoff.md](../../case.handoff.md) asks which edge attaches the draft request. Which module owns the pointer is a separate question and is not recorded.
+- **The owning module of the vote-to-request edge is not stated.** `case.handoff.md` asks which edge attaches the draft request. Which module owns the pointer is a separate question and is not recorded.
 - The pointer to one request is a proposal. It is not an edge with create, validation, and trigger rules. Timeline text stays the explanation. A field on [vote accept](../vote-accept/vote-accept.md) is not the home.

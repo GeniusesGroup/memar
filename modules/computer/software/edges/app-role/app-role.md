@@ -10,7 +10,7 @@
 
 ## Placement
 
-- **Rule domain, not software.** Who-may-administer a Rule is organization policy — Core never knows Rule (decided in [rule.handoff.md](../../../rule/rule.handoff.md)), the same verdict shape as the sell-limit audience roles filed in [sell-limit](../../../../economics/product/edges/sell-limit/sell-limit.md).
+- **Rule domain, not software.** Who-may-administer a Rule is organization policy — Core never knows Rule (decided in `rule.handoff.md`), the same verdict shape as the sell-limit audience roles filed in [sell-limit](../../../../economics/product/edges/sell-limit/sell-limit.md).
 - No new module: if the existing rights/delegate machinery already models admin roles, these labels should reuse it (edge vs module: no independent processing here). The app side must reference rules generically, never embed role semantics in core `software`.
 
 ## Open questions

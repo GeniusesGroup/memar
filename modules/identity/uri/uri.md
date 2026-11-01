@@ -17,4 +17,4 @@ Not from here. A URI protocol under [`modules-plugable/uri`](../../../modules-pl
 Storage over those records saves one, fetches one by its URI value, and lists the URIs of one quiddity inside an offset/limit window, reporting how many versions the query saw.
 
 ## Open questions
-What this conversion left undecided or blocked on other domains is in [`uri.handoff.md`](uri.handoff.md).
+What this conversion left undecided or blocked on other domains is in `uri.handoff.md`.

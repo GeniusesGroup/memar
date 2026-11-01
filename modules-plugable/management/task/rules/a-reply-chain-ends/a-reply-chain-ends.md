@@ -11,4 +11,4 @@ Status: Draft
 Two agents can ask each other for one more look without end, each time at the cost of a fresh start; a rule that says what ends a chain, and who is asked when it does not end, is what keeps the cost bounded without hiding the disagreement.
 
 ## How a check would run
-An open chain is listed with the age of its last reply; a Task may live long, so age alone expires nothing. A chain longer than the limit with no question to the authority breaks the rule. The statement is the owner's, recorded in [the Task handoff](../../../../../modules/management/task/task.handoff.md#critique-as-a-content-on-the-timeline-2026-10-30-tentative); this repository runs no automatic check of it today.
+An open chain is listed with the age of its last reply; a Task may live long, so age alone expires nothing. A chain longer than the limit with no question to the authority breaks the rule. The statement is the owner's, recorded in the Task handoff; this repository runs no automatic check of it today.

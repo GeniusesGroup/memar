@@ -11,7 +11,7 @@
 ## Placement
 
 - **Correct here — recorded on the task's own relation file; the task module keeps it while it only says how a task relates to its content** (module skeleton: `task/edges/`; prefer existing homes over inventing new modules).
-- Task is already decided to also be a Content ([task.handoff.md](../../task.handoff.md) — "Task itself is also a Content"); this relation may be the publication *aspect* of that content rather than a new edge — confirm before modeling (see Open questions).
+- Task is already decided to also be a Content (`task.handoff.md` — "Task itself is also a Content"); this relation may be the publication *aspect* of that content rather than a new edge — confirm before modeling (see Open questions).
 - Public-vs-restricted publication is access policy → rules (core never knows Rule); the label alone records no audience set (no bare edges: who may publish, what it triggers, unrecorded).
 
 ## Open questions

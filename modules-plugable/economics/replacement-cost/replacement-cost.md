@@ -13,7 +13,7 @@ Replacement cost is what an organization would pay today to obtain one more unit
   - a made product: the sum over its materials of `BaseQuantity` × the material's replacement cost, plus conversion cost (open);
   - a product with no source, quote, or material has no replacement cost and is stale.
 - Every value carries its as-of, the time of the oldest acquired input it was computed from, and the list of input versions it was computed from: the source price versions, quotes, and material edges.
-- Event: `replacement_cost_changed` (product, new value, as-of, input versions), raised when an input changes — a new price version on a source product, a purchase of a source product at the price agreed at its issue ([invoice exchange](../../../modules/economics/invoice/invoice.handoff.md)), a new or retracted quote, a changed material or source edge. The product kernel does not know this module.
+- Event: `replacement_cost_changed` (product, new value, as-of, input versions), raised when an input changes — a new price version on a source product, a purchase of a source product at the price agreed at its issue (invoice exchange), a new or retracted quote, a changed material or source edge. The product kernel does not know this module.
 
 ## Policies (rules)
 
@@ -55,7 +55,7 @@ Replacement cost is what an organization would pay today to obtain one more unit
 ### Unresolved questions
 
 - Conversion cost of a made product (labour, overhead): taken from the batch cost shares, from current payroll rates, or from service products as sources?
-- A service sold by time and place (a barber's slot of staff × place × time; [Pricing Research 001](../pricing/pricing.research.001.md#a-barber-charging-by-time-and-place)): does it have a replacement cost — the staff's current rate for the expected duration plus the place's current cost for that time — or no replacement cost, priced by rule alone?
+- A service sold by time and place (a barber's slot of staff × place × time; Pricing Research 001): does it have a replacement cost — the staff's current rate for the expected duration plus the place's current cost for that time — or no replacement cost, priced by rule alone?
 - A source priced in a different currency from the sale: is a party's currently stated offer to sell a currency — an ask on [trade](../matching_system/edges/trade/trade.md) — a price a source may point at? How a currency's price is represented has to respect the money model, in which money, if debt-based, is to be modeled precisely; the same question is open for currency components in [price-index](../price-index/price-index.md#unresolved-questions). Until answered, a cross-currency source is refused.
 - Within a source group, which alternative is chosen (preferred, lowest, highest, most recently stated), and is that choice configuration of this module or a pricing rule?
 - Converge [source](edges/source/source.md) with the product-side [supplier](../../../modules/economics/product/edges/supplier/supplier.md) candidate: one relation, which this module and procurement both read, or two?

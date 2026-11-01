@@ -10,9 +10,9 @@
 
 ## Placement
 
-- **Law owns its statuses; the ratification form is loop-edge folders under `law/status/<name>/`, read through [status](../../../../knowledge/status/status.md)** — status.md: "A domain defines the statuses that belong to it as loop-edges under `<domain>/status/<name>/`", and the owner already decided this for the domain ("Statuses of this domain are loop-edges under `status/`" — [law.handoff.md](../../law.handoff.md)); the precedent beside this folder is [voting](../../status/voting/voting.md). This doc (created now) holds the candidate vocabulary until those folders exist.
+- **Law owns its statuses; the ratification form is loop-edge folders under `law/status/<name>/`, read through [status](../../../../knowledge/status/status.md)** — status.md: "A domain defines the statuses that belong to it as loop-edges under `<domain>/status/<name>/`", and the owner already decided this for the domain ("Statuses of this domain are loop-edges under `status/`" — `law.handoff.md`); the precedent beside this folder is [voting](../../status/voting/voting.md). This doc (created now) holds the candidate vocabulary until those folders exist.
 - **Not a new module:** four labels are a value list, not processing semantics (parameters vs semantics) — configuration for the status reader, never grounds a module on its own.
-- Transitions are rule decisions (core never knows Rule); amendment/repeal of a *base* law stays an open question with [normative-bootstrap.handoff.md](../../../normative-bootstrap.handoff.md).
+- Transitions are rule decisions (core never knows Rule); amendment/repeal of a *base* law stays an open question with `normative-bootstrap.handoff.md`.
 - Not the general status module's own list: [status](../../../../knowledge/status/status.md) defines *what a status is*; the vocabulary here is law-specific.
 
 ## Open questions

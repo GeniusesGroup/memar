@@ -25,4 +25,4 @@ An organization may use different conventional names (`Close`, `Dispose`, `IsEmp
 - It does not claim automated teardown insertion; that is [Memory → Teardown is explicit, and automation writes source](../../../../docs/modules/memory/memory.md#teardown-is-explicit-and-automation-writes-source).
 
 ## Open questions
-This rule's own open state lives in its [handoff](./lifecycle-method-names.handoff.md).
+This rule's own open state lives in its handoff.

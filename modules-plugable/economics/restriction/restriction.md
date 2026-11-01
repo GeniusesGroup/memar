@@ -1,6 +1,6 @@
 # Restriction
 
-Restriction is a pluggable module for global quantity constraints — e.g. a judicial order freezing 1000 units of a person's assets. The constraint targets a person/thing, NOT individual accounts: copying the amount onto every account of the target would multiply the constraint (100 accounts × 1000 ≠ 1000). This is why the legacy `AvailableBalance`-as-account-state model was rejected (account/bookkeeping decision: [account.handoff.md](../../../modules/economics/account/account.handoff.md), [bookkeeping](../../../modules/economics/account/edges/bookkeeping/README.md) §8).
+Restriction is a pluggable module for global quantity constraints — e.g. a judicial order freezing 1000 units of a person's assets. The constraint targets a person/thing, NOT individual accounts: copying the amount onto every account of the target would multiply the constraint (100 accounts × 1000 ≠ 1000). This is why the legacy `AvailableBalance`-as-account-state model was rejected (account/bookkeeping decision: `account.handoff.md`, [bookkeeping](../../../modules/economics/account/edges/bookkeeping/README.md) §8).
 
 ## Global-constraint decisions (from Organization ideas backlog)
 
@@ -19,7 +19,7 @@ Current edges (under review; naming/shape not final):
 ## Policies (rules)
 
 - Applies to any count unit: money, shares, goods. The constraint is on a quantity, not on "funds".
-- Incoming transactions are processed normally; the restriction rule reacts by creating its own blocking transactions until satisfied. It never modifies or rolls back the triggering transaction (compensation: [transaction.handoff.md](../../../modules/economics/transaction/transaction.handoff.md) §6; fees/rules: [rule.handoff.md](../../../modules/computer/rule/rule.handoff.md) §9).
+- Incoming transactions are processed normally; the restriction rule reacts by creating its own blocking transactions until satisfied. It never modifies or rolls back the triggering transaction (compensation: `transaction.handoff.md` §6; fees/rules: `rule.handoff.md` §9).
 - A rule stays active until its target amount is satisfied; it must not assume the quantity already exists (e.g. it can wait for future deposits).
 - Release/unblock is a new compensating transaction, never a deletion.
 - A judge may block an amount without naming a destination account; destination-less constraints are valid.

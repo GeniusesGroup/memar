@@ -3,7 +3,7 @@ Staff relates users to organizations as personnel.
 
 ## Idea backlog from `_import` service comments
 
-Review discipline per [vocabulary-discipline.handoff.md](../vocabulary-discipline.handoff.md). Nothing below is ratified. Edge-comment entries now live in the per-edge docs linked from [Edges](#edges) above.
+Review discipline per `vocabulary-discipline.handoff.md`. Nothing below is ratified. Edge-comment entries now live in the per-edge docs linked from [Edges](#edges) above.
 
 ### Person-position status
 - **Idea**: change a position status sets it as finished position.
