@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Graph_SideRef in "modules-plugable/computer/memory/store/graph/protocol/graph-side-ref.kh"
+
+tp Graph_SideRefs ab
+
+tp GetRef mt (self Graph_SideRefs) (position W32) (ref Graph_SideRef)
+
+tp GetCount mt (self Graph_SideRefs) () (count W32)

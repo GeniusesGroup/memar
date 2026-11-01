@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Graph_Sides in "modules-plugable/computer/memory/store/graph/protocol/graph-sides.kh"
+
+tp Graph_ListSidesAnswer ab
+
+tp GetSides mt (self Graph_ListSidesAnswer) () (sides Graph_Sides)

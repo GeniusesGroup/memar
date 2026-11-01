@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Graph_Path_Mode ab
+
+tp Graph_Path_Mode_Trail ab {
+    Graph_Path_Mode
+}
+
+tp Graph_Path_Mode_Acyclic ab {
+    Graph_Path_Mode
+}

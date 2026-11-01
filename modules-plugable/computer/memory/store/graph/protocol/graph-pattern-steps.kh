@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Graph_Pattern_Step in "modules-plugable/computer/memory/store/graph/protocol/graph-pattern-step.kh"
+
+tp Graph_Pattern_Steps ab
+
+tp GetStep mt (self Graph_Pattern_Steps) (position W32) (step Graph_Pattern_Step)
+
+tp GetCount mt (self Graph_Pattern_Steps) () (count W32)

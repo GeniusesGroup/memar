@@ -1,0 +1,54 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Store in "modules/computer/memory/store/protocol/store.kh"
+tp Store_Seam in "modules/computer/memory/store/protocol/store-seam.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp W64 in "modules/math/integer/unsigned-64.kh"
+tp Graph_Layout in "modules-plugable/computer/memory/store/graph/protocol/graph-layout.kh"
+tp Graph_PutEdge in "modules-plugable/computer/memory/store/graph/protocol/graph-put-edge.kh"
+tp Graph_PutEdges in "modules-plugable/computer/memory/store/graph/protocol/graph-put-edges.kh"
+tp Graph_SideRef in "modules-plugable/computer/memory/store/graph/protocol/graph-side-ref.kh"
+tp Graph_SideRefs in "modules-plugable/computer/memory/store/graph/protocol/graph-side-refs.kh"
+tp Graph_ListSidesQuery in "modules-plugable/computer/memory/store/graph/protocol/graph-list-sides-query.kh"
+tp Graph_ListSidesAnswer in "modules-plugable/computer/memory/store/graph/protocol/graph-list-sides-answer.kh"
+tp Graph_GetSideQuery in "modules-plugable/computer/memory/store/graph/protocol/graph-get-side-query.kh"
+tp Graph_GetSideAnswer in "modules-plugable/computer/memory/store/graph/protocol/graph-get-side-answer.kh"
+tp Graph_SetSideFields in "modules-plugable/computer/memory/store/graph/protocol/graph-set-side-fields.kh"
+tp Graph_EndEdge in "modules-plugable/computer/memory/store/graph/protocol/graph-end-edge.kh"
+tp Graph_Pattern in "modules-plugable/computer/memory/store/graph/protocol/graph-pattern.kh"
+tp Graph_Path_Query in "modules-plugable/computer/memory/store/graph/protocol/graph-path-query.kh"
+tp Graph_Expand_Query in "modules-plugable/computer/memory/store/graph/protocol/graph-expand-query.kh"
+tp Graph_Match_Rows in "modules-plugable/computer/memory/store/graph/protocol/graph-match-rows.kh"
+
+tp Graph_Store ab {
+    Store
+    Store_Seam
+}
+
+tp Layable mt (self Graph_Store) (store Store) (can Boolean)
+
+tp Lay mt (self Graph_Store) (store Store, layout Graph_Layout) (laid Graph_Store, err Error)
+
+tp PutEdge mt (self Graph_Store) (edge Graph_PutEdge) (ref Graph_SideRef, err Error)
+
+tp PutEdges mt (self Graph_Store) (edges Graph_PutEdges) (refs Graph_SideRefs, err Error)
+
+tp ListSides mt (self Graph_Store) (query Graph_ListSidesQuery) (answer Graph_ListSidesAnswer, err Error)
+
+tp CountSides mt (self Graph_Store) (from Computer_Buffer, relation Computer_Buffer) (count W64, err Error)
+
+tp GetSide mt (self Graph_Store) (query Graph_GetSideQuery) (answer Graph_GetSideAnswer, err Error)
+
+tp SetSideFields mt (self Graph_Store) (change Graph_SetSideFields) (err Error)
+
+tp EndEdge mt (self Graph_Store) (change Graph_EndEdge) (err Error)
+
+tp Match mt (self Graph_Store) (pattern Graph_Pattern) (rows Graph_Match_Rows, err Error)
+
+tp Path mt (self Graph_Store) (query Graph_Path_Query) (rows Graph_Match_Rows, err Error)
+
+tp Exists mt (self Graph_Store) (pattern Graph_Pattern) (found Boolean, err Error)
+
+tp Expand mt (self Graph_Store) (query Graph_Expand_Query) (rows Graph_Match_Rows, err Error)

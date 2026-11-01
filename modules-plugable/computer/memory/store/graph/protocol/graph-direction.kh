@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Graph_Direction ab
+
+tp Graph_Direction_Out ab {
+    Graph_Direction
+}
+
+tp Graph_Direction_In ab {
+    Graph_Direction
+}
+
+tp Graph_Direction_Either ab {
+    Graph_Direction
+}

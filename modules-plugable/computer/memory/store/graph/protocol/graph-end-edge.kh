@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Graph_SideRef in "modules-plugable/computer/memory/store/graph/protocol/graph-side-ref.kh"
+tp Store_Token in "modules/computer/memory/store/protocol/store-token.kh"
+
+tp Graph_EndEdge ab
+
+tp GetRef mt (self Graph_EndEdge) () (ref Graph_SideRef)
+
+tp GetExpect mt (self Graph_EndEdge) () (expect Store_Token, given Boolean)

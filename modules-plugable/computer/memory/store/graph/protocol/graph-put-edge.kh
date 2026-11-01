@@ -1,0 +1,24 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Graph_Layout in "modules-plugable/computer/memory/store/graph/protocol/graph-layout.kh"
+tp Store_Token in "modules/computer/memory/store/protocol/store-token.kh"
+
+tp Graph_PutEdge ab
+
+tp GetLayout mt (self Graph_PutEdge) () (layout Graph_Layout)
+
+tp GetFrom mt (self Graph_PutEdge) () (from Computer_Buffer)
+
+tp GetRelation mt (self Graph_PutEdge) () (relation Computer_Buffer)
+
+tp GetTo mt (self Graph_PutEdge) () (to Computer_Buffer)
+
+tp GetReverseRelation mt (self Graph_PutEdge) () (relation Computer_Buffer, given Boolean)
+
+tp GetFields mt (self Graph_PutEdge) () (fields Computer_Buffer, given Boolean)
+
+tp GetExpectFrom mt (self Graph_PutEdge) () (expect Store_Token, given Boolean)
+
+tp GetExpectTo mt (self Graph_PutEdge) () (expect Store_Token, given Boolean)

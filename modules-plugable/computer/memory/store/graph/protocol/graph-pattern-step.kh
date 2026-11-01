@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+tp Graph_Direction in "modules-plugable/computer/memory/store/graph/protocol/graph-direction.kh"
+
+tp Graph_Pattern_Step ab
+
+tp GetDirection mt (self Graph_Pattern_Step) () (direction Graph_Direction)
+
+tp GetRelation mt (self Graph_Pattern_Step) () (relation Computer_Buffer)
+
+tp GetFromSlot mt (self Graph_Pattern_Step) () (slot W32)
+
+tp GetToSlot mt (self Graph_Pattern_Step) () (slot W32)
+
+tp GetFieldPrefix mt (self Graph_Pattern_Step) () (prefix Computer_Buffer, given Boolean)

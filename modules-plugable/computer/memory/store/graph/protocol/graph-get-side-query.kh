@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Graph_SideRef in "modules-plugable/computer/memory/store/graph/protocol/graph-side-ref.kh"
+
+tp Graph_GetSideQuery ab
+
+tp GetFrom mt (self Graph_GetSideQuery) () (from Computer_Buffer)
+
+tp GetRelation mt (self Graph_GetSideQuery) () (relation Computer_Buffer)
+
+tp GetTo mt (self Graph_GetSideQuery) () (to Computer_Buffer, given Boolean)
+
+tp GetRef mt (self Graph_GetSideQuery) () (ref Graph_SideRef, given Boolean)

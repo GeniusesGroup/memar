@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Graph_Layout ab
+
+tp Graph_Layout_Compact_Adjacency ab {
+    Graph_Layout
+}
+
+tp Graph_Layout_Per_Edge_Keys ab {
+    Graph_Layout
+}
