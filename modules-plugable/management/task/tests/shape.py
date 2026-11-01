@@ -27,13 +27,14 @@ _plan_file = import_module('modules-plugable.management.task.services.plan_file'
 _header = import_module('modules.knowledge.text.services.header_text')
 WRITTEN_FACTS = {key.written: fact for fact, key in _files.FRONT_KEY.items()}
 WRITTEN_FACTS['Opened'] = 'start_date'
+WRITTEN_FACTS['Status'] = 'status'
 
 
 def from_plan_text(folder: Path, text: str) -> Path:
     lines = text.splitlines(keepends=True)
     front, start = _plan_file.front_matter([line.rstrip('\r\n') for line in lines])
     facts = {WRITTEN_FACTS[key]: value for key, value in (front or {}).items() if key in WRITTEN_FACTS}
-    status = _plan_file.status_word(facts.pop('status', ''))
+    status = _plan_file.status_word(facts.pop('status', '') or (front or {}).get('Status', ''))
     folder.mkdir(parents=True, exist_ok=True)
     facts['status'] = status
     facts['writer'] = _generation.TASK_TYPE_UUID

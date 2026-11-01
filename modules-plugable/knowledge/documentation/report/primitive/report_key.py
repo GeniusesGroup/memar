@@ -7,4 +7,3 @@ from modules.knowledge.content.primitive.record_key_set import RecordKeySet
 class ReportKey(RecordKeySet):
     ID = ID_FIELD
     TITLE = RecordKey('title', 'TITLE, when known')
-    STATUS = RecordKey('status', 'empty until the task ends, then one of the Statuses a report may state')

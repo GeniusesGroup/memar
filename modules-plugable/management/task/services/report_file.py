@@ -56,16 +56,15 @@ EARLIER_OUTCOME_KEY = 'Outcome'
 EARLIER_STOP_PREFIX = 'Stop:'
 
 def report_skeleton(task: str, title: str | None=None) -> str:
-    """A new report.md: front matter naming its task with an empty Status (and the TITLE, when known), its heading, and the four parts.
+    """A new report.md: front matter naming its task (and the TITLE, when known), its heading, and the four parts.
 
     TASK is the id of the task the report belongs to, written into the
     record so that a reader finds it inside the document rather than by
     reading the name of the folder the record sits in
     ([Documentation — Report](../../../modules-plugable/knowledge/documentation/report/report.md)).
-    An empty Status is left for the task to fill when it ends; until it
-    does, the report says nothing and is not checked.
+    The task holds its Status; the report does not repeat it.
     """
-    front = ['---', f'{ReportKey.ID.written}: {task}', *([f'{ReportKey.TITLE.written}: {title}'] if title else []), f'{ReportKey.STATUS.written}:', '---']
+    front = ['---', f'{ReportKey.ID.written}: {task}', *([f'{ReportKey.TITLE.written}: {title}'] if title else []), '---']
     return '\n'.join([*front, f'# {REPORT.heading}', '', *(f'## {part}' for part in REPORT.parts)]) + '\n'
 
 def _lines(folder: Path) -> list[str]:
@@ -77,13 +76,14 @@ def _front(lines: list[str]) -> dict[str, str]:
     return REPORT.current({key.lower(): value for key, value in (front or {}).items() if key == front_key(key)})
 
 def read_report_status(folder: Path) -> str:
-    """The Status FOLDER's report.md states, as `task_plan` reads a status; empty when it states none or there is no report.
+    """Status still written in an old-shape report.md front matter, if any; empty for a new-shape report and when none.
 
-    The value is the front matter's `Status`, lowercased. A report of an
-    earlier shape states none (`report_shape_problem`), and none is not a
-    disagreement.
+    A task's lifecycle Status is the task's fact, not the report's. This
+    reader remains only so old-shape records and shape checks can see a
+    Status line left in an earlier report.md; Complete and Depends_on do
+    not use it.
     """
-    return status_word(_front(_lines(folder)).get(ReportKey.STATUS.key, ''))
+    return status_word(_front(_lines(folder)).get('status', ''))
 
 def report_shape_problem(folder: Path) -> str | None:
     """Why FOLDER's report is in an earlier shape, with where today's is shown; None when it is not, or there is none."""
@@ -97,28 +97,21 @@ def report_shape_problem(folder: Path) -> str | None:
             found.append('an `Outcome` key')
         if any((key != front_key(key) and key.lower() in {report_key.key for report_key in REPORT.keys} for key in front)):
             found.append('keys in lower case')
-        if status_word(front.get(ReportKey.STATUS.written, '')) in EARLIER_STATUS_WORDS:
-            found.append(f'the status word {status_word(front[ReportKey.STATUS.written])}')
+        if status_word(front.get('Status', '')) in EARLIER_STATUS_WORDS:
+            found.append(f'the status word {status_word(front["Status"])}')
     if not found:
         return None
     return f"{REPORT_NAME} is in an earlier shape ({'; '.join(found)}); {EARLIER_SHAPE_REMEDY}"
 
 def disagreement(status: str, report_status: str='') -> str | None:
-    """Why STATUS, a plan's, and REPORT_STATUS, its report's, disagree; None when they agree or nothing can be checked.
+    """Why STATUS, the task's, is not a Status a task may take; None when it is fine or empty.
 
-    A status outside the plan's vocabulary is named first, because no report
-    status can agree with it. An empty status or an empty report status checks
-    nothing.
+    A report does not carry Status; REPORT_STATUS is ignored. An empty status
+    checks nothing.
     """
     status = status_word(status)
-    report_status = status_word(report_status)
     if status and status not in Status.keys(PLAN.kind):
         return f"status {status} is not one of {', '.join(Status.keys(PLAN.kind))}"
-    if report_status and status:
-        if report_status not in Status.keys(REPORT.kind):
-            return f"{REPORT_NAME} Status {report_status} is not one of {', '.join(Status.keys(REPORT.kind))}"
-        if report_status != status:
-            return f"{REPORT_NAME} Status {report_status} is not the plan's {status}"
     return None
 
 def report_part(folder: Path, heading: str) -> list[str]:
@@ -139,22 +132,19 @@ def decisions_needed(folder: Path) -> list[str]:
     return report_part(folder, REPORT.hand_back_part)
 
 def handback_problem(folder: Path, status: str) -> str | None:
-    """Why FOLDER's report is not a hand-back, given its plan's STATUS; None when it is one.
+    """Why FOLDER's report is not a hand-back; None when it is one.
 
-    A hand-back is a Status this file names, agreeing with the plan's status,
-    and at most `REPORT.hand_back_max_lines` lines under its hand-back part: what the
-    delegating side reads is that line, the report's path, and those lines, so
-    a longer one would carry the task's context back into the reader's.
+    A hand-back is a report whose shape is today's, with at most
+    `REPORT.hand_back_max_lines` lines under its hand-back part: what the
+    delegating side reads is the task's Status, the report's path, and those
+    lines, so a longer one would carry the task's context back into the
+    reader's. STATUS is the task's Status and is not compared to a report field.
     """
     shape = report_shape_problem(folder)
     if shape:
         return shape
-    report_status = read_report_status(folder)
-    if not report_status:
-        return f'{files.report_path(folder).name} has no Status'
-    why = disagreement(status, report_status)
-    if why:
-        return why
+    if not _lines(folder):
+        return f'{files.report_path(folder).name} is missing'
     count = len(decisions_needed(folder))
     if count > REPORT.hand_back_max_lines:
         return f'{count} lines under {REPORT.hand_back_part}, more than {REPORT.hand_back_max_lines}'

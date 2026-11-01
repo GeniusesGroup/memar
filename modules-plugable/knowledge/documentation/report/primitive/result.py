@@ -5,6 +5,6 @@ from modules.knowledge.content.primitive.section import Section
 
 class Result(Section):
     heading = 'Result'
-    purpose = 'how the run ended, with its Status'
+    purpose = 'how the run ended; the task holds its Status, and this part narrates which kind of end it was'
     order = 3
     labels = ('report-part',)

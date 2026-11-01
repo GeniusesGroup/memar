@@ -92,7 +92,8 @@ PLAN_NAME = PLAN.file_name
 EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar task ensure --help` shows; rewrite it in that shape"
 EARLIER_STATUS_WORDS = ('open', 'done')
 EARLIER_LABEL_KEYS = ('topic', 'kind')
-STATUS_PREFIX = f'{PlanKey.STATUS.written}:'
+STATUS_WRITTEN = 'Status'
+STATUS_PREFIX = f'{STATUS_WRITTEN}:'
 REWRITE_ATTEMPTS = 5
 REWRITE_PAUSE_SECONDS = 0.05
 
@@ -137,8 +138,8 @@ def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: 
     checked each against its kind (`task_plan_labels`). DEPENDS_ON is written only when given, as the text of
     the type that checked it (`modules-plugable/management/task/services/dependency.py`).
     """
-    given = {PlanKey.ID: task, PlanKey.TITLE: title, PlanKey.STATUS: status_word(status).capitalize(), PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.PRIORITY: priority, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
-    front = ['---']
+    given = {PlanKey.ID: task, PlanKey.TITLE: title, PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.PRIORITY: priority, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
+    front = ['---', f'{STATUS_WRITTEN}: {status_word(status).capitalize()}']
     for key in PLAN.keys:
         if key is PlanKey.LABELS:
             if given[key]:
@@ -218,7 +219,7 @@ def read_plan(path: Path) -> Plan:
     front, _ = front_matter(lines)
     if front is not None:
         front = PLAN.current({key.lower(): value for key, value in front.items() if key == front_key(key)})
-    return Plan(front, status_word((front or {}).get(PlanKey.STATUS.key, '')))
+    return Plan(front, status_word((front or {}).get('status', '')))
 
 def plan_shape_problem(lines: list[str]) -> str | None:
     """Why the plan LINES are in an earlier shape, with where today's is shown; None when they are not, or have no front matter.
@@ -236,7 +237,7 @@ def plan_shape_problem(lines: list[str]) -> str | None:
         found.append('keys in lower case')
     if any((key.lower() in EARLIER_LABEL_KEYS for key in front)):
         found.append(f"the keys {' and '.join((key.capitalize() for key in EARLIER_LABEL_KEYS))}, which are labels now")
-    status = front.get(PlanKey.STATUS.written, '')
+    status = front.get(STATUS_WRITTEN, '')
     if status_word(status) in EARLIER_STATUS_WORDS:
         found.append(f'the status word {status_word(status)}')
     if not status:

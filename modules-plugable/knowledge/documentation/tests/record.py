@@ -28,8 +28,8 @@ class PlanRecord(unittest.TestCase):
         self.assertEqual(PLAN.parts, ('Request', 'Why', 'Steps', 'Next'))
 
     def test_the_keys_in_the_order_a_new_plan_writes_them(self) -> None:
-        self.assertEqual([key.key for key in PLAN.keys], ['id', 'title', 'status', 'start date', 'project', 'parent', 'conversation', 'priority', 'labels', 'depends_on'])
-        self.assertIs(PlanKey.STATUS, PLAN.keys[2])
+        self.assertEqual([key.key for key in PLAN.keys], ['id', 'title', 'start date', 'project', 'parent', 'conversation', 'priority', 'labels', 'depends_on'])
+        self.assertFalse(hasattr(PlanKey, 'STATUS'))
 
     def test_every_key_says_what_it_holds(self) -> None:
         for key in PLAN.keys:
@@ -66,8 +66,8 @@ class ReportRecord(unittest.TestCase):
         self.assertEqual(REPORT.parts, ('What ran', 'Check', 'Result', 'Left open'))
 
     def test_the_keys(self) -> None:
-        self.assertEqual([key.key for key in REPORT.keys], ['id', 'title', 'status'])
-        self.assertIs(ReportKey.STATUS, REPORT.keys[2])
+        self.assertEqual([key.key for key in REPORT.keys], ['id', 'title'])
+        self.assertFalse(hasattr(ReportKey, 'STATUS'))
 
     def test_the_hand_back_part_and_its_limit(self) -> None:
         self.assertEqual(REPORT.hand_back_part, 'Decisions needed')

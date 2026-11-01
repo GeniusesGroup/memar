@@ -37,10 +37,12 @@ def read_report(folder: Path) -> tuple:
 
 def read_fact(folder: Path, fact: str) -> str:
     front = _body(folder / PLAN_NAME)[0]
+    if fact == 'status':
+        return _m_plan_file.status_word(front.get('Status', '') or front.get('status', ''))
     value = front.get(FRONT_KEY[fact].written, '')
     if fact == 'labels':
         return '\n'.join(Labels.read(value).lines())
-    return _m_plan_file.status_word(value) if fact == 'status' else value.strip()
+    return value.strip()
 
 
 def read_facts(folder: Path) -> dict:

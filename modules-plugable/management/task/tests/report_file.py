@@ -81,9 +81,9 @@ class Fixture(unittest.TestCase):
 
 class Skeleton(Fixture):
 
-    def test_a_new_report_names_its_task_then_has_an_empty_status_and_the_parts(self) -> None:
-        self.assertEqual(task_report.report_skeleton('s-1', 'The task'), '---\nID: s-1\nTitle: The task\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n')
-        self.assertEqual(task_report.report_skeleton('s-1'), '---\nID: s-1\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n')
+    def test_a_new_report_names_its_task_and_the_parts_without_a_status(self) -> None:
+        self.assertEqual(task_report.report_skeleton('s-1', 'The task'), '---\nID: s-1\nTitle: The task\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n')
+        self.assertEqual(task_report.report_skeleton('s-1'), '---\nID: s-1\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n')
 
     def test_an_empty_skeleton_says_nothing(self) -> None:
         earlier_shape.create_report_md(self.folder, task_report.report_skeleton('s-1', 'The task'))
@@ -151,46 +151,42 @@ class ShapeProblem(Fixture):
 
 class Agreement(unittest.TestCase):
 
-    def test_equal_statuses_agree(self) -> None:
-        for status in Status.keys(DocumentKind.REPORT):
+    def test_a_task_status_in_the_vocabulary_is_fine(self) -> None:
+        for status in Status.keys(DocumentKind.PLAN):
             with self.subTest(status=status):
-                self.assertIsNone(task_report.disagreement(status, status))
+                self.assertIsNone(task_report.disagreement(status, 'ignored'))
 
     def test_case_does_not_matter(self) -> None:
         self.assertIsNone(task_report.disagreement('Complete', 'complete'))
         self.assertIsNone(task_report.disagreement('active', 'Active'))
 
-    def test_a_report_status_that_is_not_the_plans_is_named(self) -> None:
-        self.assertEqual(task_report.disagreement('active', 'complete'), "report.md Status complete is not the plan's active")
-        self.assertEqual(task_report.disagreement('complete', 'blocked'), "report.md Status blocked is not the plan's complete")
+    def test_a_report_status_is_ignored(self) -> None:
+        self.assertIsNone(task_report.disagreement('active', 'complete'))
+        self.assertIsNone(task_report.disagreement('complete', 'blocked'))
+        self.assertIsNone(task_report.disagreement('complete', 'finished'))
 
-    def test_a_status_outside_the_vocabulary_is_named_first_and_an_unknown_report_status_after(self) -> None:
+    def test_a_status_outside_the_vocabulary_is_named(self) -> None:
         self.assertEqual(task_report.disagreement('archived', 'complete'), 'status archived is not one of queued, active, blocked, complete')
         self.assertEqual(task_report.disagreement('open', 'complete'), 'status open is not one of queued, active, blocked, complete')
-        self.assertEqual(task_report.disagreement('complete', 'finished'), 'report.md Status finished is not one of active, blocked, complete')
 
-    def test_an_empty_report_status_or_an_empty_plan_status_checks_nothing(self) -> None:
-        self.assertIsNone(task_report.disagreement('complete', ''))
-        self.assertIsNone(task_report.disagreement('queued', ''))
+    def test_an_empty_task_status_checks_nothing(self) -> None:
         self.assertIsNone(task_report.disagreement('', 'complete'))
+        self.assertIsNone(task_report.disagreement('complete', ''))
 
 class HandBack(Fixture):
 
-    def test_a_report_that_agrees_is_a_hand_back(self) -> None:
+    def test_a_report_is_a_hand_back_without_a_status_field(self) -> None:
         self.assertIsNone(task_report.handback_problem(self.new('Complete'), 'complete'))
         self.assertIsNone(task_report.handback_problem(self.new('Blocked'), 'Blocked'))
+        self.report('---\nID: t\n---\n# Report\n')
+        self.assertIsNone(task_report.handback_problem(self.folder, 'active'))
 
-    def test_no_status_is_named_as_such(self) -> None:
-        self.report('---\nStatus:\n---\n# Report\n')
-        self.assertEqual(task_report.handback_problem(self.folder, 'active'), 'report.md has no Status')
-
-    def test_a_disagreeing_status_is_named(self) -> None:
-        self.assertIn("Status complete is not the plan's blocked", task_report.handback_problem(self.new('Complete'), 'blocked'))
-        self.assertIn("Status complete is not the plan's active", task_report.handback_problem(self.new('Complete'), 'active'))
+    def test_a_missing_report_is_named(self) -> None:
+        self.assertEqual(task_report.handback_problem(self.folder, 'active'), 'report.md is missing')
 
     def test_more_than_ten_decision_lines_are_not_a_hand_back(self) -> None:
         lines = ''.join((f'- Q{index}?\n' for index in range(11)))
-        self.report(f'---\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n{lines}')
+        self.report(f'---\nID: t\n---\n# Report\n\n## Decisions needed\n{lines}')
         self.assertEqual(task_report.handback_problem(self.folder, 'blocked'), '11 lines under Decisions needed, more than 10')
 if __name__ == '__main__':
     unittest.main(verbosity=2)

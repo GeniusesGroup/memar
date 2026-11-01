@@ -90,10 +90,13 @@ class Folders(Fixture):
                 self.assertTrue(task.has_plan)
                 self.assertEqual((task.status, task.front['title']), ('active', 'T'))
 
-    def test_a_queued_report_keeps_a_task_queued_in_either_shape(self) -> None:
-        for shape, folder in self.both('queued', status='active', report='queued'):
+    def test_only_the_task_status_queued_keeps_a_task_queued_in_either_shape(self) -> None:
+        for shape, folder in self.both('queued', status='queued', report='active'):
             with self.subTest(shape=shape):
                 self.assertIn('Queued', folder_module.queued_why(folder_module.read_task(folder)))
+        for shape, folder in self.both('notqueued', status='active', report='queued'):
+            with self.subTest(shape=shape):
+                self.assertIsNone(folder_module.queued_why(folder_module.read_task(folder)))
 
 class Concerns(Fixture):
 
@@ -112,15 +115,19 @@ class Reports(Fixture):
     def test_the_status_the_decisions_and_the_summary_are_read_in_either_shape(self) -> None:
         for shape, folder in self.both('report', status='complete', report='complete', decisions='- one\n- two'):
             with self.subTest(shape=shape):
-                self.assertEqual(report_file.read_report_status(folder), 'complete')
+                if shape == 'old':
+                    self.assertEqual(report_file.read_report_status(folder), 'complete')
+                else:
+                    self.assertEqual(report_file.read_report_status(folder), '')
+                    self.assertEqual(folder_module.read_task(folder).status, 'complete')
                 self.assertEqual(report_file.decisions_needed(folder), ['- one', '- two'])
                 self.assertIsNone(report_file.handback_problem(folder, 'complete'))
                 self.assertEqual(report_summary.summary_lines(folder), ['result: It came to this.'])
 
-    def test_a_report_with_no_status_is_not_a_hand_back_in_either_shape(self) -> None:
+    def test_a_report_without_a_status_field_is_still_a_hand_back_in_either_shape(self) -> None:
         for shape, folder in self.both('nostatus'):
             with self.subTest(shape=shape):
-                self.assertEqual(report_file.handback_problem(folder, 'active'), f'{files.report_path(folder).name} has no Status')
+                self.assertIsNone(report_file.handback_problem(folder, 'active'))
 
 class Dependencies(Fixture):
 
@@ -137,13 +144,16 @@ class Dependencies(Fixture):
     def unmet(self, sid: str) -> list:
         return Reader(self.fake_root).unmet([Ref.parse(sid)])
 
-    def test_a_cited_task_is_met_only_when_its_plan_and_report_are_complete_in_either_shape(self) -> None:
+    def test_a_cited_task_is_met_when_its_status_is_complete_in_either_shape(self) -> None:
         for shape, folder in self.both('done', status='complete', report='complete'):
             with self.subTest(shape=shape):
                 self.assertEqual(self.unmet(folder.name), [])
         for shape, folder in self.both('lags', status='complete', report='active'):
             with self.subTest(shape=shape):
-                self.assertEqual(self.unmet(folder.name), [f'{folder.name} (plan complete, report active)'])
+                self.assertEqual(self.unmet(folder.name), [])
+        for shape, folder in self.both('running', status='active', report='complete'):
+            with self.subTest(shape=shape):
+                self.assertEqual(self.unmet(folder.name), [f'{folder.name} (active)'])
 
     def test_a_closed_task_is_read_from_the_branch_in_either_shape(self) -> None:
         for shape, folder in self.both('closed', status='complete', report='complete'):
@@ -225,7 +235,7 @@ class Digest(Fixture):
         for shape, folder in self.both('digest', status='complete', report='complete'):
             out = io.StringIO()
             with contextlib.redirect_stdout(out):
-                digest.print_task(folder_module.read_task(folder), [], None, [], review=True)
+                digest.print_task(folder_module.read_task(folder), [], None, [], [], review=True)
             with self.subTest(shape=shape):
                 self.assertIn(f'report: {files.report_path(folder)}', out.getvalue())
                 self.assertIn('result: It came to this.', out.getvalue())

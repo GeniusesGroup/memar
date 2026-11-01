@@ -51,7 +51,6 @@ _m_report_file = import_module('modules-plugable.management.task.services.report
 REPORT_NAME = _m_report_file.REPORT_NAME
 decisions_needed = _m_report_file.decisions_needed
 handback_problem = _m_report_file.handback_problem
-read_report_status = _m_report_file.read_report_status
 from modules.computer.software.primitive.project_name import ProjectName
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
@@ -125,7 +124,7 @@ def hand_back(task_id: str) -> None:
     if not folder.is_dir():
         fail(f'task {task_id} has no folder in temp, so there is no hand-back to read; `show --file {REPORT_NAME}` reads it from the branch')
     plan_status = read_plan(folder / PLAN_NAME).status
-    lines = [f"Status: {read_report_status(folder) or '(none)'}", f'Report: {report_path(folder)}', *decisions_needed(folder)]
+    lines = [f"Status: {plan_status or '(none)'}", f'Report: {report_path(folder)}', *decisions_needed(folder)]
     problem = handback_problem(folder, plan_status)
     if problem:
         lines.append(f'Not a hand-back: {problem}')

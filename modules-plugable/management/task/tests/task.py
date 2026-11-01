@@ -176,15 +176,15 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_the_domain_help_gives_the_status_words_and_how_a_task_ends(self) -> None:
         text = run_help()
-        for phrase in ('Queued     Waiting to be taken up', 'Active     Being worked on', 'Status: Complete   the check passed', 'Status: Blocked    it waits on an answer or an approval', 'Status: Active     its budget ended'):
+        for phrase in ('Queued     Waiting to be taken up', 'Active     Being worked on', 'Complete   the check passed', 'Blocked    it waits on an answer or an approval', 'Active     its budget ended'):
             self.assertIn(phrase, text)
         text = flat(text)
-        for phrase in ('Queued, Active, Blocked, or Complete', 'finished or not', 'its report.md states a Status and its plan.md states the same', 'Complete once its check has passed'):
+        for phrase in ('Queued, Active, Blocked, or Complete', 'finished or not', 'its Status in task.yaml is set', 'the report does not repeat the Status', 'Complete once its check has passed'):
             self.assertIn(phrase, text)
 
     def test_the_domain_help_says_who_writes_into_another_tasks_folder_and_where_each_log_is(self) -> None:
         text = flat(run_help())
-        for phrase in ('Write only inside your own folder', "Two writes reach another task's folder, both from the task it came from", "writes the report.md of a sub-agent that could only return text, and sets that plan.md's Status", 'keeps its own log of what was done to its folders, tasks.log at its top'):
+        for phrase in ('Write only inside your own folder', "Two writes reach another task's folder, both from the task it came from", "writes the report.md of a sub-agent that could only return text, and sets that task's Status", 'keeps its own log of what was done to its folders, tasks.log at its top'):
             self.assertIn(phrase, text)
 
     def test_the_domain_help_points_to_archive_for_where_the_records_are(self) -> None:
@@ -235,7 +235,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_the_review_and_the_hand_back_are_digests(self) -> None:
         text = flat(run_help('get-decisions-digest'))
-        for phrase in ("review today's tasks with me and close the ones I confirm", '`memar git trash-task-folder --task-id ID`', 'at most 10 lines', 'each the question, its options, and the one it recommends', 'a complete task is in only when it has entries or a failed hand-back', 'blocking first', 'A pointer to a handoff or line that holds no open question is a failed hand-back'):
+        for phrase in ("review today's tasks with me and close the ones I confirm", '`memar git trash-task-folder --task-id ID`', 'at most 10 lines', 'each the question, its options, and the one it recommends', 'a complete task is in only when it has entries or a failed hand-back', 'blocking first', 'one naming a question that is not open is a failed hand-back'):
             self.assertIn(phrase, text)
 
     @unittest.skip('close moved to memar git; see git/tests/trash_task_folder.py')

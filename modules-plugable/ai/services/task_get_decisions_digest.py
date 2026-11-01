@@ -43,7 +43,6 @@ _m_task_files = import_module('modules-plugable.management.task.services.task_me
 report_path = _m_task_files.report_path
 decisions_needed = _m_report_file.decisions_needed
 handback_problem = _m_report_file.handback_problem
-read_report_status = _m_report_file.read_report_status
 _m_report_summary = import_module('modules-plugable.management.task.services.report_summary')
 summary_lines = _m_report_summary.summary_lines
 from modules.computer.software.primitive.project_name import ProjectName
@@ -98,7 +97,6 @@ def print_task(task: Task, entries: list[str], problem: str | None, flags: list[
     print(f"{task.id}  {(task.front or {}).get('title', '')}")
     note(f"status: {task.status or 'none'}")
     note(f'priority: {Priority.of(task.front)}')
-    note(f"report: {read_report_status(task.path) or 'none'}")
     if problem:
         note(f'failed hand-back: {problem}')
     for flag in flags:

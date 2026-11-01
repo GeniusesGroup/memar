@@ -39,7 +39,7 @@ from modules.knowledge.label.primitive.label import Labels
 TASK_FACTS_NAME = 'task.yaml'
 AUTHOR = 'memar'
 FACTS = ('title', 'status', 'priority', 'labels', 'depends_on', 'parent', 'conversation', 'project', 'participants', 'start_date', 'writer', 'converted_from')
-FRONT_KEY = {'title': PlanKey.TITLE, 'status': PlanKey.STATUS, 'priority': PlanKey.PRIORITY, 'labels': PlanKey.LABELS, 'depends_on': PlanKey.DEPENDS_ON, 'parent': PlanKey.PARENT, 'conversation': PlanKey.CONVERSATION, 'project': PlanKey.PROJECT, 'start_date': PlanKey.START_DATE}
+FRONT_KEY = {'title': PlanKey.TITLE, 'priority': PlanKey.PRIORITY, 'labels': PlanKey.LABELS, 'depends_on': PlanKey.DEPENDS_ON, 'parent': PlanKey.PARENT, 'conversation': PlanKey.CONVERSATION, 'project': PlanKey.PROJECT, 'start_date': PlanKey.START_DATE}
 BLOCK_FACTS = ('labels', 'participants')
 PLAIN_START = '"\'[]{}&*!|>%@`-?#,'
 
@@ -135,11 +135,7 @@ def record_names(names) -> list:
 def record_of(held: dict) -> tuple | None:
     if TASK_FACTS_NAME not in held:
         return None
-    front, status = _front_of(_header.parse(held[TASK_FACTS_NAME].decode('utf-8-sig').splitlines()), None)
-    matches = [(_tl.CONTENT_PATTERN.match(name), data) for name, data in held.items()]
-    reports = [content for content in (_tl.content_of(int(match.group(1)), data) for match, data in matches if match) if content.header.get('kind') == 'report']
-    reports.sort(key=lambda content: content.number)
-    return (front, status, status_word(reports[-1].header.get('status', '')) if reports else '')
+    return _front_of(_header.parse(held[TASK_FACTS_NAME].decode('utf-8-sig').splitlines()), None)
 
 
 def facts_named_project(data: bytes, name: str) -> bytes:
@@ -162,7 +158,7 @@ def report_lines(folder: Path) -> list:
     content = latest_content(folder, 'report')
     if content is None:
         return []
-    front = ['---', f'{ReportKey.ID.written}: {folder.name}', f"{ReportKey.STATUS.written}: {content.header.get('status', '')}", '---']
+    front = ['---', f'{ReportKey.ID.written}: {folder.name}', '---']
     return [*front, *content.body.splitlines()]
 
 

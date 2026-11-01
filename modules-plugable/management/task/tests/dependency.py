@@ -6,12 +6,13 @@
     python modules-plugable/management/task/tests/dependency.py
 
 The subject is the process a plan's `Depends_on` names: the tasks it cannot
-start without, each an id or `project/id`, met when the cited task's plan
-and report both state Complete, read from its folder or from its project's
-records branch once the folder is gone, and refused when written for itself,
-for a task or a project that does not resolve, or in a cycle. The design is
-task 20261016-T122241Z-23960's, with the owner's rulings of 2026-10-16
-(task 20261016-T191644Z-14044). Named for the file that holds it per
+start without, each an id or `project/id`, met when the cited task's Status
+is Complete, read from its folder or from its project's records branch once
+the folder is gone, and refused when written for itself, for a task or a
+project that does not resolve, or in a cycle. The design is task
+20261016-T122241Z-23960's, with the owner's rulings of 2026-10-16
+(task 20261016-T191644Z-14044) and the one-Status ruling of task
+20261101-T124107Z-15992. Named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
@@ -24,9 +25,9 @@ What is pinned, and what each pin is for:
 
   Writing    A reference is an id or project/id; a list is one line, in order,
              none twice; reading never refuses.
-  Met        Only a cited task whose plan and report both say Complete is
-             met; one that is not found, or whose project does not resolve,
-             says why; a closed task is read from the branch.
+  Met        Only a cited task whose Status is Complete is met; one that is
+             not found, or whose project does not resolve, says why; a closed
+             task is read from the branch; a report Status is not required.
   Refusing   A plan is refused a dependency on itself, on what cannot be found,
              and one that makes a cycle of any length, naming the path.
 """
@@ -131,15 +132,15 @@ class Met(Fixture):
     def reason(self, ref: str, home: Path | None=None) -> list[str]:
         return Reader(home or self.fake_root).unmet([Ref.parse(ref)])
 
-    def test_only_a_plan_and_a_report_both_complete_are_met(self) -> None:
+    def test_only_a_task_whose_status_is_complete_is_met(self) -> None:
         self.task('done', 'complete', 'complete')
         self.task('running', 'active')
         self.task('report-lags', 'complete', 'active')
         self.task('no-report', 'complete')
         self.assertEqual(self.reason('done'), [])
         self.assertEqual(self.reason('running'), ['running (active)'])
-        self.assertEqual(self.reason('report-lags'), ['report-lags (plan complete, report active)'])
-        self.assertEqual(self.reason('no-report'), ['no-report (plan complete, report without a status)'])
+        self.assertEqual(self.reason('report-lags'), [])
+        self.assertEqual(self.reason('no-report'), [])
 
     def test_a_task_that_is_nowhere_says_it_cannot_be_found(self) -> None:
         [why] = self.reason('gone')
@@ -149,8 +150,10 @@ class Met(Fixture):
         self.branch['kept', 'plan.md'] = plan_text('complete').encode()
         self.branch['kept', 'report.md'] = report_text('complete').encode()
         self.branch['half', 'plan.md'] = plan_text('complete').encode()
+        self.branch['active-closed', 'plan.md'] = plan_text('active').encode()
         self.assertEqual(self.reason('kept'), [])
-        self.assertEqual(self.reason('half'), ['half (plan complete, report without a status)'])
+        self.assertEqual(self.reason('half'), [])
+        self.assertEqual(self.reason('active-closed'), ['active-closed (active)'])
 
     def test_a_task_of_another_project_is_found_through_that_project_by_name(self) -> None:
         other = self.fake_root / 'other-project'
@@ -164,7 +167,7 @@ class Met(Fixture):
     def test_a_cited_task_is_read_once_for_a_run(self) -> None:
         self.task('done', 'complete', 'complete')
         reader = Reader(self.fake_root)
-        with unittest.mock.patch.object(depends_on, 'read_report_status', wraps=depends_on.read_report_status) as read:
+        with unittest.mock.patch.object(depends_on, 'read_plan', wraps=depends_on.read_plan) as read:
             reader.unmet([Ref('done')])
             reader.unmet([Ref('done')])
         self.assertEqual(read.call_count, 1)

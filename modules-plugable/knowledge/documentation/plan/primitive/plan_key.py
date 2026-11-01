@@ -9,7 +9,6 @@ from modules.computer.software.primitive.project_path import ProjectPath
 class PlanKey(RecordKeySet):
     ID = ID_FIELD
     TITLE = RecordKey('title', 'TITLE')
-    STATUS = RecordKey('status', 'where the task stands, one of the Status words `memar task --help` gives')
     START_DATE = START_DATE_FIELD
     PROJECT = RecordKey('project', f'the git top-level of the folder {ProjectName.FLAG} or {ProjectPath.FLAG} names, else that folder')
     PARENT = RecordKey('parent', 'ID of the task this one came from, with --parent')

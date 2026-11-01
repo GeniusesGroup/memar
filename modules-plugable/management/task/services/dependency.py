@@ -19,13 +19,13 @@ project the owner works on beside it. A project is resolved the way
 does not resolve is refused, with why. Why a task waits goes in the plan's
 Next, as before: the key holds ids alone.
 
-When a dependency is met. The cited task's plan and its report both state
-Complete ([Status](../../../modules-plugable/knowledge/documentation/documentation.md#status):
-only Complete is safe to depend on, and a plan and its report must agree). A
-task that no longer resolves (deleted, or archived and gone from the
-project's records branch) is not met, and says so: it stays unmet until the key
-is dropped. A closed task is read from its project's records branch, where
-`archive` kept it (`task_branch`).
+When a dependency is met. The cited task's Status is Complete
+([Status](../../../modules-plugable/knowledge/documentation/documentation.md#status):
+only Complete is safe to depend on; the task holds that Status, and no plan or
+report content repeats it). A task that no longer resolves (deleted, or archived
+and gone from the project's records branch) is not met, and says so: it stays
+unmet until the key is dropped. A closed task is read from its project's records
+branch, where `archive` kept it (`task_branch`).
 
 Cycles. A plan is refused a dependency that would let it be reached from
 itself, at any length, and the refusal names the path. A cycle written by hand
@@ -62,11 +62,8 @@ read_plan = _m_plan_file.read_plan
 status_word = _m_plan_file.status_word
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
-ReportKey = _m_report_key.ReportKey
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
-read_report_status = _m_report_file.read_report_status
 from modules.knowledge.status.primitive.status import Status
 DEPENDS_FOR = 'Depends_for'
 SEPARATOR = ','
@@ -131,32 +128,29 @@ class DependsOn(tuple):
         return [ref.id for ref in self]
 
 class Found(NamedTuple):
-    """A cited task that resolved: what its plan and report say."""
+    """A cited task that resolved: what its task Status is."""
     id: str
     front: dict[str, str] | None
-    plan_status: str
-    report_status: str
+    status: str
     project: Path | None
 
     @property
     def met(self) -> bool:
-        """Whether it is safe to depend on: its plan and its report both state Complete."""
-        return self.plan_status == Status.COMPLETE.key and self.report_status == Status.COMPLETE.key
+        """Whether it is safe to depend on: its task Status is Complete."""
+        return self.status == Status.COMPLETE.key
 
     @property
     def state(self) -> str:
         """How it stands, for the reason an unmet dependency prints."""
-        if self.plan_status == Status.COMPLETE.key:
-            return f"plan complete, report {self.report_status or 'without a status'}"
-        return self.plan_status or 'without a status'
+        return self.status or 'without a status'
 
-def _front_status(data: bytes, key: PlanKey | ReportKey) -> tuple[dict[str, str] | None, str]:
+def _front_status(data: bytes) -> tuple[dict[str, str] | None, str]:
     """The front matter of the record DATA, keys lowercased as `read_plan` does, and its status."""
     lines = data.decode('utf-8-sig', 'replace').splitlines()
     front, _ = front_matter(lines)
     if front is not None:
         front = {name.lower(): value for name, value in front.items() if name == front_key(name)}
-    return (front, status_word((front or {}).get(key.STATUS.key, '')))
+    return (front, status_word((front or {}).get('status', '')))
 
 class Reader:
     """Resolves references and reads what the cited tasks say; remembers what it read, so one run reads each only once.
@@ -198,20 +192,18 @@ class Reader:
         if folder.is_dir() and has_task(folder):
             plan = read_plan(folder / PLAN_NAME)
             named = (plan.front or {}).get(PlanKey.PROJECT.key, '').strip()
-            return Found(ref.id, plan.front, plan.status, read_report_status(folder), Path(named) if named else where)
+            return Found(ref.id, plan.front, plan.status, Path(named) if named else where)
         if where is not None:
             # TODO(memory-port): one git start per cited task is still one start per record; read all cited tasks in one batch (task 20261023-T074643Z-5420).
             held = read_many_from_branch(where, ref.id, [PLAN_NAME, REPORT_NAME, TASK_FACTS_NAME])
             if TASK_FACTS_NAME in held:
                 held = read_many_from_branch(where, ref.id, record_names(held_on_branch(where, ref.id)))
                 record = record_of(held)
-                return Found(ref.id, record[0], record[1], record[2], where)
+                return Found(ref.id, record[0], record[1], where)
             kept = held.get(PLAN_NAME)
             if kept is not None:
-                front, status = _front_status(kept, PlanKey)
-                report = held.get(REPORT_NAME)
-                report_status = _front_status(report, ReportKey)[1] if report is not None else ''
-                return Found(ref.id, front, status, report_status, where)
+                front, status = _front_status(kept)
+                return Found(ref.id, front, status, where)
         return "cannot be found: it has no task folder, and the project's records branch holds nothing for it"
 
     def unmet(self, refs: Iterable[Ref], home: Path | None=None) -> list[str]:

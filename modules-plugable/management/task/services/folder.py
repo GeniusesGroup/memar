@@ -46,11 +46,6 @@ read_plan = _m_plan_file.read_plan
 has_plan = import_module('modules-plugable.management.task.services.task_memory').has_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-_m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
-ReportKey = _m_report_key.ReportKey
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
-read_report_status = _m_report_file.read_report_status
 from modules.knowledge.status.primitive.status import Status
 DAY_SECONDS = 24 * 60 * 60
 
@@ -87,16 +82,13 @@ def read_task(folder: Path) -> Task:
     return Task(folder, True, read.front, read.status, shape=plan_file_problem(plan))
 
 def queued_why(task: Task) -> str | None:
-    """Why TASK is still queued: its plan's or its report's Status is Queued; None when neither is.
+    """Why TASK is still queued: its task Status is Queued; None when it is not.
 
     A queued task is waiting to be taken up, and nothing that moves or
     removes a folder acts on one: its folder is the task.
     """
-    queued = Status.QUEUED.key
-    if task.status == queued:
-        return f"its {PLAN_NAME}'s {PlanKey.STATUS.written} is {Status.QUEUED.word}"
-    if read_report_status(task.path) == queued:
-        return f"its {REPORT_NAME}'s {ReportKey.STATUS.written} is {Status.QUEUED.word}"
+    if task.status == Status.QUEUED.key:
+        return f'its Status is {Status.QUEUED.word}'
     return None
 
 def is_task_folder(entry: Path) -> bool:

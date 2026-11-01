@@ -106,8 +106,8 @@ class Reading(Fixture):
 
     def old(self, status: str = '') -> None:
         earlier_shape.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
-        text = _m_report_file.report_skeleton('T-1', 'Title')
-        (self.folder / 'report.md').write_text(text.replace('Status:\n', f'Status: {status}\n'), encoding='utf-8', newline='\n')
+        status_line = f'Status: {status}\n' if status else ''
+        (self.folder / 'report.md').write_text(f'---\nID: T-1\nTitle: Title\n{status_line}---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n', encoding='utf-8', newline='\n')
 
     def other(self) -> Path:
         folder = self.folder.parent / 'T-2'
@@ -115,11 +115,11 @@ class Reading(Fixture):
         files.create_task(folder, 'T-2', 'Title', None, None, Path('/work'), 'active', None, None, None)
         return folder
 
-    def test_a_report_status_is_read_from_the_header_of_the_latest_report_content(self) -> None:
+    def test_a_new_shape_report_has_no_status_channel_and_still_yields_its_body(self) -> None:
         self.made()
         self.assertEqual(_m_report_file.read_report_status(self.folder), '')
         timeline_files.add_text(self.folder, 'report', '# Report\n\n## Decisions needed\n- one\n', 'agent', fields={'status': 'Complete'})
-        self.assertEqual(_m_report_file.read_report_status(self.folder), 'complete')
+        self.assertEqual(_m_report_file.read_report_status(self.folder), '')
         self.assertEqual(_m_report_file.decisions_needed(self.folder), ['- one'])
 
     def test_a_report_status_in_the_old_shape_is_read_from_its_front_matter(self) -> None:
@@ -130,8 +130,8 @@ class Reading(Fixture):
         self.made()
         timeline_files.add_text(self.folder, 'report', '# Report\n', 'agent', fields={'status': 'complete'})
         held = {name: (self.folder / name).read_bytes() for name in files.record_names([p.name for p in self.folder.iterdir()])}
-        front, plan_status, report_status = files.record_of(held)
-        self.assertEqual((front['title'], plan_status, report_status), ('A: title', 'queued', 'complete'))
+        front, plan_status = files.record_of(held)
+        self.assertEqual((front['title'], plan_status), ('A: title', 'queued'))
         self.assertIsNone(files.record_of({'docs/a.md': b'x'}))
 
     def test_the_project_in_the_facts_is_replaced_by_its_name_and_every_other_byte_kept(self) -> None:

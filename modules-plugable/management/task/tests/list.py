@@ -487,11 +487,11 @@ class ReportMarks(Fixture):
                 self.report(sid, status, report)
                 self.assertIsNone(self.mark_of(sid))
 
-    def test_a_report_status_that_disagrees_is_marked_with_why(self) -> None:
+    def test_a_report_status_that_differs_from_the_task_is_not_marked(self) -> None:
         self.report(NEWEST, 'active', 'Complete')
-        self.assertEqual(self.mark_of(NEWEST), f"{task_find.DISAGREES} {REPORT_NAME} Status complete is not the plan's active")
+        self.assertIsNone(self.mark_of(NEWEST))
         self.report(MIDDLE, 'complete', 'Blocked')
-        self.assertIn("Status blocked is not the plan's complete", self.mark_of(MIDDLE))
+        self.assertIsNone(self.mark_of(MIDDLE))
 
     def test_an_empty_status_or_no_report_is_not_marked(self) -> None:
         self.report(NEWEST, 'complete', '')
@@ -499,11 +499,11 @@ class ReportMarks(Fixture):
         self.assertIsNone(self.mark_of(NEWEST))
         self.assertIsNone(self.mark_of(MIDDLE))
 
-    def test_a_status_outside_the_vocabulary_or_a_report_status_not_allowed_is_marked(self) -> None:
+    def test_a_status_outside_the_vocabulary_is_marked_and_a_report_status_is_ignored(self) -> None:
         self.report(NEWEST, 'archived', None)
         self.assertEqual(self.mark_of(NEWEST), f'{task_find.DISAGREES} status archived is not one of queued, active, blocked, complete')
         self.report(MIDDLE, 'complete', 'Finished')
-        self.assertIn('Status finished is not one of', self.mark_of(MIDDLE))
+        self.assertIsNone(self.mark_of(MIDDLE))
 
     def test_a_report_in_an_earlier_shape_is_marked_with_the_remedy_and_says_no_status(self) -> None:
         for index, body in enumerate(('# Report\nStop: success\n', '---\nStatus:\nOutcome: success\n---\n# Report\n')):

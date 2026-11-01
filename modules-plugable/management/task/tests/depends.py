@@ -183,10 +183,11 @@ class Claiming(Fixture):
         self.assertEqual(self.status_of(waiting), 'active')
         self.assertTrue((waiting / Claim.NAME).exists())
 
-    def test_a_plan_complete_with_a_report_that_is_not_does_not_free_it(self) -> None:
+    def test_a_task_complete_frees_a_waiter_even_when_its_report_has_no_status(self) -> None:
         self.task('before', 'complete', report='active')
         waiting = self.task('after', 'queued', depends='before')
-        self.assertIn('plan complete, report active', self.refused(task_claim.claim_folder, waiting))
+        task_claim.claim_folder(waiting)
+        self.assertEqual(self.status_of(waiting), 'active')
 
     def test_a_dependency_that_cannot_be_found_keeps_it_unclaimable_until_the_key_is_dropped(self) -> None:
         waiting = self.task('after', 'queued', depends='ghost')
