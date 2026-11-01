@@ -20,6 +20,7 @@ _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.files.errors.errors')
 _m_storage = import_module('modules-plugable.computer.memory.filesystem.storage')
 _m_codecs = import_module('modules-plugable.computer.memory.store.files.codecs.registry')
+_m_graph_files = import_module('modules-plugable.computer.memory.store.files.graph_correspondence')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
 Capability = _m_store.Capability
@@ -95,6 +96,13 @@ class Files_Path:
             leaf = _id_segment(identity)
             if shard_enabled and shard_prefix_length > 0:
                 return URI_Path(f'{identity.hex()[:shard_prefix_length]}/{leaf}')
+            return URI_Path(leaf)
+        graph = _m_graph_files.parse_graph_address(address)
+        if graph is not None:
+            _tag, frm, _relation = graph
+            leaf = _id_segment(frm)
+            if shard_enabled and shard_prefix_length > 0:
+                return URI_Path(f'{frm.hex()[:shard_prefix_length]}/{leaf}')
             return URI_Path(leaf)
         leaf = address.hex() if address else '_'
         return URI_Path(leaf)
@@ -269,8 +277,7 @@ class _Medium:
                 parts = self.codec.unpack(body)
                 if parts is None:
                     continue
-                for domain, value in parts.items():
-                    at = identity + domain
+                for at, value in _m_graph_files.restore_from_parts(identity, parts).items():
                     values[at] = value
                     bisect.insort(order, at)
             else:
@@ -361,20 +368,29 @@ class _Medium:
     def _apply_pairs(self, pairs: Sequence[tuple[bytes, bytes]]) -> None:
         by_file: dict[tuple[bytes, bool], list[tuple[bytes, bytes]]] = {}
         for at, data in pairs:
-            key = (at[:RECORD_ID_LENGTH], True) if is_record_key(at) else (at, False)
+            if is_record_key(at):
+                key = (at[:RECORD_ID_LENGTH], True)
+            else:
+                graph = _m_graph_files.parse_graph_address(at)
+                if graph is not None:
+                    _tag, frm, _relation = graph
+                    key = (frm, True)
+                else:
+                    key = (at, False)
             by_file.setdefault(key, []).append((at, data))
         for (identity, is_node), group in by_file.items():
             sample = group[0][0]
             target = self.file_for(sample)
             if is_node:
-                parts = {at[RECORD_ID_LENGTH:]: value for at, value in self.values.items() if is_record_key(at) and at[:RECORD_ID_LENGTH] == identity}
+                working = dict(self.values)
                 for at, data in group:
-                    parts[at[RECORD_ID_LENGTH:]] = bytes(data)
+                    working[at] = bytes(data)
+                parts = _m_graph_files.collect_node_parts(working, identity, is_record_key)
                 body, stored = self.codec.pack(parts)
                 target.replace_bytes(body)
                 self.files_opened += 1
-                for at, data in group:
-                    self._set_value(at, stored[at[RECORD_ID_LENGTH:]])
+                for at, raw in _m_graph_files.restore_from_parts(identity, stored).items():
+                    self._set_value(at, raw)
             else:
                 data = bytes(group[-1][1])
                 target.replace_bytes(data)

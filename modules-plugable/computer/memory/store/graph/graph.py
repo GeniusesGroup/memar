@@ -8,6 +8,7 @@ from typing import Any, Sequence
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.graph.errors.errors')
 _m_layout_value = import_module('modules-plugable.computer.memory.store.graph.codecs.layout_value')
+_m_address = import_module('modules-plugable.computer.memory.store.graph.address')
 ABSENT = _m_store.ABSENT
 Absent = _m_store.Absent
 Committed = _m_store.Committed
@@ -30,30 +31,19 @@ DIRECTION_IN = 2
 DIRECTION_EITHER = 3
 PATH_TRAIL = 1
 PATH_ACYCLIC = 2
-_TAG_LAYOUT = 0
-_TAG_COMPACT = 1
-_TAG_PER_EDGE = 2
-_TAG_IN_COMPACT = 3
-_TAG_IN_PER_EDGE = 4
-_U16 = struct.Struct('>H')
+_TAG_LAYOUT = _m_address.TAG_LAYOUT
+_TAG_COMPACT = _m_address.TAG_COMPACT
+_TAG_PER_EDGE = _m_address.TAG_PER_EDGE
+_TAG_IN_COMPACT = _m_address.TAG_IN_COMPACT
+_TAG_IN_PER_EDGE = _m_address.TAG_IN_PER_EDGE
 _U64 = struct.Struct('>Q')
 _LAYOUT_VALUES = Graph_Default_Layout_Value_Codec()
+_pack = _m_address.pack
+_take = _m_address.take
 
 def layable(store: Any) -> bool:
     p = store.parameters
     return p.address_length is None and (not p.dense) and (p.value_length is None)
-
-def _pack(parts: Sequence[bytes]) -> bytes:
-    out = bytearray()
-    for each in parts:
-        out += _U16.pack(len(each))
-        out += each
-    return bytes(out)
-
-def _take(buf: bytes, at: int) -> tuple[bytes, int]:
-    length = _U16.unpack_from(buf, at)[0]
-    at += 2
-    return (buf[at:at + length], at + length)
 
 @dataclass(frozen=True)
 class Graph_PutEdge:
