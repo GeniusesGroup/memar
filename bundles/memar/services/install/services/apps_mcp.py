@@ -3,7 +3,7 @@
 
 """bundles/memar/services/install/services/apps_mcp.py — the agent-app layer's second half: Memar's MCP server registered at user level in the agent apps that have a setting for one.
 
-The owner chose (2026-10-18; bundles/memar/memar.handoff.md) user-level registration only: the
+The owner chose (2026-10-18; a content of a task) user-level registration only: the
 server is the machine's, like the `memar` command, and a project `.mcp.json` would be one more file
 in every project to keep true by hand. So this writes into each app's own user setting, for the apps
 `apps.py` already knows and that have one, and only where the app is on this machine.

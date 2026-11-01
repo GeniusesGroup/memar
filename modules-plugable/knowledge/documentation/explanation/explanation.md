@@ -9,9 +9,9 @@ ID: 495000
 This document specifies the canonical documentation structure every formal explanation document must follow.
 
 ## Abstract
-This specification defines the structure every formal document in any projects must follow: a YAML front-matter block for identity and classification, followed by a body organized as `Abstract`, `Introduction`, and `Explanation`. Provenance — citations, contributor attribution, cross-document propagation tracking, and revision history — does not live in this document's front matter or body; it lives in the paired [Changelog](../changelog/changelog.md), since a reader of the base artifact needs its current state, not its provenance. The same reader-relationship governs more than field-level provenance: any body content that serves the audit reader rather than the current-state reader is excluded by the same criterion — see [Relevance discipline](#relevance-discipline).
+This specification defines the structure every formal document in any projects must follow: a YAML front-matter block for identity and classification, followed by a body organized as `Abstract`, `Introduction`, and `Explanation`. Provenance — citations, contributor attribution, cross-document propagation tracking, and revision history — does not live in this document's front matter or body; it lives in the changelog contents of the tasks that changed the document ([Changelog](../changelog/changelog.md)), since a reader of the base artifact needs its current state, not its provenance. The same reader-relationship governs more than field-level provenance: any body content that serves the audit reader rather than the current-state reader is excluded by the same criterion — see [Relevance discipline](#relevance-discipline).
 
-See [Documentation](../documentation.md) for what a Facet is and how this specification fits into the wider documentation system.
+See [Documentation](../documentation.md) for what a template is and how this specification fits into the wider documentation system.
 
 ## Introduction
 *This section's subsections (`Motivation`, `Methodology`) are a suggested partitioning, not the only one — an author may add another subsection here with a stated reason the existing ones don't cover what's needed. The `Introduction` heading itself carries no direct content.*
@@ -23,18 +23,13 @@ The real motivation for this specification is not specific to any one project or
 This specification's structure was not designed in the abstract in a single pass. It was arrived at through: research into precedent from other documentation and standards processes (including IETF); sustained critical review across multiple working chats, with each proposed change argued for and against rather than accepted on first suggestion; direct testing of proposed structural changes against a real document already written under an earlier version of this specification ([protocol.md](https://github.com/GeniusesGroup/memar/blob/2cb39b5eeb3a0eddd5bc1bfe132193068dea768b/RFCs/protocol.md)), which is what surfaced a concrete scattering problem later fixed by the topic-first structure below, rather than that problem being reasoned out abstractly beforehand; and a review of documentation conventions across disciplines (research papers, standards documents, architecture records), which found the same recurring building blocks — identity, a compact claim, motivating context, detailed content, open questions, rationale — differing mainly in emphasis rather than fundamental shape.
 
 ## Explanation
-*Reading every topic below in full is not required — read only what's relevant to your question. Procedural, "do this, then this" content for producing a document under this specification lives in the paired Practice-facet file `explanation.practice.md` (named per the rule in [documentation.md](../documentation.md)); this specification describes structure, not procedure.*
+*Reading every topic below in full is not required — read only what's relevant to your question. Procedural, "do this, then this" content for producing a document under this specification lives in the rules of this module; this specification describes structure, not procedure.*
 
 ### Reader relationship
 Content meant to be *studied* to understand something: specifications, analyses, design decisions, concept definitions, and any document whose primary purpose is for a reader to comprehend a subject rather than to execute a procedure. The structure below serves that reader, and it is one structure whatever the subject is — a protocol specification, a product requirement, or a concept definition — as [Optional Sections](#optional-sections) sets out. A document whose reader relationship is another's belongs to that facet, which states it in its own specification ([Practice](../practice/practice.md#reader-relationship) is the one most often mistaken for this); what serves a reader who audits history rather than one who reads the current state is settled in this specification's [Abstract](#abstract).
 
-### File
-What a filename encodes — which separator marks the category, which the conceptual term, which the facet companion — is defined in [documentation.md → File Naming](../documentation.md#file-naming) as a cross-cutting convention applying to every facet. Two rules concern this specification's front matter specifically:
-- The slug derives from the document's [`Title`](#title), and a filename never contains its [ID](#id).
-- The name is stable once the document's `Status` is `Final`.
-
 ### Title
-A short, unique, human-readable name for the document, in double quotes. It is the source of the filename slug. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
+A short, unique, human-readable name for the document, in double quotes. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
 
 ### Status
 An Explanation-facet document carries its Status in the front-matter `Status` field. The values it may take, their meanings, and whether each is safe to depend on are the type `Status` ([documentation.md → Status](../documentation.md#status)), asked with `Status.for_kind`. A `Superseded` document names its successor through [`Superseded by`](../documentation.md#citations).
@@ -46,7 +41,7 @@ Rules specific to this facet:
 - Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not read `Status`. A reader who disagrees records the disagreement rather than moving the field.
 - Nothing before `Final` should be treated as settled by anyone depending on the document.
 - Moving a Final document's substance requires a new, superseding document, not an in-place edit.
-- A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the paired Changelog's `Cited` field (see [changelog.md → Cited](../changelog/changelog.md#cited)).
+- A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the `Cited` field of the changelog content that records it (see [changelog.md → Cited](../changelog/changelog.md#cited)).
 - `Status` reflects canonical-documentation status only, never informal or practical usage. A document can be in active, wide practical use while still `Proposed`; that does not change its `Status`. (This document is itself an example: in active use as the working specification while `Proposed`.)
 
 ### Start Date
@@ -55,11 +50,9 @@ The calendar date (`YYYY-MM-DD`, UTC) the document file was first drafted. Set o
 ### ID
 A UTC unix-time-derived integer, generated once when the file is first drafted, never reused or reassigned. It carries no meaning beyond relative creation order — generating it does not imply approval; that is `Status`'s job.
 
-**Value.** UTC unix time truncated to the hour — `(unix seconds) / 3600` — as a plain decimal integer (e.g. `495317`).
+**Value and generation.** The value is UTC unix time truncated to the hour, as a plain decimal integer; `memar content hour-id` prints it ([`content_hour_id.py`](../services/content_hour_id.py)), and nothing else defines it.
 
-**Generation.** See [How to make a new document](./explanation.practice.md) for the per-platform commands.
-
-**Uniqueness and collisions.** Two or more documents drafted in the same working chat landing in the same hour is expected and normal. Resolve manually today: keep the first document's number, give the next one the following hour's value or any other free value. Manual resolution is a stopgap, not the preferred end state (see the paired handoff's anticipated work).
+**Uniqueness and collisions.** Two or more documents drafted in the same working chat landing in the same hour is expected and normal. Resolve manually today: keep the first document's number, give the next one the following hour's value or any other free value. Manual resolution is a stopgap, not the preferred end state (an `anticipated-work` content of the task that records it).
 
 **Retroactive numbering.** Pre-existing documents may be assigned an hour-value derived from their recorded `Start Date` if retroactively renumbered. Where several share a `Start Date`, order by reasonable manual judgment — no strict rule imposed.
 
@@ -71,12 +64,12 @@ This rule applies only pre-Final; once Final, merging requires a new, supersedin
 
 **Storage representation.** Out of scope here — an implementation detail.
 
-**Lookup.** Full-text search for `ID:`, or the README index (Number, Title, Status).
+**Lookup.** Full-text search for `ID:`.
 
 ### Body sections
 The body follows the front-matter, as a fixed set of top-level (`##`) sections in the order the types of [`./primitive/`](./primitive/) carrying the label `body-section` give. No document may introduce a new top-level section beside these without a change to this specification itself. Everything else a document needs is an optional building block from [Optional Sections](#optional-sections) - placed by the author wherever fits, at whatever heading depth the location calls for. The fixed three are the skeleton; the catalog is the flesh.
 
-Each fixed section is declared, with what it is for, where it goes and how it differs from its neighbours, by the types of [`./primitive/`](./primitive/) carrying the label `body-section`; `Explanation` follows the naming and cross-referencing rules of [Conventions](#conventions) and the body-versus-companion-facets split of [Relevance discipline](#relevance-discipline).
+Each fixed section is declared, with what it is for, where it goes and how it differs from its neighbours, by the types of [`./primitive/`](./primitive/) carrying the label `body-section`; `Explanation` follows the naming and cross-referencing rules of [Conventions](#conventions) and the body-versus-contents split of [Relevance discipline](#relevance-discipline).
 
 ### Conventions
 This specification's own mandatory naming and cross-referencing rules — every document following it follows these, not just an option to consider.
@@ -88,7 +81,7 @@ A front-matter field is written as the key type of its facet declares it ([`expl
 Any reference within a document to another section of the same file must be a real hyperlink (e.g. `[Conventions](#conventions)`), never plain text (e.g. `see Conventions` or a malformed pseudo-link like `see ###Conventions`). A broken anchor is easy to spot; a stale plain-text reference is not.
 
 #### Relevance discipline
-A body statement earns its place by serving the reader of the document's **current state**: reading it must change that reader's understanding of the design as it stands — its claims, definitions, arguments, or open questions. Content whose value is to a reader auditing *how* that state came to be does not belong in the body, however true or interesting it is: where and with whom positions were formed, in what order decisions arrived, the narrative of the debate that shaped them, anecdotes, and participant detail are decision-shaping context and belong to the paired [Changelog](../changelog/changelog.md). The test is not usefulness — decision-shaping context is usually useful — but which reader it serves.
+A body statement earns its place by serving the reader of the document's **current state**: reading it must change that reader's understanding of the design as it stands — its claims, definitions, arguments, or open questions. Content whose value is to a reader auditing *how* that state came to be does not belong in the body, however true or interesting it is: where and with whom positions were formed, in what order decisions arrived, the narrative of the debate that shaped them, anecdotes, and participant detail are decision-shaping context and belong to the changelog contents of the tasks that changed the document ([Changelog](../changelog/changelog.md)). The test is not usefulness — decision-shaping context is usually useful — but which reader it serves.
 
 This applies inside sections that legitimately exist: a `Motivation` states the failure mode that motivates the document (current-state relevant), and a `Methodology` states the method and its verification discipline (current-state relevant); neither carries the social history of the positions they describe. The rule generalizes the provenance statement in this specification's [Abstract](#abstract) from a field list to a criterion: whatever a changelog reader needs and a current-state reader does not, is changelog content.
 
@@ -98,14 +91,14 @@ This applies inside sections that legitimately exist: a `Motivation` states the 
 - **Motivation** — does this sentence name the failure mode that makes the document necessary? If it narrates who noticed the failure, when, or how the writing session unfolded, drop it or move it.
 - **Methodology** — does this sentence state a method the reader must hold to understand or verify the content (what layer is consumed, what is excluded and why as a standing rule, what verification discipline the claims rest on)? If it only records that a review happened, who participated, or which prior draft looked different, it fails — that material never helps a later reader understand the subject better; it only helps an auditor reconstruct the writing. Omit Methodology entirely when nothing methodologically distinctive remains after that filter.
 
-The paired changelog is the correct home for production history; pointing at it from Motivation or Methodology does not license restating that history in the body.
+The changelog contents are the correct home for production history; pointing at them from Motivation or Methodology does not license restating that history in the body.
 
 The full routing of former discussion-section content follows from this criterion:
 
-- **Evidence** - the premise facts a design's argument depends on (an external system's behavior, a measured result, a literature position) stay in the body, cited inline at the claim they support; an unsupported premise weakens the claim. Comparative surveys - how other projects organize the same problem and how this project differed - are not premise evidence; they are audit content, living in the changelog entry's `Related work` section.
-- **Considered and not done** - alternatives examined and rejected, with their reasons, are decision-shaping context: they serve the audit reader, and an AI-assisted reader cannot reliably tell a negated position from an affirmed one when loading a document into context. They live in the changelog entry that made the decision, under the entry's own `Considered and not done` section.
-- **Open questions** - working state, not current design; they may be answered, may be moot. They live in the paired [Handoff](../handoff/handoff.md) as `Open Questions`. One boundary keeps this from over-applying: where a *specific claim* is genuinely tentative, the claim itself says so in its own statement - that is content; the question and its resolution work live in the handoff. `Status` carries document-level maturity; the body does not restate it question by question.
-- **Anticipated work** - extensions and growth paths the design anticipates are not current design either; they live in the paired handoff as `Anticipated Work`.
+- **Evidence** - the premise facts a design's argument depends on (an external system's behavior, a measured result, a literature position) stay in the body, cited inline at the claim they support; an unsupported premise weakens the claim. Comparative surveys - how other projects organize the same problem and how this project differed - are not premise evidence; they are audit content, kept as a `research` content ([Research](../research/research.md)).
+- **Considered and not done** - alternatives examined and rejected, with their reasons, are decision-shaping context: they serve the audit reader, and an AI-assisted reader cannot reliably tell a negated position from an affirmed one when loading a document into context. They live in the `Options` field of the `decision` content that made the decision ([Handoff](../handoff/handoff.md#the-kinds)).
+- **Open questions** - working state, not current design; they may be answered, may be moot. They live as `question` contents of a task ([Handoff](../handoff/handoff.md#the-kinds)). One boundary keeps this from over-applying: where a *specific claim* is genuinely tentative, the claim itself says so in its own statement - that is content; the question and its resolution work live in its `question` content. `Status` carries document-level maturity; the body does not restate it question by question.
+- **Anticipated work** - extensions and growth paths the design anticipates are not current design either; they live as `anticipated-work` contents.
 - **Observed results** - what real use of the document's decision actually produced is not body content; a result's home is determined by its type, per the cross-cutting routing map in [documentation.md → Results routing](../documentation.md#results-routing).
 
 #### URI

@@ -6,5 +6,5 @@ from modules.knowledge.content.primitive.section import Section
 class Conclusion(Section):
     heading = 'Conclusion'
     purpose = 'the final outcome for each question, and where it landed'
-    order = 8
+    order = 4
     labels = ('research-section',)

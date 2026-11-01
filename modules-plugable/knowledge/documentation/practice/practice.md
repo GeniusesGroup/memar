@@ -9,7 +9,7 @@ ID: 495821
 This document specifies the Practice facet. See [Documentation](../documentation.md) for what a facet is and why Practice is governed separately from Explanation.
 
 ## Abstract
-A Practice-facet document (a **Skill file**, named `SKILL.md`) is a short, imperative, self-contained procedure. Its front matter is exactly `name` and `description` — no other fields — and its body stays under roughly 500 lines, with anything longer split into companion files loaded only when needed. This is not this project's own invention: it is the schema three independently-maintained AI ecosystems (Anthropic, OpenAI, Microsoft — see [practice.changelog.md](./practice.changelog.md) for citations) converged on without coordinating with each other, adopted here rather than replaced with something new.
+A Practice-facet document (a **Skill file**, named `SKILL.md`) is a short, imperative, self-contained procedure. Its front matter is exactly `name` and `description` — no other fields — and its body stays under roughly 500 lines, with anything longer split into reference files loaded only when needed. This is not this project's own invention: it is the schema three independently-maintained AI ecosystems (Anthropic, OpenAI, Microsoft) converged on without coordinating with each other, adopted here rather than replaced with something new.
 
 ## Introduction
 ### Motivation
@@ -22,7 +22,7 @@ Content meant to be *followed* to accomplish something: step-by-step procedures,
 
 ### Frontmatter
 Exactly two fields, both required:
-- **name**: the skill's name, lowercase with hyphens (e.g. `write-a-document`), and the name of the file it heads: for a Practice companion, its base name, the part before `.practice.md` (`handoff.practice.md` is named `documentation-handoff`); for a `SKILL.md`, the name of the folder that holds it (`.agents/skills/memar/SKILL.md` is named `memar`). A `name` that differs from its file is a second name for one thing: a reader who meets it cannot find the file by it.
+- **name**: the skill's name, lowercase with hyphens (e.g. `write-a-document`), and the name of the folder that holds the `SKILL.md` it heads (`.agents/skills/memar/SKILL.md` is named `memar`). A `name` that differs from its folder is a second name for one thing: a reader who meets it cannot find the skill by it.
 - **description**: what the skill does and, critically, when to use it — this is the only thing an agent sees before the skill triggers, so trigger conditions belong here, never only in the body.
 
 No other fields. All three cited conventions agree on this independently; Anthropic's and OpenAI's both state it as an explicit rule, not an informal habit.
@@ -41,7 +41,7 @@ Keep the body itself lean: move anything that only applies to a specific variant
 - **`assets/`**: files used in the output itself (templates, images, boilerplate), not read into context at all.
 
 ### What not to include
-Do not add a `README.md`, `CHANGELOG.md`, or any other auxiliary documentation file inside a Skill folder. A Skill file is consumed by an agent mid-task; meta-documentation about the skill's own history or creation process is pure overhead to that agent and belongs nowhere near it. (This specification, and `documentation.md`, are exactly that kind of meta-documentation — which is precisely why they live outside `.agents/skills/`, not inside any individual skill's folder.) Provenance for a Skill file — citations, contributor attribution, propagation tracking — lives in the paired `<base>.changelog.md` file at the Skill's parent level, not inside the Skill folder itself.
+Do not add a `README.md`, `CHANGELOG.md`, or any other auxiliary documentation file inside a Skill folder. A Skill file is consumed by an agent mid-task; meta-documentation about the skill's own history or creation process is pure overhead to that agent and belongs nowhere near it. (This specification, and `documentation.md`, are exactly that kind of meta-documentation — which is precisely why they live outside `.agents/skills/`, not inside any individual skill's folder.) Provenance for a Skill file — citations, contributor attribution, propagation tracking — is a changelog content of the task that changed the skill, not a file inside the Skill folder.
 
 ### Description quality criteria
 The `description` field is the only thing an agent sees before deciding whether to trigger the skill. Two qualities make it work:
@@ -73,7 +73,7 @@ No fixed section order is imposed (the three cited ecosystems disagree on this, 
 If the skill has no meaningful edge cases and the steps are self-evident, skip the overview and go straight to the steps. Structure serves the reader, not the other way around.
 
 ### Reference file naming
-When the body references a companion file in `references/`, name it for what it contains, not for the skill it belongs to: `naming-conventions.md`, not `write-a-document-references-01.md`. The file's placement inside the skill's own `references/` folder already establishes the ownership relationship.
+When the body references a file in `references/`, name it for what it contains, not for the skill it belongs to: `naming-conventions.md`, not `write-a-document-references-01.md`. The file's placement inside the skill's own `references/` folder already establishes the ownership relationship.
 
 ### Writing style
 Imperative and concise. Assume the agent reading this is already capable — write only what it doesn't already know. Every sentence should earn its token cost; prefer a short example over a paragraph of explanation wherever both would work.

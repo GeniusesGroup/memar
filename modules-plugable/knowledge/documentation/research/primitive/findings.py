@@ -6,5 +6,5 @@ from modules.knowledge.content.primitive.section import Section
 class Findings(Section):
     heading = 'Findings'
     purpose = 'what the inquiry has established so far, as claim-shaped statements'
-    order = 6
+    order = 3
     labels = ('research-section',)

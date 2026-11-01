@@ -4,7 +4,7 @@
 """mcp/mcp.py — `memar mcp`: Memar's verbs reached as MCP tools, by an agent app that starts it.
 
 This is the provisional first face of the Memar server, the guest adapter the owner chose on
-2026-10-18 (bundles/memar/memar.handoff.md, "The MCP adapter is the server's first face"). It sits
+2026-10-18 (a content of a task, "The MCP adapter is the server's first face"). It sits
 on this shelf until it moves to `modules-plugable/net/mcp/`, as the classification handoff's entry
 "MCP as a guest adapter" says, and it maps tools only: no resources and no prompts.
 

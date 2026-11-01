@@ -14,7 +14,7 @@ Catalog = import_module('modules.knowledge.content.primitive.catalog').Catalog
 BUDGET_SECONDS = 10
 FOLDER = TESTS.parent / 'primitive'
 CATALOG = Catalog(FOLDER, 'research-section')
-NAMES = ('Table of Contents', 'Status', 'Question and Goals', 'Participants', 'Methodology', 'Findings', 'Open Questions', 'Conclusion', 'Related Artifacts', 'Notes')
+NAMES = ('Question and Goals', 'Methodology', 'Findings', 'Conclusion', 'Related Artifacts', 'Notes')
 
 class ResearchSectionPins(unittest.TestCase):
 
@@ -45,8 +45,8 @@ class ResearchSectionPins(unittest.TestCase):
     def test_any_other_text_is_no_member(self) -> None:
         self.assertIsNone(CATALOG.read('no such heading'))
 
-    def test_the_first_five_are_mandatory(self) -> None:
-        self.assertEqual([member.heading for member in CATALOG if 'mandatory' in member.labels], list(NAMES[:5]))
+    def test_the_first_two_are_mandatory(self) -> None:
+        self.assertEqual([member.heading for member in CATALOG if 'mandatory' in member.labels], list(NAMES[:2]))
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

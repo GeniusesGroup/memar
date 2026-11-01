@@ -7,8 +7,8 @@
 
 The subject is the registration the agent-app layer writes, per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md); its defining
-record is the owner's choice of user-level registration only, in
-[Memar Handoff](../../../memar/memar.handoff.md#the-mcp-adapter-is-the-servers-first-face-owner-2026-10-18).
+record is the owner's choice of user-level registration only, a
+content of a task.
 
 Nothing here writes to a real agent app: the home folder is a scratch folder, and the checkout the
 command names is a stand-in.

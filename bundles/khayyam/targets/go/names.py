@@ -211,7 +211,7 @@ def kebab_name(text: str) -> str:
 
 # Go corpus roots and the archive root each one lives under, most specific
 # first. The corpus's `libgo/` tree is the archive's `lib/`, except the timer,
-# which the Time module owns (`modules/lib/lib.md`, `modules/lib/lib.handoff.md`).
+# which the Time module owns (`modules/lib/lib.md`, and a content of a task).
 # The corpus's own `modules/` folder stays a folder named `modules` inside the
 # archive's `modules/` tree (memar-go/modules/app -> memar/modules/modules/app);
 # stripping it would put its children beside the corpus's root packages.

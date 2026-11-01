@@ -6,5 +6,5 @@ from modules.knowledge.content.primitive.section import Section
 class Notes(Section):
     heading = 'Notes'
     purpose = 'anything that does not fit above but may matter later'
-    order = 10
+    order = 6
     labels = ('research-section',)

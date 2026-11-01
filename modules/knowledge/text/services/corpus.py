@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/text/services/corpus.py — which files of a checkout are its content, and which are its ledgers.
+"""modules/knowledge/text/services/corpus.py — which files of a checkout are its content.
 
 Shared by `search`, `backlinks`, and `obligations`, which read the corpus, and by
 `check`, whose walk of a folder leaves out the same generated and dependency
@@ -21,24 +21,11 @@ _m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy
 NEVER_COPIED_PATTERNS = _m_fs_copy_excluded.NEVER_COPIED_PATTERNS
 import functools
 import os
-import re
 import sys
 from pathlib import Path
-_SEARCH_EXCLUDED_SUFFIXES = ('.handoff.md', '.changelog.md')
-_RESEARCH_COMPANION = re.compile('\\.research\\.\\d+\\.md$', re.IGNORECASE)
 _CORPUS_DIRS = ('docs', 'modules', 'modules-plugable', 'bundles', '.agents')
 _CORPUS_FILES = ('README.md', 'AGENTS.md')
 _SCRATCH_DIRNAME = 'temp'
-
-def _left_out(folders: tuple[str, ...]) -> bool:
-    """Whether a file under FOLDERS, its folders from the checkout's root, is outside the corpus."""
-    return _SCRATCH_DIRNAME in folders or is_generated(folders)
-
-def _excluded_from_search(path: Path) -> bool:
-    name = path.name
-    if any((name.endswith(suffix) for suffix in _SEARCH_EXCLUDED_SUFFIXES)):
-        return True
-    return _RESEARCH_COMPANION.search(name) is not None
 
 def is_generated(parts: tuple[str, ...]) -> bool:
     """Whether any folder on the way to a file is one this project does not own.
@@ -89,32 +76,11 @@ def content_files(root: Path, sources=None) -> list[Path]:
             dirs[:] = [name for name in dirs if name != _SCRATCH_DIRNAME and (not _not_owned(name))]
             for name in files:
                 path = Path(folder, name)
-                if path.suffix.lower() not in suffixes or _excluded_from_search(path):
+                if path.suffix.lower() not in suffixes:
                     continue
                 found.append(path)
     for name in _CORPUS_FILES:
         candidate = root / name
         if candidate.is_file() and candidate.suffix.lower() in suffixes:
             found.append(candidate)
-    return sorted(found)
-
-def ledger_files(root: Path) -> list[Path]:
-    """Every changelog ledger of the checkout, whatever folder holds it.
-
-    A ledger is not excluded from the corpus by virtue of being a ledger: an
-    undischarged propagation owed by a changelog written under `modules/` is as
-    open as one written under `docs/`, and a work-list that reads half the
-    ledgers reports half the work.
-    """
-    found: list[Path] = []
-    for directory in (root / name for name in _CORPUS_DIRS):
-        if not directory.is_dir():
-            continue
-        for path in directory.rglob('*.changelog.md'):
-            if not path.is_file():
-                continue
-            folders = path.relative_to(root).parts[:-1]
-            if _left_out(folders):
-                continue
-            found.append(path)
     return sorted(found)

@@ -6,5 +6,5 @@ from modules.knowledge.content.primitive.section import Section
 class RelatedArtifacts(Section):
     heading = 'Related Artifacts'
     purpose = 'documents, records or researches affected by or affecting the inquiry'
-    order = 9
+    order = 5
     labels = ('research-section',)

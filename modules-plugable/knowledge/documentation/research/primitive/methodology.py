@@ -6,5 +6,5 @@ from modules.knowledge.content.primitive.section import Section
 class Methodology(Section):
     heading = 'Methodology'
     purpose = 'mandatory: how the inquiry was conducted, with its limits'
-    order = 5
+    order = 2
     labels = ('research-section', 'mandatory')

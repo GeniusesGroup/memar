@@ -5,7 +5,7 @@
 
     python modules/knowledge/text/tests/corpus.py
 
-The subject is which files of a checkout are its content and which its ledgers,
+The subject is which files of a checkout are its content,
 named for the file that holds it per
 [Test Naming](../../../process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
@@ -23,9 +23,7 @@ What is pinned, and what each pin is for:
                        per folder, because a tool that quietly stopped at
                        `docs/` reported a narrower world under the wider name.
                        Generated and dependency folders stay out by the decision
-                       already written for the two things that copy a checkout,
-                       and the work-list reads every ledger of the checkout,
-                       not only the ones under `docs/`.
+                       already written for the two things that copy a checkout.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -85,22 +83,17 @@ class CorpusIsTheCheckout(unittest.TestCase):
         self.write('docs/kept.md', '# Kept\n')
         self.write('node_modules/vendored/vendored.md', '# Vendored\n')
         self.write('temp/s-1/scratch.md', '# Scratch\n')
-        self.write('.agents/tasks/s-2/plan.md', '# Plan\n')
         found = {path.relative_to(root).as_posix() for path in content_corpus.content_files(root)}
         self.assertIn('docs/kept.md', found)
         self.assertNotIn('node_modules/vendored/vendored.md', found)
         self.assertNotIn('temp/s-1/scratch.md', found)
-        self.assertNotIn('.agents/tasks/s-2/plan.md', found)
 
     def test_a_tasks_folder_under_agents_is_no_longer_left_out(self) -> None:
         root = self.a_checkout()
         self.write('.agents/tasks/s-3/report.md', '# Report\n')
-        self.write('.agents/tasks/s-3/docs/entry.changelog.md', '# Changelog\n')
         self.write('.agents/skills/memar/SKILL.md', '# Skill\n')
         found = {path.relative_to(root).as_posix() for path in content_corpus.content_files(root)}
-        ledgers = {path.relative_to(root).as_posix() for path in content_corpus.ledger_files(root)}
         self.assertIn('.agents/tasks/s-3/report.md', found)
-        self.assertIn('.agents/tasks/s-3/docs/entry.changelog.md', ledgers)
         self.assertIn('.agents/skills/memar/SKILL.md', found)
 
     def test_a_folder_holding_none_of_the_content_folders_is_refused(self) -> None:
@@ -110,13 +103,5 @@ class CorpusIsTheCheckout(unittest.TestCase):
             content_corpus.content_files(empty)
         self.assertIn('not a Memar checkout', str(raised.exception))
 
-    def test_the_search_corpus_excludes_ledgers_and_ledgers_are_still_reachable(self) -> None:
-        root = self.a_checkout()
-        self.write('docs/one.changelog.md', '# One\n')
-        self.write('modules/two.changelog.md', '# Two\n')
-        searched = {path.name for path in content_corpus.content_files(root)}
-        ledgers = {path.name for path in content_corpus.ledger_files(root)}
-        self.assertNotIn('one.changelog.md', searched)
-        self.assertEqual(ledgers, {'one.changelog.md', 'two.changelog.md'})
 if __name__ == '__main__':
     unittest.main(verbosity=2)

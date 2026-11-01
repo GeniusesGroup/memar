@@ -8,8 +8,7 @@
 The subject is the server `mcp/services/serve.py` starts, with the worker and its parts beside it,
 named for the file that holds the verb per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md). Its defining
-documents are the verb's own help and the entry of
-[Memar Handoff](../../../../bundles/memar/memar.handoff.md#the-mcp-adapter-is-the-servers-first-face-owner-2026-10-18)
+documents are the verb's own help and the content of a task
 that records what the owner chose; the expectations below are theirs.
 
 Each test that talks to the server starts one, as an agent app does, and speaks MCP to it over its
