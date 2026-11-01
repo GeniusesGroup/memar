@@ -1,1 +1,0 @@
-paid-partially.md
