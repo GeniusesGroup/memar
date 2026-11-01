@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Commands in "bundles/memar_git/services/memar-git-commands.kh"
+
+tp Domain mt (self Memar_Git_Commands) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Commands) () (s String) {
+    CharacterRun_From.FromCharacterRun("List every verb of the bundle with its call shape and a line on what it is for")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Commands) () (s String) {
+    CharacterRun_From.FromCharacterRun("List every verb of the bundle with its call shape and a line on what it is for.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Commands) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Commands) () (s String) {
+    CharacterRun_From.FromCharacterRun("Serves an agent that has no MCP tools, as the commands listing of the Memar server serves the verbs it registers; an agent with MCP finds the same verbs as tools, one for each, and the listing and the tools are read from the same declared command lines, so neither is written twice. The listing carries the constraints the verbs keep, each in the help of its own verb, so that no skill, project instruction or document explains them. It reads nothing of a repository.")(s, VoidError)
+}

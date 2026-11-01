@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Reindex in "bundles/memar_git/services/memar-git-reindex.kh"
+
+tp Domain mt (self Memar_Git_Reindex) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Reindex) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finish or undo a commit or an uncommit that moved the head but could not update the shared index")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Reindex) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finish or undo a commit or an uncommit that moved the head but could not update the shared index.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Reindex) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Reindex) () (s String) {
+    CharacterRun_From.FromCharacterRun("The arguments are those a stopped Commit or Uncommit printed. The commit the head was moved to is landed; the commit it was moved from is was. The stopped Commit and Uncommit print this call with these names. Finishing gives the named paths, in the shared index, the entries landed has, in one write, and touches nothing else; it is refused once the head no longer holds the paths as landed does (ReindexHeadMoved). Undo moves the head from landed back to was and leaves the shared index as it is; it is refused once the head is not landed (ReindexHeadMoved), and refused once the shared index no longer holds the paths as it did before the command (IndexChanged), except the ends of a move or a removal the commit took. A path staged as neither landed nor was has it, and not as such a move or removal, is refused either way, because someone staged it since (StagedByOthers). Lock handling is as in Commit, except that the undo, which has no shared index to finish, stops with a rerun of the same call when the head cannot be moved.")(s, VoidError)
+}

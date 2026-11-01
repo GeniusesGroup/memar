@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Commit in "bundles/memar_git/services/memar-git-commit.kh"
+
+tp Domain mt (self Memar_Git_Commit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Commit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Commit only the named paths, as they are in the working tree, for a working tree other tasks share")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Commit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Commit only the named paths, as they are in the working tree, for a working tree other tasks share.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Commit) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Commit) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commit holds the named paths alone, taken through a private index, and the index the others share keeps their staging; hooks do not run. A replacement is PATH=FILE and commits the content of FILE as PATH: a hunk of a path others also edit, or the destination of a staged move after it was edited. A fold of N replaces the last N unpushed commits by this one and keeps the tasks they cited; a fold of 0 is no fold. A leave-out keeps a path as the new parent has it, and its change stays unstaged. The replaced commits stay reachable through the reflog. Every commit names the tasks it carries out, one trailer each, written by the verb after the Memar server confirmed each task, or says it carries out none. The message is read from the text given, never from the command line, and the answer is the id of the new commit. The commit object is written first and the head moved against the commit expected, then the shared index is given the committed paths in one write; when the head cannot be moved, nothing but an unreferenced object exists. When another git process holds a lock the verb needs it waits, and past the wait it stops, says the stage it reached, what git said and the age of the lock; it never removes a lock. When the head has not yet moved the stop says nothing was changed and to rerun the same call; when the head has moved and only the shared index could not be written, the stop names the two Reindex calls that finish or undo, with the names of this abstraction (landed, was, undo). Refused, with nothing committed: a negative fold (the count is unsigned in meaning, and the type admits a value the verb rejects); no path, no replacement and no fold, so nothing to commit; a leave-out outside a fold; a fold over a merge; a fold whose oldest commit is already upstream, which would rewrite published history; an empty message; tasks neither named nor waived, or both, or a task trailer already in the message; a task the Memar server does not know; a replacement that is not PATH=FILE or whose FILE is not a file; a path outside the repository; a path, or a leave-out, with a change staged that the head does not hold, which is another task's or the caller's own from host git (StagedByOthers), except the ends of a staged move the call names; a result tree equal to the parent's, so nothing to commit; and an edit that pushes a staged move below git's rename threshold, so that history would stop following it, which is advised to be committed as the move alone first, then the edit folded into the commit of the task (MoveWouldNotBeRename).")(s, VoidError)
+}

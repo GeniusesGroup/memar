@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Uncommit in "bundles/memar_git/services/memar-git-uncommit.kh"
+
+tp Domain mt (self Memar_Git_Uncommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Uncommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Take back the last unpushed commit; its changes stay in the working tree")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Uncommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Take back the last unpushed commit; its changes stay in the working tree.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Uncommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Uncommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commit named by expect, in the form git prints (seven to forty hexadecimal digits), must be the head, have exactly one parent (NotOneParent) and not be upstream yet (PublishedHistory); the answer is the parent, where the head now stands;  The working tree is left as it is, so the changes show as unstaged edits; in the shared index only the commit's paths go back to the parent, and anything else staged stays staged. A path of the commit holding a staged change of its own is refused (StagedByOthers). The commit stays recoverable through the reflog, and advice on how to put it back is printed beside the answer. Because it asks for the commit's id, it never takes back one that was not meant. Lock handling is as in Commit: before the head moves the stop says to rerun the same call, after it the stop names the Reindex calls. Refused: an id not in the form; the head is not the commit; the commit has other than one parent (NotOneParent); the commit is already upstream, which would rewrite published history (PublishedHistory).")(s, VoidError)
+}

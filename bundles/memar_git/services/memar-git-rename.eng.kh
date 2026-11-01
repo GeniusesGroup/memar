@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Rename in "bundles/memar_git/services/memar-git-rename.kh"
+
+tp Domain mt (self Memar_Git_Rename) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Rename) () (s String) {
+    CharacterRun_From.FromCharacterRun("Move a tracked path so that history follows it")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Rename) () (s String) {
+    CharacterRun_From.FromCharacterRun("Move a tracked path so that history follows it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Rename) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Rename) () (s String) {
+    CharacterRun_From.FromCharacterRun("The move is staged and rides with the commit of the task while git still sees it as a rename; an edit that breaks the detection needs the move committed first. The verb itself refuses only a source that does not exist (PathAbsent) or a path outside the repository; an untracked source or an existing destination is refused by the git move it runs, whose failure is GitFailed.")(s, VoidError)
+}

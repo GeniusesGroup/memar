@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Tasks in "bundles/memar_git/services/memar-git-tasks.kh"
+
+tp Domain mt (self Memar_Git_Tasks) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Tasks) () (s String) {
+    CharacterRun_From.FromCharacterRun("Tell which cited tasks the Memar server does not know")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Tasks) () (s String) {
+    CharacterRun_From.FromCharacterRun("Tell which cited tasks the Memar server does not know.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Tasks) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Tasks) () (s String) {
+    CharacterRun_From.FromCharacterRun("Asks the Memar server, through the verb it offers for looking a task up, with the repository as the project; the bundle imports no module of the task domain and reads no task store, so a change of how tasks are kept does not reach it. Returns the ids the server did not find, each with what the server said; an unreachable server is an error of its own and never an answer that the tasks exist, and never read as a task not found: the two are told apart.")(s, VoidError)
+}

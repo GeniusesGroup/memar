@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
+
+tp Memar_Git_Deadline ab
+
+tp Memar_Git_Repository ab
+
+tp Root mt (self Memar_Git_Repository) (repository String) (root String, err Error)
+tp InRepository mt (self Memar_Git_Repository) (root String, path String) (named String, err Error)
+tp Run mt (self Memar_Git_Repository) (root String, arguments Array_Dynamic, input String) (output String, err Error)
+tp LockDeadline mt (self Memar_Git_Repository) () (deadline Memar_Git_Deadline)
+tp SharedLocks mt (self Memar_Git_Repository) (root String) (locks Array_Dynamic)
+tp WaitLock mt (self Memar_Git_Repository) (locks Array_Dynamic, before String, deadline Memar_Git_Deadline) (held String)
+tp Patiently mt (self Memar_Git_Repository) (root String, arguments Array_Dynamic, input String, deadline Memar_Git_Deadline) (output String, held String, err Error)
+tp Stopped mt (self Memar_Git_Repository) (stage String, then String, lock String) (err Error)
+tp PrivateIndex mt (self Memar_Git_Repository) (root String) (index String, err Error)
+tp IndexEntries mt (self Memar_Git_Repository) (root String, paths Array_Dynamic) (entries Array_Dynamic)
+tp TreeEntries mt (self Memar_Git_Repository) (root String, revision String, paths Array_Dynamic) (entries Array_Dynamic)
+tp IndexFrom mt (self Memar_Git_Repository) (root String, landed String, was String, paths Array_Dynamic, reached String, deadline Memar_Git_Deadline) (err Error)
+tp StagedMoves mt (self Memar_Git_Repository) (root String, paths Array_Dynamic, against String, replacements Array_Dynamic) (moves Array_Dynamic)
+tp RefuseStaged mt (self Memar_Git_Repository) (root String, paths Array_Dynamic, outcome String) (err Error)
+tp RenamesLost mt (self Memar_Git_Repository) (root String, moves Array_Dynamic, parent String, tree String) (lost Array_Dynamic)
+tp UpstreamHolding mt (self Memar_Git_Repository) (root String, commit String) (upstream String)

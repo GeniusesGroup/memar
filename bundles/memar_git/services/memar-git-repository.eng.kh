@@ -1,0 +1,52 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Repository in "bundles/memar_git/services/memar-git-repository.kh"
+tp Memar_Git_Deadline in "bundles/memar_git/services/memar-git-repository.kh"
+
+tp Domain mt (self Memar_Git_Repository) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Repository) () (s String) {
+    CharacterRun_From.FromCharacterRun("The helpers the verbs share to act on a named repository")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Repository) () (s String) {
+    CharacterRun_From.FromCharacterRun("The helpers the verbs share to act on a named repository.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Repository) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Repository) () (s String) {
+    CharacterRun_From.FromCharacterRun("Not verbs: no one calls them from outside the bundle. Root finds the top of the repository the caller named, never the folder the command runs from; it refuses when git is not installed (GitNotInstalled), and when the named place is not a folder in a repository (NotARepository). InRepository gives a path as git names it from the top, a relative path being relative to the repository, and refuses a path outside it. Run runs git in the root, and a failure of git is GitFailed, carrying what git said. LockDeadline starts one deadline that all the stages of a command share, so the wait is one wait in all. SharedLocks names the locks of the shared index, of the head and of the branch the head names. WaitLock waits until the locks are free or the deadline, announcing the first wait on each lock, and answers the lock still held, or none. Patiently runs git on the index or a ref and waits out only a held lock, until the deadline; any other failure comes back at once with no lock. Stopped ends a command saying the stage reached, what git said, the age of the lock still held with whether git processes run and what that means, and what to do next; the lock is never removed. PrivateIndex gives a commit an index of its own. IndexEntries and TreeEntries read the entries of the shared index and of a revision. IndexFrom gives paths in the shared index the entries of a revision in one write, so the index holds every path as before or every path as the revision has it, never a mix; when it cannot, it stops with the Reindex calls that finish or undo. StagedMoves names both ends of each move and each removal that the other verbs stage for the paths, counting a move claimed by the call, and an edit staged into its destination that keeps it above git's rename threshold. RefuseStaged refuses a path with a staged change the head does not hold. RenamesLost names each staged move that the tree about to be written no longer shows as a rename. UpstreamHolding answers the upstream's commit when the commit is already on it, else none.")(s, VoidError)
+}
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Deadline in "bundles/memar_git/services/memar-git-repository.kh"
+
+tp Domain mt (self Memar_Git_Deadline) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Deadline) () (s String) {
+    CharacterRun_From.FromCharacterRun("The moment a command stops waiting for locks")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Deadline) () (s String) {
+    CharacterRun_From.FromCharacterRun("The moment a command stops waiting for locks.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Deadline) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Deadline) () (s String) {
+    CharacterRun_From.FromCharacterRun("One deadline for all the stages of a command, started once, so that the wait is one wait in all.")(s, VoidError)
+}

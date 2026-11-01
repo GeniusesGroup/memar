@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Restore in "bundles/memar_git/services/memar-git-restore.kh"
+
+tp Domain mt (self Memar_Git_Restore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Restore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Discard uncommitted changes of the named paths, refused unless confirmed")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Restore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Discard uncommitted changes of the named paths, refused unless confirmed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Restore) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Restore) () (s String) {
+    CharacterRun_From.FromCharacterRun("Tidying the status is how uncommitted work is most often lost, so the verb refuses unless confirm is exactly DISCARD-UNCOMMITTED, and refuses when no path is named. Only the working tree is returned to the head; the index is not touched, and a failure of git is GitFailed. Setting the work aside is Stash.")(s, VoidError)
+}

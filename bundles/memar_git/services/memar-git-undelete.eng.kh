@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Undelete in "bundles/memar_git/services/memar-git-undelete.kh"
+
+tp Domain mt (self Memar_Git_Undelete) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Undelete) () (s String) {
+    CharacterRun_From.FromCharacterRun("Bring each deleted path back from a commit into the index and the working tree")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Undelete) () (s String) {
+    CharacterRun_From.FromCharacterRun("Bring each deleted path back from a commit into the index and the working tree.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Undelete) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Undelete) () (s String) {
+    CharacterRun_From.FromCharacterRun("The revision names the commit and defaults to the head. Both stages are restored always, because a path staged as deleted is absent from the index, and restoring only the working tree would leave a file that the next commit silently deletes again. It says what each path was in the index and what it is now. The paths are taken one by one, so those before a refused one are already restored. Refused when a path is outside the repository or when the revision does not hold the path (PathAbsent); it fails (GitFailed) when git cannot restore or the path did not come back into the index.")(s, VoidError)
+}

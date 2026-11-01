@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Remove in "bundles/memar_git/services/memar-git-remove.kh"
+
+tp Domain mt (self Memar_Git_Remove) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Remove) () (s String) {
+    CharacterRun_From.FromCharacterRun("Stop tracking each named path without losing it")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Remove) () (s String) {
+    CharacterRun_From.FromCharacterRun("Stop tracking each named path without losing it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Remove) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Remove) () (s String) {
+    CharacterRun_From.FromCharacterRun("The paths are taken one by one, so those before a refused one are already done. A path that exists goes to the recycle bin, so it is still there if it turns out to be needed, and then its disappearance is staged for tracked content; it is never a deletion by git. Refused when a path is outside the repository, or when it neither exists nor is tracked (PathAbsent); a failure of the recycle step or of git is GitFailed.")(s, VoidError)
+}

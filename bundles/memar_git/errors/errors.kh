@@ -1,0 +1,99 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Error_Memar_Git_Refusal ab {
+    Error
+}
+
+tp Error_Memar_Git_NotNamed ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_GitNotInstalled ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_NotARepository ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_GitFailed ab {
+    Error
+}
+
+tp Error_Memar_Git_PathAbsent ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_NothingToCommit ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_FoldMisused ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_MergeInFold ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_PublishedHistory ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_EmptyMessage ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_ReplacementMalformed ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_MoveWouldNotBeRename ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_TaskNotCited ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_TaskUnknown ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_TaskByHand ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_ServerUnreachable ab {
+    Error
+}
+
+tp Error_Memar_Git_NotConfirmed ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_NotHead ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_NotOneParent ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_ReindexHeadMoved ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_IndexChanged ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_StagedByOthers ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_Locked ab {
+    Error
+}

@@ -1,0 +1,509 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Memar_Git_Refusal in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NotNamed in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_GitNotInstalled in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NotARepository in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_GitFailed in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_PathAbsent in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NothingToCommit in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_FoldMisused in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_MergeInFold in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_PublishedHistory in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_EmptyMessage in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_ReplacementMalformed in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_MoveWouldNotBeRename in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_TaskNotCited in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_TaskUnknown in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_TaskByHand in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_ServerUnreachable in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NotConfirmed in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NotHead in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NotOneParent in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_ReindexHeadMoved in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_IndexChanged in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_StagedByOthers in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_Locked in "bundles/memar_git/errors/errors.kh"
+
+tp Domain mt (self Error_Memar_Git_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Remove and Undelete go path by path and the paths before the refused one are already done")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Remove and Undelete go path by path and the paths before the refused one are already done.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the verb and what to change in the call.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The repository, a path, a revision or an id the verb needs is not named, is not in the form git prints, or lies outside the repository")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The repository, a path, a revision or an id the verb needs is not named, is not in the form git prints, or lies outside the repository.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names what is missing or malformed.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_GitNotInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_GitNotInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("Git is not installed")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_GitNotInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("Git is not installed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_GitNotInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_GitNotInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names what installs it.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NotARepository) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NotARepository) () (s String) {
+    CharacterRun_From.FromCharacterRun("The named place is not a folder in a git repository")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NotARepository) () (s String) {
+    CharacterRun_From.FromCharacterRun("The named place is not a folder in a git repository.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NotARepository) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NotARepository) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the place.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_GitFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_GitFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A git command or a plumbing step failed")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_GitFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A git command or a plumbing step failed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_GitFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_GitFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail carries the command, its exit status and what git said. Run, Rename, Restore, Stash, Remove, Undelete.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path is absent: it neither exists nor is tracked, or the revision does not hold it")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path is absent: it neither exists nor is tracked, or the revision does not hold it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Remove, Rename and Undelete.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NothingToCommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NothingToCommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("There is nothing to commit: no path, replacement or fold named, or the result tree equals the parent's")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NothingToCommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("There is nothing to commit: no path, replacement or fold named, or the result tree equals the parent's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NothingToCommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NothingToCommit) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail says which.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_FoldMisused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_FoldMisused) () (s String) {
+    CharacterRun_From.FromCharacterRun("A fold is negative, or a leave-out is named outside a fold")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_FoldMisused) () (s String) {
+    CharacterRun_From.FromCharacterRun("A fold is negative, or a leave-out is named outside a fold.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_FoldMisused) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_FoldMisused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the argument.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_MergeInFold) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_MergeInFold) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commits a fold would replace include a merge")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_MergeInFold) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commits a fold would replace include a merge.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_MergeInFold) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_MergeInFold) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the count.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_PublishedHistory) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_PublishedHistory) () (s String) {
+    CharacterRun_From.FromCharacterRun("A commit a fold replaces, or the head Uncommit takes back, is already upstream, and removing it would rewrite published history")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_PublishedHistory) () (s String) {
+    CharacterRun_From.FromCharacterRun("A commit a fold replaces, or the head Uncommit takes back, is already upstream, and removing it would rewrite published history.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_PublishedHistory) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_PublishedHistory) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the commit and the upstream.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_EmptyMessage) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_EmptyMessage) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commit message is empty")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_EmptyMessage) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commit message is empty.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_EmptyMessage) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_EmptyMessage) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the message given.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_ReplacementMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_ReplacementMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A replacement is not PATH=FILE, or its source is not a file")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_ReplacementMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A replacement is not PATH=FILE, or its source is not a file.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_ReplacementMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_ReplacementMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the replacement.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_MoveWouldNotBeRename) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_MoveWouldNotBeRename) () (s String) {
+    CharacterRun_From.FromCharacterRun("An edit pushes a staged move below git's rename threshold, so history would stop following it")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_MoveWouldNotBeRename) () (s String) {
+    CharacterRun_From.FromCharacterRun("An edit pushes a staged move below git's rename threshold, so history would stop following it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_MoveWouldNotBeRename) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_MoveWouldNotBeRename) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the moves and advises committing the move alone first, then folding the edit into the commit of the task.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_TaskNotCited) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_TaskNotCited) () (s String) {
+    CharacterRun_From.FromCharacterRun("A commit names no task and does not say that it carries none, or says both")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_TaskNotCited) () (s String) {
+    CharacterRun_From.FromCharacterRun("A commit names no task and does not say that it carries none, or says both.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_TaskNotCited) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_TaskNotCited) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the form.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_TaskUnknown) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_TaskUnknown) () (s String) {
+    CharacterRun_From.FromCharacterRun("A cited task is unknown to the Memar server")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_TaskUnknown) () (s String) {
+    CharacterRun_From.FromCharacterRun("A cited task is unknown to the Memar server.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_TaskUnknown) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_TaskUnknown) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail lists the ids and what the server said.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_TaskByHand) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_TaskByHand) () (s String) {
+    CharacterRun_From.FromCharacterRun("The message already holds a task trailer")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_TaskByHand) () (s String) {
+    CharacterRun_From.FromCharacterRun("The message already holds a task trailer.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_TaskByHand) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_TaskByHand) () (s String) {
+    CharacterRun_From.FromCharacterRun("A task reaches history only by the route that checks it.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_ServerUnreachable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_ServerUnreachable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Memar server could not be asked")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_ServerUnreachable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Memar server could not be asked.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_ServerUnreachable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_ServerUnreachable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Never read as the tasks existing.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NotConfirmed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NotConfirmed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A discard is not confirmed")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NotConfirmed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A discard is not confirmed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NotConfirmed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NotConfirmed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the word to give.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NotHead) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NotHead) () (s String) {
+    CharacterRun_From.FromCharacterRun("The head is not the commit Uncommit was told to take back")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NotHead) () (s String) {
+    CharacterRun_From.FromCharacterRun("The head is not the commit Uncommit was told to take back.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NotHead) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NotHead) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the head and the commit expected.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NotOneParent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NotOneParent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commit to take back does not have exactly one parent")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NotOneParent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The commit to take back does not have exactly one parent.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NotOneParent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NotOneParent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the commit and its parents.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_ReindexHeadMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_ReindexHeadMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("The head has moved since the stopped command: it no longer holds the paths as the landed commit does, or it is not the landed commit, so the shared index is not given the paths and the head is not moved back")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_ReindexHeadMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("The head has moved since the stopped command: it no longer holds the paths as the landed commit does, or it is not the landed commit, so the shared index is not given the paths and the head is not moved back.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_ReindexHeadMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_ReindexHeadMoved) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the head. Reindex.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_IndexChanged) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_IndexChanged) () (s String) {
+    CharacterRun_From.FromCharacterRun("The shared index no longer holds the paths as it did before the commit, so the head is not moved back")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_IndexChanged) () (s String) {
+    CharacterRun_From.FromCharacterRun("The shared index no longer holds the paths as it did before the commit, so the head is not moved back.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_IndexChanged) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_IndexChanged) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reindex with undo.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_StagedByOthers) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_StagedByOthers) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path holds a change staged that the head does not hold, another task's or the caller's own from host git")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_StagedByOthers) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path holds a change staged that the head does not hold, another task's or the caller's own from host git.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_StagedByOthers) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_StagedByOthers) () (s String) {
+    CharacterRun_From.FromCharacterRun("Raised by Commit, Uncommit and Reindex; nothing is moved.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Another git process holds a lock past the wait")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Another git process holds a lock past the wait.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail says the stage reached, what git said, the age of the lock and the exact call that finishes or undoes the step; the lock is never removed.")(s, VoidError)
+}

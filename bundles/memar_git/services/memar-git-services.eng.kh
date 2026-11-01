@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_Services in "bundles/memar_git/services/memar-git-services.kh"
+
+tp Domain mt (self Memar_Git_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("The services of the bundle: scoped git acts that lose no work, and their listing")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("The services of the bundle: scoped git acts that lose no work, and their listing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_Services) () (s String) {
+    CharacterRun_From.FromCharacterRun("Every verb takes the repository it acts on and never reads the folder it runs from. The verbs are reached as tools by an agent with MCP and by the commands listing otherwise.")(s, VoidError)
+}

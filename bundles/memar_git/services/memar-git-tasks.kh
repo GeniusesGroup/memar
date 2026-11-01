@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
+
+tp Memar_Git_Tasks ab
+
+tp Unknown mt (self Memar_Git_Tasks) (repository String, tasks Array_Dynamic) (unknown Array_Dynamic, err Error)

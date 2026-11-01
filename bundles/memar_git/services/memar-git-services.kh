@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Services in "modules/process/services/protocol/services.kh"
+tp Memar_Git_Commit in "bundles/memar_git/services/memar-git-commit.kh"
+tp Memar_Git_Uncommit in "bundles/memar_git/services/memar-git-uncommit.kh"
+tp Memar_Git_Reindex in "bundles/memar_git/services/memar-git-reindex.kh"
+tp Memar_Git_Remove in "bundles/memar_git/services/memar-git-remove.kh"
+tp Memar_Git_Rename in "bundles/memar_git/services/memar-git-rename.kh"
+tp Memar_Git_Restore in "bundles/memar_git/services/memar-git-restore.kh"
+tp Memar_Git_Stash in "bundles/memar_git/services/memar-git-stash.kh"
+tp Memar_Git_Undelete in "bundles/memar_git/services/memar-git-undelete.kh"
+tp Memar_Git_Commands in "bundles/memar_git/services/memar-git-commands.kh"
+
+tp Memar_Git_Services ab {
+    Process_Services
+}
+
+tp GetCommit mt (self Memar_Git_Services) () (commit Memar_Git_Commit)
+tp GetUncommit mt (self Memar_Git_Services) () (uncommit Memar_Git_Uncommit)
+tp GetReindex mt (self Memar_Git_Services) () (reindex Memar_Git_Reindex)
+tp GetRemove mt (self Memar_Git_Services) () (remove Memar_Git_Remove)
+tp GetRename mt (self Memar_Git_Services) () (rename Memar_Git_Rename)
+tp GetRestore mt (self Memar_Git_Services) () (restore Memar_Git_Restore)
+tp GetStash mt (self Memar_Git_Services) () (stash Memar_Git_Stash)
+tp GetUndelete mt (self Memar_Git_Services) () (undelete Memar_Git_Undelete)
+tp GetCommands mt (self Memar_Git_Services) () (commands Memar_Git_Commands)
