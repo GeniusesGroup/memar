@@ -35,7 +35,7 @@ class Label_Status(DeclaredLabel):
         """Document-life Status words under thing (ordered); domain Status words stay out until imported for their own queries."""
         DeclaredLabel.ensure_under('modules.identity.thing.labels')
         found = [
-            member for member in DeclaredLabel.taking(cls)
+            member for member in DeclaredLabel.having(cls)
             if getattr(member, 'order', None) is not None
         ]
         return tuple(sorted(found, key=lambda member: member.order))

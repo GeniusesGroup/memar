@@ -24,7 +24,7 @@ class Label_DocumentKind(DeclaredLabel):
     @classmethod
     def members(cls) -> tuple[type, ...]:
         DeclaredLabel.ensure_under('modules-plugable.knowledge.documentation')
-        found = DeclaredLabel.taking(cls)
+        found = DeclaredLabel.having(cls)
         return tuple(sorted(found, key=lambda member: getattr(member, 'order', 10**9)))
 
     @classmethod

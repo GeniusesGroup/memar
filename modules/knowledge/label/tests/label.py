@@ -97,8 +97,9 @@ class OneLabel(unittest.TestCase):
 
 class Definitions(unittest.TestCase):
 
-    def test_a_definition_takes_labels(self) -> None:
+    def test_a_definition_carries_labels(self) -> None:
         definition = LabelDefinition(A, (B, C))
+        self.assertEqual(definition.labels, (B, C))
         self.assertTrue(definition.is_a(B))
         self.assertFalse(definition.is_a(Label('z', new_id())))
 

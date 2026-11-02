@@ -13,12 +13,6 @@ _REGISTRY: list[type] = []
 _ENSURED_PACKAGES: set[str] = set()
 
 class DeclaredLabel(Word):
-    """A label declared as a Type `Label_<Word>`; subclasses register themselves in memory.
-
-    `labels` holds the DeclaredLabel types this word takes (its kinds). Word text is
-    always read from the type (`word` / Details), never cached beside it as strings.
-    The registry is process-local until a graph of label edges replaces it.
-    """
     id = ''
     labels: tuple[type, ...] = ()
     ended = ''
@@ -44,7 +38,7 @@ class DeclaredLabel(Word):
     def definition(cls) -> LabelDefinition:
         return LabelDefinition(
             cls.as_label,
-            tuple(taken.as_label for taken in cls.labels),
+            tuple(held.as_label for held in cls.labels),
             cls.meaning,
             cls.ended,
             tuple(replaced.as_label for replaced in cls.replaced_by),
@@ -72,20 +66,22 @@ class DeclaredLabel(Word):
 
     @classmethod
     def DevActionNote(cls) -> str:
-        return ''
+        return (
+            'Declare Label_<Word>(DeclaredLabel) with labels=(KindType, …) as DeclaredLabel types. '
+            'Ask having(kind) or the kind\'s members()/statuses(); text is word and Details, never a string cache. '
+            'The in-memory registry is process-local until a graph of label edges replaces it.'
+        )
 
     @classmethod
     def all_declared(cls) -> tuple[type, ...]:
         return tuple(_REGISTRY)
 
     @classmethod
-    def taking(cls, kind: type) -> tuple[type, ...]:
-        """Declared Label_* whose `labels` include KIND (among modules already imported)."""
+    def having(cls, kind: type) -> tuple[type, ...]:
         return tuple(member for member in _REGISTRY if kind in getattr(member, 'labels', ()))
 
     @classmethod
     def ensure_under(cls, package_name: str) -> None:
-        """Import every `Label_*` module under PACKAGE_NAME into the registry."""
         if package_name in _ENSURED_PACKAGES:
             return
         package = importlib.import_module(package_name)
@@ -101,7 +97,6 @@ class DeclaredLabel(Word):
 
     @classmethod
     def import_path(cls, path: Path) -> type:
-        """Load one Label_* file by path into the registry; return its type."""
         name = '_memar_labels_' + hashlib.sha1(str(path).encode('utf-8')).hexdigest()
         spec = importlib.util.spec_from_file_location(name, path)
         module = importlib.util.module_from_spec(spec)
