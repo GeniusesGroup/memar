@@ -9,8 +9,6 @@ class Label_Blocked(DeclaredLabel):
     id = '01a14a04-652b-7a44-a88d-5f132d3b675d'
     meaning = 'Cannot continue until something outside the work arrives: an answer, an approval, a dependency; the record states what it waits for.'
     order = 9
-    takes = (Label_Status,)
-    kinds = ('Plan', 'Report', 'Handoff',)
+    labels = (Label_Status,)
     safe = 'No'
     report_ending = 'it waits on an answer or an approval: say which'
-    labels = ('Status',)

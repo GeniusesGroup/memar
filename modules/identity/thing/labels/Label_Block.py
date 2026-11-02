@@ -7,5 +7,4 @@ class Label_Block(DeclaredLabel):
     word = 'block'
     id = '01a19853-60ef-726b-ac8d-a1bf52a42973'
     meaning = 'Blocked from progress until a condition clears.'
-    takes = ()
-    labels = ('Status',)
+    labels = ()

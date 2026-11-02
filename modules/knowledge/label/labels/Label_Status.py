@@ -2,6 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+from modules.knowledge.label.labels.Label_LabelKind import Label_LabelKind
 
 class Label_Status(DeclaredLabel):
     word = 'Status'
@@ -15,7 +16,7 @@ class Label_Status(DeclaredLabel):
         'domain-specific Status-kind words stay in that domain\'s labels/.'
     )
     order = 1
-    labels = ('LabelKind',)
+    labels = (Label_LabelKind,)
 
     @classmethod
     def Overview(cls) -> str:
@@ -24,47 +25,40 @@ class Label_Status(DeclaredLabel):
     @classmethod
     def DevActionNote(cls) -> str:
         return (
-            'Declare each Status-kind word as Label_<Word>(DeclaredLabel) with takes=(Label_Status,). '
-            'Ask members() / for_document() / read() on this type; do not keep a parallel Status bag or status/ tree.'
+            'Declare each Status-kind word as Label_<Word>(DeclaredLabel) with labels=(Label_Status,). '
+            'Document kinds declare which Status words apply via statuses(). '
+            'Ask members() / for_document() / read() on this type.'
         )
 
     @classmethod
-    def _ensure_members(cls) -> None:
-        if getattr(cls, '_members_loaded', False):
-            return
-        from modules.identity.thing.labels.Label_Active import Label_Active
-        from modules.identity.thing.labels.Label_Blocked import Label_Blocked
-        from modules.identity.thing.labels.Label_Complete import Label_Complete
-        from modules.identity.thing.labels.Label_Draft import Label_Draft
-        from modules.identity.thing.labels.Label_Final import Label_Final
-        from modules.identity.thing.labels.Label_Paused import Label_Paused
-        from modules.identity.thing.labels.Label_Proposed import Label_Proposed
-        from modules.identity.thing.labels.Label_Queued import Label_Queued
-        from modules.identity.thing.labels.Label_Rejected import Label_Rejected
-        from modules.identity.thing.labels.Label_Superseded import Label_Superseded
-        from modules.identity.thing.labels.Label_Withdrawn import Label_Withdrawn
-        cls._members_loaded = True
-
-    @classmethod
     def members(cls) -> tuple[type, ...]:
-        """Document-life Status-kind Label_* that take this label (imported; ordered by `order`).
-
-        Only members that declare `kinds` (which document kinds they apply to) are
-        returned. Other Label_* that still `takes=(Label_Status,)` without `kinds`
-        are not document-life Status words and stay out of this closed set.
-        """
-        cls._ensure_members()
+        """Document-life Status words under thing (ordered); domain Status words stay out until imported for their own queries."""
+        DeclaredLabel.ensure_under('modules.identity.thing.labels')
         found = [
             member for member in DeclaredLabel.taking(cls)
-            if getattr(member, 'kinds', ())
+            if getattr(member, 'order', None) is not None
         ]
-        return tuple(sorted(found, key=lambda member: getattr(member, 'order', 10**9)))
+        return tuple(sorted(found, key=lambda member: member.order))
 
     @classmethod
     def for_document(cls, document_kind) -> tuple[type, ...]:
-        """Members whose `kinds` lists DOCUMENT_KIND (a type with `.word`, or a word)."""
-        word = document_kind if isinstance(document_kind, str) else document_kind.word
-        return tuple(member for member in cls.members() if word in member.kinds)
+        """Status words the document kind declares via statuses(); a word looks up an imported kind."""
+        if isinstance(document_kind, str):
+            wanted = document_kind.strip().lower()
+            document_kind = next(
+                (
+                    member for member in DeclaredLabel.all_declared()
+                    if getattr(member, 'word', '').lower() == wanted and hasattr(member, 'statuses')
+                ),
+                None,
+            )
+            if document_kind is None:
+                return ()
+        statuses = getattr(document_kind, 'statuses', None)
+        if statuses is None:
+            return ()
+        held = statuses() if callable(statuses) else statuses
+        return tuple(held)
 
     @classmethod
     def read(cls, text: str):

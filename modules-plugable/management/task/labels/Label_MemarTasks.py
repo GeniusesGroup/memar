@@ -8,5 +8,4 @@ class Label_MemarTasks(DeclaredLabel):
     word = 'memar-tasks'
     id = '01a14a13-19cc-7794-96e1-38952aab81f5'
     meaning = "Memar's task records and the tooling that opens, queues, claims, archives and sweeps them."
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

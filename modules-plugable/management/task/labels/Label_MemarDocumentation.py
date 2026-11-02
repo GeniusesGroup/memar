@@ -8,5 +8,4 @@ class Label_MemarDocumentation(DeclaredLabel):
     word = 'memar-documentation'
     id = '01a14a13-19a1-73a4-9827-b2de020e5476'
     meaning = "Memar's documentation and the content services that read, check and write its documents."
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

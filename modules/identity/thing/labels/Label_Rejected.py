@@ -9,8 +9,6 @@ class Label_Rejected(DeclaredLabel):
     id = '01a14a04-6527-7b35-8b8c-8438070c1c38'
     meaning = 'Considered and explicitly not adopted; kept for the historical record.'
     order = 5
-    takes = (Label_Status,)
-    kinds = ('Explanation',)
+    labels = (Label_Status,)
     safe = 'No'
     report_ending = None
-    labels = ('Status',)

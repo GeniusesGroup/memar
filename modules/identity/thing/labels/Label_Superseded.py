@@ -9,8 +9,6 @@ class Label_Superseded(DeclaredLabel):
     id = '01a14a04-6526-7818-93c4-ad6502671d9b'
     meaning = 'Replaced by a newer document, which the cited relation names.'
     order = 4
-    takes = (Label_Status,)
-    kinds = ('Explanation',)
+    labels = (Label_Status,)
     safe = 'No: depend on the superseding document'
     report_ending = None
-    labels = ('Status',)

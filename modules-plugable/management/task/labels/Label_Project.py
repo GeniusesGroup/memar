@@ -8,5 +8,4 @@ class Label_Project(DeclaredLabel):
     word = 'project'
     id = '01a19209-8533-75b4-af0c-275079dc1174'
     meaning = 'A task that is a project: the upstream task of a body of work, active until the work ends, which other tasks refer to; its names are its titles.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

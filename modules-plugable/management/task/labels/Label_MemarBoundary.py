@@ -8,5 +8,4 @@ class Label_MemarBoundary(DeclaredLabel):
     word = 'memar-boundary'
     id = '01a14a13-19b8-7327-94b4-e9a6c6f53ce4'
     meaning = 'What belongs in Memar and what belongs outside it, in organization, a library or another project, and the moves that follow.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

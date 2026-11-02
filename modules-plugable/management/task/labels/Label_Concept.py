@@ -8,5 +8,4 @@ class Label_Concept(DeclaredLabel):
     word = 'concept'
     id = '01a15043-2a68-792b-af93-53b6b152c023'
     meaning = 'Modeling a concept before it is placed in a module; no record the search reaches carries it, so this sentence is read from its word.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

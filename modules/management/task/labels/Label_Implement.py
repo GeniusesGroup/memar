@@ -8,7 +8,6 @@ class Label_Implement(DeclaredLabel):
     word = 'implement'
     id = '01a14a04-6533-7efe-98ac-0e9e47dc1376'
     meaning = 'The task builds or changes code, a test or a tool whose design is already settled, one checked step at a time.'
-    takes = (Label_TaskKind,)
+    labels = (Label_TaskKind,)
     order = 5
     carried = True
-    labels = ('TaskKind',)

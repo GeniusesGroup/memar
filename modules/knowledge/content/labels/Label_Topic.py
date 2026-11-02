@@ -2,6 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+from modules.knowledge.label.labels.Label_LabelKind import Label_LabelKind
 
 class Label_Topic(DeclaredLabel):
     word = 'Topic'
@@ -9,7 +10,8 @@ class Label_Topic(DeclaredLabel):
     meaning = (
         'A label other labels take when they name the subject a content record is about. '
         'Each subject word is its own Label_<Word> Type in the domain that owns it '
-        '(a stream of work under task; a module-named topic in that module).'
+        '(a stream of work under task). A word that only names a module is a reference '
+        'to that module, not a Topic.'
     )
     order = 2
-    labels = ('LabelKind',)
+    labels = (Label_LabelKind,)

@@ -8,5 +8,4 @@ class Label_Research(DeclaredLabel):
     word = 'research'
     id = '01a1928d-3597-70d5-acea-7408e9301e40'
     meaning = 'A task whose work is a research: an inquiry whose findings other tasks use and cite.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

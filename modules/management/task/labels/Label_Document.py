@@ -8,7 +8,6 @@ class Label_Document(DeclaredLabel):
     word = 'document'
     id = '01a14a04-6534-78ea-b510-9d2abcdcba79'
     meaning = 'The task writes or revises a document whose content is already settled.'
-    takes = (Label_TaskKind,)
+    labels = (Label_TaskKind,)
     order = 6
     carried = True
-    labels = ('TaskKind',)

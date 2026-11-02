@@ -8,5 +8,4 @@ class Label_ImportRelocation(DeclaredLabel):
     word = 'import-relocation'
     id = '01a1508b-7a5d-7448-870a-396c655df680'
     meaning = 'Moving imports to the modules that now hold what they import; no record the search reaches carries it, so this sentence is read from its word.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

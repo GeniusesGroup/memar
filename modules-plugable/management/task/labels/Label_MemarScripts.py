@@ -8,5 +8,4 @@ class Label_MemarScripts(DeclaredLabel):
     word = 'memar-scripts'
     id = '01a14a13-1972-7b1b-8056-e00b30bb0067'
     meaning = "Memar's own scripts and the `memar` command: what each verb does, and the module that holds it."
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

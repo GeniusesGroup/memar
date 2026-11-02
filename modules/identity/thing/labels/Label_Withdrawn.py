@@ -9,8 +9,6 @@ class Label_Withdrawn(DeclaredLabel):
     id = '01a14a04-652d-7d1c-963b-a0fd21c182dd'
     meaning = 'Abandoned without an answer; the reason is recorded in the record itself.'
     order = 11
-    takes = (Label_Status,)
-    kinds = ('Research',)
+    labels = (Label_Status,)
     safe = 'No'
     report_ending = None
-    labels = ('Status',)

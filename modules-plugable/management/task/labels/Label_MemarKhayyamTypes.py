@@ -8,5 +8,4 @@ class Label_MemarKhayyamTypes(DeclaredLabel):
     word = 'memar-khayyam-types'
     id = '01a14a13-1980-7a5f-8be8-e766626965a0'
     meaning = "Memar's own types written as Khayyam types."
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

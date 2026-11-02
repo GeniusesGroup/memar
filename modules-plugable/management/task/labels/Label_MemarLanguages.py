@@ -8,5 +8,4 @@ class Label_MemarLanguages(DeclaredLabel):
     word = 'memar-languages'
     id = '01a14a13-1a3a-7365-bc2b-112e0ebb062e'
     meaning = 'The types of the human languages Memar supports, and the abstraction of how each is written.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

@@ -9,8 +9,6 @@ class Label_Active(DeclaredLabel):
     id = '01a14a04-6529-77f7-9f29-c657a634a824'
     meaning = 'Being worked on or investigated now.'
     order = 7
-    takes = (Label_Status,)
-    kinds = ('Plan', 'Report', 'Handoff', 'Research',)
+    labels = (Label_Status,)
     safe = 'No'
     report_ending = 'its budget ended or it made no progress: another pass is owed'
-    labels = ('Status',)

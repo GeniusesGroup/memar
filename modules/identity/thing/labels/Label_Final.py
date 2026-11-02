@@ -9,8 +9,6 @@ class Label_Final(DeclaredLabel):
     id = '01a14a04-6525-7362-b4b2-3654fb2c06a6'
     meaning = 'Reflected in canonical documentation.'
     order = 3
-    takes = (Label_Status,)
-    kinds = ('Explanation',)
+    labels = (Label_Status,)
     safe = 'Yes'
     report_ending = None
-    labels = ('Status',)

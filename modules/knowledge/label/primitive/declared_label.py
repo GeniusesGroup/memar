@@ -1,27 +1,32 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
+import hashlib
+import importlib
+import importlib.util
+import pkgutil
+from pathlib import Path
 from modules.knowledge.text.primitive.word import Word
 from modules.knowledge.label.primitive.label import Label, LabelDefinition
 
 _REGISTRY: list[type] = []
+_ENSURED_PACKAGES: set[str] = set()
 
 class DeclaredLabel(Word):
     """A label declared as a Type `Label_<Word>`; subclasses register themselves in memory.
 
-    Registration is process-local: a Label_* is known to `taking` only after its
-    module has been imported. That is weaker than a graph of label edges, and
-    stronger than walking the filesystem for every query ([detail.kh](../../../computer/type/protocol/detail.kh)
-    for human-facing text of a type).
+    `labels` holds the DeclaredLabel types this word takes (its kinds). Word text is
+    always read from the type (`word` / Details), never cached beside it as strings.
+    The registry is process-local until a graph of label edges replaces it.
     """
     id = ''
-    takes: tuple[type, ...] = ()
+    labels: tuple[type, ...] = ()
     ended = ''
     replaced_by: tuple[type, ...] = ()
-    kinds: tuple[str, ...] = ()
     safe = ''
     report_ending: str | None = None
     carried = True
+    order: int | None = None
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
@@ -39,7 +44,7 @@ class DeclaredLabel(Word):
     def definition(cls) -> LabelDefinition:
         return LabelDefinition(
             cls.as_label,
-            tuple(taken.as_label for taken in cls.takes),
+            tuple(taken.as_label for taken in cls.labels),
             cls.meaning,
             cls.ended,
             tuple(replaced.as_label for replaced in cls.replaced_by),
@@ -75,8 +80,39 @@ class DeclaredLabel(Word):
 
     @classmethod
     def taking(cls, kind: type) -> tuple[type, ...]:
-        """Declared Label_* types whose `takes` include KIND (only among modules already imported)."""
-        return tuple(member for member in _REGISTRY if kind in getattr(member, 'takes', ()))
+        """Declared Label_* whose `labels` include KIND (among modules already imported)."""
+        return tuple(member for member in _REGISTRY if kind in getattr(member, 'labels', ()))
+
+    @classmethod
+    def ensure_under(cls, package_name: str) -> None:
+        """Import every `Label_*` module under PACKAGE_NAME into the registry."""
+        if package_name in _ENSURED_PACKAGES:
+            return
+        package = importlib.import_module(package_name)
+        paths = getattr(package, '__path__', None)
+        if paths is None:
+            _ENSURED_PACKAGES.add(package_name)
+            return
+        for module in pkgutil.walk_packages(paths, package.__name__ + '.'):
+            leaf = module.name.rsplit('.', 1)[-1]
+            if leaf.startswith('Label_') or '.labels.Label_' in module.name:
+                importlib.import_module(module.name)
+        _ENSURED_PACKAGES.add(package_name)
+
+    @classmethod
+    def import_path(cls, path: Path) -> type:
+        """Load one Label_* file by path into the registry; return its type."""
+        name = '_memar_labels_' + hashlib.sha1(str(path).encode('utf-8')).hexdigest()
+        spec = importlib.util.spec_from_file_location(name, path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        found = [
+            attr for attr in vars(module).values()
+            if isinstance(attr, type) and issubclass(attr, DeclaredLabel) and attr is not DeclaredLabel and attr.__name__.startswith('Label_')
+        ]
+        if len(found) != 1:
+            raise TypeError(f'{path}: one Label_<Word> per file; found {len(found)}')
+        return found[0]
 
     @classmethod
     def read_among(cls, members: tuple[type, ...], text: str):

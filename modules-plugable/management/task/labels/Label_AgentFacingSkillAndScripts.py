@@ -8,5 +8,4 @@ class Label_AgentFacingSkillAndScripts(DeclaredLabel):
     word = 'agent-facing-skill-and-scripts'
     id = '01a154e2-a32b-7c06-b910-db3f22dd8695'
     meaning = 'The Memar skill and the scripts an agent reads and runs.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

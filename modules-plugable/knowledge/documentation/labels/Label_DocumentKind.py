@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from importlib import import_module
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+from modules.knowledge.label.labels.Label_LabelKind import Label_LabelKind
 
 class Label_DocumentKind(DeclaredLabel):
     word = 'DocumentKind'
@@ -12,30 +12,20 @@ class Label_DocumentKind(DeclaredLabel):
         '(Plan, Report, Explanation, Handoff, Research).'
     )
     order = 1
-    labels = ('LabelKind',)
+    labels = (Label_LabelKind,)
 
     @classmethod
     def DevActionNote(cls) -> str:
         return (
-            'Declare each document-kind word as Label_<Word>(DeclaredLabel) with takes=(Label_DocumentKind,). '
-            'Ask members() on this type.'
+            'Declare each document-kind word as Label_<Word>(DeclaredLabel) with labels=(Label_DocumentKind,). '
+            'Declare statuses() as the Status-kind types that kind may take. Ask members() on this type.'
         )
 
     @classmethod
-    def _ensure_members(cls) -> None:
-        if getattr(cls, '_members_loaded', False):
-            return
-        import_module('modules-plugable.knowledge.documentation.explanation.labels.Label_Explanation')
-        import_module('modules-plugable.knowledge.documentation.plan.labels.Label_Plan')
-        import_module('modules-plugable.knowledge.documentation.report.labels.Label_Report')
-        import_module('modules-plugable.knowledge.documentation.handoff.labels.Label_Handoff')
-        import_module('modules-plugable.knowledge.documentation.research.labels.Label_Research')
-        cls._members_loaded = True
-
-    @classmethod
     def members(cls) -> tuple[type, ...]:
-        cls._ensure_members()
-        return DeclaredLabel.taking(cls)
+        DeclaredLabel.ensure_under('modules-plugable.knowledge.documentation')
+        found = DeclaredLabel.taking(cls)
+        return tuple(sorted(found, key=lambda member: getattr(member, 'order', 10**9)))
 
     @classmethod
     def read(cls, text: str):

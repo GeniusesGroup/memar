@@ -8,5 +8,4 @@ class Label_MemoryPort(DeclaredLabel):
     word = 'memory-port'
     id = '01a167b9-f20e-7305-95a0-e055447a1869'
     meaning = 'The memory port and its adapters, and the task verbs and records moved onto it.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

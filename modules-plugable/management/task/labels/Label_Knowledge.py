@@ -8,5 +8,4 @@ class Label_Knowledge(DeclaredLabel):
     word = 'knowledge'
     id = '01a14f34-bd79-73d9-b20c-3ccb0034fe0a'
     meaning = 'Work across the modules of the knowledge category; a category holds modules and no declarations, so the stream is declared here.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

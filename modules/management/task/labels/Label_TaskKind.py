@@ -2,6 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+from modules.knowledge.label.labels.Label_LabelKind import Label_LabelKind
 
 class Label_TaskKind(DeclaredLabel):
     word = 'TaskKind'
@@ -12,4 +13,4 @@ class Label_TaskKind(DeclaredLabel):
         'Each act word is its own Label_<Word> Type under the task domain.'
     )
     order = 3
-    labels = ('LabelKind',)
+    labels = (Label_LabelKind,)

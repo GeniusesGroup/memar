@@ -8,7 +8,6 @@ class Label_Plan(DeclaredLabel):
     word = 'plan'
     id = ''
     meaning = 'A task coordinates other tasks — writes, queues or hands over their plans, or asks for a review of their work — and adds this to the kind of its own task, so no plan carries it.'
-    takes = (Label_TaskKind,)
+    labels = (Label_TaskKind,)
     order = 2
     carried = False
-    labels = ('TaskKind',)

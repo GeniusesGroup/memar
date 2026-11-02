@@ -9,8 +9,6 @@ class Label_Queued(DeclaredLabel):
     id = '01a14a04-6528-796c-8a26-e8132b15f166'
     meaning = 'Waiting to be taken up; nobody has started it.'
     order = 6
-    takes = (Label_Status,)
-    kinds = ('Plan',)
+    labels = (Label_Status,)
     safe = 'No'
     report_ending = None
-    labels = ('Status',)

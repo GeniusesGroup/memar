@@ -9,8 +9,6 @@ class Label_Proposed(DeclaredLabel):
     id = '01a14a04-6524-7dda-8f7d-d0005f0d99d4'
     meaning = 'Design discussion reached consensus; ready for final review before being reflected in canonical documentation.'
     order = 2
-    takes = (Label_Status,)
-    kinds = ('Explanation',)
+    labels = (Label_Status,)
     safe = 'Not yet'
     report_ending = None
-    labels = ('Status',)

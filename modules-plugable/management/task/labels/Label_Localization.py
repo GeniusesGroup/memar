@@ -8,5 +8,4 @@ class Label_Localization(DeclaredLabel):
     word = 'localization'
     id = '01a14a13-1a0e-7dc1-aa1d-a880b7fd45b2'
     meaning = "How a type's words are given in each human language: its details and their files."
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

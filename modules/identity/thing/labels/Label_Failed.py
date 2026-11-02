@@ -7,5 +7,4 @@ class Label_Failed(DeclaredLabel):
     word = 'failed'
     id = '01a19853-60ef-726b-ac8d-a1c068c10945'
     meaning = 'The attempt failed.'
-    takes = ()
-    labels = ('Status',)
+    labels = ()

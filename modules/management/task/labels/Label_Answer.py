@@ -8,7 +8,6 @@ class Label_Answer(DeclaredLabel):
     word = 'answer'
     id = ''
     meaning = 'A question is answered in the conversation itself, which opens no task and so writes no plan.'
-    takes = (Label_TaskKind,)
+    labels = (Label_TaskKind,)
     order = 1
     carried = False
-    labels = ('TaskKind',)

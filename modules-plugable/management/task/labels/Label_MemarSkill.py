@@ -8,5 +8,4 @@ class Label_MemarSkill(DeclaredLabel):
     word = 'memar-skill'
     id = '01a155a9-fc6c-7489-8fbd-92cbdce9b6fc'
     meaning = 'The Memar skill file and what every task pays to read before its first step.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

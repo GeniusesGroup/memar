@@ -132,9 +132,8 @@ class Fixture(unittest.TestCase):
                 f"    word = {word!r}\n"
                 f"    id = {new_id()!r}\n"
                 f"    meaning = 'work on {word}'\n"
-                f"    takes = (Label_Topic,)\n"
+                f"    labels = (Label_Topic,)\n"
                 f"{extras}"
-                "    labels = ('Topic',)\n",
                 encoding='utf-8',
             )
         task_plan_labels.forget()

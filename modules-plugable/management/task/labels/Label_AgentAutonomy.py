@@ -8,5 +8,4 @@ class Label_AgentAutonomy(DeclaredLabel):
     word = 'agent-autonomy'
     id = '01a16468-aa1d-765e-84f5-4bfabf5d1ec8'
     meaning = 'Why agents hand questions to the owner instead of finding the answers in Memar, and the fixes.'
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

@@ -8,5 +8,4 @@ class Label_MemarCli(DeclaredLabel):
     word = 'memar-cli'
     id = '01a15a79-c9c2-735a-bbd8-da6731e1bc68'
     meaning = "The names of the `memar` command's verbs and of the services behind them."
-    takes = (Label_Topic,)
-    labels = ('Topic',)
+    labels = (Label_Topic,)

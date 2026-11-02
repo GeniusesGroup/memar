@@ -44,12 +44,12 @@ class Values(unittest.TestCase):
             'Queued', 'Active', 'Paused', 'Blocked', 'Complete', 'Withdrawn',
         ])
 
-    def test_each_value_has_a_meaning_a_kind_and_a_safety(self) -> None:
+    def test_each_value_has_a_meaning_and_a_safety(self) -> None:
         for status in Label_Status.members():
             with self.subTest(status=status.word):
                 self.assertTrue(status.meaning)
-                self.assertTrue(status.kinds)
                 self.assertTrue(status.safe)
+                self.assertIn(Label_Status, status.labels)
 
     def test_the_key_is_the_word_lower_case(self) -> None:
         self.assertEqual(Label_Complete.key, 'complete')
@@ -97,6 +97,7 @@ class Kinds(unittest.TestCase):
 
     def test_a_task_plan_may_be_queued_active_blocked_or_complete(self) -> None:
         self.assertEqual(Label_Status.for_document(Label_Plan), (Label_Queued, Label_Active, Label_Blocked, Label_Complete))
+        self.assertEqual(Label_Plan.statuses(), (Label_Queued, Label_Active, Label_Blocked, Label_Complete))
 
     def test_a_task_report_may_be_active_blocked_or_complete(self) -> None:
         self.assertEqual(Label_Status.for_document(Label_Report), (Label_Active, Label_Blocked, Label_Complete))
@@ -118,9 +119,10 @@ class ReportEnding(unittest.TestCase):
             with self.subTest(status=status.word):
                 self.assertTrue(status.report_ending)
 
-    def test_no_other_status_has_one(self) -> None:
+    def test_no_other_document_life_status_outside_report_has_one(self) -> None:
+        report = set(Label_Status.for_document(Label_Report))
         for status in Label_Status.members():
-            if Label_Report.word not in status.kinds:
+            if status not in report:
                 with self.subTest(status=status.word):
                     self.assertIsNone(status.report_ending)
 

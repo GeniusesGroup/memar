@@ -9,8 +9,6 @@ class Label_Draft(DeclaredLabel):
     id = '01a14a04-6523-7916-969a-cedf7ef62566'
     meaning = "Direction is not yet settled; real, unresolved questions remain, recorded in the document's paired handoff."
     order = 1
-    takes = (Label_Status,)
-    kinds = ('Explanation',)
+    labels = (Label_Status,)
     safe = 'No'
     report_ending = None
-    labels = ('Status',)
