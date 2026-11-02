@@ -7,9 +7,9 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-from ._index import PrivateIndex, index_entries
-from ._lock import LOCK_NOTE, lock_deadline, once, patiently, stopped
-from ._run import plumb, repository_flag, repository_root, run_captured, stderr_of
+from bundles.memar_git.services._index import PrivateIndex, index_entries
+from bundles.memar_git.services._lock import LOCK_NOTE, lock_deadline, once, patiently, stopped
+from bundles.memar_git.services._run import plumb, repository_flag, repository_root, run_captured, stderr_of
 RECORD_ATTEMPTS = 8
 
 def _manifest_entries(manifest: Path) -> dict[str, Path]:

@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""computer/git/services/_index.py — a private index to build a tree in, reading entries of a tree or an index, and the one write that gives the shared index a commit's entries.
-
-Shared by `commit`, `reindex` and `record`. The private index is a file of its own in a folder of
-its own under the repository's git folder, gone when the command ends, so two commands at once
-never read or write one file.
-"""
 from __future__ import annotations
 import os
 import tempfile
@@ -15,16 +9,10 @@ from ._lock import once, patiently, stopped, this_command
 from ._run import plumb
 
 def tree_entry(rev: str, path: str, root: Path) -> str:
-    """`mode sha` of path in rev, or empty when rev does not hold it."""
     listed = plumb(['ls-tree', rev, '--', path], root)
     return listed.split('\t')[0].replace(' blob ', ' ') if listed else ''
 
 class PrivateIndex:
-    """A throwaway index file of its own, made inside the repository's git folder and gone when the command ends.
-
-    Two commands at once each get their own, so neither reads or writes the
-    other's. The folder is removed by `tempfile`, not by this file.
-    """
 
     def __init__(self, root: Path) -> None:
         git_dir = Path(plumb(['rev-parse', '--absolute-git-dir'], root))
@@ -37,7 +25,6 @@ class PrivateIndex:
         self._folder.cleanup()
 
 def tree_entries(rev: str, paths: list[str], root: Path) -> dict[str, str]:
-    """`mode sha` of each file under PATHS in REV, by path."""
     if not paths:
         return {}
     listed = plumb(['--literal-pathspecs', 'ls-tree', '-r', '-z', rev, '--', *paths], root)
@@ -49,7 +36,6 @@ def tree_entries(rev: str, paths: list[str], root: Path) -> dict[str, str]:
     return entries
 
 def index_entries(paths: list[str], root: Path, env: dict | None=None) -> dict[str, str]:
-    """`mode sha` of each entry under PATHS in the index ENV names, the shared one by default, by path."""
     if not paths:
         return {}
     listed = plumb(['--literal-pathspecs', 'ls-files', '-s', '-z', '--', *paths], root, env=env)
@@ -61,7 +47,6 @@ def index_entries(paths: list[str], root: Path, env: dict | None=None) -> dict[s
     return entries
 
 def index_input(rev: str, paths: list[str], root: Path, env: dict | None=None) -> bytes:
-    """`update-index -z --index-info` input giving PATHS REV's entries, and taking out each entry REV lacks."""
     want = tree_entries(rev, paths, root)
     zero = '0' * len(plumb(['rev-parse', rev], root))
     records = [f'{entry}\t{path}' for path, entry in want.items()]
@@ -69,12 +54,6 @@ def index_input(rev: str, paths: list[str], root: Path, env: dict | None=None) -
     return ''.join((f'{record}\x00' for record in records)).encode('utf-8')
 
 def index_from(rev: str, was: str, paths: list[str], root: Path, reached: str, deadline: float) -> None:
-    """Give PATHS in the shared index REV's entries, in one write; stop saying how to finish or undo when it cannot.
-
-    One write, so the shared index holds either every path as it did before or
-    every path as REV has them, never a mix. REACHED says where HEAD stands,
-    for the message that stops; WAS is the commit HEAD was moved from.
-    """
     if not paths:
         return
     done, lock = patiently(['update-index', '-z', '--index-info'], root, deadline, index_input(rev, paths, root))

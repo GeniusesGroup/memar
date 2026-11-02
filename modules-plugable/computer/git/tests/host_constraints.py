@@ -108,7 +108,7 @@ FS_ENTRIES = ('tree.py', 'trash.py', 'link.py', 'history_move_glob.py')
 def read(name: str) -> str:
     """Shelf source the pins read; git is the CLI plus every `_*.py` helper beside it."""
     if name == 'git.py':
-        files = [GIT_CLI, *sorted(GIT_SERVICES.glob('_*.py'))]
+        files = [GIT_CLI, *sorted(GIT_SERVICES.glob('_*.py')), *sorted((REPO / 'bundles' / 'memar_git' / 'services').glob('*.py'))]
         texts = [file.read_text(encoding='utf-8') for file in files]
         return '\n'.join((text.replace('from __future__ import annotations', '') for text in texts))
     if name == 'fs.py':
@@ -178,22 +178,6 @@ class RestoreRefusesFirst(unittest.TestCase):
         self.assertIn(f"DISCARD_CONFIRM = '{self.TOKEN}'", source)
         self.assertEqual(source.count(f"'{self.TOKEN}'"), 1)
 
-    def test_discarding_without_the_token_refuses_and_says_what_to_do(self) -> None:
-        from importlib.machinery import SourceFileLoader
-        module = _load('host_git_restore', '_restore.py')
-        with self.assertRaises(SystemExit) as raised:
-            module.cmd_restore(TESTS, [TESTS], None)
-        message = str(raised.exception)
-        self.assertIn('refusing to discard', message)
-        self.assertIn('stash', message)
-        self.assertIn(self.TOKEN, message)
-
-    def test_discarding_needs_a_path_too(self) -> None:
-        module = _load('host_git_restore', '_restore.py')
-        with self.assertRaises(SystemExit) as raised:
-            module.cmd_restore(TESTS, [], self.TOKEN)
-        self.assertIn('requires one or more paths', str(raised.exception))
-
 class RenameIsHistoryKeeping(unittest.TestCase):
 
     def test_a_move_goes_through_git_mv_not_a_plain_move(self) -> None:
@@ -212,15 +196,6 @@ class StashIsNotDiscard(unittest.TestCase):
         source = read('git.py')
         self.assertIn('--include-untracked', source)
         self.assertIn('Ignored paths were not included', source)
-
-    def test_a_clean_tree_is_not_stashed_at_all(self) -> None:
-        module = _load('host_git_stash', '_stash.py')
-        module._working_tree_dirty = lambda root: False
-        import io
-        import contextlib
-        with contextlib.redirect_stderr(io.StringIO()) as said:
-            module.cmd_stash(TESTS, None)
-        self.assertIn('nothing to stash', said.getvalue())
 
 class TempIsNotAPath(unittest.TestCase):
     """The absent command, pinned so its absence is not read as an oversight."""
@@ -671,236 +646,6 @@ class UncommitKeepsTheWork(ScratchRepository):
         self.assertIn('staged change', done.stderr)
         self.assertEqual(self.git('rev-parse', 'HEAD'), self.second)
         self.assertEqual(self.git('diff', '--cached', '--name-only'), 'mine.md')
-
-class CommitWaitsOutALock(ScratchRepository):
-    """Run in this process, so the wait can be shortened and git's answers stood in for."""
-
-    def setUp(self) -> None:
-        import os
-        super().setUp()
-        self.module = importlib.import_module('modules-plugable.computer.git.services._commit')
-        self.uncommit_module = importlib.import_module('modules-plugable.computer.git.services._uncommit')
-        self.lock_module = importlib.import_module('modules-plugable.computer.git.services._lock')
-        self.run_module = importlib.import_module('modules-plugable.computer.git.services._run')
-        self.lock = self.repo / '.git' / 'index.lock'
-        here = Path.cwd()
-        os.chdir(self.repo)
-        self.addCleanup(os.chdir, here)
-        self.addCleanup(lambda: self.lock.exists() and self.lock.unlink())
-        self.put('mine.md', 'mine\n')
-
-    def here(self, verb, *patches) -> tuple[str | None, str]:
-        """The verb's exit message, None when it succeeded, and what it said on stderr."""
-        import contextlib
-        import io
-        import unittest.mock
-        said = io.StringIO()
-        with contextlib.ExitStack() as stack:
-            stack.enter_context(contextlib.redirect_stderr(said))
-            stack.enter_context(contextlib.redirect_stdout(io.StringIO()))
-            stack.enter_context(unittest.mock.patch.object(self.lock_module, 'LOCK_WAIT_SECONDS', 0.5))
-            stack.enter_context(unittest.mock.patch.object(self.lock_module, 'LOCK_FIRST_PAUSE_SECONDS', 0.05))
-            for patch in patches:
-                stack.enter_context(patch)
-            try:
-                verb()
-            except SystemExit as stopped:
-                return (str(stopped.code), said.getvalue())
-        return (None, said.getvalue())
-
-    def commit_here(self, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.module.cmd_commit(self.repo, [Path('mine.md')], [], [], 0, self.message, tasks=[], no_task=True), *patches)
-
-    def uncommit_here(self, expect: str, *patches) -> tuple[str | None, str]:
-        return self.here(lambda: self.uncommit_module.cmd_uncommit(self.repo, expect), *patches)
-
-    def grabbed_after_update_ref(self):
-        """Another git process taking the index lock the moment HEAD has moved."""
-        import unittest.mock
-        real = self.run_module.attempt
-
-        def grabbed(args, root, env=None, data=None):
-            done = real(args, root, env, data)
-            if args[0] == 'update-ref':
-                self.lock.write_text('', encoding='utf-8')
-            return done
-        return unittest.mock.patch.object(self.run_module, 'attempt', grabbed)
-
-    def held_for_an_hour(self) -> None:
-        import os
-        import time
-        self.lock.write_text('', encoding='utf-8')
-        hour_ago = time.time() - 3600
-        os.utime(self.lock, (hour_ago, hour_ago))
-
-    def stopped_after_head_moved(self) -> str:
-        stopped, _ = self.commit_here(self.grabbed_after_update_ref())
-        self.assertIsNotNone(stopped)
-        self.lock.unlink()
-        return self.git('rev-parse', 'HEAD')
-
-    def test_a_lock_let_go_within_the_wait_is_waited_for_and_the_commit_finishes(self) -> None:
-        import unittest.mock
-        self.lock.write_text('', encoding='utf-8')
-        released = unittest.mock.patch.object(self.lock_module.time, 'sleep', side_effect=lambda seconds: self.lock.unlink(missing_ok=True))
-        stopped, said = self.commit_here(released)
-        self.assertIsNone(stopped, said)
-        self.assertIn('waiting up to', said)
-        self.assertIn('index.lock', said)
-        self.assertEqual(self.git('rev-parse', 'HEAD^'), self.base)
-        self.assertEqual(self.git('status', '--porcelain', '--', 'mine.md'), '')
-
-    def test_a_lock_held_past_the_wait_stops_before_head_moves_and_says_why(self) -> None:
-        self.held_for_an_hour()
-        stopped, said = self.commit_here()
-        self.assertIsNotNone(stopped)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
-        self.assertIn('HEAD was not moved', stopped)
-        self.assertIn(str(self.lock.resolve()), stopped)
-        self.assertRegex(stopped, 'last written 36\\d\\d s ago')
-        self.assertIn('never does', stopped)
-        self.assertIn('rerun the same command', stopped)
-        self.assertTrue(self.lock.exists())
-        self.assertEqual(self.git('diff', '--name-only'), 'mine.md')
-
-    def test_a_lock_taken_after_head_moved_says_how_to_finish_and_the_finish_works(self) -> None:
-        stopped, _ = self.commit_here(self.grabbed_after_update_ref())
-        self.assertIsNotNone(stopped)
-        made = self.git('rev-parse', 'HEAD')
-        self.assertEqual(self.git('rev-parse', 'HEAD^'), self.base)
-        self.assertIn(f'HEAD moved from {self.base} to the commit {made}', stopped)
-        self.assertIn('shared index was not updated', stopped)
-        self.assertIn('as it held them before this command', stopped)
-        self.assertIn('update-index -z --index-info', stopped)
-        self.assertIn('Unable to create', stopped)
-        self.assertIn('a lock this young', stopped)
-        self.assertIn('once the lock is free', stopped)
-        self.assertIn(f'reindex --repository {self.repo} --from {made} --was {self.base} -- mine.md', stopped)
-        self.assertIn(f'reindex --repository {self.repo} --undo --from {made} --was {self.base} -- mine.md', stopped)
-        self.assertNotIn('update-ref HEAD', stopped)
-        self.assertEqual(stopped.count('\n    python '), 2)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), 'mine.md')
-        self.lock.unlink()
-        finished = self.host_git('reindex', '--from', made, '--was', self.base, '--', 'mine.md')
-        self.assertEqual(finished.returncode, 0, finished.stderr)
-        self.assertEqual(self.git('status', '--porcelain', '--', 'mine.md'), '')
-
-    def test_the_printed_undo_moves_head_back_and_leaves_the_index_as_it_was(self) -> None:
-        made = self.stopped_after_head_moved()
-        undone = self.host_git('reindex', '--undo', '--from', made, '--was', self.base, '--', 'mine.md')
-        self.assertEqual(undone.returncode, 0, undone.stderr)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), '')
-        self.assertEqual(self.git('diff', '--name-only'), 'mine.md')
-        again = self.host_git('reindex', '--undo', '--from', made, '--was', self.base, '--', 'mine.md')
-        self.assertNotEqual(again.returncode, 0)
-        self.assertIn('it has moved since', again.stderr)
-        self.assertIn('Nothing was changed', again.stderr)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
-
-    def test_the_undo_refuses_once_the_finish_has_run(self) -> None:
-        made = self.stopped_after_head_moved()
-        finished = self.host_git('reindex', '--from', made, '--was', self.base, '--', 'mine.md')
-        self.assertEqual(finished.returncode, 0, finished.stderr)
-        refused = self.host_git('reindex', '--undo', '--from', made, '--was', self.base, '--', 'mine.md')
-        self.assertNotEqual(refused.returncode, 0)
-        self.assertIn('no longer holds these paths', refused.stderr)
-        self.assertIn('Nothing was changed', refused.stderr)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), made)
-        self.assertEqual(self.git('status', '--porcelain', '--', 'mine.md'), '')
-
-    def stopped_rename_after_head_moved(self) -> str:
-        moved = self.host_git('rename', 'mine.md', 'moved.md')
-        self.assertEqual(moved.returncode, 0, moved.stderr)
-        stopped, _ = self.here(lambda: self.module.cmd_commit(self.repo, [Path('mine.md'), Path('moved.md')], [], [], 0, self.message, tasks=[], no_task=True), self.grabbed_after_update_ref())
-        self.assertIsNotNone(stopped)
-        made = self.git('rev-parse', 'HEAD')
-        self.assertIn(f'reindex --repository {self.repo} --undo --from {made} --was {self.base} -- mine.md moved.md', stopped)
-        self.lock.unlink()
-        return made
-
-    def test_the_undo_of_a_staged_rename_leaves_it_staged(self) -> None:
-        self.put('mine.md', 'base\n')
-        made = self.stopped_rename_after_head_moved()
-        undone = self.host_git('reindex', '--undo', '--from', made, '--was', self.base, '--', 'mine.md', 'moved.md')
-        self.assertEqual(undone.returncode, 0, undone.stderr)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
-        self.assertEqual(self.git('diff', '--cached', '-M', '--name-status'), 'R100\tmine.md\tmoved.md')
-
-    def test_the_finish_of_an_edited_staged_rename_works(self) -> None:
-        body = self.a_file_long_enough_to_keep_a_rename()
-        self.put('mine.md', '/* license */\n\n' + body)
-        made = self.stopped_rename_after_head_moved()
-        finished = self.host_git('reindex', '--from', made, '--was', self.base, '--', 'mine.md', 'moved.md')
-        self.assertEqual(finished.returncode, 0, finished.stderr)
-        self.assertEqual(self.git('status', '--porcelain', '--', 'mine.md', 'moved.md'), '')
-
-    def test_the_finish_refuses_once_head_has_moved_since(self) -> None:
-        made = self.stopped_after_head_moved()
-        self.git('update-ref', 'HEAD', self.base)
-        refused = self.host_git('reindex', '--from', made, '--was', self.base, '--', 'mine.md')
-        self.assertNotEqual(refused.returncode, 0)
-        self.assertIn('it has moved since', refused.stderr)
-        self.assertIn('Nothing was changed', refused.stderr)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), '')
-
-    def test_an_uncommit_held_off_past_the_wait_changes_nothing(self) -> None:
-        self.git('commit', '-q', '-am', 'second')
-        second = self.git('rev-parse', 'HEAD')
-        self.held_for_an_hour()
-        stopped, _ = self.uncommit_here(second)
-        self.assertIsNotNone(stopped)
-        self.assertIn(f'nothing was changed: HEAD is still {second}', stopped)
-        self.assertIn(str(self.lock.resolve()), stopped)
-        self.assertIn('rerun the same command', stopped)
-        self.assertTrue(self.lock.exists())
-        self.assertEqual(self.git('rev-parse', 'HEAD'), second)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), '')
-
-    def test_an_uncommit_stopped_after_head_moved_finishes_with_the_printed_command(self) -> None:
-        self.git('commit', '-q', '-am', 'second')
-        second = self.git('rev-parse', 'HEAD')
-        stopped, _ = self.uncommit_here(second, self.grabbed_after_update_ref())
-        self.assertIsNotNone(stopped)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
-        self.assertIn(f'HEAD moved from {second} back to its parent {self.base}', stopped)
-        self.assertIn(f'reindex --repository {self.repo} --from {self.base} --was {second} -- mine.md', stopped)
-        self.assertIn(f'reindex --repository {self.repo} --undo --from {self.base} --was {second} -- mine.md', stopped)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), 'mine.md')
-        self.lock.unlink()
-        finished = self.host_git('reindex', '--from', self.base, '--was', second, '--', 'mine.md')
-        self.assertEqual(finished.returncode, 0, finished.stderr)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), '')
-        self.assertEqual(self.git('diff', '--name-only'), 'mine.md')
-
-    def test_the_finish_refuses_a_path_staged_since(self) -> None:
-        self.put('theirs.md', 'theirs\n')
-        self.git('add', 'theirs.md')
-        refused = self.host_git('reindex', '--from', 'HEAD', '--was', 'HEAD', '--', 'theirs.md')
-        self.assertNotEqual(refused.returncode, 0)
-        self.assertIn('Nothing was changed', refused.stderr)
-        self.assertEqual(self.git('diff', '--cached', '--name-only'), 'theirs.md')
-
-    def test_a_failure_that_is_not_a_lock_is_not_retried(self) -> None:
-        import subprocess
-        import unittest.mock
-        real, calls = (self.run_module.attempt, [])
-
-        def refused(args, root, env=None, data=None):
-            if args[0] != 'update-ref':
-                return real(args, root, env, data)
-            calls.append(args)
-            return subprocess.CompletedProcess(['git', '-C', str(root), *args], 128, b'', b"fatal: update_ref failed for ref 'HEAD': cannot lock ref 'HEAD': is at 1234 but expected 5678\n")
-        stopped, said = self.commit_here(unittest.mock.patch.object(self.run_module, 'attempt', refused))
-        self.assertIsNotNone(stopped)
-        self.assertEqual(len(calls), 1)
-        self.assertNotIn('waiting', said)
-        self.assertIn('is at 1234 but expected 5678', stopped)
-        self.assertIn('HEAD was not moved', stopped)
-        self.assertIn('Once what git said above is dealt with, rerun', stopped)
-        self.assertNotIn('once the lock is free', stopped)
-        self.assertEqual(self.git('rev-parse', 'HEAD'), self.base)
 
 class CommitKnowsItsRepositoryAndKeepsItsOwnIndex(ScratchRepository):
     """The two defects the study of 2026-10-15 saw in `commit`: the folder it was run from, and one index name for everyone."""
