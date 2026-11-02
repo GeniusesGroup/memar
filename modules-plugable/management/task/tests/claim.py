@@ -41,10 +41,7 @@ What is pinned, and what each pin is for:
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+from modules.knowledge.label.labels.Label_Status import Label_Status
 import contextlib
 import io
 import os
@@ -59,8 +56,13 @@ TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
-sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
+memar_fs = _m_fs_memar
+sys.path.insert(2, str(TESTS))
 import earlier_shape
 import shape
 task_files = import_module('modules-plugable.management.task.services.task_memory')
@@ -74,7 +76,6 @@ task_plan = import_module('modules-plugable.management.task.services.plan_file')
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
 task_report = import_module('modules-plugable.management.task.services.report_file')
-from modules.knowledge.label.services.status_words import document_kinds, DOCUMENT_KIND_WORDS, Label_Plan, Label_Report, Label_Explanation, Label_Handoff, Label_Research, statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 
 def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None) -> str:
     ranked = f'Priority: {priority}\n' if priority is not None else ''
@@ -119,7 +120,7 @@ class QueuedIsAStatus(Fixture):
         folder = self.task('20261012T000001Z-1-0', 'queued')
         self.task('20261012T000002Z-1-0', 'active')
         self.assertEqual(self.status_of(folder), 'queued')
-        self.assertIn('queued', status_keys(Label_Plan))
+        self.assertIn('queued', Label_Status.keys(Label_Plan))
         found = [task.id for task in task_find.find_tasks(status='queued')]
         self.assertEqual(found, [folder.name])
         self.assertIsNone(task_report.disagreement('queued', ''))

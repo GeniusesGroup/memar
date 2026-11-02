@@ -22,6 +22,9 @@ def create_report_md(folder: Path, text: str) -> None:
 def create_plan_md(folder: Path, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
     opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     text = _m_plan_file.plan_skeleton(task, title, opened, project, parent=parent, conversation=conversation, status=status, priority=priority, labels=labels, depends_on=depends_on)
+    # Predecessor-generation plans carried Status in front matter; today's skeleton keeps it in facts.
+    if status:
+        text = text.replace('---\n', f'---\n{_m_plan_file.STATUS_WRITTEN}: {status.capitalize()}\n', 1)
     try:
         with (folder / PLAN_NAME).open('x', encoding='utf-8', newline='\n') as plan:
             plan.write(text)

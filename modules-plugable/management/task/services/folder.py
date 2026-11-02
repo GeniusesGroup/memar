@@ -47,7 +47,6 @@ read_plan = _m_plan_file.read_plan
 has_plan = import_module('modules-plugable.management.task.services.task_memory').has_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 DAY_SECONDS = 24 * 60 * 60
 
 class Task(NamedTuple):

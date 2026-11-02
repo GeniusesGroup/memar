@@ -6,7 +6,6 @@ from importlib import import_module
 import re
 Request = import_module('modules-plugable.knowledge.documentation.plan.primitive.request').Request
 Steps = import_module('modules-plugable.knowledge.documentation.plan.primitive.steps').Steps
-from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 Task = _m_folder.Task
 measured_idle = _m_folder.measured_idle

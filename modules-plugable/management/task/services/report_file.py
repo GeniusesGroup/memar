@@ -36,6 +36,7 @@ A report is scratch, like the plan, and goes with its folder: what lasts of it
 is routed by closing by type.
 """
 from __future__ import annotations
+from modules.knowledge.label.labels.Label_Status import Label_Status
 from importlib import import_module
 from pathlib import Path
 files = import_module('modules-plugable.management.task.services.task_memory')
@@ -50,7 +51,6 @@ PLAN = _m_record.PLAN
 REPORT = _m_record.REPORT
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
-from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 REPORT_NAME = REPORT.file_name
 EARLIER_OUTCOME_KEY = 'Outcome'
 EARLIER_STOP_PREFIX = 'Stop:'
@@ -110,8 +110,8 @@ def disagreement(status: str, report_status: str='') -> str | None:
     checks nothing.
     """
     status = status_word(status)
-    if status and status not in status_keys(PLAN.kind):
-        return f"status {status} is not one of {', '.join(status_keys(PLAN.kind))}"
+    if status and status not in Label_Status.keys(PLAN.kind):
+        return f"status {status} is not one of {', '.join(Label_Status.keys(PLAN.kind))}"
     return None
 
 def report_part(folder: Path, heading: str) -> list[str]:

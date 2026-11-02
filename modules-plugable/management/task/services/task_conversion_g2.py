@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
+from modules.knowledge.label.labels.Label_Status import Label_Status
 from modules.identity.thing.labels.Label_Queued import Label_Queued
 from modules.identity.thing.labels.Label_Complete import Label_Complete
 from modules.identity.thing.labels.Label_Blocked import Label_Blocked
@@ -20,7 +21,6 @@ _types = import_module('modules-plugable.management.task.services.task_graph_typ
 _place = import_module('modules.management.timeline.services.timeline_place')
 _timeline_graph = import_module('modules.management.timeline.services.timeline_graph')
 _attach = import_module('modules.knowledge.label.services.attach')
-_status = import_module('modules.knowledge.label.services.status_words')
 ABSENT = _m_store.ABSENT
 Committed = _m_store.Committed
 Found = _m_store.Found
@@ -29,8 +29,7 @@ Graph_Store = _m_graph.Graph_Store
 Graph_PutEdge = _m_graph.Graph_PutEdge
 Graph_ListSidesQuery = _m_graph.Graph_ListSidesQuery
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
-TASK_STATUSES = (_status.Label_Queued, _status.Label_Active, _status.Label_Blocked, _status.Label_Complete)
-
+TASK_STATUSES = (Label_Queued, Label_Active, Label_Blocked, Label_Complete)
 
 class RecordContents:
 
@@ -78,7 +77,6 @@ class RecordContents:
             return listed[0].To
         return None
 
-
 def _facts(folder: Path) -> dict:
     if (folder / _task_files.TASK_FACTS_NAME).is_file():
         held = _task_files.read_facts(folder) or {}
@@ -86,13 +84,11 @@ def _facts(folder: Path) -> dict:
         held = _predecessor.read_facts(folder)
     return held
 
-
 def _legacy_list(value: str) -> list:
     text = (value or '').strip()
     if not text:
         return []
     return text.splitlines() if '\n' in text else [text]
-
 
 def _placed_at_unix(header: dict) -> int:
     text = (header.get('placed_at') or '').strip()
@@ -104,25 +100,21 @@ def _placed_at_unix(header: dict) -> int:
     except ValueError:
         return 0
 
-
 def _put(graph, frm: bytes, relation: bytes, to: bytes, reverse: bytes, fields: bytes = b'') -> None:
     result = graph.put_edge(Graph_PutEdge(LAYOUT_COMPACT, frm, relation, to, reverse, fields, b'', b''))
     if isinstance(result, (_m_store.Refused, _m_store.Unavailable, _m_store.Conflict)):
         raise RuntimeError(f'edge refused: {result!r}')
 
-
 def _set_status_label(graph, task_id: bytes, status: str) -> None:
     word = _task_files.status_word(status) or 'queued'
-    value = _status.read_status(word) or _status.Label_Queued
+    value = Label_Status.read(word) or Label_Queued
     _attach.put_label(graph, task_id, value.label)
-
 
 def _attach_plan_labels(graph, facts: dict, task_id: bytes) -> None:
     from modules.knowledge.label.primitive.label import Labels
     raw = facts.get('labels') or ''
     for label in Labels.read(raw):
         _attach.put_label(graph, task_id, label)
-
 
 def _write_task_edges(graph, store, folder: Path, facts: dict, task_id: bytes) -> None:
     project = (facts.get('project') or '').strip()
@@ -148,7 +140,6 @@ def _write_task_edges(graph, store, folder: Path, facts: dict, task_id: bytes) -
     for dep in _legacy_list(facts.get('depends_on') or ''):
         _put(graph, task_id, _types.DEPENDS_ON, _types.legacy_ref_id(dep), _types.DEPENDS_FOR, _types.fields_legacy_ref(dep))
 
-
 def read_status_label(store, task_id: bytes) -> str:
     graph = Graph_Store(store, LAYOUT_COMPACT)
     held = set(_attach.list_label_ids(graph, task_id))
@@ -156,7 +147,6 @@ def read_status_label(store, task_id: bytes) -> str:
         if _attach.id_bytes(value.label) in held:
             return value.key
     return ''
-
 
 def list_event_is(store, task_id: bytes) -> list[dict]:
     graph = Graph_Store(store, LAYOUT_COMPACT)
@@ -179,7 +169,6 @@ def list_event_is(store, task_id: bytes) -> list[dict]:
         })
     rows.sort(key=lambda row: row['number'])
     return rows
-
 
 def convert_g1_folder(folder: Path, store) -> bytes:
     facts = _facts(folder)
@@ -208,7 +197,6 @@ def convert_g1_folder(folder: Path, store) -> bytes:
         )
         after_by_kind[kind] = number
     return task_id
-
 
 def dump_task_part(store, task_id: bytes) -> dict:
     """Inspectable projection from edges — not a stored domain blob."""

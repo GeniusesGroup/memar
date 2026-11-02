@@ -20,10 +20,8 @@ BUDGET_SECONDS = 30
 _m_files = import_module('modules-plugable.computer.memory.store.files.files')
 _m_graph = import_module('modules-plugable.computer.memory.store.graph.graph')
 _attach = import_module('modules.knowledge.label.services.attach')
-_status = import_module('modules.knowledge.label.services.status_words')
 Graph_Store = _m_graph.Graph_Store
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
-
 
 class Attach(unittest.TestCase):
 
@@ -42,12 +40,11 @@ class Attach(unittest.TestCase):
 
     def test_put_label_uses_label_relation_to_status_uuid(self) -> None:
         thing = uuid.uuid7().bytes
-        queued = _status.Label_Queued.label
+        queued = Label_Queued.label
         _attach.put_label(self.graph, thing, queued)
         held = _attach.list_label_ids(self.graph, thing)
         self.assertEqual(held, [_attach.id_bytes(queued)])
         self.assertEqual(self.graph.count_sides(thing, b'queued'), 0)
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -76,6 +76,7 @@ replaced. This file holds what they and every reader share: the shape, the front
 reading.
 """
 from __future__ import annotations
+from modules.knowledge.label.labels.Label_Status import Label_Status
 from modules.identity.thing.labels.Label_Complete import Label_Complete
 from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
@@ -89,7 +90,6 @@ REPORT = _m_record.REPORT
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import Labels
-from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 PLAN_NAME = PLAN.file_name
 EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar task ensure --help` shows; rewrite it in that shape"
 EARLIER_STATUS_WORDS = ('open', 'done')
@@ -191,7 +191,7 @@ def _front_pairs(lines: list[str]) -> dict[str, str]:
 
 def is_complete(status: str) -> bool:
     """Whether STATUS says the task is finished: the word complete, in any case, and no other."""
-    return read_status(status) is Label_Complete
+    return Label_Status.read(status) is Label_Complete
 
 def read_bytes(path: Path) -> bytes:
     """PATH's bytes, trying again when Windows refuses the read for the moment another process replaces the plan."""

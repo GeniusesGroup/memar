@@ -64,7 +64,6 @@ _m_plan_status = import_module('modules-plugable.management.task.services.plan_s
 set_status = _m_plan_status.set_status
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace('_', '-')
 BLOCKED_EVENT = 'blocked-by-dependency'
 RELEASED_EVENT = 'released-by-dependency'

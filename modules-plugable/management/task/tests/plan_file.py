@@ -64,8 +64,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
+from modules.knowledge.label.labels.Label_Status import Label_Status
 import sys
 import tempfile
 import unittest
@@ -76,6 +75,9 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
+_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
+suite_scratch = _m_fs_test_scratch.suite_scratch
 task_files = import_module('modules-plugable.management.task.services.task_files')
 
 def stores_over(path):
@@ -93,7 +95,6 @@ _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanPriority = _m_priority.Priority
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.label.services.status_words import document_kinds, DOCUMENT_KIND_WORDS, Label_Plan, Label_Report, Label_Explanation, Label_Handoff, Label_Research, statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 TaskKind = _m_task_kind.TaskKind
 TITLE = 'Parse the header'
 OPENED = '2026-10-01T00:00:00Z'
@@ -162,7 +163,7 @@ class ReadsTodaysShape(Fixture):
     def test_the_old_words_are_not_translated(self) -> None:
         self.assertEqual(self.read(new_plan('open')).status, 'open')
         self.assertEqual(self.read(new_plan('Done')).status, 'done')
-        self.assertNotIn(self.read(new_plan('open')).status, status_keys(Label_Plan))
+        self.assertNotIn(self.read(new_plan('open')).status, Label_Status.keys(Label_Plan))
 
     def test_a_body_status_line_gives_a_plan_no_status(self) -> None:
         self.assertEqual(self.read(old_plan('open')).status, '')
@@ -319,7 +320,7 @@ class KindOfTask(Fixture):
                 with self.assertRaises(SystemExit) as refused:
                     task_plan_labels.checked_label(f'TaskKind={kind.word}', None)
                 self.assertIn(f'a plan does not carry the kind {kind.word}', str(refused.exception.code))
-                self.assertIn(kind.applies, str(refused.exception.code))
+                self.assertIn(kind.meaning, str(refused.exception.code))
 
     def test_a_new_plan_writes_the_labels_only_when_given(self) -> None:
         given = task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'), labels=Labels((DESIGN, Label('a', '01a14a04-6536-7c2e-8cc6-276de9a45ba5'))))
