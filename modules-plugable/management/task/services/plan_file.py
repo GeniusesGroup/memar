@@ -87,7 +87,7 @@ REPORT = _m_record.REPORT
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import Labels
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 PLAN_NAME = PLAN.file_name
 EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar task ensure --help` shows; rewrite it in that shape"
 EARLIER_STATUS_WORDS = ('open', 'done')

@@ -115,12 +115,28 @@ class Fixture(unittest.TestCase):
         return shape.new_task(folder, status=status, project=where, labels=held or None)
 
     def declare(self, *words: str, project: Path | None=None, ended: str='', replaced_by: str='') -> None:
-        """Declare each topic of WORDS in PROJECT, as a module of it would: a file of a `labels/` folder holding `LABELS`."""
+        """Declare each topic of WORDS in PROJECT, as a module of it would: a Label_<Word> file of a `labels/` folder."""
         where = (project or self.project) / 'work' / 'labels'
         where.mkdir(parents=True, exist_ok=True)
         for word in words:
-            instead = f", replaced_by=(Label({replaced_by!r}, {new_id()!r}),)" if replaced_by else ''
-            (where / f"{word.replace('-', '_')}.py").write_text(f"from modules.knowledge.label.primitive.label import Label\nfrom modules.knowledge.label.primitive.topic import topic\nLABELS = (topic({word!r}, {new_id()!r}, 'work on {word}', ended={ended!r}{instead}),)\n", encoding='utf-8')
+            cls = 'Label_' + ''.join(part[:1].upper() + part[1:] for part in word.replace('-', '_').split('_') if part)
+            extras = f"    ended = {ended!r}\n" if ended else ''
+            if replaced_by:
+                extras += (
+                    "    # replaced_by left empty in this test helper; ended marks the label\n"
+                )
+            (where / f'{cls}.py').write_text(
+                "from modules.knowledge.label.labels.declared_label import DeclaredLabel\n"
+                "from modules.knowledge.label.labels.Label_Topic import Label_Topic\n\n"
+                f"class {cls}(DeclaredLabel):\n"
+                f"    word = {word!r}\n"
+                f"    id = {new_id()!r}\n"
+                f"    meaning = 'work on {word}'\n"
+                f"    takes = (Label_Topic,)\n"
+                f"{extras}"
+                "    labels = ('Topic',)\n",
+                encoding='utf-8',
+            )
         task_plan_labels.forget()
 
     def label_line(self, spec: str, project: Path) -> str:

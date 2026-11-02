@@ -50,7 +50,7 @@ PLAN = _m_record.PLAN
 REPORT = _m_record.REPORT
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 REPORT_NAME = REPORT.file_name
 EARLIER_OUTCOME_KEY = 'Outcome'
 EARLIER_STOP_PREFIX = 'Stop:'

@@ -10,7 +10,7 @@ TOP = next(p for p in TESTS.parents if p.name == 'modules').parent
 sys.path.insert(0, str(TOP))
 sys.dont_write_bytecode = True
 BUDGET_SECONDS = 10
-Section = import_module('modules.knowledge.content.primitive.section').Section
+Section = import_module('modules.knowledge.text.primitive.section').Section
 
 class SectionPins(unittest.TestCase):
 

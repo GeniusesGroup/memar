@@ -64,7 +64,7 @@ _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanKey = _m_plan_key.PlanKey
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 DEPENDS_FOR = 'Depends_for'
 SEPARATOR = ','
 PROJECT_SEPARATOR = '/'

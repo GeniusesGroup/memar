@@ -74,7 +74,7 @@ task_plan = import_module('modules-plugable.management.task.services.plan_file')
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
 task_report = import_module('modules-plugable.management.task.services.report_file')
-from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.knowledge.label.services.status_words import DocumentKind, Status
 
 def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None) -> str:
     ranked = f'Priority: {priority}\n' if priority is not None else ''

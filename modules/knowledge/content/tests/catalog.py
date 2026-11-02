@@ -11,10 +11,10 @@ TOP = next(p for p in TESTS.parents if p.name == 'modules').parent
 sys.path.insert(0, str(TOP))
 sys.dont_write_bytecode = True
 BUDGET_SECONDS = 10
-Section = import_module('modules.knowledge.content.primitive.section').Section
+Section = import_module('modules.knowledge.text.primitive.section').Section
 Catalog = import_module('modules.knowledge.content.primitive.catalog').Catalog
-SECTION_HEADER = 'from modules.knowledge.content.primitive.section import Section\n\n'
-WORD_HEADER = 'from modules.knowledge.content.primitive.word import Word\n\n'
+SECTION_HEADER = 'from modules.knowledge.text.primitive.section import Section\n\n'
+WORD_HEADER = 'from modules.knowledge.text.primitive.word import Word\n\n'
 
 def declare_section(folder: Path, file: str, name: str, heading: str, order: int, labels: tuple[str, ...]) -> None:
     body = f'class {name}(Section):\n    heading = {heading!r}\n    purpose = "what it is for"\n    order = {order}\n    labels = {labels!r}\n'

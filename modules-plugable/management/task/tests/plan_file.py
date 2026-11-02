@@ -93,7 +93,7 @@ _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanPriority = _m_priority.Priority
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.knowledge.label.services.status_words import DocumentKind, Status
 TaskKind = _m_task_kind.TaskKind
 TITLE = 'Parse the header'
 OPENED = '2026-10-01T00:00:00Z'

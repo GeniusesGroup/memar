@@ -7,8 +7,8 @@ from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 from typing import Iterator
 from zlib import crc32
-from modules.knowledge.content.primitive.section import Section
-from modules.knowledge.content.primitive.word import Word
+from modules.knowledge.text.primitive.section import Section
+from modules.knowledge.text.primitive.word import Word
 
 DECLARES = re.compile(r'^class\s+\w+\(', re.M)
 

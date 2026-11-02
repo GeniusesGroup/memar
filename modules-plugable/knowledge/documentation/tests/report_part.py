@@ -22,7 +22,7 @@ class ReportPartPins(unittest.TestCase):
         self.assertEqual(CATALOG.headings(), NAMES)
 
     def test_each_is_a_type_declared_in_a_file_of_the_folder(self) -> None:
-        base = import_module('modules.knowledge.content.primitive.section').Section
+        base = import_module('modules.knowledge.text.primitive.section').Section
         for member in CATALOG:
             with self.subTest(member=member.__name__):
                 self.assertTrue(isinstance(member, type) and issubclass(member, base))

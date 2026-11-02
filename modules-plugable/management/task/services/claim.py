@@ -43,7 +43,7 @@ from typing import Callable
 from machine.console import fail, note
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder

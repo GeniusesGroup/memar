@@ -66,7 +66,7 @@ PLAN = _m_record.PLAN
 REPORT = _m_record.REPORT
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 
 def status_meanings(statuses: tuple[Status, ...]) -> str:
     """STATUSES as help lines, each word and its meaning, obtained from the type."""

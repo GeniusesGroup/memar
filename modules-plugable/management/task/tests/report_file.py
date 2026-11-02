@@ -55,7 +55,7 @@ sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
 import earlier_shape
 task_report = import_module('modules-plugable.management.task.services.report_file')
-from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.knowledge.label.services.status_words import DocumentKind, Status
 NEW_PARTS = '# Report\n\n## What ran\nx\n'
 
 class Fixture(unittest.TestCase):

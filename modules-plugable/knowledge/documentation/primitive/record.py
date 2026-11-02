@@ -7,7 +7,7 @@ from pathlib import Path
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.content.primitive.record_key import RecordKey
-from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.knowledge.label.services.status_words import DocumentKind, Status
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
 from modules.knowledge.content.primitive.catalog import Catalog

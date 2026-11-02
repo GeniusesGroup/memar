@@ -19,7 +19,7 @@ PlanKey = _m_plan_key.PlanKey
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
 from modules.knowledge.content.primitive.record_key import ID_FIELD
-from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.knowledge.label.services.status_words import DocumentKind, Status
 
 class PlanRecord(unittest.TestCase):
 

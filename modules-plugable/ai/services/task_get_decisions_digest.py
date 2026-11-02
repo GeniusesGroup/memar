@@ -11,7 +11,7 @@ from typing import Callable
 from machine.console import note
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 REPORT = _m_record.REPORT
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 _m_content_questions = import_module('modules-plugable.knowledge.documentation.services.content_questions')
 BLOCKING_MARK = _m_content_questions.BLOCKING_MARK
 open_questions = _m_content_questions.open_questions

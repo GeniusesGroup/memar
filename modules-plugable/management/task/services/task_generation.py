@@ -7,6 +7,7 @@ from pathlib import Path
 _header = import_module('modules.knowledge.text.services.header_text')
 
 TASK_TYPE_UUID = '6e94ed31-f133-485c-a3c0-72def253b37b'
+G2_TYPE_UUID = 'fec2d0e7-eb2b-4179-9f94-2b38b956849f'
 FIRST_GENERATION_TYPE_UUID = '0594ae4f-8708-434f-9d42-d489f4089c09'
 WRITER_FACT = 'writer'
 CONVERTED_FROM_FACT = 'converted_from'

@@ -39,7 +39,7 @@ SCRIPTS = TOP / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
-from modules.knowledge.status.primitive.status import DocumentKind, Status
+from modules.knowledge.label.services.status_words import DocumentKind, Status
 
 class Values(unittest.TestCase):
 
@@ -69,7 +69,7 @@ class StatusIsALabel(unittest.TestCase):
     """Status is a field of its own, and its values are labels of the Status label (owner, 2026-10-16)."""
 
     def test_every_value_is_a_label_whose_definition_takes_the_status_label(self) -> None:
-        from modules.knowledge.status.primitive.status import STATUS_LABEL
+        from modules.knowledge.label.services.status_words import STATUS_LABEL
         definitions = Status.definitions()
         self.assertEqual([d.label.word for d in definitions], [s.word for s in Status])
         for definition in definitions:
@@ -85,7 +85,7 @@ class StatusIsALabel(unittest.TestCase):
 
     def test_the_registry_knows_them_as_statuses(self) -> None:
         from modules.knowledge.label.primitive.label import LabelKind, LabelRegistry, Labels
-        from modules.knowledge.status.primitive.status import STATUS_LABEL
+        from modules.knowledge.label.services.status_words import STATUS_LABEL
         kind = LabelKind(STATUS_LABEL, 'where a document stands', 'everything that reads a Status', str, Status.definitions())
         registry = LabelRegistry([kind])
         self.assertEqual(registry.words(Labels((Status.QUEUED.label, Status.DONE.label if hasattr(Status, 'DONE') else Status.COMPLETE.label)), 'Status'), ('Queued', 'Complete'))
@@ -93,7 +93,7 @@ class StatusIsALabel(unittest.TestCase):
 class Kinds(unittest.TestCase):
 
     def test_the_kind_of_document_is_not_named_kind(self) -> None:
-        import modules.knowledge.status.primitive.status as declared
+        import modules.knowledge.label.services.status_words as declared
         self.assertFalse(hasattr(declared, 'Kind'))
 
     def test_a_task_plan_may_be_queued_active_blocked_or_complete(self) -> None:
@@ -109,7 +109,7 @@ class Kinds(unittest.TestCase):
 
     def test_every_kind_has_values(self) -> None:
         for kind in DocumentKind:
-            with self.subTest(kind=kind.value):
+            with self.subTest(kind=kind.word):
                 self.assertTrue(Status.for_kind(kind))
 
 class ReportEnding(unittest.TestCase):
@@ -121,7 +121,7 @@ class ReportEnding(unittest.TestCase):
 
     def test_no_other_status_has_one(self) -> None:
         for status in Status:
-            if DocumentKind.REPORT not in status.kinds:
+            if DocumentKind.REPORT.word not in status.kinds:
                 with self.subTest(status=status.word):
                     self.assertIsNone(status.report_ending)
 

@@ -5,7 +5,7 @@ from __future__ import annotations
 from importlib import import_module
 from machine.console import fail
 set_status = import_module('modules-plugable.management.task.services.plan_status').set_status
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 
 
 def queue_plan(store, project, task, claimed: bool) -> None:

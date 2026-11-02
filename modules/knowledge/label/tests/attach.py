@@ -19,7 +19,7 @@ BUDGET_SECONDS = 30
 _m_files = import_module('modules-plugable.computer.memory.store.files.files')
 _m_graph = import_module('modules-plugable.computer.memory.store.graph.graph')
 _attach = import_module('modules.knowledge.label.services.attach')
-_status = import_module('modules.knowledge.status.primitive.status')
+_status = import_module('modules.knowledge.label.services.status_words')
 Graph_Store = _m_graph.Graph_Store
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
 

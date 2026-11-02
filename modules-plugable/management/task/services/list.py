@@ -69,7 +69,7 @@ _m_plan_labels = import_module('modules-plugable.management.task.services.plan_l
 labels_of = _m_plan_labels.labels_of
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 PLAN = _m_record.PLAN
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
 disagreement = _m_report_file.disagreement

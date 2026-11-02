@@ -133,7 +133,7 @@ def near_words(word: str, kind: str, registry: LabelRegistry) -> list[str]:
 def undeclared(fresh: LabelDefinition, kind: str, project: Path | None, registry: LabelRegistry) -> str:
     """What is said of a word of the free kind KIND that PROJECT does not declare: where it is declared, the declaration to write, and the declared words near it."""
     word = fresh.label.word
-    said = f"{kind} {word!r} is declared by no module of this project; a {kind} is code, declared by the domain whose it is: by the module it names, or, for a stream of work, by the task domain. Write it in a Python file of that module's `{FOLDER}/` folder, in its `{NAME}` tuple: {kind.lower()}({word!r}, {fresh.label.id!r}, '<one sentence: what work it names>'), then label the task"
+    said = f"{kind} {word!r} is declared by no module of this project; a {kind} is code, declared by the domain whose it is: by the module it names, or, for a stream of work, by the task domain. Write class `{NAME}{''.join(p[:1].upper()+p[1:] for p in word.replace('-', '_').split('_'))}(DeclaredLabel)` in that module's `{FOLDER}/` folder with id={fresh.label.id!r} and takes=(Label_{kind},), then label the task"
     files = sorted({str(item.source.relative_to(project)) if project else str(item.source) for item in declarations_of(project) if item.definition.is_a(registry.kinds[kind].label)})
     if files:
         said += f"; this project declares its {kind} labels in {', '.join(files)}"

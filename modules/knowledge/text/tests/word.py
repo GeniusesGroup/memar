@@ -10,7 +10,7 @@ TOP = next(p for p in TESTS.parents if p.name == 'modules').parent
 sys.path.insert(0, str(TOP))
 sys.dont_write_bytecode = True
 BUDGET_SECONDS = 10
-Word = import_module('modules.knowledge.content.primitive.word').Word
+Word = import_module('modules.knowledge.text.primitive.word').Word
 
 class WordPins(unittest.TestCase):
 

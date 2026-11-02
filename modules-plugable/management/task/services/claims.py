@@ -7,7 +7,7 @@ import argparse
 Request = import_module('modules-plugable.knowledge.documentation.plan.primitive.request').Request
 from typing import Callable
 from machine.console import fail, note
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 _m_plan_brief = plugable_load('ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
 _m_claim = import_module('modules-plugable.management.task.services.claim')

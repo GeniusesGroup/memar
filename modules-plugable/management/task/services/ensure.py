@@ -71,7 +71,7 @@ _m_claim = import_module('modules-plugable.management.task.services.claim')
 is_claimed = _m_claim.is_claimed
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 from modules.knowledge.label.primitive.label import Labels
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey

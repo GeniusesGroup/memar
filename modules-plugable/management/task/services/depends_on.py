@@ -41,7 +41,7 @@ _m_plan_depends = import_module('modules-plugable.management.task.services.plan_
 set_depends_on = _m_plan_depends.set_depends_on
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 

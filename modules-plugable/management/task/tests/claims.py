@@ -75,10 +75,22 @@ task_plan = import_module('modules-plugable.management.task.services.plan_file')
 task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 
 def declare_topic(project: Path, fresh) -> None:
-    """Declare the topic FRESH in PROJECT, as a module of it would: a file of a `labels/` folder holding `LABELS`."""
+    """Declare the topic FRESH in PROJECT, as a module of it would: a Label_<Word> file of a `labels/` folder."""
     where = project / 'work' / 'labels'
     where.mkdir(parents=True, exist_ok=True)
-    (where / f"{fresh.label.word.replace('-', '_')}.py").write_text(f"from modules.knowledge.label.primitive.topic import topic\nLABELS = (topic({fresh.label.word!r}, {fresh.label.id!r}, 'work on {fresh.label.word}'),)\n", encoding='utf-8')
+    word = fresh.label.word
+    cls = 'Label_' + ''.join(part[:1].upper() + part[1:] for part in word.replace('-', '_').split('_') if part)
+    (where / f'{cls}.py').write_text(
+        "from modules.knowledge.label.labels.declared_label import DeclaredLabel\n"
+        "from modules.knowledge.label.labels.Label_Topic import Label_Topic\n\n"
+        f"class {cls}(DeclaredLabel):\n"
+        f"    word = {word!r}\n"
+        f"    id = {fresh.label.id!r}\n"
+        f"    meaning = 'work on {word}'\n"
+        f"    takes = (Label_Topic,)\n"
+        "    labels = ('Topic',)\n",
+        encoding='utf-8',
+    )
     task_plan_labels.forget()
 
 def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None, project: str='P', topic: str | tuple[str, ...] | None=None) -> str:

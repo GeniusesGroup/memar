@@ -7,7 +7,7 @@ from machine.console import fail
 status_word = import_module('modules-plugable.management.task.services.plan_file').status_word
 PLAN = import_module('modules-plugable.knowledge.documentation.primitive.record').PLAN
 change_fact = import_module('modules-plugable.management.task.services.fact_retry').change_fact
-from modules.knowledge.status.primitive.status import Status
+from modules.knowledge.label.services.status_words import Status
 
 
 def set_status(store, project, task, status: str, only_from: tuple | None = None) -> None:
