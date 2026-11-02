@@ -1,10 +1,9 @@
 ---
 Title: "Go Port Rule — Result Parameter Names"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-28
 ID: "497379"
 ---
-
 # Go Port Rule — Result Parameter Names
 The Go port's rules live one rule per folder under [`targets/go/rules/`](../README.md), and this is the rule for a parameter name that no author chose. It rewrites source; it is applied by `abstraction_bridge.py tidy --rule result-parameter-names` in [`targets/go/`](../../abstraction_bridge.py).
 

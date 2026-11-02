@@ -20,6 +20,6 @@
 
 - Receiving [budget.md](../../budget.md) review question: are these role labels or the general role/delegation machinery? Budget-role and budget-label vocabulary converges in [budget.md](../../budget.md) Open questions (one home, incl. the Materials/Labor list shared with the transaction shortcut comments).
 - What does each role trigger — Rectifier corrects, Executor performs, Quality_Controller approves? Record before ratifying (no bare edges).
-- Are the roles statuses (sync service checks) or labels (async business-rule checks) per [status](../../../../../modules/knowledge/status/status.md)?
+- Are the roles Status-kind labels (lifecycle words taking `Label_Status`) or other label kinds, per [Documentation → Status](../../../../../modules-plugable/knowledge/documentation/documentation.md#status)?
 - Direction/naming unconfirmed — nothing ratified.
 

@@ -1,10 +1,9 @@
 ---
 Title: "Securing Sensitive Spaces"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497095
 ---
-
 # Securing Sensitive Spaces
 
 ## Abstract

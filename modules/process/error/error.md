@@ -1,10 +1,9 @@
 ---
 Title: "The Error"
-Status: Proposed
+Labels: Proposed
 Start Date: 2026-07-09
 ID: 495440
 ---
-
 # The Error
 
 ## Abstract

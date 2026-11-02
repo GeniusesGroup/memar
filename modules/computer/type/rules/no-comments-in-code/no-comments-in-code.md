@@ -1,9 +1,8 @@
 ---
 Title: "Type Rule — No Comments in Code"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # Type Rule — No Comments in Code
 A rule of this repository, held for [Type](../../type.md), whose human-facing identity is written by the type's own methods ([Khayyam → Self-Documenting Code and Naming](../../../../../docs/khayyam/khayyam.md#self-documenting-code-and-naming)). It applies to code, in every language this repository's code is written in, and to nothing that is not code. It is held by Type because what a type says of itself is Type's, and the exception it admits is the documentation module's claim: Python is used only because it compiles and runs today, and no habit of it is wanted.
 

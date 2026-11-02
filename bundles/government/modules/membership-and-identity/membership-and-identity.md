@@ -1,10 +1,9 @@
 ---
 Title: "Membership and Identity"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497085
 ---
-
 # Membership and Identity
 
 ## Abstract

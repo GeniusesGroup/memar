@@ -1,9 +1,8 @@
 ---
 Title: "Software Rule — Abstraction First"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # Software Rule — Abstraction First
 A rule of this repository, held for [Software](../../software.md). It applies only to work whose product is software; Memar is also used for systems that are not, and the rule says nothing about them. It states the order in which a software requirement is developed: its abstraction first, in Khayyam, approved, and only then any code of it. Step 8 of the workflow accepts a protocol, an abstraction or the document that owns the subject; the narrowing to Khayyam is [Framework → Khayyam and Other Languages](../../../../../docs/framework.md#khayyam-and-other-languages)'s. The claim it applies is [Modeling Practice → The Modeling Workflow](../../../../../docs/modeling.practice.md#the-modeling-workflow), whose eighth step makes a module's contract stand before code is committed to the module, and [Test → The Expectation Is Written Before the Work](../../../../process/test/test.md#the-expectation-is-written-before-the-work), which puts the abstraction before the Test.
 
@@ -23,5 +22,5 @@ An organization may develop its software from the code up and remain conformant 
 
 ## What this rule does not claim
 - It does not claim the abstraction is final forever: a later requirement may move a boundary ([System → What Architecture Is Not](../../../../../docs/system.md#what-architecture-is-not)).
-- It does not claim how an approval is recorded beyond the changelog; that is [Changelog Practice](../../../../../modules-plugable/knowledge/documentation/changelog/changelog.practice.md).
+- It does not claim how an approval is recorded beyond the changelog; that is [Approval](../../../../../modules-plugable/knowledge/documentation/approval/approval.md).
 - It is enforced by no check this repository runs today; a reviewer finds, for each commit of code, the `.kh` files and the approval that precede it.

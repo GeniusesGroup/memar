@@ -1,9 +1,8 @@
 ---
 Title: "Real"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-24
 ---
-
 # Real
 A label for an account whose quantity is a thing in the world, or an intangible that still has no separate legal person behind it.
 

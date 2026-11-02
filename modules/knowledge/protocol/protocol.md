@@ -1,10 +1,9 @@
 ---
 Title: "Protocol"
-Status: Proposed
+Labels: Proposed
 Start Date: 2026-06-21
 ID: 495002
 ---
-
 # Protocol
 
 ## Abstract

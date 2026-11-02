@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Receiver Method Names"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497338"
 ---
-
 # Khayyam Rule — Receiver Method Names
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for the name a method carries when the method is reached only through the receiver it is attached to. It is a companion to the [qualified names rule](../qualified-names/qualified-names.md), which governs the names of *declarations* that another file may meet; the two answer different questions, and a repository may keep either without the other.
 

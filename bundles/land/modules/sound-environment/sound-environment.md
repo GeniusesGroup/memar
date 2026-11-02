@@ -1,10 +1,9 @@
 ---
 Title: "The Sound Environment"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497051
 ---
-
 # The Sound Environment
 
 ## Abstract

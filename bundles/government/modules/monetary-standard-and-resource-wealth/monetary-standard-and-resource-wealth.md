@@ -1,10 +1,9 @@
 ---
 Title: "Monetary Standard and Resource Wealth"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497091
 ---
-
 # Monetary Standard and Resource Wealth
 
 ## Abstract

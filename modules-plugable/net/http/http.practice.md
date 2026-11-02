@@ -2,7 +2,6 @@
 name: http
 description: replaces the default assumption that a system is an HTTP application — and that session handoff is a GET with query parameters — with an explicit, per-concern need-check and recorded decision; use when a URL or endpoint shows up as the addressing model, a session or identity must move between origins, a shareable address is minted, a Memar protocol is adapted to ride on HTTP, or an HTTP dependency is inherited unexamined. Not the argument against the default, which http.md holds, and not the design of the protocol chosen
 ---
-
 # HTTP Practice
 > **Purpose:** This practice operationalizes [http.md](http.md): it turns that document's warning — set aside the default that you necessarily need HTTP as the application protocol — into a followable check with explicit criteria. The critique and its arguments live in the base document and are not restated here; each criterion below links to the topic that argues it.
 

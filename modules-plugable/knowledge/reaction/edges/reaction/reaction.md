@@ -23,7 +23,7 @@
 - One unified reaction edge vs typed reaction edges (rate, like, emoji as distinct relations)?
 - Time-series placement per analytics-is-always-pluggable (economics criteria): does analytics mirror the series, or does the series live only here?
 - "Query by day??" (open comment in the source) — daily aggregation: reaction query processing or analytics?
-- `Status()` — module-local status vocabulary or the general status domain ([status](../../../../../modules/knowledge/status/status.md))?
+- `Status()` — module-local Status-kind words under reaction `labels/`, or general words under `thing/labels/` ([Documentation → Status](../../../../../modules-plugable/knowledge/documentation/documentation.md#status))?
 
 ## Source
 

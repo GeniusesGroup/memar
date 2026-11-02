@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Other-Language Keyword"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-03
 ID: "497513"
 ---
-
 # Khayyam Rule — Other-Language Keyword
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the Rule for a word in a `.kh` unit that names a keyword some other language reserves and this one does not. It is a governance report of this repository's toolchain, not a statement of the language: [Khayyam → Language Keyword in a Glance](../../../../docs/khayyam/khayyam.md#language-keyword-in-a-glance) fixes the seven words that name declaration forms — `tp`, `vr`, `in`, `cp`, `mt`, `ab`, `sc` — and [Khayyam → Minimal Legislation](../../../../docs/khayyam/khayyam.md#minimal-legislation-a-principle) at `:177` puts a condition about the words a reader reaches for in the tool that applies it.
 

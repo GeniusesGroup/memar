@@ -1,10 +1,9 @@
 ---
 Title: "Memory Git Store"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-26
 ID: 498066
 ---
-
 # Memory Git Store
 
 ## Abstract

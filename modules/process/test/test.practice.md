@@ -2,7 +2,6 @@
 name: test
 description: turns the Test protocol into the procedure a development step follows and a Test is written by — state a named Process's expectations before the work, enact the smallest increment that could satisfy them, check the instance and record the disposition, then keep the Test itself. Use whenever developing anything the Memar way, software or not, at any scale from a function to a system, and whenever a Test is written, moved, or retired. Carries the steps only; the definition, the obligations, and the structural Rules live in [test.md](./test.md) and in the module's `rules/` folder and are not restated here.
 ---
-
 # Test Practice
 > **Purpose:** This practice operationalizes [test.md](./test.md). It turns the protocol's claim — that a Test is a named Process's written expectations, produced before the work and kept afterwards — into the followable procedure, in two parts. **The cycle** is what one development step does: state the expectations, enact the smallest increment that could satisfy them, check the instance against them, and record the disposition. **The artifact** is what one Test is: which Process it names, what it states, what it may assume, where it is recorded, and the fact that it outlives the run. The reasons live in the protocol document and are not restated here; each step links to the topic that argues it.
 

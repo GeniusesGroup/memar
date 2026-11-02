@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Qualified Names"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497337"
 ---
-
 # Khayyam Rule — Qualified Names
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for declarations whose names would collide with another module's. It is a governance rule of this repository, and it is the mechanical half of a claim the language makes: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) holds that a name collision is an architecture error rather than a disambiguation problem, that the correct fix is one abstraction being the single owner of one concept, and that the language supplies no `as` alias to defer the question.
 

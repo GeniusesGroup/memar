@@ -1,9 +1,8 @@
 ---
 Title: "Filesystem Rule — No File Concept Outside the Filesystem"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-31
 ---
-
 # Filesystem Rule — No File Concept Outside the Filesystem
 A rule of this repository, held for the [filesystem](../../filesystem.md). It applies wherever an abstraction, a service, a widget, an error or a document of a module other than the filesystem is written, in every language.
 

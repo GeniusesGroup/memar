@@ -1,10 +1,9 @@
 ---
 Title: "Account labels"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-24
 ID: 497284
 ---
-
 # Account labels
 Registered meanings of words a person may attach to an account.
 

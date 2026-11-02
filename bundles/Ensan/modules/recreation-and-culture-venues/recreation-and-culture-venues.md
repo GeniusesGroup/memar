@@ -1,10 +1,9 @@
 ---
 Title: "Recreation and Culture Venues"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497102
 ---
-
 # Recreation and Culture Venues
 
 ## Abstract

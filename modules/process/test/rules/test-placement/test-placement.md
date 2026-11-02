@@ -1,10 +1,9 @@
 ---
 Title: "Test Rule — Test Placement"
-Status: Draft
+Labels: Draft
 Start Date: "2026-09-30"
 ID: "497432"
 ---
-
 # Test Rule — Test Placement
 A rule of this repository, held for the [Test](../../test.md) protocol. A Test is a standing part of the system that owes it, and this rule states where that part lives: in a `tests/` folder inside the module whose Process the Test names. It is a governance rule of this repository, not part of the Test protocol — an organization that organizes its tests differently conforms to the protocol without adopting this rule, which is what [rule.md → Who Owns and Introduces Rules](../../../rule/rule.md#who-owns-and-introduces-rules) requires of any Rule.
 

@@ -1,10 +1,9 @@
 ---
 Title: "Autonomy in Crisis"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497096
 ---
-
 # Autonomy in Crisis
 
 ## Abstract

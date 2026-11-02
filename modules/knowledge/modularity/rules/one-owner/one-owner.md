@@ -2,7 +2,6 @@
 Title: "Modularity Rule — A Concept Has One Owner Module"
 Start Date: 2026-10-30
 ---
-
 # Modularity Rule — A Concept Has One Owner Module
 A rule of this repository, held for [Modularity](../../modularity.md). It applies wherever an abstraction, a service or a widget is declared, in every language.
 

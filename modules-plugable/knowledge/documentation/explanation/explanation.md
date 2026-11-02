@@ -1,5 +1,6 @@
 ---
 Title: "Documentation — Explanation"
+Labels: Draft
 Start Date: 2026-06-21
 ID: 495000
 ---
@@ -29,13 +30,13 @@ Content meant to be *studied* to understand something: specifications, analyses,
 ### Title
 A short, unique, human-readable name for the document, in double quotes. A title change that alters the concept is a new document with a new `ID`; a title change that merely rephrases the same concept is a minor revision of the same document.
 
-### Status
-An Explanation-facet document carries its Status as a Status-kind [label](../../../../modules/knowledge/label/label.md) on the document record — `(document)-[:label]->(Draft)` — not as a front-matter key. `ExplanationKey` has no `STATUS`. Values and meanings are the type `Status` ([documentation.md → Status](../documentation.md#status); [Status](../../../../modules/knowledge/status/status.md#what-a-status-is)), asked with `Status.for_kind`. A `Superseded` document names its successor through [`Superseded by`](../documentation.md#citations).
+### Labels
+An Explanation-facet document is content and may carry [labels](../../../../modules/knowledge/label/label.md), including Status-kind words that take `Status` (`Label_Status`). Attachment is Label's edge `(document)-[:label]->(Draft)`. On the Markdown surface those edges are written under the front-matter key `Labels` (comma-separated words: `Labels: Draft` or `Labels: Draft, guest`) — the written form of the content record's label edges, not a parallel hack ([documentation.md → Status](../documentation.md#status)). `ExplanationKey` declares `LABELS` and has no `STATUS`. Status-kind members are the `Label_<Word>` types under [thing/labels](../../../../modules/identity/thing/labels/), asked through `Label_Status`. A `Superseded` document names its successor through [`Superseded by`](../documentation.md#citations).
 
-Rules specific to this facet:
+Rules specific to this facet's Status-kind labels:
 - `ID` is never reused, regardless of which Status-kind label the document carries, including Rejected.
-- Attach `Proposed` once discussion converges; attach `Final` once it is reflected in canonical documentation (withdraw the previous Status-kind label when the move is exclusive).
-- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not read Status labels as a special key.
+- Carry `Proposed` once discussion converges; carry `Final` once it is reflected in canonical documentation (withdraw the previous Status-kind label when the move is exclusive).
+- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not treat Labels as a special Status key.
 - Nothing before `Final` should be treated as settled by anyone depending on the document.
 - Moving a Final document's substance requires a new, superseding document, not an in-place edit.
 - A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the `Cited` field of the changelog content that records it (see [changelog.md → Cited](../changelog/changelog.md#cited)).
@@ -45,7 +46,7 @@ Rules specific to this facet:
 The calendar date (`YYYY-MM-DD`, UTC) the document file was first drafted. Set once, never changed. Should agree with the date implied by `ID`, since both are meant to be captured at the same moment.
 
 ### ID
-A UTC unix-time-derived integer, generated once when the file is first drafted, never reused or reassigned. It carries no meaning beyond relative creation order — generating it does not imply approval; that is `Status`'s job.
+A UTC unix-time-derived integer, generated once when the file is first drafted, never reused or reassigned. It carries no meaning beyond relative creation order — generating it does not imply approval; that is the Status-kind label's job under [Labels](#labels).
 
 **Value and generation.** The value is UTC unix time truncated to the hour, as a plain decimal integer; `memar content hour-id` prints it ([`content_hour_id.py`](../services/content_hour_id.py)), and nothing else defines it.
 
@@ -57,7 +58,7 @@ A UTC unix-time-derived integer, generated once when the file is first drafted, 
 - If the merged document keeps one original title unchanged, it uses that document's original number.
 - If an entirely new title is chosen, the merged document uses the smallest (earliest) of the numbers being merged.
 
-This rule applies only pre-Final; once Final, merging requires a new, superseding document per the Status rules.
+This rule applies only pre-Final; once Final, merging requires a new, superseding document per the Status-kind rules under [Labels](#labels).
 
 **Storage representation.** Out of scope here — an implementation detail.
 
@@ -110,32 +111,25 @@ Each building block is declared, with what it is for, where it goes and how it d
 
 ### Making a document
 The steps that produce a document under this specification, in order. What each field and section means is stated above; the section types are the types of [`./primitive/`](./primitive/).
-1. Start from the skeleton: the front matter fields `Title`, `Start Date` and `ID`, then one top heading and the fixed body sections. Status is not a front-matter key — attach the Status-kind label `Draft` on the document record ([Status](#status)).
+1. Start from the skeleton: the front matter fields `Title`, `Labels`, `Start Date` and `ID`, then one top heading and the fixed body sections. Put the Status-kind word `Draft` under `Labels` (the written form of the document's label edges — [Labels](#labels)).
    ```
    ---
    Title: ""
+   Labels: Draft
    Start Date: ""
    ID: ""
    ---
-
    # Document Title
-
    ## Abstract
-
    ## Introduction
-
    ### Motivation
-
    ### Methodology
-
    ## Explanation
-
    ### {Topic}
-
    #### {Sub topic}
    ```
 2. Set `ID` once to the current UTC hour-count that `memar content hour-id` prints, and never change it.
-3. Fill the rest of the front matter: a short, unique `Title` in quotes, and `Start Date` as today's UTC date, matching the moment `ID` was generated; attach `Draft` (then `Proposed` / `Final` as the rules above say).
+3. Fill the rest of the front matter: a short, unique `Title` in quotes, `Labels: Draft` (then `Proposed` / `Final` as the rules above say), and `Start Date` as today's UTC date, matching the moment `ID` was generated.
 4. Write the body. `Abstract` and `Introduction` stay unified, document-wide prose; `Explanation` is split into topics, with a sub topic where finer structure helps. Premise evidence for a claim is cited inline at the claim. Document-wide optional sections sit directly under the body's top level, not inside a topic.
 5. Filter the Abstract, the Motivation and the Methodology before leaving them ([Framing Sections State the Subject, Not the Writing](./rules/framing-sections-state-the-subject-not-the-writing/framing-sections-state-the-subject-not-the-writing.md)), and keep alternatives, open questions and anticipated work out of the body ([The Body Holds No Alternatives, Questions or Plans](./rules/the-body-holds-no-alternatives-questions-or-plans/the-body-holds-no-alternatives-questions-or-plans.md)).
 6. Hold the draft to the [standards of cognitive material](../../../../docs/cognition.md#standards-of-cognitive-material) while writing, clarity first, and examine each claim as it is drafted and not in a later phase.

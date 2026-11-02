@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Identifier Naming"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497336"
 ---
-
 # Khayyam Rule — Identifier Naming
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for the convention an organization holds its identifiers to — which script, which transliteration, which casing, and how names carry domain meaning. It is a rule of an organization, stated here because the grammar leaves the choice open: [Khayyam → Language Keyword in a Glance](../../../../docs/khayyam/khayyam.md#language-keyword-in-a-glance) states what an identifier is and stops there.
 

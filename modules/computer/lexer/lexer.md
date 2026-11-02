@@ -1,10 +1,9 @@
 ---
 Title: "Lexer"
-Status: Draft
+Labels: Draft
 Start Date: 2026-08-12
 ID: 496248
 ---
-
 # Lexer
 This document records the concept work behind Memar's Lexer protocol — the working positions, boundaries, and open questions reached in the sessions that defined it. It is a Draft: a dedicated design chat will turn these positions into the protocol's actual specification. See [Protocol](../../knowledge/protocol/protocol.md) for the general concept of a protocol.
 

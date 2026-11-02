@@ -6,9 +6,10 @@
 Two sets of rules, separated by what they hold for. The encoding and newline
 rules hold for every text file in every project, because a shell damages a file
 the same way whatever the file is for. Memar's written-surface rules — no blank
-line under a heading, no run of blank lines, a link that resolves to a file and
-a heading — are Memar's own conventions and apply only inside a Memar
-repository, which is asked of `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` rather than
+line under a heading, no blank line after the closing front-matter fence, no run
+of blank lines, a link that resolves to a file and a heading — are Memar's own
+conventions and apply only inside a Memar repository, which is asked of
+`modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` rather than
 assumed.
 
 A link that points up the layers of the written content is a
@@ -50,7 +51,7 @@ _m_temp_duplicate = import_module('modules-plugable.knowledge.documentation.serv
 temp_duplicate_problems = _m_temp_duplicate.temp_duplicate_problems
 CHECKED_SUFFIXES = ('.md', '.kh', '.py', '.ts', '.json', '.yaml', '.yml', '.txt', '.ps1', '.sh', '.bat', '.cmd')
 def describe(verbs):
-    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
+    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, a blank line after the closing front-matter fence, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
     parser.add_argument('files', nargs='+', help='files or folders (any path)')
     parser.add_argument('-v', '--verbose', action='store_true', help='also print clean files')
     parser.add_argument('--memar-rules', dest='memar_rules', action='store_true', default=None, help="apply Memar's Markdown conventions; the default asks whether the folder is a Memar repository")
@@ -67,11 +68,11 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
     the one `memar content resolve-path` resolves against.
 
     `memar_rules` decides whether the Markdown rules are applied at all. They are
-    Memar's own conventions — no blank line under a heading, linear load-bearing
-    logic, a relative link that resolves — and a file in a project that has not
-    adopted Memar is not a Memar document, so a missing blank line there is not a
-    defect and reporting it tells the owner their repository is wrong for a
-    reason they never agreed to. The encoding and newline rules are different:
+    Memar's own conventions — no blank line under a heading, no blank line after
+    the closing front-matter fence, linear load-bearing logic, a relative link
+    that resolves — and a file in a project that has not adopted Memar is not a
+    Memar document, so a missing blank line there is not a defect and reporting
+    it tells the owner their repository is wrong for a reason they never agreed to. The encoding and newline rules are different:
     they hold for every text file in every project, because a shell damages a
     file the same way whatever the file is for. So the two sets are separated by
     a flag rather than by a list, and the caller decides by asking
@@ -90,6 +91,12 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
             rest = text[blank_after.end():].lstrip('\n \t')
             if not rest.startswith('#'):
                 problems.append(f'line {text[:blank_after.start()].count(chr(10)) + 1}: blank line between a heading and its body')
+        if text.startswith('---\n'):
+            fm_end = text.find('\n---\n', 4)
+            if fm_end >= 0:
+                after_fm = fm_end + len('\n---\n')
+                if after_fm < len(text) and text[after_fm] == '\n':
+                    problems.append(f'line {text[:after_fm].count(chr(10)) + 1}: blank line after the closing front-matter fence')
         visible = without_code(text)
         problems.extend(anchor_problems(visible, text))
         problems.extend(link_problems(path, visible, cache, root))

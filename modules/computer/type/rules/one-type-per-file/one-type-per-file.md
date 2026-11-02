@@ -1,9 +1,8 @@
 ---
 Title: "Type Rule — One Type per File"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-31
 ---
-
 # Type Rule — One Type per File
 A rule of this repository, held for [Type](../../type.md), whose identity is what a type says of itself ([No Comments in Code](../no-comments-in-code/no-comments-in-code.md)). It applies to code in every language this repository's code is written in. It is held by Type because what a file declares is a type's, and the file is the type's address.
 

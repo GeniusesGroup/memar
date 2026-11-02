@@ -1,10 +1,9 @@
 ---
 Title: "Go Port Rule — Commented Generic Bindings"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-28
 ID: "497378"
 ---
-
 # Go Port Rule — Commented Generic Bindings
 The Go port's rules live one rule per folder under [`targets/go/rules/`](../README.md), and this is the rule for a generic Go interface whose methods the port left in the clue block because their types were type parameters. It rewrites source; it is applied by `abstraction_bridge.py tidy --rule commented-generic-bindings` in [`targets/go/`](../../abstraction_bridge.py).
 

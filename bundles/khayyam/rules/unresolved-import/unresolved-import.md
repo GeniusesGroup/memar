@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Unresolved Import"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497332"
 ---
-
 # Khayyam Rule — Unresolved Import
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the first of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) states that the value is a URI, and what a tool does when the URI it names resolves to nothing is the tool's own condition.
 

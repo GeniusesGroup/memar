@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Method Verb Phrases"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497400"
 ---
-
 # Khayyam Rule — Method Verb Phrases
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for the shape a method name takes when the name must state what the method does without reading the comment or body. It is a governance rule of this repository, companion to the [receiver method names rule](../receiver-method-names/receiver-method-names.md) (which governs whether a method keeps a bare name) and the [observer and mutator rule](../../../../modules/computer/adt/rules/observer-mutator/observer-mutator.md) (which governs `Observer_X` / `Mutator_X` accessor and mutator naming; the Get/Set question here applies outside those families).
 

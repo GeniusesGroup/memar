@@ -1,10 +1,9 @@
 ---
 Title: "Wildlife-Safe Surfaces and Light"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497049
 ---
-
 # Wildlife-Safe Surfaces and Light
 
 ## Abstract

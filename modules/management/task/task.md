@@ -18,7 +18,7 @@ Each domain does its own work. Task answers four questions about a piece of work
 | What the Task requires of the worker (skills) | [skill](../../knowledge/skill/skill.md), [requires](edges/requires/requires.md) | the requirement edge only |
 | The check, the cycle guard, any policy | [rule](../../computer/rule/rule.md), attached through `condition_is` | the attachment point |
 | The kinds a Task is of, and why it carries one | [label](../../knowledge/label/label.md) | nothing; a kind is a label with its explanation |
-| The words that mark a position (Queued, Active, …) | [status](../../knowledge/status/status.md) | the position, as the shared loop-edge |
+| The words that mark a position (Queued, Active, …) | [Label_Status](../../knowledge/label/labels/Status.py) / [thing/labels](../../identity/thing/labels/) | the position, as a Status-kind label on the task |
 | Time, calendars, notification, budget | their own domains | nothing |
 | How records are stored or exchanged | storage, and the adapters of the bridge to Memar | nothing; no file system or version-control concept is part of a Task |
 
@@ -46,7 +46,7 @@ One Task is one thing asked, with one check. A request with two checks is two Ta
 A Task that only produced a finding or a proposal is not Complete. It is a step of the Task it improves (a child through `part_of`), or it waits for an approval and is Blocked. The finding itself is content and changes nothing by being written.
 
 ## Status
-A Task's position is one of four words, each a loop-edge on the Task as [Status](../../knowledge/status/status.md#what-a-status-is) describes, so that code uses the edge type.
+A Task's position is one of four Status-kind words, each a [label](../../knowledge/label/label.md) that takes `Status` (`Label_Status`) attached to the task through Label's edge ([Documentation → Status](../../../modules-plugable/knowledge/documentation/documentation.md#status); words under [thing/labels](../../identity/thing/labels/)).
 
 | Status | Meaning |
 |---|---|

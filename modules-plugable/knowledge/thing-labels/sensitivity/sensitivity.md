@@ -1,9 +1,8 @@
 ---
 Title: "Sensitivity"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-24
 ---
-
 # Sensitivity
 A label a person may attach to any node to mark material a reader may not want to meet unwarned.
 

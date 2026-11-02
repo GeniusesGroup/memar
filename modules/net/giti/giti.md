@@ -1,10 +1,9 @@
 ---
 Title: "Giti (GP)"
-Status: Draft
+Labels: Draft
 Start Date: 2026-08-26
 ID: 496595
 ---
-
 # Giti (GP) - Decentralized Interplanetary Network Protocol
 
 ## Abstract

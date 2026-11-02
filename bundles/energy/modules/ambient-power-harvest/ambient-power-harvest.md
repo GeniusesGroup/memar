@@ -1,10 +1,9 @@
 ---
 Title: "Harvesting Ambient Motion"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497070
 ---
-
 # Harvesting Ambient Motion
 
 ## Abstract

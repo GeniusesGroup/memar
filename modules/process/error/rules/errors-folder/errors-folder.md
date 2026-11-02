@@ -1,9 +1,8 @@
 ---
 Title: "Error Rule — Errors Folder"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # Error Rule — Errors Folder
 A rule of this repository, held for [The Error](../../error.md). It applies only to software modules that declare errors. It is held here because the module that would change if what an error is changed is this one, and the folder is where that declaration is read. Where a module's errors are declared is a layout question: [Modules → the kinds of folder](../../../../README.md) names `errors/` among the role folders, and this rule states what that role holds.
 

@@ -1,10 +1,9 @@
 ---
 Title: "Memory Files Store"
-Status: Draft
+Labels: Draft
 Start Date: 2026-11-01
 ID: 498200
 ---
-
 ## Abstract
 `files` is an adapter of the [store contract](../../../../../modules/computer/memory/store/store.md#the-contract) under `modules-plugable/computer/memory/store/files/`. It states the **correspondence** between upstream store addresses — the ones [record](../record/record.md) and [graph](../graph/graph.md) use for nodes, parts, labels and edges — and bytes on the project's filesystem. It knows **addresses and bytes** plus that correspondence. It does **not** redefine `file` / `directory`: those concepts are owned by [filesystem](../../filesystem/filesystem.md); this adapter **only uses** `Storage_File`, `Storage_Directory`, and `URI_Path`. It is not moved under `filesystem/` — that module has no graph view. Domains never name a file, folder or path ([No File Concept](../../filesystem/rules/no-file-concept/no-file-concept.md)). A project's final adapter for a class may still be [`git-store`](../git-store/git-store.md).
 

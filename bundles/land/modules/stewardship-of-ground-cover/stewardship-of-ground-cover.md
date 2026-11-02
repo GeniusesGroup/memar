@@ -1,10 +1,9 @@
 ---
 Title: "Stewardship of the Ground Cover"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497048
 ---
-
 # Stewardship of the Ground Cover
 
 ## Abstract

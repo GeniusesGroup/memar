@@ -1,10 +1,9 @@
 ---
 Title: "Knowledge"
-Status: Draft
+Labels: Draft
 Start Date: 2026-07-20
 ID: "495696"
 ---
-
 # Knowledge
 This document defines what knowledge is, how it differs from its representations, and what a system must do to preserve, retrieve, and evolve it. The organizational discipline of managing knowledge as a practice — creation workflows, tacit-to-explicit conversion, sector adoption, and change management — belongs to the Organization project; this document owns the concept and its modeling consequences.
 

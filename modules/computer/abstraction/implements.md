@@ -1,10 +1,9 @@
 ---
 Title: "abstraction_p.Implements — A Tooling-Facing Implementation-Intent Declaration"
-Status: Draft
+Labels: Draft
 Start Date: 2026-07-08
 ID: 495413
 ---
-
 # abstraction_p.Implements — A Tooling-Facing Implementation-Intent Declaration
 
 ## Abstract

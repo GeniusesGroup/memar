@@ -2,7 +2,6 @@
 name: modeling
 description: Defines the concrete, step-by-step procedure for running a Memar modeling chat — discovering a model from scratch, refining an existing one, or critically reviewing a model (including one published by another organization) — and for placing a new edge or relation. Use this file to do the work. Open modeling.md only when a step names a section to check. Not for mapping an accepted concept onto a type, which the type practice does, nor for critique of material that is not a model, which the cognition practice does.
 ---
-
 # Modeling Practice
 > **Purpose:** This practice defines how a Memar modeling chat is carried out in practice — the concrete steps, checklists, and session-quality signals referenced by [modeling.md](./modeling.md).
 > **Nature:** This is a *Practice* — a method commonly used for this type of work, not a claim about knowledge, skill, or capability.

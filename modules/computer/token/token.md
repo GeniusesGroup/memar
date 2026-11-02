@@ -1,10 +1,9 @@
 ---
 Title: "Token"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497412"
 ---
-
 # Token
 
 ## Abstract

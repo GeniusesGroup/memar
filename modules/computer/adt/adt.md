@@ -1,10 +1,9 @@
 ---
 Title: "Abstract Data Types"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497411"
 ---
-
 # Abstract Data Types
 
 ## Abstract

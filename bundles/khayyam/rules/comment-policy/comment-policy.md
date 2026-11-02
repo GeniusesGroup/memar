@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Comment Policy"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497329"
 ---
-
 # Khayyam Rule — Comment Policy
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for what this repository's Khayyam sources carry in prose: the header every file opens with, and where documentation is allowed to live. It is an organizational rule, stated in the tool's own catalog because the tool is where an organization keeps the ones it holds itself to. How the prose is *marked* is a separate rule, the [comment forms](../comment-forms/comment-forms.md).
 

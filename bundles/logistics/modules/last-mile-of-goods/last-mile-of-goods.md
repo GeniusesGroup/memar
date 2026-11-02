@@ -1,10 +1,9 @@
 ---
 Title: "Last Mile of Goods"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497063
 ---
-
 # Last Mile of Goods
 
 ## Abstract

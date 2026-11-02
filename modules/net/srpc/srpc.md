@@ -1,10 +1,9 @@
 ---
 Title: "sRPC — Application Protocol"
-Status: Draft
+Labels: Draft
 Start Date: 2020-05-10
 ID: 441408
 ---
-
 # sRPC — Application Protocol
 
 ## Abstract

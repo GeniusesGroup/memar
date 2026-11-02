@@ -1,10 +1,9 @@
 ---
 Title: "Airflow Through the Built Fabric"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497050
 ---
-
 # Airflow Through the Built Fabric
 
 ## Abstract

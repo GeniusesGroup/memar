@@ -1,10 +1,9 @@
 ---
 Title: "The Dead Among the Living"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497078
 ---
-
 # The Dead Among the Living
 
 ## Abstract

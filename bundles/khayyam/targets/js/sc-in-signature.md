@@ -1,10 +1,9 @@
 ---
 Title: "Scope in a Signature"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-02
 ID: 497484
 ---
-
 # Scope in a Signature
 ## Abstract
 The owner has ruled that an Abstraction has no need of `sc`, and that a code scope is in essence a kind of implementation — not an abstraction and not a protocol. The rule this confirms was already stated at [`docs/khayyam/abstraction.md`](../../../../docs/khayyam/abstraction.md) under *What You Cannot Do*; the confirmation settles the rule and gives a reason the documents do not yet carry, and it has consequences nobody has worked through. This document works them through and drafts the minimum text each would need. The findings: a scope may be declared only inside a method body and an abstraction holds no method body, so in this repository's toolchain no abstraction can declare or drive a scope — the only open half is the *receiving* side, an abstraction-owned method a caller uses to drive one. The kinds of type that could hold a scope in a type-level argument are an abstraction, a capsule, a method, and the `sc` category written directly; the documents permit the first two, admit the third as a position with no declared holder, and do not address the fourth or say which owner may write it. The Control Flow protocol's two sentences are **not** in conflict: it requires an observable dependency boundary and permits "named scopes, explicit closures, or another mechanism", and its replaceability claim is about a library an organization mandates through its Linter, not about type substitutability. The sources neither contradict the ruling nor needs to change: not one `.kh` file under `modules/` declares a method with a scope in a type-level argument, and the one declaration in the tree that does — a test fixture, not a `.kh` file — already names a capsule, which is the shape the ruling sanctions. Ten drafts follow, each marked as a language, protocol, or toolchain decision and saying whether a drafter may phrase it or the owner must choose first; one of the ten is the finding that a protocol sentence needs no text at all.

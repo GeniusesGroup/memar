@@ -1,7 +1,7 @@
 # Voting
 Binding signatures are open on this law. The payload stays as what was signed.
 
-Declared as a Status-kind label in [`voting.py`](../voting.py). What a status is, and how attachment works, is [Status](../../../../knowledge/status/status.md#what-a-status-is) via [Label edge](../../../../knowledge/label/edges/label/label.md).
+Declared as a Status-kind label in [`voting.py`](../voting.py). What a status is, and how attachment works, is [Status](../../../../../modules-plugable/knowledge/documentation/documentation.md#status) via [Label edge](../../../../knowledge/label/edges/label/label.md).
 
 ## Model
 - `(law)-[:label]->(voting)` with `(voting)-[:label]->(Status)` on the definition.

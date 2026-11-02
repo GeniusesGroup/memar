@@ -1,9 +1,8 @@
 ---
 Title: "Test Rule — Tests First and Scoped"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # Test Rule — Tests First and Scoped
 A rule of this repository, held for the [Test](../../test.md) protocol. Tests before the work is the protocol's own claim ([The Expectation Is Written Before the Work](../../test.md#the-expectation-is-written-before-the-work)); this rule adds how a run is bounded, which the protocol leaves to the organization. It applies only to work whose product is software, a throwaway script included; the protocol does not.
 

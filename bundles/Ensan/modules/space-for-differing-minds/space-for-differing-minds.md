@@ -1,10 +1,9 @@
 ---
 Title: "Space for Differing Minds and Conduct"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497054
 ---
-
 # Space for Differing Minds and Conduct
 
 ## Abstract

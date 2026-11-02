@@ -1,10 +1,9 @@
 ---
 Title: "Concurrency Realization"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-06
 ID: 496869
 ---
-
 # Concurrency Realization
 
 ## Abstract

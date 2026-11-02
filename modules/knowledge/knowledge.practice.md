@@ -2,7 +2,6 @@
 name: knowledge
 description: procedures for working with knowledge in Memar — questioning, researching, and evaluating it; use before building on a load-bearing claim, when gathering and citing sources for a document, or when judging whether an artifact stores knowledge or only a conclusion. Not the critique procedure, which the cognition practice owns, and not the concept or its principles, which knowledge.md holds
 ---
-
 # Knowledge Practice
 > **Purpose:** This practice operationalizes [knowledge.md](./knowledge.md): the followable procedures that working with knowledge actually consists of. The concept, the Data→Information→Knowledge→Document hierarchy, and the modeling principles live in [knowledge.md](./knowledge.md) — that document is assumed reading, and its rules are not restated here. Three procedures are reserved and seeded below; each grows as real use demonstrates what it needs. They were previously held as three separate placeholder files (`knowledge-question.practice.md`, `knowledge-research.practice.md`, `knowledge-evaluate.practice.md`), merged into this single companion per the one-practice-per-base-document rule.
 

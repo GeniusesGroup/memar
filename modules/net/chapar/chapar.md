@@ -1,10 +1,9 @@
 ---
 Title: "Chapar - Data Link Protocol"
-Status: Draft
+Labels: Draft
 Start Date: 2015-01-01
 ID: 394466
 ---
-
 # Chapar - Data Link Protocol
 
 ## Abstract

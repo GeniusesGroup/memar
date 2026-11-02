@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Scope Visibility"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-03
 ID: "497509"
 ---
-
 # Khayyam Rule — Scope Visibility
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the Rule for the names a `sc` block may use and the names it takes with it when it ends. It is a rule about the language rather than about this repository's toolchain or its conventions: whether a name resolves is what decides what a program means, so [Khayyam → Minimal Legislation](../../../../docs/khayyam/khayyam.md#minimal-legislation-a-principle) at `:177` places a condition of this kind in the grammar — a construct earns a place there "when its existence, its resolution, or its observable behavior turns on it" — and `:181` makes the test the one this Rule answers, whether turning the condition off would change what a program means rather than how well a codebase is kept. It is a governance rule reported per declaration and enforced by no tool today; what the frontend does and does not check is under [What this rule does not claim](#what-this-rule-does-not-claim).
 

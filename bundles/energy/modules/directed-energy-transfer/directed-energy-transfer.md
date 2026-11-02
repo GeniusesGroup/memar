@@ -1,10 +1,9 @@
 ---
 Title: "Directed Energy Transfer"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497065
 ---
-
 # Directed Energy Transfer
 
 ## Abstract

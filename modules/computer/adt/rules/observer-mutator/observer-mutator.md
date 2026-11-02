@@ -1,10 +1,9 @@
 ---
 Title: "ADT Rule — Observer and Mutator"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: 497415
 ---
-
 # ADT Rule — Observer and Mutator
 Rules for the ADT module live one rule per folder under [`modules/computer/adt/rules/`](../README.md). This rule governs abstract state a capsule exposes through methods without naming storage — the observer and mutator families from Liskov & Guttag's ADT operation classification. It is a governance rule of this repository, companion to the [qualified names rule](../../../../../bundles/khayyam/rules/qualified-names/qualified-names.md) (collision and qualification over `Observer_*` spellings) and the [method verb phrases rule](../../../../../bundles/khayyam/rules/method-verb-phrases/method-verb-phrases.md) (verb-phrase shape for methods outside these families).
 

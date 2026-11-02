@@ -1,9 +1,8 @@
 ---
 Title: "Memar Git"
-Status: Draft
+Labels: Draft
 Start Date: 2026-11-01
 ---
-
 # Memar Git
 ## Abstract
 This bundle offers the acts a working tree shared by several tasks needs from git, each with the constraint that keeps work from being lost: commit only the named paths, take a commit back, finish an interrupted commit, stop tracking without deleting, rename, discard only when confirmed, set work aside, and bring a deleted path back. It is a bundle, where an outside system is met: git is not a Memar concept, so no module states it ([Filesystem Rule: No File Concept Outside the Filesystem](../../modules-plugable/computer/memory/filesystem/rules/no-file-concept/no-file-concept.md)), and the bundle, which no module depends on, is where its words (repository, path, index) may appear. The abstraction is in [`services/`](./services/) and [`errors/`](./errors/); this document says what the bundle is, why, and what it costs.

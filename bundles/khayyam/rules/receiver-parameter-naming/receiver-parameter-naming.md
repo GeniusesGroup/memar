@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Receiver Parameter Naming"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497403"
 ---
-
 # Khayyam Rule — Receiver Parameter Naming
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for the name of the owner parameter in a method signature. It is a governance rule of this repository: [Khayyam → Type → Method](../../../../docs/khayyam/khayyam.md#method) and [Method in Khayyam → Method Structure](../../../../docs/khayyam/method.md#method-structure) state that any name is allowed in the owner group; this rule states what this repository suggests.
 

@@ -1,9 +1,8 @@
 ---
 Title: "Toxic"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-24
 ---
-
 # Toxic
 A label a person may attach to any node to mark the material as harmful.
 

@@ -1,10 +1,9 @@
 ---
 Title: "Water Bodies as Common Infrastructure"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497075
 ---
-
 # Water Bodies as Common Infrastructure
 
 ## Abstract

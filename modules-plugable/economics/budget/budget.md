@@ -1,4 +1,4 @@
-﻿# Budget
+# Budget
 
 ## Model
 
@@ -21,4 +21,4 @@
 ## Open questions
 
 - Are the Materials/Labor/Investments budget labels the budget module's data, or reference-type labels on the transaction side? The same list rides the transaction shortcut comments — converge with [reference](../../../modules/economics/transaction/edges/reference/reference.md) (Reference types → Open questions), one home.
-- Budget statuses Executed/Inspected (from the transaction status-labels backlog): this module's vocabulary or general status domain ([status](../../../modules/knowledge/status/status.md))?
+- Budget Status-kind words Executed/Inspected (from the transaction status-labels backlog): this module's `labels/` vocabulary or general words under `thing/labels/` ([Documentation → Status](../../../modules-plugable/knowledge/documentation/documentation.md#status))?

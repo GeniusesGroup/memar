@@ -2,7 +2,6 @@
 name: type
 description: Defines the concrete procedure for applying Memar's Type model when designing, implementing, or reviewing systems — deciding whether something qualifies as a Type, choosing among the Capsule/Method/Abstraction/Scope categories, mapping identified concepts onto type-system realizations (including static/stateless concepts), and applying naming conventions — the operational decisions type.md's principles govern but intentionally do not carry as steps. Use during domain-to-type mapping, code design, or design review. Not for discovering whether something is a concept at all — that is modeling practice.
 ---
-
 # Type Practice
 > **Purpose:** This practice defines how the decisions governed by [type.md](./type.md) are made in practice — the steps and checks an implementer or reviewer runs when turning identified concepts into Types.
 > **Nature:** This is a *Practice* — a method commonly used for this type of work, not a claim about knowledge, skill, or capability.

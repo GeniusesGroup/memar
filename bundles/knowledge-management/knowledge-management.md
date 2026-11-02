@@ -1,9 +1,7 @@
 # Knowledge Management
-
 **Status: composition bundle — deliberately NOT a module.** This bundle owns no kernel schema of its own (no node type, no edge type, no rule identity that only exists here). It is a named composition of capabilities that live in other modules, for the upstream organizational need: creating, converting, preserving, discovering, and revising knowledge across people and time.
 
 ## Why a bundle (not core, not a single pluggable)
-
 Three layers in this repository:
 
 | Layer | Location | What it is |
@@ -17,12 +15,11 @@ Three layers in this repository:
 Memar owns the *concept* of knowledge and its modeling principles (`docs/knowledge.md`, resolve via Memar skill / local checkout). This bundle owns the *organizational practice* that consumes those principles against this repository's real modules.
 
 ## Composed modules (index — grow as design chats land)
-
 Structural / holding:
 
 - [`modules/knowledge/content`](../../modules/knowledge/content/README.md) (+ `content.handoff.md`) — Content units, timelines attachment, document-model blocks, knowledge-capture decisions
 - [`modules/knowledge/text`](../../modules/knowledge/text/README.md) (+ `text.handoff.md`) — human-readable tokens; other domains relate, do not own text bodies
-- [`modules/knowledge/status`](../../modules/knowledge/status/README.md) — shared status machinery (including review/RFC-as-phase)
+- [`Label_Status`](../../modules/knowledge/label/labels/Status.py) and Status-kind words under [`thing/labels`](../../modules/identity/thing/labels/) — Status is a label kind, not a separate domain (including review/RFC-as-phase)
 - [`modules/management/task`](../../modules/management/task/) (+ `task.handoff.md`) — Task as work/knowledge unit; Discussion/Decision/Change association
 - [`modules/management/timeline`](../../modules/management/timeline/) (+ `timeline.handoff.md`)
 - [`modules/management/group`](../../modules/management/group/README.md) — membership; Task is additive over Group
@@ -42,5 +39,4 @@ Also composed / related (seed mapping — grow as sessions land):
 - `modules/identity/organization` — where the framing claim is argued against real org models
 
 ## Active design state
-
 See `knowledge-management.handoff.md` — migrated seed + brainstorm material awaiting dedicated design chats. Design dialectic lives in that handoff's Discussion sections. Nothing in that handoff is fully ratified as a finished Explanation-facet document yet.

@@ -10,10 +10,10 @@
 
 ## Placement
 
-- **Law owns its Status-kind labels under `law/labels/`, attached only through [Label edge](../../../../knowledge/label/edges/label/label.md)** — declarations in one file per word under [`law/labels/`](../../labels/); kind+rule+event in [Status](../../../../knowledge/status/status.md#what-a-status-is). Precedent: [voting](../../labels/voting/voting.md). This doc holds any remaining candidate vocabulary until declared there.
+- **Law owns its Status-kind labels under `law/labels/`, attached only through [Label edge](../../../../knowledge/label/edges/label/label.md)** — declarations in one file per word under [`law/labels/`](../../labels/); kind+rule+event in [Status](../../../../../modules-plugable/knowledge/documentation/documentation.md#status). Precedent: [voting](../../labels/voting/voting.md). This doc holds any remaining candidate vocabulary until declared there.
 - **Not a new module:** four labels are a value list, not processing semantics (parameters vs semantics) — configuration for the status reader, never grounds a module on its own.
 - Transitions are rule decisions (core never knows Rule); amendment/repeal of a *base* law stays an open question with `normative-bootstrap.handoff.md`.
-- Not the general status module's own list: [status](../../../../knowledge/status/status.md) defines *what a status is*; the vocabulary here is law-specific.
+- Not the general status module's own list: [status](../../../../../modules-plugable/knowledge/documentation/documentation.md#status) defines *what a status is*; the vocabulary here is law-specific.
 
 ## Open questions
 

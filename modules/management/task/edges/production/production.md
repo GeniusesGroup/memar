@@ -24,6 +24,6 @@
 
 - Production as task *kind* (label / edges-loop type) vs an edge to a production/product node — which is it? ("project IS a task" precedent.)
 - Material dependency / ByProduct / product lines: task-side relation or product-side identity? Converge with [material](../../../../economics/product/edges/material/material.md) — one home, not two.
-- Production statuses vs the general status domain (knowledge/status): own status set or labels?
+- Production statuses vs the general status domain (../modules-plugable/knowledge/documentation/documentation.md#status): own status set or labels?
 - Suggestion of labels: GUI projection or stored semantics?
 

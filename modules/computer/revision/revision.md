@@ -1,10 +1,9 @@
 ---
 Title: "Revision"
-Status: Draft
+Labels: Draft
 Start Date: "2026-10-05"
 ID: "497554"
 ---
-
 # Revision
 ## Abstract
 A **Revision** is the application of a reviewable plan to sources: enumerate what the sources hold, turn the affected ranges into a plan a reader can review, write only under an explicit request, refuse a write that would newly break a file, and report everything found and left. This document states that contract once, so every language toolchain realizes the same engine instead of each module re-inventing it. It does not state how sources are enumerated for any one language, what a plan looks like on screen, or which exit codes a command returns; those are per-target decisions. It owns neither the identity of what is rewritten nor the truth of what the rewrite means: the first belongs to the Content model, the second to the language analyzer, and the refusal gate is where the two meet.

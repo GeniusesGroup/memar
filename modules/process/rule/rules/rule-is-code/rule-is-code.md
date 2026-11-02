@@ -1,9 +1,8 @@
 ---
 Title: "Rule Rule — A Rule Is Code Where It Can Be"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # Rule Rule — A Rule Is Code Where It Can Be
 A rule of this repository, held for [Rule](../../rule.md), which says that a Rule's executable form lives in a module's `rules/` folder beside the normative claim ([Normative Claim and Executable Form](../../rule.md#normative-claim-and-executable-form)). This rule says how far the condition itself is to be code and not prose, by the presumption of [A Fact in Code Is Written Once](../../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once): everything is code unless shown otherwise.
 

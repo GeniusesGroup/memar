@@ -1,10 +1,9 @@
 ---
 Title: "Math"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497410"
 ---
-
 # Math
 
 ## Abstract

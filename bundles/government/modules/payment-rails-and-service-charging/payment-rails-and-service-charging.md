@@ -1,10 +1,9 @@
 ---
 Title: "Payment Rails and Service Charging"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497090
 ---
-
 # Payment Rails and Service Charging
 
 ## Abstract

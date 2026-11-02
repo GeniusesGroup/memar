@@ -1,10 +1,9 @@
 ---
 Title: "Thermal Sources and Storage"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497066
 ---
-
 # Thermal Sources and Storage
 
 ## Abstract

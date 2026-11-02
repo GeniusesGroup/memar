@@ -1,10 +1,9 @@
 ---
 Title: "Purpose of the Tall Thermal Column"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497068
 ---
-
 # Purpose of the Tall Thermal Column
 
 ## Abstract

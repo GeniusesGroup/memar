@@ -2,7 +2,6 @@
 name: memar
 description: Operating practices for any work conducted the Memar way — not only work inside the GeniusesGroup/memar repository. Use when developing any system (software, hardware, apps, gadgets, buildings, organizations/society) with Memar; when working on a Memar-built project (e.g. `organization`); a Memar sub-project (Khayyam, os, Chapar, Giti/GP, sRPC, GUI, Syllab, Achaemenid); or when applying Memar's principles even if "Memar" is never named — e.g. "write this in Khayyam" or "design this the way Memar does". Also covers reasoning about ideas, architecture, modeling, terminology, critique, or documentation under Memar's approach. This skill holds no project knowledge; it only defines how to discover and use Memar's live documentation to hold the Memar mental model before acting.
 ---
-
 # Memar
 This file holds only what is the agent's own: how an agent's runtime — its context window, its sub-agents, its tools — carries out work the Memar way. Memar's knowledge is in its documents, and how its tools are used is declared by `memar` and the tools it leads to; neither is repeated here. This file is not complete: what it does not say may still be in Memar, so look it up. Where this file disagrees with a document or with `memar`, the document or `memar` wins, and the disagreement is reported.
 

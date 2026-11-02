@@ -1,10 +1,9 @@
 ---
 Title: "Placement and Routing of Service Flows"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497056
 ---
-
 # Placement and Routing of Service Flows
 
 ## Abstract

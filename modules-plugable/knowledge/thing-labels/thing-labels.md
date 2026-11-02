@@ -1,9 +1,8 @@
 ---
 Title: "Thing labels"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-24
 ---
-
 # Thing labels
 Registered meanings of words a person may attach to any node.
 

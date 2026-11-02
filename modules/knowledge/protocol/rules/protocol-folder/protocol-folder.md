@@ -1,10 +1,9 @@
 ---
 Title: "Protocol Rule — A Protocol Is Written in a `protocol/` Folder"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-31
 ID: 497844
 ---
-
 # Protocol Rule — A Protocol Is Written in a `protocol/` Folder
 The owner's ruling of 2026-10-31, while designing the title module. It is the rule for where an abstraction is written, held for every module of every project built with Memar, and it applies [Protocol](../../protocol.md) to the file system: an abstraction is the code-level form of a protocol, and a protocol has one place to be read.
 

@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Declaration Order"
-Status: Draft
+Labels: Draft
 Start Date: "2026-10-04"
 ID: "497527"
 ---
-
 # Khayyam Rule — Declaration Order
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for where a method stands relative to the type it belongs to. It is a governance rule of this repository, not a grammar requirement: [Method Structure](../../../../docs/khayyam/method.md#method-structure) states the shape of a declaration and no order among declarations, and the [file layout rule](../file-layout/file-layout.md) already holds that the grammar requires no declaration order. What this rule adds is the part that rule stops short of. File layout's contracts-first order puts a file's contracts before its bodies; a type declaration and the method that belongs to it are both contracts, and that order says nothing about which of the two comes first.
 

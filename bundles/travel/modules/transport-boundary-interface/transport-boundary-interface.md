@@ -1,10 +1,9 @@
 ---
 Title: "Transport at the Boundary of the Network"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497062
 ---
-
 # Transport at the Boundary of the Network
 
 ## Abstract

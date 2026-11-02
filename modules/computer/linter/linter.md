@@ -1,10 +1,9 @@
 ---
 Title: "Linter"
-Status: Draft
+Labels: Draft
 Start Date: 2026-06-22
 ID: 495025
 ---
-
 # Linter
 
 ## Abstract

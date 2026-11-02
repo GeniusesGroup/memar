@@ -1,10 +1,9 @@
 ---
 Title: "The Type"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-10
 ID: 497671
 ---
-
 # The Type
 
 ## Abstract

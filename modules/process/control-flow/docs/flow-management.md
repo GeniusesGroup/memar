@@ -1,10 +1,9 @@
 ---
 Title: "Flow Management Model"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-03
 ID: "497514"
 ---
-
 # Flow Management Model
 
 ## Abstract

@@ -1,10 +1,9 @@
 ---
 Title: "Memory View"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-23
 ID: 497993
 ---
-
 # Memory View
 
 ## Abstract

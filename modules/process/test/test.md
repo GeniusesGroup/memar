@@ -1,10 +1,9 @@
 ---
 Title: "Test"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-16
 ID: 497098
 ---
-
 # Test
 This document states Memar's position on **Test**: a Test is the written expectations of a named Process, written before the work and kept as a standing part of the system that owes them — not a debugging aid, not a runner's output, and not a claim about code quality. Its concept-level definition is owned by [Process → Expectations and Checks](../process.md#expectations-and-checks); this document adds what the protocol layer owns. It states that the expectation precedes the enactment, and why: the ordering is what lets a check reach the errors of understanding rather than only the errors of implementation. It states that the form the expectation takes is fixed by the domain's checks, so a building's requirement and a module's protocol surface are governed by the same rules in different artifacts. It states that a Test is a deliverable a system owes, what it may assume, and what a passing suite does and does not establish. And it records the software ecosystem's name for this discipline, **Test-Driven Development**, only to set the name down: that tradition's account of a Test differs from this one, and the difference is substantive rather than terminological. It deliberately states no structural rule — where a Test lives and what its artifacts are called are Rules, carried in the implementing module's `rules/` folder per [Rule → Where Rules Live](../rule/rule.md#where-rules-live-rules-beside-protocol), and pointed to from [What a Test Is Not](#what-a-test-is-not) rather than restated here.
 

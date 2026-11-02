@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Method Separation"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-28
 ID: "497376"
 ---
-
 # Khayyam Rule — Method Separation
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for the vertical space between two method declarations in a file that carries prose. It rewrites source; it is applied by `abstraction_bridge.py tidy --rule method-separation` in [`targets/go/`](../../targets/go/abstraction_bridge.py).
 

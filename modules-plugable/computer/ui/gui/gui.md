@@ -1,9 +1,8 @@
 ---
 Title: "GUI - Graphic User Interface"
-Status: Draft
+Labels: Draft
 Start Date: 2021-05-25
 ---
-
 # GUI - Graphic User Interface
 The GUI is the realization of [UI](../../../../modules/computer/ui/ui.md) for a person at a screen: the pages and widgets of the neutral protocols, rendered and driven through a screen, a pointer, touch and a keyboard. What follows is the position this realization takes; the concepts it realizes are the UI module's.
 

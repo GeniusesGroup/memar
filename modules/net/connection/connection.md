@@ -1,10 +1,9 @@
 ---
 Title: "Networking Connection"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-06
 ID: 496867
 ---
-
 # Networking Connection
 
 ## Abstract

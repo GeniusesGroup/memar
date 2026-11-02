@@ -2,7 +2,6 @@
 name: chapar
 description: Use when implementing a Chapar data-link switch, a Chapar endpoint (sending Unicast, announcing or reacting to Discovery), or ChaparKhane path coordination. Procedures are derived step by step from chapar.md; it contains no design rationale (see chapar.md's paired changelog and handoff) and defines no wire-format changes of its own.
 ---
-
 # Implementing Chapar
 All steps below are imperative restatements of normative behavior defined in [chapar.md](chapar.md). Do not introduce behavior absent from that document.
 

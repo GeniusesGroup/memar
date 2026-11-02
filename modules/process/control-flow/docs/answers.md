@@ -1,10 +1,9 @@
 ---
 Title: "Control Flow Model Answers"
-Status: Draft
+Labels: Draft
 Start Date: "2026-10-01"
 ID: "497458"
 ---
-
 # Control Flow Model Answers
 ## Abstract
 This document is what the documents and the `.kh` sources of this repository do and do not settle about the nine open questions the Control Flow model handoff carries. It answers each from the evidence, cites the decisive sentence at every claim, and names the specific missing sentence wherever nothing answers. Of the nine, the repository settles none outright and constrains all nine; the four that decide whether any declaration in this module can be written — the owner of the forms, the type of a scope parameter, the type of a condition, and whether a form carries an error output — turn on one gap that no document in this repository fills: a conditional pair has to reach the branch body it drives, a code scope is the `sc` subtype of Khayyam, a fourth Type category rather than an Abstraction, and an Abstraction's method signature may name only Abstractions, so a conditional pair declared as an Abstraction has no way to name the scope its members receive. That limit is the language's rule and the owner's ruling rather than the protocol's requirement: `modules/process/control-flow/control-flow.md:59` requires the observable dependency boundary and permits named scopes, explicit closures, or another mechanism with the same boundary. One conflict is recorded rather than resolved. The measurement the type-of-a-scope-parameter question rests on survives in the tree only as a compiled build product under `bundles/khayyam/targets/js/build/`, its `.kh` source absent.

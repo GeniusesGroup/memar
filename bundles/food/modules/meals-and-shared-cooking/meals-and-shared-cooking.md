@@ -1,10 +1,9 @@
 ---
 Title: "Meals and Shared Cooking"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497080
 ---
-
 # Meals and Shared Cooking
 
 ## Abstract

@@ -1,9 +1,8 @@
 ---
 Title: "UI Rule — A Widget Aggregates, a Service Does One Thing"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # UI Rule — A Widget Aggregates, a Service Does One Thing
 A rule of this repository, held for [Widget](../../widget/widget.md). It states where aggregation lives, because the widget document is silent on it and agents have placed aggregation in services.
 

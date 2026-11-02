@@ -1,10 +1,9 @@
 ---
 Title: "Service Placement Scale"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497053
 ---
-
 # Service Placement Scale
 
 ## Abstract

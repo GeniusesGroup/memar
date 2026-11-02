@@ -2,7 +2,6 @@
 name: filesystem
 description: replaces the default assumption that a system needs a filesystem with an explicit, per-concern need-check and recorded decision; use when files, paths, or folders appear in a draft model, a substrate dependency is chosen for a component, a domain model mirrors a directory layout, a tool's requirement is about to become an architectural premise, or a storage decision is inherited unexamined. Not the argument against the default, which filesystem.md holds, and not the design of the storage chosen
 ---
-
 # Filesystem Practice
 > **Purpose:** This practice operationalizes [filesystem.md](filesystem.md): it turns that document's warning — set aside the default that you necessarily need a filesystem — into a followable check with explicit criteria. The critique and its arguments live in the base document and are not restated here; each criterion below links to the topic that argues it.
 

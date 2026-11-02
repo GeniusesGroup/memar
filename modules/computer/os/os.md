@@ -1,10 +1,9 @@
 ---
 Title: "OS - Operating System"
-Status: Draft
+Labels: Draft
 Start Date: 2026-08-28
 ID: 496644
 ---
-
 # OS - Operating System
 This document answers the question "how should an operating system be built under this architecture?" by stating, for every requirement the OS must meet, an explicit capability and an explicit constraint — what the OS does, and what it must not do — with no presupposition inherited from the traditional view.
 

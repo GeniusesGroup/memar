@@ -1,10 +1,9 @@
 ---
 Title: "Form of Government Organs"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497083
 ---
-
 # Form of Government Organs
 
 ## Abstract

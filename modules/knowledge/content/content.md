@@ -41,7 +41,6 @@ Several methodological commitments shaped this document, consistent with the pro
 **Numeric claims from AI-generated research are qualitative judgments, not measured data**, and are never cited as such in this document. See Documentation — Research → Findings.
 
 ---
-
 ## Explanation
 
 ### What "Content" Means Here, and What This Document Is Not

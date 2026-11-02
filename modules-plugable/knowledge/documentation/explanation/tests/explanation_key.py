@@ -16,8 +16,9 @@ ExplanationKey = _m_explanation_key.ExplanationKey
 class ExplanationKeyPins(unittest.TestCase):
 
     def test_the_keys_are_the_specifications_in_its_order(self) -> None:
-        self.assertEqual([key.key for key in ExplanationKey], ['title', 'start date', 'id'])
+        self.assertEqual([key.key for key in ExplanationKey], ['title', 'labels', 'start date', 'id'])
         self.assertFalse(hasattr(ExplanationKey, 'STATUS'))
+        self.assertEqual(ExplanationKey.LABELS.written, 'Labels')
 
     def test_each_has_a_description_and_a_written_form(self) -> None:
         for key in ExplanationKey:

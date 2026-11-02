@@ -1,10 +1,9 @@
 ---
 Title: "UI - User Interface"
-Status: Draft
+Labels: Draft
 Start Date: 2021-05-25
 ID: 450528
 ---
-
 # UI - User Interface
 UI is how any agent (a person, a screen, a voice, a command line, a program) meets services. It is the concept; the GUI, the VUI, the command and the CLI are its realizations, each a module of its own, and this document is the concept's, not any one realization's. The concept has two core parts, [Widget](./widget/widget.md) and [Page](./page/page.md), which core domains build on and which are bound to no screen; the rest of a realization is pluggable. The position of the graphical realization is in [GUI](../../../modules-plugable/computer/ui/gui/gui.md).
 

@@ -1,10 +1,9 @@
 ---
 Title: "Go Port Rule — Go Clue Residue"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-28
 ID: "497377"
 ---
-
 # Go Port Rule — Go Clue Residue
 The Go port's rules live one rule per folder under [`targets/go/rules/`](../README.md), and this is the rule for the Go text the port leaves at the end of a Khayyam file. It rewrites source; it is applied by `abstraction_bridge.py tidy --rule go-clue-residue` in [`targets/go/`](../../abstraction_bridge.py).
 

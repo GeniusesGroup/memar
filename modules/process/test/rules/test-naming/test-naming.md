@@ -1,10 +1,9 @@
 ---
 Title: "Test Rule — Test Naming"
-Status: Draft
+Labels: Draft
 Start Date: "2026-09-30"
 ID: "497433"
 ---
-
 # Test Rule — Test Naming
 A rule of this repository, held for the [Test](../../test.md) protocol. [Test Placement](../test-placement/test-placement.md) decides where a Test lives; this rule decides what its own artifacts are called, and follows from that placement: a Test inside a `tests/` folder needs no marker in its name, because the folder is the marker. It holds for every Test in the Memar ecosystem, not for Khayyam source alone: a Test of one of this repository's foundational documents, when one is written, is named the same way as a Test of a module. It is a governance rule of this repository, not part of the Test protocol, for the reason [test-placement.md → Keep it or drop it](../test-placement/test-placement.md#keep-it-or-drop-it) states.
 

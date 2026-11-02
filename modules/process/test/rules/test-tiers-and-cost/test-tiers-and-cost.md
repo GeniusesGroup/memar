@@ -1,9 +1,8 @@
 ---
 Title: "Test Rule — Tiers and Cost"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-30
 ---
-
 # Test Rule — Tiers and Cost
 A rule of this repository, held for the [Test](../../test.md) protocol. [Tiers with labeled seams](../../test.practice.md#tiers-with-labeled-seams) says checks differ in tier and that tiers are not mixed; this rule says what a Test of each tier may spend, so that a run stays small enough for an agent to wait on it. It came from a measurement of 2026-10-30: 120 test files took about 700 seconds alone, because most Tests built a git repository, started a `memar` process or composed the documents again for each Test, and an agent's context was spent waiting.
 

@@ -1,9 +1,8 @@
 ---
 Title: "Service Rule — A Service's SDK Is the Only Place Its Answers Are Cached"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-31
 ---
-
 # Service Rule — A Service's SDK Is the Only Place Its Answers Are Cached
 A rule of this repository, held for [SDK](../sdk/sdk.md). It applies to every consumer of a service, in every language: a widget, a page, a command, a program.
 

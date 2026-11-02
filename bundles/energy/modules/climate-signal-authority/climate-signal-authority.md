@@ -1,10 +1,9 @@
 ---
 Title: "Authority for the Indoor Climate Signal"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497073
 ---
-
 # Authority for the Indoor Climate Signal
 
 ## Abstract

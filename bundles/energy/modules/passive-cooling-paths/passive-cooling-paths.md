@@ -1,10 +1,9 @@
 ---
 Title: "Passive Heat Rejection"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497072
 ---
-
 # Passive Heat Rejection
 
 ## Abstract

@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Comment Forms"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497328"
 ---
-
 # Khayyam Rule — Comment Forms
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for the comment forms this repository's toolchain recognizes. It is a rule of a tool, not a statement of the language: [Khayyam → Language Keyword in a Glance](../../../../docs/khayyam/khayyam.md#language-keyword-in-a-glance) fixes the declarations a program may contain, and how a tool reads the prose between them is the tool's own condition over the characters it is given.
 

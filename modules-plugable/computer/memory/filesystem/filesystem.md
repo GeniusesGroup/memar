@@ -1,10 +1,9 @@
 ---
 Title: "Reevaluating the Filesystem as a Fundamental Modeling Primitive"
-Status: Draft
+Labels: Draft
 Start Date: 2026-06-21
 ID: "495004"
 ---
-
 # Reevaluating the Filesystem as a Fundamental Modeling Primitive
 This document deconstructs the default validity of File and Directory as primitives for modeling knowledge; the positive principles this critique motivates are stated in its companion, [Knowledge](../../../../modules/knowledge/knowledge.md).
 

@@ -1,10 +1,9 @@
 ---
 Title: "Dependency and Version Management"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-06
 ID: 496870
 ---
-
 # Dependency and Version Management
 
 ## Abstract

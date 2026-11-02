@@ -1,10 +1,9 @@
 ---
 Title: "Dwelling Provision and Adaptability"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497058
 ---
-
 # Dwelling Provision and Adaptability
 
 ## Abstract

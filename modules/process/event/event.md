@@ -1,10 +1,9 @@
 ---
 Title: "Event"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-03
 ID: 497508
 ---
-
 # Event
 
 ## Abstract

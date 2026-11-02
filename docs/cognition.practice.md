@@ -2,7 +2,6 @@
 name: cognition
 description: defines how the components of thinking — its operations, standards, and awareness disciplines — are exercised in Memar's work, chiefly in critique of a proposal, model, or design; use when a proposal, model, design, or architecture is presented for evaluation, a choice between alternatives is to be made, critique is asked for, a discourse norm is to be applied at intake, or a run is to be debriefed. Not the norms and components themselves, which cognition.md owns; not the critique a modeling chat runs, which the modeling practice owns; and not the self-examination that is part of drafting
 ---
-
 # Cognition Practice
 > **Purpose:** This practice defines how the components of thinking in [Cognition](./cognition.md) are exercised in Memar's actual work, starting with the activity whose procedure is most developed: critique. The concept, the components — elementary operations, standards, awareness disciplines, named errors — and the discourse norms live in [cognition.md](./cognition.md) — that document is assumed reading, and its rules are not restated here.
 

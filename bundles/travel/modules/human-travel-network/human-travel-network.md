@@ -1,10 +1,9 @@
 ---
 Title: "Human Travel Network"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497061
 ---
-
 # Human Travel Network
 
 ## Abstract

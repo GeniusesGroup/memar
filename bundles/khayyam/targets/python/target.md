@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Python Target"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-24
 ID: 498016
 ---
-
 # Khayyam Python Target
 ## Abstract
 This document is the Python target of the Khayyam toolchain, and today it holds one thing: the profile a Python source follows so that its later conversion to Khayyam is a translation and not a redesign. The owner ruled on 2026-10-24 that a Memar-built system is written in Python, following Memar's development framework and Memar's existing Python code, and that Khayyam replaces the Python when Khayyam is ready. A translation is mechanical only where every construct of the source has one Khayyam form. The profile therefore admits the Python constructs whose Khayyam form a Khayyam document states, refuses those that have none, and names the constructs whose form is still open: loops and jumps, unbounded integers and formatted text, and the import of a pluggable module ([What the profile does not yet cover](#what-the-profile-does-not-yet-cover)). Converting code that uses an admitted construct is mechanical; converting code that uses an open one is not, until its form is stated. Nothing here converts anything yet, and no Python artifact is emitted from Khayyam: the folder is named for the language, beside [`go/`](../go/target.md) and [`js/`](../js/target.md), as the Go target is. Every rule below is Tentative until the owner ratifies the profile (handoff).

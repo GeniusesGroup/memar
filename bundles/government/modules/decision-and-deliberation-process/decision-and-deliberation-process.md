@@ -1,10 +1,9 @@
 ---
 Title: "Decision and Deliberation Process"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497082
 ---
-
 # Decision and Deliberation Process
 
 ## Abstract

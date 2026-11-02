@@ -2,7 +2,6 @@
 name: khayyam
 description: Use whenever Khayyam code (file extension .kh) is written, read, reviewed, translated into, or explained — "write this in Khayyam", "convert this function to Khayyam", "how do capsules/abstractions/methods work in Khayyam", or any .kh file content. Khayyam is a young language general training data does not cover: work from this quick reference and the live khayyam.md, never from memory or by analogy to Go/Rust/C. A quick reference and a translation mapping only: not the language's specification, which khayyam.md is and which wins where the two differ, and not the deciding of what a program's types should be, which the modeling and type practices own.
 ---
-
 # Khayyam Language Skill
 Khayyam is a minimalist system-modeling language, part of the Memar framework ecosystem. **File extension:** `.kh`
 

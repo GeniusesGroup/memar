@@ -1,9 +1,8 @@
 ---
 Title: "Text Rule — Long Body Not JSON-Escaped"
-Status: Draft
+Labels: Draft
 Start Date: 2026-11-01
 ---
-
 # Text Rule — Long Body Not JSON-Escaped
 A rule of this repository, held for the [text](../../text.md) domain. It applies to every Memar project that stores a long prose body (Markdown or other character text) through the memory store’s Files adapter.
 

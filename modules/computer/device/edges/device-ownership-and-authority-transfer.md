@@ -1,7 +1,7 @@
 ---
 RFC Number: 003000
 Title: "Device Ownership and Command-Authority Transfer"
-Status: Draft
+Labels: Draft
 Start Date: 2026-07-02
 Applied to: []
 Supersedes: null
@@ -12,7 +12,6 @@ Related:
   Conflicts with: []
 Author(s): []
 ---
-
 ## Summary
 A device (e.g., an IoT sensor or appliance) needs a well-defined process for establishing who currently has command authority over it — starting from the manufacturer at production time, and changing hands as the device is sold, resold, or moved between organizations. This RFC starts the record of that process. It opens a new numbering series (003000+), separate from Chapar's own RFCs (001000–001999), because this problem is not specific to Chapar or even to networking — it is a cross-cutting concern that will eventually live as modules/services in the `organization` repository, not inside `memar`'s Chapar-related files.
 

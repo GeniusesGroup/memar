@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Abstraction Naming Heuristic"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497401"
 ---
-
 # Khayyam Rule — Abstraction Naming Heuristic
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for how an abstraction name should frame a domain concept rather than a technical capability. It is a governance rule of this repository, companion to the [identifier naming rule](../identifier-naming/identifier-naming.md).
 

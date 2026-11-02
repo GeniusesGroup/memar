@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Name Not Declared"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497333"
 ---
-
 # Khayyam Rule — Name Not Declared
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the second of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) gives the `in` declaration a name and a path, and what a tool does when the named file does not declare that name is the tool's own condition.
 

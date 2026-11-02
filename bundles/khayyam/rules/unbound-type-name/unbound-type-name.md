@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Unbound Type Name"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-26
 ID: "497335"
 ---
-
 # Khayyam Rule — Unbound Type Name
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the fourth of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: the language states that a signature names a type, and whether a name in a signature is bound by anything the file declares or includes is a tool's condition over its own semantic representation.
 

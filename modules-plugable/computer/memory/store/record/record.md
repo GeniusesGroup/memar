@@ -1,10 +1,9 @@
 ---
 Title: "Memory Record"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-23
 ID: 497992
 ---
-
 # Memory Record
 
 ## Abstract

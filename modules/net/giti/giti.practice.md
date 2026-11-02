@@ -2,7 +2,6 @@
 name: giti
 description: Use when implementing, deploying, or operating any GP network component where the protocol document deliberately leaves the how open — running software routers or ChaparKhane-role coordinators, bridging GP traffic over today's Internet, or executing any other GP-related procedure that evolves over time. Procedures only; the protocol's own rules live in giti.md.
 ---
-
 # GP Practices
 Procedures for operating GP networks. [giti.md](giti.md) owns the protocol — frames, addressing, and normative rules — and says nothing here binds it; each practice below is a working procedure, expected to evolve with experience, and none defines a GP frame, field, or rule.
 

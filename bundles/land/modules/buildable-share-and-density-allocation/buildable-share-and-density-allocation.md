@@ -1,10 +1,9 @@
 ---
 Title: "Buildable Share and Density Allocation"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497045
 ---
-
 # Buildable Share and Density Allocation
 
 ## Abstract

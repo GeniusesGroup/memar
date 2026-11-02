@@ -18,6 +18,6 @@
 
 - Are `Optional`/`Mandatory` labels on one generic form-question edge, or two distinct edge types? (Same labels-on-edge-vs-distinct-edges question as [form](../form/form.md) — one review, two relations.)
 - What does Mandatory trigger — validation on submit, scoring, or ordering? Who may flip it (no bare edges)?
-- Relation to the general status domain's `optional` loop-edge ([status](../../../../../modules/knowledge/status/status.md) `edges-loop/optional/`) — same vocabulary word, same mechanism or a form-local flag?
+- Relation to the general Status-kind word `Optional` under [`thing/labels`](../../../../../modules/identity/thing/labels/) ([Documentation → Status](../../../../../modules-plugable/knowledge/documentation/documentation.md#status)) — same vocabulary word, same label attachment or a form-local flag?
 - Direction/naming unconfirmed — nothing ratified.
 

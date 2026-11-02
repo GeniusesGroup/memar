@@ -1,10 +1,9 @@
 ---
 Title: "Centralized or Distributed Primary Generation"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497069
 ---
-
 # Centralized or Distributed Primary Generation
 
 ## Abstract

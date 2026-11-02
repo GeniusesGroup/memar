@@ -6,5 +6,6 @@ from modules.knowledge.content.primitive.record_key_set import RecordKeySet
 
 class ExplanationKey(RecordKeySet):
     TITLE = RecordKey('title', 'a short, unique, human-readable name for the document, in double quotes', 'Title')
+    LABELS = RecordKey('labels', "comma-separated label words on this content (Status-kind and others), e.g. Draft or Draft, guest — the written form of the content record's label edges", 'Labels')
     START_DATE = START_DATE_FIELD
     ID = ID_FIELD

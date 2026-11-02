@@ -1,10 +1,9 @@
 ---
 Title: "Memory Display"
-Status: Draft
+Labels: Draft
 Start Date: 2026-11-01
 ID: 498207
 ---
-
 # Memory Display
 
 ## Abstract

@@ -14,5 +14,5 @@ class PlanKey(RecordKeySet):
     PARENT = RecordKey('parent', 'ID of the task this one came from, with --parent')
     CONVERSATION = RecordKey('conversation', 'the id of the first task of the conversation, with --parent')
     PRIORITY = RecordKey('priority', 'N, with --priority')
-    LABELS = RecordKey('labels', 'a block, one `- KIND: WORD` line a label, with --label KIND=WORD: the words that link this task to others, as many as it needs and none it does not', 'Labels')
+    LABELS = RecordKey('labels', "the written form of this content record's label edges: a block, one `- KIND: WORD` line a label, with --label KIND=WORD (Topic, TaskKind, …); Status-kind lifecycle of the task stays on the task node", 'Labels')
     DEPENDS_ON = RecordKey('depends_on', 'ID, ID, ...: the tasks that must be Complete before this one can start, each an id or project/id; while one is not, this task is Blocked')

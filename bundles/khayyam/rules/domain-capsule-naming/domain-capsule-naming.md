@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Domain Capsule Naming"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497405"
 ---
-
 # Khayyam Rule — Domain Capsule Naming
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for capsule names that organize behavior by domain rather than by utility category. It is a governance rule of this repository.
 

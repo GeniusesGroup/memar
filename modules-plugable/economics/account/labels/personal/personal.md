@@ -1,9 +1,8 @@
 ---
 Title: "Personal"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-24
 ---
-
 # Personal
 A label for an account whose quantity belongs to a person, a business, a legal entity, or a bank account.
 

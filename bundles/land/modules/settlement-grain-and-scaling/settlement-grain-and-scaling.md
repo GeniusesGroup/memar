@@ -1,10 +1,9 @@
 ---
 Title: "Settlement Grain and Scaling"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-13
 ID: 497052
 ---
-
 # Settlement Grain and Scaling
 
 ## Abstract

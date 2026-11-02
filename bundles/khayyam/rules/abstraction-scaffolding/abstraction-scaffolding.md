@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Abstraction Scaffolding"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497409"
 ---
-
 # Khayyam Rule — Abstraction Scaffolding
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for linter and IDE assistance that reduces explicit-delegation boilerplate without adding grammar. It is a governance rule of this repository: [Abstraction in Khayyam](../../../../docs/khayyam/abstraction.md) states that satisfaction is implicit and delegation must stay explicit in source; this rule states what organizational tooling may generate or verify.
 
