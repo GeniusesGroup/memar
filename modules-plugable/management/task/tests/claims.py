@@ -81,8 +81,8 @@ def declare_topic(project: Path, fresh) -> None:
     word = fresh.label.word
     cls = 'Label_' + ''.join(part[:1].upper() + part[1:] for part in word.replace('-', '_').split('_') if part)
     (where / f'{cls}.py').write_text(
-        "from modules.knowledge.label.labels.declared_label import DeclaredLabel\n"
-        "from modules.knowledge.label.labels.Label_Topic import Label_Topic\n\n"
+        "from modules.knowledge.label.primitive.declared_label import DeclaredLabel\n"
+        "from modules.knowledge.content.labels.Label_Topic import Label_Topic\n\n"
         f"class {cls}(DeclaredLabel):\n"
         f"    word = {word!r}\n"
         f"    id = {fresh.label.id!r}\n"

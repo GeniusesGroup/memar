@@ -1,10 +1,8 @@
 ---
 Title: "Modularity Rule — Kernel Neutrality"
-Status: Draft
 Start Date: 2026-10-20
 ID: 496333
 ---
-
 # Modularity Rule — Kernel Neutrality
 Modularity's rules live one rule per directory under [`modules/knowledge/modularity/rules/`](../README.md), and this is the rule for what a kernel module may fix: its subject, and no choice another organization may make otherwise. It is held for the placements [Kernel](../../labels/kernel.md) and [Pluggable](../../labels/pluggable.md), and it is to modules what [Khayyam → Minimal Legislation](../../../../../docs/khayyam/khayyam.md#minimal-legislation-a-principle) is to the grammar.
 
@@ -29,4 +27,4 @@ An organization may keep or drop this rule for its own kernel. Dropping it is co
 - It does not claim a kernel module holds no names: the names of its own types, fields and methods are its subject.
 - It does not make a folder's name its meaning. A name carries meaning as a label, refined over time and retired when its concept changes ([Label](../../../label/label.md)); the kinds behind the names — a contract, the edge kinds, status, the kinds of work — carry the structure (the owner's ruling of 2026-10-20 on [Modules Categories Research 001](../../../../../.agents/tasks/20261019-T191746Z-16420/docs/modules.categories.research.001.md#7-owner-decisions-needed), C2).
 - It does not bind a bundle or Memar's own tooling (`.agents/scripts`, `bundles/memar`): a bundle is a composition that may name any module ([Placement → The rule](../placement/placement.md#the-rule)), and the tooling composes Memar's own choices. It binds Memar's tool modules under `modules/`, such as task and content, as it binds every kernel module.
-- It does not make the categories under `modules/` profile data; [Category](../../../label/labels/category.md) governs them.
+- It does not make the categories under `modules/` profile data; [Category](../../labels/category.md) governs them.

@@ -32,6 +32,8 @@ agent holding it or, once the claim has lapsed, queued again
 (`new --task-id ID --queued`).
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
 import argparse
 import os
@@ -43,7 +45,7 @@ from typing import Callable
 from machine.console import fail, note
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
@@ -144,13 +146,13 @@ def try_claim(folder: Path) -> str | None:
     held = claim.exists()
     if held and is_claimed(folder):
         return f'task {folder.name} is claimed by another agent; its claim is in {claim}'
-    if status != Status.QUEUED.key and (not (status == Status.ACTIVE.key and held)):
+    if status != Label_Queued.key and (not (status == Label_Active.key and held)):
         return f"task {folder.name} is not queued (its status is {status or 'none'}), so it is not free to claim"
     why = _take_over(folder) if held else _create_claim(folder)
     if why:
         return why
     try:
-        set_status(stores_at(folder), None, folder.name, Status.ACTIVE.key, only_from=(Status.QUEUED.key, Status.ACTIVE.key))
+        set_status(stores_at(folder), None, folder.name, Label_Active.key, only_from=(Label_Queued.key, Label_Active.key))
     except SystemExit as refused:
         claim.unlink(missing_ok=True)
         return str(refused.code).removeprefix('error: ')

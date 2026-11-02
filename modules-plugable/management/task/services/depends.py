@@ -37,6 +37,8 @@ each stands; one that no longer resolves keeps it unclaimable until the key is
 dropped, and the refusal says so.
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Label_Blocked import Label_Blocked
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 from pathlib import Path
@@ -62,7 +64,7 @@ _m_plan_status = import_module('modules-plugable.management.task.services.plan_s
 set_status = _m_plan_status.set_status
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace('_', '-')
 BLOCKED_EVENT = 'blocked-by-dependency'
 RELEASED_EVENT = 'released-by-dependency'
@@ -100,20 +102,20 @@ def reconcile(task: Task, reader: Reader) -> str:
     """Bring TASK's Status up to date with its dependencies, as the module says; the Status it has now."""
     if not (task.has_plan and task.readable):
         return task.status
-    if task.status not in (Status.QUEUED.key, Status.BLOCKED.key):
+    if task.status not in (Label_Queued.key, Label_Blocked.key):
         return task.status
-    if not DependsOn.of(task.front) and (not (task.status == Status.BLOCKED.key and blocked_by_memar(task.path))):
+    if not DependsOn.of(task.front) and (not (task.status == Label_Blocked.key and blocked_by_memar(task.path))):
         return task.status
     unmet = problems(task, reader)
     try:
-        if unmet and task.status == Status.QUEUED.key:
-            set_status(stores_at(task.path), None, task.id, Status.BLOCKED.key, only_from=(Status.QUEUED.key,))
+        if unmet and task.status == Label_Queued.key:
+            set_status(stores_at(task.path), None, task.id, Label_Blocked.key, only_from=(Label_Queued.key,))
             record(BLOCKED_EVENT, task.id, '; '.join(unmet), folder=task.path)
-            return Status.BLOCKED.key
-        if not unmet and task.status == Status.BLOCKED.key and blocked_by_memar(task.path):
-            set_status(stores_at(task.path), None, task.id, Status.QUEUED.key, only_from=(Status.BLOCKED.key,))
+            return Label_Blocked.key
+        if not unmet and task.status == Label_Blocked.key and blocked_by_memar(task.path):
+            set_status(stores_at(task.path), None, task.id, Label_Queued.key, only_from=(Label_Blocked.key,))
             record(RELEASED_EVENT, task.id, '', folder=task.path)
-            return Status.QUEUED.key
+            return Label_Queued.key
     except SystemExit:
         return read_task(task.path).status
     return task.status
@@ -173,8 +175,8 @@ def concerns_for(task: Task, reader: Reader) -> list[str]:
     path = reader.cycle(task.id, refs, home)
     if path:
         found.append(f'{PlanKey.DEPENDS_ON.written} makes a cycle: {ARROW.join(path)}')
-    if task.status == Status.BLOCKED.key and (not problems(task, reader)):
+    if task.status == Label_Blocked.key and (not problems(task, reader)):
         found.append(f'blocked, and every {PlanKey.DEPENDS_ON.written} is Complete: it can resume')
-    elif task.status == Status.BLOCKED.key:
+    elif task.status == Label_Blocked.key:
         found.append(f'blocked by {PlanKey.DEPENDS_ON.written}: ' + '; '.join(problems(task, reader)))
     return found

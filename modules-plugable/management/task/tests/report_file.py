@@ -55,7 +55,7 @@ sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
 import earlier_shape
 task_report = import_module('modules-plugable.management.task.services.report_file')
-from modules.knowledge.label.services.status_words import DocumentKind, Status
+from modules.knowledge.label.services.status_words import document_kinds, DOCUMENT_KIND_WORDS, Label_Plan, Label_Report, Label_Explanation, Label_Handoff, Label_Research, statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 NEW_PARTS = '# Report\n\n## What ran\nx\n'
 
 class Fixture(unittest.TestCase):
@@ -97,7 +97,7 @@ class Skeleton(Fixture):
         self.assertEqual(task_report.read_report_status(self.folder), 'complete')
 
     def test_a_report_may_state_the_statuses_the_table_gives_a_task_report(self) -> None:
-        self.assertEqual(Status.keys(DocumentKind.REPORT), ('active', 'blocked', 'complete'))
+        self.assertEqual(status_keys(Label_Report), ('active', 'blocked', 'complete'))
 
 class ReadsTodaysShape(Fixture):
 
@@ -152,7 +152,7 @@ class ShapeProblem(Fixture):
 class Agreement(unittest.TestCase):
 
     def test_a_task_status_in_the_vocabulary_is_fine(self) -> None:
-        for status in Status.keys(DocumentKind.PLAN):
+        for status in status_keys(Label_Plan):
             with self.subTest(status=status):
                 self.assertIsNone(task_report.disagreement(status, 'ignored'))
 

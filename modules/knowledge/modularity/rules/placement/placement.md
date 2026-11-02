@@ -1,10 +1,8 @@
 ---
 Title: "Modularity Rule — Placement"
-Status: Draft
 Start Date: 2026-10-17
 ID: 496333
 ---
-
 # Modularity Rule — Placement
 Modularity's rules live one rule per directory under [`modules/knowledge/modularity/rules/`](../README.md), and this is the rule for a module's placement: that it has one, that its place does not lie about what it is, and that what it may depend on follows from where it is. It is a governance rule of this repository, held for the placements [Kernel](../../labels/kernel.md), [Pluggable](../../labels/pluggable.md) and [Bundle](../../labels/bundle.md).
 

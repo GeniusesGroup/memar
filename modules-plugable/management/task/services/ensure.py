@@ -15,6 +15,9 @@ names (`task_location`), and the day's sweep runs when one is opened (`task_gc`)
 touching the task being opened or continued.
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Label_Blocked import Label_Blocked
+from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
@@ -71,7 +74,7 @@ _m_claim = import_module('modules-plugable.management.task.services.claim')
 is_claimed = _m_claim.is_claimed
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 from modules.knowledge.label.primitive.label import Labels
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
@@ -189,7 +192,7 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         register(path.parent, project)
     if not has_plan_now:
         waits = bool(cited) and bool(reader.unmet(cited))
-        status = Status.BLOCKED.key if waits else Status.QUEUED.key if queued else Status.ACTIVE.key
+        status = Label_Blocked.key if waits else Label_Queued.key if queued else Label_Active.key
         create_task(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
         if waits:
             record(BLOCKED_EVENT, sid, '; '.join(reader.unmet(cited)), folder=path)

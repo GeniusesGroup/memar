@@ -9,6 +9,7 @@ is `task_depends`'s. This file is the verb's face over them: it checks what
 is added, writes the key, brings the Status up to date and says what is.
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
 import argparse
 from typing import Callable
@@ -41,7 +42,7 @@ _m_plan_depends = import_module('modules-plugable.management.task.services.plan_
 set_depends_on = _m_plan_depends.set_depends_on
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 
@@ -76,7 +77,7 @@ def change(task_id: str, add: list[str], drop: list[str]) -> None:
         note(line)
     for line in concerns_for(task, reader):
         note(f'concerns: {line}')
-    if task.status == Status.ACTIVE.key and problems(task, reader):
+    if task.status == Label_Active.key and problems(task, reader):
         note('it is Active, so its Status is not changed; set it Blocked if it cannot go on until they are Complete')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

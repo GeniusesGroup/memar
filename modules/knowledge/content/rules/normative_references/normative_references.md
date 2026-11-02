@@ -1,10 +1,8 @@
 ---
 Title: "Content Rule — Normative References"
-Status: Draft
 Start Date: 2026-10-16
 ID: "497823"
 ---
-
 # Content Rule — Normative References
 This is the rule for what an act reads before it starts: for each kind of act, the sections of Memar's documents it cannot be carried out without having read, listed in this folder one list per kind beside one list every act reads. It is a rule of Memar's scripts, whose `task` concern declares the kinds of act ([`task_kind.py`](../../../../management/task/labels/task_kind.py); `memar content get-act-context --help` names them), and it lives in the scripts' `rules/` folder as [Where Rules Live](../../../../../modules/process/rule/rule.md#where-rules-live-rules-beside-protocol) says; it moves to the `rules/` folder of the scripts' `task` module when the scripts become modules (task 20261015-T123046Z-17544), since its subject is the kinds that module declares ([Which Module a Rule Belongs To](../../../../../modules/process/rule/rule.md#which-module-a-rule-belongs-to)).
 

@@ -30,7 +30,7 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 from machine.console import fail
-from modules.knowledge.label.labels.declared_label import DeclaredLabel
+from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.primitive.label import LabelDefinition
 FOLDER = 'labels'
 NAME = 'Label_'

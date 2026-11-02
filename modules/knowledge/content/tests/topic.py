@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the topic type in `modules/knowledge/label/primitive/topic.py`.
+"""Tests for the topic type in `modules/knowledge/content/primitive/topic.py`.
 
-    python modules/knowledge/label/tests/topic.py
+    python modules/knowledge/content/tests/topic.py
 
-The subject is a plan's topic, declared once: the one subject `claims` batches
-by, free text normalized to lower case with runs of white space as one hyphen,
-one line. Named for the file that holds it per
+The subject is a record's Topic kind: free text normalized to lower case with
+runs of white space as one hyphen, one line. Named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
@@ -35,7 +34,7 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 from modules.knowledge.label.primitive.label import LabelProblem
-from modules.knowledge.label.primitive.topic import LABEL_KIND, TOPIC_LABEL, Topic
+from modules.knowledge.content.primitive.topic import LABEL_KIND, TOPIC_LABEL, Topic
 
 class Normalizing(unittest.TestCase):
 

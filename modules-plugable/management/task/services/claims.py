@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Label_Blocked import Label_Blocked
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 import argparse
 Request = import_module('modules-plugable.knowledge.documentation.plan.primitive.request').Request
 from typing import Callable
 from machine.console import fail, note
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 _m_plan_brief = plugable_load('ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
 _m_claim = import_module('modules-plugable.management.task.services.claim')
@@ -35,7 +37,7 @@ PLAN_NAME = _m_plan_file.PLAN_NAME
 part_text = _m_plan_file.part_text
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
-from modules.knowledge.label.primitive.topic import Topic
+from modules.knowledge.content.primitive.topic import Topic
 _m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 TOPIC = _m_plan_labels.TOPIC
 topics_of = _m_plan_labels.topics_of
@@ -54,12 +56,12 @@ PROJECT_REQUIRED = f'{CLAIMS_COMMAND} needs {ProjectName.either_words()}: one ru
 
 def in_line(project: str) -> list[Task]:
     reconcile_all(find_tasks(project=project_of(project)))
-    queued = find_tasks(status=Status.QUEUED.key, project=project_of(project))
+    queued = find_tasks(status=Label_Queued.key, project=project_of(project))
     return sorted(queued, key=lambda task: (-Priority.of(task.front), (task.front or {}).get(PlanKey.START_DATE.key, ''), task.id))
 
 def held_back(project: str) -> None:
     reader = Reader(None)
-    for task in find_tasks(status=Status.BLOCKED.key, project=project_of(project)):
+    for task in find_tasks(status=Label_Blocked.key, project=project_of(project)):
         if DependsOn.of(task.front) and (unmet := problems(task, reader)):
             print(f"{task.id}  waiting: {', '.join(unmet)}")
 

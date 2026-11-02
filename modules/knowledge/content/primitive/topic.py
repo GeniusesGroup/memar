@@ -2,7 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from machine.console import fail
-from modules.knowledge.label.labels.Label_Topic import Label_Topic
+from modules.knowledge.content.labels.Label_Topic import Label_Topic
 from modules.knowledge.label.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
 TOPIC_LABEL = Label_Topic.as_label
 LABEL_KIND_NAME = Label_Topic.word
@@ -28,7 +28,7 @@ def _word(text: str) -> str:
 
 LABEL_KIND = LabelKind(
     TOPIC_LABEL,
-    'the subject a task is about; each subject is Label_<Word> taking Label_Topic',
+    'the subject a record is about; each subject is Label_<Word> taking Label_Topic',
     '`claims` and `labels`',
     _word,
 )

@@ -1,10 +1,8 @@
 ---
 Title: "Process"
-Status: Draft
 Start Date: "2026-08-15"
 ID: "496320"
 ---
-
 # Process
 
 ## Abstract
@@ -367,4 +365,4 @@ Process is closely related to many foundational concepts, but those concepts ret
 The detailed definitions of these concepts belong to their respective documents. Process should remain the point at which their behavioral relationships can be understood.
 
 ### The Modules of This Category
-This document stands in `modules/process/`, the category of Memar's modules whose subject is a process or a participant in one — a request, a response, an event, a service, an error, a rule, a test — so that the concept is read beside the modules that apply it. The category is a browsing namespace ([Label → Category](../knowledge/label/labels/category.md)); a module belongs here when its subject is a process or part of one, and its specification and realization sit together as for every module ([Modules](../README.md#what-this-layer-is)).
+This document stands in `modules/process/`, the category of Memar's modules whose subject is a process or a participant in one — a request, a response, an event, a service, an error, a rule, a test — so that the concept is read beside the modules that apply it. The category is a browsing namespace ([Label → Category](../knowledge/modularity/labels/category.md)); a module belongs here when its subject is a process or part of one, and its specification and realization sit together as for every module ([Modules](../README.md#what-this-layer-is)).

@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Label_Complete import Label_Complete
+from modules.identity.thing.labels.Label_Blocked import Label_Blocked
+from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
 import sys
 import unittest
@@ -19,7 +23,7 @@ PlanKey = _m_plan_key.PlanKey
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
 from modules.knowledge.content.primitive.record_key import ID_FIELD
-from modules.knowledge.label.services.status_words import DocumentKind, Status
+from modules.knowledge.label.services.status_words import document_kinds, DOCUMENT_KIND_WORDS, Label_Plan, Label_Report, Label_Explanation, Label_Handoff, Label_Research, statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 
 class PlanRecord(unittest.TestCase):
 
@@ -37,8 +41,8 @@ class PlanRecord(unittest.TestCase):
                 self.assertTrue(key.description)
 
     def test_the_statuses_are_those_of_a_task_plan(self) -> None:
-        self.assertEqual(PLAN.kind, DocumentKind.PLAN)
-        self.assertEqual(PLAN.statuses, (Status.QUEUED, Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
+        self.assertEqual(PLAN.kind, Label_Plan)
+        self.assertEqual(PLAN.statuses, (Label_Queued, Label_Active, Label_Blocked, Label_Complete))
 
     def test_a_key_is_written_in_pascal_case(self) -> None:
         self.assertEqual(PlanKey.PARENT.written, 'Parent')
@@ -77,8 +81,8 @@ class ReportRecord(unittest.TestCase):
         self.assertIsNone(PLAN.hand_back_part)
 
     def test_the_statuses_are_those_of_a_task_report(self) -> None:
-        self.assertEqual(REPORT.kind, DocumentKind.REPORT)
-        self.assertEqual(REPORT.statuses, (Status.ACTIVE, Status.BLOCKED, Status.COMPLETE))
+        self.assertEqual(REPORT.kind, Label_Report)
+        self.assertEqual(REPORT.statuses, (Label_Active, Label_Blocked, Label_Complete))
 
 class TheId(unittest.TestCase):
 

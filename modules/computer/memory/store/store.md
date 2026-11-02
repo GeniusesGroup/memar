@@ -1,16 +1,14 @@
 ---
 Title: "Memory Store"
-Status: Draft
 Start Date: 2026-10-26
 ID: 498060
 ---
-
 # Memory Store
 
 ## Abstract
 A **store** is anything that retains bytes under addresses: a block device, a page, a record store, a key-value store, a file system, the working memory of a process. The store contract is the one abstraction through which state kept in volatile or non-volatile memory is read and written; its operations and guarantees are [`protocol/store.kh`](protocol/store.kh). The contract is parametric in the kind of address ([Memory Address](../address/address.md)) and in three properties of the store (dense or sparse, fixed or any value length, compare-and-write or not). A capsule that realizes it for one kind of address adds no abstraction of its own, as a capsule that realizes an abstraction realizes no other ([Khayyam → Sovereign Encapsulation](../../../../docs/khayyam/encapsulation.md)). The medium is an adapter a project chooses, never a property of the services that read and write: a concern's authoritative data has one location, and a file in the working tree, a branch of version control and a database are ways an adapter keeps it, never a second place a service also writes ([Memory → The memory/storage dichotomy rejected](../memory.md#the-memorystorage-dichotomy-rejected)).
 
-This document is the contract moved out of [Memory](../memory.md#retention-is-reached-through-one-contract) on 2026-10-26, because a category holds no contract ([Category → The rules](../../../knowledge/label/labels/category.md#the-rules)). The contract itself is Khayyam: the types and their operations are [`protocol/store.kh`](protocol/store.kh) and the files beside it, each type's human-facing text in its `*.eng.kh`, the two families of refusal in [`errors/errors.kh`](errors/errors.kh). This document holds what those cannot: the reasons, the trade-offs and the owner's rulings. The Python in this folder is a realization of the Khayyam and states nothing the Khayyam does not.
+This document is the contract moved out of [Memory](../memory.md#retention-is-reached-through-one-contract) on 2026-10-26, because a category holds no contract ([Category → The rules](../../../knowledge/modularity/labels/category.md#the-rules)). The contract itself is Khayyam: the types and their operations are [`protocol/store.kh`](protocol/store.kh) and the files beside it, each type's human-facing text in its `*.eng.kh`, the two families of refusal in [`errors/errors.kh`](errors/errors.kh). This document holds what those cannot: the reasons, the trade-offs and the owner's rulings. The Python in this folder is a realization of the Khayyam and states nothing the Khayyam does not.
 
 ## Explanation
 

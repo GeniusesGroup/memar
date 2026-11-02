@@ -1,13 +1,11 @@
 ---
 Title: "Placements"
-Status: Draft
 Start Date: 2026-10-17
 ID: 496333
 ---
-
 # Placements
 ## Abstract
-This document states how a module of any project built with Memar is placed: by which of three tests it stands under `modules/`, `modules-plugable/` or `bundles/`, and which [categories](../label/labels/category.md), any number, it is browsed under. The tests are the labels [Kernel](./labels/kernel.md), [Pluggable](./labels/pluggable.md) and [Bundle](./labels/bundle.md), each defined once in [`labels/`](./labels/), beside [Guest](./labels/guest.md), which a module of either of the first two may also carry. Every project that uses Memar follows these placements; a repository that places modules differently owes the reason in its own documents and cites this module for the difference. The `organization` repository, where the placements were first worked out, refers here for why its modules are placed as they are. The placements belong to [Modularity](./modularity.md) because they are its principles applied to a repository: a module that is optional for a system is pluggable for it, and a module the foundations cannot lose is kernel.
+This document states how a module of any project built with Memar is placed: by which of three tests it stands under `modules/`, `modules-plugable/` or `bundles/`, and which [categories](./labels/category.md), any number, it is browsed under. The tests are the labels [Kernel](./labels/kernel.md), [Pluggable](./labels/pluggable.md) and [Bundle](./labels/bundle.md), each defined once in [`labels/`](./labels/), beside [Guest](./labels/guest.md), which a module of either of the first two may also carry. Every project that uses Memar follows these placements; a repository that places modules differently owes the reason in its own documents and cites this module for the difference. The `organization` repository, where the placements were first worked out, refers here for why its modules are placed as they are. The placements belong to [Modularity](./modularity.md) because they are its principles applied to a repository: a module that is optional for a system is pluggable for it, and a module the foundations cannot lose is kernel.
 
 ## Why placement is stated here
 Where a module lives is a claim about what it is, and a claim about what a thing is belongs to the model, not to a repository's habit. Memar's own modules were once placed by transfer and by reading, with no argument recorded anywhere, and two answers to one question grew side by side: a shelf for modules that are not Memar's, and a placement for optional capabilities. This document holds the one answer, so that every document that places a module cites it instead of restating it. The meaning of each label is not kept here: a label is defined by the module that owns the claim it makes ([Label](../label/label.md)), and the placement labels are the claims of Modularity.

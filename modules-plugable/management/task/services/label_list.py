@@ -20,11 +20,12 @@ queued, since the queued ones are what `claims` batches by topic. The largest
 first, then by kind and word, so the order does not depend on the order folders were read.
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
 from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail, note
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 from modules.computer.software.services.project_find import add_project_flags, project_from_args
 _task_list = import_module('modules-plugable.management.task.services.list')
 _task_folder = import_module('modules-plugable.management.task.services.folder')
@@ -64,7 +65,7 @@ def list_labels(project: str | None) -> None:
         note('no label in use or declared in this project')
         return
     for label, tasks in sorted(found.items(), key=lambda item: (-len(item[1]), item[0])):
-        queued = sum((1 for task in tasks if task.status == Status.QUEUED.key))
+        queued = sum((1 for task in tasks if task.status == Label_Queued.key))
         count = f'{len(tasks)} task' + ('' if len(tasks) == 1 else 's')
         print(f'{label}  {count}, {queued} queued')
 

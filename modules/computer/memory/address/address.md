@@ -1,10 +1,8 @@
 ---
 Title: "Memory Address"
-Status: Draft
 Start Date: 2026-10-26
 ID: 498060
 ---
-
 # Memory Address
 
 ## Abstract
@@ -14,3 +12,4 @@ An **address** names a place that retains state: a byte string with equality and
 - **What every kind is.** A byte string; equality; a total order (the byte order); a fixed length or any length, declared by the kind. An address is a value: it carries no operation on the store.
 - **What it is not.** It is not a position in volatile memory (`MemoryAddress` has equivalence only); volatile memory is an instance of a store when its positions are given an order.
 - **Referring.** A document that only names a thing retained depends on this module. One that reads or writes it also depends on [Memory Store](../store/store.md), and on nothing of `record`, `file` or any adapter.
+- **Identifiers.** A new id is minted here as a `MemoryAddress`; domains share one address when they are lenses on the same thing; a human string of an address is display only. The rule is [Identifiers Are Memory Addresses](rules/identifiers-are-memory-addresses/identifiers-are-memory-addresses.md).

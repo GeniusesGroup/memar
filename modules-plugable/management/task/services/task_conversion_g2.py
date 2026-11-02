@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Label_Complete import Label_Complete
+from modules.identity.thing.labels.Label_Blocked import Label_Blocked
+from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
 import uuid
 from pathlib import Path
@@ -25,7 +29,7 @@ Graph_Store = _m_graph.Graph_Store
 Graph_PutEdge = _m_graph.Graph_PutEdge
 Graph_ListSidesQuery = _m_graph.Graph_ListSidesQuery
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
-TASK_STATUSES = (_status.Status.QUEUED, _status.Status.ACTIVE, _status.Status.BLOCKED, _status.Status.COMPLETE)
+TASK_STATUSES = (_status.Label_Queued, _status.Label_Active, _status.Label_Blocked, _status.Label_Complete)
 
 
 class RecordContents:
@@ -109,7 +113,7 @@ def _put(graph, frm: bytes, relation: bytes, to: bytes, reverse: bytes, fields: 
 
 def _set_status_label(graph, task_id: bytes, status: str) -> None:
     word = _task_files.status_word(status) or 'queued'
-    value = _status.Status.read(word) or _status.Status.QUEUED
+    value = _status.read_status(word) or _status.Label_Queued
     _attach.put_label(graph, task_id, value.label)
 
 

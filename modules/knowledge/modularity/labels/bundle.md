@@ -1,10 +1,8 @@
 ---
 Title: "Bundle"
-Status: Draft
 Start Date: 2026-10-17
 ID: 496333
 ---
-
 # Bundle
 ## Abstract
 **Bundle** is the placement of a named composition that runs or aggregates several modules toward a requirement no single module states. A bundle sits at `bundles/<name>/`. Its parts are modules, and what the bundle adds is the composition: which modules it brings together, how they are started and reached, and what it ships. The test and what a bundle may own are stated once, in [`bundles/README.md`](../../../../bundles/README.md); this document only places the bundle among the three placements of [Placements](../placements.md).

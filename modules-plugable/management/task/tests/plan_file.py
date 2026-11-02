@@ -93,7 +93,7 @@ _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanPriority = _m_priority.Priority
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-from modules.knowledge.label.services.status_words import DocumentKind, Status
+from modules.knowledge.label.services.status_words import document_kinds, DOCUMENT_KIND_WORDS, Label_Plan, Label_Report, Label_Explanation, Label_Handoff, Label_Research, statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 TaskKind = _m_task_kind.TaskKind
 TITLE = 'Parse the header'
 OPENED = '2026-10-01T00:00:00Z'
@@ -162,7 +162,7 @@ class ReadsTodaysShape(Fixture):
     def test_the_old_words_are_not_translated(self) -> None:
         self.assertEqual(self.read(new_plan('open')).status, 'open')
         self.assertEqual(self.read(new_plan('Done')).status, 'done')
-        self.assertNotIn(self.read(new_plan('open')).status, Status.keys(DocumentKind.PLAN))
+        self.assertNotIn(self.read(new_plan('open')).status, status_keys(Label_Plan))
 
     def test_a_body_status_line_gives_a_plan_no_status(self) -> None:
         self.assertEqual(self.read(old_plan('open')).status, '')

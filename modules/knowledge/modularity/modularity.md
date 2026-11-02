@@ -1,10 +1,8 @@
 ---
 Title: "Modularity"
-Status: Draft
 Start Date: "2026-08-15"
 ID: 496333
 ---
-
 # Modularity
 
 ## Abstract

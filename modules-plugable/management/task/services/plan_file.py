@@ -76,6 +76,8 @@ replaced. This file holds what they and every reader share: the shape, the front
 reading.
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Complete import Label_Complete
+from modules.identity.thing.labels.Label_Active import Label_Active
 from importlib import import_module
 import time
 from pathlib import Path
@@ -87,7 +89,7 @@ REPORT = _m_record.REPORT
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import Labels
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 PLAN_NAME = PLAN.file_name
 EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar task ensure --help` shows; rewrite it in that shape"
 EARLIER_STATUS_WORDS = ('open', 'done')
@@ -124,7 +126,7 @@ def front_key(key: str) -> str:
     """KEY as the front matter writes it: the written form a record's key declares (`ID`, `Start Date`), else PascalCase, a capital for a one-word key."""
     return WRITTEN.get(key.lower(), key.capitalize())
 
-def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: str | None=None, conversation: str | None=None, status: str=Status.ACTIVE.key, priority: int | None=None, labels: Labels | None=None, depends_on: str | None=None) -> str:
+def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: str | None=None, conversation: str | None=None, status: str=Label_Active.key, priority: int | None=None, labels: Labels | None=None, depends_on: str | None=None) -> str:
     """A new plan.md: front matter naming its task and carrying its status (active unless queued), the title as its heading, and the parts.
 
     TASK is the id of the task the plan belongs to, written into the
@@ -189,7 +191,7 @@ def _front_pairs(lines: list[str]) -> dict[str, str]:
 
 def is_complete(status: str) -> bool:
     """Whether STATUS says the task is finished: the word complete, in any case, and no other."""
-    return Status.read(status) is Status.COMPLETE
+    return read_status(status) is Label_Complete
 
 def read_bytes(path: Path) -> bytes:
     """PATH's bytes, trying again when Windows refuses the read for the moment another process replaces the plan."""

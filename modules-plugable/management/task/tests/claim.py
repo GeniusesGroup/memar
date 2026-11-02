@@ -74,7 +74,7 @@ task_plan = import_module('modules-plugable.management.task.services.plan_file')
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 Priority = _m_priority.Priority
 task_report = import_module('modules-plugable.management.task.services.report_file')
-from modules.knowledge.label.services.status_words import DocumentKind, Status
+from modules.knowledge.label.services.status_words import document_kinds, DOCUMENT_KIND_WORDS, Label_Plan, Label_Report, Label_Explanation, Label_Handoff, Label_Research, statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 
 def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None) -> str:
     ranked = f'Priority: {priority}\n' if priority is not None else ''
@@ -119,7 +119,7 @@ class QueuedIsAStatus(Fixture):
         folder = self.task('20261012T000001Z-1-0', 'queued')
         self.task('20261012T000002Z-1-0', 'active')
         self.assertEqual(self.status_of(folder), 'queued')
-        self.assertIn('queued', Status.keys(DocumentKind.PLAN))
+        self.assertIn('queued', status_keys(Label_Plan))
         found = [task.id for task in task_find.find_tasks(status='queued')]
         self.assertEqual(found, [folder.name])
         self.assertIsNone(task_report.disagreement('queued', ''))

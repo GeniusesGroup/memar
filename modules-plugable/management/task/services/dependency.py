@@ -35,6 +35,7 @@ This file only reads and checks. Writing the key is `task_plan_depends`,
 the Status a dependency gives a task is `task_depends`.
 """
 from __future__ import annotations
+from modules.identity.thing.labels.Label_Complete import Label_Complete
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 import re
@@ -64,7 +65,7 @@ _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanKey = _m_plan_key.PlanKey
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
 REPORT_NAME = _m_report_file.REPORT_NAME
-from modules.knowledge.label.services.status_words import Status
+from modules.knowledge.label.services.status_words import statuses, statuses_for, status_keys, status_listing, read_status, status_definitions, STATUS_LABEL, STATUS_WORDS
 DEPENDS_FOR = 'Depends_for'
 SEPARATOR = ','
 PROJECT_SEPARATOR = '/'
@@ -137,7 +138,7 @@ class Found(NamedTuple):
     @property
     def met(self) -> bool:
         """Whether it is safe to depend on: its task Status is Complete."""
-        return self.status == Status.COMPLETE.key
+        return self.status == Label_Complete.key
 
     @property
     def state(self) -> str:

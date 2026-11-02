@@ -83,7 +83,7 @@ task_plan = import_module('modules-plugable.management.task.services.plan_file')
 task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
-from modules.knowledge.label.primitive.topic import Topic
+from modules.knowledge.content.primitive.topic import Topic
 import re
 
 class Fixture(unittest.TestCase):
@@ -126,8 +126,8 @@ class Fixture(unittest.TestCase):
                     "    # replaced_by left empty in this test helper; ended marks the label\n"
                 )
             (where / f'{cls}.py').write_text(
-                "from modules.knowledge.label.labels.declared_label import DeclaredLabel\n"
-                "from modules.knowledge.label.labels.Label_Topic import Label_Topic\n\n"
+                "from modules.knowledge.label.primitive.declared_label import DeclaredLabel\n"
+                "from modules.knowledge.content.labels.Label_Topic import Label_Topic\n\n"
                 f"class {cls}(DeclaredLabel):\n"
                 f"    word = {word!r}\n"
                 f"    id = {new_id()!r}\n"

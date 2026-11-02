@@ -1,10 +1,8 @@
 ---
 Title: "Content"
-Status: Draft
 Start Date: "2026-07-27"
 ID: 495880
 ---
-
 # Content
 
 ## Abstract

@@ -1,10 +1,8 @@
 ---
 Title: "Guest"
-Status: Draft
 Start Date: 2026-10-17
 ID: 497842
 ---
-
 # Guest
 ## Abstract
 **Guest** is the label of a module whose subject is a surface that Memar does not own: a protocol the outside world already speaks and will keep speaking without Memar's agreement — HTTP, TCP, a JSON grammar, a SOAP envelope — or a design name that circulates with senses Memar does not inherit. A guest module is placed like any other module, by the tests of [Kernel](./kernel.md) and [Pluggable](./pluggable.md), and carries `guest` among the `labels` of its manifest. The label, not a path, is what says "this exists here, but it is not Memar's". It replaces the `lib/` category, whose path carried that claim and could not carry it without a second place for every subject (Placements → Decisions).

@@ -34,7 +34,7 @@ PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import FLAG_SEPARATOR, Label, LabelDefinition, LabelProblem, LabelRegistry, Labels
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 task_kind = _m_task_kind
-from modules.knowledge.label.primitive import topic
+from modules.knowledge.content.primitive import topic
 TaskKind = _m_task_kind.TaskKind
 change_fact = import_module('modules-plugable.management.task.services.fact_retry').change_fact
 from modules.knowledge.label.services.declarations import FOLDER, NAME, Declared, declared, declaring_files

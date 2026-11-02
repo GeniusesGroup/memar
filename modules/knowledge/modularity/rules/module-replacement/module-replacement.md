@@ -1,9 +1,7 @@
 ---
 Title: "Modularity Rule — A Module Is Replaced, Not Versioned"
-Status: Draft
 Start Date: 2026-10-31
 ---
-
 # Modularity Rule — A Module Is Replaced, Not Versioned
 A rule of this repository, held for [Modularity](../../modularity.md). It applies to every module and every language, whenever the stored shape or the protocol a module declares changes in a way that data already written, or a party already implementing, cannot follow. It rests on the life cycle of a Type ([Type](../../../../computer/type/type.md)) and on no number of a version, and it assumes neither git nor a filesystem: a memory model and the adapters to a filesystem realize it, and the model is shaped by neither.
 

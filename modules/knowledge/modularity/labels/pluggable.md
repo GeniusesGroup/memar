@@ -1,10 +1,8 @@
 ---
 Title: "Pluggable"
-Status: Draft
 Start Date: 2026-10-17
 ID: 496333
 ---
-
 # Pluggable
 ## Abstract
 **Pluggable** is the placement of a module that is an optional capability: it attaches to a kernel module, or to another pluggable one, through an explicit relationship, owns its complete capability, and can be installed and removed as a whole while the module it attaches to stays whole. A pluggable module sits at the mirror of the module it attaches to: `modules-plugable/` and that module's path, then the capability's name ([Category Depth](../../label/rules/category-depth/category-depth.md)). The word describes an architectural relationship and not a plugin mechanism ([Modularity → Pluggable Does Not Mean Plugin](../modularity.md#pluggable-does-not-mean-plugin)): a pluggable module may be compiled into the same artifact and live in the same repository as the module it attaches to.

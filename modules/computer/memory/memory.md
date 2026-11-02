@@ -1,10 +1,8 @@
 ---
 Title: "Memory"
-Status: Draft
 Start Date: 2026-09-06
 ID: 496868
 ---
-
 # Memory
 
 ## Abstract
@@ -119,7 +117,7 @@ The arena-allocation experiments in collector-equipped languages — including o
 An address-sized integer belongs to the memory domain, not to the numeric tower. No math capsule is declared for it; it goes with the pointer to the references (2026-10-26, tentative), and which declaration receives a reference `uintptr` is tracked in the paired handoff.
 
 ### Retention is reached through one contract
-Whatever retains state, in volatile or non-volatile memory, is reached through one contract: a store of bytes under addresses, read by `get` and `list` and written only by an atomic `batch` under expectations. A block device, a page, a record store, a key-value store and a file system differ in the kind of address they take and in the values they hold, and in nothing else. The owner ruled on 2026-10-26 that a category holds no contract ([Category → The rules](../../knowledge/label/labels/category.md#the-rules)), so this folder is a category and the contract is divided into modules, each a bounded responsibility of its own; the division and its reasons are in Memory Handoff:
+Whatever retains state, in volatile or non-volatile memory, is reached through one contract: a store of bytes under addresses, read by `get` and `list` and written only by an atomic `batch` under expectations. A block device, a page, a record store, a key-value store and a file system differ in the kind of address they take and in the values they hold, and in nothing else. The owner ruled on 2026-10-26 that a category holds no contract ([Category → The rules](../../knowledge/modularity/labels/category.md#the-rules)), so this folder is a category and the contract is divided into modules, each a bounded responsibility of its own; the division and its reasons are in Memory Handoff:
 - [Address](address/address.md) states what names a retained thing, and is what a Task, a timeline or a Request refers to.
 - [Store](store/store.md) is the contract: the operations, the token, the guarantees, the parameters, and where each capsule stands.
 - [Volatile](volatile/volatile.md) is the reference adapter and [Conformance](conformance/conformance.md) the suite that decides whether an adapter keeps the contract.
