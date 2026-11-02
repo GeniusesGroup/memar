@@ -32,8 +32,8 @@ agent holding it or, once the claim has lapsed, queued again
 (`new --task-id ID --queued`).
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 import argparse
 import os

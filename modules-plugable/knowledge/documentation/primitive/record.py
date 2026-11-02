@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 from machine.plugable_import import load as plugable_load
-Label_DocumentKind = plugable_load('knowledge.documentation.labels.Label_DocumentKind').Label_DocumentKind
-Label_Explanation = plugable_load('knowledge.documentation.explanation.labels.Label_Explanation').Label_Explanation
-Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
-Label_Report = plugable_load('knowledge.documentation.report.labels.Label_Report').Label_Report
-Label_Handoff = plugable_load('knowledge.documentation.handoff.labels.Label_Handoff').Label_Handoff
-Label_Research = plugable_load('knowledge.documentation.research.labels.Label_Research').Label_Research
+Label_DocumentKind = plugable_load('knowledge.documentation.labels.DocumentKind').Label_DocumentKind
+Label_Explanation = plugable_load('knowledge.documentation.explanation.labels.Explanation').Label_Explanation
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
+Label_Report = plugable_load('knowledge.documentation.report.labels.Report').Label_Report
+Label_Handoff = plugable_load('knowledge.documentation.handoff.labels.Handoff').Label_Handoff
+Label_Research = plugable_load('knowledge.documentation.research.labels.Research').Label_Research
 from importlib import import_module
 from dataclasses import dataclass
 from pathlib import Path

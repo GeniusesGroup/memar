@@ -37,8 +37,8 @@ each stands; one that no longer resolves keeps it unclaimable until the key is
 dropped, and the refusal says so.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Blocked import Label_Blocked
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Blocked import Label_Blocked
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 from pathlib import Path

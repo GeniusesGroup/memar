@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 import re
 Request = import_module('modules-plugable.knowledge.documentation.plan.primitive.request').Request

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from modules.knowledge.label.labels.Label_Status import Label_Status
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Complete import Label_Complete
-from modules.identity.thing.labels.Label_Blocked import Label_Blocked
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.knowledge.label.labels.Status import Label_Status
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Complete import Label_Complete
+from modules.identity.thing.labels.Blocked import Label_Blocked
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 import uuid
 from pathlib import Path

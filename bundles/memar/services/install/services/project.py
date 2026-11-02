@@ -29,11 +29,11 @@ and line endings kept.
 
 Installing is declaring that the project follows Memar, so the registry
 (`project_registry`) learns it in the same run, under the project's folder
-name, which a person changes later with `memar project add --alias`. A project
+name, which a person changes later with `memar software add --alias`. A project
 already registered, under any name, is left as it is: that is not an error, and
 it is not given a second name. A name another project holds is reported with
 the holder, and nothing is renamed, neither the holder nor this project; the
-install goes on, and `memar project add NAME PATH` registers it under a name
+install goes on, and `memar software add NAME PATH` registers it under a name
 that is free. A dry run says what it would register and writes no registry.
 
 It places no script and no Python file in the project: the bootstrap for the
@@ -188,18 +188,18 @@ def register_project(target: Path, *, dry_run: bool=False) -> None:
     mine = path_key(target)
     for entry in entries:
         if path_key(entry.path) == mine:
-            print(f'the project is already registered as {entry.names[0]}; `memar project add --alias` gives it another name')
+            print(f'the project is already registered as {entry.names[0]}; `memar software add --alias` gives it another name')
             return
     for entry in entries:
         if normalized(name) in {normalized(each) for each in entry.names}:
-            print(f'the project was not registered: the name {name} is already the project {entry.names[0]} at {entry.path}; register it under a free name with `memar project add NAME {target}`', file=sys.stderr)
+            print(f'the project was not registered: the name {name} is already the project {entry.names[0]} at {entry.path}; register it under a free name with `memar software add NAME {target}`', file=sys.stderr)
             return
     try:
         add_project(name, target)
     except SystemExit as refused:
         print(f'the project was not registered: {refused.code}', file=sys.stderr)
         return
-    print(f'registered the project {name} at {target}; `memar project add --alias` gives it another name')
+    print(f'registered the project {name} at {target}; `memar software add --alias` gives it another name')
 
 def remove_obsolete(target: Path, *, dry_run: bool=False) -> None:
     """Remove the README an earlier install wrote into TARGET, and name the preferences file it no longer reads."""

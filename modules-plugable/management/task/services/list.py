@@ -23,7 +23,7 @@ project's tasks mixed into Memar's answers no question one task asks.
 folder in its own locations (`task_location.locations_of`), and every
 other one whose plan names that project, from whatever folder `list` is run
 in. The project is always named, a folder or a name the registry resolves
-(`memar project find`); the folder `list` is run in is never read. A conversation crosses projects, since a delegated task may be another
+(`memar software find`); the folder `list` is run in is never read. A conversation crosses projects, since a delegated task may be another
 project's, so `--conversation` looks in every location Memar has recorded.
 
 A task whose plan and report disagree is marked where its status is shown,
@@ -34,7 +34,7 @@ be misread — kept forever, or picked up as finished. What disagrees is
 `task_report`'s answer.
 """
 from __future__ import annotations
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 from importlib import import_module
 import argparse
 from pathlib import Path

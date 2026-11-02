@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from modules.management.task.labels.Label_TaskKind import Label_TaskKind
+from modules.management.task.labels.TaskKind import Label_TaskKind
 from modules.knowledge.label.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
-from modules.management.task.labels.Label_Answer import Label_Answer
-from modules.management.task.labels.Label_Plan import Label_Plan
-from modules.management.task.labels.Label_Design import Label_Design
-from modules.management.task.labels.Label_Critique import Label_Critique
-from modules.management.task.labels.Label_Implement import Label_Implement
-from modules.management.task.labels.Label_Document import Label_Document
-from modules.management.task.labels.Label_Mechanical import Label_Mechanical
+from modules.management.task.labels.Answer import Label_Answer
+from modules.management.task.labels.Plan import Label_Plan
+from modules.management.task.labels.Design import Label_Design
+from modules.management.task.labels.Critique import Label_Critique
+from modules.management.task.labels.Implement import Label_Implement
+from modules.management.task.labels.Document import Label_Document
+from modules.management.task.labels.Mechanical import Label_Mechanical
 LABEL_KIND_NAME = Label_TaskKind.word
 TASK_KIND_LABEL = Label_TaskKind.as_label
 

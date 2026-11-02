@@ -29,7 +29,7 @@ class ProjectName(str):
     def checked(cls, value: str) -> ProjectName:
         """VALUE stripped, as a name; refused when it is empty or written as a path, with the flag that takes a path."""
         if not value or not value.strip():
-            fail(f'{cls.FLAG} needs the name of a project, one `memar project list` shows')
+            fail(f'{cls.FLAG} needs the name of a project, one `memar software list` shows')
         text = value.strip()
         if ProjectPath.written_like(text):
             fail(f"{cls.FLAG} takes a project's name, and {value} looks like a path; for a folder use {ProjectPath.FLAG} {ProjectPath.METAVAR}")

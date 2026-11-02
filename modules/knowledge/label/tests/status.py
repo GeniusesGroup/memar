@@ -16,25 +16,25 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(TOP))
 sys.dont_write_bytecode = True
 from machine.plugable_import import load as plugable_load
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 from modules.knowledge.label.primitive.label import LabelKind, LabelRegistry, Labels
-from modules.identity.thing.labels.Label_Active import Label_Active
-from modules.identity.thing.labels.Label_Blocked import Label_Blocked
-from modules.identity.thing.labels.Label_Complete import Label_Complete
-from modules.identity.thing.labels.Label_Draft import Label_Draft
-from modules.identity.thing.labels.Label_Final import Label_Final
-from modules.identity.thing.labels.Label_Paused import Label_Paused
-from modules.identity.thing.labels.Label_Proposed import Label_Proposed
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Rejected import Label_Rejected
-from modules.identity.thing.labels.Label_Superseded import Label_Superseded
-from modules.identity.thing.labels.Label_Withdrawn import Label_Withdrawn
-Label_DocumentKind = plugable_load('knowledge.documentation.labels.Label_DocumentKind').Label_DocumentKind
-Label_Explanation = plugable_load('knowledge.documentation.explanation.labels.Label_Explanation').Label_Explanation
-Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
-Label_Report = plugable_load('knowledge.documentation.report.labels.Label_Report').Label_Report
-Label_Handoff = plugable_load('knowledge.documentation.handoff.labels.Label_Handoff').Label_Handoff
-Label_Research = plugable_load('knowledge.documentation.research.labels.Label_Research').Label_Research
+from modules.identity.thing.labels.Active import Label_Active
+from modules.identity.thing.labels.Blocked import Label_Blocked
+from modules.identity.thing.labels.Complete import Label_Complete
+from modules.identity.thing.labels.Draft import Label_Draft
+from modules.identity.thing.labels.Final import Label_Final
+from modules.identity.thing.labels.Paused import Label_Paused
+from modules.identity.thing.labels.Proposed import Label_Proposed
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Rejected import Label_Rejected
+from modules.identity.thing.labels.Superseded import Label_Superseded
+from modules.identity.thing.labels.Withdrawn import Label_Withdrawn
+Label_DocumentKind = plugable_load('knowledge.documentation.labels.DocumentKind').Label_DocumentKind
+Label_Explanation = plugable_load('knowledge.documentation.explanation.labels.Explanation').Label_Explanation
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
+Label_Report = plugable_load('knowledge.documentation.report.labels.Report').Label_Report
+Label_Handoff = plugable_load('knowledge.documentation.handoff.labels.Handoff').Label_Handoff
+Label_Research = plugable_load('knowledge.documentation.research.labels.Research').Label_Research
 
 class Values(unittest.TestCase):
 

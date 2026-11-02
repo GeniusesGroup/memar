@@ -127,7 +127,7 @@ class Fixture(unittest.TestCase):
                 )
             (where / f'{cls}.py').write_text(
                 "from modules.knowledge.label.primitive.declared_label import DeclaredLabel\n"
-                "from modules.knowledge.content.labels.Label_Topic import Label_Topic\n\n"
+                "from modules.knowledge.content.labels.Topic import Label_Topic\n\n"
                 f"class {cls}(DeclaredLabel):\n"
                 f"    word = {word!r}\n"
                 f"    id = {new_id()!r}\n"

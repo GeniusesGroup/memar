@@ -3,13 +3,13 @@
 from __future__ import annotations
 from importlib import import_module
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
-from modules.identity.thing.labels.Label_Draft import Label_Draft
-from modules.identity.thing.labels.Label_Proposed import Label_Proposed
-from modules.identity.thing.labels.Label_Final import Label_Final
-from modules.identity.thing.labels.Label_Superseded import Label_Superseded
-from modules.identity.thing.labels.Label_Rejected import Label_Rejected
+from modules.identity.thing.labels.Draft import Label_Draft
+from modules.identity.thing.labels.Proposed import Label_Proposed
+from modules.identity.thing.labels.Final import Label_Final
+from modules.identity.thing.labels.Superseded import Label_Superseded
+from modules.identity.thing.labels.Rejected import Label_Rejected
 Label_DocumentKind = import_module(
-    'modules-plugable.knowledge.documentation.labels.Label_DocumentKind'
+    'modules-plugable.knowledge.documentation.labels.DocumentKind'
 ).Label_DocumentKind
 
 class Label_Explanation(DeclaredLabel):

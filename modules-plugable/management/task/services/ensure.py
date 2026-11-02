@@ -15,9 +15,9 @@ names (`task_location`), and the day's sweep runs when one is opened (`task_gc`)
 touching the task being opened or continued.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Blocked import Label_Blocked
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Blocked import Label_Blocked
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
@@ -78,7 +78,7 @@ from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 ENSURE_COMMAND = 'ensure'
-PROJECT_REQUIRED = f'{ENSURE_COMMAND} needs {ProjectName.either_words()} to make a task folder: the project is always named, by a name `memar project find` resolves or by a folder, and the folder this runs in is never read; a task that is already there is continued without it'
+PROJECT_REQUIRED = f'{ENSURE_COMMAND} needs {ProjectName.either_words()} to make a task folder: the project is always named, by a name `memar software find` resolves or by a folder, and the folder this runs in is never read; a task that is already there is continued without it'
 
 def named_project(project: str | None) -> Path | None:
     """The project whose folder is PROJECT, its git top-level, or None when none was named.

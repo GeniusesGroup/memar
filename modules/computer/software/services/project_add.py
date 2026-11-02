@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/computer/software/services/project_add.py — `memar project add NAME PATH`: a folder given a name.
+"""modules/computer/software/services/project_add.py — `memar software add NAME PATH`: a folder given a name.
 
 The registry's rules (unique names without case, a real folder, merging into a
 folder already registered) are `project_registry`'s; this file declares the
@@ -16,7 +16,7 @@ from modules.computer.software.services.project_registry import add_project, ens
 ADD_COMMAND = 'add'
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar project add`."""
+    """`memar software add`."""
     adder = verbs.add_parser(ADD_COMMAND, help='register a folder under a name, and aliases in any language', description="Register the folder PATH as the project NAME. Repeat --alias for each\nother name it goes by, in any language. A name or alias must not be\nanother project's, whatever its case. Adding a folder that is already\nregistered adds the names to its entry.")
     adder.add_argument('name', metavar='NAME', help="the project's own name")
     adder.add_argument('path', metavar='PATH', help="the project's folder")

@@ -162,7 +162,7 @@ def refusal(word: str, found: Lookup) -> str:
     """The words an unanswered lookup stops with: the candidates, or what was tried and what to do."""
     if found.kind == CANDIDATES:
         return f'{word} is near several projects and none is picked; ask again with the exact name or alias of one:\n{_described(found.entries)}'
-    return f'no project is named or near {word}. It is not in the registry (`memar project list`), and no repository of that name is beside the Memar checkout or the registered projects. Register it with `memar project add NAME PATH`, or ask the owner for the name.'
+    return f'no project is named or near {word}. It is not in the registry (`memar software list`), and no repository of that name is beside the Memar checkout or the registered projects. Register it with `memar software add NAME PATH`, or ask the owner for the name.'
 
 def resolve_project(word: str) -> Path:
     """The folder of the one project WORD names, for the verbs that are given a project by name.
@@ -217,7 +217,7 @@ def project_from_args(args: argparse.Namespace) -> Path | None:
     return None
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar project find`."""
+    """`memar software find`."""
     finder = verbs.add_parser(FIND_COMMAND, help='print the folder of the project a name, alias, or near-miss of one names', description='Print the folder of the project WORD names, and nothing else. WORD is a name\nor alias in any case and any language, or near one: a prefix, or a typo.\nOne near project is one answer. Several are listed as candidates on stderr\nwith a non-zero status, and none is picked. When nothing is near, a search\nof a few seconds for a repository of that name beside the Memar checkout\nand the registered projects runs first, and what it finds is registered.\nOnly then is it an error. Ask `find` for a name; do not write a script to\nsearch for one, and do not guess a path.')
     finder.add_argument('word', metavar='WORD', help="the project's name or alias, or near it")
     return run

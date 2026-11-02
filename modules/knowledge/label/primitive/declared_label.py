@@ -91,7 +91,9 @@ class DeclaredLabel(Word):
             return
         for module in pkgutil.walk_packages(paths, package.__name__ + '.'):
             leaf = module.name.rsplit('.', 1)[-1]
-            if leaf.startswith('Label_') or '.labels.Label_' in module.name:
+            if leaf.startswith('_'):
+                continue
+            if '.labels.' in module.name:
                 importlib.import_module(module.name)
         _ENSURED_PACKAGES.add(package_name)
 
@@ -103,7 +105,13 @@ class DeclaredLabel(Word):
         spec.loader.exec_module(module)
         found = [
             attr for attr in vars(module).values()
-            if isinstance(attr, type) and issubclass(attr, DeclaredLabel) and attr is not DeclaredLabel and attr.__name__.startswith('Label_')
+            if (
+                isinstance(attr, type)
+                and issubclass(attr, DeclaredLabel)
+                and attr is not DeclaredLabel
+                and attr.__name__.startswith('Label_')
+                and attr.__module__ == module.__name__
+            )
         ]
         if len(found) != 1:
             raise TypeError(f'{path}: one Label_<Word> per file; found {len(found)}')

@@ -670,7 +670,7 @@ class InstallingRegistersTheProject(unittest.TestCase):
     """Installing Memar into a project is declaring that it follows Memar, so the registry learns it then.
 
     The name is the project's folder name, which a person changes later with
-    `memar project add --alias`. A project already registered is left as it is,
+    `memar software add --alias`. A project already registered is left as it is,
     not an error and not given a second name; a name another project holds is
     reported and nothing is renamed. The registry is the scratch Memar's.
     """
@@ -750,7 +750,7 @@ class InstallingRegistersTheProject(unittest.TestCase):
         self.assertEqual(self.entry_of(holder).names, ('work-app',))
         self.assertIn('work-app', err)
         self.assertIn(str(holder), err)
-        self.assertIn('memar project add', err)
+        self.assertIn('memar software add', err)
         self.assertTrue((other / 'AGENTS.md').is_file(), 'the install itself still ran')
 
     def test_a_dry_run_says_what_it_would_register_and_writes_no_registry(self) -> None:

@@ -20,7 +20,7 @@ queued, since the queued ones are what `claims` batches by topic. The largest
 first, then by kind and word, so the order does not depend on the order folders were read.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Queued import Label_Queued
 from importlib import import_module
 import argparse
 from typing import Callable

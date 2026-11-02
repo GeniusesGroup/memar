@@ -23,7 +23,7 @@ _YES = re.compile('\\byes\\b', re.I)
 def describe(verbs):
     from modules.computer.software.primitive.project_name import ProjectName
     from modules.computer.software.primitive.project_path import ProjectPath
-    parser = verbs.add_parser('questions', help='list the open questions of the tasks as task#number: heading hits', description=f'List the contents of kind question that no later content refers to, one `task#number: heading` hit per line, blocking ones first (marked [blocks]), then by task and number. Every task of the project is read; {ProjectName.FLAG} {ProjectName.METAVAR} names a project by a name `memar project list` shows, {ProjectPath.FLAG} {ProjectPath.METAVAR} by its folder. No flag means the checkout. What could not be read, and why, is printed on standard error.', formatter_class=argparse.HelpFormatter)
+    parser = verbs.add_parser('questions', help='list the open questions of the tasks as task#number: heading hits', description=f'List the contents of kind question that no later content refers to, one `task#number: heading` hit per line, blocking ones first (marked [blocks]), then by task and number. Every task of the project is read; {ProjectName.FLAG} {ProjectName.METAVAR} names a project by a name `memar software list` shows, {ProjectPath.FLAG} {ProjectPath.METAVAR} by its folder. No flag means the checkout. What could not be read, and why, is printed on standard error.', formatter_class=argparse.HelpFormatter)
     from modules.computer.software.services.project_find import add_project_flags
     add_project_flags(parser, 'read this project instead of the checkout')
     parser.add_argument('--blocking', action='store_true', help='list only questions that block')

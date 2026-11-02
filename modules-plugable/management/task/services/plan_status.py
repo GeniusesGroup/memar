@@ -2,7 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 
 from __future__ import annotations
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 from importlib import import_module
 from machine.console import fail
 status_word = import_module('modules-plugable.management.task.services.plan_file').status_word

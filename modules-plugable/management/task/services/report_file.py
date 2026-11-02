@@ -36,7 +36,7 @@ A report is scratch, like the plan, and goes with its folder: what lasts of it
 is routed by closing by type.
 """
 from __future__ import annotations
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 from importlib import import_module
 from pathlib import Path
 files = import_module('modules-plugable.management.task.services.task_memory')

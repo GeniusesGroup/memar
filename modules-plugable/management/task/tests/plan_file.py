@@ -64,7 +64,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 import sys
 import tempfile
 import unittest
@@ -75,7 +75,7 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
 task_files = import_module('modules-plugable.management.task.services.task_files')

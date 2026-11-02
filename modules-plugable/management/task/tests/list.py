@@ -405,7 +405,7 @@ class ProjectLocations(Fixture):
         with unittest.mock.patch.object(project_find, 'search_locally', return_value=None):
             with self.assertRaises(SystemExit) as raised:
                 self.run_cli('--project', 'nothing-like-it')
-        self.assertIn('memar project', str(raised.exception.code))
+        self.assertIn('memar software', str(raised.exception.code))
 
     def test_project_of_nothing_asked_is_none(self) -> None:
         self.assertIsNone(task_find.project_of(None))

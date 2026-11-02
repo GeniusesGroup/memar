@@ -76,9 +76,9 @@ replaced. This file holds what they and every reader share: the shape, the front
 reading.
 """
 from __future__ import annotations
-from modules.knowledge.label.labels.Label_Status import Label_Status
-from modules.identity.thing.labels.Label_Complete import Label_Complete
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.knowledge.label.labels.Status import Label_Status
+from modules.identity.thing.labels.Complete import Label_Complete
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 import time
 from pathlib import Path

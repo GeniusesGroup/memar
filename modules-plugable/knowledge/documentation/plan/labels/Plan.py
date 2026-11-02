@@ -3,12 +3,12 @@
 from __future__ import annotations
 from importlib import import_module
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Active import Label_Active
-from modules.identity.thing.labels.Label_Blocked import Label_Blocked
-from modules.identity.thing.labels.Label_Complete import Label_Complete
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Active import Label_Active
+from modules.identity.thing.labels.Blocked import Label_Blocked
+from modules.identity.thing.labels.Complete import Label_Complete
 Label_DocumentKind = import_module(
-    'modules-plugable.knowledge.documentation.labels.Label_DocumentKind'
+    'modules-plugable.knowledge.documentation.labels.DocumentKind'
 ).Label_DocumentKind
 
 class Label_Plan(DeclaredLabel):

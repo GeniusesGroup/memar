@@ -4,10 +4,11 @@
 """modules/knowledge/label/services/declarations.py — the labels a project declares as code.
 
 Each domain declares its own labels ([Label → Where labels are declared](../label.md#where-labels-are-declared)):
-a module writes them in a Python file of its `labels/` folder as a Type named
-`Label_<Word>` that subclasses `DeclaredLabel`. Discovery finds those files and
-loads them into the in-memory `DeclaredLabel` registry; queries then read the
-registry, not the tree again.
+a module writes them in a Python file of its `labels/` folder (or one folder named
+for the word under `labels/`) as a Type named `Label_<Word>` that subclasses
+`DeclaredLabel`. The file and folder names do not carry the `Label_` prefix; the
+Type name does. Discovery finds those files and loads them into the in-memory
+`DeclaredLabel` registry; queries then read the registry, not the tree again.
 
 Why a tree scan and not a fixed import list. This module is a kernel module, and
 the modules that declare labels are any of the project's ([Kernel Neutrality](
@@ -34,30 +35,48 @@ class Declared:
     definition: LabelDefinition
     source: Path
 
+def _under_labels(relative: Path) -> bool:
+    """True when RELATIVE is a .py directly in labels/, or one level under labels/<word>/."""
+    parts = relative.parts
+    if FOLDER not in parts:
+        return False
+    index = parts.index(FOLDER)
+    rest = parts[index + 1:]
+    return len(rest) in (1, 2) and rest[-1].endswith('.py')
+
 def declaring_files(project: Path) -> list[Path]:
-    """The Python files of PROJECT's `labels/` folders that define a Label_* DeclaredLabel, in path order."""
+    """The Python files of PROJECT's `labels/` folders that may define a Label_* DeclaredLabel, in path order."""
     root = project.resolve()
     found: list[Path] = []
-    for path in root.rglob('Label_*.py'):
+    for path in root.rglob('*.py'):
         try:
             relative = path.relative_to(root)
         except ValueError:
             continue
         if any(part.startswith('.') or part in SKIPPED for part in relative.parts):
             continue
-        if path.parent.name != FOLDER or path.name in SKIP_FILES:
+        if path.name in SKIP_FILES or path.name.startswith('_'):
+            continue
+        if not _under_labels(relative):
             continue
         found.append(path)
     return sorted(found)
 
-def _run(path: Path) -> LabelDefinition:
-    """Load PATH into the DeclaredLabel registry and return its definition."""
+def _run(path: Path) -> LabelDefinition | None:
+    """Load PATH into the DeclaredLabel registry and return its definition, or None when it declares none."""
     try:
         declared = DeclaredLabel.import_path(path)
     except TypeError as refused:
+        if 'found 0' in str(refused):
+            return None
         fail(str(refused))
     return declared.definition()
 
 def declared(project: Path) -> tuple[Declared, ...]:
     """Every label PROJECT declares, file by file in path order; registry is filled as a side effect."""
-    return tuple(Declared(_run(path), path) for path in declaring_files(project))
+    out: list[Declared] = []
+    for path in declaring_files(project):
+        definition = _run(path)
+        if definition is not None:
+            out.append(Declared(definition, path))
+    return tuple(out)

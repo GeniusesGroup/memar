@@ -15,7 +15,7 @@ one edit.
 What the type holds. The value is ids, comma-separated, on one line, each `ID`
 for a task of the plan's own project or `project/ID` for one of another
 project the owner works on beside it. A project is resolved the way
-`memar project find` resolves a name and never guessed from a path; one that
+`memar software find` resolves a name and never guessed from a path; one that
 does not resolve is refused, with why. Why a task waits goes in the plan's
 Next, as before: the key holds ids alone.
 
@@ -35,7 +35,7 @@ This file only reads and checks. Writing the key is `task_plan_depends`,
 the Status a dependency gives a task is `task_depends`.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Complete import Label_Complete
+from modules.identity.thing.labels.Complete import Label_Complete
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 import re

@@ -2,7 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from machine.console import fail
-from modules.knowledge.content.labels.Label_Topic import Label_Topic
+from modules.knowledge.content.labels.Topic import Label_Topic
 from modules.knowledge.label.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
 TOPIC_LABEL = Label_Topic.as_label
 LABEL_KIND_NAME = Label_Topic.word

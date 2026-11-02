@@ -22,7 +22,7 @@ can find what an earlier one wrote.
 a path with a `.git` part, binary files, a non-document file over 256 KB, and
 the task's own `temp` folder. The plan is kept naming its project by the
 project's registered name rather than by the path it has on the computer that
-opened it, which means nothing elsewhere (`memar project find` turns the name
+opened it, which means nothing elsewhere (`memar software find` turns the name
 into this computer's path); every other byte is kept as written. The commit's
 message lists each leave-out with its size and reason.
 
@@ -173,7 +173,7 @@ def owed(folder: Path) -> Owed | Kept:
         return Kept(Outcome.NOT_OWED, None, f"its project's preferences say `{RECORDS_KEY}: {Records.OFF.value}`")
     name = project_name(project)
     if name is None:
-        return Kept(Outcome.REFUSED, None, f'its project {project} has no registered name to write in the kept plan; give it one with `memar project add`')
+        return Kept(Outcome.REFUSED, None, f'its project {project} has no registered name to write in the kept plan; give it one with `memar software add`')
     if not task_branch.is_repository(project):
         return Kept(Outcome.REFUSED, None, f"its project {project} is not the top folder of a git repository, and its records are kept on the branch {RECORDS_BRANCH} of the project's own repository")
     if task_branch.is_checked_out(project):

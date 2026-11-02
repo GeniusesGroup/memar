@@ -2,7 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
-from modules.management.task.labels.Label_TaskKind import Label_TaskKind
+from modules.management.task.labels.TaskKind import Label_TaskKind
 
 class Label_Answer(DeclaredLabel):
     word = 'answer'

@@ -338,7 +338,7 @@ class WhenRefused(Fixture):
         folder = self.task('20261014-T100006Z-8', project=str(other))
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.REFUSED)
-        self.assertIn('memar project add', kept.why)
+        self.assertIn('memar software add', kept.why)
         self.assertFalse(self.git('branch', '--list', BRANCH, folder=other))
 
     def test_a_project_that_is_not_a_git_repository_is_refused(self) -> None:

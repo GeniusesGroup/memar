@@ -20,5 +20,5 @@ One run serves one project, and a guessed or spanning scope would hide which pro
 An organization with one project and one topic needs none of it.
 
 ## What this rule does not claim
-- It does not give the verbs, flags or the time a claim lasts; `memar task claims --help`, `memar task claim --help` and `memar project find --help` say them.
+- It does not give the verbs, flags or the time a claim lasts; `memar task claims --help`, `memar task claim --help` and `memar software find --help` say them.
 - This repository runs no check of it today.

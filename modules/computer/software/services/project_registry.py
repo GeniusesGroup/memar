@@ -194,10 +194,10 @@ def add_location(project: Path | str, location: Path | str) -> Entry:
             return ([*entries[:index], changed, *entries[index + 1:]], changed)
         name = folder.name
         if not normalized(name):
-            fail(f'the folder {folder} has no name to register its project under; use `memar project add NAME PATH`')
+            fail(f'the folder {folder} has no name to register its project under; use `memar software add NAME PATH`')
         for entry in entries:
             if normalized(name) in {normalized(each) for each in entry.names}:
-                fail(f'the name {name} is already the project {entry.names[0]} at {entry.path}, so {folder} was not registered with its task location {place}; use `memar project add NAME {folder}` with another name')
+                fail(f'the name {name} is already the project {entry.names[0]} at {entry.path}, so {folder} was not registered with its task location {place}; use `memar software add NAME {folder}` with another name')
         made = Entry(str(folder), (name,), (place,))
         return ([*entries, made], made)
     return _update(change)
@@ -224,7 +224,7 @@ def remove_project(word: str) -> Entry:
         for entry in entries:
             if key in {normalized(each) for each in entry.names} or (Path(word).is_absolute() and path_key(entry.path) == path_key(word)):
                 return ([other for other in entries if other is not entry], entry)
-        fail(f'no registered project is named {word}; `memar project list` shows them')
+        fail(f'no registered project is named {word}; `memar software list` shows them')
     return _update(change)
 
 def ensure_memar_entry() -> None:

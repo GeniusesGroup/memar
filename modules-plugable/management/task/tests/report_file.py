@@ -41,7 +41,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-from modules.knowledge.label.labels.Label_Status import Label_Status
+from modules.knowledge.label.labels.Status import Label_Status
 import sys
 import tempfile
 import unittest
@@ -52,8 +52,8 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
-Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
-Label_Report = plugable_load('knowledge.documentation.report.labels.Label_Report').Label_Report
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
+Label_Report = plugable_load('knowledge.documentation.report.labels.Report').Label_Report
 _m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
 suite_scratch = _m_fs_test_scratch.suite_scratch
 import earlier_shape

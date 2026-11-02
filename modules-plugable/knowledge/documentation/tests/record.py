@@ -2,16 +2,16 @@
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 from machine.plugable_import import load as plugable_load
-Label_DocumentKind = plugable_load('knowledge.documentation.labels.Label_DocumentKind').Label_DocumentKind
-Label_Explanation = plugable_load('knowledge.documentation.explanation.labels.Label_Explanation').Label_Explanation
-Label_Plan = plugable_load('knowledge.documentation.plan.labels.Label_Plan').Label_Plan
-Label_Report = plugable_load('knowledge.documentation.report.labels.Label_Report').Label_Report
-Label_Handoff = plugable_load('knowledge.documentation.handoff.labels.Label_Handoff').Label_Handoff
-Label_Research = plugable_load('knowledge.documentation.research.labels.Label_Research').Label_Research
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Complete import Label_Complete
-from modules.identity.thing.labels.Label_Blocked import Label_Blocked
-from modules.identity.thing.labels.Label_Active import Label_Active
+Label_DocumentKind = plugable_load('knowledge.documentation.labels.DocumentKind').Label_DocumentKind
+Label_Explanation = plugable_load('knowledge.documentation.explanation.labels.Explanation').Label_Explanation
+Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
+Label_Report = plugable_load('knowledge.documentation.report.labels.Report').Label_Report
+Label_Handoff = plugable_load('knowledge.documentation.handoff.labels.Handoff').Label_Handoff
+Label_Research = plugable_load('knowledge.documentation.research.labels.Research').Label_Research
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Complete import Label_Complete
+from modules.identity.thing.labels.Blocked import Label_Blocked
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 import sys
 import unittest

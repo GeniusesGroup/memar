@@ -2,8 +2,8 @@
 # For license and copyright information please see the LEGAL file in the code repository
 
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Queued import Label_Queued
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.identity.thing.labels.Queued import Label_Queued
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 from machine.console import fail
 set_status = import_module('modules-plugable.management.task.services.plan_status').set_status

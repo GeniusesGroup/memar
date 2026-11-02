@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/computer/software/services/project_list.py — `memar project list`: every registered project, one a line.
+"""modules/computer/software/services/project_list.py — `memar software list`: every registered project, one a line.
 
 Memar's own checkout is always among them (`project_registry.ensure_memar_entry`).
 """
@@ -12,7 +12,7 @@ from modules.computer.software.services.project_registry import ensure_memar_ent
 LIST_COMMAND = 'list'
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar project list`."""
+    """`memar software list`."""
     verbs.add_parser(LIST_COMMAND, help='show every registered project, its names and its folder', description='Show every registered project, one a line: its names, the first its own, then its folder.')
     return run
 

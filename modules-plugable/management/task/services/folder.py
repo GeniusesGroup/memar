@@ -7,7 +7,7 @@ Tasks live on the records branch. A Path here is only a handle whose .name is
 the task id — not a directory agents should open.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Queued import Label_Queued
+from modules.identity.thing.labels.Queued import Label_Queued
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')

@@ -9,7 +9,7 @@ is `task_depends`'s. This file is the verb's face over them: it checks what
 is added, writes the key, brings the Status up to date and says what is.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Label_Active import Label_Active
+from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 import argparse
 from typing import Callable
@@ -82,7 +82,7 @@ def change(task_id: str, add: list[str], drop: list[str]) -> None:
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar task depends-on`."""
     key = PlanKey.DEPENDS_ON.written
-    changer = verbs.add_parser(DEPENDS_COMMAND, help='show, add or drop the tasks a task cannot start without', description=f"A task's {key} names the tasks that must be Complete (their plan and their report both)\nbefore it can start: it cannot be claimed or started until they are, and while one is not, its\nStatus is Blocked, with the unmet ids as the reason. Each is an id, or project/id for a task\nof another project, the project resolved as `memar project find` resolves a name. Without --add\nand --drop this shows the key, where each stands, and the tasks that depend on this one\n({DEPENDS_FOR}, derived, never written). --add is refused for the task itself, an id or a\nproject that does not resolve, and a cycle of any length; --drop is how a dependency that no\nlonger exists is removed. A queued task with an unmet dependency becomes Blocked; one whose\ndependencies are all met after Memar blocked it becomes queued again; an Active task is\nnot changed. Why a task waits goes in its plan's Next, and whoever makes its own task\nwait tells the owner at once that the work waits. Anyone may change it. ({key} means\nwhat the documents' Depends_on means, stronger in time: it cannot start until the cited task is Complete.)")
+    changer = verbs.add_parser(DEPENDS_COMMAND, help='show, add or drop the tasks a task cannot start without', description=f"A task's {key} names the tasks that must be Complete (their plan and their report both)\nbefore it can start: it cannot be claimed or started until they are, and while one is not, its\nStatus is Blocked, with the unmet ids as the reason. Each is an id, or project/id for a task\nof another project, the project resolved as `memar software find` resolves a name. Without --add\nand --drop this shows the key, where each stands, and the tasks that depend on this one\n({DEPENDS_FOR}, derived, never written). --add is refused for the task itself, an id or a\nproject that does not resolve, and a cycle of any length; --drop is how a dependency that no\nlonger exists is removed. A queued task with an unmet dependency becomes Blocked; one whose\ndependencies are all met after Memar blocked it becomes queued again; an Active task is\nnot changed. Why a task waits goes in its plan's Next, and whoever makes its own task\nwait tells the owner at once that the work waits. Anyone may change it. ({key} means\nwhat the documents' Depends_on means, stronger in time: it cannot start until the cited task is Complete.)")
     TaskId.add_positional(changer, 'the task whose dependencies to show or change')
     changer.add_argument('--add', action='append', default=[], metavar='REF', help='a task to depend on, ID or project/ID; may be repeated')
     changer.add_argument('--drop', action='append', default=[], metavar='REF', help='a dependency to remove, as it is written in the key; may be repeated')
