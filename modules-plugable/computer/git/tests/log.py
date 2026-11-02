@@ -3,9 +3,9 @@
 
 """Tests for the task log in `modules-plugable/computer/git/services/log.py`.
 
-    python modules-plugable/management/task/tests/log.py
+    python modules-plugable/computer/git/tests/log.py
 
-The subject is the log a person reads for a folder that is gone, named for the
+The subject is the log a person reads for a task that is gone, named for the
 file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
@@ -18,12 +18,9 @@ again.
 What is pinned, and what each pin is for:
 
   OneLinePerEvent  Each event is appended as one tab-separated line — time,
-                   event, id, detail — in UTF-8 with LF, beside the task
-                   folders; a log that cannot be written warns and does not
-                   stop what was being done. Each location keeps its own
-                   log in its root: a task in a project's own location
-                   is recorded there, one in Memar's own or left in temp/
-                   in Memar's. Which events are recorded is pinned by the
+                   event, id, detail — in UTF-8 with LF, under temp/; a log
+                   that cannot be written warns and does not stop what was
+                   being done. Which events are recorded is pinned by the
                    suites of the services that record them.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
@@ -59,18 +56,18 @@ class OneLinePerEvent(unittest.TestCase):
         patched.start()
         self.addCleanup(patched.stop)
 
-    def test_each_event_is_one_tab_separated_line_beside_the_folders(self) -> None:
+    def test_each_event_is_one_tab_separated_line_under_temp(self) -> None:
         task_log.record('opened', 's-1')
         task_log.record('reaped', 's-2', 'idle 8.0 days')
         log = task_log.log_path()
-        self.assertEqual(log.parent, memar_fs.task_dir('s-1').parent)
+        self.assertEqual(log, memar_fs.scratch_root() / task_log.TASK_LOG_NAME)
         raw = log.read_bytes()
         self.assertNotIn(b'\r', raw)
         lines = [line.split('\t') for line in raw.decode('utf-8').splitlines()]
         self.assertEqual([line[1:] for line in lines], [['opened', 's-1', ''], ['reaped', 's-2', 'idle 8.0 days']])
         datetime.fromisoformat(lines[0][0])
 
-    def test_each_location_keeps_its_own_log_in_its_root(self) -> None:
+    def test_folder_argument_does_not_move_the_log(self) -> None:
         location = self.fake_root / 'project' / 'tasks'
         project_task = location / 'my-task'
         project_task.mkdir(parents=True)
@@ -79,12 +76,11 @@ class OneLinePerEvent(unittest.TestCase):
         task_log.record('opened', 'my-task', folder=project_task)
         task_log.record('opened', left.name, folder=left)
         task_log.record('opened', 's-1', folder=memar_fs.task_dir('s-1', create=True))
-        self.assertEqual(task_log.log_path(project_task), location / task_log.TASK_LOG_NAME)
+        self.assertEqual(task_log.log_path(project_task), memar_fs.scratch_root() / task_log.TASK_LOG_NAME)
         self.assertEqual(task_log.log_path(left), task_log.log_path())
-        own = [line.split('\t')[1:3] for line in task_log.log_path(project_task).read_text(encoding='utf-8').splitlines()]
-        memars = [line.split('\t')[1:3] for line in task_log.log_path().read_text(encoding='utf-8').splitlines()]
-        self.assertEqual(own, [['opened', 'my-task']])
-        self.assertEqual(memars, [['opened', left.name], ['opened', 's-1']])
+        lines = [line.split('\t')[1:3] for line in task_log.log_path().read_text(encoding='utf-8').splitlines()]
+        self.assertEqual(lines, [['opened', 'my-task'], ['opened', left.name], ['opened', 's-1']])
+        self.assertFalse((location / task_log.TASK_LOG_NAME).exists())
 
     def test_a_log_that_cannot_be_written_warns_and_goes_on(self) -> None:
         task_log.log_path().mkdir(parents=True)
