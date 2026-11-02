@@ -17,5 +17,5 @@ A commit enters the history that others read and is not quietly taken back. A ta
 An organization may let agents commit as they go, and then answers for a history shaped by chats that had not finished.
 
 ## What this rule does not claim
-- It does not say how a commit is made; the root `--help` of `modules-plugable/computer/git/services/_host_git_cli.py` and that of its `commit` verb say that, and the skill's Closing section sends the agent there.
+- It does not say how a commit is made; the help of the tool `git_commit` (`memar git commit --help`) says that, and the skill's Closing section sends the agent there.
 - This repository runs no check of it today.

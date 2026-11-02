@@ -18,5 +18,5 @@ A history of fixes upon fixes cannot be read, and a rename mixed with edits is r
 An organization that squashes on merge may drop the first and third clauses.
 
 ## What this rule does not claim
-- It does not give the commands: amending, folding and staging are described by `--help` of `modules-plugable/computer/git/services/_host_git_cli.py`.
+- It does not give the commands: amending, folding and staging are described by the help of the tool `git_commit` (`memar git commit --help`).
 - This repository runs no check of it today.

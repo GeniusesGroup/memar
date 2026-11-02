@@ -57,7 +57,7 @@ type.
 
 **What it routes to is what Memar itself does**, and nothing else. A tool that
 constrains a host tool the framework has no claim to does not belong on the
-shelf — see `modules-plugable/computer/git/services/_host_git_cli.py` root `--help` for why path-invoked constraint scripts stay off the router.
+shelf — `memar git --help` says why the git verbs are a bundle's and not a path-invoked constraint script.
 
 Two launchers carry this file: this one, executable where a file may be, and
 `memar.cmd` beside it for a Windows shell that will not run a file without a
@@ -125,8 +125,8 @@ Each verb's own help defines the words that are its own."""
 
 EPILOG = """Ask any verb with `--help` and it says what it accepts.
 
-Before deleting, moving, restoring, or committing files, use
-`modules-plugable/computer/git/services/_host_git_cli.py` and the services under
+Before deleting, moving, restoring, or committing files, use `memar git` (the tool
+`git_commit` and its siblings) and the services under
 `modules-plugable/computer/memory/filesystem/services/` for delete, move, restore, and
 commit. For putting text into a file, use `memar content write` and
 `memar content edit`."""
