@@ -44,7 +44,9 @@ EXTENSIONS_RELATIVE = Path(AGENTS_DIRNAME) / 'vscode' / 'extensions'
 CONSUMER_README_RELATIVE = Path(AGENTS_DIRNAME) / 'memar' / 'README.md'
 AGENTS_INDEX_RELATIVE = Path(AGENTS_DIRNAME) / 'README.md'
 RECORDS_RELATIVE = Path(AGENTS_DIRNAME) / TASKS_DIRNAME
-RECORDS_BRANCH = 'dev-knowledge'
+# Task trees live only on this branch. Agents never check it out, push it, or
+# make it HEAD; services write it through `record` without touching the worktree.
+RECORDS_BRANCH = 'memar'
 PUBLISHED_REPOSITORY = 'GeniusesGroup/memar'
 PUBLISH_BRANCH = 'main'
 PUBLISHED_PAGES = f'https://github.com/{PUBLISHED_REPOSITORY}/blob/{PUBLISH_BRANCH}/'
@@ -102,26 +104,24 @@ def scratch_root() -> Path:
     return root
 
 def tasks_root() -> Path:
-    """The folder every live task folder lives in: <root>/.agents/tasks/.
+    """Retired: tasks are not folders. Prefer `RECORDS_BRANCH` via task_store.
 
-    Same relative path as archived records on `RECORDS_BRANCH` (`RECORDS_RELATIVE`).
-    Not under temp/: the folder is visible to git so a mistaken clean or branch
-    switch cannot drop the work without a chance to stage or recover it.
+    Still returns a path under scratch so old tests that mkdir under a patched
+    root do not explode; services must not treat it as the task store.
     """
-    root = memar_root() / RECORDS_RELATIVE
+    root = scratch_root() / 'task-store-retired'
     root.mkdir(parents=True, exist_ok=True)
     return root
 
 tasks_root = tasks_root
 
-def project_tasks_registry() -> Path:
-    """The earlier file listing the project folders task folders were made in: <root>/.agents/tasks/tasks.projects.
+def legacy_tasks_root() -> Path:
+    """The retired worktree path <root>/.agents/tasks/, for cutover trash only."""
+    return memar_root() / RECORDS_RELATIVE
 
-    The core only notices it (`task_location`) and never reads it: a
-    location it lists is recorded on its project's entry in `projects_log()`
-    again when a task is next made or continued there.
-    """
-    return tasks_root() / PROJECT_TASKS_NAME
+def project_tasks_registry() -> Path:
+    """The earlier file listing the project folders task folders were made in."""
+    return legacy_tasks_root() / PROJECT_TASKS_NAME
 
 def projects_log() -> Path:
     """The registry of projects and their names: <root>/temp/projects.log.
@@ -133,15 +133,12 @@ def projects_log() -> Path:
     return scratch_root() / PROJECTS_LOG_NAME
 
 def task_dir(task_id: str, *, create: bool=False) -> Path:
-    """The folder of one task, under the tasks root. No guessing, no creation.
+    """A Path whose .name is TASK_ID — not a directory on disk.
 
-    The id names one folder segment, never a path: anything else is refused
-    rather than resolved. Pass create=True only where the caller owns the
-    task lifecycle; readers of another task's folder never create.
+    Tasks live on `RECORDS_BRANCH`. create=True does not mkdir; opening a task
+    records it on the branch through task services.
     """
     if not task_id or task_id in ('.', '..') or '/' in task_id or ('\\' in task_id):
         fail(f'refusing task id {task_id!r}: name one folder segment, not a path.')
-    path = tasks_root() / task_id
-    if create:
-        path.mkdir(parents=True, exist_ok=True)
-    return path
+    del create
+    return Path(task_id)

@@ -66,6 +66,7 @@ from machine.console import fail, note
 from . import branch as task_branch
 from modules.computer.software.edges.manifest.services.preferences import RECORDS_KEY, Records, preferences_path, read_preferences, records_preference
 from modules.computer.software.services.project_registry import read_entries
+from modules.computer.software.services.project_find import project_by_name
 from .branch import RecordRefused, folder_on_branch, reference
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 Task = _m_folder.Task
@@ -158,6 +159,11 @@ def owed(folder: Path) -> Owed | Kept:
     if not named:
         return Kept(Outcome.NOT_OWED, None, f'its {PLAN_NAME} names no project to keep its records in')
     project = Path(named)
+    if not project.is_dir():
+        try:
+            project = Path(project_by_name(named))
+        except SystemExit:
+            return Kept(Outcome.REFUSED, None, f'its project {named} is not a folder on this computer')
     if not project.is_dir():
         return Kept(Outcome.REFUSED, None, f'its project {named} is not a folder on this computer')
     preference = records_preference(project)
@@ -281,37 +287,17 @@ def related_tasks(folder: Path) -> list[Path]:
     return found
 
 def archive(task_id: str) -> None:
-    """`archive`: keep the records of TASK_ID and of the tasks it handed work to in one commit, and say where each is."""
-    folder = folder_of(task_id)
-    if not folder.is_dir():
-        fail(f'no task folder {task_id} was found')
-    related = related_tasks(folder)
-    refused = [(each.name, kept.why) for each, kept in zip(related, keep_records(related, write=False)) if kept.outcome is Outcome.REFUSED]
-    if refused:
-        for name, why in refused:
-            note(f'refused, {why}: {name}')
-        fail(f"the records of {', '.join((name for name, _ in refused))} could not be kept, so none of this task's were written")
-    tips: list[str] = []
-    refused = []
-    for each, kept in zip(related, keep_records(related)):
-        if kept.outcome is Outcome.KEPT:
-            note(f'kept: {each.name}')
-            note(f'records: {kept.reference}')
-            if kept.commit and kept.commit not in tips:
-                tips.append(kept.commit)
-        elif kept.outcome is Outcome.NOT_OWED:
-            note(f'not kept, {kept.why}: {each.name}')
-        else:
-            note(f'refused, {kept.why}: {each.name}')
-            refused.append(each.name)
-    for tip in tips:
-        note(f'commit: {tip}')
-    if refused:
-        fail(f"the records of {', '.join(refused)} could not be kept; commit none of this task until they are")
+    """`archive`: confirm TASK_ID is on the records branch (tasks are written there directly)."""
+    _m_task_store = import_module('modules-plugable.computer.git.services.task_store')
+    if not _m_task_store.on_branch(task_id):
+        fail(f'no task {task_id} on {RECORDS_BRANCH}')
+    note(f'on branch: {task_id}')
+    note(f'records: {reference(task_id)}')
+    note(f'commit: {_m_task_store.verify_tip()}')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar git archive-task-records`."""
-    parser = verbs.add_parser(ARCHIVE_COMMAND, help="keep a task's records on its project's records branch, to cite with the task's work and to find by content", description=f"Keep the records of the task TASK_ID on the branch {RECORDS_BRANCH} of the repository of\nthe project its plan names, at {RECORDS_RELATIVE.as_posix()}/<id>/ in that branch, and do the same for\nevery task whose Parent chain leads to it, all in one commit. The whole\nfolder is kept except the claim, caches, a path with a .git part, binary files,\na file over {KEEP_LIMIT_BYTES // 1024} KB that is not a document, and the task's own {TEMP_FOLDER}/ folder; the commit's\nmessage lists each of those with its size and why. The kept plan names the\nproject by its registered name, not by its path. Each kept task's\nreference (the branch, a colon, the folder) is printed, and the commit; the\ntask's commit cites each task by its id, with `_host_git_cli.py commit\n--task-id`, which finds it there. The project's HEAD,\nindex and working tree are not touched, and it never pushes. A project whose\npreferences say `{RECORDS_KEY}: {Records.OFF.value}` keeps none. A task whose records cannot be\nkept is named with why, and the verb fails before writing anything. What is kept\nis read by content as well as by id: `memar content find` and `memar content search`\nread it with `--from tasks`.")
+    parser = verbs.add_parser(ARCHIVE_COMMAND, help="confirm a task is on its project's records branch", description=f"Confirm the task TASK_ID is on {RECORDS_BRANCH} at {RECORDS_RELATIVE.as_posix()}/<id>/.\nTasks are written to the branch by ensure and conversation post; this verb does not copy from a folder.")
     TaskId.add_flag(parser, 'the task whose work is being committed', required=True)
     return run
 

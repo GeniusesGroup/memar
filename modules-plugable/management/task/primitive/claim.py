@@ -25,22 +25,31 @@ from typing import ClassVar
 
 @dataclass(frozen=True)
 class Claim:
-    """The claim of one task FOLDER: where it is, and whether it still holds."""
+    """The claim of one task FOLDER: where the lock lives, and whether it still holds.
+
+    The lock is under temp/claims/<id>/, not in the task tree on the records
+    branch: exclusive create cannot live in git.
+    """
     folder: Path
     NAME: ClassVar[str] = 'claim'
     TAKEOVER_NAME: ClassVar[str] = f'{NAME}.takeover'
     NAMES: ClassVar[tuple[str, str]] = (NAME, TAKEOVER_NAME)
     STALE_SECONDS: ClassVar[int] = 24 * 60 * 60
 
+    def _lock_dir(self) -> Path:
+        from importlib import import_module
+        claim_dir = import_module('modules-plugable.computer.git.services.task_store').claim_dir
+        return claim_dir(self.folder.name)
+
     @property
     def path(self) -> Path:
-        """The claim file in the folder."""
-        return self.folder / self.NAME
+        """The claim lock file for this task id."""
+        return self._lock_dir() / self.NAME
 
     @property
     def takeover_path(self) -> Path:
         """The guard held while a stale claim is replaced."""
-        return self.folder / self.TAKEOVER_NAME
+        return self._lock_dir() / self.TAKEOVER_NAME
 
     def exists(self) -> bool:
         """Whether the folder holds a claim file, fresh or stale."""

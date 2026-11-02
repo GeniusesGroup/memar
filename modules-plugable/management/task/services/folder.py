@@ -1,29 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/management/task/services/folder.py — one task's folder as the other services read it.
+"""modules-plugable/management/task/services/folder.py — one task as services read it.
 
-Finding, sweeping, and linking tasks all start from the same question — which
-folders are tasks, what their plan says, and how long nothing in them has
-changed — and each answer is given here once, so a task listed as active is
-the task the sweep keeps.
-
-Where the folders are is not decided here: `modules-plugable/computer/memory/filesystem/services/fs_memar.py` owns every
-Memar path, the task folder among them. Only the task root's folders are
-Memar's; a folder directly in temp/ is not read as a task.
-A folder in a
-project's own task location (`task_location`) is continued, linked to,
-and closed like any other, and listed when the caller asks for its project or
-its conversation, but it is never among the folders the sweep is given: it is
-the project's, not Memar's. That location is a folder
-the project chose and may hold the project's own folders too, so a folder
-there is a task only by the same test
-(`is_task_folder`), and no other folder there is ever written into or
-closed.
-
-Idle is the latest change anywhere inside a folder, because on Windows a
-folder's own time does not move when a nested file is edited. Reading changes
-no modification time, so a folder that is only read still counts as idle.
+Tasks live on the records branch. A Path here is only a handle whose .name is
+the task id — not a directory agents should open.
 """
 from __future__ import annotations
 from modules.identity.thing.labels.Label_Queued import Label_Queued
@@ -47,10 +28,16 @@ read_plan = _m_plan_file.read_plan
 has_plan = import_module('modules-plugable.management.task.services.task_memory').has_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
+_m_task_files = import_module('modules-plugable.management.task.services.task_files')
+TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
+read_facts = _m_task_files.read_facts
 DAY_SECONDS = 24 * 60 * 60
 
+def _store():
+    return import_module('modules-plugable.computer.git.services.task_store')
+
 class Task(NamedTuple):
-    """One task folder: its path, whether it has a plan, and what the plan says."""
+    """One task: a Path handle (.name == id), whether it has a plan, and what the plan says."""
     path: Path
     has_plan: bool
     front: dict[str, str] | None
@@ -68,39 +55,46 @@ class Task(NamedTuple):
 
     @property
     def conversation(self) -> str:
-        """The first task of this one's conversation: recorded, else this task itself."""
         return (self.front or {}).get(PlanKey.CONVERSATION.key, '') or self.id
 
 def read_task(folder: Path) -> Task:
-    plan = folder / PLAN_NAME
-    if not has_plan(folder):
-        return Task(folder, False, None, '')
-    try:
-        read = read_plan(plan)
-    except (OSError, UnicodeDecodeError):
-        return Task(folder, True, None, '', readable=False)
-    return Task(folder, True, read.front, read.status, shape=plan_file_problem(plan))
+    """Read TASK from the records branch (or a real directory if tests still use one)."""
+    if folder.is_dir() and has_plan(folder):
+        plan = folder / PLAN_NAME
+        if (folder / TASK_FACTS_NAME).is_file():
+            facts = read_facts(folder) or {}
+            front = {PlanKey.TITLE.key: facts.get('title', ''), PlanKey.PROJECT.key: str(facts.get('project', '')), PlanKey.PARENT.key: facts.get('parent') or '', PlanKey.CONVERSATION.key: facts.get('conversation') or '', PlanKey.PRIORITY.key: facts.get('priority') or '', PlanKey.DEPENDS_ON.key: facts.get('depends_on') or '', PlanKey.START_DATE.key: facts.get('start_date') or ''}
+            return Task(folder, True, front, (facts.get('status') or '').lower())
+        try:
+            read = read_plan(plan)
+        except (OSError, UnicodeDecodeError):
+            return Task(folder, True, None, '', readable=False)
+        return Task(folder, True, read.front, read.status, shape=plan_file_problem(plan))
+    files = _store().tree(folder.name)
+    if TASK_FACTS_NAME in files:
+        facts = read_facts(folder.name) or {}
+        front = {PlanKey.TITLE.key: facts.get('title', ''), PlanKey.PROJECT.key: str(facts.get('project', '')), PlanKey.PARENT.key: facts.get('parent') or '', PlanKey.CONVERSATION.key: facts.get('conversation') or '', PlanKey.PRIORITY.key: facts.get('priority') or '', PlanKey.DEPENDS_ON.key: facts.get('depends_on') or '', PlanKey.START_DATE.key: facts.get('start_date') or ''}
+        return Task(folder, True, front, (facts.get('status') or '').lower())
+    if PLAN_NAME in files:
+        import tempfile
+        with tempfile.NamedTemporaryFile(suffix='.md', delete=False) as handle:
+            handle.write(files[PLAN_NAME])
+            temp = Path(handle.name)
+        try:
+            read = read_plan(temp)
+        except (OSError, UnicodeDecodeError):
+            return Task(folder, True, None, '', readable=False)
+        finally:
+            temp.unlink(missing_ok=True)
+        return Task(folder, True, read.front, read.status, shape=plan_file_problem(temp) if temp.exists() else None)
+    return Task(folder, False, None, '')
 
 def queued_why(task: Task) -> str | None:
-    """Why TASK is still queued: its task Status is Queued; None when it is not.
-
-    A queued task is waiting to be taken up, and nothing that moves or
-    removes a folder acts on one: its folder is the task.
-    """
     if task.status == Label_Queued.key:
         return f'its Status is {Label_Queued.word}'
     return None
 
 def is_task_folder(entry: Path) -> bool:
-    """Whether ENTRY, a folder found by name outside the task root, is a task's.
-
-    A name `task_id` mints, or a folder holding a plan.md that `ensure` wrote,
-    with its title and the time it was opened, because `--task-id` lets a
-    person name a task anything — and a folder named in a form minted
-    before is a task by that plan as long as it keeps that name. Any other folder
-    where a task could be — temp/'s own, or a project's beside its task
-    folders — is not one, and no task verb writes into it or closes it.
-    """
     if entry.is_symlink() or not entry.is_dir():
         return False
     if TaskId.is_form(entry.name):
@@ -115,28 +109,21 @@ def is_task_folder(entry: Path) -> bool:
     return PlanKey.TITLE.key in front and PlanKey.START_DATE.key in front
 
 def _project_entries(task_id: str, also: Path | None) -> list[Path]:
-    """Whatever is named TASK_ID in ALSO or in a registered project location, folder or not."""
     locations = ([also] if also is not None else []) + registered_locations()
     return [entry for entry in (location / task_id for location in locations) if entry.exists() or entry.is_symlink()]
 
 def project_folder_of(task_id: str, also: Path | None=None) -> Path | None:
-    """TASK_ID's task folder in ALSO or in a registered project location, or None when it is in none."""
     return next((entry for entry in _project_entries(task_id, also) if is_task_folder(entry)), None)
 
 def foreign_project_entry(task_id: str, also: Path | None=None) -> Path | None:
-    """What is named TASK_ID in ALSO or a registered project location and is not a task folder, or None."""
     return next((entry for entry in _project_entries(task_id, also) if not is_task_folder(entry)), None)
 
 def folder_of(task_id: str) -> Path:
-    """TASK_ID's folder: under the task root, else in a registered project location.
+    """Path handle for TASK_ID (.name == id). Not a directory; content is on the records branch."""
+    return task_dir(task_id)
 
-    The first when none is there. The id is checked by `task_dir`, so a
-    path is refused before a location is looked at.
-    """
-    folder = task_dir(task_id)
-    if folder.is_dir():
-        return folder
-    return project_folder_of(task_id) or folder
+def task_exists(task_id: str) -> bool:
+    return _store().on_branch(task_id) or project_folder_of(task_id) is not None
 
 def _entries(root: Path) -> list[Path]:
     try:
@@ -145,40 +132,35 @@ def _entries(root: Path) -> list[Path]:
         return []
 
 def task_folders(*, projects: bool=False, locations: list[Path] | None=None) -> list[Path]:
-    """Every task folder under the task root, newest first.
-
-    With PROJECTS, the task folders in every registered project location
-    too, and with LOCATIONS, those in each of these; the sweep asks with
-    neither, because those are not Memar's to sweep. In every location a
-    folder is a task by `is_task_folder`, since anyone may name a
-    task anything with `--task-id`, and a folder named in a form minted
-    before stays a task by its plan as long as it keeps that name.
-    A name sort of the minted form is creation order; any other name follows
-    every minted one.
-    """
-    folders = [entry for entry in _entries(tasks_root()) if is_task_folder(entry)]
+    """Path handles for every task id on the records branch, newest first."""
+    folders = [task_dir(task_id) for task_id in _store().list_task_ids()]
+    known = {each.name for each in folders}
     roots: list[Path] = []
     for root in [*(registered_locations() if projects else []), *(locations or [])]:
         if root.resolve() not in roots:
             roots.append(root.resolve())
-    folders += [entry for root in roots for entry in _entries(root) if is_task_folder(entry)]
+    for root in roots:
+        for entry in _entries(root):
+            if entry.name not in known and is_task_folder(entry):
+                folders.append(entry)
+                known.add(entry.name)
     folders.sort(key=lambda entry: (TaskId.is_form(entry.name), entry.name), reverse=True)
     return folders
 
 def last_change(path: Path) -> float:
-    """The latest modification time of PATH or of anything inside it."""
-    latest = path.stat().st_mtime
-    for root, folders, files in os.walk(path):
-        for name in (*folders, *files):
-            try:
-                changed = os.stat(os.path.join(root, name), follow_symlinks=False).st_mtime
-            except OSError:
-                continue
-            latest = max(latest, changed)
-    return latest
+    if path.is_dir():
+        latest = path.stat().st_mtime
+        for root, folders, files in os.walk(path):
+            for name in (*folders, *files):
+                try:
+                    changed = os.stat(os.path.join(root, name), follow_symlinks=False).st_mtime
+                except OSError:
+                    continue
+                latest = max(latest, changed)
+        return latest
+    return time.time()
 
 def measured_idle(path: Path) -> float | None:
-    """Days since anything inside PATH changed, or None when that cannot be read."""
     try:
         return (time.time() - last_change(path)) / DAY_SECONDS
     except OSError:

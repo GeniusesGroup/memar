@@ -17,7 +17,7 @@ it, so no pin depends on this checkout's records. What is pinned, and what each 
 
   Archived   A term found only in an archived record is found by `search` and by `find` with
              `--from tasks`, and its hit names the records branch, the task and the file
-             (`dev-knowledge:.agents/tasks/<id>/<file>`); the branch is read without moving
+             (`<records-branch>:.agents/tasks/<id>/<file>`); the branch is read without moving
              HEAD, index or working tree.
   Filter     The same term is not found without `--from`, nor with `--from documents`; with
              `--from tasks` alone no document is read.
@@ -170,10 +170,10 @@ class Live(Project):
         self.assertIn(f'.agents/tasks/{LIVE}/plan.md:5:Feed the {TERM}.', lines)
         self.assertFalse(any((f'{LIVE}/temp/' in line for line in lines)), lines)
 
-    def test_a_task_with_a_live_folder_is_read_from_it_and_not_from_the_branch(self) -> None:
+    def test_a_worktree_folder_does_not_override_the_records_branch(self) -> None:
         write(self.root / '.agents' / 'tasks' / ARCHIVED / 'plan.md', '# Plan\n\n## Request\n\nCount the burrows again.\n')
         lines, _ = self.search(TERM, sources=(CorpusSource.TASKS,))
-        self.assertFalse(any((f'tasks/{ARCHIVED}/' in line for line in lines)), lines)
+        self.assertTrue(any((f'{RECORDS_BRANCH}:.agents/tasks/{ARCHIVED}/' in line for line in lines)), lines)
 
 class Nothing(Project):
 

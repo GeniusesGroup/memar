@@ -81,8 +81,9 @@ def checked_refs(values, timeline: str) -> tuple:
 def post_text(timeline: str, kind: str, content_file: str | None, author: str | None, refs=()) -> int:
     held = checked_refs(refs, timeline)
     files = _m_conversation.file_timeline(timeline, held)
-    folder = _m_conversation.folder_of(timeline)
-    project = (read_facts(folder) or {}).get('project', '').strip()
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    facts = read_facts(timeline) or {}
+    project = (facts.get('project') or '').strip()
     word = checked_kind(kind, Path(project) if project else None)
     try:
         text = read_text(content_file)
@@ -96,6 +97,7 @@ def post_text(timeline: str, kind: str, content_file: str | None, author: str | 
         fail(f'another content of kind {word} was placed in timeline {timeline} meanwhile, so nothing was written; post it again')
     except _m_errors.Timeline_Error_NotFound:
         fail(_m_conversation.not_found_reason(timeline))
+    del store
     print(f'{timeline}  posted content {placed} of kind {word}')
     return placed
 

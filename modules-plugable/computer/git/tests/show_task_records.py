@@ -176,7 +176,7 @@ class Refusals(Fixture):
         self.archived_and_gone()
         _, stopped = self.show('--file', 'docs/none.md')
         self.assertIn('docs/none.md', stopped or '')
-        self.assertIn('dev-knowledge', stopped or '')
+        self.assertIn(memar_fs.RECORDS_BRANCH, stopped or '')
 
     def test_a_path_that_leaves_the_tasks_folder_is_refused(self) -> None:
         self.archived_and_gone()
@@ -192,7 +192,7 @@ class Refusals(Fixture):
 
     def test_a_project_with_no_records_branch_says_so(self) -> None:
         _, stopped = self.show()
-        self.assertIn('dev-knowledge', stopped or '')
+        self.assertIn(memar_fs.RECORDS_BRANCH, stopped or '')
 
 class Listing(Fixture):
 
@@ -233,10 +233,12 @@ class HandBack(Fixture):
         self.assertIsNone(stopped)
         self.assertIn('Not a hand-back:', said)
 
-    def test_a_report_with_no_status_is_named_not_a_hand_back(self) -> None:
-        self.report(b'---\nTitle: T\nStatus:\n---\n# Report\n')
-        said, _ = self.show('--hand-back')
-        self.assertIn('Not a hand-back: report.md has no Status', said)
+    def test_a_report_without_status_is_still_a_hand_back_when_the_task_has_status(self) -> None:
+        self.report(b'---\nTitle: T\n---\n# Report\n')
+        said, stopped = self.show('--hand-back')
+        self.assertIsNone(stopped)
+        self.assertEqual(said.splitlines()[0], 'Status: complete')
+        self.assertNotIn('Not a hand-back', said)
 
     def test_a_task_with_no_folder_is_refused(self) -> None:
         said, stopped = self.show('--hand-back')

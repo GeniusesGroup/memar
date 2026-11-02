@@ -131,16 +131,15 @@ def try_claim(folder: Path) -> str | None:
     blocked for them that are all met since is queued again first, so it is
     taken as an ordinary queued task (`task_depends`).
     """
-    plan = folder / PLAN_NAME
     if not has_plan(folder):
-        return f'{folder} has no {PLAN_NAME}, so there is no task to claim'
-    shape = plan_file_problem(plan)
-    if shape:
-        return f'task {folder.name}: {shape}'
+        return f'task {folder.name} has no plan, so there is no task to claim'
+    task = import_module('modules-plugable.management.task.services.folder').read_task(folder)
+    if task.shape:
+        return f'task {folder.name}: {task.shape}'
     unmet = dependency_refusal(folder, CLAIM_COMMAND)
     if unmet:
         return unmet
-    status = read_plan(plan).status
+    status = task.status
     claim = claim_path(folder)
     held = claim.exists()
     if held and is_claimed(folder):

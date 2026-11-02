@@ -111,13 +111,15 @@ capability:
   record   Commit files onto a branch other than the one checked out, without
            touching HEAD, the shared index or the working tree: a branch that
            keeps a record out of the history of the work (the task records
-           `memar git archive-task-records` keeps). It is the plumbing of `commit`
+           branch `RECORDS_BRANCH` / `memar`). It is the plumbing of `commit`
            pointed at another branch — a private index read from that
            branch's tip, blobs written byte for byte, a commit object, and
            `update-ref` against the tip it read, so a writer that got there
            first makes it start again from the new tip. It takes the
            repository from `--repository`, never the folder it runs from, and
-           it never pushes: publishing a branch is a person's act.
+           it never pushes: publishing a branch is a person's act. Agents never
+           check out, push, pull, reset, rebase, merge, delete, or rename that
+           records branch; only this verb (via Memar services) may move its tip.
 
            Every verb that acts on a repository takes `--repository` the same
            way, none reads the folder it runs from, and a relative path is

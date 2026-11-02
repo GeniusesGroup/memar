@@ -100,13 +100,14 @@ def recorded_project(folder: Path) -> Path | None:
     return where if where.is_dir() else None
 
 def linked_conversation(task_id: str, parent: str) -> str:
-    """The conversation a task opened from PARENT belongs to; PARENT must be a task folder."""
+    """The conversation a task opened from PARENT belongs to; PARENT must be a known task."""
     if parent == task_id:
         fail('--parent names this task itself; name the task this task came from')
     folder = folder_of(parent)
-    if not folder.is_dir():
-        fail(f'no task folder {parent}: --parent names a task that is there, the one this task came from')
-    return read_task(folder).conversation
+    task = read_task(folder)
+    if not task.has_plan and not import_module('modules-plugable.computer.git.services.task_store').on_branch(parent):
+        fail(f'no task {parent}: --parent names a task that is there, the one this task came from')
+    return task.conversation
 
 def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
     """Ensure the task's folder, its facts and its plan and report contents (a task made now is in the new shape: task.yaml and content.NNNNN.md; one in the old shape, plan.md and report.md, is continued as it is), and its folders exist; return its id and path.
@@ -146,24 +147,16 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     sid = TaskId.new() if task_id is None else task_id
     folder = task_dir(sid)
     project = named_project(project)
-    location = project_location(project) if project is not None else None
-    if task_id is not None and (not folder.is_dir()):
-        folder = project_folder_of(sid, also=location) or folder
-    if project is None and folder.is_dir():
-        project = recorded_project(folder)
-        location = project_location(project) if project is not None else None
-    if project is None and (not (folder.is_dir() and has_plan(folder))):
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    if project is None and store.on_branch(sid):
+        project = recorded_project(folder) or store.project_of_task(sid)
+    if project is None and not has_plan(folder):
         fail(PROJECT_REQUIRED)
-    if not folder.is_dir() and location is not None:
-        folder = location / sid
-        if folder.exists() or folder.is_symlink():
-            fail(f'{folder} is there and is not a task folder; `ensure` never writes into it. Pass --task-id a name not used in that location, or none to mint one')
     given = None
     if labels is not None:
         given, registry = (Labels(), registry_for(project))
         for text in labels:
             given = given.with_label(checked_label(text, project, registry))
-    existed = folder.is_dir()
     has_plan_now = has_plan(folder)
     title = checked_title(title, required=not has_plan_now)
     parent = (parent or '').strip() or None
@@ -180,19 +173,11 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     if cited:
         refused_for_writing(sid, now, reader, cited)
     path = folder
-    if not existed:
-        try:
-            path.mkdir(parents=True, exist_ok=True)
-        except OSError as error:
-            where = f'; check `{TASKS_KEY}` in {preferences_path(project)}' if location is not None and project is not None else ''
-            fail(f'the task folder {path} could not be made ({error.strerror or error}){where}')
-        record('opened', sid, f'parent {parent}' if parent else '', folder=path)
-    if in_project_location(path):
-        register(path.parent, project)
     if not has_plan_now:
         waits = bool(cited) and bool(reader.unmet(cited))
         status = Label_Blocked.key if waits else Label_Queued.key if queued else Label_Active.key
         create_task(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
+        record('opened', sid, f'parent {parent}' if parent else '', folder=path)
         if waits:
             record(BLOCKED_EVENT, sid, '; '.join(reader.unmet(cited)), folder=path)
     else:
@@ -205,6 +190,5 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         if cited:
             set_depends_on(stores_at(path), project, sid, now)
             reconcile(read_task(path), reader)
-    ensure_folders(path)
     reap_once_a_day(keep=sid)
     return (sid, path)

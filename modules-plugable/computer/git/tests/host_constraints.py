@@ -1049,7 +1049,7 @@ class CommitCitesItsTasks(ScratchRepository):
 
 class RecordWritesAnotherBranch(ScratchRepository):
     """`record`: a commit on another branch, made without HEAD, the index or the working tree."""
-    BRANCH = 'dev-knowledge'
+    BRANCH = 'memar'
 
     def setUp(self) -> None:
         super().setUp()

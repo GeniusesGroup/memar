@@ -70,19 +70,32 @@ def line_end(line: str) -> str:
     return line[len(line.rstrip('\r\n')):] or '\n'
 
 
-def has_task(folder: Path) -> bool:
-    return (folder / TASK_FACTS_NAME).is_file()
+def _task_id(task) -> str:
+    return task if isinstance(task, str) else Path(task).name
 
 
-def has_plan(folder: Path) -> bool:
+def has_task(folder) -> bool:
+    if isinstance(folder, Path) and folder.is_dir():
+        return (folder / TASK_FACTS_NAME).is_file()
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    return TASK_FACTS_NAME in store.tree(_task_id(folder))
+
+
+def has_plan(folder) -> bool:
     return has_task(folder)
 
 
-def read_facts(folder: Path) -> dict | None:
-    path = folder / TASK_FACTS_NAME
-    if not path.is_file():
+def read_facts(folder) -> dict | None:
+    if isinstance(folder, Path) and folder.is_dir():
+        path = folder / TASK_FACTS_NAME
+        if not path.is_file():
+            return None
+        return _header.parse(read_bytes(path).decode('utf-8-sig').splitlines())
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    data = store.tree(_task_id(folder)).get(TASK_FACTS_NAME)
+    if data is None:
         return None
-    return _header.parse(read_bytes(path).decode('utf-8-sig').splitlines())
+    return _header.parse(data.decode('utf-8-sig').splitlines())
 
 
 def _front_of(facts: dict, task: str | None) -> tuple:
@@ -162,35 +175,43 @@ def report_lines(folder: Path) -> list:
     return [*front, *content.body.splitlines()]
 
 
-def write_facts(folder: Path, facts: dict) -> None:
-    path = folder / TASK_FACTS_NAME
-    temporary = folder / f'.{TASK_FACTS_NAME}.{os.getpid()}.tmp'
-    with temporary.open('w', encoding='utf-8', newline='\n') as written:
-        written.write(_header.render({key: facts[key] for key in FACTS if key in facts}, BLOCK_FACTS, BLOCK_FACTS))
+def facts_bytes(facts: dict) -> bytes:
+    return _header.render({key: facts[key] for key in FACTS if key in facts}, BLOCK_FACTS, BLOCK_FACTS).encode('utf-8')
+
+
+def write_facts(folder, facts: dict) -> None:
+    """Write facts onto the records branch for the task id (folder Path or id string)."""
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    refused = import_module('modules-plugable.computer.git.services.branch').RecordRefused
+    task = _task_id(folder)
+    project = facts.get('project')
     try:
-        os.link(temporary, path)
-    except FileExistsError:
-        pass
-    finally:
-        temporary.unlink(missing_ok=True)
+        store.put_files(task, {TASK_FACTS_NAME: facts_bytes(facts)}, Path(project) if project else None, message=f'Record task {task}\n')
+    except refused as error:
+        fail(f'task {task} could not be recorded on the records branch ({error})')
 
 
-def create_task(folder: Path, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
+def create_task(folder, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
     opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    write_facts(folder, {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened, 'writer': _generation.TASK_TYPE_UUID})
+    write_facts(task, {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened, 'writer': _generation.TASK_TYPE_UUID})
 
 
-def _yaml_write(folder: Path, fact: str, value: str, expected: str) -> str:
-    path = folder / TASK_FACTS_NAME
-
-    def make(data: bytes) -> str:
-        pairs = _header.parse(data.decode('utf-8-sig').splitlines())
-        if _version(pairs.get(fact, '')) != expected:
-            raise Task_Error_Changed()
-        pairs[fact] = value
-        ordered = {key: pairs[key] for key in (*FACTS, *pairs) if key in pairs}
-        return _header.render(ordered, BLOCK_FACTS, BLOCK_FACTS)
-    _replace_file(path, make)
+def _yaml_write(task_id: str, fact: str, value: str, expected: str, project=None) -> str:
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    refused = import_module('modules-plugable.computer.git.services.branch').RecordRefused
+    data = store.tree(task_id).get(TASK_FACTS_NAME)
+    if data is None:
+        raise Task_Error_NotFound()
+    pairs = _header.parse(data.decode('utf-8-sig').splitlines())
+    if _version(pairs.get(fact, '')) != expected:
+        raise Task_Error_Changed()
+    pairs[fact] = value
+    ordered = {key: pairs[key] for key in (*FACTS, *pairs) if key in pairs}
+    rendered = _header.render(ordered, BLOCK_FACTS, BLOCK_FACTS).encode('utf-8')
+    try:
+        store.put_files(task_id, {TASK_FACTS_NAME: rendered}, Path(project) if project is not None else None, message=f'Record task {task_id}\n')
+    except refused as error:
+        fail(f'task {task_id} could not be recorded on the records branch ({error})')
     return _version(value)
 
 
@@ -199,18 +220,19 @@ class FileTaskStores:
     def __init__(self, resolve: Callable) -> None:
         self.resolve = resolve
 
-    def _folder(self, project, task) -> Path:
-        folder = self.resolve(project, task)
-        if not has_task(folder):
+    def _task(self, project, task) -> str:
+        resolved = self.resolve(project, task)
+        task_id = _task_id(resolved)
+        if not has_task(task_id):
             raise Task_Error_NotFound()
-        return folder
+        return task_id
 
     def _read(self, project, task, fact: str) -> tuple:
-        text = (read_facts(self._folder(project, task)) or {}).get(fact, '')
+        text = (read_facts(self._task(project, task)) or {}).get(fact, '')
         return (text, _version(text))
 
     def _replace(self, project, task, fact: str, value: str, expected: str) -> str:
-        return _yaml_write(self._folder(project, task), fact, value, expected)
+        return _yaml_write(self._task(project, task), fact, value, expected, project)
 
     def read_priority(self, project, task) -> tuple:
         text, version = self._read(project, task, 'priority')
@@ -241,11 +263,10 @@ class FileTaskStores:
         return self._replace(project, task, 'depends_on', cited.text() if cited else '', expected)
 
 
-def stores_at(folder: Path) -> FileTaskStores:
-    return FileTaskStores(lambda project, task: folder)
+def stores_at(folder) -> FileTaskStores:
+    task_id = _task_id(folder)
+    return FileTaskStores(lambda project, task: task_id)
 
 
 def stores() -> FileTaskStores:
-    def resolve(project, task) -> Path:
-        return import_module('modules-plugable.management.task.services.folder').folder_of(task)
-    return FileTaskStores(resolve)
+    return FileTaskStores(lambda project, task: task)

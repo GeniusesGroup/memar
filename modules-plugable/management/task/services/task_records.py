@@ -1,31 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/management/task/services/task_records.py — the tasks a content verb reads when it is asked to: their archived records and their live folders.
+"""modules-plugable/management/task/services/task_records.py — the tasks a content verb reads: the records branch.
 
-The source `tasks` of `CorpusSource` (`modules/knowledge/text/primitive/corpus_source.py`).
-A task's records are what it wrote while it worked, and a later task meeting a question
-like an earlier one must be able to find the earlier answer (owner, 2026-10-19). They are read
-only when a verb is asked for them, because each is one task's claim and never a ruling, and
-each is named so that a reader sees whose claim it is: the task's id and the file in it, in
-the form a changelog cites them.
-
-**Two places hold them.** A finished task's records are archived on the records branch of
-the project's own repository (`modules-plugable/computer/git/services/_git_records.py`), read with git's read-only commands, so
-nothing of the checkout moves: no HEAD, index or working tree. A task still in progress, or
-finished and not yet swept, has a live folder: in the project's tasks folder (its preferences'
-`tasks`, else `.agents/tasks/` inside it), and in Memar's own when its plan names the project
-by its folder. A task that has a live folder is read from that folder alone, as
-`memar git show-task-records` reads it first, since while the folder exists it is the task's latest state.
-
-**What is read of them.** Every text file, as the archive keeps them: binary files are left
-out, and so is a live folder's own temp/, which the archive never keeps. A project whose
-preferences say `records: off` has no archived records; a project that is not a repository's top
-folder, or whose repository has no records branch, has none either. Each of those is said in a
-note the verb prints, so an empty answer is not read as an absence of the subject.
-
-A hit names its file so: `<branch>:.agents/tasks/<id>/<file>` for an archived one, and the
-live folder's path, from the project when it lies inside it, for a live one.
+The source `tasks` of `CorpusSource`. Durable task trees live on `RECORDS_BRANCH`
+only (`_git_records`). Ephemeral materialization under temp/task-store may still
+be listed as a live folder for in-progress Path APIs, but the branch is the store:
+a hit on the branch is never overridden by a worktree copy under `.agents/tasks/`.
 """
 from __future__ import annotations
 from importlib import import_module
@@ -123,20 +104,22 @@ def archive_note(root: Path) -> str | None:
     return None
 
 def task_records(root: Path) -> tuple[list[Record], list[str]]:
-    """Every file of every task of the project at ROOT, live folders first, and the notes that say what could not be read and why."""
-    records: list[Record] = []
-    live = live_folders(root)
-    for folder in live:
-        records.extend(_live(root, folder))
+    """Every file of every task of the project at ROOT from the records branch, plus notes."""
     note = archive_note(root)
     if note is not None:
-        return (records, [note])
-    read_live = {folder.name for folder in live}
+        return ([], [note])
+    records: list[Record] = []
+    on_branch: set[str] = set()
     for task, relative, blob in git_records.every_file(root):
-        if task in read_live or relative.split('/', 1)[0] == TEMP_DIRNAME:
+        if relative.split('/', 1)[0] == TEMP_DIRNAME:
             continue
+        on_branch.add(task)
         suffix = Path(relative).suffix.lower()
         records.append(Record(f'{git_records.reference(task)}{relative}', task, suffix, None, blob))
+    for folder in live_folders(root):
+        if folder.name in on_branch:
+            continue
+        records.extend(_live(root, folder))
     return (records, [])
 
 def read_all(root: Path, records: list[Record]) -> dict[str, str]:

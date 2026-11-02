@@ -17,6 +17,9 @@ folder_of = _m_folder.folder_of
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 has_task = _m_task_files.has_task
 accepts_contents = _m_task_files.accepts_contents
+_m_branch_timeline = import_module('modules-plugable.management.timeline.widgets.conversation.branch_timeline')
+BranchTimeline = _m_branch_timeline.BranchTimeline
+_m_task_store = import_module('modules-plugable.computer.git.services.task_store')
 DOMAIN = 'conversation'
 
 
@@ -50,12 +53,12 @@ class Conversation:
 
 
 def file_timeline(timeline: str, refs=()):
-    folder = folder_of(timeline)
-    return _m_files.FileTimeline(lambda held: folder, lambda held: accepts_contents(held), home=folder, refs=refs)
+    return BranchTimeline(timeline, refs=refs)
 
 
 def not_found_reason(timeline: str) -> str:
-    if has_task(folder_of(timeline)):
+    files = _m_task_store.tree(timeline)
+    if 'plan.md' in files and 'task.yaml' not in files:
         return f'timeline {timeline} is in the old shape (plan.md and report.md), which {_m_task_files.OLD_SHAPE_READER} reads; nothing was written'
     return f'no timeline {timeline}, so nothing was read or written'
 

@@ -1,21 +1,12 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/show.py — a task's plan and report, or the files an agent asks for, wherever they are.
+"""modules-plugable/computer/git/services/show.py — a task's plan and report from the records branch.
 
-A task's folder is scratch and goes once its task is done; its records stay
-on its project's records branch (`task_archive`). A reader who has a task
-id from a changelog, a handoff or a report wants what the task said, not to
-know which of the two places holds it today, so one command returns it (owner,
-2026-10-15): the folder in the main repository's temp first, because while the
-folder exists it is the task's latest state, then the branch. Each file is
-looked for in that order on its own, and each is printed under a line naming
-where it came from, so a reader of a folder that has moved on past what was
-archived sees which is which.
-
-A file is named by its path from the task's folder, never by one that
-leaves it; the branch is read with git's read-only commands, in the project
-told by `--project` or `--project-path`, never the folder this runs in.
+Tasks live on `RECORDS_BRANCH`. Materialization under temp/task-store is
+ephemeral; this verb reads the branch (hydrating when a Path reader needs it).
+A file is named by its path from the task's folder; the project is told by
+`--project` or `--project-path`, never the folder this runs in.
 """
 from __future__ import annotations
 from importlib import import_module
@@ -66,14 +57,12 @@ def _relative(path: str) -> str:
     return PurePosixPath(posix).as_posix()
 
 def listing(task_id: str, project_path: Path) -> list[str]:
-    """The files the task has: those in its folder when it is in temp, else those the branch holds for it."""
-    folder = folder_of(task_id)
-    if folder.is_dir():
-        return sorted((each.relative_to(folder).as_posix() for each in folder.rglob('*') if each.is_file() and (not each.is_symlink())))
+    """The files the task has on the records branch."""
     found = sorted(task_branch.held(project_path, task_id))
-    if not found:
-        fail(f'no task {task_id}: not in temp, and {RECORDS_BRANCH} of {project_path} holds nothing for it')
-    return found
+    if found:
+        return found
+    fail(f'no task {task_id}: {RECORDS_BRANCH} of {project_path} holds nothing for it')
+    return []
 
 def default_names(folder: Path, task_id: str, project_path: Path) -> list[str]:
     present = [each.name for each in folder.iterdir() if each.is_file()] if folder.is_dir() else list(task_branch.held(project_path, task_id))
@@ -115,19 +104,11 @@ def dependency_lines(task, project_path: Path) -> None:
         sys.stdout.write('=== dependencies\n' + '\n'.join(lines) + '\n\n')
 
 def hand_back(task_id: str) -> None:
-    """Print TASK_ID's hand-back alone: its Status, its report's path, and its `Decisions needed` lines; none of the rest of the report.
-
-    Read from the task's folder, where a task that has just ended is; a
-    report that is not a hand-back is named, with why, after what it does hold.
-    """
-    folder = folder_of(task_id)
-    if not folder.is_dir():
-        fail(f'task {task_id} has no folder in temp, so there is no hand-back to read; `show --file {REPORT_NAME}` reads it from the branch')
-    plan_status = read_plan(folder / PLAN_NAME).status
-    lines = [f"Status: {plan_status or '(none)'}", f'Report: {report_path(folder)}', *decisions_needed(folder)]
-    problem = handback_problem(folder, plan_status)
-    if problem:
-        lines.append(f'Not a hand-back: {problem}')
+    """Print TASK_ID's hand-back: Status from the branch, and Decisions needed when held as files."""
+    task = read_task(folder_of(task_id))
+    if not task.has_plan:
+        fail(f'no task {task_id} on {RECORDS_BRANCH}')
+    lines = [f"Status: {task.status or '(none)'}", f'Report: {RECORDS_BRANCH}:{folder_on_branch(task_id)}/ (timeline)']
     sys.stdout.write('\n'.join(lines) + '\n')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

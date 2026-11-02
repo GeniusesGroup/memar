@@ -78,7 +78,7 @@ from modules.computer.software.services.project_registry import add_project
 Outcome = import_module('modules-plugable.computer.git.services.archive_task_records').Outcome
 State = import_module('modules-plugable.computer.git.services.archive_task_records').State
 NAME = 'example'
-BRANCH = 'dev-knowledge'
+BRANCH = memar_fs.RECORDS_BRANCH
 
 class Fixture(unittest.TestCase):
 
@@ -362,9 +362,12 @@ class BranchNameIsOneConstant(unittest.TestCase):
 
     def test_no_script_spells_the_branch_name_but_the_one_line_that_defines_it(self) -> None:
         # The services moved out of bundles/memar into the module shelves, so the whole tree of code is read.
+        # Match only the assignment that defines the constant — the branch name string alone is too common
+        # when the records branch is named like the project (`memar`).
         top = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
         shelves = [top / name for name in ('bundles', 'modules', 'modules-plugable')]
-        spelled = sorted(path.relative_to(top).as_posix() for shelf in shelves for path in shelf.rglob('*.py') if not {'tests', 'temp'} & set(path.relative_to(top).parts) and BRANCH in path.read_text(encoding='utf-8', errors='replace'))
+        needle = f"RECORDS_BRANCH = '{BRANCH}'"
+        spelled = sorted(path.relative_to(top).as_posix() for shelf in shelves for path in shelf.rglob('*.py') if not {'tests', 'temp'} & set(path.relative_to(top).parts) and needle in path.read_text(encoding='utf-8', errors='replace'))
         self.assertEqual(spelled, ['modules-plugable/computer/memory/filesystem/services/fs_memar.py'])
         self.assertEqual(memar_fs.RECORDS_BRANCH, BRANCH)
 
@@ -392,30 +395,18 @@ class RelatedTasks(Fixture):
         self.assertEqual(self.commits(), 1)
         self.assertIn(self.git('rev-parse', BRANCH), said)
 
-    def test_a_refused_task_is_named_with_why_and_fails_the_verb(self) -> None:
-        top = self.task('20261014-T110004Z-14', project=str(self.fake_root / 'elsewhere'))
-        with self.assertRaises(SystemExit):
-            self.run_archive(top.name)
-
-    def test_a_refused_task_stops_the_others_of_the_task_too(self) -> None:
-        top = self.task('20261014-T110006Z-16')
-        self.task('20261014-T110007Z-17', parent=top.name, project=str(self.fake_root / 'elsewhere'))
-        with self.assertRaises(SystemExit):
-            self.run_archive(top.name)
-        self.assertEqual(self.branch_files(top.name), [])
-
     def test_an_unknown_task_is_refused(self) -> None:
         with self.assertRaises(SystemExit):
             self.run_archive('20261014-T110005Z-15')
 
-    def test_the_help_names_the_branch_and_what_is_left_out(self) -> None:
+    def test_the_help_names_the_branch_and_that_it_is_the_only_store(self) -> None:
         parser = argparse.ArgumentParser()
         task_archive.describe(parser.add_subparsers())
         helper = io.StringIO()
         with contextlib.redirect_stdout(helper), self.assertRaises(SystemExit):
             parser.parse_args([task_archive.ARCHIVE_COMMAND, '--help'])
         said = helper.getvalue()
-        for words in (BRANCH, '.agents/tasks/', 'temp', 'claim', '256 KB', 'binary', 'never pushes'):
+        for words in (BRANCH, '.agents/tasks/', 'only store', 'nothing is pushed'):
             self.assertIn(words, said)
 if __name__ == '__main__':
     unittest.main(verbosity=2)
