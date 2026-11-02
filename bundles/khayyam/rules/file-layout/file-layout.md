@@ -1,16 +1,15 @@
 ---
 Title: "Khayyam Rule — File Layout"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497402"
 ---
-
 # Khayyam Rule — File Layout
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for how source files in this repository are sized and ordered. It is a governance rule of this repository, not a grammar requirement: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) states that `in` includes named entities from other files; it does not legislate file length or declaration order.
 
 ## The rule
 - **Short files for single responsibility**: each `.kh` file should stay small enough to express one coherent responsibility; the file-as-import-unit model encourages splitting rather than accumulation.
-- **Contracts-first order**: a file is meant to be read with `in` inclusions and type declarations before method bodies. Companion tooling may fold declaration blocks and bodies so that order is the default view ([Linter → Tooling may present structure first](../../../../docs/modules/computer/linter.md#tooling-may-present-structure-first)); that assist is not grammar.
+- **Contracts-first order**: a file is meant to be read with `in` inclusions and type declarations before method bodies. Companion tooling may fold declaration blocks and bodies so that order is the default view ([Linter → Tooling may present structure first](../../../../modules/computer/linter/linter.md#tooling-may-present-structure-first)); that assist is not grammar.
 - **One abstraction per protocol file (strong default)**: under `protocol/`, a file that declares more than one abstraction (`tp X ab`) is harder to navigate than one concept per file — each `in` import names a file, so a multi-abstraction file forces readers to open it for one name and absorb others. **Split** when the abstractions are distinct concepts (for example `Empty`, `Nil`, and `Null` in ADT operations). **Keep together** when one abstraction only composes the others tightly, or the declarations form a single cohesive family (for example `Codec`, `Codec_Decoder`, and `Codec_Encoder`; or `Observer_X` / `Mutator_X` families already placed in `<base>.observers.kh` and `<base>.mutators.kh` companion files per the [observer and mutator rule](../../../../modules/computer/adt/rules/observer-mutator/observer-mutator.md)). This default is advisory — not mandatory — but is the shape new protocol work should take unless there is a stated reason to bundle.
 
 ## Why it exists

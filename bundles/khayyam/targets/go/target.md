@@ -1,17 +1,16 @@
 ---
 Title: "Khayyam Go Target"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-08
 ID: 497622
 ---
-
 # Khayyam Go Target
 ## Abstract
 This document is the Go target of the Khayyam toolchain: what the bridge between the archived Go reference and this repository's Khayyam sources does today, what it reads, what it still owes, and what may sit beside it. The target exists because the owner ruled on 2026-10-05 that Go stays a target of the toolchain — a folder named for the emit output it is to produce, beside [`js/`](../js/target.md), and not a place where the language's design is decided. It is not yet an emit target in the sense the pipeline uses that word: nothing here produces a Go artifact, and no Go artifact exists. What it does produce is Khayyam. [`abstraction_bridge.py`](./abstraction_bridge.py) reads Go sources and writes the declarations that have a Khayyam form; every construct that has none stays in the destination as a residue carrying its original Go text, with the whole Go file kept verbatim as comments at the end of the file it produced; and the three Rules that govern that residue are applied here by `tidy --rule`. What the port did, what it measured, and what it left undecided are recorded in the paired research.
 
 ## Introduction
 ### Motivation
-The bridge is the only path by which the archived `memar-go` reference reached this repository's sources, and 852 of the repository's `.kh` files still end in the residue block it wrote ([`go-clue-residue`](./rules/go-clue-residue/go-clue-residue.md)). A tool whose output is unfinished needs a document that says what it has produced and what it has not, or the residue reads as a design rather than as work in progress. The toolchain's own placement names this folder for an emit output ([Khayyam → Local placement](../../khayyam.md#local-placement)), so the gap between what the folder is named for and what it does is the thing a reader arrives here to have settled.
+The bridge is the only path by which the archived `memar-go` reference reached this repository's sources, and 852 of the repository's `.kh` files still end in the residue block it wrote ([`go-clue-residue`](./rules/go-clue-residue/go-clue-residue.md)). A tool whose output is unfinished needs a document that says what it has produced and what it has not, or the residue reads as a design rather than as work in progress. The toolchain's own placement names this folder for an emit output (`Khayyam → Local placement`), so the gap between what the folder is named for and what it does is the thing a reader arrives here to have settled.
 
 ### Methodology
 Each statement below is read from the code it names: the two directions and the five sub-commands from [`abstraction_bridge.py`](./abstraction_bridge.py)'s own usage block, the residue block's marker, seal and license line from [`go_source_block.py`](./go_source_block.py), and the four source-rewrite passes `tidy` applies from [`tidy.py`](./tidy.py). Nothing here describes an emitter that does not exist, and no design for one is proposed.
@@ -58,7 +57,7 @@ The residue rules are kept rather than retired for the same reason they are stat
 A file belongs under `targets/go/` when it is the bridge between Go and Khayyam, or a reader the bridge needs, or a Rule about the residue that bridge leaves:
 
 - **The bridge and its readers** — [`abstraction_bridge.py`](./abstraction_bridge.py) and the modules it is one call into: the Go lexer and parser, the Khayyam reader, the comment reader, the residue block, the naming tables, the frontend check, and their tests.
-- **The residue rules** — [`rules/`](./rules/README.md), whose subject is what the port left in a `.kh` file. A Rule whose subject is a Khayyam program is the [language catalog's](../../rules/README.md) whatever tool applies it; enforcement does not decide a Rule's home ([Rule → Which Module a Rule Belongs To](../../../../docs/rule.md#which-module-a-rule-belongs-to)).
+- **The residue rules** — [`rules/`](./rules/README.md), whose subject is what the port left in a `.kh` file. A Rule whose subject is a Khayyam program is the [language catalog's](../../rules/README.md) whatever tool applies it; enforcement does not decide a Rule's home ([Rule → Which Module a Rule Belongs To](../../../../modules/computer/rule/rule.md)).
 - **This folder's own records** — this document and the research that carries the port's measurement.
 
 What does **not** belong here:

@@ -1,15 +1,14 @@
 ---
 Title: "Khayyam Rule — Type as Argument"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497406"
 ---
-
 # Khayyam Rule — Type as Argument
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for passing a bare type or a method value where a capsule or abstraction instance is expected. It is a governance rule of this repository: [Method in Khayyam → Type-level arguments for `sc` and `mt`](../../../../docs/khayyam/method.md#type-level-arguments-for-sc-and-mt) states what the compiler accepts; this rule states what this repository discourages.
 
 ## The rule
-- **Bare type where a value is expected**: passing a bare type name where the signature expects a capsule or abstraction instance is a governance smell; the [Linter](../../../../docs/modules/computer/linter.md) may flag it.
+- **Bare type where a value is expected**: passing a bare type name where the signature expects a capsule or abstraction instance is a governance smell; the [Linter](../../../../modules/computer/linter/linter.md) may flag it.
 - **Closure-style `mt` pass**: passing an `mt` in closure style — capturing state as an implicit capsule — is discouraged; express the behavior as a named capsule implementing the relevant abstraction ([Encapsulation in Khayyam → Closures as Implicit Capsule Syntax](../../../../docs/khayyam/encapsulation.md#closures-as-implicit-capsule-syntax)).
 
 Type-level arguments for `sc` and `mt` positions that the signature explicitly allows remain valid.

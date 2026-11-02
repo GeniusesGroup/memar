@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Binding Declarations Live in a Side File"
-Status: Draft
+Labels: Draft
 Start Date: 2026-10-03
 ID: 497512
 ---
-
 # Khayyam Rule — Binding Declarations Live in a Side File
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for where a binding's declarations are written and what such a file may hold. It is a governance rule of this repository, not a grammar requirement: [Khayyam → Minimal Legislation](../../../../docs/khayyam/khayyam.md#minimal-legislation-a-principle) at `:177` puts "which prose a file carries" and "where a declaration may be written" in the tool's own rules, on the ground that one realization may treat them differently from the next.
 
@@ -28,7 +27,7 @@ An organization may name its companion whatever it likes and keep every declarat
 
 ## What this rule does not claim
 - It does not claim the language reads a file's name. Nothing in [Khayyam → Method](../../../../docs/khayyam/khayyam.md#method) or the compiler protocol consults it, and a second toolchain need not.
-- It does not claim a body-less declaration's name, signature, or meaning belongs to the declaring party. The language states nothing about how a foreign function is reached, by the owner's ruling, and the drafted intervention that would have said it was withdrawn rather than deferred — see [Language Gaps → I-B](../../targets/js/language-gaps.md#i-b--whose-name-a-body-less-method-carries--withdrawn-by-the-owners-ruling). This rule does not restate it.
+- It does not claim a body-less declaration's name, signature, or meaning belongs to the declaring party. The language states nothing about how a foreign function is reached, by the owner's ruling, and the drafted intervention that would have said it was withdrawn rather than deferred — see [Language Gaps → I-B](../../targets/js/language-gaps.md#i-b--whose-name-a-body-less-method-carries). This rule does not restate it.
 - It does not claim that the correspondence is recorded by this rule's name. What the name buys is that a unit is *findable* as a place where bindings are declared; how the correspondence between one party's declaration and the other party's side is recorded is unowned, and that gap is real.
 - It does not claim a unit so named must exist. The rule names what such a unit holds and does not require it, so an owner may write one before the crossing it will carry is known.
 - It does not claim anything about the file-layout rule's other subjects — file size, declaration order, or one abstraction per protocol file — which it cites and does not restate.

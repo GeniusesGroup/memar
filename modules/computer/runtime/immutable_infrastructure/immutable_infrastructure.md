@@ -1,10 +1,9 @@
 ---
 Title: "Immutable Infrastructure"
-Status: Draft
+Labels: Draft
 Start Date: 2026-07-06
 ID: 495370
 ---
-
 # Immutable Infrastructure
 
 ## Abstract
@@ -35,7 +34,7 @@ The rule holds unchanged where a system runs on a site with no network to its bu
 - **Configuration is part of the release.** Changing a parameter of the site is building a release of a new version, not editing a file on the running server. Whether a site's secrets are such configuration is open (handoff).
 - **An old shape is converted, not kept readable.** A release that changes how something is stored carries the script that converts the old shape to the new one, and the system reads only the new ([Software → No Hidden Inputs](../../../process/software/software.md#no-hidden-inputs)). A release that skips versions carries every conversion between them, in order. A past Request is written once, never edited, and signed over its data, so converting the shapes inside it would break its signature; how a conversion treats the payloads of past Requests is open (Request Handoff).
 - **Going back is redeploying the release before.** The previous release stays on the site. Since a conversion changes stored data, an update first stops every service that writes, then takes a backup, and only then runs its first conversion, so the backup holds every record committed before the update and nothing is written between the two. Going back after a conversion is a restore of that backup and the previous release together.
-- **A restore loses what was written after the update.** Every record committed under the new release, a permit or an approval among them, is absent from the backup, so a restore made days after an update loses days of records. Going back is therefore lossless only until the new release takes its first write. After that, going back needs those records carried back: the Requests committed since the update name every one of them ([Request → The Request node](../../request/request.md#the-request-node)), and applying them again under the previous release needs a conversion of their shapes back to the previous one. A release that carries no such reverse conversion can be left, once it has taken writes, only by a new release that fixes it forward.
+- **A restore loses what was written after the update.** Every record committed under the new release, a permit or an approval among them, is absent from the backup, so a restore made days after an update loses days of records. Going back is therefore lossless only until the new release takes its first write. After that, going back needs those records carried back: the Requests committed since the update name every one of them (`Request → The Request node`), and applying them again under the previous release needs a conversion of their shapes back to the previous one. A release that carries no such reverse conversion can be left, once it has taken writes, only by a new release that fixes it forward.
 - **Data edited at runtime selects; it does not add.** A rule, a workflow or an approval matrix that people edit from a console while the system runs is data that selects among the capabilities the artifact carries. The console therefore accepts no code and no expression that names an operation the artifact lacks; an operation a rule needs that the artifact lacks is a new release. This is the governance rule above, applied to rules kept as data.
 
 ### Open Design Threads

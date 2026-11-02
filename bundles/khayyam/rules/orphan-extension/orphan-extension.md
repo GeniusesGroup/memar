@@ -1,10 +1,9 @@
 ---
 Title: "Khayyam Rule — Orphan Extension"
-Status: Draft
+Labels: Draft
 Start Date: 2026-09-29
 ID: "497408"
 ---
-
 # Khayyam Rule — Orphan Extension
 Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for attaching methods to a type outside the type's owning directory. It is a governance rule of this repository: [Modularity in Khayyam → Inclusion Is Not Module Definition](../../../../docs/khayyam/modularity.md#inclusion-is-not-module-definition) states the syntax; [Khayyam → Separation of Syntax and Governance](../../../../docs/khayyam/khayyam.md#separation-of-syntax-and-governance-a-principle) records the language-level separation; this rule states how this repository's linter treats cross-directory extension.
 
@@ -12,7 +11,7 @@ Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../REA
 Khayyam relies on the file system for modularity (no `package` keyword). Syntactically, a file may import a type and attach new methods to it in another file.
 
 - **Local directory extension** — permitted: a type included with `in` may have further methods attached in another file of the same local directory (file-splitting without a package keyword).
-- **Distant or external extension** — a governance failure (monkey-patching): attaching a method to a type imported from an external library or a different domain directory. The reference [Linter](../../../../docs/modules/computer/linter.md) configuration warns or errors on that attachment. The repair is composition (wrap the external capsule in a local one), not a grammar restriction.
+- **Distant or external extension** — a governance failure (monkey-patching): attaching a method to a type imported from an external library or a different domain directory. The reference [Linter](../../../../modules/computer/linter/linter.md) configuration warns or errors on that attachment. The repair is composition (wrap the external capsule in a local one), not a grammar restriction.
 
 The local/distant boundary is directory-based by default and is organization-overridable — see the linter handoff.
 
