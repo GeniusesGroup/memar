@@ -436,7 +436,7 @@ class Real(unittest.TestCase):
     def test_every_kinds_context_on_the_real_lists_is_not_empty(self) -> None:
         every_act = context([memar_place(ROOT)], []).listed
         self.assertGreater(every_act, 0)
-        for kind in TaskKind:
+        for kind in TaskKind.all():
             with self.subTest(kind=kind.word):
                 composed = context([memar_place(ROOT)], [kind])
                 self.assertGreater(composed.listed, every_act)
@@ -512,9 +512,9 @@ class CommandLine(unittest.TestCase):
         done = run_memar('content', 'get-act-context', '--help')
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
-        for kind in TaskKind:
+        for kind in TaskKind.all():
             with self.subTest(kind=kind.word):
-                self.assertIn(f"{kind.word}: {' '.join(kind.applies.split())}", shown)
+                self.assertIn(f"{kind.word}: {' '.join(kind.meaning.split())}", shown)
         self.assertIn('--after', shown)
         self.assertIn('--task-id', shown)
 

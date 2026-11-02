@@ -19,8 +19,8 @@ kinds' lists say now. With `--task-id`, what this prints is added to the
 record once its last part is printed, so every part of one text is composed
 from the same record.
 
-The kinds and when each applies are `modules/management/task/labels/task_kind.py`'s, and the help
-lists them from there. A composition too long for one tool output prints in
+The kinds and each kind's meaning are `modules/management/task/labels/task_kind.py`'s (each Label_*'s
+`meaning`), and the help lists them from there. A composition too long for one tool output prints in
 ordered parts through `machine/console_parts.py`, each of its blocks a section
 a part is cut between. The project whose preferences set the bound is named by
 its flag, read in the folder as given; with none named, the default bound holds
@@ -49,7 +49,7 @@ def _word(value: str) -> str:
     return f'"{value}"' if any((character.isspace() for character in value)) else value
 
 def _kinds_listing() -> str:
-    return '\n'.join((f'  {kind.word}: {kind.applies}' for kind in TaskKind.all()))
+    return '\n'.join((f'  {kind.word}: {kind.meaning}' for kind in TaskKind.all()))
 
 def describe(verbs):
     parser = verbs.add_parser(COMMAND, help="print the passages of Memar's documents a kind of act requires read", description=f"""Print the sections the normative references of the given kinds name, the lists in\nmodules/knowledge/content/rules/normative_references/: the every-act list's, then each kind's in the\norder given, each section once under a line naming it and its entry's why, and a Practice's\ndescription once above its first section. The first line counts what it holds. It is what\n`memar ai get-task-init-context` prints for a plan's Kind, for an act with no task — a question\nanswered in chat — or one that changes midway.\n\nWith {TASK_FLAG}, what is printed is recorded in that task's temp/ folder; {AFTER_FLAG} K0\nthen leaves out the sections of K0's lists that record holds as printed with the same hash,\nso a section changed since, or added since, prints. {AFTER_FLAG} without {TASK_FLAG} is refused.\n\nA text too long for one tool output prints in ordered parts, each at most --most-characters\nlong: each part but the last ends with the exact command for the next (--part N), to run\nat once; read every part before acting. The same kinds print the same parts, and each\npart says "part N of M of text H", H a hash of the whole text: a part naming another H\nis of another version of it.\n\nThe kinds, and when each applies:\n{_kinds_listing()}""")

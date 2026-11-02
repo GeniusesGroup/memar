@@ -320,14 +320,14 @@ def headers(part: str) -> list[str]:
 class Documents(Fixture):
 
     def test_each_kind_prints_its_passages_and_no_other(self) -> None:
-        for kind in (kind for kind in TaskKind if kind.carried):
+        for kind in (kind for kind in TaskKind.all() if kind.carried):
             with self.subTest(kind=kind.word):
                 plan = plan_with(kind.word)
                 found = [line for line in headers(self.parts(plan)['documents']) if '(description)' not in line]
                 printed = self.compose_heads(kind)
                 self.assertEqual(found, printed)
 
-    def compose_heads(self, kind: TaskKind) -> list[str]:
+    def compose_heads(self, kind) -> list[str]:
         _m_task_context = import_module('modules-plugable.ai.services.task_context')
         context_text = _m_task_context.context_text
         return [line for line in headers(context_text([memar_place(self.fake_root)], [kind])) if '(description)' not in line]

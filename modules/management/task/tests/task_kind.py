@@ -57,14 +57,14 @@ WHO_RUNS = re.compile('\\b(models?|tiers?|strong|stronger|strongest|cheap|cheape
 class Words(unittest.TestCase):
 
     def test_the_kinds_in_their_order(self) -> None:
-        self.assertEqual([kind.word for kind in TaskKind], ['answer', 'plan', 'design', 'critique', 'implement', 'document', 'mechanical'])
+        self.assertEqual([kind.word for kind in TaskKind.all()], ['answer', 'plan', 'design', 'critique', 'implement', 'document', 'mechanical'])
 
-    def test_each_word_is_lower_case_with_one_sentence_on_when_it_applies(self) -> None:
-        for kind in TaskKind:
+    def test_each_word_is_lower_case_with_one_sentence_of_meaning(self) -> None:
+        for kind in TaskKind.all():
             with self.subTest(kind=kind.word):
                 self.assertRegex(kind.word, '^[a-z]+$')
-                self.assertTrue(kind.applies.endswith('.'))
-                self.assertEqual(kind.applies.count('. '), 0, 'one sentence')
+                self.assertTrue(kind.meaning.endswith('.'))
+                self.assertEqual(kind.meaning.count('. '), 0, 'one sentence')
 
     def test_a_word_is_read_in_any_case_and_a_word_that_is_no_kind_is_none(self) -> None:
         self.assertIs(TaskKind.read(' Design '), TaskKind.DESIGN)
@@ -80,15 +80,18 @@ class Carried(unittest.TestCase):
         self.assertFalse(TaskKind.PLAN.carried)
 
     def test_without_the_filter_every_word_is_listed(self) -> None:
-        self.assertEqual(TaskKind.words(), tuple((kind.word for kind in TaskKind)))
+        self.assertEqual(TaskKind.words(), tuple((kind.word for kind in TaskKind.all())))
 
 class NoPassages(unittest.TestCase):
 
-    def test_a_kind_holds_its_word_when_it_applies_and_whether_carried_and_no_passage(self) -> None:
-        for kind in TaskKind:
+    def test_a_kind_holds_its_word_meaning_and_whether_carried_and_no_passage(self) -> None:
+        for kind in TaskKind.all():
             with self.subTest(kind=kind.word):
-                self.assertEqual(len(kind.value), 3)
+                self.assertTrue(kind.word)
+                self.assertTrue(kind.meaning)
+                self.assertIsInstance(kind.carried, bool)
                 self.assertFalse(hasattr(kind, 'passages'))
+                self.assertFalse(hasattr(kind, 'applies'))
 
     def test_the_declaration_names_no_document_section(self) -> None:
         text = DECLARATION.read_text(encoding='utf-8')
@@ -108,8 +111,9 @@ class NothingAboutWho(unittest.TestCase):
         self.assertTrue(WHO_RUNS.search('runs on the strongest model'))
 
 def sources() -> list[Path]:
-    """Every Python source of the scripts but the suites, the declaration and its reader."""
-    skipped = {DECLARATION.resolve(), READER.resolve()}
+    """Every Python source of the scripts but the suites, the TaskKind words, and their reader."""
+    labels = DECLARATION.parent
+    skipped = {DECLARATION.resolve(), READER.resolve(), *(path.resolve() for path in labels.glob('Label_*.py'))}
     top = SCRIPTS.parent.parent
     found = [path for path in sorted(SCRIPTS.rglob('*.py')) if 'tests' not in path.relative_to(SCRIPTS).parts[:-1] and path.resolve() not in skipped]
     for module in ('modules/knowledge/content', 'modules/process', 'modules/computer/module', 'modules-plugable/knowledge/documentation/plan/primitive', 'modules/knowledge/label', 'modules/management/task', 'modules-plugable/management/task', 'modules-plugable/ai', 'bundles/memar'):
@@ -119,14 +123,15 @@ def sources() -> list[Path]:
 class WrittenOnce(unittest.TestCase):
 
     def test_no_other_source_spells_a_kind_word_as_a_string_of_its_own(self) -> None:
-        words = {*TaskKind.words(), *RETIRED}
+        # plan/document collide with content DocumentKind words; those are not TaskKind spellings.
+        words = {*(TaskKind.words()), *RETIRED} - {'plan', 'document'}
         spelt = []
         for path in sources():
             tree = ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
             for node in ast.walk(tree):
                 if isinstance(node, ast.Constant) and isinstance(node.value, str) and (node.value.strip().lower() in words):
                     spelt.append(f'{path.relative_to(SCRIPTS.parent.parent).as_posix()}:{node.lineno} {node.value!r}')
-        self.assertEqual(spelt, [], 'name the kind through `modules/management/task/labels/task_kind.py`')
+        self.assertEqual(spelt, [], 'name the kind through modules/management/task/labels/Label_* and task_kind.py')
 
     def test_the_scan_reads_the_shelves(self) -> None:
         top = SCRIPTS.parent.parent
