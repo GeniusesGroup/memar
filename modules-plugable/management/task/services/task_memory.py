@@ -24,43 +24,57 @@ record_of = _files.record_of
 facts_named_project = _files.facts_named_project
 
 
-def accepts_contents(folder: Path) -> bool:
+def _as_path(folder) -> Path | None:
+    return folder if isinstance(folder, Path) else None
+
+
+def accepts_contents(folder) -> bool:
     return _files.has_task(folder)
 
 
-def _earlier_shape(folder: Path) -> bool:
-    return not accepts_contents(folder)
+def _earlier_shape(folder) -> bool:
+    path = _as_path(folder)
+    return not accepts_contents(folder) and path is not None and (path / PLAN_NAME).is_file()
 
 
-def has_task(folder: Path) -> bool:
-    return accepts_contents(folder) or (folder / PLAN_NAME).is_file()
+def has_task(folder) -> bool:
+    if accepts_contents(folder):
+        return True
+    path = _as_path(folder)
+    return path is not None and (path / PLAN_NAME).is_file()
 
 
-def has_plan(folder: Path) -> bool:
+def has_plan(folder) -> bool:
     return has_task(folder)
 
 
-def plan_path(folder: Path) -> Path:
-    return folder / PLAN_NAME if _earlier_shape(folder) else _files.plan_path(folder)
+def plan_path(folder) -> Path:
+    path = _as_path(folder)
+    if _earlier_shape(folder) and path is not None:
+        return path / PLAN_NAME
+    return _files.plan_path(folder)
 
 
-def report_path(folder: Path) -> Path:
-    return folder / REPORT_NAME if _earlier_shape(folder) else _files.report_path(folder)
+def report_path(folder) -> Path:
+    path = _as_path(folder)
+    if _earlier_shape(folder) and path is not None:
+        return path / REPORT_NAME
+    return _files.report_path(folder)
 
 
-def plan_text(folder: Path) -> str:
+def plan_text(folder) -> str:
     return _adapter.read_plan(folder) if _earlier_shape(folder) else _files.plan_text(folder)
 
 
-def report_text(folder: Path) -> str:
+def report_text(folder) -> str:
     return _adapter.read_report(folder)[0] if _earlier_shape(folder) else _files.report_text(folder)
 
 
-def has_report(folder: Path) -> bool:
+def has_report(folder) -> bool:
     return _adapter.read_report(folder)[1] if _earlier_shape(folder) else _files.has_report(folder)
 
 
-def report_lines(folder: Path) -> list:
+def report_lines(folder) -> list:
     return _adapter.read_report_lines(folder) if _earlier_shape(folder) else _files.report_lines(folder)
 
 
@@ -89,11 +103,12 @@ class MemoryTaskStores(_files.FileTaskStores):
         return super()._replace(project, task, fact, value, expected)
 
 
-def stores_at(folder: Path) -> MemoryTaskStores:
-    return MemoryTaskStores(lambda project, task: folder)
+def stores_at(folder) -> MemoryTaskStores:
+    tid = folder if isinstance(folder, str) else Path(folder).name
+    return MemoryTaskStores(lambda project, task: tid)
 
 
 def stores() -> MemoryTaskStores:
-    def resolve(project, task) -> Path:
-        return import_module('modules-plugable.management.task.services.folder').folder_of(task)
+    def resolve(project, task):
+        return task if isinstance(task, str) else Path(task).name
     return MemoryTaskStores(resolve)

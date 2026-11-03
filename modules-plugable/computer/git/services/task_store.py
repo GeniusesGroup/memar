@@ -13,14 +13,18 @@ from importlib import import_module
 _m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
 RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
 RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
-memar_root = _m_fs_memar.memar_root
-scratch_root = _m_fs_memar.scratch_root
 import shutil
 import tempfile
 from pathlib import Path
 from . import branch as task_branch
 from .branch import RecordRefused, folder_on_branch
 CLAIMS_DIRNAME = 'claims'
+
+def memar_root() -> Path:
+    return _m_fs_memar.memar_root()
+
+def scratch_root() -> Path:
+    return _m_fs_memar.scratch_root()
 
 def records_project() -> Path:
     """The repository whose records branch holds Memar's own tasks."""

@@ -18,21 +18,18 @@ with it. The only subprocess is git's top-level, which writes nothing.
 
 What is pinned, and what each pin is for:
 
-  CreatesFolder      `ensure` ensures the task's folder and prints its id,
-                     path, and plan, so every task works inside its own
-                     folder and nothing lands in git by accident; an id shaped
-                     like a path is refused.
-  RerunIsIdempotent  Reusing one task id keeps the folder as is and reports
-                     the same id and path again.
-  TitleRequired      A folder gets its plan.md from `--title`, so a task is
-                     not minted, nor a folder with no plan.md taken up, without
-                     one; a folder that has a plan is continued without one.
-  PlanWritten        The plan is written in UTF-8 with LF and no BOM, records
-                     the project `ensure` resolves, which is the git top-level
-                     else the current folder — asked of a given folder the
-                     same way, which `list --project` relies on —
-                     and is never overwritten: it is the record the next
-                     task continues from.
+  CreatesFolder      `ensure` records the task on the records branch and
+                     returns its id and Path handle under the scratch tasks
+                     root (never the checkout cwd); an id shaped like a path
+                     is refused.
+  RerunIsIdempotent  Reusing one task id keeps the same handle and the same
+                     facts on the branch.
+  TitleRequired      A new task needs `--title`; a scratch folder alone is not
+                     a task until facts are recorded; a task that has facts is
+                     continued without a title.
+  PlanWritten        Facts are UTF-8 LF no BOM on the records branch, name the
+                     project `ensure` resolves, and continuing never overwrites
+                     the title or posted plan contents.
   ParentLinked       `--parent` records the task a task came from and the
                      first task of its conversation, read off the parent's
                      own plan; a parent that is not there, or the task
@@ -125,6 +122,7 @@ import modules.computer.software.services.project_registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
 task_files = import_module('modules-plugable.management.task.services.task_files')
+task_store = import_module('modules-plugable.computer.git.services.task_store')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 task_report = import_module('modules-plugable.management.task.services.report_file')
 _m_layout = import_module('modules-plugable.management.task.services.layout')
@@ -201,6 +199,8 @@ class Fixture(unittest.TestCase):
         self.addCleanup(patched.stop)
         self.project = self.fake_root / 'project'
         self.project.mkdir()
+        git_init(self.fake_root)
+        git_init(self.project)
         self.in_project(self.fake_root)
 
     def ensure(self, *arguments, **options):
@@ -229,24 +229,24 @@ class CreatesFolder(Fixture):
     def test_creates_the_folder_and_returns_its_id_and_path(self) -> None:
         sid, path = self.ensure('s-1', TITLE)
         self.assertEqual(sid, 's-1')
-        self.assertTrue(path.is_dir())
         self.assertEqual(path, memar_fs.task_dir('s-1'))
+        self.assertIn('task.yaml', task_store.tree(sid))
+        self.assertFalse((self.fake_root / sid).exists())
 
     def test_open_prints_the_id_path_and_plan(self) -> None:
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open('s-2', TITLE, None)
         text = out.getvalue()
-        path = memar_fs.task_dir('s-2')
         self.assertIn('task_id: s-2', text)
-        self.assertIn(f'path: {path}', text)
-        self.assertIn(f'memar conversation post --timeline s-2 --kind plan', text)
-        self.assertIn(task_temp.TEMP_SENTENCE, text)
+        self.assertIn('memar conversation post --timeline s-2 --kind plan', text)
+        self.assertIn('task.yaml', task_store.tree('s-2'))
 
     def test_mints_an_id_when_none_is_given(self) -> None:
         sid, path = self.ensure(title=TITLE)
         self.assertTrue(TaskId.is_form(sid))
         self.assertEqual(path, memar_fs.task_dir(sid))
+        self.assertIn('task.yaml', task_store.tree(sid))
 
     def test_refuses_a_path_as_a_task_id(self) -> None:
         for bad in ('a/b', 'a\\b', '..', '.', ''):
@@ -258,10 +258,9 @@ class RerunIsIdempotent(Fixture):
 
     def test_rerun_keeps_the_folder_and_reports_the_same_path(self) -> None:
         first_id, first_path = self.ensure('s-9', TITLE)
-        marker = first_path / 'notes.md'
-        marker.write_text('# Notes\n', encoding='utf-8', newline='\n')
+        before = task_store.tree('s-9')['task.yaml']
         self.assertEqual(self.ensure('s-9'), (first_id, first_path))
-        self.assertTrue(marker.is_file())
+        self.assertEqual(task_store.tree('s-9')['task.yaml'], before)
 
 class TitleRequired(Fixture):
 
@@ -276,9 +275,10 @@ class TitleRequired(Fixture):
         bare = memar_fs.task_dir('s-bare', create=True)
         with self.assertRaises(SystemExit):
             self.ensure('s-bare')
-        self.assertFalse((bare / 'task.yaml').exists())
+        self.assertNotIn('task.yaml', task_store.tree('s-bare'))
         self.ensure('s-bare', TITLE)
-        self.assertTrue((bare / 'task.yaml').is_file())
+        self.assertIn('task.yaml', task_store.tree('s-bare'))
+        self.assertFalse((bare / 'task.yaml').exists())
 
     def test_a_folder_with_a_plan_is_continued_without_one(self) -> None:
         sid, path = self.ensure('s-plan', TITLE)
@@ -288,7 +288,7 @@ class PlanWritten(Fixture):
 
     def test_the_facts_are_utf8_lf_no_bom_and_name_the_project_and_no_plan_is_written(self) -> None:
         _, path = self.ensure('s-plan', TITLE)
-        raw = (path / 'task.yaml').read_bytes()
+        raw = task_store.tree('s-plan')['task.yaml']
         self.assertFalse(raw.startswith(bytes([0xef, 0xbb, 0xbf])))
         self.assertNotIn(bytes([13]), raw)
         facts = task_files.read_facts(path)
@@ -300,7 +300,7 @@ class PlanWritten(Fixture):
     def test_a_plan_posted_after_the_task_is_utf8_lf_no_bom(self) -> None:
         _, path = self.ensure('s-plan', TITLE)
         timeline_files.add_text(path, 'plan', '# Plan' + chr(10) + 'Written.' + chr(10), 'agent')
-        raw = task_files.plan_path(path).read_bytes()
+        raw = task_store.tree('s-plan')[task_files.plan_path(path).name]
         self.assertFalse(raw.startswith(bytes([0xef, 0xbb, 0xbf])))
         self.assertNotIn(bytes([13]), raw)
         self.assertEqual(task_files.plan_text(path), '# Plan' + chr(10) + 'Written.' + chr(10))

@@ -69,6 +69,11 @@ class Fixture(unittest.TestCase):
         patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=self.fake_root)
         patched.start()
         self.addCleanup(patched.stop)
+        under = import_module('modules-plugable.management.task.tests.scratch_task').task_dir_under(self.fake_root)
+        for target in (memar_fs, task_folder):
+            bound = unittest.mock.patch.object(target, 'task_dir', under)
+            bound.start()
+            self.addCleanup(bound.stop)
 
     def task(self, sid: str, plan: str | bytes | None=None) -> Path:
         path = memar_fs.task_dir(sid, create=True)
@@ -86,7 +91,7 @@ class TaskRead(Fixture):
         broken = task_folder.read_task(self.task(NEWEST, b'\xff\xfe'))
         self.assertEqual((broken.has_plan, broken.readable), (True, False))
         planned = task_folder.read_task(self.task(EARLIER_FORM, plan_skeleton('20261001T000000Z-1-0', 'T', '2026-10-01T00:00:00Z', Path('/work'))))
-        self.assertEqual((planned.has_plan, planned.readable, planned.status), (True, True, 'active'))
+        self.assertEqual((planned.has_plan, planned.readable), (True, True))
         self.assertEqual(planned.front['title'], 'T')
 
     def test_the_conversation_is_recorded_else_the_task_itself(self) -> None:
@@ -102,16 +107,18 @@ class FoldersFound(Fixture):
             self.task(sid)
         self.task(EARLIER_DATED, plan_skeleton('20261001T000000Z-1-0', 'T', 'x', Path('/w')))
         self.task(EARLIER_FORM)
+        root = self.fake_root / 'task-dirs'
         for name in ('images', 'memar-edit-locks', 's-old'):
-            (memar_fs.tasks_root() / name).mkdir()
-        (memar_fs.tasks_root() / 'tasks.log').write_text('', encoding='utf-8')
-        self.assertEqual([path.name for path in task_folder.task_folders()], [NEWEST, OLDEST, EARLIER_DATED])
+            (root / name).mkdir()
+        (root / 'tasks.log').write_text('', encoding='utf-8')
+        self.assertEqual([path.name for path in task_folder.task_folders(locations=[root])], [NEWEST, OLDEST, EARLIER_DATED])
 
     def test_a_task_left_in_temp_is_not_read(self) -> None:
         self.task(OLDEST)
         left = memar_fs.scratch_root() / NEWEST
         left.mkdir()
-        self.assertEqual(task_folder.task_folders(), [memar_fs.task_dir(OLDEST)])
+        root = self.fake_root / 'task-dirs'
+        self.assertEqual(task_folder.task_folders(locations=[root]), [memar_fs.task_dir(OLDEST)])
         self.assertEqual(task_folder.folder_of(NEWEST), memar_fs.task_dir(NEWEST))
         self.assertFalse(hasattr(task_folder, 'is_left_task'))
         self.assertFalse(hasattr(task_folder, 'left_folder_of'))

@@ -125,12 +125,12 @@ def reconcile_all(tasks: Iterable[Task], reader: Reader | None=None) -> None:
     for task in tasks:
         reconcile(task, reader)
 
-def refusal(folder: Path, act: str) -> str | None:
-    """Why the task at FOLDER cannot be ACT'ed (`claim`, `start`) for its dependencies, naming each; None when it can.
+def refusal(task_ref, act: str) -> str | None:
+    """Why TASK_REF (id or Path) cannot be ACT'ed (`claim`, `start`) for its dependencies, naming each; None when it can.
 
     The Status is brought up to date first, so the refusal and the Status agree.
     """
-    task = read_task(folder)
+    task = read_task(task_ref)
     if not (task.has_plan and task.readable) or not DependsOn.of(task.front):
         return None
     reader = Reader(None)

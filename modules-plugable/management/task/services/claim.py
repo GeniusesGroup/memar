@@ -65,26 +65,30 @@ _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 CLAIM_COMMAND = 'claim'
 
-def claim_path(folder: Path) -> Path:
-    return Claim(folder).path
+def _id(task) -> str:
+    return task if isinstance(task, str) else Path(task).name
 
-def is_claimed(folder: Path) -> bool:
-    """Whether FOLDER holds a claim that has not gone stale."""
-    return Claim(folder).is_fresh()
+def claim_path(task) -> Path:
+    return Claim.of(task).path
 
-def _create_claim(folder: Path) -> str | None:
-    """Create FOLDER's claim by exclusive create; None when this caller made it, else why not."""
-    claim = claim_path(folder)
+def is_claimed(task) -> bool:
+    """Whether TASK (id or Path handle) holds a claim that has not gone stale."""
+    return Claim.of(task).is_fresh()
+
+def _create_claim(task) -> str | None:
+    """Create TASK's claim by exclusive create; None when this caller made it, else why not."""
+    tid = _id(task)
+    claim = claim_path(tid)
     stamp = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     try:
         with claim.open('x', encoding='utf-8', newline='\n') as written:
             written.write(Claim.body(stamp, socket.gethostname(), os.getpid()))
     except FileExistsError:
-        return f'task {folder.name} is claimed by another agent; its claim is in {claim}'
+        return f'task {tid} is claimed by another agent; its claim is in {claim}'
     return None
 
-def _take_over(folder: Path) -> str | None:
-    """Replace FOLDER's stale claim with this caller's, holding the takeover until it exists; None when done, else why not.
+def _take_over(task) -> str | None:
+    """Replace TASK's stale claim with this caller's, holding the takeover until it exists; None when done, else why not.
 
     Two takers racing over one stale claim must not both win. Dropping the
     stale claim and creating the new one are therefore one act under one
@@ -96,7 +100,8 @@ def _take_over(folder: Path) -> str | None:
     is still there or the holder's is. A takeover left behind by a caller that
     died mid-way lapses like a claim.
     """
-    takeover = Claim(folder).takeover_path
+    tid = _id(task)
+    takeover = Claim.of(tid).takeover_path
     try:
         if time.time() - takeover.stat().st_mtime >= Claim.STALE_SECONDS:
             takeover.unlink()
@@ -105,71 +110,72 @@ def _take_over(folder: Path) -> str | None:
     try:
         takeover.open('x').close()
     except FileExistsError:
-        return f'task {folder.name} is being taken over by another agent'
+        return f'task {tid} is being taken over by another agent'
     try:
-        if is_claimed(folder):
-            return f'task {folder.name} is claimed by another agent; its claim is in {claim_path(folder)}'
+        if is_claimed(tid):
+            return f'task {tid} is claimed by another agent; its claim is in {claim_path(tid)}'
         try:
-            claim_path(folder).unlink()
+            claim_path(tid).unlink()
         except FileNotFoundError:
             pass
-        return _create_claim(folder)
+        return _create_claim(tid)
     finally:
         takeover.unlink()
 
-def try_claim(folder: Path) -> str | None:
-    """Make FOLDER's task this caller's: queued (or active under a stale claim) becomes active, claimed; None when it did, else why not.
+def try_claim(task) -> str | None:
+    """Make TASK this caller's: queued (or active under a stale claim) becomes active, claimed; None when it did, else why not.
 
-    Not taken when the folder has no plan, when the plan is neither queued nor
-    active under a stale claim, or when another caller holds a claim that has
-    not gone stale — including one that won a race a moment ago. Saying why
-    rather than failing lets `claims`, trying several tasks in turn, pass
-    over one it did not get and say nothing for it.
+    TASK is a task id string, or a transitional Path handle. Not taken when
+    there is no plan, when the plan is neither queued nor active under a stale
+    claim, or when another caller holds a claim that has not gone stale —
+    including one that won a race a moment ago. Saying why rather than failing
+    lets `claims`, trying several tasks in turn, pass over one it did not get
+    and say nothing for it.
 
     A task whose `Depends_on` names one that is not Complete is not taken
     whatever its Status, and the refusal names the unmet ones; one Memar
     blocked for them that are all met since is queued again first, so it is
     taken as an ordinary queued task (`task_depends`).
     """
-    if not has_plan(folder):
-        return f'task {folder.name} has no plan, so there is no task to claim'
-    task = import_module('modules-plugable.management.task.services.folder').read_task(folder)
-    if task.shape:
-        return f'task {folder.name}: {task.shape}'
-    unmet = dependency_refusal(folder, CLAIM_COMMAND)
+    tid = _id(task)
+    if not has_plan(tid):
+        return f'task {tid} has no plan, so there is no task to claim'
+    held_task = import_module('modules-plugable.management.task.services.folder').read_task(tid)
+    if held_task.shape:
+        return f'task {tid}: {held_task.shape}'
+    unmet = dependency_refusal(tid, CLAIM_COMMAND)
     if unmet:
         return unmet
-    status = task.status
-    claim = claim_path(folder)
+    status = held_task.status
+    claim = claim_path(tid)
     held = claim.exists()
-    if held and is_claimed(folder):
-        return f'task {folder.name} is claimed by another agent; its claim is in {claim}'
+    if held and is_claimed(tid):
+        return f'task {tid} is claimed by another agent; its claim is in {claim}'
     if status != Label_Queued.key and (not (status == Label_Active.key and held)):
-        return f"task {folder.name} is not queued (its status is {status or 'none'}), so it is not free to claim"
-    why = _take_over(folder) if held else _create_claim(folder)
+        return f"task {tid} is not queued (its status is {status or 'none'}), so it is not free to claim"
+    why = _take_over(tid) if held else _create_claim(tid)
     if why:
         return why
     try:
-        set_status(stores_at(folder), None, folder.name, Label_Active.key, only_from=(Label_Queued.key, Label_Active.key))
+        set_status(stores_at(tid), None, tid, Label_Active.key, only_from=(Label_Queued.key, Label_Active.key))
     except SystemExit as refused:
         claim.unlink(missing_ok=True)
         return str(refused.code).removeprefix('error: ')
     return None
 
-def claim_folder(folder: Path) -> None:
-    """Make FOLDER's task this caller's, as `try_claim` does; refused, with why, when it is not taken."""
-    why = try_claim(folder)
+def claim_folder(task) -> None:
+    """Make TASK this caller's, as `try_claim` does; refused, with why, when it is not taken."""
+    why = try_claim(task)
     if why:
         fail(why)
 
 def claim(task_id: str) -> None:
     """`claim`: claim TASK_ID's task and say so."""
-    folder = folder_of(task_id)
-    if not is_task_folder(folder):
+    if not is_task_folder(task_id):
         fail(f'no task folder {task_id}')
-    claim_folder(folder)
+    claim_folder(task_id)
     print(f'claimed {task_id}')
-    note(f'claim: {claim_path(folder)}')
+    note(f'claim: {claim_path(task_id)}')
     note(TEMP_SENTENCE)
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

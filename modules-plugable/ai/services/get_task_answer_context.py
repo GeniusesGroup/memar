@@ -60,17 +60,16 @@ from machine.console_parts import add_part_arguments, bound, next_command
 from machine.console_parts import part_text as parted
 from modules.knowledge.content.services.reference import content_root, read_text
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
-_m_folder = import_module('modules-plugable.management.task.services.folder')
-folder_of = _m_folder.folder_of
-is_task_folder = _m_folder.is_task_folder
+_m_storage = import_module('modules-plugable.ai.services.agent_task_storage')
+folder_of = _m_storage.handle
+is_task_folder = _m_storage.is_task_folder
+has_plan = _m_storage.has_plan
+plan_path = _m_storage.plan_path
+report_path = _m_storage.report_path
+plan_text = _m_storage.plan_text
+report_text = _m_storage.report_text
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
-has_plan = _m_task_files.has_plan
-plan_path = _m_task_files.plan_path
-report_path = _m_task_files.report_path
-plan_text = _m_task_files.plan_text
-report_text = _m_task_files.report_text
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 REPORT = _m_record.REPORT
 _m_report_file = import_module('modules-plugable.management.task.services.report_file')
@@ -91,8 +90,8 @@ def questions_problem(folder) -> str | None:
         return None
     return f"its {REPORT_NAME} has no line under `{REPORT.hand_back_part}`, where a task's questions stand. Write each question there first, one line each"
 
-def task_part(task_id: str, folder) -> str:
-    return marked_part('task', f'task_id: {task_id}\nplan: {plan_path(folder)}\nreport: {report_path(folder)}\nIts questions are read here, and the task is not taken up.')
+def task_part(task_id: str) -> str:
+    return marked_part('task', f'task_id: {task_id}\nplan: {plan_path(task_id)}\nreport: {report_path(task_id)}\nIts questions are read here, and the task is not taken up.')
 
 def documents_part(root, questions: list[str], project: Path | None) -> list[str]:
     """The sections the `answer` kind's normative references name, then the documents the QUESTIONS name; nothing is recorded, since answering writes nothing."""
@@ -100,14 +99,13 @@ def documents_part(root, questions: list[str], project: Path | None) -> list[str
 
 def answer_passages(task_id: str, with_skill: bool=True) -> list[str]:
     """The text that hands TASK_ID's questions to an agent, as the passages a part is cut between; the skill only WITH_SKILL."""
-    folder = folder_of(task_id)
-    if not is_task_folder(folder) or not has_plan(folder):
-        fail(f'no questions to answer in {task_id}: it has no task folder with a {PLAN_NAME}')
-    problem = questions_problem(folder)
+    if not is_task_folder(task_id) or not has_plan(task_id):
+        fail(f'no questions to answer in {task_id}: it has no task with a plan (task.yaml and a plan content, or {PLAN_NAME})')
+    problem = questions_problem(task_id)
     if problem:
         fail(f'no questions to answer in {task_id}: {problem}')
     root = content_root()
-    passages = [task_part(task_id, folder), model_part(TaskKind.ANSWER.title), marked_part(plan_path(folder).name, plan_text(folder)), marked_part(report_path(folder).name, report_text(folder)), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *documents_part(root, decisions_needed(folder), plan_project(task_id)), marked_part('commands', commands.card_text()), marked_part('ending', ENDING)]
+    passages = [task_part(task_id), model_part(TaskKind.ANSWER.title), marked_part(plan_path(task_id).name, plan_text(task_id)), marked_part(report_path(task_id).name, report_text(task_id)), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *documents_part(root, decisions_needed(task_id), plan_project(task_id)), marked_part('commands', commands.card_text()), marked_part('ending', ENDING)]
     return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
 def answer_text(task_id: str, with_skill: bool=True) -> str:

@@ -35,11 +35,34 @@ def content_name(number: int) -> str:
     return f'content.{number:0{CONTENT_WIDTH}d}{CONTENT_EXTENSION}'
 
 
+def _task_id(folder) -> str:
+    return folder if isinstance(folder, str) else Path(folder).name
+
+
+def _tree(folder: Path) -> dict[str, bytes] | None:
+    """Records-branch bytes for the task id, or None to read a real disk directory.
+
+    The store wins when the id is on the branch, even if a scratch Path for the
+    same id exists — so a test mkdir under tasks_root cannot hide branch state.
+    """
+    store = import_module('modules-plugable.computer.git.services.task_store')
+    tid = _task_id(folder)
+    if store.on_branch(tid):
+        return store.tree(tid)
+    if isinstance(folder, Path) and folder.is_dir():
+        return None
+    return {}
+
+
 def numbers(folder: Path) -> list:
-    try:
-        names = [entry.name for entry in folder.iterdir()]
-    except OSError:
-        return []
+    held = _tree(folder)
+    if held is None:
+        try:
+            names = [entry.name for entry in folder.iterdir()]
+        except OSError:
+            return []
+    else:
+        names = list(held)
     return sorted(int(match.group(1)) for match in map(CONTENT_PATTERN.match, names) if match)
 
 
@@ -54,7 +77,14 @@ def content_of(number: int, data: bytes) -> Content:
 
 
 def read_content_file(folder: Path, number: int) -> Content:
-    return content_of(number, (folder / content_name(number)).read_bytes())
+    name = content_name(number)
+    held = _tree(folder)
+    if held is None:
+        return content_of(number, (folder / name).read_bytes())
+    data = held.get(name)
+    if data is None:
+        raise FileNotFoundError(name)
+    return content_of(number, data)
 
 
 def read_contents(folder: Path) -> list:
@@ -78,12 +108,24 @@ def write_content(folder: Path, kind: str, text: str, author: str, follows: int 
         header['refs'] = '\n'.join(refs)
     header.update({key: str(value) for key, value in (fields or {}).items()})
     rendered = f'---\n{_m_header.render(header, ("refs",))}---\n{text}'
+    data = rendered.encode('utf-8')
     while True:
         if follows is not None and _newer_than(folder, kind, follows):
             raise Timeline_Error_Changed()
         held = numbers(folder)
         number = (held[-1] if held else 0) + 1
-        path = folder / content_name(number)
+        name = content_name(number)
+        tree = _tree(folder)
+        if tree is not None:
+            store = import_module('modules-plugable.computer.git.services.task_store')
+            tid = _task_id(folder)
+            if name in tree:
+                continue
+            store.put_files(tid, {name: data}, message=f'Record {name} for task {tid}\n')
+            if follows is not None and _newer_than(folder, kind, follows, below=number):
+                raise Timeline_Error_Changed()
+            return number
+        path = folder / name
         try:
             handle = path.open('x', encoding='utf-8', newline='\n')
         except FileExistsError:

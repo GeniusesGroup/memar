@@ -133,12 +133,17 @@ def projects_log() -> Path:
     return scratch_root() / PROJECTS_LOG_NAME
 
 def task_dir(task_id: str, *, create: bool=False) -> Path:
-    """A Path whose .name is TASK_ID — not a directory on disk.
+    """Path handle for TASK_ID under the retired scratch tasks root — never cwd.
 
-    Tasks live on `RECORDS_BRANCH`. create=True does not mkdir; opening a task
-    records it on the branch through task services.
+    Durable task trees live on `RECORDS_BRANCH` via task_store. This Path's
+    `.name` is the id so callers that still pass a Path keep working; it is not
+    the store. create=True only makes a scratch directory under tasks_root for
+    tests that still write a disk-shaped fixture; it never lands a folder on the
+    checkout root.
     """
     if not task_id or task_id in ('.', '..') or '/' in task_id or ('\\' in task_id):
         fail(f'refusing task id {task_id!r}: name one folder segment, not a path.')
-    del create
-    return Path(task_id)
+    path = tasks_root() / task_id
+    if create:
+        path.mkdir(parents=True, exist_ok=True)
+    return path

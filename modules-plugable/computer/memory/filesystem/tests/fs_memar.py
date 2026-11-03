@@ -23,9 +23,10 @@ What is pinned, and what each pin is for:
                      only ever occupy the ignored temp entry and no ignore
                      rule is owed; an unresolvable root errors rather than
                      guessing.
-  TaskDir         A task id names one folder segment under the tasks
-                     root, .agents/tasks/, and nothing else; anything shaped
-                     like a path is refused, and readers never create.
+  TaskDir         A task id names one folder segment under the retired
+                     scratch tasks root (never the checkout cwd); create
+                     only makes that scratch folder; anything shaped like a
+                     path is refused.
   ProjectTasksRegistry
                      The record of project task locations is Memar's own
                      state, a file beside the task folders, and asking
@@ -91,8 +92,8 @@ class TaskDir(unittest.TestCase):
             fake_root = Path(scratch)
             with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):
                 path = memar_fs.task_dir('s-1')
-                self.assertEqual(path, fake_root / '.agents' / 'tasks' / 's-1')
-                self.assertEqual(path.parent, memar_fs.tasks_root())
+                self.assertEqual(path, memar_fs.tasks_root() / 's-1')
+                self.assertEqual(path.parent, fake_root / memar_fs.TEMP_DIRNAME / 'task-store-retired')
                 self.assertFalse(path.exists())
 
     def test_task_dir_creates_only_when_asked(self) -> None:
@@ -101,6 +102,7 @@ class TaskDir(unittest.TestCase):
             with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):
                 path = memar_fs.task_dir('s-2', create=True)
                 self.assertTrue(path.is_dir())
+                self.assertEqual(path, memar_fs.tasks_root() / 's-2')
 
     def test_task_dir_refuses_anything_shaped_like_a_path(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
@@ -110,6 +112,23 @@ class TaskDir(unittest.TestCase):
                     with self.subTest(bad=bad):
                         with self.assertRaises(SystemExit):
                             memar_fs.task_dir(bad)
+
+    def test_task_dir_create_does_not_land_on_the_checkout_root(self) -> None:
+        sid = '20261013T000001Z-1-0'
+        leaked = REPO / sid
+        self.addCleanup(lambda: __import__('shutil').rmtree(leaked, ignore_errors=True) if leaked.exists() else None)
+        if leaked.exists():
+            __import__('shutil').rmtree(leaked)
+        previous = Path.cwd()
+        try:
+            os.chdir(REPO)
+            path = memar_fs.task_dir(sid, create=True)
+            self.assertTrue(path.is_dir())
+            self.assertFalse(leaked.exists())
+            self.assertEqual(path.name, sid)
+            self.assertTrue(str(path.resolve()).startswith(str((REPO / memar_fs.TEMP_DIRNAME).resolve())))
+        finally:
+            os.chdir(previous)
 
 class ProjectTasksRegistry(unittest.TestCase):
 

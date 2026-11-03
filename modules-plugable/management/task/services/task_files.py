@@ -75,10 +75,10 @@ def _task_id(task) -> str:
 
 
 def has_task(folder) -> bool:
-    if isinstance(folder, Path) and folder.is_dir():
-        return (folder / TASK_FACTS_NAME).is_file()
     store = import_module('modules-plugable.computer.git.services.task_store')
-    return TASK_FACTS_NAME in store.tree(_task_id(folder))
+    if TASK_FACTS_NAME in store.tree(_task_id(folder)):
+        return True
+    return isinstance(folder, Path) and (folder / TASK_FACTS_NAME).is_file()
 
 
 def has_plan(folder) -> bool:
@@ -86,16 +86,13 @@ def has_plan(folder) -> bool:
 
 
 def read_facts(folder) -> dict | None:
-    if isinstance(folder, Path) and folder.is_dir():
-        path = folder / TASK_FACTS_NAME
-        if not path.is_file():
-            return None
-        return _header.parse(read_bytes(path).decode('utf-8-sig').splitlines())
     store = import_module('modules-plugable.computer.git.services.task_store')
     data = store.tree(_task_id(folder)).get(TASK_FACTS_NAME)
-    if data is None:
-        return None
-    return _header.parse(data.decode('utf-8-sig').splitlines())
+    if data is not None:
+        return _header.parse(data.decode('utf-8-sig').splitlines())
+    if isinstance(folder, Path) and (folder / TASK_FACTS_NAME).is_file():
+        return _header.parse(read_bytes(folder / TASK_FACTS_NAME).decode('utf-8-sig').splitlines())
+    return None
 
 
 def _front_of(facts: dict, task: str | None) -> tuple:
@@ -106,16 +103,16 @@ def _front_of(facts: dict, task: str | None) -> tuple:
     return (front, status_word(facts.get('status', '')))
 
 
-def plan_front(folder: Path) -> tuple | None:
+def plan_front(folder) -> tuple | None:
     facts = read_facts(folder)
     if facts is None:
         return None
-    return _front_of(facts, folder.name)
+    return _front_of(facts, _task_id(folder))
 
 
-def _latest_path(folder: Path, kind: str) -> Path:
+def _latest_path(folder, kind: str) -> Path:
     content = latest_content(folder, kind)
-    return folder / (_tl.content_name(content.number) if content else TASK_FACTS_NAME)
+    return Path(_task_id(folder)) / (_tl.content_name(content.number) if content else TASK_FACTS_NAME)
 
 
 def plan_path(folder: Path) -> Path:
@@ -167,11 +164,11 @@ def plan_body(folder: Path) -> str | None:
     return content.body if content else ''
 
 
-def report_lines(folder: Path) -> list:
+def report_lines(folder) -> list:
     content = latest_content(folder, 'report')
     if content is None:
         return []
-    front = ['---', f'{ReportKey.ID.written}: {folder.name}', '---']
+    front = ['---', f'{ReportKey.ID.written}: {_task_id(folder)}', '---']
     return [*front, *content.body.splitlines()]
 
 

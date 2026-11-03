@@ -4,6 +4,7 @@ from __future__ import annotations
 from importlib import import_module
 import argparse
 import re
+from pathlib import Path
 Why = import_module('modules-plugable.knowledge.documentation.plan.primitive.why').Why
 from typing import Callable
 from machine.console import fail
@@ -12,15 +13,14 @@ DependsOn = _m_dependency.DependsOn
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 from .get_task_plan_carry_out_brief import brief_text
-_m_folder = import_module('modules-plugable.management.task.services.folder')
-folder_of = _m_folder.folder_of
-is_task_folder = _m_folder.is_task_folder
+_m_storage = import_module('modules-plugable.ai.services.agent_task_storage')
+folder_of = _m_storage.handle
+is_task_folder = _m_storage.is_task_folder
+has_plan = _m_storage.has_plan
+plan_front = _m_storage.plan_front
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
-has_plan = _m_task_files.has_plan
 part_text = _m_plan_file.part_text
-read_plan = _m_plan_file.read_plan
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 NEW_CHATS_COMMAND = 'get-new-chats-ask'
@@ -30,28 +30,31 @@ def _first_sentence(text: str) -> str:
     one_line = ' '.join(text.split())
     return re.split('(?<=[.!?])\\s', one_line, maxsplit=1)[0] if one_line else ''
 
+def _front(folder) -> dict:
+    held = plan_front(folder)
+    if held is not None:
+        return held[0] or {}
+    return {}
+
 def own_task_blocking(own_task_id: str, task_ids: list[str]) -> list[str]:
-    folder = folder_of(own_task_id)
-    if not is_task_folder(folder) or not has_plan(folder):
-        fail(f'no task {own_task_id}: it has no task folder with a {PLAN_NAME}')
-    cited = DependsOn.of(read_plan(folder / PLAN_NAME).front).ids()
+    if not is_task_folder(own_task_id) or not has_plan(own_task_id):
+        fail(f'no task {own_task_id}: it has no task with a plan (task.yaml and a plan content, or {PLAN_NAME})')
+    cited = DependsOn.of(_front(own_task_id)).ids()
     return [each for each in task_ids if each in cited]
 
 def chats_text(task_ids: list[str], blocking: list[str]) -> str:
     parts = [INTRO]
     for task_id in task_ids:
-        plan = folder_of(task_id) / PLAN_NAME
-        front = read_plan(plan).front or {}
+        front = _front(task_id)
         mark = 'blocks' if task_id in blocking else 'independent'
-        why = _first_sentence(part_text(plan, Why.heading))
+        why = _first_sentence(part_text(Path(task_id) / PLAN_NAME, Why.heading))
         parts.append(f"{front.get('title', task_id)} — priority {front.get('priority', '?')} — {mark}\nWhy: {why}\n{brief_text(task_id)}")
     return '\n\n'.join(parts)
 
 def get_new_chats_ask(task_ids: list[str], blocking: list[str], own_task_id: str | None=None) -> None:
     for task_id in task_ids:
-        folder = folder_of(task_id)
-        if not is_task_folder(folder) or not has_plan(folder):
-            fail(f'no task to ask a chat for in {task_id}: it has no task folder with a {PLAN_NAME}')
+        if not is_task_folder(task_id) or not has_plan(task_id):
+            fail(f'no task to ask a chat for in {task_id}: it has no task with a plan (task.yaml and a plan content, or {PLAN_NAME})')
     outside = [each for each in blocking if each not in task_ids]
     if outside:
         fail(f"--blocking names {', '.join(outside)}, not among the tasks asked for")

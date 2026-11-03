@@ -150,7 +150,7 @@ class Rows(unittest.TestCase):
         self.assertEqual(task_source.status_label('no-such-status'), ())
 
     def test_a_row_carries_its_plans_labels_and_its_status_label(self) -> None:
-        task = task_list.Task(Path(IDS[0]), True, {'title': 'T', 'project': '/work', 'labels': '  - lists(0a0a0a0a-0a0a-7a0a-8a0a-0a0a0a0a0a0a)'}, 'blocked')
+        task = task_list.Task(IDS[0], True, {'title': 'T', 'project': '/work', 'labels': '  - lists(0a0a0a0a-0a0a-7a0a-8a0a-0a0a0a0a0a0a)'}, 'blocked')
         with unittest.mock.patch.object(task_source, 'find_tasks', return_value=[task]):
             row = task_source.records_rows()[0]
         self.assertEqual(row.id, IDS[0])

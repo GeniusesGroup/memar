@@ -17,9 +17,14 @@ from machine.console_parts import part_text as parted
 from modules.knowledge.content.services.reference import content_root, read_text
 _m_depends = import_module('modules-plugable.management.task.services.depends')
 dependency_refusal = _m_depends.refusal
-_m_folder = import_module('modules-plugable.management.task.services.folder')
-folder_of = _m_folder.folder_of
-is_task_folder = _m_folder.is_task_folder
+_m_storage = import_module('modules-plugable.ai.services.agent_task_storage')
+folder_of = _m_storage.handle
+is_task_folder = _m_storage.is_task_folder
+has_plan = _m_storage.has_plan
+plan_path = _m_storage.plan_path
+report_path = _m_storage.report_path
+plan_text = _m_storage.plan_text
+plan_front = _m_storage.plan_front
 _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
 _m_ensure = import_module('modules-plugable.management.task.services.ensure')
@@ -27,15 +32,7 @@ ensure_task = _m_ensure.ensure_task
 from modules.computer.software.edges.manifest.services.preferences import MOST_CHARACTERS_KEY, PREFERENCES_RELATIVE, most_characters_preference
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
-has_plan = _m_task_files.has_plan
-plan_path = _m_task_files.plan_path
-report_path = _m_task_files.report_path
-plan_text = _m_task_files.plan_text
 part_text = _m_plan_file.part_text
-read_plan = _m_plan_file.read_plan
-_m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
-PlanKey = _m_plan_key.PlanKey
 _m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 MODEL_RULE = _m_plan_labels.MODEL_RULE
 TASK_KINDS = _m_plan_labels.TASK_KINDS
@@ -79,8 +76,8 @@ def marked_passages(name: str, blocks: list[str]) -> list[str]:
     kept[0] = f'{MARK} {name} {MARK}\n{kept[0]}'
     return [block + '\n' for block in kept]
 
-def _task_part(task_id: str, folder: Path) -> str:
-    return marked_part('task', f'task_id: {task_id}\npath: {folder}\nplan: {plan_path(folder)}\nreport: {report_path(folder)}')
+def _task_part(task_id: str) -> str:
+    return marked_part('task', f'task_id: {task_id}\nplan: {plan_path(task_id)}\nreport: {report_path(task_id)}')
 
 def model_part(kind: str) -> str:
     rule = f'The model a task runs on follows what it needs, not its kind alone: the rule is {MODEL_RULE} (`memar content resolve-path {MODEL_RULE}` gives its path); the plan states the facts it reads.'
@@ -93,10 +90,9 @@ def model_part(kind: str) -> str:
         body = f'kind: the plan states no kind.\n{rule} If its Request ideates, designs, or critiques, end Blocked saying the plan states no kind, for the delegator to state it. {too_weak}'
     return marked_part('model', body)
 
-def _folder_part(folder: Path) -> str:
-    entries = sorted(folder.rglob('*'), key=lambda path: path.relative_to(folder).as_posix().lower())
-    lines = [path.relative_to(folder).as_posix() + ('/' if path.is_dir() else '') for path in entries]
-    return marked_part('folder', '\n'.join(lines))
+def _folder_part(task_id: str) -> str:
+    lines = _m_storage.tree_names(task_id)
+    return marked_part('folder', '\n'.join(lines) if lines else '(no files on the records branch)')
 
 def step_documents(root: Path, steps: str) -> list[Ref]:
     found: list[Ref] = []
@@ -149,28 +145,27 @@ def _help_part(plan: str) -> list[str]:
     return marked_passages('help', blocks)
 
 def start_passages(task_id: str, with_skill: bool=True) -> list[str]:
-    folder = folder_of(task_id)
-    if not is_task_folder(folder) or not has_plan(folder):
-        fail(f'no task to start in {task_id}: it has no task folder with a {PLAN_NAME}. Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and write the task into its {PLAN_NAME} first')
-    unmet = dependency_refusal(folder, 'start')
+    if not is_task_folder(task_id) or not has_plan(task_id):
+        fail(f'no task to start in {task_id}: it has no task with a plan (task.yaml and a plan content, or {PLAN_NAME}). Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and post its plan with `memar conversation post` first')
+    unmet = dependency_refusal(task_id, 'start')
     if unmet:
         fail(unmet)
-    _, folder = ensure_task(task_id)
-    plan_file = plan_path(folder)
-    plan = plan_text(folder)
-    kind = task_kind_of(read_plan(folder / PLAN_NAME).front)
+    ensure_task(task_id)
+    plan_file = plan_path(task_id)
+    plan = plan_text(task_id)
+    front = (plan_front(task_id) or (None, None))[0]
+    kind = task_kind_of(front)
     root = content_root()
-    composed = documents(root, _kinds(kind), step_documents(root, part_text(folder / PLAN_NAME, Steps.heading)), plan_project(task_id))
-    write_record(folder, composed.printed)
-    passages = [_task_part(task_id, folder), model_part(kind), marked_part(plan_file.name, plan), _folder_part(folder), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *marked_passages('documents', composed.blocks), *([] if called_through_mcp() else [marked_part('commands', commands.card_text()), *_help_part(plan)]), marked_part('ending', ENDING)]
+    composed = documents(root, _kinds(kind), step_documents(root, part_text(Path(task_id) / PLAN_NAME, Steps.heading)), plan_project(task_id))
+    write_record(task_id, composed.printed)
+    passages = [_task_part(task_id), model_part(kind), marked_part(plan_file.name, plan), _folder_part(task_id), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *marked_passages('documents', composed.blocks), *([] if called_through_mcp() else [marked_part('commands', commands.card_text()), *_help_part(plan)]), marked_part('ending', ENDING)]
     return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
 def start_text(task_id: str, with_skill: bool=True) -> str:
     return ''.join(start_passages(task_id, with_skill))
 
 def plan_project(task_id: str) -> Path | None:
-    named = (read_plan(folder_of(task_id) / PLAN_NAME).front or {}).get(PlanKey.PROJECT.key, '').strip()
-    return Path(named) if named else None
+    return _m_storage.project_named(task_id)
 
 def get_task_init_context(task_id: str, with_skill: bool=True, part: int=1, most: int | None=None) -> None:
     words = ['memar', 'ai', START_COMMAND, TaskId.FLAG, task_id, *([] if with_skill else ['--without-skill'])]

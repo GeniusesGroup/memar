@@ -75,16 +75,16 @@ def run(args: argparse.Namespace) -> None:
     write_record = _m_task_context.write_record
     if args.after and args.task_id is None:
         fail(AFTER_REFUSED)
-    folder = None
+    task_id = None
     if args.task_id is not None:
-        folder = folder_of(args.task_id)
-        if not is_task_folder(folder):
+        if not is_task_folder(args.task_id):
             fail(f'{TASK_FLAG} {args.task_id}: no such task folder')
+        task_id = args.task_id
     kinds = [TaskKind.read(word) for word in args.kind]
     after = [TaskKind.read(word) for word in args.after]
     project = project_from_args(args)
     places, problems = context_places(content_root(), project)
-    composed = context(places, kinds, after, read_record(folder) if folder else frozenset(), project_named=project is not None, place_problems=problems)
+    composed = context(places, kinds, after, read_record(task_id) if task_id else frozenset(), project_named=project is not None, place_problems=problems)
     blocks = composed.blocks
     if len(blocks) == 1:
         print(f"Every section {', '.join(args.kind)} requires was already printed for {', '.join(args.after)}.")
@@ -95,5 +95,5 @@ def run(args: argparse.Namespace) -> None:
     words = ['memar', 'content', COMMAND, *(f'--kind {word}' for word in args.kind), *(f'{AFTER_FLAG} {word}' for word in args.after), *task, *named]
     preferred = most_characters_preference(project)
     print_part(passages, args, words, preferred)
-    if folder is not None and args.part == len(cut(passages, bound(args.most_characters, preferred), next_command(words, args.most_characters))):
-        write_record(folder, composed.printed)
+    if task_id is not None and args.part == len(cut(passages, bound(args.most_characters, preferred), next_command(words, args.most_characters))):
+        write_record(task_id, composed.printed)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/management/task/primitive/claim.py — the claim an agent leaves in a task's folder while it holds the task, declared once.
+"""modules-plugable/management/task/primitive/claim.py — the claim an agent leaves while it holds a task, declared once.
 
 A claim is a file, created with exclusive create so that exactly one of two
 agents taking one task wins (`task_claim` does the taking). What the
@@ -25,21 +25,26 @@ from typing import ClassVar
 
 @dataclass(frozen=True)
 class Claim:
-    """The claim of one task FOLDER: where the lock lives, and whether it still holds.
+    """The claim of one task id: where the lock lives, and whether it still holds.
 
     The lock is under temp/claims/<id>/, not in the task tree on the records
     branch: exclusive create cannot live in git.
     """
-    folder: Path
+    task_id: str
     NAME: ClassVar[str] = 'claim'
     TAKEOVER_NAME: ClassVar[str] = f'{NAME}.takeover'
     NAMES: ClassVar[tuple[str, str]] = (NAME, TAKEOVER_NAME)
     STALE_SECONDS: ClassVar[int] = 24 * 60 * 60
 
+    @classmethod
+    def of(cls, task) -> Claim:
+        """Claim for TASK: an id string, or a transitional Path whose .name is the id."""
+        return cls(task if isinstance(task, str) else Path(task).name)
+
     def _lock_dir(self) -> Path:
         from importlib import import_module
         claim_dir = import_module('modules-plugable.computer.git.services.task_store').claim_dir
-        return claim_dir(self.folder.name)
+        return claim_dir(self.task_id)
 
     @property
     def path(self) -> Path:
@@ -52,11 +57,11 @@ class Claim:
         return self._lock_dir() / self.TAKEOVER_NAME
 
     def exists(self) -> bool:
-        """Whether the folder holds a claim file, fresh or stale."""
+        """Whether a claim file exists, fresh or stale."""
         return self.path.exists()
 
     def is_fresh(self) -> bool:
-        """Whether the folder holds a claim that has not gone stale."""
+        """Whether a claim that has not gone stale is held."""
         try:
             touched = self.path.stat().st_mtime
         except OSError:

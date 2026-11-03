@@ -29,13 +29,12 @@ from importlib import import_module
 import argparse
 from typing import Callable
 from machine.console import fail
-_m_folder = import_module('modules-plugable.management.task.services.folder')
-folder_of = _m_folder.folder_of
-is_task_folder = _m_folder.is_task_folder
+_m_storage = import_module('modules-plugable.ai.services.agent_task_storage')
+folder_of = _m_storage.handle
+is_task_folder = _m_storage.is_task_folder
+has_plan = _m_storage.has_plan
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_task_files = import_module('modules-plugable.management.task.services.task_memory')
-has_plan = _m_task_files.has_plan
 from modules.computer.software.primitive.project_name import ProjectName
 from modules.computer.software.primitive.project_path import ProjectPath
 TASK_COMMAND = import_module('modules-plugable.ai.ai').AI_COMMAND
@@ -50,9 +49,8 @@ def brief_text(task_id: str) -> str:
 
 def get_task_plan_carry_out_brief(task_id: str) -> None:
     """Print TASK_ID's brief alone, once its folder and its plan are there."""
-    folder = folder_of(task_id)
-    if not is_task_folder(folder) or not has_plan(folder):
-        fail(f'no task to hand over in {task_id}: it has no task folder with a {PLAN_NAME}. Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and write the task into its {PLAN_NAME} first')
+    if not is_task_folder(task_id) or not has_plan(task_id):
+        fail(f'no task to hand over in {task_id}: it has no task with a plan (task.yaml and a plan content, or {PLAN_NAME}). Open it with `memar task ensure --title T --parent ID {ProjectName.FLAG} {ProjectName.METAVAR}` (or `{ProjectPath.FLAG} {ProjectPath.METAVAR}`), ID the task handing it over, and post its plan with `memar conversation post` first')
     print(brief_text(task_id))
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
