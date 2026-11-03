@@ -11,12 +11,13 @@ Label_DocumentKind = import_module(
 ).Label_DocumentKind
 
 class Label_Report(DeclaredLabel):
-    word = 'Report'
     id = '01a14a04-653a-7a01-8a01-000000000003'
-    meaning = 'A task report narrates how the run ended beside the task Status.'
-    order = 3
     labels = (Label_DocumentKind,)
 
     @classmethod
     def statuses(cls) -> tuple[type, ...]:
         return (Label_Active, Label_Blocked, Label_Complete)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'A task report narrates how the run ended beside the task Status.'

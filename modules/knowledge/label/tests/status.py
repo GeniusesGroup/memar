@@ -39,15 +39,15 @@ Label_Research = plugable_load('knowledge.documentation.research.labels.Research
 class Values(unittest.TestCase):
 
     def test_the_type_holds_the_eleven_values_in_order(self) -> None:
-        self.assertEqual([s.word for s in Label_Status.members()], [
+        self.assertEqual([s.title for s in Label_Status.members()], [
             'Draft', 'Proposed', 'Final', 'Superseded', 'Rejected',
             'Queued', 'Active', 'Paused', 'Blocked', 'Complete', 'Withdrawn',
         ])
 
     def test_each_value_has_a_meaning_and_a_safety(self) -> None:
         for status in Label_Status.members():
-            with self.subTest(status=status.word):
-                self.assertTrue(status.meaning)
+            with self.subTest(status=status.title):
+                self.assertTrue(status.Overview())
                 self.assertTrue(status.safe)
                 self.assertIn(Label_Status, status.labels)
 
@@ -67,9 +67,9 @@ class StatusIsALabel(unittest.TestCase):
 
     def test_every_value_is_a_label_whose_definition_takes_the_status_label(self) -> None:
         definitions = Label_Status.definitions()
-        self.assertEqual([d.label.word for d in definitions], [s.word for s in Label_Status.members()])
+        self.assertEqual([d.label.title for d in definitions], [s.title for s in Label_Status.members()])
         for definition in definitions:
-            with self.subTest(label=definition.label.word):
+            with self.subTest(label=definition.label.title):
                 self.assertTrue(definition.is_a(Label_Status.as_label))
 
     def test_the_identifiers_are_distinct_uuid_version_7(self) -> None:
@@ -83,7 +83,7 @@ class StatusIsALabel(unittest.TestCase):
         kind = LabelKind(Label_Status.as_label, 'where a document stands', 'everything that reads a Status', str, Label_Status.definitions())
         registry = LabelRegistry([kind])
         self.assertEqual(
-            registry.words(Labels((Label_Queued.label, Label_Complete.label)), 'Status'),
+            registry.titles(Labels((Label_Queued.label, Label_Complete.label)), 'Status'),
             ('Queued', 'Complete'),
         )
 
@@ -109,21 +109,21 @@ class Kinds(unittest.TestCase):
 
     def test_every_kind_has_values(self) -> None:
         for kind in Label_DocumentKind.members():
-            with self.subTest(kind=kind.word):
+            with self.subTest(kind=kind.title):
                 self.assertTrue(Label_Status.for_document(kind))
 
 class ReportEnding(unittest.TestCase):
 
     def test_each_status_a_report_may_state_says_how_a_run_ended(self) -> None:
         for status in Label_Status.for_document(Label_Report):
-            with self.subTest(status=status.word):
+            with self.subTest(status=status.title):
                 self.assertTrue(status.report_ending)
 
     def test_no_other_document_life_status_outside_report_has_one(self) -> None:
         report = set(Label_Status.for_document(Label_Report))
         for status in Label_Status.members():
             if status not in report:
-                with self.subTest(status=status.word):
+                with self.subTest(status=status.title):
                     self.assertIsNone(status.report_ending)
 
 class Listing(unittest.TestCase):
@@ -134,6 +134,42 @@ class Listing(unittest.TestCase):
 
     def test_the_words_of_a_kind_as_keys(self) -> None:
         self.assertEqual(Label_Status.keys(Label_Plan), ('queued', 'active', 'blocked', 'complete'))
+
+class Declaration(unittest.TestCase):
+
+    def test_the_word_is_the_class_name_after_the_prefix(self) -> None:
+        from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+        class Label_Pending(DeclaredLabel):
+            labels = (Label_Status,)
+        self.assertEqual((Label_Pending.title, Label_Pending.key), ('Pending', 'pending'))
+        self.assertEqual(Label_Pending.definition().label.title, 'Pending')
+
+    def test_a_word_that_names_another_class_is_refused(self) -> None:
+        from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+        with self.assertRaises(TypeError):
+            class Label_Other(DeclaredLabel):
+                title = 'Different'
+
+    def test_the_summary_is_the_first_sentence_of_the_overview(self) -> None:
+        from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+        class Label_Told(DeclaredLabel):
+            @classmethod
+            def Overview(cls) -> str:
+                return 'First one. Second one.'
+        self.assertEqual(Label_Told.Summary(), 'First one.')
+        self.assertEqual(Label_Told.definition().meaning, 'First one. Second one.')
+
+    def test_a_declaration_holds_no_meaning_order_or_end_of_life_key(self) -> None:
+        for status in Label_Status.members():
+            with self.subTest(status=status.title):
+                for key in ('meaning', 'order', 'ended', 'replaced_by'):
+                    self.assertNotIn(key, vars(status))
+        self.assertEqual(Label_Draft.ExpiryDate(), '')
+        self.assertEqual(Label_Draft.ExpireInFavorOf(), ())
+
+    def test_the_kind_owner_holds_the_order_of_its_members(self) -> None:
+        self.assertEqual(Label_Status.SEQUENCE[0], 'Draft')
+        self.assertEqual([m.__name__[6:] for m in Label_DocumentKind.members()], ['Explanation', 'Plan', 'Report', 'Handoff', 'Research'])
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

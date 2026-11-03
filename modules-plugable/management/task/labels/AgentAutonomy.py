@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_AgentAutonomy(DeclaredLabel):
-    word = 'agent-autonomy'
+    title = 'agent-autonomy'
     id = '01a16468-aa1d-765e-84f5-4bfabf5d1ec8'
-    meaning = 'Why agents hand questions to the owner instead of finding the answers in Memar, and the fixes.'
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Why agents hand questions to the owner instead of finding the answers in Memar, and the fixes.'

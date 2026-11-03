@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_Project(DeclaredLabel):
-    word = 'project'
+    title = 'project'
     id = '01a19209-8533-75b4-af0c-275079dc1174'
-    meaning = 'A task that is a project: the upstream task of a body of work, active until the work ends, which other tasks refer to; its names are its titles.'
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'A task that is a project: the upstream task of a body of work, active until the work ends, which other tasks refer to; its names are its titles.'

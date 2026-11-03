@@ -5,9 +5,11 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.management.task.labels.TaskKind import Label_TaskKind
 
 class Label_Answer(DeclaredLabel):
-    word = 'answer'
+    title = 'answer'
     id = ''
-    meaning = 'A question is answered in the conversation itself, which opens no task and so writes no plan.'
     labels = (Label_TaskKind,)
-    order = 1
     carried = False
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'A question is answered in the conversation itself, which opens no task and so writes no plan.'

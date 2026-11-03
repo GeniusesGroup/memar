@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_MemarDocsHygiene(DeclaredLabel):
-    word = 'memar-docs-hygiene'
+    title = 'memar-docs-hygiene'
     id = '01a14a13-1a27-798f-bbc4-16921e7f67a0'
-    meaning = "Keeping each of Memar's documents in its facet and home: handoffs swept, questions moved to the document they concern."
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return "Keeping each of Memar's documents in its facet and home: handoffs swept, questions moved to the document they concern."

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from typing import Callable, Iterable
 FLAG_SEPARATOR = '='
 _ID = '[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}'
-_LABEL = re.compile(f'^(?:[-*]\\s+)?(?P<word>[^()\\s][^()]*?)\\s*\\((?P<id>{_ID})\\)$')
+_LABEL = re.compile(f'^(?:[-*]\\s+)?(?P<title>[^()\\s][^()]*?)\\s*\\((?P<id>{_ID})\\)$')
 
 class LabelProblem(ValueError):
     pass
@@ -22,16 +22,16 @@ def new_id() -> str:
 
 @dataclass(frozen=True)
 class Label:
-    word: str
+    title: str
     id: str
 
     def __str__(self) -> str:
-        return f'{self.word}({self.id})'
+        return f'{self.title}({self.id})'
 
     @classmethod
     def read(cls, text: str) -> Label | None:
         found = _LABEL.match(text.strip())
-        return cls(found['word'].strip(), found['id']) if found else None
+        return cls(found['title'].strip(), found['id']) if found else None
 
 @dataclass(frozen=True)
 class LabelDefinition:
@@ -54,7 +54,7 @@ class LabelKind:
 
     @property
     def name(self) -> str:
-        return self.label.word
+        return self.label.title
 
     def define(self, text: str) -> LabelDefinition:
         return LabelDefinition(Label(self.normalize(text), new_id()), (self.label,))
@@ -113,10 +113,10 @@ class LabelRegistry:
         definition = self.definition(label)
         return definition.labels if definition else ()
 
-    def words(self, labels: Labels, kind: str) -> tuple[str, ...]:
+    def titles(self, labels: Labels, kind: str) -> tuple[str, ...]:
         wanted = self.kinds[kind].label
         return tuple(
-            self._by_id[label.id].label.word
+            self._by_id[label.id].label.title
             for label in labels
             if any(held.id == wanted.id for held in self.labels_of(label))
         )
@@ -125,21 +125,21 @@ class LabelRegistry:
         self._by_id.setdefault(definition.label.id, definition)
 
     def resolve(self, text: str) -> tuple[Label, LabelDefinition | None]:
-        kind_name, found, word = text.partition(FLAG_SEPARATOR)
-        if not found or not kind_name.strip() or (not word.strip()):
+        kind_name, found, title = text.partition(FLAG_SEPARATOR)
+        if not found or not kind_name.strip() or (not title.strip()):
             raise LabelProblem(f'a label is written KIND{FLAG_SEPARATOR}WORD, e.g. {self._example()}; {text!r} is not one')
         kind = self.kinds.get(kind_name.strip())
         if kind is None:
             raise LabelProblem(f"a plan carries labels of the kinds {', '.join(self.kinds)}; {kind_name.strip()!r} is none of them")
         if kind.closed:
-            made = kind.normalize(word)
+            made = kind.normalize(title)
             for definition in kind.closed:
-                if definition.label.word == made:
+                if definition.label.title == made:
                     return (definition.label, None)
             raise LabelProblem(f'{made!r} is not a {kind.name}')
-        made = kind.normalize(word)
+        made = kind.normalize(title)
         for definition in self._by_id.values():
-            if definition.label.word == made and definition.is_a(kind.label):
+            if definition.label.title == made and definition.is_a(kind.label):
                 return (definition.label, None)
         fresh = kind.define(made)
         return (fresh.label, fresh)

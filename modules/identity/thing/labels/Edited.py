@@ -4,7 +4,10 @@ from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 
 class Label_Edited(DeclaredLabel):
-    word = 'edited'
+    title = 'edited'
     id = '01a19853-60ef-726b-ac8d-a1c2f4047442'
-    meaning = 'Edited after a prior standing; often a derived reading.'
     labels = ()
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Edited after a prior standing; often a derived reading.'

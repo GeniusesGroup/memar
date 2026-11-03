@@ -5,22 +5,23 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.LabelKind import Label_LabelKind
 
 class Label_Status(DeclaredLabel):
-    word = 'Status'
     id = '01a14a04-6522-7d19-9796-04f8a30e831f'
-    meaning = (
-        'A label other labels take when they name where a record stands in its life. '
-        'A Status-kind label may carry a rule; when it attaches, work may start. '
-        'Attachment is only the Label edge on any record — including content. '
-        'Status is not a separate domain vocabulary tree. '
-        'General Status-kind words live under modules/identity/thing/labels as Label_<Word>; '
-        'domain-specific Status-kind words stay in that domain\'s labels/.'
-    )
-    order = 1
     labels = (Label_LabelKind,)
+    SEQUENCE: tuple[str, ...] = (
+        'Draft', 'Proposed', 'Final', 'Superseded', 'Rejected',
+        'Queued', 'Active', 'Paused', 'Blocked', 'Complete', 'Withdrawn',
+    )
 
     @classmethod
     def Overview(cls) -> str:
-        return cls.meaning
+        return (
+            'A label other labels take when they name where a record stands in its life. '
+            'A Status-kind label may carry a rule; when it attaches, work may start. '
+            'Attachment is only the Label edge on any record — including content. '
+            'Status is not a separate domain vocabulary tree. '
+            'General Status-kind words live under modules/identity/thing/labels as Label_<Word>; '
+            'domain-specific Status-kind words stay in that domain\'s labels/.'
+        )
 
     @classmethod
     def DevActionNote(cls) -> str:
@@ -34,11 +35,8 @@ class Label_Status(DeclaredLabel):
     def members(cls) -> tuple[type, ...]:
         """Document-life Status words under thing (ordered); domain Status words stay out until imported for their own queries."""
         DeclaredLabel.ensure_under('modules.identity.thing.labels')
-        found = [
-            member for member in DeclaredLabel.having(cls)
-            if getattr(member, 'order', None) is not None
-        ]
-        return tuple(sorted(found, key=lambda member: member.order))
+        held = {member.__name__[len('Label_'):]: member for member in DeclaredLabel.having(cls)}
+        return tuple(held[name] for name in cls.SEQUENCE if name in held)
 
     @classmethod
     def for_document(cls, document_kind) -> tuple[type, ...]:
@@ -48,7 +46,7 @@ class Label_Status(DeclaredLabel):
             document_kind = next(
                 (
                     member for member in DeclaredLabel.all_declared()
-                    if getattr(member, 'word', '').lower() == wanted and hasattr(member, 'statuses')
+                    if getattr(member, 'title', '').lower() == wanted and hasattr(member, 'statuses')
                 ),
                 None,
             )

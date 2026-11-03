@@ -5,7 +5,7 @@ from machine.console import fail
 from modules.knowledge.content.labels.Topic import Label_Topic
 from modules.knowledge.label.primitive.label import Label, LabelDefinition, LabelKind, LabelProblem
 TOPIC_LABEL = Label_Topic.as_label
-LABEL_KIND_NAME = Label_Topic.word
+LABEL_KIND_NAME = Label_Topic.title
 
 class Topic(str):
     @classmethod

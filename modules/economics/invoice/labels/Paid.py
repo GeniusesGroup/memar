@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Paid(DeclaredLabel):
-    word = 'paid'
+    title = 'paid'
     id = '01a19853-60ef-726b-ac8d-a1b44b006589'
-    meaning = 'The customer has fully paid the invoice amount.'
     labels = (Label_Status,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The customer has fully paid the invoice amount.'

@@ -120,20 +120,20 @@ class Fixture(unittest.TestCase):
         where.mkdir(parents=True, exist_ok=True)
         for word in words:
             cls = 'Label_' + ''.join(part[:1].upper() + part[1:] for part in word.replace('-', '_').split('_') if part)
-            extras = f"    ended = {ended!r}\n" if ended else ''
-            if replaced_by:
-                extras += (
-                    "    # replaced_by left empty in this test helper; ended marks the label\n"
-                )
+            extras = (
+                "\n    @classmethod\n    def ExpiryDate(cls) -> str:\n"
+                f"        return {ended!r}\n"
+            ) if ended else ''
             (where / f'{cls}.py').write_text(
                 "from modules.knowledge.label.primitive.declared_label import DeclaredLabel\n"
                 "from modules.knowledge.content.labels.Topic import Label_Topic\n\n"
                 f"class {cls}(DeclaredLabel):\n"
-                f"    word = {word!r}\n"
+                f"    title = {word!r}\n"
                 f"    id = {new_id()!r}\n"
-                f"    meaning = 'work on {word}'\n"
-                f"    labels = (Label_Topic,)\n"
-                f"{extras}"
+                "    labels = (Label_Topic,)\n\n"
+                "    @classmethod\n    def Overview(cls) -> str:\n"
+                f"        return 'work on {word}'\n"
+                f"{extras}",
                 encoding='utf-8',
             )
         task_plan_labels.forget()
@@ -143,13 +143,13 @@ class Fixture(unittest.TestCase):
         kind, word = (part.strip() for part in spec.split(':', 1))
         label, fresh = task_plan_labels.registry_for(project).resolve(f'{kind}={word}')
         if fresh is not None:
-            self.declare(fresh.label.word, project=project)
+            self.declare(fresh.label.title, project=project)
             label, _ = task_plan_labels.registry_for(project).resolve(f'{kind}={word}')
         return f'  - {label}\n'
 
     def words(self, folder: Path, kind: str) -> tuple[str, ...]:
         front = self.front(folder)
-        return task_plan_labels.registry_of(front).words(task_plan_labels.labels_of(front), kind)
+        return task_plan_labels.registry_of(front).titles(task_plan_labels.labels_of(front), kind)
 
     def plan(self, folder: Path) -> Path:
         return folder / shape.FACTS_NAME

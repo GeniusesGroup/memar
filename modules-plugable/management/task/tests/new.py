@@ -357,8 +357,8 @@ class KindWritten(Fixture):
 
     def test_the_help_lists_the_kinds_the_declaration_lets_a_plan_carry(self) -> None:
         help_text = self.label_help()
-        self.assertIn(', '.join(TaskKind.words(carried=True)), help_text)
-        self.assertIn(f'{TaskKind.ANSWER.word}, {TaskKind.PLAN.word} are refused', help_text)
+        self.assertIn(', '.join(TaskKind.titles(carried=True)), help_text)
+        self.assertIn(f'{TaskKind.ANSWER.title}, {TaskKind.PLAN.title} are refused', help_text)
         self.assertIn('TaskKind, Topic', help_text)
 
     def test_the_description_sends_findings_and_questions_to_the_contents_of_a_task(self) -> None:
@@ -373,7 +373,7 @@ class KindWritten(Fixture):
 
     def test_a_kind_no_plan_carries_is_refused_and_makes_nothing(self) -> None:
         with self.assertRaises(SystemExit):
-            self.ensure('s-answer', TITLE, labels=[f'TaskKind={TaskKind.ANSWER.word}'])
+            self.ensure('s-answer', TITLE, labels=[f'TaskKind={TaskKind.ANSWER.title}'])
         self.assertFalse(memar_fs.task_dir('s-answer').exists())
 
     def test_a_word_that_is_no_kind_is_refused_and_makes_nothing(self) -> None:

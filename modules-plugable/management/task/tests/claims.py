@@ -78,16 +78,17 @@ def declare_topic(project: Path, fresh) -> None:
     """Declare the topic FRESH in PROJECT, as a module of it would: a Label_<Word> file of a `labels/` folder."""
     where = project / 'work' / 'labels'
     where.mkdir(parents=True, exist_ok=True)
-    word = fresh.label.word
+    word = fresh.label.title
     cls = 'Label_' + ''.join(part[:1].upper() + part[1:] for part in word.replace('-', '_').split('_') if part)
     (where / f'{cls}.py').write_text(
         "from modules.knowledge.label.primitive.declared_label import DeclaredLabel\n"
         "from modules.knowledge.content.labels.Topic import Label_Topic\n\n"
         f"class {cls}(DeclaredLabel):\n"
-        f"    word = {word!r}\n"
+        f"    title = {word!r}\n"
         f"    id = {fresh.label.id!r}\n"
-        f"    meaning = 'work on {word}'\n"
-        f"    labels = (Label_Topic,)\n"
+        "    labels = (Label_Topic,)\n\n"
+        "    @classmethod\n    def Overview(cls) -> str:\n"
+        f"        return 'work on {word}'\n",
         encoding='utf-8',
     )
     task_plan_labels.forget()

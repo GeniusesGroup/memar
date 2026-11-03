@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Field_Labels in "modules/knowledge/label/protocol/field-labels.kh"
+tp Field_Title in "modules-plugable/uri/title/protocol/title.kh"
+
+tp Label_Error_Undeclared cp {
+	Error
+	Field_Title
+	Field_Labels
+}

@@ -89,8 +89,8 @@ task_plan_labels = import_module('modules-plugable.management.task.services.plan
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 task_kind_module = _m_task_kind
-DESIGN = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.word == 'design'))
-MECHANICAL = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.word == 'mechanical'))
+DESIGN = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.title == 'design'))
+MECHANICAL = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.title == 'mechanical'))
 _m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
 PlanPriority = _m_priority.Priority
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -306,21 +306,21 @@ class FrontMatterBlocks(Fixture):
 class KindOfTask(Fixture):
 
     def test_the_kinds_are_those_the_declaration_lets_a_plan_carry(self) -> None:
-        self.assertEqual(task_plan_labels.TASK_KINDS, TaskKind.words(carried=True))
+        self.assertEqual(task_plan_labels.TASK_KINDS, TaskKind.titles(carried=True))
 
     def test_the_mechanical_kind_is_the_one_a_plan_with_other_kinds_is_not_read_as(self) -> None:
-        self.assertEqual(task_plan_labels.MECHANICAL_KIND, TaskKind.MECHANICAL.word)
+        self.assertEqual(task_plan_labels.MECHANICAL_KIND, TaskKind.MECHANICAL.title)
 
     def test_the_rule_the_model_follows_is_a_document_of_the_repository(self) -> None:
         self.assertTrue((Path(__file__).resolve().parents[4] / task_plan_labels.MODEL_RULE.lstrip('/')).is_file())
 
     def test_a_kind_no_plan_carries_is_refused_with_why(self) -> None:
         for kind in (TaskKind.ANSWER, TaskKind.PLAN):
-            with self.subTest(kind=kind.word):
+            with self.subTest(kind=kind.title):
                 with self.assertRaises(SystemExit) as refused:
-                    task_plan_labels.checked_label(f'TaskKind={kind.word}', None)
-                self.assertIn(f'a plan does not carry the kind {kind.word}', str(refused.exception.code))
-                self.assertIn(kind.meaning, str(refused.exception.code))
+                    task_plan_labels.checked_label(f'TaskKind={kind.title}', None)
+                self.assertIn(f'a plan does not carry the kind {kind.title}', str(refused.exception.code))
+                self.assertIn(kind.Overview(), str(refused.exception.code))
 
     def test_a_new_plan_writes_the_labels_only_when_given(self) -> None:
         given = task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'), labels=Labels((DESIGN, Label('a', '01a14a04-6536-7c2e-8cc6-276de9a45ba5'))))
@@ -332,7 +332,7 @@ class KindOfTask(Fixture):
         self.assertEqual(task_plan_labels.checked_label('TaskKind= Design ', None), DESIGN)
         with self.assertRaises(SystemExit) as refused:
             task_plan_labels.checked_label('TaskKind=modelling', None)
-        self.assertIn(f"a kind is one of {', '.join(TaskKind.words(carried=True))}", str(refused.exception.code))
+        self.assertIn(f"a kind is one of {', '.join(TaskKind.titles(carried=True))}", str(refused.exception.code))
 
     def test_a_hand_written_kind_reads_as_written_in_lower_case(self) -> None:
         self.assertEqual(task_plan_labels.task_kind_of({'labels': f'  {DESIGN} '}), 'design')

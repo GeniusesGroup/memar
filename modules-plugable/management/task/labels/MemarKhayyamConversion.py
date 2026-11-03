@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_MemarKhayyamConversion(DeclaredLabel):
-    word = 'memar-khayyam-conversion'
+    title = 'memar-khayyam-conversion'
     id = '01a14a13-1aab-74ec-84e2-c78cd526f2b2'
-    meaning = 'Converting the Go left in Khayyam files to Khayyam, module by module.'
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Converting the Go left in Khayyam files to Khayyam, module by module.'

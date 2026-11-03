@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Expired(DeclaredLabel):
-    word = 'expired'
+    title = 'expired'
     id = '01a19853-60ef-726b-ac8d-a1b7be557fe3'
-    meaning = 'The invoice passed its due window without settlement.'
     labels = (Label_Status,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The invoice passed its due window without settlement.'

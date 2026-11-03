@@ -54,7 +54,7 @@ def checked_kind(kind: str, project: Path | None) -> str:
         except LabelProblem:
             continue
         if fresh is None:
-            return label.word
+            return label.title
     checked_label(f'{TOPIC}={word}', project, registry)
     return word
 

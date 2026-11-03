@@ -107,7 +107,7 @@ def answer_passages(task_id: str, with_skill: bool=True) -> list[str]:
     if problem:
         fail(f'no questions to answer in {task_id}: {problem}')
     root = content_root()
-    passages = [task_part(task_id, folder), model_part(TaskKind.ANSWER.word), marked_part(plan_path(folder).name, plan_text(folder)), marked_part(report_path(folder).name, report_text(folder)), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *documents_part(root, decisions_needed(folder), plan_project(task_id)), marked_part('commands', commands.card_text()), marked_part('ending', ENDING)]
+    passages = [task_part(task_id, folder), model_part(TaskKind.ANSWER.title), marked_part(plan_path(folder).name, plan_text(folder)), marked_part(report_path(folder).name, report_text(folder)), *([marked_part('skill', read_text(root / SKILL_FILE))] if with_skill else []), *documents_part(root, decisions_needed(folder), plan_project(task_id)), marked_part('commands', commands.card_text()), marked_part('ending', ENDING)]
     return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
 def answer_text(task_id: str, with_skill: bool=True) -> str:

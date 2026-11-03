@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Voting(DeclaredLabel):
-    word = 'voting'
+    title = 'voting'
     id = '01a19853-60ef-726b-ac8d-a1b850d803e4'
-    meaning = 'Binding signatures are open on this law; the payload stays as what was signed.'
     labels = (Label_Status,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Binding signatures are open on this law; the payload stays as what was signed.'

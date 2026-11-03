@@ -12,12 +12,13 @@ Label_DocumentKind = import_module(
 ).Label_DocumentKind
 
 class Label_Plan(DeclaredLabel):
-    word = 'Plan'
     id = '01a14a04-653a-7a01-8a01-000000000002'
-    meaning = 'A task plan holds the task Status; the plan content does not repeat it.'
-    order = 2
     labels = (Label_DocumentKind,)
 
     @classmethod
     def statuses(cls) -> tuple[type, ...]:
         return (Label_Queued, Label_Active, Label_Blocked, Label_Complete)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'A task plan holds the task Status; the plan content does not repeat it.'

@@ -94,7 +94,7 @@ def list_problems(path: Path, root: Path) -> list[str]:
     if word is None or place is None:
         return []
     problems: list[str] = []
-    known = (EVERY_ACT, *TaskKind.words())
+    known = (EVERY_ACT, *TaskKind.titles())
     if word not in known:
         problems.append(f"the list's word '{word}' names no kind; the words are {', '.join(known)}")
     named = every_act = None

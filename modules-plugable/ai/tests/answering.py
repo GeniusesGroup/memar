@@ -92,7 +92,7 @@ SID = '20261011-T000000Z-9'
 ROOT = SCRIPTS.parent.parent
 SKILL = '# Skill\n- SKILL-TEXT, printed whole.\n'
 DOCS = {'plain.md': '# Plain\n\n## Abstract\nPLAIN-ABSTRACT\n\n## Body\nPLAIN-BODY\n', 'steps.md': '# Steps\n\n## Abstract\nSTEPS-ABSTRACT\n\n## Detail\nSTEPS-DETAIL\n'}
-LISTS = [found for found in lists([memar_place(ROOT)]) if found.word in (EVERY_ACT, TaskKind.ANSWER.word)]
+LISTS = [found for found in lists([memar_place(ROOT)]) if found.word in (EVERY_ACT, TaskKind.ANSWER.title)]
 REAL = sorted({entry.path for found in LISTS for entry in found.entries} | {found.path.relative_to(ROOT).as_posix() for found in LISTS})
 MARK = '=== '
 PLAN = plan_skeleton('20261011T000000Z-1-0', 'Delegated', '2026-10-11T00:00:00Z', Path('/project'), labels=Labels((Label('TaskKind', 'design'),))).replace('## Request\n', '## Request\nPLAN-REQUEST\n')

@@ -206,7 +206,7 @@ def kind_refs(places: Sequence[Place], kinds: Iterable[TaskKind]) -> list[Ref]:
     found = lists(list(places))
     every_act = {(entry.target, entry.anchor) for listed in found if listed.word == EVERY_ACT for entry in listed.entries if not entry.drops}
     texts: dict[Path, str | None] = {}
-    words = list(dict.fromkeys([EVERY_ACT, *(kind.word for kind in kinds)]))
+    words = list(dict.fromkeys([EVERY_ACT, *(kind.title for kind in kinds)]))
     return [ref for word in words for ref in _group(found, word, places, every_act, texts)]
 
 def _same(refs: Sequence[Ref], record: set[Printed]) -> list[Ref]:
@@ -224,10 +224,10 @@ def _plural(count: int, word: str) -> str:
     return f'{count} {word}' + ('' if count == 1 else 's')
 
 def first_line(kinds: Sequence[TaskKind], after: Sequence[TaskKind], composed: Composed, left_out: int, project_named: bool, project_places: bool=False, problems: Sequence[str]=()) -> str:
-    words = ', '.join((kind.word for kind in kinds)) or 'none'
+    words = ', '.join((kind.title for kind in kinds)) or 'none'
     parts = [f'kinds: {words}', f"{_plural(composed.listed, 'section')} from Memar's lists" + (f", {composed.listed_project} from this project's" if project_places else '')]
     if after:
-        parts.append(f"after {', '.join((kind.word for kind in after))}: {_plural(left_out, 'section')} already printed left out")
+        parts.append(f"after {', '.join((kind.title for kind in after))}: {_plural(left_out, 'section')} already printed left out")
     if composed.changed:
         parts.append(f'{composed.changed} {CHANGED_MARK}')
     if composed.gone:

@@ -5,10 +5,11 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Active(DeclaredLabel):
-    word = 'Active'
     id = '01a14a04-6529-77f7-9f29-c657a634a824'
-    meaning = 'Being worked on or investigated now.'
-    order = 7
     labels = (Label_Status,)
     safe = 'No'
     report_ending = 'its budget ended or it made no progress: another pass is owed'
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Being worked on or investigated now.'

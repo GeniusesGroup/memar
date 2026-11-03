@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_Adapter(DeclaredLabel):
-    word = 'adapter'
+    title = 'adapter'
     id = '01a14aae-4f4c-7618-a0e2-ab43ef3da0ab'
-    meaning = "The adapter executable a project such as organization gives Memar's `.agents/`."
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return "The adapter executable a project such as organization gives Memar's `.agents/`."

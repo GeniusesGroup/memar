@@ -57,14 +57,14 @@ WHO_RUNS = re.compile('\\b(models?|tiers?|strong|stronger|strongest|cheap|cheape
 class Words(unittest.TestCase):
 
     def test_the_kinds_in_their_order(self) -> None:
-        self.assertEqual([kind.word for kind in TaskKind.all()], ['answer', 'plan', 'design', 'critique', 'implement', 'document', 'mechanical'])
+        self.assertEqual([kind.title for kind in TaskKind.all()], ['answer', 'plan', 'design', 'critique', 'implement', 'document', 'mechanical'])
 
     def test_each_word_is_lower_case_with_one_sentence_of_meaning(self) -> None:
         for kind in TaskKind.all():
-            with self.subTest(kind=kind.word):
-                self.assertRegex(kind.word, '^[a-z]+$')
-                self.assertTrue(kind.meaning.endswith('.'))
-                self.assertEqual(kind.meaning.count('. '), 0, 'one sentence')
+            with self.subTest(kind=kind.title):
+                self.assertRegex(kind.title, '^[a-z]+$')
+                self.assertTrue(kind.Overview().endswith('.'))
+                self.assertEqual(kind.Overview().count('. '), 0, 'one sentence')
 
     def test_a_word_is_read_in_any_case_and_a_word_that_is_no_kind_is_none(self) -> None:
         self.assertIs(TaskKind.read(' Design '), TaskKind.DESIGN)
@@ -75,20 +75,20 @@ class Words(unittest.TestCase):
 class Carried(unittest.TestCase):
 
     def test_a_plan_carries_every_kind_but_answer_and_plan(self) -> None:
-        self.assertEqual(TaskKind.words(carried=True), ('design', 'critique', 'implement', 'document', 'mechanical'))
+        self.assertEqual(TaskKind.titles(carried=True), ('design', 'critique', 'implement', 'document', 'mechanical'))
         self.assertFalse(TaskKind.ANSWER.carried)
         self.assertFalse(TaskKind.PLAN.carried)
 
     def test_without_the_filter_every_word_is_listed(self) -> None:
-        self.assertEqual(TaskKind.words(), tuple((kind.word for kind in TaskKind.all())))
+        self.assertEqual(TaskKind.titles(), tuple((kind.title for kind in TaskKind.all())))
 
 class NoPassages(unittest.TestCase):
 
     def test_a_kind_holds_its_word_meaning_and_whether_carried_and_no_passage(self) -> None:
         for kind in TaskKind.all():
-            with self.subTest(kind=kind.word):
-                self.assertTrue(kind.word)
-                self.assertTrue(kind.meaning)
+            with self.subTest(kind=kind.title):
+                self.assertTrue(kind.title)
+                self.assertTrue(kind.Overview())
                 self.assertIsInstance(kind.carried, bool)
                 self.assertFalse(hasattr(kind, 'passages'))
                 self.assertFalse(hasattr(kind, 'applies'))
@@ -113,7 +113,7 @@ class NothingAboutWho(unittest.TestCase):
 def sources() -> list[Path]:
     """Every Python source of the scripts but the suites, the TaskKind words, and their reader."""
     labels = DECLARATION.parent
-    skipped = {DECLARATION.resolve(), READER.resolve(), *(path.resolve() for path in labels.glob('Label_*.py'))}
+    skipped = {DECLARATION.resolve(), READER.resolve(), *(path.resolve() for path in labels.glob('*.py'))}
     top = SCRIPTS.parent.parent
     found = [path for path in sorted(SCRIPTS.rglob('*.py')) if 'tests' not in path.relative_to(SCRIPTS).parts[:-1] and path.resolve() not in skipped]
     for module in ('modules/knowledge/content', 'modules/process', 'modules/computer/module', 'modules-plugable/knowledge/documentation/plan/primitive', 'modules/knowledge/label', 'modules/management/task', 'modules-plugable/management/task', 'modules-plugable/ai', 'bundles/memar'):
@@ -124,7 +124,7 @@ class WrittenOnce(unittest.TestCase):
 
     def test_no_other_source_spells_a_kind_word_as_a_string_of_its_own(self) -> None:
         # plan/document collide with content DocumentKind words; those are not TaskKind spellings.
-        words = {*(TaskKind.words()), *RETIRED} - {'plan', 'document'}
+        words = {*(TaskKind.titles()), *RETIRED} - {'plan', 'document'}
         spelt = []
         for path in sources():
             tree = ast.parse(path.read_text(encoding='utf-8'), filename=str(path))
@@ -146,7 +146,7 @@ class WordsAreLabels(unittest.TestCase):
     def test_each_carried_word_is_defined_once_taking_the_task_kind_label(self) -> None:
         LABEL_KIND = _m_task_kind.LABEL_KIND
         TASK_KIND_LABEL = _m_task_kind.TASK_KIND_LABEL
-        self.assertEqual([d.label.word for d in LABEL_KIND.closed], list(TaskKind.words(carried=True)))
+        self.assertEqual([d.label.title for d in LABEL_KIND.closed], list(TaskKind.titles(carried=True)))
         for definition in LABEL_KIND.closed:
             self.assertTrue(definition.is_a(TASK_KIND_LABEL))
         self.assertEqual(len({d.label.id for d in LABEL_KIND.closed}), len(LABEL_KIND.closed))
@@ -155,6 +155,6 @@ class WordsAreLabels(unittest.TestCase):
         from modules.knowledge.label.primitive.label import LabelProblem
         LABEL_KIND = _m_task_kind.LABEL_KIND
         with self.assertRaises(LabelProblem):
-            LABEL_KIND.normalize(TaskKind.ANSWER.word)
+            LABEL_KIND.normalize(TaskKind.ANSWER.title)
 if __name__ == '__main__':
     unittest.main(verbosity=2)

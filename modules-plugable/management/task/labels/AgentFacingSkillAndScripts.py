@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_AgentFacingSkillAndScripts(DeclaredLabel):
-    word = 'agent-facing-skill-and-scripts'
+    title = 'agent-facing-skill-and-scripts'
     id = '01a154e2-a32b-7c06-b910-db3f22dd8695'
-    meaning = 'The Memar skill and the scripts an agent reads and runs.'
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The Memar skill and the scripts an agent reads and runs.'

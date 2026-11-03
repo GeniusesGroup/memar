@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_MemoryPort(DeclaredLabel):
-    word = 'memory-port'
+    title = 'memory-port'
     id = '01a167b9-f20e-7305-95a0-e055447a1869'
-    meaning = 'The memory port and its adapters, and the task verbs and records moved onto it.'
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The memory port and its adapters, and the task verbs and records moved onto it.'

@@ -4,7 +4,10 @@ from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 
 class Label_Protocol(DeclaredLabel):
-    word = 'protocol'
+    title = 'protocol'
     id = '01a19249-6472-7b5a-abf6-cba2a3e7921c'
-    meaning = 'A reference to the protocol module (what a protocol is, how a protocol is written); not a Topic.'
     labels = ()
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'A reference to the protocol module (what a protocol is, how a protocol is written); not a Topic.'

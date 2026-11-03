@@ -54,7 +54,7 @@ LABEL_COMMAND = 'add'
 def carried(task_id: str, plan: Path) -> str:
     """What the plan at PLAN carries, one line: `labels: docs, design`, or `labels: (none)`."""
     labels = labels_of(read_plan(plan).front)
-    return f'{task_id}  labels: ' + (', '.join((label.word for label in labels)) or '(none)')
+    return f'{task_id}  labels: ' + (', '.join((label.title for label in labels)) or '(none)')
 
 def set_task_label(task_id: str, text: str, remove: bool) -> None:
     """`label`: add the label TEXT (`KIND=WORD`) to TASK_ID's plan, or with REMOVE take it out, and say what the plan carries now."""
@@ -71,12 +71,12 @@ def set_task_label(task_id: str, text: str, remove: bool) -> None:
         else:
             has = any((item.id == label.id for item in labels_of(front)))
             remove_label(stores_at(folder), None, task_id, label)
-            print(f'{task_id}  removed {label.word}' if has else f'{task_id}  does not carry {label.word}')
+            print(f'{task_id}  removed {label.title}' if has else f'{task_id}  does not carry {label.title}')
     else:
         label = checked_label(text, project)
         has = any((item.id == label.id for item in labels_of(front)))
         add_label(stores_at(folder), None, task_id, label)
-        print(f'{task_id}  added {label.word}' if not has else f'{task_id}  already carries {label.word}')
+        print(f'{task_id}  added {label.title}' if not has else f'{task_id}  already carries {label.title}')
     print(carried(task_id, plan))
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:

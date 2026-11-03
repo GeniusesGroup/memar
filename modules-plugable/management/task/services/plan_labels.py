@@ -41,8 +41,8 @@ from modules.knowledge.label.services.declarations import FOLDER, NAME, Declared
 KINDS = (task_kind.LABEL_KIND, topic.LABEL_KIND)
 TASK_KIND = task_kind.LABEL_KIND_NAME
 TOPIC = topic.LABEL_KIND_NAME
-TASK_KINDS = TaskKind.words(carried=True)
-MECHANICAL_KIND = TaskKind.MECHANICAL.word
+TASK_KINDS = TaskKind.titles(carried=True)
+MECHANICAL_KIND = TaskKind.MECHANICAL.title
 MODEL_RULE = '/modules-plugable/management/task/rules/model-follows-need/model-follows-need.md'
 NEAR_EDITS = 2
 RECHECK_SECONDS = 2.0
@@ -104,7 +104,7 @@ def labels_of(front: dict[str, str] | None) -> Labels:
 
 def topics_of(front: dict[str, str] | None) -> tuple[str, ...]:
     """The words of the topics FRONT matter gives its plan, in the order written."""
-    return registry_of(front).words(labels_of(front), TOPIC)
+    return registry_of(front).titles(labels_of(front), TOPIC)
 
 def task_kind_of(front: dict[str, str] | None) -> str:
     """The task kind FRONT matter gives its plan, lower case as written; empty when it has none.
@@ -113,7 +113,7 @@ def task_kind_of(front: dict[str, str] | None) -> str:
     mechanical one, so that a task that is also mechanical does not start at the
     mechanical level (`MODEL_RULE`).
     """
-    words = [word.strip().lower() for word in registry_of(front).words(labels_of(front), TASK_KIND)]
+    words = [word.strip().lower() for word in registry_of(front).titles(labels_of(front), TASK_KIND)]
     return next((word for word in words if word != MECHANICAL_KIND), words[0] if words else '')
 
 def edit_distance(one: str, two: str) -> int:
@@ -126,18 +126,18 @@ def edit_distance(one: str, two: str) -> int:
         previous = current
     return previous[-1]
 
-def near_words(word: str, kind: str, registry: LabelRegistry) -> list[str]:
+def near_titles(word: str, kind: str, registry: LabelRegistry) -> list[str]:
     """The words REGISTRY defines under the kind named KIND within `NEAR_EDITS` of WORD, ended ones left out."""
-    return sorted((definition.label.word for definition in registry.definitions(kind) if not definition.ended and edit_distance(word, definition.label.word) <= NEAR_EDITS))
+    return sorted((definition.label.title for definition in registry.definitions(kind) if not definition.ended and edit_distance(word, definition.label.title) <= NEAR_EDITS))
 
 def undeclared(fresh: LabelDefinition, kind: str, project: Path | None, registry: LabelRegistry) -> str:
     """What is said of a word of the free kind KIND that PROJECT does not declare: where it is declared, the declaration to write, and the declared words near it."""
-    word = fresh.label.word
+    word = fresh.label.title
     said = f"{kind} {word!r} is declared by no module of this project; a {kind} is code, declared by the domain whose it is: by the module it names, or, for a stream of work, by the task domain. Write class `{NAME}{''.join(p[:1].upper()+p[1:] for p in word.replace('-', '_').split('_'))}(DeclaredLabel)` in that module's `{FOLDER}/` folder with id={fresh.label.id!r} and takes=(Label_{kind},), then label the task"
     files = sorted({str(item.source.relative_to(project)) if project else str(item.source) for item in declarations_of(project) if item.definition.is_a(registry.kinds[kind].label)})
     if files:
         said += f"; this project declares its {kind} labels in {', '.join(files)}"
-    near = near_words(word, kind, registry)
+    near = near_titles(word, kind, registry)
     if near:
         said += f"; near it: {', '.join(near)} — if it is one of them, use that one"
     return said
@@ -154,8 +154,8 @@ def checked_label(text: str, project: Path | None, registry: LabelRegistry | Non
         fail(undeclared(fresh, kind, project, registry))
     definition = registry.definition(label)
     if definition is not None and definition.ended:
-        instead = ', '.join((item.word for item in definition.replaced_by)) or 'none named'
-        fail(f'{kind} {label.word} ended on {definition.ended}; it is taken by no new task. In its place: {instead}')
+        instead = ', '.join((item.title for item in definition.replaced_by)) or 'none named'
+        fail(f'{kind} {label.title} ended on {definition.ended}; it is taken by no new task. In its place: {instead}')
     return label
 
 def label_to_remove(text: str, project: Path | None, carried: Labels) -> Label | None:
@@ -166,7 +166,7 @@ def label_to_remove(text: str, project: Path | None, carried: Labels) -> Label |
         fail(str(problem))
     if fresh is None:
         return label
-    return next((item for item in carried if item.word == fresh.label.word), None)
+    return next((item for item in carried if item.title == fresh.label.title), None)
 
 def add_label(store, project, task, label: Label) -> None:
     change_fact(task, 'labels', lambda: store.read_labels(project, task), lambda value, version: store.replace_labels(project, task, value, version), lambda was: None if any(item.id == label.id for item in was) else was.with_label(label))

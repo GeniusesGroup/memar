@@ -85,7 +85,7 @@ def _task_part(task_id: str, folder: Path) -> str:
 def model_part(kind: str) -> str:
     rule = f'The model a task runs on follows what it needs, not its kind alone: the rule is {MODEL_RULE} (`memar content resolve-path {MODEL_RULE}` gives its path); the plan states the facts it reads.'
     too_weak = 'If you judge your reasoning too weak for this task, write that and why in its report, name the level you ran at and what it lacked, end Blocked, and ask for another agent one level above to take it up.'
-    if kind in TaskKind.words():
+    if kind in TaskKind.titles():
         body = f'kind: {kind}\n{rule} The kind is its starting point. {too_weak}'
     elif kind:
         body = f"kind: {kind}\n{kind!r} is not a kind; the kinds are {', '.join(TASK_KINDS)}. End Blocked saying so, for the task that handed you the task to correct it."

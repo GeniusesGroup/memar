@@ -5,14 +5,9 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.LabelKind import Label_LabelKind
 
 class Label_DocumentKind(DeclaredLabel):
-    word = 'DocumentKind'
     id = '01a14a04-6539-7a01-8a01-000000000001'
-    meaning = (
-        'A label other labels take when they name what kind of documentation record a word is '
-        '(Plan, Report, Explanation, Handoff, Research).'
-    )
-    order = 1
     labels = (Label_LabelKind,)
+    SEQUENCE: tuple[str, ...] = ('Explanation', 'Plan', 'Report', 'Handoff', 'Research')
 
     @classmethod
     def DevActionNote(cls) -> str:
@@ -24,8 +19,9 @@ class Label_DocumentKind(DeclaredLabel):
     @classmethod
     def members(cls) -> tuple[type, ...]:
         DeclaredLabel.ensure_under('modules-plugable.knowledge.documentation')
-        found = DeclaredLabel.having(cls)
-        return tuple(sorted(found, key=lambda member: getattr(member, 'order', 10**9)))
+        held = {member.__name__[len('Label_'):]: member for member in DeclaredLabel.having(cls)}
+        listed = tuple(held[name] for name in cls.SEQUENCE if name in held)
+        return listed + tuple(member for name, member in held.items() if name not in cls.SEQUENCE)
 
     @classmethod
     def read(cls, text: str):
@@ -38,3 +34,10 @@ class Label_DocumentKind(DeclaredLabel):
     @classmethod
     def listing(cls) -> str:
         return DeclaredLabel.listing_of(cls.members())
+
+    @classmethod
+    def Overview(cls) -> str:
+        return (
+            'A label other labels take when they name what kind of documentation record a word is '
+            '(Plan, Report, Explanation, Handoff, Research).'
+        )

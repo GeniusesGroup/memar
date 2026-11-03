@@ -5,9 +5,11 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.management.task.labels.TaskKind import Label_TaskKind
 
 class Label_Mechanical(DeclaredLabel):
-    word = 'mechanical'
+    title = 'mechanical'
     id = '01a14a04-6535-780b-bfa4-4a451f6e5d70'
-    meaning = 'The task searches, counts, moves or rewrites by a rule given to it in full, and no step of it decides anything.'
     labels = (Label_TaskKind,)
-    order = 7
     carried = True
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The task searches, counts, moves or rewrites by a rule given to it in full, and no step of it decides anything.'

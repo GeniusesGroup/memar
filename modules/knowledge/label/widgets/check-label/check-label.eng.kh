@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Check in "modules/knowledge/label/widgets/check-label/check-label.kh"
+
+tp Domain mt (self Label_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Checks a title as a label of a kind a record may take")(s, VoidError)
+}
+
+tp Overview mt (self Label_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finds the label of the kind with the title; when there is none it refuses with Label_Error_Undeclared carrying the nearest ones. A record embeds Field_Labels and calls this widget; it writes no check of its own.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("Use a title the refusal offers, or declare the new label where it belongs.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Check) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

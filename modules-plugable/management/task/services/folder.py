@@ -91,7 +91,7 @@ def read_task(folder: Path) -> Task:
 
 def queued_why(task: Task) -> str | None:
     if task.status == Label_Queued.key:
-        return f'its Status is {Label_Queued.word}'
+        return f'its Status is {Label_Queued.title}'
     return None
 
 def is_task_folder(entry: Path) -> bool:

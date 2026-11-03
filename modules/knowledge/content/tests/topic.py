@@ -62,7 +62,7 @@ class Reading(unittest.TestCase):
 
     def test_a_topic_is_a_free_label_kind_whose_rule_is_the_types(self) -> None:
         self.assertEqual(LABEL_KIND.name, 'Topic')
-        self.assertEqual(LABEL_KIND.define(' Docs  Cleanup ').label.word, 'docs-cleanup')
+        self.assertEqual(LABEL_KIND.define(' Docs  Cleanup ').label.title, 'docs-cleanup')
         self.assertTrue(LABEL_KIND.define('docs').is_a(TOPIC_LABEL))
         self.assertEqual(LABEL_KIND.closed, ())
         with self.assertRaises(LabelProblem):

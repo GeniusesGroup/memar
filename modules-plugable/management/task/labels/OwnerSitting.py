@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_OwnerSitting(DeclaredLabel):
-    word = 'owner-sitting'
+    title = 'owner-sitting'
     id = '01a150bd-710b-7bab-8bcb-0eafafa6f3b3'
-    meaning = 'Work done in a sitting with the owner present; no record the search reaches carries it, so this sentence is read from its word.'
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Work done in a sitting with the owner present; no record the search reaches carries it, so this sentence is read from its word.'

@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Labels ab {
+	Details
+}
+
+tp GetCount mt (self Labels) () (count W32)
+
+tp GetLabelAt mt (self Labels) (position W32) (label Label, err Error)
+
+tp Contains mt (self Labels) (label Label) (found Boolean)

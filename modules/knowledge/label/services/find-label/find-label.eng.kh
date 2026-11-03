@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Find in "modules/knowledge/label/services/find-label/find-label.kh"
+
+tp Domain mt (self Label_Find) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Find) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finds the declared labels of a kind that have a title")(s, VoidError)
+}
+
+tp Overview mt (self Label_Find) () (s String) {
+    CharacterRun_From.FromCharacterRun("The labels declared in the labels folders of the project that compose the kind and are titled so. An empty answer is an answer, not an error.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Find) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Find) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

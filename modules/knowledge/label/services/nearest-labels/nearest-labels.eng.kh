@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Nearest in "modules/knowledge/label/services/nearest-labels/nearest-labels.kh"
+
+tp Domain mt (self Label_Nearest) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Nearest) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finds the declared labels of a kind with a title near a title")(s, VoidError)
+}
+
+tp Overview mt (self Label_Nearest) () (s String) {
+    CharacterRun_From.FromCharacterRun("The labels that compose the kind whose titles are within two single-character insertions, deletions or substitutions of the given one, in alphabetical order.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Nearest) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Nearest) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

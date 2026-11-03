@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_MemarModules(DeclaredLabel):
-    word = 'memar-modules'
+    title = 'memar-modules'
     id = '01a14a13-19fb-729d-838f-ca7b1fd0e043'
-    meaning = "Surveying Memar's modules and upgrading them one module at a time."
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return "Surveying Memar's modules and upgrading them one module at a time."

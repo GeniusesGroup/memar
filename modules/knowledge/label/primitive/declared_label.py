@@ -5,22 +5,20 @@ import hashlib
 import importlib
 import importlib.util
 import pkgutil
+import re
 from pathlib import Path
-from modules.knowledge.text.primitive.word import Word
 from modules.knowledge.label.primitive.label import Label, LabelDefinition
 
 _REGISTRY: list[type] = []
 _ENSURED_PACKAGES: set[str] = set()
 
-class DeclaredLabel(Word):
+class DeclaredLabel:
+    title = ''
     id = ''
     labels: tuple[type, ...] = ()
-    ended = ''
-    replaced_by: tuple[type, ...] = ()
     safe = ''
     report_ending: str | None = None
     carried = True
-    order: int | None = None
 
     def __init_subclass__(cls, **kwargs) -> None:
         super().__init_subclass__(**kwargs)
@@ -28,8 +26,14 @@ class DeclaredLabel(Word):
             return
         if not cls.__name__.startswith('Label_'):
             raise TypeError(f'{cls.__name__} must be named Label_<Word>')
-        cls.key = cls.word.lower()
-        cls.as_label = Label(cls.word, cls.id) if cls.id else Label(cls.word, '')
+        suffix = cls.__name__[len('Label_'):]
+        declared = cls.__dict__.get('title')
+        if declared is not None and re.sub(r'[-_ ]', '', declared).lower() != suffix.lower():
+            raise TypeError(f'{cls.__name__} declares title {declared!r}, which is not its class name {suffix!r}')
+        if declared is None:
+            cls.title = suffix
+        cls.key = cls.title.lower()
+        cls.as_label = Label(cls.title, cls.id) if cls.id else Label(cls.title, '')
         cls.label = cls.as_label
         if cls not in _REGISTRY:
             _REGISTRY.append(cls)
@@ -39,9 +43,9 @@ class DeclaredLabel(Word):
         return LabelDefinition(
             cls.as_label,
             tuple(held.as_label for held in cls.labels),
-            cls.meaning,
-            cls.ended,
-            tuple(replaced.as_label for replaced in cls.replaced_by),
+            cls.Overview(),
+            cls.ExpiryDate(),
+            tuple(replaced.as_label for replaced in cls.ExpireInFavorOf()),
         )
 
     @classmethod
@@ -50,15 +54,23 @@ class DeclaredLabel(Word):
 
     @classmethod
     def Summary(cls) -> str:
-        text = (cls.meaning or cls.word).strip()
+        text = (cls.Overview() or cls.title).strip()
         if not text:
-            return cls.word
+            return cls.title
         end = text.find('.')
         return text[: end + 1] if end >= 0 else text
 
     @classmethod
     def Overview(cls) -> str:
-        return (cls.meaning or '').strip()
+        return ''
+
+    @classmethod
+    def ExpiryDate(cls) -> str:
+        return ''
+
+    @classmethod
+    def ExpireInFavorOf(cls) -> tuple[type, ...]:
+        return ()
 
     @classmethod
     def UserActionNote(cls) -> str:
@@ -68,7 +80,7 @@ class DeclaredLabel(Word):
     def DevActionNote(cls) -> str:
         return (
             'Declare Label_<Word>(DeclaredLabel) with labels=(KindType, …) as DeclaredLabel types. '
-            'Ask having(kind) or the kind\'s members()/statuses(); text is word and Details, never a string cache. '
+            'Ask having(kind) or the kind\'s members()/statuses(); text is title and Details, never a string cache. '
             'The in-memory registry is process-local until a graph of label edges replaces it.'
         )
 
@@ -128,8 +140,8 @@ class DeclaredLabel(Word):
 
     @classmethod
     def listing_of(cls, members: tuple[type, ...]) -> str:
-        words = [member.word for member in members]
-        return f"{', '.join(words[:-1])}, or {words[-1]}" if len(words) > 1 else (words[0] if words else '')
+        titles = [member.title for member in members]
+        return f"{', '.join(titles[:-1])}, or {titles[-1]}" if len(titles) > 1 else (titles[0] if titles else '')
 
     @classmethod
     def definitions_of(cls, members: tuple[type, ...]):

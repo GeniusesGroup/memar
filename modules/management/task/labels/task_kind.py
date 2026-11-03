@@ -10,7 +10,7 @@ from modules.management.task.labels.Critique import Label_Critique
 from modules.management.task.labels.Implement import Label_Implement
 from modules.management.task.labels.Document import Label_Document
 from modules.management.task.labels.Mechanical import Label_Mechanical
-LABEL_KIND_NAME = Label_TaskKind.word
+LABEL_KIND_NAME = Label_TaskKind.title
 TASK_KIND_LABEL = Label_TaskKind.as_label
 
 class TaskKind:
@@ -29,19 +29,19 @@ class TaskKind:
     @classmethod
     def read(cls, text: str):
         wanted = text.strip().lower()
-        return next((kind for kind in cls.all() if kind.word == wanted), None)
+        return next((kind for kind in cls.all() if kind.title == wanted), None)
 
     @classmethod
-    def words(cls, carried: bool=False) -> tuple[str, ...]:
-        return tuple(kind.word for kind in cls.all() if kind.carried or not carried)
+    def titles(cls, carried: bool=False) -> tuple[str, ...]:
+        return tuple(kind.title for kind in cls.all() if kind.carried or not carried)
 
 def _word(text: str) -> str:
     kind = TaskKind.read(text)
     if kind is None:
-        raise LabelProblem(f"a kind is one of {', '.join(TaskKind.words(carried=True))}; {text.strip()!r} is not one")
+        raise LabelProblem(f"a kind is one of {', '.join(TaskKind.titles(carried=True))}; {text.strip()!r} is not one")
     if not kind.carried:
-        raise LabelProblem(f"a plan does not carry the kind {kind.word}: {kind.meaning} A plan's kind is one of {', '.join(TaskKind.words(carried=True))}")
-    return kind.word
+        raise LabelProblem(f"a plan does not carry the kind {kind.title}: {kind.Overview()} A plan's kind is one of {', '.join(TaskKind.titles(carried=True))}")
+    return kind.title
 
 LABEL_KIND = LabelKind(
     TASK_KIND_LABEL,
@@ -49,7 +49,7 @@ LABEL_KIND = LabelKind(
     "get-task-init-context, which reads an act's sections, and content get-act-context --kind",
     _word,
     tuple(
-        LabelDefinition(Label(kind.word, kind.id), (TASK_KIND_LABEL,))
+        LabelDefinition(Label(kind.title, kind.id), (TASK_KIND_LABEL,))
         for kind in TaskKind.all()
         if kind.carried
     ),

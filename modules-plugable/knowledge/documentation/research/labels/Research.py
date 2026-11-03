@@ -12,12 +12,13 @@ Label_DocumentKind = import_module(
 ).Label_DocumentKind
 
 class Label_Research(DeclaredLabel):
-    word = 'Research'
     id = '01a14a04-653a-7a01-8a01-000000000005'
-    meaning = 'A research task; the task holds Status of the inquiry.'
-    order = 5
     labels = (Label_DocumentKind,)
 
     @classmethod
     def statuses(cls) -> tuple[type, ...]:
         return (Label_Active, Label_Paused, Label_Complete, Label_Withdrawn)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'A research task; the task holds Status of the inquiry.'

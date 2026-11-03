@@ -90,7 +90,7 @@ TaskKind = _m_task_kind.TaskKind
 ROOT = SCRIPTS.parent.parent
 DOC = '# Doc\n\n## Abstract\nDOC-ABSTRACT\n\n## One\nONE-TEXT\n\n## Two\nTWO-TEXT\n'
 UP = '../../../../../'
-WORD = TaskKind.DESIGN.word
+WORD = TaskKind.DESIGN.title
 
 class Fixture(unittest.TestCase):
 
@@ -125,7 +125,7 @@ class Word(Fixture):
         found = self.problems('modelling', self.entry('two'))
         self.assertEqual(len(found), 1, found)
         self.assertIn("'modelling' names no kind", found[0])
-        for word in (EVERY_ACT, *TaskKind.words()):
+        for word in (EVERY_ACT, *TaskKind.titles()):
             self.assertIn(word, found[0])
 
     def test_a_kinds_list_and_the_every_act_list_are_not(self) -> None:

@@ -134,7 +134,7 @@ MARK = '=== '
 
 def _kind_label(word: str) -> Label:
     """The label of a task kind a plan carries; a word that is none gets an identifier nothing defines."""
-    known = {d.label.word: d.label for d in task_kind.LABEL_KIND.closed}
+    known = {d.label.title: d.label for d in task_kind.LABEL_KIND.closed}
     return known.get(word) or Label(word, new_id())
 
 def plan_with(kind: str | None=None, request: str='Do the thing.', steps: str='', project: Path=Path('/project')) -> str:
@@ -321,8 +321,8 @@ class Documents(Fixture):
 
     def test_each_kind_prints_its_passages_and_no_other(self) -> None:
         for kind in (kind for kind in TaskKind.all() if kind.carried):
-            with self.subTest(kind=kind.word):
-                plan = plan_with(kind.word)
+            with self.subTest(kind=kind.title):
+                plan = plan_with(kind.title)
                 found = [line for line in headers(self.parts(plan)['documents']) if '(description)' not in line]
                 printed = self.compose_heads(kind)
                 self.assertEqual(found, printed)
@@ -348,7 +348,7 @@ class Documents(Fixture):
         (project / 'docs' / 'own.md').write_text('# Own\n\n## Mine\nMINE-TEXT\n', encoding='utf-8', newline='\n')
         (project / 'rules').mkdir()
         mark = section_hash(by_anchor('# Own\n\n## Mine\nMINE-TEXT\n', 'mine'))
-        (project / 'rules' / LIST_NAME.format(word=TaskKind.DESIGN.word)).write_text(f'# Orchard\nWhy.\n\n- [Own → Mine](../docs/own.md#mine) — OWN-WHY `reviewed {mark}`\n', encoding='utf-8', newline='\n')
+        (project / 'rules' / LIST_NAME.format(word=TaskKind.DESIGN.title)).write_text(f'# Orchard\nWhy.\n\n- [Own → Mine](../docs/own.md#mine) — OWN-WHY `reviewed {mark}`\n', encoding='utf-8', newline='\n')
         preferences = preferences_path(project)
         preferences.write_text(preferences_text({PREFERENCE: 'rules, rules/gone'}), encoding='utf-8', newline='\n')
         part = self.parts(plan_with('design', project=project))['documents']

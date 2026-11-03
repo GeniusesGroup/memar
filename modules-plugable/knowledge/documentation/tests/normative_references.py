@@ -222,7 +222,7 @@ class Real(unittest.TestCase):
 
     def test_memars_place_holds_a_list_for_every_kind_and_every_act_each_with_entries(self) -> None:
         found = {found_list.word: found_list for found_list in lists([memar_place(ROOT)])}
-        for word in (EVERY_ACT, *TaskKind.words()):
+        for word in (EVERY_ACT, *TaskKind.titles()):
             with self.subTest(word=word):
                 self.assertIn(word, found)
                 self.assertTrue(found[word].entries)

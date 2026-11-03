@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_LegacyArchive(DeclaredLabel):
-    word = 'legacy-archive'
+    title = 'legacy-archive'
     id = '01a154a5-4510-7194-965d-0273c985375f'
-    meaning = "Reviewing the old archive of services and GUI against Memar's modules, and deciding what of it is kept."
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return "Reviewing the old archive of services and GUI against Memar's modules, and deciding what of it is kept."

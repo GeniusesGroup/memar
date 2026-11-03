@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Labels in "modules/knowledge/label/protocol/labels.kh"
+
+tp Domain mt (self Labels) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Labels) () (s String) {
+    CharacterRun_From.FromCharacterRun("Labels, in the order written, none twice")(s, VoidError)
+}
+
+tp Overview mt (self Labels) () (s String) {
+    CharacterRun_From.FromCharacterRun("The labels of a record, or the labels a refusal offers.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Labels) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Labels) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

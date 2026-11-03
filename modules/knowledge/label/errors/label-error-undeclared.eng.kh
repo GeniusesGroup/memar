@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Error_Undeclared in "modules/knowledge/label/errors/label-error-undeclared.kh"
+
+tp Domain mt (self Label_Error_Undeclared) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Error_Undeclared) () (s String) {
+    CharacterRun_From.FromCharacterRun("No label of the kind has the title")(s, VoidError)
+}
+
+tp Overview mt (self Label_Error_Undeclared) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carries the title refused and the labels of the kind with titles near it, so that a typo is caught before it splits one subject in two.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Error_Undeclared) () (s String) {
+    CharacterRun_From.FromCharacterRun("Use one of the labels offered if it is the one meant; otherwise declare the new label in the labels folder of the module whose it is.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Error_Undeclared) () (s String) {
+    CharacterRun_From.FromCharacterRun("Report the title and the kind.")(s, VoidError)
+}

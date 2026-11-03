@@ -4,7 +4,10 @@ from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 
 class Label_Failed(DeclaredLabel):
-    word = 'failed'
+    title = 'failed'
     id = '01a19853-60ef-726b-ac8d-a1c068c10945'
-    meaning = 'The attempt failed.'
     labels = ()
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The attempt failed.'

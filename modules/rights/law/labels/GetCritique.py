@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_GetCritique(DeclaredLabel):
-    word = 'get-critique'
+    title = 'get-critique'
     id = '01a19853-60ef-726b-ac8d-a1b97fbe53be'
-    meaning = 'The law is open for public critique; companions can still change.'
     labels = (Label_Status,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The law is open for public critique; companions can still change.'

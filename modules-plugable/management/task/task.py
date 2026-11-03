@@ -71,11 +71,11 @@ REPORT_NAME = _m_report_file.REPORT_NAME
 
 def status_meanings(words: tuple[type, ...]) -> str:
     """WORDS as help lines, each word and its meaning, obtained from the type."""
-    return '\n'.join((f'    {status.word:<9}  {status.meaning}' for status in words))
+    return '\n'.join((f'    {status.title:<9}  {status.Overview()}' for status in words))
 
 def report_endings() -> str:
     """How a run that ends in each Status narrates that end in the report's Result, as help lines."""
-    return '\n'.join((f'    {status.word:<9}  {status.report_ending}' for status in reversed(REPORT.statuses)))
+    return '\n'.join((f'    {status.title:<9}  {status.report_ending}' for status in reversed(REPORT.statuses)))
 TASK_COMMAND = 'task'
 TASK_COMMAND = TASK_COMMAND
 SUMMARY = 'open the scratch folder one piece of work gets; queue tasks, and take queued tasks to do'

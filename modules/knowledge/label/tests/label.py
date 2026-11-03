@@ -118,13 +118,13 @@ class Definitions(unittest.TestCase):
     def test_a_refined_word_is_read_as_its_declaration_writes_it(self) -> None:
         red = LabelDefinition(Label('red', new_id()), (COLOR.label,), 'a red')
         registry = LabelRegistry([COLOR], (red,))
-        self.assertEqual(registry.words(Labels((Label('rouge', red.label.id),)), 'Color'), ('red',))
+        self.assertEqual(registry.titles(Labels((Label('rouge', red.label.id),)), 'Color'), ('red',))
 
 class Kinds(unittest.TestCase):
 
     def test_a_free_kind_defines_a_word_by_its_rule_with_a_new_identifier(self) -> None:
         definition = COLOR.define('Dark  Red')
-        self.assertEqual(definition.label.word, 'dark-red')
+        self.assertEqual(definition.label.title, 'dark-red')
         self.assertRegex(definition.label.id, UUID7)
         self.assertTrue(definition.is_a(COLOR.label))
 
@@ -135,7 +135,7 @@ class Kinds(unittest.TestCase):
 
     def test_the_registry_resolves_a_closed_word_to_its_label_and_defines_nothing(self) -> None:
         label, fresh = LabelRegistry([SIZE, COLOR]).resolve('Size=small')
-        self.assertEqual(label.word, 'small')
+        self.assertEqual(label.title, 'small')
         self.assertIsNone(fresh)
 
     def test_the_registry_defines_a_free_word_once_and_knows_it_after(self) -> None:
@@ -168,14 +168,14 @@ class Kinds(unittest.TestCase):
         dark, fresh = registry.resolve('Color=dark')
         registry.add(fresh)
         small, _ = registry.resolve('Size=small')
-        self.assertEqual(registry.words(Labels((dark, small)), 'Color'), ('dark',))
-        self.assertEqual(registry.words(Labels((dark, small)), 'Size'), ('small',))
+        self.assertEqual(registry.titles(Labels((dark, small)), 'Color'), ('dark',))
+        self.assertEqual(registry.titles(Labels((dark, small)), 'Size'), ('small',))
 
 class ManyLabels(unittest.TestCase):
 
     def test_a_record_takes_several_labels_in_the_order_written(self) -> None:
         labels = Labels().with_label(A).with_label(B).with_label(C)
-        self.assertEqual([label.word for label in labels], ['a', 'b', 'c'])
+        self.assertEqual([label.title for label in labels], ['a', 'b', 'c'])
         self.assertEqual(len(labels), 3)
 
     def test_a_label_is_never_twice_by_identifier(self) -> None:

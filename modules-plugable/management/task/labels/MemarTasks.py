@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_MemarTasks(DeclaredLabel):
-    word = 'memar-tasks'
+    title = 'memar-tasks'
     id = '01a14a13-19cc-7794-96e1-38952aab81f5'
-    meaning = "Memar's task records and the tooling that opens, queues, claims, archives and sweeps them."
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return "Memar's task records and the tooling that opens, queues, claims, archives and sweeps them."

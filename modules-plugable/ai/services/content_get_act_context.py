@@ -49,13 +49,13 @@ def _word(value: str) -> str:
     return f'"{value}"' if any((character.isspace() for character in value)) else value
 
 def _kinds_listing() -> str:
-    return '\n'.join((f'  {kind.word}: {kind.meaning}' for kind in TaskKind.all()))
+    return '\n'.join((f'  {kind.title}: {kind.Overview()}' for kind in TaskKind.all()))
 
 def describe(verbs):
     parser = verbs.add_parser(COMMAND, help="print the passages of Memar's documents a kind of act requires read", description=f"""Print the sections the normative references of the given kinds name, the lists in\nmodules/knowledge/content/rules/normative_references/: the every-act list's, then each kind's in the\norder given, each section once under a line naming it and its entry's why, and a Practice's\ndescription once above its first section. The first line counts what it holds. It is what\n`memar ai get-task-init-context` prints for a plan's Kind, for an act with no task — a question\nanswered in chat — or one that changes midway.\n\nWith {TASK_FLAG}, what is printed is recorded in that task's temp/ folder; {AFTER_FLAG} K0\nthen leaves out the sections of K0's lists that record holds as printed with the same hash,\nso a section changed since, or added since, prints. {AFTER_FLAG} without {TASK_FLAG} is refused.\n\nA text too long for one tool output prints in ordered parts, each at most --most-characters\nlong: each part but the last ends with the exact command for the next (--part N), to run\nat once; read every part before acting. The same kinds print the same parts, and each\npart says "part N of M of text H", H a hash of the whole text: a part naming another H\nis of another version of it.\n\nThe kinds, and when each applies:\n{_kinds_listing()}""")
     add_project_flags(parser, 'the project whose preferences set the most characters a part holds')
-    parser.add_argument('--kind', action='append', required=True, choices=TaskKind.words(), metavar='K', help='a kind of act whose sections to print; repeat for several')
-    parser.add_argument(AFTER_FLAG, action='append', default=[], choices=TaskKind.words(), metavar='K0', help=f'a kind whose sections were already read in the task {TASK_FLAG} names; repeat for several')
+    parser.add_argument('--kind', action='append', required=True, choices=TaskKind.titles(), metavar='K', help='a kind of act whose sections to print; repeat for several')
+    parser.add_argument(AFTER_FLAG, action='append', default=[], choices=TaskKind.titles(), metavar='K0', help=f'a kind whose sections were already read in the task {TASK_FLAG} names; repeat for several')
     TaskId.add_flag(parser, 'the task this context is printed for: what it prints is recorded there, and --after reads that record')
     add_part_arguments(parser, f'the `{MOST_CHARACTERS_KEY}` in the {PREFERENCES_RELATIVE.as_posix()} of the project named')
     return run

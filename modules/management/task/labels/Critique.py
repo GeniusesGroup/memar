@@ -5,9 +5,11 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.management.task.labels.TaskKind import Label_TaskKind
 
 class Label_Critique(DeclaredLabel):
-    word = 'critique'
+    title = 'critique'
     id = '01a14a04-6532-76bf-b48e-4b7cc539bf44'
-    meaning = 'The task judges work it did not make against the documents that govern that work, and returns a verdict on each part.'
     labels = (Label_TaskKind,)
-    order = 4
     carried = True
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'The task judges work it did not make against the documents that govern that work, and returns a verdict on each part.'

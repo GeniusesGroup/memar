@@ -48,7 +48,7 @@ def labels_in_use(project) -> dict[str, list[Task]]:
         definition = registry.definition(label)
         if definition is None or not definition.labels:
             return f'{UNDECLARED}: {label}'
-        return f"{definition.labels[0].word}: {definition.label.word}" + (' (ended)' if definition.ended else '')
+        return f"{definition.labels[0].title}: {definition.label.title}" + (' (ended)' if definition.ended else '')
     found: dict[str, list[Task]] = {written(definition.label): [] for definition in registry.definitions(TOPIC)}
     for task in find_tasks(project=project):
         for label in dict.fromkeys((written(label) for label in labels_of(task.front))):

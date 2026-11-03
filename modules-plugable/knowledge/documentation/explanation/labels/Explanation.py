@@ -13,12 +13,13 @@ Label_DocumentKind = import_module(
 ).Label_DocumentKind
 
 class Label_Explanation(DeclaredLabel):
-    word = 'Explanation'
     id = '01a14a04-653a-7a01-8a01-000000000001'
-    meaning = 'An Explanation-facet document carries Status as Status-kind labels on its record.'
-    order = 1
     labels = (Label_DocumentKind,)
 
     @classmethod
     def statuses(cls) -> tuple[type, ...]:
         return (Label_Draft, Label_Proposed, Label_Final, Label_Superseded, Label_Rejected)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'An Explanation-facet document carries Status as Status-kind labels on its record.'

@@ -5,10 +5,11 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Proposed(DeclaredLabel):
-    word = 'Proposed'
     id = '01a14a04-6524-7dda-8f7d-d0005f0d99d4'
-    meaning = 'Design discussion reached consensus; ready for final review before being reflected in canonical documentation.'
-    order = 2
     labels = (Label_Status,)
     safe = 'Not yet'
     report_ending = None
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Design discussion reached consensus; ready for final review before being reflected in canonical documentation.'

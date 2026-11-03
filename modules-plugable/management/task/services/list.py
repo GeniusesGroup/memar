@@ -169,7 +169,7 @@ def print_task(task: Task, *, idle: float | None=None, reader: Reader | None=Non
         note(f"status: {task.status or 'none'}")
         note(f'priority: {Priority.of(task.front)}')
         if labels_of(task.front):
-            note(f"labels: {', '.join((label.word for label in labels_of(task.front)))}")
+            note(f"labels: {', '.join((label.title for label in labels_of(task.front)))}")
         why = disagreement(task.status, read_report_status(task.path))
         if why:
             note(f'{DISAGREES} {why}')
@@ -220,4 +220,4 @@ def describe(verbs) -> Callable[[argparse.Namespace], None]:
     return run
 
 def run(args: argparse.Namespace) -> None:
-    list_tasks(args.text, args.status, args.idle_days, args.conversation, project_from_args(args))
+    fail(str(import_module('modules-plugable.management.task.services.ids').ListRefused()))

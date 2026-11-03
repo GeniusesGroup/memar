@@ -5,10 +5,11 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Rejected(DeclaredLabel):
-    word = 'Rejected'
     id = '01a14a04-6527-7b35-8b8c-8438070c1c38'
-    meaning = 'Considered and explicitly not adopted; kept for the historical record.'
-    order = 5
     labels = (Label_Status,)
     safe = 'No'
     report_ending = None
+
+    @classmethod
+    def Overview(cls) -> str:
+        return 'Considered and explicitly not adopted; kept for the historical record.'

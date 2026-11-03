@@ -5,7 +5,10 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.content.labels.Topic import Label_Topic
 
 class Label_MemarKhayyamTypes(DeclaredLabel):
-    word = 'memar-khayyam-types'
+    title = 'memar-khayyam-types'
     id = '01a14a13-1980-7a5f-8be8-e766626965a0'
-    meaning = "Memar's own types written as Khayyam types."
     labels = (Label_Topic,)
+
+    @classmethod
+    def Overview(cls) -> str:
+        return "Memar's own types written as Khayyam types."

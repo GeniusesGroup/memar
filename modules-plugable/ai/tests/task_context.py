@@ -175,17 +175,17 @@ def headers(text: str) -> list[str]:
 class Order(Fixture):
 
     def test_every_act_first_then_each_kind_in_the_order_given(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'two')], CRITIQUE.word: [('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('plain.md', 'two')], CRITIQUE.title: [('plain.md', 'one')]})
         found = headers(self.text([CRITIQUE, DESIGN]))
         self.assertEqual(found, ['--- docs/core.md#norms ---', '--- docs/plain.md#one ---', '--- docs/plain.md#two ---'])
 
     def test_within_a_list_documents_by_path_and_sections_in_document_order(self) -> None:
-        self.lists({DESIGN.word: [('way.practice.md', 'third'), ('plain.md', 'three'), ('way.practice.md', 'first'), ('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('way.practice.md', 'third'), ('plain.md', 'three'), ('way.practice.md', 'first'), ('plain.md', 'one')]})
         found = [line for line in headers(self.text([DESIGN])) if '(description)' not in line]
         self.assertEqual(found, ['--- docs/core.md#norms ---', '--- docs/plain.md#one ---', '--- docs/plain.md#three ---', '--- docs/way.practice.md#first ---', '--- docs/way.practice.md#third ---'])
 
     def test_each_section_prints_under_its_line_and_its_why(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one', 'ONE-WHY')]})
+        self.lists({DESIGN.title: [('plain.md', 'one', 'ONE-WHY')]})
         text = self.text([DESIGN])
         self.assertIn('--- docs/plain.md#one ---\nWhy: ONE-WHY\n## One\nONE-TEXT', text)
         self.assertNotIn('TWO-TEXT', text)
@@ -199,7 +199,7 @@ class Order(Fixture):
 class FirstLine(Fixture):
 
     def test_the_first_line_names_the_kinds_and_counts_the_sections(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one'), ('plain.md', 'two')]})
+        self.lists({DESIGN.title: [('plain.md', 'one'), ('plain.md', 'two')]})
         self.assertEqual(self.text([DESIGN]).splitlines()[0], "kinds: design; 3 sections from Memar's lists")
 
     def test_with_no_project_named_it_says_memars_lists_alone(self) -> None:
@@ -209,15 +209,15 @@ class FirstLine(Fixture):
 class Once(Fixture):
 
     def test_a_section_two_kinds_name_prints_once(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')], CRITIQUE.word: [('plain.md', 'one'), ('plain.md', 'two')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')], CRITIQUE.title: [('plain.md', 'one'), ('plain.md', 'two')]})
         text = self.text([DESIGN, CRITIQUE])
         self.assertEqual(text.count('ONE-TEXT'), 1)
         self.assertIn('TWO-TEXT', text)
 
     def test_a_section_inside_another_prints_once_whichever_comes_first(self) -> None:
         for first, second in ((DESIGN, CRITIQUE), (CRITIQUE, DESIGN)):
-            with self.subTest(first=first.word):
-                self.lists({DESIGN.word: [('way.practice.md', 'inner')], CRITIQUE.word: [('way.practice.md', 'second')]})
+            with self.subTest(first=first.title):
+                self.lists({DESIGN.title: [('way.practice.md', 'inner')], CRITIQUE.title: [('way.practice.md', 'second')]})
                 text = self.text([first, second])
                 self.assertEqual(text.count('INNER-TEXT'), 1)
                 self.assertNotIn('--- docs/way.practice.md#inner ---', text)
@@ -225,31 +225,31 @@ class Once(Fixture):
 class Description(Fixture):
 
     def test_a_practice_has_its_description_once_above_its_first_section(self) -> None:
-        self.lists({DESIGN.word: [('way.practice.md', 'first'), ('way.practice.md', 'third'), ('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('way.practice.md', 'first'), ('way.practice.md', 'third'), ('plain.md', 'one')]})
         text = self.text([DESIGN])
         self.assertEqual(text.count('WAY-DESCRIPTION'), 1)
         self.assertLess(text.index('ONE-TEXT'), text.index('WAY-DESCRIPTION'))
         self.assertLess(text.index('WAY-DESCRIPTION'), text.index('--- docs/way.practice.md#first ---'))
 
     def test_a_document_with_no_description_has_none_printed(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')]})
         self.assertNotIn('(description)', self.text([DESIGN]))
 
 class Marked(Fixture):
 
     def test_a_section_changed_since_reviewed_prints_as_it_reads_now_marked(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')]})
         self.document('plain.md', DOCS['plain.md'].replace('ONE-TEXT', 'ONE-EDITED'))
         text = self.text([DESIGN])
-        where = f'{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.word)}:4'
+        where = f'{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.title)}:4'
         self.assertIn(f'--- docs/plain.md#one (changed since reviewed: {where}) ---\n{CHANGED_DO.format(located=where)}\n', text)
         self.assertIn('ONE-EDITED', text)
         self.assertIn('; 1 changed since reviewed', text.splitlines()[0])
 
     def test_a_broken_entry_prints_its_link_label_and_why_marked(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'gone', 'GONE-WHY'), ('missing.md', 'x', 'MISSING-WHY', '0' * 12)]})
+        self.lists({DESIGN.title: [('plain.md', 'gone', 'GONE-WHY'), ('missing.md', 'x', 'MISSING-WHY', '0' * 12)]})
         text = self.text([DESIGN])
-        where = f'{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.word)}'
+        where = f'{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.title)}'
         self.assertIn(f'--- docs/plain.md#gone (anchor gone: {where}:4) ---', text)
         self.assertIn('[plain.md → gone](../../../../../docs/plain.md#gone) — GONE-WHY', text)
         self.assertIn(f'--- docs/missing.md#x (anchor gone: {where}:5) ---', text)
@@ -260,16 +260,16 @@ class Marked(Fixture):
 class Dropped(Fixture):
 
     def test_a_drop_prints_where_the_passage_stood_with_its_reason_and_is_counted(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one'), ('plain.md', 'two'), self.entry('plain.md', 'one', 'NO-SUCH-STEP', drop=True)]})
+        self.lists({DESIGN.title: [('plain.md', 'one'), ('plain.md', 'two'), self.entry('plain.md', 'one', 'NO-SUCH-STEP', drop=True)]})
         text = self.text([DESIGN])
-        where = f'{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.word)}:6'
+        where = f'{MEMAR_PLACE.as_posix()}/{LIST_NAME.format(word=DESIGN.title)}:6'
         self.assertNotIn('ONE-TEXT', text)
         self.assertIn(f'--- docs/plain.md#one (dropped) ---\ndropped by {where}: NO-SUCH-STEP', text)
         self.assertLess(text.index('(dropped)'), text.index('TWO-TEXT'))
         self.assertIn('; 1 passage dropped (listed below)', text.splitlines()[0])
 
     def test_an_every_act_section_is_never_dropped(self) -> None:
-        self.lists({DESIGN.word: [('core.md', 'norms'), self.entry('core.md', 'norms', drop=True)]})
+        self.lists({DESIGN.title: [('core.md', 'norms'), self.entry('core.md', 'norms', drop=True)]})
         text = self.text([DESIGN])
         self.assertIn('CORE-NORMS', text)
         self.assertNotIn('(dropped)', text)
@@ -287,7 +287,7 @@ class Record(Fixture):
         return '\n\n'.join(composed.blocks)
 
     def test_what_a_context_printed_is_recorded_a_line_per_section(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')]})
         self.print_and_record([DESIGN])
         lines = record_path(self.folder).read_text(encoding='utf-8').splitlines()
         self.assertEqual(len(lines), 2)
@@ -296,7 +296,7 @@ class Record(Fixture):
         self.assertEqual(len(record_path(self.folder).read_text(encoding='utf-8').splitlines()), 2, 'recorded once')
 
     def test_after_leaves_out_what_the_record_holds_with_the_same_hash(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')], CRITIQUE.word: [('plain.md', 'one'), ('plain.md', 'two')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')], CRITIQUE.title: [('plain.md', 'one'), ('plain.md', 'two')]})
         self.print_and_record([DESIGN])
         text = self.print_and_record([CRITIQUE], after=[DESIGN])
         self.assertNotIn('ONE-TEXT', text)
@@ -305,7 +305,7 @@ class Record(Fixture):
         self.assertIn('after design: 2 sections already printed left out', text.splitlines()[0])
 
     def test_a_section_changed_between_two_prints_prints_again(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')], CRITIQUE.word: [('plain.md', 'one')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')], CRITIQUE.title: [('plain.md', 'one')]})
         self.print_and_record([DESIGN])
         self.document('plain.md', DOCS['plain.md'].replace('ONE-TEXT', 'ONE-EDITED'))
         text = self.print_and_record([CRITIQUE], after=[DESIGN])
@@ -313,15 +313,15 @@ class Record(Fixture):
         self.assertNotIn('CORE-NORMS', text)
 
     def test_a_section_added_to_the_earlier_kinds_list_since_it_printed_prints(self) -> None:
-        self.lists({DESIGN.word: [('plain.md', 'one')], CRITIQUE.word: [('plain.md', 'one'), ('plain.md', 'three')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')], CRITIQUE.title: [('plain.md', 'one'), ('plain.md', 'three')]})
         self.print_and_record([DESIGN])
-        self.lists({DESIGN.word: [('plain.md', 'one'), ('plain.md', 'three')]})
+        self.lists({DESIGN.title: [('plain.md', 'one'), ('plain.md', 'three')]})
         text = self.print_and_record([CRITIQUE], after=[DESIGN])
         self.assertIn('THREE-TEXT', text)
         self.assertNotIn('ONE-TEXT', text)
 
     def test_a_description_printed_with_the_record_is_not_printed_again(self) -> None:
-        self.lists({DESIGN.word: [('way.practice.md', 'first')], CRITIQUE.word: [('way.practice.md', 'first'), ('way.practice.md', 'third')]})
+        self.lists({DESIGN.title: [('way.practice.md', 'first')], CRITIQUE.title: [('way.practice.md', 'first'), ('way.practice.md', 'third')]})
         self.print_and_record([DESIGN])
         text = self.print_and_record([CRITIQUE], after=[DESIGN])
         self.assertNotIn('WAY-DESCRIPTION', text)
@@ -353,7 +353,7 @@ class Project(Fixture):
         self.refs = self.project / 'rules' / 'refs'
         self.refs.mkdir(parents=True)
         self.prefer('rules/refs')
-        self.lists({DESIGN.word: [('plain.md', 'one'), ('plain.md', 'two')]})
+        self.lists({DESIGN.title: [('plain.md', 'one'), ('plain.md', 'two')]})
 
     def prefer(self, value: str) -> None:
         path = preferences_path(self.project)
@@ -380,35 +380,35 @@ class Project(Fixture):
         return context_text(places, kinds, place_problems=problems)
 
     def test_a_projects_added_section_prints_after_memars_and_is_counted(self) -> None:
-        self.project_list(DESIGN.word, self.own('mine'))
+        self.project_list(DESIGN.title, self.own('mine'))
         text = self.text([DESIGN])
         self.assertEqual(headers(text), ['--- docs/core.md#norms ---', '--- docs/plain.md#one ---', '--- docs/plain.md#two ---', '--- orchard: docs/own.md#mine ---'])
         self.assertIn('--- orchard: docs/own.md#mine ---\nWhy: OWN-WHY\n## Mine\nMINE-TEXT', text)
         self.assertEqual(text.splitlines()[0], "kinds: design; 3 sections from Memar's lists, 1 from this project's")
 
     def test_a_passage_of_memar_named_by_its_published_address_prints_from_memars_checkout(self) -> None:
-        self.project_list(DESIGN.word, self.published('plain.md', 'three'))
+        self.project_list(DESIGN.title, self.published('plain.md', 'three'))
         text = self.text([DESIGN])
         self.assertEqual(headers(text)[-1], '--- docs/plain.md#three ---')
         self.assertIn('Why: PUBLISHED-WHY\n## Three\nTHREE-TEXT', text)
 
     def test_a_drop_prints_where_the_passage_stood_and_is_counted(self) -> None:
-        self.project_list(DESIGN.word, self.published('plain.md', 'one', drop='NO-ORCHARD-STEP'))
+        self.project_list(DESIGN.title, self.published('plain.md', 'one', drop='NO-ORCHARD-STEP'))
         text = self.text([DESIGN])
         self.assertNotIn('ONE-TEXT', text)
-        where = f'orchard: rules/refs/{LIST_NAME.format(word=DESIGN.word)}:4'
+        where = f'orchard: rules/refs/{LIST_NAME.format(word=DESIGN.title)}:4'
         self.assertIn(f'--- docs/plain.md#one (dropped) ---\ndropped by {where}: NO-ORCHARD-STEP', text)
         self.assertLess(text.index('(dropped)'), text.index('TWO-TEXT'))
         self.assertIn('; 1 passage of Memar dropped by this project (listed below)', text.splitlines()[0])
 
     def test_a_drop_with_no_reason_drops_nothing(self) -> None:
-        self.project_list(DESIGN.word, self.published('plain.md', 'one', drop=''))
+        self.project_list(DESIGN.title, self.published('plain.md', 'one', drop=''))
         text = self.text([DESIGN])
         self.assertIn('ONE-TEXT', text)
         self.assertNotIn('(dropped)', text)
 
     def test_an_every_act_section_prints_whatever_the_projects_lists_say(self) -> None:
-        for word in (EVERY_ACT, DESIGN.word):
+        for word in (EVERY_ACT, DESIGN.title):
             self.project_list(word, self.published('core.md', 'norms', drop='NOT-HERE'))
         text = self.text([DESIGN])
         self.assertIn('CORE-NORMS', text)
@@ -421,8 +421,8 @@ class Project(Fixture):
         self.assertIn('not a folder', first)
 
     def test_a_list_outside_or_below_the_declared_folders_is_not_read(self) -> None:
-        self.project_list(DESIGN.word, self.own('mine'), folder=self.project / 'docs')
-        self.project_list(DESIGN.word, self.own('mine'), folder=self.refs / 'below')
+        self.project_list(DESIGN.title, self.own('mine'), folder=self.project / 'docs')
+        self.project_list(DESIGN.title, self.own('mine'), folder=self.refs / 'below')
         text = self.text([DESIGN])
         self.assertNotIn('MINE-TEXT', text)
         self.assertEqual(text.splitlines()[0], "kinds: design; 3 sections from Memar's lists, 0 from this project's")
@@ -437,7 +437,7 @@ class Real(unittest.TestCase):
         every_act = context([memar_place(ROOT)], []).listed
         self.assertGreater(every_act, 0)
         for kind in TaskKind.all():
-            with self.subTest(kind=kind.word):
+            with self.subTest(kind=kind.title):
                 composed = context([memar_place(ROOT)], [kind])
                 self.assertGreater(composed.listed, every_act)
                 self.assertEqual(composed.gone, 0)
@@ -513,8 +513,8 @@ class CommandLine(unittest.TestCase):
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
         for kind in TaskKind.all():
-            with self.subTest(kind=kind.word):
-                self.assertIn(f"{kind.word}: {' '.join(kind.meaning.split())}", shown)
+            with self.subTest(kind=kind.title):
+                self.assertIn(f"{kind.title}: {' '.join(kind.Overview().split())}", shown)
         self.assertIn('--after', shown)
         self.assertIn('--task-id', shown)
 
@@ -532,9 +532,9 @@ class CommandLineWithTask(Fixture):
         patched.start()
         self.addCleanup(patched.stop)
         self.folder = memar_fs.task_dir(self.SID, create=True)
-        plan = plan_skeleton(self.SID, 'Fixture', '2026-10-16T00:00:00Z', self.root, labels=Labels((Label('TaskKind', DESIGN.word),)))
+        plan = plan_skeleton(self.SID, 'Fixture', '2026-10-16T00:00:00Z', self.root, labels=Labels((Label('TaskKind', DESIGN.title),)))
         (self.folder / PLAN_NAME).write_text(plan, encoding='utf-8', newline='\n')
-        self.lists({DESIGN.word: [('plain.md', 'one')], CRITIQUE.word: [('plain.md', 'one'), ('plain.md', 'two')]})
+        self.lists({DESIGN.title: [('plain.md', 'one')], CRITIQUE.title: [('plain.md', 'one'), ('plain.md', 'two')]})
 
     def run_with(self, *arguments: str) -> str:
         content_context = import_module('modules-plugable.ai.services.content_get_act_context')
@@ -546,24 +546,24 @@ class CommandLineWithTask(Fixture):
         return printed.getvalue()
 
     def test_the_record_is_written_and_after_subtracts_it(self) -> None:
-        self.run_with('--kind', DESIGN.word)
+        self.run_with('--kind', DESIGN.title)
         self.assertTrue(record_path(self.folder).is_file())
-        text = self.run_with('--kind', CRITIQUE.word, '--after', DESIGN.word)
+        text = self.run_with('--kind', CRITIQUE.title, '--after', DESIGN.title)
         self.assertNotIn('ONE-TEXT', text)
         self.assertIn('TWO-TEXT', text)
         self.assertIn('after design: 2 sections already printed left out', text.splitlines()[0])
 
     def test_the_record_is_written_once_the_last_part_is_printed(self) -> None:
         self.document('plain.md', DOCS['plain.md'].replace('TWO-TEXT', 'TWO-TEXT\n\n' + 'A long paragraph. ' * 60))
-        self.lists({CRITIQUE.word: [('plain.md', 'one'), ('plain.md', 'two')]})
-        first = self.run_with('--kind', CRITIQUE.word, '--most-characters', '700')
+        self.lists({CRITIQUE.title: [('plain.md', 'one'), ('plain.md', 'two')]})
+        first = self.run_with('--kind', CRITIQUE.title, '--most-characters', '700')
         self.assertIn('--part 2', first)
         self.assertFalse(record_path(self.folder).is_file())
         last = first
         number = 1
         while 'the last' not in last:
             number += 1
-            last = self.run_with('--kind', CRITIQUE.word, '--most-characters', '700', '--part', str(number))
+            last = self.run_with('--kind', CRITIQUE.title, '--most-characters', '700', '--part', str(number))
         self.assertTrue(record_path(self.folder).is_file())
 
     def test_the_named_projects_lists_are_read_beside_memars(self) -> None:
@@ -572,20 +572,20 @@ class CommandLineWithTask(Fixture):
         (project / 'docs' / 'own.md').write_text(OWN, encoding='utf-8', newline='\n')
         (project / 'rules').mkdir()
         mark = section_hash(by_anchor(OWN, 'mine'))
-        (project / 'rules' / LIST_NAME.format(word=DESIGN.word)).write_text(f'# Orchard\nWhy.\n\n- [Own → Mine](../docs/own.md#mine) — OWN-WHY `reviewed {mark}`\n', encoding='utf-8', newline='\n')
+        (project / 'rules' / LIST_NAME.format(word=DESIGN.title)).write_text(f'# Orchard\nWhy.\n\n- [Own → Mine](../docs/own.md#mine) — OWN-WHY `reviewed {mark}`\n', encoding='utf-8', newline='\n')
         preferences = preferences_path(project)
         preferences.write_text(preferences_text({PREFERENCE: 'rules'}), encoding='utf-8', newline='\n')
-        text = self.run_with('--kind', DESIGN.word, '--project-path', str(project))
+        text = self.run_with('--kind', DESIGN.title, '--project-path', str(project))
         self.assertIn('MINE-TEXT', text)
         self.assertIn("2 sections from Memar's lists, 1 from this project's", text.splitlines()[0])
 
     def test_after_covering_everything_says_so(self) -> None:
-        self.run_with('--kind', CRITIQUE.word)
-        self.assertIn('already printed', self.run_with('--kind', DESIGN.word, '--after', CRITIQUE.word))
+        self.run_with('--kind', CRITIQUE.title)
+        self.assertIn('already printed', self.run_with('--kind', DESIGN.title, '--after', CRITIQUE.title))
 
     def test_a_task_with_no_folder_is_refused(self) -> None:
         with self.assertRaises(SystemExit) as refused:
-            self.run_with_id('20261016-T000000Z-2', '--kind', DESIGN.word)
+            self.run_with_id('20261016-T000000Z-2', '--kind', DESIGN.title)
         self.assertIn('20261016-T000000Z-2', str(refused.exception.code))
 
     def run_with_id(self, task_id: str, *arguments: str) -> None:
