@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Queued(DeclaredLabel):
+    title = 'Queued'
     id = '01a14a04-6528-796c-8a26-e8132b15f166'
     labels = (Label_Status,)
     safe = 'No'

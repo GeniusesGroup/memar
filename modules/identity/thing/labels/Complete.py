@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Complete(DeclaredLabel):
+    title = 'Complete'
     id = '01a14a04-652c-7844-bfc5-b73cdd4f4bef'
     labels = (Label_Status,)
     safe = 'Yes'

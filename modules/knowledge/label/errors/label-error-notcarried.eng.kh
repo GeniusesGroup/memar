@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Error_NotCarried in "modules/knowledge/label/errors/label-error-notcarried.kh"
+
+tp Domain mt (self Label_Error_NotCarried) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Error_NotCarried) () (s String) {
+    CharacterRun_From.FromCharacterRun("The thing does not carry the label to be replaced")(s, VoidError)
+}
+
+tp Overview mt (self Label_Error_NotCarried) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carries the label that was to be taken out.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Error_NotCarried) () (s String) {
+    CharacterRun_From.FromCharacterRun("Replace a label the thing carries.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Error_NotCarried) () (s String) {
+    CharacterRun_From.FromCharacterRun("Report the thing and the label.")(s, VoidError)
+}

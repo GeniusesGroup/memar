@@ -12,6 +12,7 @@ Label_DocumentKind = import_module(
 ).Label_DocumentKind
 
 class Label_Handoff(DeclaredLabel):
+    title = 'Handoff'
     id = '01a14a04-653a-7a01-8a01-000000000004'
     labels = (Label_DocumentKind,)
 

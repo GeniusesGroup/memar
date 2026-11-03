@@ -103,20 +103,14 @@ class Definitions(unittest.TestCase):
         self.assertTrue(definition.is_a(B))
         self.assertFalse(definition.is_a(Label('z', new_id())))
 
-    def test_a_definition_carries_its_meaning_and_its_end_of_life(self) -> None:
-        live = LabelDefinition(A, (B,), 'what a means')
-        self.assertEqual((live.meaning, live.ended, live.replaced_by), ('what a means', '', ()))
-        ended = LabelDefinition(A, (B,), 'what a meant', '2026-10-23', (C,))
-        self.assertEqual((ended.ended, ended.replaced_by), ('2026-10-23', (C,)))
-
     def test_the_registry_holds_declared_definitions_and_lists_them_by_kind(self) -> None:
-        declared = (LabelDefinition(Label('red', new_id()), (COLOR.label,), 'a red'), LabelDefinition(Label('blue', new_id()), (COLOR.label,), 'a blue'))
+        declared = (LabelDefinition(Label('red', new_id()), (COLOR.label,)), LabelDefinition(Label('blue', new_id()), (COLOR.label,)))
         registry = LabelRegistry([SIZE, COLOR], declared)
         self.assertEqual(registry.definitions('Color'), declared)
         self.assertEqual(registry.resolve('Color=red'), (declared[0].label, None))
 
     def test_a_refined_word_is_read_as_its_declaration_writes_it(self) -> None:
-        red = LabelDefinition(Label('red', new_id()), (COLOR.label,), 'a red')
+        red = LabelDefinition(Label('red', new_id()), (COLOR.label,))
         registry = LabelRegistry([COLOR], (red,))
         self.assertEqual(registry.titles(Labels((Label('rouge', red.label.id),)), 'Color'), ('red',))
 

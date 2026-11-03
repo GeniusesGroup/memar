@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Blocked(DeclaredLabel):
+    title = 'Blocked'
     id = '01a14a04-652b-7a44-a88d-5f132d3b675d'
     labels = (Label_Status,)
     safe = 'No'

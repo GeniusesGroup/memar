@@ -33,7 +33,7 @@ LABEL_KIND = LabelKind(
     _word,
 )
 
-def topic(word: str, identifier: str, meaning: str, *, ended: str='', replaced_by: tuple[Label, ...]=()) -> LabelDefinition:
+def topic(word: str) -> LabelDefinition:
     raise LabelProblem(
         f"do not call topic(); declare class Label_<Word>(DeclaredLabel) with takes=(Label_Topic,) (refused for {word!r})"
     )

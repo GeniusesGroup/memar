@@ -13,6 +13,7 @@ Label_DocumentKind = import_module(
 ).Label_DocumentKind
 
 class Label_Explanation(DeclaredLabel):
+    title = 'Explanation'
     id = '01a14a04-653a-7a01-8a01-000000000001'
     labels = (Label_DocumentKind,)
 

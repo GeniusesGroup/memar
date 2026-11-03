@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Superseded(DeclaredLabel):
+    title = 'Superseded'
     id = '01a14a04-6526-7818-93c4-ad6502671d9b'
     labels = (Label_Status,)
     safe = 'No: depend on the superseding document'

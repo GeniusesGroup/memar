@@ -4,6 +4,7 @@ from __future__ import annotations
 from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 
 class Label_LabelKind(DeclaredLabel):
+    title = 'LabelKind'
     id = '01a14a04-6530-7000-8000-000000000001'
     labels = ()
 

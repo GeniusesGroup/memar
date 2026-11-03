@@ -31,6 +31,7 @@ from pathlib import Path
 from machine.console import fail
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
+from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.primitive.label import FLAG_SEPARATOR, Label, LabelDefinition, LabelProblem, LabelRegistry, Labels
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 task_kind = _m_task_kind
@@ -126,9 +127,19 @@ def edit_distance(one: str, two: str) -> int:
         previous = current
     return previous[-1]
 
+def ended_on(label: Label) -> str:
+    """The date the declaration of LABEL says it ended; empty when it is still taken or declared by no class."""
+    declaration = DeclaredLabel.of(label)
+    return declaration.ExpiryDate() if declaration is not None else ''
+
+def replacements_of(label: Label) -> tuple[Label, ...]:
+    """The labels the declaration of LABEL names in its place."""
+    declaration = DeclaredLabel.of(label)
+    return tuple(item.as_label for item in declaration.ExpireInFavorOf()) if declaration is not None else ()
+
 def near_titles(word: str, kind: str, registry: LabelRegistry) -> list[str]:
     """The words REGISTRY defines under the kind named KIND within `NEAR_EDITS` of WORD, ended ones left out."""
-    return sorted((definition.label.title for definition in registry.definitions(kind) if not definition.ended and edit_distance(word, definition.label.title) <= NEAR_EDITS))
+    return sorted((definition.label.title for definition in registry.definitions(kind) if not ended_on(definition.label) and edit_distance(word, definition.label.title) <= NEAR_EDITS))
 
 def undeclared(fresh: LabelDefinition, kind: str, project: Path | None, registry: LabelRegistry) -> str:
     """What is said of a word of the free kind KIND that PROJECT does not declare: where it is declared, the declaration to write, and the declared words near it."""
@@ -153,9 +164,10 @@ def checked_label(text: str, project: Path | None, registry: LabelRegistry | Non
     if fresh is not None:
         fail(undeclared(fresh, kind, project, registry))
     definition = registry.definition(label)
-    if definition is not None and definition.ended:
-        instead = ', '.join((item.title for item in definition.replaced_by)) or 'none named'
-        fail(f'{kind} {label.title} ended on {definition.ended}; it is taken by no new task. In its place: {instead}')
+    ended = ended_on(label)
+    if definition is not None and ended:
+        instead = ', '.join((item.title for item in replacements_of(label))) or 'none named'
+        fail(f'{kind} {label.title} ended on {ended}; it is taken by no new task. In its place: {instead}')
     return label
 
 def label_to_remove(text: str, project: Path | None, carried: Labels) -> Label | None:

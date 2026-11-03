@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Rejected(DeclaredLabel):
+    title = 'Rejected'
     id = '01a14a04-6527-7b35-8b8c-8438070c1c38'
     labels = (Label_Status,)
     safe = 'No'

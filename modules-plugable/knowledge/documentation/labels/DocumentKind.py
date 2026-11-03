@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.LabelKind import Label_LabelKind
 
 class Label_DocumentKind(DeclaredLabel):
+    title = 'DocumentKind'
     id = '01a14a04-6539-7a01-8a01-000000000001'
     labels = (Label_LabelKind,)
     SEQUENCE: tuple[str, ...] = ('Explanation', 'Plan', 'Report', 'Handoff', 'Research')
@@ -19,7 +20,7 @@ class Label_DocumentKind(DeclaredLabel):
     @classmethod
     def members(cls) -> tuple[type, ...]:
         DeclaredLabel.ensure_under('modules-plugable.knowledge.documentation')
-        held = {member.__name__[len('Label_'):]: member for member in DeclaredLabel.having(cls)}
+        held = {member.title: member for member in DeclaredLabel.having(cls)}
         listed = tuple(held[name] for name in cls.SEQUENCE if name in held)
         return listed + tuple(member for name, member in held.items() if name not in cls.SEQUENCE)
 

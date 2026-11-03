@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Replace in "modules/knowledge/label/services/replace-label/replace-label.kh"
+
+tp Domain mt (self Label_Replace) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Replace) () (s String) {
+    CharacterRun_From.FromCharacterRun("Takes a label off a thing and puts another on it")(s, VoidError)
+}
+
+tp Overview mt (self Label_Replace) () (s String) {
+    CharacterRun_From.FromCharacterRun("The thing keeps every other label, and carries the new label where the old one stood. It is refused with Label_Error_NotCarried when the thing does not carry the old one. A status is a label, so a change of status is this service with the status labels. It knows no task and no file: the thing is any thing, and where its labels are held is the label module's edge store.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Replace) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Replace) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

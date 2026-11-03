@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Withdrawn(DeclaredLabel):
+    title = 'Withdrawn'
     id = '01a14a04-652d-7d1c-963b-a0fd21c182dd'
     labels = (Label_Status,)
     safe = 'No'

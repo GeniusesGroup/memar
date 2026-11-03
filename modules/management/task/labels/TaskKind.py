@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.LabelKind import Label_LabelKind
 
 class Label_TaskKind(DeclaredLabel):
+    title = 'TaskKind'
     id = '01a14a04-652e-7dc2-8926-f2b0b5b2ba1b'
     labels = (Label_LabelKind,)
 

@@ -37,9 +37,6 @@ class Label:
 class LabelDefinition:
     label: Label
     labels: tuple[Label, ...] = ()
-    meaning: str = ''
-    ended: str = ''
-    replaced_by: tuple[Label, ...] = ()
 
     def is_a(self, kind: Label) -> bool:
         return any(held.id == kind.id for held in self.labels)

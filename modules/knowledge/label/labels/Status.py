@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.LabelKind import Label_LabelKind
 
 class Label_Status(DeclaredLabel):
+    title = 'Status'
     id = '01a14a04-6522-7d19-9796-04f8a30e831f'
     labels = (Label_LabelKind,)
     SEQUENCE: tuple[str, ...] = (
@@ -35,7 +36,7 @@ class Label_Status(DeclaredLabel):
     def members(cls) -> tuple[type, ...]:
         """Document-life Status words under thing (ordered); domain Status words stay out until imported for their own queries."""
         DeclaredLabel.ensure_under('modules.identity.thing.labels')
-        held = {member.__name__[len('Label_'):]: member for member in DeclaredLabel.having(cls)}
+        held = {member.title: member for member in DeclaredLabel.having(cls)}
         return tuple(held[name] for name in cls.SEQUENCE if name in held)
 
     @classmethod

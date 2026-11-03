@@ -137,27 +137,35 @@ class Listing(unittest.TestCase):
 
 class Declaration(unittest.TestCase):
 
-    def test_the_word_is_the_class_name_after_the_prefix(self) -> None:
+    def test_the_title_is_declared_and_the_key_is_it_lower_case(self) -> None:
         from modules.knowledge.label.primitive.declared_label import DeclaredLabel
         class Label_Pending(DeclaredLabel):
+            title = 'Pending'
             labels = (Label_Status,)
         self.assertEqual((Label_Pending.title, Label_Pending.key), ('Pending', 'pending'))
         self.assertEqual(Label_Pending.definition().label.title, 'Pending')
 
-    def test_a_word_that_names_another_class_is_refused(self) -> None:
+    def test_a_declaration_without_a_title_is_refused_naming_the_class(self) -> None:
         from modules.knowledge.label.primitive.declared_label import DeclaredLabel
-        with self.assertRaises(TypeError):
-            class Label_Other(DeclaredLabel):
-                title = 'Different'
+        with self.assertRaisesRegex(TypeError, 'Label_Untitled'):
+            class Label_Untitled(DeclaredLabel):
+                labels = (Label_Status,)
+
+    def test_a_title_need_not_repeat_the_class_name(self) -> None:
+        from modules.knowledge.label.primitive.declared_label import DeclaredLabel
+        class Label_Other(DeclaredLabel):
+            title = 'different'
+        self.assertEqual(Label_Other.key, 'different')
 
     def test_the_summary_is_the_first_sentence_of_the_overview(self) -> None:
         from modules.knowledge.label.primitive.declared_label import DeclaredLabel
         class Label_Told(DeclaredLabel):
+            title = 'Told'
             @classmethod
             def Overview(cls) -> str:
                 return 'First one. Second one.'
         self.assertEqual(Label_Told.Summary(), 'First one.')
-        self.assertEqual(Label_Told.definition().meaning, 'First one. Second one.')
+        self.assertFalse(hasattr(Label_Told.definition(), 'meaning'))
 
     def test_a_declaration_holds_no_meaning_order_or_end_of_life_key(self) -> None:
         for status in Label_Status.members():

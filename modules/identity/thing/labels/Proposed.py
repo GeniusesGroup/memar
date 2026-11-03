@@ -5,6 +5,7 @@ from modules.knowledge.label.primitive.declared_label import DeclaredLabel
 from modules.knowledge.label.labels.Status import Label_Status
 
 class Label_Proposed(DeclaredLabel):
+    title = 'Proposed'
     id = '01a14a04-6524-7dda-8f7d-d0005f0d99d4'
     labels = (Label_Status,)
     safe = 'Not yet'

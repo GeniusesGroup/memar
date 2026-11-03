@@ -5,7 +5,6 @@ import hashlib
 import importlib
 import importlib.util
 import pkgutil
-import re
 from pathlib import Path
 from modules.knowledge.label.primitive.label import Label, LabelDefinition
 
@@ -26,12 +25,8 @@ class DeclaredLabel:
             return
         if not cls.__name__.startswith('Label_'):
             raise TypeError(f'{cls.__name__} must be named Label_<Word>')
-        suffix = cls.__name__[len('Label_'):]
-        declared = cls.__dict__.get('title')
-        if declared is not None and re.sub(r'[-_ ]', '', declared).lower() != suffix.lower():
-            raise TypeError(f'{cls.__name__} declares title {declared!r}, which is not its class name {suffix!r}')
-        if declared is None:
-            cls.title = suffix
+        if not cls.__dict__.get('title'):
+            raise TypeError(f'{cls.__name__} declares no title')
         cls.key = cls.title.lower()
         cls.as_label = Label(cls.title, cls.id) if cls.id else Label(cls.title, '')
         cls.label = cls.as_label
@@ -43,9 +38,6 @@ class DeclaredLabel:
         return LabelDefinition(
             cls.as_label,
             tuple(held.as_label for held in cls.labels),
-            cls.Overview(),
-            cls.ExpiryDate(),
-            tuple(replaced.as_label for replaced in cls.ExpireInFavorOf()),
         )
 
     @classmethod
@@ -87,6 +79,10 @@ class DeclaredLabel:
     @classmethod
     def all_declared(cls) -> tuple[type, ...]:
         return tuple(_REGISTRY)
+
+    @classmethod
+    def of(cls, label: Label) -> type | None:
+        return next((member for member in reversed(_REGISTRY) if member.id == label.id), None)
 
     @classmethod
     def having(cls, kind: type) -> tuple[type, ...]:
