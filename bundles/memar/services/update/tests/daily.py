@@ -13,7 +13,7 @@ in the `tests/` folder of the shelf that owns it per
 
 Nothing here starts a real update or writes outside its scratch folder: the
 Memar root is patched onto one, made under the folder
-`modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and the start of the background run is
+`modules/process/test/services/test_scratch.py` names, and the start of the background run is
 patched to record its command, except in the one test that starts a harmless
 child to prove it outlives no caller's output.
 
@@ -62,11 +62,11 @@ sys.path.insert(0, str(SCRIPTS / 'services'))
 sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-test_scratch = _m_fs_test_scratch
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+test_scratch = _m_test_scratch
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import bundles.memar.services.update.services.daily as daily
 AWAKE: dict[str, str] = {}
 

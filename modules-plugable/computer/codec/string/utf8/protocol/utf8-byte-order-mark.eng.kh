@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp UTF8_ByteOrderMark in "modules-plugable/computer/codec/string/utf8/protocol/utf8-byte-order-mark.kh"
+
+tp Domain mt (self UTF8_ByteOrderMark) () (s String) {
+    CharacterRun_From.FromCharacterRun("UTF-8")(s, VoidError)
+}
+
+tp Summary mt (self UTF8_ByteOrderMark) () (s String) {
+    CharacterRun_From.FromCharacterRun("The three bytes that may begin a UTF-8 byte sequence and say nothing of its text")(s, VoidError)
+}
+
+tp Overview mt (self UTF8_ByteOrderMark) () (s String) {
+    CharacterRun_From.FromCharacterRun("The three bytes that may begin a UTF-8 byte sequence and say nothing of its text.")(s, VoidError)
+}
+
+tp UserActionNote mt (self UTF8_ByteOrderMark) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self UTF8_ByteOrderMark) () (s String) {
+    CharacterRun_From.FromCharacterRun("Detect says whether the bytes begin with the mark. Strip answers the bytes without the mark and whether it was there, so a caller can report a removed mark. Only a leading mark is one; the same bytes elsewhere are text.")(s, VoidError)
+}

@@ -44,13 +44,12 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_lock = import_module('modules-plugable.computer.memory.filesystem.services.fs_lock')
-fs_lock = _m_fs_lock
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
-_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_text_edit_lock = import_module('bundles.memar_fs.services.text_edit_lock')
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
+_m_fs_trash = import_module('bundles.memar_fs.services.fs_trash')
 fs_trash = _m_fs_trash
 import contextlib
 import io
@@ -166,7 +165,7 @@ class OnlyItsFolder(Fixture):
 
     def test_closing_leaves_the_lock_root_alone_and_is_recorded(self) -> None:
         path = self.task('s-3')
-        lock_dir = memar_fs.scratch_root() / fs_lock.EDIT_LOCK_DIR_NAME
+        lock_dir = memar_fs.scratch_root() / _m_text_edit_lock.EDIT_LOCK_DIR_NAME
         lock_dir.mkdir()
         with unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin) as trash:
             task_close.close_task('s-3')

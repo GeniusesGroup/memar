@@ -85,9 +85,8 @@ for folder in (TOP, SCRIPTS, SCRIPTS / "services"):
         sys.path.insert(0, str(folder))
 
 from machine.console import use_utf8_stdio
-from machine.plugable_import import load as plugable_load
 
-role_folders = plugable_load("computer.memory.filesystem.services.fs_memar").role_folders
+role_folders = importlib.import_module("bundles.memar.services.location.memar_location").role_folders
 # The one door a service is handed a class of nodes by, declared here and written in `services/memory/memory.py`
 # (Memory Record, "Binding adapters to classes"), since this file routes and nothing else.
 open = importlib.import_module("bundles.memar.services.memory.memory").open
@@ -126,9 +125,8 @@ Each verb's own help defines the words that are its own."""
 EPILOG = """Ask any verb with `--help` and it says what it accepts.
 
 Before deleting, moving, restoring, or committing files, use `memar git` (the tool
-`git_commit` and its siblings) and the services under
-`modules-plugable/computer/memory/filesystem/services/` for delete, move, restore, and
-commit. For putting text into a file, use `memar content write` and
+`git_commit` and its siblings) and `memar fs`
+for delete, move, restore, and commit. For putting text into a file, use `memar content write` and
 `memar content edit`."""
 
 

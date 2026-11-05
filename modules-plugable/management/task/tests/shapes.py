@@ -3,11 +3,10 @@
 
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import contextlib
 import io
 import subprocess
@@ -254,13 +253,14 @@ class Sweep(Fixture):
 class Scratch(Fixture):
 
     def test_a_scratch_file_in_a_task_folder_of_either_shape_is_refused_outside_its_temp(self) -> None:
-        write = plugable_load('computer.memory.filesystem.services.content_write')
+        write = import_module('bundles.memar_fs.services.text_edit_command')
+        refused = import_module('bundles.memar_fs.errors.errors').ScratchInTaskFolder
         for shape, folder in self.both('scratch'):
             (folder / 'docs').mkdir(exist_ok=True)
             source = folder / 'docs' / 'x.txt'
             source.write_text('x', encoding='utf-8')
             with self.subTest(shape=shape):
-                with self.assertRaises(SystemExit):
+                with self.assertRaises(refused):
                     write.refuse_kept_scratch(source)
 
 if __name__ == '__main__':

@@ -7,7 +7,7 @@ The rule is [Normative References](../../../../modules/knowledge/content/rules/n
 before an act starts, the agent reads every section the entries of the every-act
 list and of its kinds' lists name. This file reads those lists and nothing else;
 which kinds exist is `modules/management/task/labels/task_kind.py`'s, how the sections print is
-`modules-plugable/ai/services/task_context.py`'s, and what `memar content check` reports of a list
+`modules/knowledge/content/services/act_context.py`'s, and what `memar content check` reports of a list
 is `modules-plugable/knowledge/documentation/services/normative_references_check.py`'s.
 
 **Declared places.** A list is read only in a place declared to hold lists, so a
@@ -27,16 +27,15 @@ an entry: the shape is the declaration.
 
 **Where an entry's link leads.** A relative link names a file of the place's own
 repository. In a project's list a link may instead be a page of Memar's
-published repository (`modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s `PUBLISHED_PAGES`): it names that
+published repository (`bundles/memar/services/location/memar_location.py`'s `PUBLISHED_PAGES`): it names that
 file of the Memar checkout the place was given, and is read and hashed from
 there, so a project can name a passage Memar's lists omit, or drop one they name,
 without knowing where Memar's checkout lies on a machine.
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-PUBLISHED_PAGES = _m_fs_memar.PUBLISHED_PAGES
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+PUBLISHED_PAGES = _m_memar_location.PUBLISHED_PAGES
 import re
 from pathlib import Path, PurePosixPath
 from typing import NamedTuple

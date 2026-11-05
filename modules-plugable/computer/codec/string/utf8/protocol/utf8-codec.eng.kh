@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp UTF8_Codec in "modules-plugable/computer/codec/string/utf8/protocol/utf8-codec.kh"
+
+tp Domain mt (self UTF8_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("UTF-8")(s, VoidError)
+}
+
+tp Summary mt (self UTF8_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("The UTF-8 realization of the text domain codec port")(s, VoidError)
+}
+
+tp Overview mt (self UTF8_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("The UTF-8 realization of the text domain codec port.")(s, VoidError)
+}
+
+tp UserActionNote mt (self UTF8_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self UTF8_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Realizes Text_Codec for UTF-8 and uses UTF8_ByteOrderMark to strip, detect and report the mark. Its errors realize Text_Error_Edit_NotUtf8 and Text_Error_Edit_NamedTextNotUtf8 as UTF8_Error_NotUtf8 and UTF8_Error_NamedTextNotUtf8.")(s, VoidError)
+}

@@ -14,7 +14,7 @@ What each service does is pinned by its own suite beside this one; a behavior
 pinned in two files is one of them to forget.
 
 Nothing here writes outside its scratch folder. The Memar root the services
-resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules/process/test/services/test_scratch.py`
 names, and removed again. The command is assembled by the launcher from the
 task services alone, so another domain's services are not this suite's
 subject. The subprocesses run ask for `--help` only, which resolves no root and
@@ -74,10 +74,10 @@ from __future__ import annotations
 TIER = 'system'
 BUDGET_SECONDS = 150
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 from importlib import import_module
 import argparse
 import contextlib

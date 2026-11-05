@@ -6,7 +6,7 @@
     python bundles/memar/services/install/tests/install.py
 
 Nothing here writes outside its scratch folder. The scratch folder is made
-under the one `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and is removed again; every
+under the one `modules/process/test/services/test_scratch.py` names, and is removed again; every
 subprocess runs a path that stops before any write, and
 the platform's own record of MEMAR_ROOT is read but never written.
 
@@ -85,16 +85,16 @@ from __future__ import annotations
 TIER = 'system'
 BUDGET_SECONDS = 150
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_target = import_module('modules-plugable.computer.memory.filesystem.services.fs_target')
-target = _m_fs_target
-_m_fs_memar_repository = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar_repository')
-SKILL_MARKER = _m_fs_memar_repository.SKILL_MARKER
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
-memar_fs = _m_fs_memar
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_target = import_module('bundles.memar.services.install.services.target')
+target = _m_target
+_m_repository = import_module('bundles.memar.services.location.repository')
+SKILL_MARKER = _m_repository.SKILL_MARKER
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
+memar_fs = _m_memar_location
+memar_fs = _m_memar_location
 import argparse
 import contextlib
 import io
@@ -222,11 +222,11 @@ class SiblingSurface(unittest.TestCase):
     def test_the_siblings_import_the_module_that_owns_each_concern(self):
         expected = {
             INTO_PROJECT: {
-                'is_memar_repository': 'modules-plugable.computer.memory.filesystem.services.fs_memar_repository',
+                'is_memar_repository': 'bundles.memar.services.location.repository',
                 'recorded_value': 'machine.env_location',
             },
             INTO_APPS: {
-                'soft_delete': 'modules-plugable.computer.memory.filesystem.services.fs_trash',
+                'soft_delete': 'bundles.memar_fs.services.fs_trash',
                 'WINDOWS_BOOTSTRAP': 'bundles.memar.services.install.services.project',
                 'POSIX_BOOTSTRAP': 'bundles.memar.services.install.services.project',
                 'resolve_root': 'machine.env_location',
@@ -237,7 +237,7 @@ class SiblingSurface(unittest.TestCase):
             imports = [(owner, symbol.strip()) for owner, line in IMPORT_LINE.findall(text) for symbol in line.split(',')]
             for symbol, owner in wanted.items():
                 with self.subTest(name=name, symbol=symbol):
-                    if owner.startswith('modules-plugable'):
+                    if owner.startswith(('modules-plugable', 'bundles.memar_fs')):
                         self.assertIn(owner, text, f'{symbol} must be loaded from {owner}')
                         self.assertRegex(
                             text,
@@ -657,7 +657,7 @@ class HelpUnchanged(unittest.TestCase):
 
     def test_the_installer_help_carries_no_mechanism(self):
         shown = printed(run_install('--help'))
-        for phrase in ('modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py', 'bundles/memar/services/update/services/checkout.py', 'machine/env_location.py', 'modules-plugable/computer/memory/filesystem/services/fs_lock.py', 'advisory', 'idempotent'):
+        for phrase in ('bundles/memar/services/location/repository.py', 'bundles/memar/services/update/services/checkout.py', 'machine/env_location.py', 'bundles/memar_fs/services/fs_lock.py', 'advisory', 'idempotent'):
             with self.subTest(phrase=phrase):
                 self.assertNotIn(phrase, shown)
 

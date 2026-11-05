@@ -7,6 +7,9 @@ tp Error_Memar_Git_Refusal in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_NotNamed in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_GitNotInstalled in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_NotARepository in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NotAFolder in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_PatternMalformed in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_NoMatch in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_GitFailed in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_PathAbsent in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_NothingToCommit in "bundles/memar_git/errors/errors.kh"
@@ -27,17 +30,18 @@ tp Error_Memar_Git_ReindexHeadMoved in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_IndexChanged in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_StagedByOthers in "bundles/memar_git/errors/errors.kh"
 tp Error_Memar_Git_Locked in "bundles/memar_git/errors/errors.kh"
+tp Error_Memar_Git_MoveFailed in "bundles/memar_git/errors/errors.kh"
 
 tp Domain mt (self Error_Memar_Git_Refusal) () (s String) {
     CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
 }
 
 tp Summary mt (self Error_Memar_Git_Refusal) () (s String) {
-    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Remove and Undelete go path by path and the paths before the refused one are already done")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Remove, Undelete and HistoryMoveGlob go path by path and the paths before the refused one are already done")(s, VoidError)
 }
 
 tp Overview mt (self Error_Memar_Git_Refusal) () (s String) {
-    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Remove and Undelete go path by path and the paths before the refused one are already done.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Remove, Undelete and HistoryMoveGlob go path by path and the paths before the refused one are already done.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Error_Memar_Git_Refusal) () (s String) {
@@ -506,4 +510,84 @@ tp UserActionNote mt (self Error_Memar_Git_Locked) () (s String) {
 
 tp DevActionNote mt (self Error_Memar_Git_Locked) () (s String) {
     CharacterRun_From.FromCharacterRun("The detail says the stage reached, what git said, the age of the lock and the exact call that finishes or undoes the step; the lock is never removed.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The destination of a move must be a folder and is not one")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The destination of a move must be a folder and is not one.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the place. HistoryMoveGlob (only when applying).")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_PatternMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_PatternMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The pattern is empty or absolute: it must be non-empty and relative to the current folder")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_PatternMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The pattern is empty or absolute: it must be non-empty and relative to the current folder.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_PatternMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_PatternMalformed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing is moved. HistoryMoveGlob.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_NoMatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_NoMatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("No file matches the pattern")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_NoMatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("No file matches the pattern.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_NoMatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_NoMatch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing is moved. HistoryMoveGlob.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Git_MoveFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Git_MoveFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The history-keeping move of one matched file failed")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Git_MoveFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The history-keeping move of one matched file failed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Git_MoveFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Git_MoveFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The paths before the failed one are already moved. The detail carries the file and what `git mv` said. HistoryMoveGlob.")(s, VoidError)
 }

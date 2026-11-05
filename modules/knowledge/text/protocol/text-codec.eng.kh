@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Codec in "modules/knowledge/text/protocol/text-codec.kh"
+
+tp Domain mt (self Text_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Bytes to a text and back, refusing bytes that are not valid for the encoding")(s, VoidError)
+}
+
+tp Overview mt (self Text_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Bytes to a text and back, refusing bytes that are not valid for the encoding.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Codec) () (s String) {
+    CharacterRun_From.FromCharacterRun("Decode removes a leading byte-order mark, reports that it was there, and refuses with Text_Error_Edit_NotUtf8 bytes that are not valid, never answering a copy decoded with replacement. DecodeBare keeps a leading mark in the text as the character U+FEFF and refuses with Text_Error_Edit_NotUtf8, a refusal. DecodeNamed is bare as well, and ends with Text_Error_Edit_NamedTextNotUtf8, a failure: it is the decode of a named text that an edit takes as the text to replace or the replacement. Encode never begins its bytes with a mark. The text domain owns this port; the UTF-8 codec module realizes it.")(s, VoidError)
+}

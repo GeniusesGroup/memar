@@ -22,9 +22,8 @@ they belong; whoever made them files them.
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-TEMP_FOLDER = _m_fs_memar.TEMP_FOLDER
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+TEMP_FOLDER = _m_memar_location.TEMP_FOLDER
 from pathlib import Path
 from typing import NamedTuple
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')

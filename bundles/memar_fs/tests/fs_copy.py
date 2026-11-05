@@ -1,70 +1,56 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""Tests for whether a copy still matches, in `modules-plugable/computer/memory/filesystem/services/fs_copy.py`.
-
-    python modules-plugable/computer/memory/filesystem/tests/fs_copy.py
-
-The subject is the tree comparison of `modules-plugable/computer/memory/filesystem/services/fs_copy.py`, named for the file
-that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
-in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-
-Both trees are written into a scratch folder and removed with it.
-
-What is pinned, and what each pin is for:
-
-  CopyMatches        A tree copied with the same ignore rule matches, and what
-                     the rule leaves out is left out of the comparison on both
-                     sides.
-  CopyDiffers        A file changed, added, or gone on either side is a
-                     difference, including a change that keeps the size.
-
-Usage is the interface. Do not duplicate these recipes as prose catalogs.
-"""
 from __future__ import annotations
-from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_copy = import_module('modules-plugable.computer.memory.filesystem.services.fs_copy')
-differs = _m_fs_copy.differs
+TIER = 'system'
+BUDGET_SECONDS = 60
 import shutil
 import sys
-import tempfile
 import unittest
 from pathlib import Path
-TESTS = Path(__file__).resolve().parent
-REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
-SCRIPTS = REPO / 'bundles' / 'memar'
-sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(REPO))
-sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _scratch import ScratchFolder, bundle, errors, junction_or_symlink
+
+def copy(*args, **keywords):
+    return bundle('services.fs_copy').copy(*args, **keywords)
+
 IGNORE = shutil.ignore_patterns('*.pyc', 'node_modules')
 
-class Fixture(unittest.TestCase):
+class Fixture(ScratchFolder):
 
     def setUp(self) -> None:
-        scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
-        self.addCleanup(scratch.cleanup)
-        root = Path(scratch.name)
-        self.source = root / 'source'
+        super().setUp()
+        self.source = self.root / 'source'
         (self.source / 'part').mkdir(parents=True)
         (self.source / 'a.md').write_text('alpha\n', encoding='utf-8')
         (self.source / 'part' / 'b.md').write_text('beta\n', encoding='utf-8')
-        self.dest = root / 'dest'
+        self.dest = self.root / 'dest'
         shutil.copytree(self.source, self.dest, ignore=IGNORE)
 
 class CopyMatches(Fixture):
 
     def test_a_copy_matches_its_source(self) -> None:
-        self.assertFalse(differs(self.source, self.dest, IGNORE))
+        self.assertFalse(copy(self.source, self.dest, IGNORE))
 
-    def test_what_the_rule_leaves_out_is_not_compared(self) -> None:
+    def test_what_the_ignore_leaves_out_is_not_compared_on_either_side(self) -> None:
         (self.source / 'node_modules').mkdir()
         (self.source / 'node_modules' / 'dep.js').write_text('dev\n', encoding='utf-8')
         (self.dest / 'part' / 'x.pyc').write_bytes(b'\x00')
-        self.assertFalse(differs(self.source, self.dest, IGNORE))
+        self.assertFalse(copy(self.source, self.dest, IGNORE))
+
+    def test_a_folder_whose_name_is_left_out_is_not_entered(self) -> None:
+        (self.dest / 'node_modules' / 'deep').mkdir(parents=True)
+        (self.dest / 'node_modules' / 'deep' / 'x.js').write_text('x\n', encoding='utf-8')
+        self.assertFalse(copy(self.source, self.dest, IGNORE))
+
+    def test_ignore_is_given_each_folder_reached_with_the_names_it_holds(self) -> None:
+        reached: dict = {}
+
+        def ignore(folder, held):
+            reached[Path(folder).name] = sorted(held)
+            return []
+        copy(self.source, self.dest, ignore)
+        self.assertEqual(reached['source'], ['a.md', 'part'])
+        self.assertEqual(reached['part'], ['b.md'])
 
 class CopyDiffers(Fixture):
 
@@ -75,6 +61,24 @@ class CopyDiffers(Fixture):
                 shutil.rmtree(self.dest)
                 shutil.copytree(self.source, self.dest, ignore=IGNORE)
                 change()
-                self.assertTrue(differs(self.source, self.dest, IGNORE))
+                self.assertTrue(copy(self.source, self.dest, IGNORE))
+
+    def test_a_change_on_the_source_side_differs(self) -> None:
+        (self.source / 'a.md').write_text('alphA\n', encoding='utf-8')
+        self.assertTrue(copy(self.source, self.dest, IGNORE))
+
+    def test_a_missing_copy_differs_from_a_source_that_holds_a_file_and_never_raises(self) -> None:
+        self.assertTrue(copy(self.source, self.root / 'absent', IGNORE))
+
+    def test_two_absent_folders_do_not_differ(self) -> None:
+        self.assertFalse(copy(self.root / 'absent-one', self.root / 'absent-two', IGNORE))
+
+    def test_a_link_to_a_folder_is_neither_entered_nor_counted(self) -> None:
+        elsewhere = self.root / 'elsewhere'
+        elsewhere.mkdir()
+        (elsewhere / 'e.md').write_text('e\n', encoding='utf-8')
+        if not junction_or_symlink(self.source / 'via', elsewhere):
+            self.skipTest('this machine makes no folder link')
+        self.assertFalse(copy(self.source, self.dest, IGNORE))
 if __name__ == '__main__':
     unittest.main(verbosity=2)

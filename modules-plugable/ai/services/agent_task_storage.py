@@ -9,7 +9,7 @@ Path this module opens is scratch under temp/ for the context-read record
 from __future__ import annotations
 from importlib import import_module
 from pathlib import Path
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 is_task_folder = _m_folder.is_task_folder
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
@@ -37,7 +37,7 @@ def tree_names(task_id: str) -> list[str]:
 
 def context_record_path(task_id: str) -> Path:
     """Scratch path for what get-act-context already printed; never a task tree folder."""
-    root = _m_fs_memar.scratch_root() / 'context-read' / task_id
+    root = _m_memar_location.scratch_root() / 'context-read' / task_id
     root.mkdir(parents=True, exist_ok=True)
     return root / CONTEXT_READ
 

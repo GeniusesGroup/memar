@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: every checkout is laid out in
-one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
+one, made under the folder `modules/process/test/services/test_scratch.py` names, and removed
 again, and no test walks the repository's own tree.
 
 What is pinned, and what each pin is for:
@@ -28,9 +28,9 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
+from importlib import import_module
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
 import sys
 import tempfile
 import unittest

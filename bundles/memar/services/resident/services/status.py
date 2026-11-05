@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 from machine.resident import ask, folder, state_of
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
 COMMAND = 'status'
-TOP = _m_fs_memar.checkout_root()
+TOP = _m_memar_location.checkout_root()
 
 def describe(verbs):
     verbs.add_parser(COMMAND, help='say whether the resident process runs', description="Print the resident process's id, port and the number of calls it has answered; exit 1 when none runs.")

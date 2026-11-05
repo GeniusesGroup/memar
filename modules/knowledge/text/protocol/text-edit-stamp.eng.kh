@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Edit_Stamp in "modules/knowledge/text/protocol/text-edit-stamp.kh"
+
+tp Domain mt (self Text_Edit_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Edit_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a held text was at one moment: whether it existed, a hash of its content, its modification time and its size")(s, VoidError)
+}
+
+tp Overview mt (self Text_Edit_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("What a held text was at one moment: whether it existed, a hash of its content, its modification time and its size.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Edit_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Edit_Stamp) () (s String) {
+    CharacterRun_From.FromCharacterRun("Two stamps are the same only when existence, content hash and modification time all agree; size is recorded with them.")(s, VoidError)
+}

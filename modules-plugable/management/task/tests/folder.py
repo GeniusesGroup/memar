@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder. The Memar root is patched onto
-one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
+one, made under the folder `modules/process/test/services/test_scratch.py` names, and removed
 again.
 
 What is pinned, and what each pin is for:
@@ -33,11 +33,10 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import os
 import sys
 import tempfile

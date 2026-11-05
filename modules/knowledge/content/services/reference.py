@@ -17,9 +17,9 @@ A reference that leaves the checkout, or names a file this clone does not hold,
 is refused rather than guessed: an unpublished draft is reported as one.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_root = _m_fs_memar.memar_root
+from importlib import import_module
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_root = _m_memar_location.memar_root
 import re
 import sys
 from pathlib import Path
@@ -30,7 +30,7 @@ def content_root() -> Path:
     Resolved once per run: a verb that re-asked would be a verb that could
     disagree with the verb beside it.
     """
-    return _m_fs_memar.memar_root()
+    return _m_memar_location.memar_root()
 
 def under_root(file_part: str, root: Path) -> Path:
     """The file a root-relative reference (`/docs/...`) names: the checkout `root`, then the path.

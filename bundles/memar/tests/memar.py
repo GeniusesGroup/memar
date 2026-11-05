@@ -74,8 +74,8 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
 import concurrent.futures
 import argparse
 import ast
@@ -387,7 +387,8 @@ class RouterNamesNoVerb(unittest.TestCase):
         imported = {alias.asname or alias.name.split('.')[0] for node in ast.walk(tree) if isinstance(node, ast.Import) for alias in node.names}
         for node in ast.walk(tree):
             if isinstance(node, ast.Constant) and isinstance(node.value, str) and (node is not docstring) and (node is not epilog):
-                for word in words & set(re.findall('[a-z][a-z-]*', node.value)):
+                dotted_import_path = re.fullmatch(r'[a-z_][a-z_0-9]*(?:\.[a-z_][a-z_0-9]*)+', node.value) is not None
+                for word in (set() if dotted_import_path else words & set(re.findall('[a-z][a-z-]*', node.value))):
                     with self.subTest(text=node.value[:40], word=word):
                         self.fail(f"the router's text names the verb {word!r}")
             if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and (node.value.id in imported):

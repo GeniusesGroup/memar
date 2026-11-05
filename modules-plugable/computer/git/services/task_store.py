@@ -10,9 +10,9 @@ Agents never see a filesystem path for a task.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
-RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
+RECORDS_RELATIVE = _m_memar_location.RECORDS_RELATIVE
 import shutil
 import tempfile
 from pathlib import Path
@@ -21,10 +21,10 @@ from .branch import RecordRefused, folder_on_branch
 CLAIMS_DIRNAME = 'claims'
 
 def memar_root() -> Path:
-    return _m_fs_memar.memar_root()
+    return _m_memar_location.memar_root()
 
 def scratch_root() -> Path:
-    return _m_fs_memar.scratch_root()
+    return _m_memar_location.scratch_root()
 
 def records_project() -> Path:
     """The repository whose records branch holds Memar's own tasks."""

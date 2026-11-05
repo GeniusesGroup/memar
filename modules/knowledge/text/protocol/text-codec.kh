@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+
+tp Text_Codec ab
+
+tp Decode mt (self Text_Codec) (bytes Computer_Buffer) (text Text, hadMark Boolean, err Error)
+
+tp DecodeBare mt (self Text_Codec) (bytes Computer_Buffer) (text Text, err Error)
+
+tp DecodeNamed mt (self Text_Codec) (bytes Computer_Buffer) (text Text, err Error)
+
+tp Encode mt (self Text_Codec) (text Text) (bytes Computer_Buffer)

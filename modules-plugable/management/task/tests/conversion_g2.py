@@ -16,8 +16,7 @@ sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(TOP))
 sys.path.insert(3, str(TESTS))
 sys.dont_write_bytecode = True
-from machine.plugable_import import load as plugable_load
-suite_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch').suite_scratch
+suite_scratch = import_module('modules.process.test.services.test_scratch').suite_scratch
 import earlier_shape
 BUDGET_SECONDS = 60
 _m_store = import_module('modules.computer.memory.store.protocol.store')

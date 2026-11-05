@@ -28,8 +28,8 @@ task keeps wanting to skip, and says which in its own --help.
 
 Deleting, moving, discarding, stashing, restoring, and committing go through
 this file and the path-invoked services under
-modules-plugable/computer/memory/filesystem/services/ (tree, trash, link,
-history_move_glob, and the fs_*.py libraries beside them). Never the host's
+bundles/memar_fs/services/ (tree, trash, link,
+and the fs_*.py libraries beside them). Never the host's
 own command for those acts — rm, Remove-Item, git rm, git restore, git checkout
 of paths, git clean, a plain git commit — and never a command a runtime rewrites.
 Run each with Python by path inside the checkout; none is a memar verb.

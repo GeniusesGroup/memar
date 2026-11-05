@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Fs_Trash in "bundles/memar_fs/services/memar-fs-trash.kh"
+
+tp Domain mt (self Memar_Fs_Trash) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Fs_Trash) () (s String) {
+    CharacterRun_From.FromCharacterRun("Move each named path to the recycle bin of the platform instead of deleting it")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Fs_Trash) () (s String) {
+    CharacterRun_From.FromCharacterRun("Move each named path to the recycle bin of the platform instead of deleting it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Fs_Trash) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Fs_Trash) () (s String) {
+    CharacterRun_From.FromCharacterRun("It is never a permanent delete: what is moved can be recovered. The paths are taken one by one, so those before a refused one are already moved. The platform step is the shell recycle operation on Windows, the Finder on macOS, and elsewhere gio, trash-put, or the user trash folder with its info record. A symbolic link counts as present even when its target is gone. The list of paths must not be empty. Refused with PathAbsent; TrashFailed is a failure.")(s, VoidError)
+}

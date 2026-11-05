@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Edit_Lock in "modules/knowledge/text/protocol/text-edit-lock.kh"
+
+tp Domain mt (self Text_Edit_Lock) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Edit_Lock) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text being edited by several processes is edited by one at a time")(s, VoidError)
+}
+
+tp Overview mt (self Text_Edit_Lock) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text being edited by several processes is edited by one at a time.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Edit_Lock) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Edit_Lock) () (s String) {
+    CharacterRun_From.FromCharacterRun("Take records the stamp of the held text, waits up to the wait for the lock, removes and takes over a lock older than the stale limit, writes an intent note, and compares the stamp again: a text that appeared, disappeared, changed content or was touched meanwhile ends in Text_Error_Edit_ChangedWhileWaiting, with the lock released. The intent note is written atomically after the lock is taken, so a waiter taking over a stale lock can read what the dead holder planned; it records the target, the writer, the summary, the base content hash, the base modification time, the base size and the creation time. Refused with Text_Error_Edit_Locked (a live holder past the wait); Text_Error_Edit_LockUnwritable is a failure.")(s, VoidError)
+}

@@ -19,7 +19,7 @@ opened first among equals. The owner's ruling recorded in task
 20261012T163251Z-25244-0 makes the project required: no default, no all.
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules/process/test/services/test_scratch.py`
 names. The concurrent claims run two real processes, each importing the
 service with the same root patched in, so the race is the operating system's.
 
@@ -38,11 +38,11 @@ What is pinned, and what each pin is for:
                      `claims` at once never take one task twice.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+from importlib import import_module
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 from importlib import import_module
 import argparse
 import contextlib
@@ -265,7 +265,7 @@ class ClaimsTakesN(Fixture):
             "sys.path.insert(1, __import__('os').path.dirname(__import__('os').path.dirname(sys.argv[1]))); "
             "sys.dont_write_bytecode = True\nfrom pathlib import Path\n"
             "from importlib import import_module\n"
-            "m = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')\n"
+            "m = import_module('bundles.memar.services.location.memar_location')\n"
             "m.memar_root = lambda: Path(sys.argv[2])\n"
             "import importlib; c = importlib.import_module('modules-plugable.management.task.services.claims')\n"
             "while time.time() < float(sys.argv[3]): pass\n"

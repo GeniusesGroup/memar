@@ -9,7 +9,7 @@ A project keeps its own task folders. Unless it says otherwise with the
 so git can see them and a branch switch does not drop the work silently. The
 one project that does not get that default treated as a foreign location is the
 Memar checkout itself, whose folders are made under the Memar root
-(`modules-plugable/computer/memory/filesystem/services/fs_memar.py`) and swept from there once their task is done. A
+(`bundles/memar/services/location/memar_location.py`) and swept from there once their task is done. A
 project may put them elsewhere with the `tasks` key. Those folders are the
 project's, not Memar's: the sweep (`sweep_idle_task_folders`) never touches them,
 and keeping or deleting one is the project's business, which `ensure` says each
@@ -57,15 +57,15 @@ among folders that are not tasks, which only the test in `task_folder`
 keeps every task verb out of.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-AGENTS_DIRNAME = _m_fs_memar.AGENTS_DIRNAME
-TASKS_DIRNAME = _m_fs_memar.TASKS_DIRNAME
-TASKS_DIRNAME = _m_fs_memar.TASKS_DIRNAME
-TEMP_DIRNAME = _m_fs_memar.TEMP_DIRNAME
-project_tasks_registry = _m_fs_memar.project_tasks_registry
-scratch_root = _m_fs_memar.scratch_root
-tasks_root = _m_fs_memar.tasks_root
+from importlib import import_module
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+AGENTS_DIRNAME = _m_memar_location.AGENTS_DIRNAME
+TASKS_DIRNAME = _m_memar_location.TASKS_DIRNAME
+TASKS_DIRNAME = _m_memar_location.TASKS_DIRNAME
+TEMP_DIRNAME = _m_memar_location.TEMP_DIRNAME
+project_tasks_registry = _m_memar_location.project_tasks_registry
+scratch_root = _m_memar_location.scratch_root
+tasks_root = _m_memar_location.tasks_root
 import os
 import subprocess
 import sys
@@ -114,7 +114,7 @@ def default_location(project: Path) -> Path:
     """The folder PROJECT's task folders are made in when its preferences name none: .agents/tasks/ inside it.
 
     Memar is an entry like any other project: its checkout's default is the same
-    rule, which is Memar's own tasks folder (`modules-plugable/computer/memory/filesystem/services/fs_memar.py`), so
+    rule, which is Memar's own tasks folder (`bundles/memar/services/location/memar_location.py`), so
     `project_location` answers None for it as for Memar's own tasks root.
     """
     return project / AGENTS_DIRNAME / TASKS_DIRNAME

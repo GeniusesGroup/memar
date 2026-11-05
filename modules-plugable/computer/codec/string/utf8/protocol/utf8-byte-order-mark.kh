@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp UTF8_ByteOrderMark ab
+
+tp Detect mt (self UTF8_ByteOrderMark) (bytes Computer_Buffer) (has Boolean)
+
+tp Strip mt (self UTF8_ByteOrderMark) (bytes Computer_Buffer) (rest Computer_Buffer, had Boolean)

@@ -18,7 +18,7 @@ if str(TOP) not in sys.path:
     sys.path.insert(0, str(TOP))
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.files.errors.errors')
-_m_storage = import_module('modules-plugable.computer.memory.filesystem.storage')
+_m_storage = import_module('bundles.memar_fs.services.storage')
 _m_codecs = import_module('modules-plugable.computer.memory.store.files.codecs.registry')
 _m_graph_files = import_module('modules-plugable.computer.memory.store.files.graph_correspondence')
 ABSENT = _m_store.ABSENT

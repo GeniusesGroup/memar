@@ -61,7 +61,7 @@ The outcome — full dependency, projection-only, or none — must be an explici
 - Banning the filesystem — the check may well conclude *yes, use it*. The error is the default, not the outcome.
 
 ## Deleting, moving, restoring, and committing
-These acts are owned by the `memar git` verbs (the tools `git_commit`, `git_remove`, `git_rename`, `git_restore`, …) and the path-invoked services under [`modules-plugable/computer/memory/filesystem/services/`](services/). Their `--help` and opening comments are the authority; this section does not restate them.
+These acts are owned by the `memar git` verbs (the tools `git_commit`, `git_remove`, `git_rename`, `git_restore`, …) and the `memar fs` verbs of [`bundles/memar_fs/`](../../../../bundles/memar_fs/memar_fs.md). Their `--help` is the authority; this section does not restate them.
 
 ## Putting text into a file
-Putting text into a file is owned by [`modules-plugable/computer/memory/filesystem/services/content_write.py`](services/content_write.py) and `edit` beside it (`memar content write --help` / `edit --help`). Their help and module docstrings are the authority; this section does not restate them.
+Putting text into a file is owned by the verbs `memar content write` and `memar content edit` of [`bundles/memar_fs/`](../../../../bundles/memar_fs/memar_fs.md) (`--help` of each). Their help is the authority; this section does not restate them.

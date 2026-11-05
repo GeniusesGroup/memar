@@ -15,7 +15,7 @@ here too. The module is pluggable, and nothing under `modules/` imports it
 (`bundles/memar/tests/module_graph.py` fails if one does).
 
 Nothing here writes outside its scratch folder: each folder the roles are made
-in is made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
+in is made under the folder `modules/process/test/services/test_scratch.py` names, and removed
 again. `modules/README.md` is read, never written. The subprocesses run ask
 for `--help` only, which writes nothing.
 
@@ -41,12 +41,12 @@ What is pinned, and what each pin is for:
                        prints what it made and what was already there, and
                        refuses a PATH that is not a folder, and no PATH: the
                        current folder is never read.
-  TempIsTheMachines    The `temp` role takes its name from `modules-plugable/computer/memory/filesystem/services/fs_memar.py`,
+  TempIsTheMachines    The `temp` role takes its name from `bundles/memar/services/location/memar_location.py`,
                        which spells it once, and the task's sentence on
                        temporary files takes it from there too.
-  ToolsReadTheProfile  `fs_memar.role_folders()`, which the router and
+  ToolsReadTheProfile  `memar_location.role_folders()`, which the router and
                        the module-graph test skip by, gives this enum's names,
-                       and `fs_memar.MODULE_SKELETON` names this service.
+                       and `memar_location.MODULE_SKELETON` names this service.
   HelpDeclaresIt       `memar module --help` says where what each role folder
                        holds is printed, and carries no command line of
                        `ensure-folders`; `memar module ensure-folders --help`
@@ -57,10 +57,10 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import contextlib
 import importlib.util
 import io

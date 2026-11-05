@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text_Codec in "modules/knowledge/text/protocol/text-codec.kh"
+
+tp UTF8_Codec ab {
+    Text_Codec
+}

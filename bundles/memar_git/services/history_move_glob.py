@@ -1,49 +1,38 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""modules-plugable/computer/memory/filesystem/services/history_move_glob.py — git-mv every file matching a glob."""
 from __future__ import annotations
 import argparse
 import subprocess
 import sys
-from pathlib import Path
-_REPO = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent
-if __package__ in (None, ''):
-    for _folder in (_REPO, _REPO / 'bundles' / 'memar'):
-        if str(_folder) not in sys.path:
-            sys.path.insert(0, str(_folder))
-    __package__ = 'modules-plugable.computer.memory.filesystem.services'
-from ._fs_common import host_git_cli
-DESCRIPTION = 'modules-plugable/computer/memory/filesystem/services/history_move_glob.py — history-preserving bulk move (git-mv-glob)\n\nMove every file matching PATTERN into DESTINATION through `git mv`. Default is dry-run;\npass --apply to execute, then commit renames by themselves afterwards.\n'
+from pathlib import Path, PurePath
+from ..errors.errors import MoveFailed, NoMatch, NotAFolder, PatternMalformed
+from ._edge import guarded
 
-def cmd_git_mv_glob(pattern: str, destination: Path, *, apply: bool) -> None:
-    destination = destination.resolve()
+def history_move_glob(pattern: str, destination: Path, apply: bool=False) -> str:
+    if not pattern or PurePath(pattern).is_absolute() or Path(pattern).drive:
+        raise PatternMalformed(f'the pattern must be a non-empty glob relative to the current folder: {pattern!r}')
+    destination = Path(destination).resolve()
     if apply and (not destination.is_dir()):
-        sys.exit(f'error: destination is not a directory: {destination}')
-    matches = sorted(Path('.').glob(pattern))
-    matches = [m for m in matches if m.is_file()]
+        raise NotAFolder(f'destination is not a folder: {destination}')
+    matches = [m for m in sorted(Path('.').glob(pattern)) if m.is_file()]
     if not matches:
-        sys.exit(f'error: no files match pattern: {pattern}')
-    git_py = host_git_cli()
+        raise NoMatch(f'no files match pattern: {pattern}')
+    lines = []
     for source in matches:
-        dest = destination / source.name
-        line = f'git mv {source} {dest}'
-        if not apply:
-            print(f'dry-run: {line}')
-            continue
-        completed = subprocess.run([sys.executable, str(git_py), 'rename', str(source), str(dest)], check=False)
-        if completed.returncode != 0:
-            sys.exit(completed.returncode)
+        target = destination / source.name
+        lines.append(f'git mv {source} {target}')
+        if apply:
+            completed = subprocess.run(['git', 'mv', str(source), str(target)], check=False, capture_output=True, text=True)
+            if completed.returncode != 0:
+                raise MoveFailed(f'git mv {source} {target} exited {completed.returncode}: {completed.stderr.strip()}')
     if not apply:
+        lines = [f'dry-run: {line}' for line in lines]
         print('dry-run only. Re-run with --apply to execute, then commit the renames by themselves before editing content.', file=sys.stderr)
+    return '\n'.join(lines)
 
-def main() -> int:
-    parser = argparse.ArgumentParser(description=DESCRIPTION, formatter_class=argparse.RawDescriptionHelpFormatter)
+def describe(verbs):
+    parser = verbs.add_parser('history-move-glob', help='git mv every file matching a glob, keeping history; lists only unless applied', description='Move every file matching PATTERN into DESTINATION through `git mv`. Default is dry-run;\npass --apply to execute, then commit renames by themselves afterwards.', formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('pattern', help='glob relative to cwd, e.g. "*.md"')
     parser.add_argument('destination', type=Path, help='destination directory (e.g. docs)')
     parser.add_argument('--apply', action='store_true', help='execute; without this flag, print dry-run lines only')
-    args = parser.parse_args()
-    cmd_git_mv_glob(args.pattern, args.destination, apply=args.apply)
-    return 0
-if __name__ == '__main__':
-    raise SystemExit(main())
+    return guarded(lambda a: print(history_move_glob(a.pattern, a.destination, apply=a.apply)))

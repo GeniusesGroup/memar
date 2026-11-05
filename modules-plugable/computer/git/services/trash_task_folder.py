@@ -24,10 +24,10 @@ report's Status is Queued its folder is the task itself.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
-RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
-_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
+RECORDS_RELATIVE = _m_memar_location.RECORDS_RELATIVE
+_m_fs_trash = import_module('bundles.memar_fs.services.fs_trash')
 import argparse
 from pathlib import Path
 from typing import Callable, NamedTuple

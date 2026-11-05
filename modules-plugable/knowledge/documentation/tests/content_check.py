@@ -11,7 +11,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder. Every document is written into
-one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
+one, made under the folder `modules/process/test/services/test_scratch.py` names, and removed
 again, and no test reads the repository's own
 `docs/`: a test that asserts against the tree stops being a test of the rule and
 becomes a report on whatever the tree currently holds.
@@ -76,14 +76,13 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy_excluded')
-NEVER_COPIED_PATTERNS = _m_fs_copy_excluded.NEVER_COPIED_PATTERNS
-_m_fs_memar_repository = plugable_load('computer.memory.filesystem.services.fs_memar_repository')
-memar_repository = _m_fs_memar_repository
-enclosing_repository = _m_fs_memar_repository.enclosing_repository
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_copy_excluded = import_module('bundles.memar.services.machine.copy_excluded')
+NEVER_COPIED_PATTERNS = _m_copy_excluded.NEVER_COPIED_PATTERNS
+_m_repository = import_module('bundles.memar.services.location.repository')
+memar_repository = _m_repository
+enclosing_repository = _m_repository.enclosing_repository
 import sys
 import tempfile
 import unittest
@@ -346,7 +345,7 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
     An installed dependency tree is not this repository's work, and a report that
     raises the same problems inside it on every run is a report about the tool
     rather than about the tree — after long enough it is a report nobody reads.
-    The patterns come from `machine/fs_copy_excluded`, which already holds that
+    The patterns come from `machine/copy_excluded`, which already holds that
     answer for the two things that copy part of a checkout elsewhere; a second
     list here would be a second answer to one question.
 

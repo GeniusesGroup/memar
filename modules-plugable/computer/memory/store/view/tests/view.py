@@ -23,7 +23,7 @@ for _each in (TOP / 'bundles' / 'memar' / 'services', TOP):
     if str(_each) not in sys.path:
         sys.path.insert(0, str(_each))
 sys.dont_write_bytecode = True
-_m_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
+_m_scratch = import_module('modules.process.test.services.test_scratch')
 _m_volatile = import_module('modules.computer.memory.volatile.volatile')
 _m_record = import_module('modules-plugable.computer.memory.store.record.record')
 _m_git_store = import_module('modules-plugable.computer.memory.store.git-store.git-store')

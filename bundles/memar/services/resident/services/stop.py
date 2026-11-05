@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 from machine.resident import ask
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
 COMMAND = 'stop'
-TOP = _m_fs_memar.checkout_root()
+TOP = _m_memar_location.checkout_root()
 
 def describe(verbs):
     verbs.add_parser(COMMAND, help='ask the resident process to end', description='Ask the resident process of this checkout to end; the next call started with MEMAR_SERVER=1 starts it again.')

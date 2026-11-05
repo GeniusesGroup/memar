@@ -1,0 +1,59 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Text_Error_Edit_Refusal ab {
+    Error
+}
+
+tp Text_Error_Edit_OldEmpty ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_MatchAbsent ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_MatchAmbiguous ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_EmptyText ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_CreateNotAsked ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_TextAbsent ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_NotUtf8 ab {
+    Text_Error_Edit_Refusal
+}
+
+tp Text_Error_Edit_ReadFailed ab {
+    Error
+}
+
+tp Text_Error_Edit_WriteFailed ab {
+    Error
+}
+
+tp Text_Error_Edit_Locked ab {
+    Error
+}
+
+tp Text_Error_Edit_LockUnwritable ab {
+    Error
+}
+
+tp Text_Error_Edit_ChangedWhileWaiting ab {
+    Error
+}
+
+tp Text_Error_Edit_NamedTextNotUtf8 ab {
+    Error
+}

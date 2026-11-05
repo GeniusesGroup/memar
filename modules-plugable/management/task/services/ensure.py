@@ -20,8 +20,8 @@ from modules.identity.thing.labels.Blocked import Label_Blocked
 from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-task_dir = _m_fs_memar.task_dir
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+task_dir = _m_memar_location.task_dir
 from pathlib import Path
 from machine.console import fail
 _m_dependency = import_module('modules-plugable.management.task.services.dependency')
@@ -110,7 +110,7 @@ def linked_conversation(task_id: str, parent: str) -> str:
     return task.conversation
 
 def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
-    """Ensure the task's folder, its facts and its plan and report contents (a task made now is in the new shape: task.yaml and content.NNNNN.md; one in the old shape, plan.md and report.md, is continued as it is), and its folders exist; return its id and path.
+    """Ensure the task's facts and its plan and report contents on the records branch (and role folders); return its id and path.
 
     TITLE is required when the folder has no task yet, and unused when it
     has one. PARENT links a new plan to the task it came from; a plan that

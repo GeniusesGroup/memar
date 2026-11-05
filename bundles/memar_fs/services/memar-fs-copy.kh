@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Memar_Fs_CopyIgnore ab
+
+tp Decide mt (self Memar_Fs_CopyIgnore) (folder String, names Array_Dynamic) (left Array_Dynamic)
+
+tp Memar_Fs_Copy ab {
+    Service
+}
+
+tp Copy mt (self Memar_Fs_Copy) (source String, copy String, ignore Memar_Fs_CopyIgnore) (differs Boolean, err Error)

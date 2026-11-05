@@ -7,7 +7,7 @@ Never a permanent delete. Agents that "deep delete" then need the file again
 burn tokens reconstructing it; the trash keeps recovery cheap.
 
 Each platform's trash is a different mechanism under one act, so the three
-implementations live here and `modules-plugable/computer/memory/filesystem/services/trash.py` keeps the command that calls
+implementations live here and `bundles/memar_fs/services/trash.py` keeps the command that calls
 them.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
@@ -77,7 +77,7 @@ def _trash_xdg(path: Path) -> None:
 
 def soft_delete(path: Path) -> None:
     path = Path(os.path.abspath(str(path)))
-    if not path.is_symlink() and (not path.exists()):
+    if not os.path.lexists(path):
         sys.exit(f'error: path does not exist: {path}')
     if os.name == 'nt':
         _trash_windows(path)

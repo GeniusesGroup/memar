@@ -20,7 +20,7 @@ for _each in (TOP / 'bundles' / 'memar' / 'services', TOP):
 sys.dont_write_bytecode = True
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_conformance = import_module('modules.computer.memory.conformance.conformance')
-_m_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
+_m_scratch = import_module('modules.process.test.services.test_scratch')
 _m_files = import_module('modules-plugable.computer.memory.store.files.files')
 _m_json = import_module('modules-plugable.computer.memory.store.files.codecs.json.body')
 _m_yaml = import_module('modules-plugable.computer.memory.store.files.codecs.yaml.body')
@@ -183,7 +183,7 @@ class Medium(unittest.TestCase):
 
     def test_uses_storage_directory_and_file(self) -> None:
         adapter = make_local()
-        storage = import_module('modules-plugable.computer.memory.filesystem.storage')
+        storage = import_module('bundles.memar_fs.services.storage')
         self.assertIsInstance(adapter.get_memory_root(), storage.Storage_Directory)
         store = adapter.open()
         put_at = address(store, 1)

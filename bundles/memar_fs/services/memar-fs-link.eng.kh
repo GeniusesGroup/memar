@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Fs_Link in "bundles/memar_fs/services/memar-fs-link.kh"
+
+tp Domain mt (self Memar_Fs_Link) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Fs_Link) () (s String) {
+    CharacterRun_From.FromCharacterRun("Make a directory link from a place to a target folder")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Fs_Link) () (s String) {
+    CharacterRun_From.FromCharacterRun("Make a directory link from a place to a target folder.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Fs_Link) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Fs_Link) () (s String) {
+    CharacterRun_From.FromCharacterRun("The link is a symbolic link to a folder, and on Windows a junction when the symbolic link cannot be made. A link that already resolves to the target is left as it is and is not an error. Something else at the place of the link is refused unless replacement is asked for, and then it goes to the recycle bin first and is not deleted. The parent folders of the link are made when absent. Refused with NotAFolder (the target is not a folder) or LinkExists; LinkFailed and TrashFailed are failures.")(s, VoidError)
+}

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for where a suite writes, in `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`.
+"""Tests for where a suite writes, in `modules/process/test/services/test_scratch.py`.
 
-    python modules-plugable/computer/memory/filesystem/tests/fs_test_scratch.py
+    python modules/process/test/tests/test_scratch.py
 
 The subject is the one owner of MEMAR_TEST_SCRATCH, named for the file that
 holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
-in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Naming](../rules/test-naming/test-naming.md),
+in the `tests/` folder of the module that owns it per
+[Test Placement](../rules/test-placement/test-placement.md).
 
 Nothing here writes outside the fallback folder the module itself makes, and
 git is asked only whether a path is ignored.
@@ -31,8 +31,8 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-scratch = _m_fs_test_scratch
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+scratch = _m_test_scratch
 import os
 import stat
 import subprocess
@@ -42,7 +42,8 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
+REPO = next(p for p in TESTS.parents if p.name == 'modules').parent
+CHECKOUT = REPO
 SCRIPTS = REPO / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(REPO))

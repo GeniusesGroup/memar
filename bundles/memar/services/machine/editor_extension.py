@@ -30,12 +30,12 @@ has to be asked for; copying a folder the installer already put on the machine
 is a different kind of act, and that is the whole of the difference.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy_excluded')
-NEVER_COPIED = _m_fs_copy_excluded.NEVER_COPIED
-_m_fs_copy = plugable_load('computer.memory.filesystem.services.fs_copy')
-differs = _m_fs_copy.differs
-_m_fs_trash = plugable_load('computer.memory.filesystem.services.fs_trash')
+from importlib import import_module
+_m_copy_excluded = import_module('bundles.memar.services.machine.copy_excluded')
+NEVER_COPIED = _m_copy_excluded.NEVER_COPIED
+_m_fs_copy = import_module('bundles.memar_fs.services.fs_copy')
+differs = _m_fs_copy.copy
+_m_fs_trash = import_module('bundles.memar_fs.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
 import json
 import shutil

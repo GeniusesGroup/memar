@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Fs_Tree in "bundles/memar_fs/services/memar-fs-tree.kh"
+
+tp Domain mt (self Memar_Fs_Tree) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Fs_Tree) () (s String) {
+    CharacterRun_From.FromCharacterRun("List a folder as a tree drawn with ASCII branches")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Fs_Tree) () (s String) {
+    CharacterRun_From.FromCharacterRun("List a folder as a tree drawn with ASCII branches.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Fs_Tree) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Fs_Tree) () (s String) {
+    CharacterRun_From.FromCharacterRun("Folders come before files, each group in case-insensitive name order, and every entry named .git, __pycache__, .venv or node_modules, file or folder, is left out, with all a folder holds. A link to a folder counts as a folder and is followed, so a link cycle makes the walk recurse without end. The first line is the name of the root. With dirsOnly only folders are listed and no file. A folder that cannot be read is reported on the error stream, not in the listing, and the walk goes on; that is not a refusal. Refused with NotAFolder when the root is not a folder.")(s, VoidError)
+}

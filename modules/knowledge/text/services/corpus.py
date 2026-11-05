@@ -16,9 +16,9 @@ of the walk below — and are read only by `find` and `search` when they are ask
 for (`task_records.py`).
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_copy_excluded = plugable_load('computer.memory.filesystem.services.fs_copy_excluded')
-NEVER_COPIED_PATTERNS = _m_fs_copy_excluded.NEVER_COPIED_PATTERNS
+from importlib import import_module
+_m_copy_excluded = import_module('bundles.memar.services.machine.copy_excluded')
+NEVER_COPIED_PATTERNS = _m_copy_excluded.NEVER_COPIED_PATTERNS
 import functools
 import os
 import sys
@@ -30,7 +30,7 @@ _SCRATCH_DIRNAME = 'temp'
 def is_generated(parts: tuple[str, ...]) -> bool:
     """Whether any folder on the way to a file is one this project does not own.
 
-    Asked through `machine/fs_copy_excluded`, which already answers it for the
+    Asked through `machine/copy_excluded`, which already answers it for the
     two things that copy part of a checkout elsewhere. A file's own name is not
     weighed: `node_modules` as a *file* would be a different thing, and the
     patterns are folder patterns where that matters.

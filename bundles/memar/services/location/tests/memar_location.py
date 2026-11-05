@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for where Memar lives on disk in `modules-plugable/computer/memory/filesystem/services/fs_memar.py`.
+"""Tests for where Memar lives on disk in `bundles/memar/services/location/memar_location.py`.
 
-    python modules-plugable/computer/memory/filesystem/tests/fs_memar.py
+    python bundles/memar/services/location/tests/memar_location.py
 
-The subject is the location surface of `modules-plugable/computer/memory/filesystem/services/fs_memar.py`, named for the
+The subject is the location surface of `bundles/memar/services/location/memar_location.py`, named for the
 file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the module that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes to the machine. Roots are patched onto a scratch folder
 inside this one; the one test that touches the real checkout only reads
@@ -39,10 +39,10 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import os
 import sys
 import tempfile
@@ -50,7 +50,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
+REPO = next(p for p in TESTS.parents if p.name == 'bundles').parent
 SCRIPTS = REPO / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(REPO))

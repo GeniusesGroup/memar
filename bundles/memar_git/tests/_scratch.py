@@ -17,7 +17,7 @@ for _folder in (TOP, TOP / 'bundles' / 'memar', TOP / 'bundles' / 'memar' / 'ser
     if str(_folder) not in sys.path:
         sys.path.insert(0, str(_folder))
 sys.dont_write_bytecode = True
-suite_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch').suite_scratch
+suite_scratch = import_module('modules.process.test.services.test_scratch').suite_scratch
 PROCESS_SECONDS = 60
 _TEMPLATES: dict = {}
 

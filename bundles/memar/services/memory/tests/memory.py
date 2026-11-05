@@ -24,8 +24,8 @@ for _folder in (TOP, SCRIPTS, SCRIPTS / 'services'):
     if str(_folder) not in sys.path:
         sys.path.insert(0, str(_folder))
 sys.dont_write_bytecode = True
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_store_errors = import_module('modules.computer.memory.store.errors.errors')
 _m_volatile = import_module('modules.computer.memory.volatile.volatile')

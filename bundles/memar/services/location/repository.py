@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py — what a Memar repository is, on disk.
+"""bundles/memar/services/location/repository.py — what a Memar repository is, on disk.
 
 The one definition of the question, and the one place the words of a refusal
 about it are written. Every other file in this folder — and every shell that
@@ -10,7 +10,7 @@ is the only way two of them cannot come to disagree.
 
 The answer is a question about files and folders and nothing else, so it sits on
 the machine shelf, below everything that asks it: where Memar lives
-(`machine/env_location.py`, `modules-plugable/computer/memory/filesystem/services/fs_memar.py`) as well as the installer, the
+(`machine/env_location.py`, `bundles/memar/services/location/memar_location.py`) as well as the installer, the
 content check, and the update. How far a checkout of one is behind its upstream
 is the update's, in `bundles/memar/services/update/services/checkout.py`.
 """

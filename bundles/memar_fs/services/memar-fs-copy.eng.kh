@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Fs_Copy in "bundles/memar_fs/services/memar-fs-copy.kh"
+
+tp Domain mt (self Memar_Fs_Copy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Fs_Copy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Say whether a folder still holds what copying another into it would write")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Fs_Copy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Say whether a folder still holds what copying another into it would write.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Fs_Copy) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Fs_Copy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Each side is read as the files a copy carries, by their path relative to the folder, leaving out what the caller decides: ignore is given each folder reached, by its path, with the names it holds, and answers which of them are left out; a folder whose name is left out is not entered. The answer is true when a file is added, gone or changed, compared by size and then by bytes. What a copy leaves out is passed in by the caller and not decided here, and which copies exist stays with whoever makes them. A folder that is absent or cannot be read reads as holding no file and never raises, so a missing copy differs from a source that holds any; a link to a folder is neither entered nor counted. Failure only as ReadFailed, and only for the read or the stat of a file, never of a folder. A library service, not a command: it has no command line and no help of its own. Its only importer is the editor-extension code of the Memar bundle, bundles/memar/services/machine/editor_extension.py, and no module imports it.")(s, VoidError)
+}

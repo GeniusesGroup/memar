@@ -1,0 +1,215 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Memar_Fs_Refusal in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_NotNamed in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_ContentOfTask in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_NotAFolder in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_PathAbsent in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_ScratchInTaskFolder in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_LinkExists in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_LinkFailed in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_TrashFailed in "bundles/memar_fs/errors/errors.kh"
+tp Error_Memar_Fs_RootUnresolved in "bundles/memar_fs/errors/errors.kh"
+
+tp Domain mt (self Error_Memar_Fs_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Trash goes path by path, and the paths before the refused one are already done")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A verb refuses; nothing is changed, except that Trash goes path by path, and the paths before the refused one are already done.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the verb and what to change in the call.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace or the replacement is given neither as text nor as a named file")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace or the replacement is given neither as text nor as a named file.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_NotNamed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names which is missing. The verb `memar content edit` only; the other verbs state their required arguments in their signatures and raise nothing of this kind.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_ContentOfTask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_ContentOfTask) () (s String) {
+    CharacterRun_From.FromCharacterRun("The named path is a content of a task: a text of a task is added as a new content, never written over")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_ContentOfTask) () (s String) {
+    CharacterRun_From.FromCharacterRun("The named path is a content of a task: a text of a task is added as a new content, never written over.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_ContentOfTask) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_ContentOfTask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing was written. The verbs `memar content edit` and `memar content write`.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("A named place that must be a folder is not one: the root to list or the target of a link")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("A named place that must be a folder is not one: the root to list or the target of a link.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_NotAFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the place. Tree, Link.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path to put in the recycle bin does not exist")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("A path to put in the recycle bin does not exist.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_PathAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the path. Trash.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_ScratchInTaskFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_ScratchInTaskFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The file the new text comes from lies in a task folder outside its temp folder, where it would be archived with the task as a second copy of what is written from it")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_ScratchInTaskFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The file the new text comes from lies in a task folder outside its temp folder, where it would be archived with the task as a second copy of what is written from it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_ScratchInTaskFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_ScratchInTaskFolder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing was written. The detail names the folder where the scratch file belongs. The verb `memar content write`.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_LinkExists) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_LinkExists) () (s String) {
+    CharacterRun_From.FromCharacterRun("Something already stands at the place of the link, is not already the target, and replacement was not asked for")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_LinkExists) () (s String) {
+    CharacterRun_From.FromCharacterRun("Something already stands at the place of the link, is not already the target, and replacement was not asked for.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_LinkExists) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_LinkExists) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the place. Link.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_LinkFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_LinkFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The directory link could not be made, by the platform call or by the junction fallback on Windows")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_LinkFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The directory link could not be made, by the platform call or by the junction fallback on Windows.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_LinkFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_LinkFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail carries the link, the target and what the system said. Link.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_TrashFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_TrashFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The path could not be moved to the recycle bin")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_TrashFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The path could not be moved to the recycle bin.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_TrashFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_TrashFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail carries the path, the platform step and what it said. Trash, and Link when it replaces.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Fs_RootUnresolved) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Fs")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Fs_RootUnresolved) () (s String) {
+    CharacterRun_From.FromCharacterRun("No Memar root can be resolved for the scratch folder of the locks: the recorded root names no Memar repository and the code runs inside no checkout")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Fs_RootUnresolved) () (s String) {
+    CharacterRun_From.FromCharacterRun("No Memar root can be resolved for the scratch folder of the locks: the recorded root names no Memar repository and the code runs inside no checkout.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Fs_RootUnresolved) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Fs_RootUnresolved) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nothing was guessed and nothing was written. The detail says to record a root by installing, or to run from inside a checkout. The verbs `memar content edit` and `memar content write`.")(s, VoidError)
+}

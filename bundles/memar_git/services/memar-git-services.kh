@@ -9,6 +9,7 @@ tp Memar_Git_Rename in "bundles/memar_git/services/memar-git-rename.kh"
 tp Memar_Git_Restore in "bundles/memar_git/services/memar-git-restore.kh"
 tp Memar_Git_Stash in "bundles/memar_git/services/memar-git-stash.kh"
 tp Memar_Git_Undelete in "bundles/memar_git/services/memar-git-undelete.kh"
+tp Memar_Git_HistoryMoveGlob in "bundles/memar_git/services/memar-git-history-move-glob.kh"
 tp Memar_Git_Commands in "bundles/memar_git/services/memar-git-commands.kh"
 
 tp Memar_Git_Services ab {
@@ -23,4 +24,5 @@ tp GetRename mt (self Memar_Git_Services) () (rename Memar_Git_Rename)
 tp GetRestore mt (self Memar_Git_Services) () (restore Memar_Git_Restore)
 tp GetStash mt (self Memar_Git_Services) () (stash Memar_Git_Stash)
 tp GetUndelete mt (self Memar_Git_Services) () (undelete Memar_Git_Undelete)
+tp GetHistoryMoveGlob mt (self Memar_Git_Services) () (historyMoveGlob Memar_Git_HistoryMoveGlob)
 tp GetCommands mt (self Memar_Git_Services) () (commands Memar_Git_Commands)

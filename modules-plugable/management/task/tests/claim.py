@@ -18,7 +18,7 @@ claim fresh, so one lapses only after a day. Taking the N first in line is
 `modules-plugable/management/task/services/claims.py`'s, and its tests are `task_claims.py` here.
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one, made under the folder `modules/process/test/services/test_scratch.py`
 names. The concurrent claims run two real processes, each importing the
 service with the same root patched in, so the race is the operating system's.
 
@@ -58,10 +58,10 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 sys.path.insert(2, str(TESTS))
 import earlier_shape
 import shape

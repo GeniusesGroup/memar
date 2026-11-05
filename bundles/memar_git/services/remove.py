@@ -13,15 +13,17 @@ from ._run import in_repo, repository_flag, repository_root, run_captured, run_g
 
 def cmd_remove(repository: Path, paths: list[Path]) -> None:
     root = repository_root(repository)
-    fs_py = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar').checkout_root() / 'modules-plugable' / 'computer' / 'memory' / 'filesystem' / 'services' / 'trash.py'
+    trashed = import_module('bundles.memar_fs.services.trash')
+    fs_errors = import_module('bundles.memar_fs.errors.errors')
     for path in paths:
         named = in_repo(path, root)
         if not (root / named).exists() and (not _tracked(named, root)):
             raise PathAbsent(f'path does not exist and is not tracked: {path}')
         if (root / named).exists():
-            completed = subprocess.run([sys.executable, str(fs_py), str(root / named)], check=False)
-            if completed.returncode != 0:
-                raise GitFailed(f'trashing {named} exited {completed.returncode}')
+            try:
+                trashed.trash([root / named])
+            except fs_errors.Error as failure:
+                raise GitFailed(f'trashing {named} failed: {failure}') from None
         run_git(['add', '-u', '--', named], root)
         print(f'removed (trashed + staged): {named}\nDo not use git rm — recovery from it is hard.', file=sys.stderr)
 

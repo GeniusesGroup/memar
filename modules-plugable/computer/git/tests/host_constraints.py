@@ -81,12 +81,12 @@ from __future__ import annotations
 
 from importlib import import_module
 
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_fs_trash = import_module('bundles.memar_fs.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
 import ast
 import importlib.util
 import re
@@ -113,7 +113,7 @@ def read(name: str) -> str:
         return '\n'.join((text.replace('from __future__ import annotations', '') for text in texts))
     if name == 'fs.py':
         files = [FS_SERVICES / each for each in FS_ENTRIES]
-        files.append(FS_SERVICES / '_fs_common.py')
+        files.append(REPO / 'bundles' / 'memar_fs' / 'services' / '_fs_common.py')
         texts = [file.read_text(encoding='utf-8') for file in files]
         return '\n'.join((text.replace('from __future__ import annotations', '') for text in texts))
     raise KeyError(name)
@@ -152,12 +152,12 @@ class NothingIsPermanent(unittest.TestCase):
 
     def test_the_recoverable_delete_is_the_one_the_fs_shelf_uses(self) -> None:
         self.assertIn('soft_delete', read('fs.py'))
-        self.assertIn('modules-plugable.computer.memory.filesystem.services.fs_trash', read('fs.py'))
+        self.assertIn('bundles.memar_fs.services.fs_trash', read('fs.py'))
 
     def test_the_git_shelf_delegates_deletion_to_the_fs_shelf(self) -> None:
         source = read('git.py')
-        self.assertIn('trash.py', source)
-        self.assertIn('filesystem', source)
+        self.assertIn('bundles.memar_fs.services.trash', source)
+        self.assertIn('memar_fs', source)
 
 class RefusesWhenAbsent(unittest.TestCase):
 
@@ -262,7 +262,7 @@ class ShelfIsNotRouted(unittest.TestCase):
         description = module.DESCRIPTION
         self.assertIn('not', description.lower())
         self.assertIn('memar', description.lower())
-        self.assertIn('modules-plugable/computer/memory/filesystem/services/', description)
+        self.assertIn('bundles/memar_fs/services/', description)
 
 TIER = 'system'
 BUDGET_SECONDS = 20

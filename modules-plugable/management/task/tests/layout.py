@@ -21,7 +21,7 @@ What is pinned, and what each pin is for:
                  services that write those files declare.
   OwnLayout      The task keeps its own small layout (owner, 2026-10-20,
                  C4): one folder per kind, tests/ and temp/, the last named
-                 by `modules-plugable/computer/memory/filesystem/services/fs_memar.py`; it asks no module profile for it.
+                 by `bundles/memar/services/location/memar_location.py`; it asks no module profile for it.
   KindsGoToRoles Each kind's folder is one of the task's folders; a note (.md)
                  goes in docs/ and a script (.py, .mjs, .js, .ps1, .sh) in
                  services/ (owner, 2026-10-14); a file of no kind named here,
@@ -31,9 +31,8 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import sys
 import unittest
 from pathlib import Path

@@ -16,8 +16,8 @@ the daily sweep's, in `task_gc`.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-scratch_root = _m_fs_memar.scratch_root
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+scratch_root = _m_memar_location.scratch_root
 import sys
 from datetime import datetime, timezone
 from pathlib import Path

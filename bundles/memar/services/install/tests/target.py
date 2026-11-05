@@ -3,12 +3,12 @@
 
 """Tests for the folder a run would use, and the one place that refuses a temporary one.
 
-    python modules-plugable/computer/memory/filesystem/tests/fs_target.py
+    python bundles/memar/services/install/tests/target.py
 
-The subject is `modules-plugable/computer/memory/filesystem/services/fs_target.py`, named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+The subject is `bundles/memar/services/install/services/target.py`, named for the file that holds it per
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 A check of a file this suite does not own belongs beside the file that owns it,
 not here: what the installer does with these answers is pinned in
@@ -22,10 +22,10 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_target = import_module('modules-plugable.computer.memory.filesystem.services.fs_target')
-target = _m_fs_target
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_target = import_module('bundles.memar.services.install.services.target')
+target = _m_target
 import os
 import sys
 import tempfile
@@ -33,7 +33,7 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
+REPO = next(p for p in TESTS.parents if p.name == 'bundles').parent
 SCRIPTS = REPO / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(REPO))

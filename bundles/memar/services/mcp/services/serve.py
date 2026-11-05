@@ -27,10 +27,10 @@ import os
 import sys
 from importlib import import_module
 from pathlib import Path
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-role_folders = _m_fs_memar.role_folders
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+role_folders = _m_memar_location.role_folders
 COMMAND = 'serve'
-SCRIPTS = _m_fs_memar.checkout_root() / 'bundles' / 'memar'
+SCRIPTS = _m_memar_location.checkout_root() / 'bundles' / 'memar'
 TOP = SCRIPTS.parent.parent
 CODE_ROOTS = ('modules', 'modules-plugable', 'bundles')
 ROUTER = 'memar'

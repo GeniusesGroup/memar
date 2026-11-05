@@ -1,0 +1,47 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp UTF8_Error_NotUtf8 in "modules-plugable/computer/codec/string/utf8/errors/errors.kh"
+tp UTF8_Error_NamedTextNotUtf8 in "modules-plugable/computer/codec/string/utf8/errors/errors.kh"
+
+tp Domain mt (self UTF8_Error_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("UTF-8")(s, VoidError)
+}
+
+tp Summary mt (self UTF8_Error_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("The bytes of a text that must be read are not valid UTF-8")(s, VoidError)
+}
+
+tp Overview mt (self UTF8_Error_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("The bytes of a text that must be read are not valid UTF-8.")(s, VoidError)
+}
+
+tp UserActionNote mt (self UTF8_Error_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self UTF8_Error_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A refusal of the text domain. The detail names where the bytes came from.")(s, VoidError)
+}
+
+tp Domain mt (self UTF8_Error_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("UTF-8")(s, VoidError)
+}
+
+tp Summary mt (self UTF8_Error_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("The bytes of a named text, taken bare, are not valid UTF-8")(s, VoidError)
+}
+
+tp Overview mt (self UTF8_Error_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("The bytes of a named text, taken bare, are not valid UTF-8.")(s, VoidError)
+}
+
+tp UserActionNote mt (self UTF8_Error_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self UTF8_Error_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A failure of the text domain. A leading byte-order mark would have stayed as the character U+FEFF.")(s, VoidError)
+}

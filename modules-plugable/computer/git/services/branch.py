@@ -4,7 +4,7 @@
 """modules-plugable/computer/git/services/branch.py — a project's records branch: what it holds, and the one way a commit is added to it.
 
 A project's tasks' records are kept on a branch of the project's own
-repository (`fs_memar.RECORDS_BRANCH`), each task
+repository (`memar_location.RECORDS_BRANCH`), each task
 at `.agents/tasks/<id>/` in the branch's tree, so the history of the work
 does not grow with them and nothing of the checkout moves when one is kept. This
 file is the whole of what the other task services know about git:
@@ -25,8 +25,9 @@ from __future__ import annotations
 from importlib import import_module
 _m_git_records = import_module('modules-plugable.computer.git.services._git_records')
 git_records = _m_git_records
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
+RECORDS_RELATIVE = _m_memar_location.RECORDS_RELATIVE
 import shutil
 import subprocess
 import sys

@@ -36,9 +36,9 @@ always an entry (`project_registry.ensure_memar_entry`), so asking for memar
 needs no registration.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+from importlib import import_module
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import argparse
 import os
 import time

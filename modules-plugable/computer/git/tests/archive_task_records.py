@@ -44,7 +44,7 @@ What is pinned, and what each pin is for:
                   is not silently dropped.
   BranchNameIsOneConstant
                   The branch name is spelled in one line of the scripts,
-                  `fs_memar.RECORDS_BRANCH`.
+                  `memar_location.RECORDS_BRANCH`.
   RelatedTasks `archive` keeps the task named and every task whose
                   Parent chain leads to it in one commit, and prints the
                   branch reference of each and the commit.
@@ -55,10 +55,10 @@ from __future__ import annotations
 TIER = 'system'
 BUDGET_SECONDS = 150
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import argparse
 import contextlib
 import io
@@ -368,7 +368,7 @@ class BranchNameIsOneConstant(unittest.TestCase):
         shelves = [top / name for name in ('bundles', 'modules', 'modules-plugable')]
         needle = f"RECORDS_BRANCH = '{BRANCH}'"
         spelled = sorted(path.relative_to(top).as_posix() for shelf in shelves for path in shelf.rglob('*.py') if not {'tests', 'temp'} & set(path.relative_to(top).parts) and needle in path.read_text(encoding='utf-8', errors='replace'))
-        self.assertEqual(spelled, ['modules-plugable/computer/memory/filesystem/services/fs_memar.py'])
+        self.assertEqual(spelled, ['bundles/memar/services/location/memar_location.py'])
         self.assertEqual(memar_fs.RECORDS_BRANCH, BRANCH)
 
 class RelatedTasks(Fixture):

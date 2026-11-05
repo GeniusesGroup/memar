@@ -9,7 +9,7 @@ changelogs and handoffs cite task ids, and a cited id whose folder the sweep
 has sent to the trash cites nothing. So the two are two concerns with two
 locations: the folder stays where it is and goes as it
 always went, and its records are kept in the project's own repository, on the
-branch `fs_memar.RECORDS_BRANCH` names, at
+branch `memar_location.RECORDS_BRANCH` names, at
 `.agents/tasks/<id>/` in that branch's tree. A branch, because the full
 records would otherwise grow the history of the work; a branch of the project's
 own repository, because that is where the project's people already are, and
@@ -52,10 +52,10 @@ anything is written.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
-RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
-scratch_root = _m_fs_memar.scratch_root
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
+RECORDS_RELATIVE = _m_memar_location.RECORDS_RELATIVE
+scratch_root = _m_memar_location.scratch_root
 import argparse
 import os
 import tempfile

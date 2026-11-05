@@ -1,0 +1,299 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Error_Edit_Refusal in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_OldEmpty in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_MatchAbsent in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_MatchAmbiguous in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_EmptyText in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_CreateNotAsked in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_TextAbsent in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_NotUtf8 in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_ReadFailed in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_WriteFailed in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_Locked in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_LockUnwritable in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_ChangedWhileWaiting in "modules/knowledge/text/errors/edit.kh"
+tp Text_Error_Edit_NamedTextNotUtf8 in "modules/knowledge/text/errors/edit.kh"
+
+tp Domain mt (self Text_Error_Edit_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("An edit refuses; nothing is written")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("An edit refuses; nothing is written.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_Refusal) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_OldEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_OldEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace is empty, so it would match everywhere")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_OldEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace is empty, so it would match everywhere.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_OldEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_OldEmpty) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_MatchAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_MatchAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace does not occur in the held text")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_MatchAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace does not occur in the held text.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_MatchAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_MatchAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail advises checking the exact text, including line endings and dash characters.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_MatchAmbiguous) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_MatchAmbiguous) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace occurs more than once and every occurrence was not asked")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_MatchAmbiguous) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to replace occurs more than once and every occurrence was not asked.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_MatchAmbiguous) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_MatchAmbiguous) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail gives the count and advises more surrounding context or asking for every occurrence.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_EmptyText) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_EmptyText) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to write is empty or only whitespace")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_EmptyText) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to write is empty or only whitespace.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_EmptyText) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_EmptyText) () (s String) {
+    CharacterRun_From.FromCharacterRun("Empty input usually means nothing was delivered, not that the text should be emptied.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_CreateNotAsked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_CreateNotAsked) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to write into is not held, and the call did not ask to create it")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_CreateNotAsked) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to write into is not held, and the call did not ask to create it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_CreateNotAsked) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_CreateNotAsked) () (s String) {
+    CharacterRun_From.FromCharacterRun("A mistyped name would otherwise leave a stray text.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_TextAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_TextAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to edit is not held by the adapter")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_TextAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text to edit is not held by the adapter.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_TextAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_TextAbsent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text that must be read, the held text or the source of a write, is not valid for the codec")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A text that must be read, the held text or the source of a write, is not valid for the codec.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_NotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("The held text is not written to, because writing a decoded-with-replacement copy is how damage spreads. The source of a write is decoded bare.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_ReadFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_ReadFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter could not read the held text")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_ReadFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter could not read the held text.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_ReadFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_ReadFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail carries what the adapter said.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_WriteFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_WriteFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter could not write the held text")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_WriteFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The adapter could not write the held text.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_WriteFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_WriteFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail carries what the adapter said.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Another cooperating process holds the lock on the text past the wait")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("Another cooperating process holds the lock on the text past the wait.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_Locked) () (s String) {
+    CharacterRun_From.FromCharacterRun("A lock older than the stale limit is a dead holder and is taken over, so only a live holder is waited out.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_LockUnwritable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_LockUnwritable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The lock or the intent note of the lock could not be made or written")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_LockUnwritable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The lock or the intent note of the lock could not be made or written.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_LockUnwritable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_LockUnwritable) () (s String) {
+    CharacterRun_From.FromCharacterRun("A failure of the realization that an earlier realization let escape as an unhandled operating-system error, before anything is written to the text; a realization catches it into this error.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_ChangedWhileWaiting) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_ChangedWhileWaiting) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text changed between the moment its state was taken and the moment the lock was held")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_ChangedWhileWaiting) () (s String) {
+    CharacterRun_From.FromCharacterRun("The text changed between the moment its state was taken and the moment the lock was held.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_ChangedWhileWaiting) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_ChangedWhileWaiting) () (s String) {
+    CharacterRun_From.FromCharacterRun("The lock is released and nothing is written; the call must be made again against the current content. The detail names what differed.")(s, VoidError)
+}
+
+tp Domain mt (self Text_Error_Edit_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Error_Edit_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A named text taken as the text to replace or the replacement is not valid for the codec")(s, VoidError)
+}
+
+tp Overview mt (self Text_Error_Edit_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A named text taken as the text to replace or the replacement is not valid for the codec.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Error_Edit_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Error_Edit_NamedTextNotUtf8) () (s String) {
+    CharacterRun_From.FromCharacterRun("A failure, not a refusal. The decode is bare: a leading byte-order mark stays as the character U+FEFF.")(s, VoidError)
+}

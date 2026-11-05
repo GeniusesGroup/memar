@@ -9,7 +9,7 @@ the same way whatever the file is for. Memar's written-surface rules — no blan
 line under a heading, no blank line after the closing front-matter fence, no run
 of blank lines, a link that resolves to a file and a heading — are Memar's own
 conventions and apply only inside a Memar repository, which is asked of
-`modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` rather than
+`bundles/memar/services/location/repository.py` rather than
 assumed.
 
 A link that points up the layers of the written content is a
@@ -24,9 +24,8 @@ domains' parts and decides none of them.
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_memar_repository = plugable_load('computer.memory.filesystem.services.fs_memar_repository')
-enclosing_repository = _m_fs_memar_repository.enclosing_repository
+_m_repository = import_module('bundles.memar.services.location.repository')
+enclosing_repository = _m_repository.enclosing_repository
 import argparse
 import re
 from pathlib import Path
@@ -76,7 +75,7 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
     they hold for every text file in every project, because a shell damages a
     file the same way whatever the file is for. So the two sets are separated by
     a flag rather than by a list, and the caller decides by asking
-    `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` whether the folder is a Memar repository.
+    `bundles/memar/services/location/repository.py` whether the folder is a Memar repository.
     """
     cache: dict = {} if link_cache is None else link_cache
     problems, text = file_problems(path)

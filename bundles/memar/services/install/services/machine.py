@@ -25,12 +25,12 @@ develops — and the machine around a recorded checkout:
   - prints the value it wrote and where it wrote it.
 
 What each of those is is asked rather than repeated here:
-`modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py` what a Memar repository is,
+`bundles/memar/services/location/repository.py` what a Memar repository is,
 `bundles/memar/services/update/services/checkout.py` what marks a checkout as a developer's,
 `machine/env_location.py` what the location variable
 says and where that variable lives, `machine/env_path.py` the user's PATH,
-`modules-plugable/computer/memory/filesystem/services/fs_target.py` the folder a run would use, `modules-plugable/computer/memory/filesystem/services/fs_lock.py` two
-tasks at once, `modules-plugable/computer/memory/filesystem/services/fs_memar.py` where the checkout and its scratch live,
+`bundles/memar/services/install/services/target.py` the folder a run would use, `bundles/memar/services/install/services/lock.py` two
+tasks at once, `bundles/memar/services/location/memar_location.py` where the checkout and its scratch live,
 `machine/editor_extension.py` the editor extensions, and `machine/console.py`
 how a step is printed.
 
@@ -56,21 +56,22 @@ record, the record is used and the disagreement is printed.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_lock = import_module('modules-plugable.computer.memory.filesystem.services.fs_lock')
-lock_path = _m_fs_lock.lock_path
+_m_lock = import_module('bundles.memar.services.install.services.lock')
+lock_path = _m_lock.lock_path
+take_lock = _m_lock.take_lock
+_m_fs_lock = import_module('bundles.memar_fs.services.fs_lock')
 release_lock = _m_fs_lock.release_lock
-take_lock = _m_fs_lock.take_lock
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-checkout_root = _m_fs_memar.checkout_root
-memar_root = _m_fs_memar.memar_root
-_m_fs_memar_repository = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar_repository')
-is_memar_repository = _m_fs_memar_repository.is_memar_repository
-not_a_repository = _m_fs_memar_repository.not_a_repository
-_m_fs_target = import_module('modules-plugable.computer.memory.filesystem.services.fs_target')
-default_target = _m_fs_target.default_target
-full_path = _m_fs_target.full_path
-refuse_temporary = _m_fs_target.refuse_temporary
-temporary_directory = _m_fs_target.temporary_directory
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+checkout_root = _m_memar_location.checkout_root
+memar_root = _m_memar_location.memar_root
+_m_repository = import_module('bundles.memar.services.location.repository')
+is_memar_repository = _m_repository.is_memar_repository
+not_a_repository = _m_repository.not_a_repository
+_m_target = import_module('bundles.memar.services.install.services.target')
+default_target = _m_target.default_target
+full_path = _m_target.full_path
+refuse_temporary = _m_target.refuse_temporary
+temporary_directory = _m_target.temporary_directory
 import os
 from pathlib import Path
 from machine.console import fail, note, step

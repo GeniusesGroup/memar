@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: reports are written under the
-folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names and removed with it.
+folder `modules/process/test/services/test_scratch.py` names and removed with it.
 
 What is pinned, and what each pin is for:
 
@@ -54,8 +54,8 @@ sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
 Label_Plan = plugable_load('knowledge.documentation.plan.labels.Plan').Label_Plan
 Label_Report = plugable_load('knowledge.documentation.report.labels.Report').Label_Report
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
 import earlier_shape
 task_report = import_module('modules-plugable.management.task.services.report_file')
 NEW_PARTS = '# Report\n\n## What ran\nx\n'

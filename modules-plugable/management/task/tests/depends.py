@@ -18,7 +18,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: the Memar root the services
-resolve is patched onto one made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py`
+resolve is patched onto one made under the folder `modules/process/test/services/test_scratch.py`
 names, which is also the project, a git repository; the records branch is
 replaced by a dictionary.
 
@@ -43,11 +43,12 @@ What is pinned, and what each pin is for:
               the asking chat's plan cites.
 """
 from __future__ import annotations
+from importlib import import_module
 from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 from importlib import import_module
 import contextlib
 import io

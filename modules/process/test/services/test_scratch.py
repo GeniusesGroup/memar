@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py — where a test suite in this folder writes: the one owner of MEMAR_TEST_SCRATCH.
+"""modules/process/test/services/test_scratch.py — where a test suite in this folder writes: the one owner of MEMAR_TEST_SCRATCH.
 
 Every suite here, on whichever shelf it sits, makes its throwaway folders under
 the folder `suite_scratch()` returns, so the name of the variable and what it
@@ -18,7 +18,7 @@ folder where nobody looks.
 Unset, the folder is `temp/test-scratch/` in the checkout this file sits in, and
 never the OS temporary directory: a task's scratch is not kept there, and
 neither is a suite's. `temp/` is the checkout's one scratch root, named by
-`modules-plugable/computer/memory/filesystem/services/fs_memar.py` and ignored by the checkout's `.gitignore`, so a run
+`bundles/memar/services/location/memar_location.py` and ignored by the checkout's `.gitignore`, so a run
 leaves nothing git sees and whatever a failed run leaves is found where a person
 looks for scratch. The folder is not named the way a task is, so the task
 sweep never takes it.
@@ -38,9 +38,9 @@ a child is a test run too. Imported by anything else, it marks nothing.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-TEMP_DIRNAME = _m_fs_memar.TEMP_DIRNAME
-checkout_root = _m_fs_memar.checkout_root
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+TEMP_DIRNAME = _m_memar_location.TEMP_DIRNAME
+checkout_root = _m_memar_location.checkout_root
 import os
 import shutil
 import stat

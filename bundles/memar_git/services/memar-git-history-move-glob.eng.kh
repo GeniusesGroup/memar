@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Git_HistoryMoveGlob in "bundles/memar_git/services/memar-git-history-move-glob.kh"
+
+tp Domain mt (self Memar_Git_HistoryMoveGlob) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Git")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Git_HistoryMoveGlob) () (s String) {
+    CharacterRun_From.FromCharacterRun("Move every file matching a pattern into a folder, keeping its history")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Git_HistoryMoveGlob) () (s String) {
+    CharacterRun_From.FromCharacterRun("Move every file matching a pattern into a folder, keeping its history.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Git_HistoryMoveGlob) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Git_HistoryMoveGlob) () (s String) {
+    CharacterRun_From.FromCharacterRun("The pattern is read against the current folder and only files match. Without apply the verb lists what it would move, moves nothing, and then prints on the error stream the advice to re-run with apply and to commit the renames by themselves before editing content; with apply each file is moved by `git mv`, one by one, so those before a failed one are already moved. The verb commits nothing in either case. The pattern must be non-empty and relative to the current folder. Refused with PatternMalformed (empty or absolute pattern), NotAFolder (when applying, the destination is not a folder) or NoMatch; MoveFailed is a failure and carries the exit status of `git mv`.")(s, VoidError)
+}

@@ -7,7 +7,7 @@ Why a registry. A verb that acts on a project must be told which one: no script
 keeps a default project path, and none reads the folder it was started in,
 because both are guesses that are right on the day they are written. A name
 told to a service is not a guess, so the names live in one file,
-temp/projects.log at the root of Memar's temp (its path is `modules-plugable/computer/memory/filesystem/services/fs_memar.py`'s),
+temp/projects.log at the root of Memar's temp (its path is `bundles/memar/services/location/memar_location.py`'s),
 and `project_find` turns a word into a folder through it.
 
 The format is one project a line, each line a JSON object with the folder and
@@ -33,12 +33,12 @@ This file declares no verb; `project_add`, `project_list`, `project_remove`, and
 `project_find` do, and share what is here.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_lock = plugable_load('computer.memory.filesystem.services.fs_lock')
+from importlib import import_module
+_m_fs_lock = import_module('bundles.memar_fs.services.fs_lock')
 try_lock = _m_fs_lock.try_lock
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
-projects_log = _m_fs_memar.projects_log
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
+projects_log = _m_memar_location.projects_log
 import json
 import os
 import time

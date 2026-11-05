@@ -1,35 +1,26 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""modules-plugable/computer/memory/filesystem/services/fs_copy.py — whether a folder still holds what copying another would write.
-
-Memar copies parts of its checkout onto the machine — the skill into agent apps,
-the editor extensions into the editor — and each copy falls behind as the
-checkout changes. Whether one has is a question about two directory trees and
-nothing of Memar's, so it is asked here, once, for every copy; which copies
-exist stays with the file that makes them, and what a copy leaves out is passed
-in by the caller rather than decided here.
-"""
 from __future__ import annotations
 import os
 from pathlib import Path
 from typing import Callable, Iterable
 Ignore = Callable[[str, Iterable[str]], Iterable[str]]
 
+def _is_link(path: Path) -> bool:
+    return os.path.islink(path) or os.path.isjunction(path)
+
 def copied_files(folder: Path, ignore: Ignore) -> dict[str, Path]:
-    """Each file a copy of FOLDER carries, by its path relative to FOLDER, leaving out what IGNORE names."""
     found: dict[str, Path] = {}
     for root, folders, files in os.walk(folder):
         left_out = set(ignore(root, [*folders, *files]))
-        folders[:] = [name for name in folders if name not in left_out]
+        folders[:] = [name for name in folders if name not in left_out and (not _is_link(Path(root, name)))]
         for name in files:
             if name not in left_out:
                 path = Path(root, name)
                 found[path.relative_to(folder).as_posix()] = path
     return found
 
-def differs(source: Path, dest: Path, ignore: Ignore) -> bool:
-    """Whether DEST is not what copying SOURCE would write: a file added, gone, or changed."""
+def copy(source: Path, dest: Path, ignore: Ignore) -> bool:
     want, have = (copied_files(source, ignore), copied_files(dest, ignore))
     if want.keys() != have.keys():
         return True

@@ -49,15 +49,15 @@ where it is used.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-scratch_root = _m_fs_memar.scratch_root
-_m_fs_lock = import_module('modules-plugable.computer.memory.filesystem.services.fs_lock')
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+scratch_root = _m_memar_location.scratch_root
+_m_fs_lock = import_module('bundles.memar_fs.services.fs_lock')
 claim_today = _m_fs_lock.claim_today
 release_lock = _m_fs_lock.release_lock
 try_lock = _m_fs_lock.try_lock
-scratch_root = _m_fs_memar.scratch_root
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-in_test_run = _m_fs_test_scratch.in_test_run
+scratch_root = _m_memar_location.scratch_root
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+in_test_run = _m_test_scratch.in_test_run
 import contextlib
 import io
 import os
@@ -70,7 +70,7 @@ if TYPE_CHECKING:
 OPT_OUT_VARIABLE = 'MEMAR_NO_AUTO_UPDATE'
 UPDATE_VERB = 'update'
 BACKGROUND_FLAG = '--background'
-LAUNCHER = _m_fs_memar.checkout_root() / 'bundles' / 'memar' / 'memar'
+LAUNCHER = _m_memar_location.checkout_root() / 'bundles' / 'memar' / 'memar'
 UPDATE_DIRNAME = 'update'
 DAILY_MARKER_NAME = 'update.daily'
 LOCK_NAME = 'update.lock'

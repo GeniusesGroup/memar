@@ -18,6 +18,18 @@ tp Error_Memar_Git_NotARepository ab {
     Error_Memar_Git_Refusal
 }
 
+tp Error_Memar_Git_NotAFolder ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_PatternMalformed ab {
+    Error_Memar_Git_Refusal
+}
+
+tp Error_Memar_Git_NoMatch ab {
+    Error_Memar_Git_Refusal
+}
+
 tp Error_Memar_Git_GitFailed ab {
     Error
 }
@@ -95,5 +107,9 @@ tp Error_Memar_Git_StagedByOthers ab {
 }
 
 tp Error_Memar_Git_Locked ab {
+    Error
+}
+
+tp Error_Memar_Git_MoveFailed ab {
     Error
 }

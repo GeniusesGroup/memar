@@ -3,7 +3,7 @@
 
 """modules-plugable/computer/git/services/_git_records.py — a project's records branch, read: what it holds, by whom it is cited, and the bytes of its files.
 
-A project's tasks' records are kept on the branch `fs_memar.RECORDS_BRANCH` of
+A project's tasks' records are kept on the branch `memar_location.RECORDS_BRANCH` of
 the project's own repository, each task at `RECORDS_RELATIVE/<id>/` in the branch's tree,
 by `memar git archive-task-records` (`modules-plugable/computer/git/services/archive_task_records.py`). Two modules read
 that branch: the task module, which prints one task by its id, and the content module,
@@ -18,9 +18,9 @@ repository: `is_top` says whether PROJECT is a repository's own top folder.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
-RECORDS_RELATIVE = _m_fs_memar.RECORDS_RELATIVE
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
+RECORDS_RELATIVE = _m_memar_location.RECORDS_RELATIVE
 import os
 import shutil
 import subprocess

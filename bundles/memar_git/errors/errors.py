@@ -70,6 +70,15 @@ class IndexChanged(Refusal):
 class StagedByOthers(Refusal):
     pass
 
+class NotAFolder(Refusal):
+    pass
+
+class PatternMalformed(Refusal):
+    pass
+
+class NoMatch(Refusal):
+    pass
+
 class GitFailed(Error):
     pass
 
@@ -77,4 +86,7 @@ class ServerUnreachable(Error):
     pass
 
 class Locked(Error):
+    pass
+
+class MoveFailed(Error):
     pass

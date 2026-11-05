@@ -10,10 +10,9 @@ have not moved to the id) — never the store.
 from __future__ import annotations
 from modules.identity.thing.labels.Queued import Label_Queued
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-task_dir = _m_fs_memar.task_dir
-tasks_root = _m_fs_memar.tasks_root
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+task_dir = _m_memar_location.task_dir
+tasks_root = _m_memar_location.tasks_root
 import os
 import time
 from pathlib import Path

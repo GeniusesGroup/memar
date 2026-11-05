@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Memar_Git_HistoryMoveGlob ab {
+    Service
+}
+
+tp HistoryMoveGlob mt (self Memar_Git_HistoryMoveGlob) (pattern String, destination String, apply Boolean) (listing String, err Error)

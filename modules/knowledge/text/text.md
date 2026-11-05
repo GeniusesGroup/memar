@@ -25,6 +25,9 @@ In [literary theory, a text](https://en.wikipedia.org/wiki/Text_(literary_theory
   `TextModel`, which is the shape of the decision above seen from outside: a
   URI is a thing that reads as text.
 
+## Editing a held text
+Exact-text replacement and the writing of a whole text are the text domain's own act, declared in [`services/edit-text/edit-text.kh`](services/edit-text/edit-text.kh); it reaches a text only through the port [`protocol/text-edit-store.kh`](protocol/text-edit-store.kh), reads and writes bytes through the codec port [`protocol/text-codec.kh`](protocol/text-codec.kh), takes its line ending from [`protocol/text-line-ending-rule.kh`](protocol/text-line-ending-rule.kh), and holds the text under the lock [`protocol/text-edit-lock.kh`](protocol/text-edit-lock.kh), whose refusals and failures are in [`errors/edit.kh`](errors/edit.kh).
+
 ## Durable storage
 A text’s durable value is the character sequence of the `Text` — the bytes of that sequence as the text domain stores them as a memory part. How a Files body codec embeds those part bytes inside one node body is private to the bound codec and is not Text’s concern. **Escaped JSON** that wraps a long body (the JSON codec’s `$files.text` object) is **not** Text’s durable form. Memar projects follow [Text Rule — Long Body Not JSON-Escaped](rules/long-body-not-json-escaped/long-body-not-json-escaped.md): bind a Files body codec that does not force that shape; JSON is not mandatory; [Syllab](../../computer/codec/syllab/syllab.md) is the intended bind once its Files body codec exists.
 

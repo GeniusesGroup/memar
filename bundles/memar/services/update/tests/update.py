@@ -15,7 +15,7 @@ verb asks is patched where its owner defines it, because the services import
 what a run needs only when it runs, and a test is about the verb's own
 decisions; the verb is run through its own `describe`, as the router runs it.
 The checkout comparison runs against throwaway git repositories made under the
-folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names and removed whole by its
+folder `modules/process/test/services/test_scratch.py` names and removed whole by its
 `remove_tree`, and the one real skill-copy check is given a home that holds no
 agent app.
 
@@ -67,9 +67,9 @@ from __future__ import annotations
 TIER = 'system'
 BUDGET_SECONDS = 150
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-remove_tree = _m_fs_test_scratch.remove_tree
-suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+remove_tree = _m_test_scratch.remove_tree
+suite_scratch = _m_test_scratch.suite_scratch
 import argparse
 import contextlib
 import io

@@ -13,11 +13,11 @@ from importlib import import_module
 from machine.plugable_import import load as plugable_load
 _m_git_records = plugable_load('computer.git.services._git_records')
 git_records = _m_git_records
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-RECORDS_BRANCH = _m_fs_memar.RECORDS_BRANCH
-TEMP_DIRNAME = _m_fs_memar.TEMP_DIRNAME
-TASKS_DIRNAME = _m_fs_memar.TASKS_DIRNAME
-tasks_root = _m_fs_memar.tasks_root
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
+TEMP_DIRNAME = _m_memar_location.TEMP_DIRNAME
+TASKS_DIRNAME = _m_memar_location.TASKS_DIRNAME
+tasks_root = _m_memar_location.tasks_root
 from pathlib import Path
 from typing import NamedTuple
 PLAN_FILE = 'plan.md'
@@ -62,7 +62,7 @@ def _names_project(folder: Path, root: Path) -> bool:
 def live_folders(root: Path) -> list[Path]:
     """The live task folders of the project at ROOT: each in its tasks folder, and each in Memar's own whose plan names ROOT; sorted by id."""
     from modules.computer.software.edges.manifest.services.preferences import tasks_location
-    own = tasks_location(root) or root / _m_fs_memar.AGENTS_DIRNAME / TASKS_DIRNAME
+    own = tasks_location(root) or root / _m_memar_location.AGENTS_DIRNAME / TASKS_DIRNAME
     memar = tasks_root()
     has_task = import_module('modules-plugable.management.task.services.task_memory').has_task
     found: dict[str, Path] = {}

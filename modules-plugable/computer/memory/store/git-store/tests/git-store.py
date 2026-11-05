@@ -25,7 +25,7 @@ for _each in (TOP / 'bundles' / 'memar' / 'services', TOP):
 sys.dont_write_bytecode = True
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_conformance = import_module('modules.computer.memory.conformance.conformance')
-_m_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
+_m_scratch = import_module('modules.process.test.services.test_scratch')
 _m_git_store = import_module('modules-plugable.computer.memory.store.git-store.git-store')
 _m_cases = import_module('modules-plugable.computer.memory.store.git-store.cases')
 _m_lockable = import_module('modules-plugable.computer.memory.store.lockable.lockable')

@@ -25,7 +25,7 @@ already ignores it at every depth, the file's own lines and endings kept.
 
 The layer is asked in this process, as `memar install` asks it, from inside a
 scratch folder of its own — given a `.git` so that it is a project root wherever
-it sits, and made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names. The
+it sits, and made under the folder `modules/process/test/services/test_scratch.py` names. The
 dry run writes nothing, and only what it printed is read: a scratch inside this repository would be installed into this
 repository, whose section names its own skill file rather than the one written
 for a project that has to fetch Memar first.
@@ -34,10 +34,10 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 import contextlib
 import io
 import re

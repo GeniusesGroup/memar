@@ -17,10 +17,10 @@ it. Which is why the reading and the writing here name the same place, and why
 this is the only read of the variable in this folder.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_memar_repository = plugable_load('computer.memory.filesystem.services.fs_memar_repository')
-is_memar_repository = _m_fs_memar_repository.is_memar_repository
-not_a_repository = _m_fs_memar_repository.not_a_repository
+from importlib import import_module
+_m_repository = import_module('bundles.memar.services.location.repository')
+is_memar_repository = _m_repository.is_memar_repository
+not_a_repository = _m_repository.not_a_repository
 import os
 import re
 import sys

@@ -14,8 +14,7 @@ sys.path.insert(0, str(TOP / 'bundles' / 'memar' / 'services'))
 sys.path.insert(1, str(TOP / 'bundles' / 'memar'))
 sys.path.insert(2, str(TOP))
 sys.dont_write_bytecode = True
-from machine.plugable_import import load as plugable_load
-suite_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch').suite_scratch
+suite_scratch = import_module('modules.process.test.services.test_scratch').suite_scratch
 BUDGET_SECONDS = 30
 _m_files = import_module('modules-plugable.computer.memory.store.files.files')
 _m_graph = import_module('modules-plugable.computer.memory.store.graph.graph')

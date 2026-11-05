@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for what a Memar repository is, in `modules-plugable/computer/memory/filesystem/services/fs_memar_repository.py`.
+"""Tests for what a Memar repository is, in `bundles/memar/services/location/repository.py`.
 
-    python modules-plugable/computer/memory/filesystem/tests/fs_memar_repository.py
+    python bundles/memar/services/location/tests/repository.py
 
 The subject is the one definition of a Memar repository, named for the file
 that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Every repository here is made in a scratch folder under the one
-`modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed with it.
+`modules/process/test/services/test_scratch.py` names, and removed with it.
 
 What is pinned, and what each pin is for:
 
@@ -24,16 +24,16 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_memar_repository = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar_repository')
-memar_repository = _m_fs_memar_repository
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_repository = import_module('bundles.memar.services.location.repository')
+memar_repository = _m_repository
 import sys
 import tempfile
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
+REPO = next(p for p in TESTS.parents if p.name == 'bundles').parent
 SCRIPTS = REPO / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(REPO))

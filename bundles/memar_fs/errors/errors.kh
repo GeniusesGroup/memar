@@ -1,0 +1,43 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Error_Memar_Fs_Refusal ab {
+    Error
+}
+
+tp Error_Memar_Fs_NotNamed ab {
+    Error_Memar_Fs_Refusal
+}
+
+tp Error_Memar_Fs_ContentOfTask ab {
+    Error_Memar_Fs_Refusal
+}
+
+tp Error_Memar_Fs_NotAFolder ab {
+    Error_Memar_Fs_Refusal
+}
+
+tp Error_Memar_Fs_PathAbsent ab {
+    Error_Memar_Fs_Refusal
+}
+
+tp Error_Memar_Fs_ScratchInTaskFolder ab {
+    Error_Memar_Fs_Refusal
+}
+
+tp Error_Memar_Fs_LinkExists ab {
+    Error_Memar_Fs_Refusal
+}
+
+tp Error_Memar_Fs_LinkFailed ab {
+    Error
+}
+
+tp Error_Memar_Fs_TrashFailed ab {
+    Error
+}
+
+tp Error_Memar_Fs_RootUnresolved ab {
+    Error
+}

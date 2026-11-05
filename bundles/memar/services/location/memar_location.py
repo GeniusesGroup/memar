@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/memory/filesystem/services/fs_memar.py — where Memar lives on disk: the one home for location answers.
+"""bundles/memar/services/location/memar_location.py — where Memar lives on disk: the one home for location answers.
 
 Every script that needs a Memar path — the checkout, the recorded root, the
 scratch root, a task folder — asks here instead of recomputing it. One need,
@@ -22,8 +22,8 @@ from pathlib import Path
 from machine.console import fail
 from machine.env_location import recorded_root
 
-_m_fs_memar_repository = import_module("modules-plugable.computer.memory.filesystem.services.fs_memar_repository")
-is_memar_repository = _m_fs_memar_repository.is_memar_repository
+_m_repository = import_module("bundles.memar.services.location.repository")
+is_memar_repository = _m_repository.is_memar_repository
 
 # The folder Memar's own configuration lives in, relative to a checkout root.
 AGENTS_DIRNAME = ".agents"
@@ -65,15 +65,15 @@ def role_folders() -> tuple[str, ...]:
     except ModuleNotFoundError:
         return ()
 
-PLUGABLE_ROOT = 'modules-plugable'
+PLUGABLE_ROOT = 'bundles'
 
 def checkout_root(start: Path | None=None) -> Path:
-    """The checkout a file is in: the parent of the nearest `modules-plugable` folder above it.
+    """The checkout a file is in: the parent of the nearest `bundles` folder above it.
 
     Found by that marker and not counted in levels, so a move of the file, to a
     deeper folder or a mirrored one, leaves the answer right; `start` defaults to
-    this file, which stands in that folder. The nearest is taken because a pluggable
-    module stands under it once, whatever its depth. Code that cannot yet import this
+    this file, which stands in that folder. The nearest is taken because a bundle
+    stands under it once. Code that cannot yet import this
     file (a test that must find the root to put it on the search path) repeats the
     marker search in one line.
     """

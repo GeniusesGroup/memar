@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Services in "modules/process/services/protocol/services.kh"
+tp Memar_Fs_Link in "bundles/memar_fs/services/memar-fs-link.kh"
+tp Memar_Fs_Tree in "bundles/memar_fs/services/memar-fs-tree.kh"
+tp Memar_Fs_Copy in "bundles/memar_fs/services/memar-fs-copy.kh"
+tp Memar_Fs_Trash in "bundles/memar_fs/services/memar-fs-trash.kh"
+tp Memar_Fs_Commands in "bundles/memar_fs/services/memar-fs-commands.kh"
+
+tp Memar_Fs_Services ab {
+    Process_Services
+}
+
+tp GetLink mt (self Memar_Fs_Services) () (link Memar_Fs_Link)
+tp GetTree mt (self Memar_Fs_Services) () (tree Memar_Fs_Tree)
+tp GetCopy mt (self Memar_Fs_Services) () (copy Memar_Fs_Copy)
+tp GetTrash mt (self Memar_Fs_Services) () (trash Memar_Fs_Trash)
+tp GetCommands mt (self Memar_Fs_Services) () (commands Memar_Fs_Commands)

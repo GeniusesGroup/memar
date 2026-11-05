@@ -9,19 +9,19 @@ whose output is that path invites the failure the rule exists to stop.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_fs_trash = import_module('modules-plugable.computer.memory.filesystem.services.fs_trash')
+_m_fs_trash = import_module('bundles.memar_fs.services.fs_trash')
 soft_delete = _m_fs_trash.soft_delete
 import os
 import subprocess
 import sys
 from pathlib import Path
-PACKAGE = 'modules-plugable.computer.memory.filesystem.services'
+PACKAGE = 'bundles.memar_fs.services'
 
 def bootstrap_repo() -> Path:
     """Put the checkout and launcher shelf on the path; return the repo root."""
     from importlib import import_module
-    repo = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar').checkout_root()
-    launcher = import_module('modules-plugable.computer.memory.filesystem.services.fs_memar').LAUNCHER_RELATIVE
+    repo = import_module('bundles.memar.services.location.memar_location').checkout_root()
+    launcher = import_module('bundles.memar.services.location.memar_location').LAUNCHER_RELATIVE
     for folder in (repo, repo / launcher):
         if str(folder) not in sys.path:
             sys.path.insert(0, str(folder))
@@ -82,4 +82,4 @@ def ensure_dir_link(link: Path, target: Path, *, replace: bool=False) -> None:
     print(f'linked {link} -> {target}', file=sys.stderr)
 
 def host_git_cli() -> Path:
-    return import_module('modules-plugable.computer.memory.filesystem.services.fs_memar').checkout_root() / 'modules-plugable' / 'computer' / 'git' / 'services' / '_host_git_cli.py'
+    return import_module('bundles.memar.services.location.memar_location').checkout_root() / 'modules-plugable' / 'computer' / 'git' / 'services' / '_host_git_cli.py'

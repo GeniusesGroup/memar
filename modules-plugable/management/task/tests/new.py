@@ -12,7 +12,7 @@ in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder. The Memar root is patched onto
-one, made under the folder `modules-plugable/computer/memory/filesystem/services/fs_test_scratch.py` names, and removed
+one, made under the folder `modules/process/test/services/test_scratch.py` names, and removed
 again; task folders, locks, and intent notes land there and are removed
 with it. The only subprocess is git's top-level, which writes nothing.
 
@@ -81,20 +81,20 @@ What is pinned, and what each pin is for:
                      Memar's.
   LockSharesTheRoot  Locks and intent notes land under the same temp root the
                      task folders are under. How a lock behaves is pinned in
-                     `machine/tests/fs_lock.py`, which owns it.
+                     `bundles/memar_fs/tests/text_edit_lock.py`, which owns it.
   UnresolvableRoot   With no root to resolve, opening errors rather than
                      guessing a folder.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_fs_test_scratch = plugable_load('computer.memory.filesystem.services.fs_test_scratch')
-suite_scratch = _m_fs_test_scratch.suite_scratch
-_m_fs_lock = plugable_load('computer.memory.filesystem.services.fs_lock')
-fs_lock = _m_fs_lock
-_m_fs_memar = plugable_load('computer.memory.filesystem.services.fs_memar')
-memar_fs = _m_fs_memar
+from importlib import import_module
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_text_edit_lock = import_module('bundles.memar_fs.services.text_edit_lock')
+text_edit_lock = _m_text_edit_lock
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
 from importlib import import_module
 import argparse
 import contextlib
@@ -783,9 +783,9 @@ class LockSharesTheRoot(Fixture):
     def test_a_lock_and_its_intent_note_land_under_the_temp_root(self) -> None:
         target = self.fake_root / 'notes.md'
         target.write_text('# Notes\n', encoding='utf-8', newline='\n')
-        lock = fs_lock.edit_lock_path(target)
-        self.assertEqual(lock.parent, memar_fs.scratch_root() / fs_lock.EDIT_LOCK_DIR_NAME)
-        intent = fs_lock.edit_intent_path(lock)
+        lock = text_edit_lock.lock_path(str(target.resolve()), None)
+        self.assertEqual(lock.parent, memar_fs.scratch_root() / text_edit_lock.EDIT_LOCK_DIR_NAME)
+        intent = text_edit_lock.intent_path(lock)
         self.assertEqual(intent.parent, lock.parent)
         self.assertEqual(intent.name, lock.name + '.intent.json')
         _, path = self.ensure('s-3', TITLE)

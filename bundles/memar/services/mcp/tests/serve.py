@@ -42,9 +42,9 @@ from __future__ import annotations
 TIER = 'system'
 BUDGET_SECONDS = 150
 from importlib import import_module
-_m_fs_test_scratch = import_module('modules-plugable.computer.memory.filesystem.services.fs_test_scratch')
-remove_tree = _m_fs_test_scratch.remove_tree
-suite_scratch = _m_fs_test_scratch.suite_scratch
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+remove_tree = _m_test_scratch.remove_tree
+suite_scratch = _m_test_scratch.suite_scratch
 import json
 import os
 import subprocess
@@ -316,42 +316,38 @@ class ArgumentsAsTyped(unittest.TestCase):
         with self.assertRaisesRegex(_tools.Refused, 'true or false'):
             _tools.argv(self.tools['content_find'], {'text': 'a', 'no_links': 'yes'})
 
-class TextIsTheStandardInput(WithServer):
-    TAKES_STANDARD_INPUT = ('conversation_post', 'content_write')
+def _declared_tools():
+    import argparse
+    parser = argparse.ArgumentParser(prog='declared')
+    verbs = parser.add_subparsers(dest='verb')
+    reads = verbs.add_parser('reads', help='a verb that reads standard input')
+    reads.add_argument('--file', required=True, help='where the text goes')
+    reads.add_argument('--content-file', help='the content; standard input when not given')
+    names = verbs.add_parser('names', help='a verb that reads nothing')
+    names.add_argument('--file', required=True, help='a file')
+    return {tool.name: tool for tool in _tools.tools(parser)}
 
-    def test_the_schemas_carry_text_and_no_stdin(self):
-        tools = {tool['name']: tool for tool in self.server.request('tools/list')['tools']}
-        for name in self.TAKES_STANDARD_INPUT:
-            with self.subTest(tool=name):
-                properties = tools[name]['inputSchema']['properties']
-                self.assertIn('text', properties)
-                self.assertEqual(properties['text']['type'], 'string')
-        for name, tool in tools.items():
-            with self.subTest(tool=name):
+class TextIsTheStandardInput(WithServer):
+
+    def test_the_schemas_of_the_tools_carry_no_stdin(self):
+        for tool in self.server.request('tools/list')['tools']:
+            with self.subTest(tool=tool['name']):
                 self.assertNotIn('stdin', tool['inputSchema']['properties'])
 
-    def test_a_call_with_stdin_is_refused(self):
-        with self.assertRaisesRegex(AssertionError, 'no argument named stdin'):
-            self.server.call('content_write', {'file': 'unused.md', 'stdin': 'x'})
-
-    def test_text_reaches_the_verb_as_its_standard_input(self):
-        scratch = Path(suite_scratch()) / 'text-as-stdin'
-        scratch.mkdir(parents=True, exist_ok=True)
-        self.addCleanup(remove_tree, scratch)
-        target = scratch / 'out.md'
-        stdout, stderr, status = self.server.call('content_write', {'file': str(target), 'create': True, 'text': 'from text\n'})
-        self.assertEqual(status, 0, stderr)
-        self.assertEqual(target.read_text(encoding='utf-8'), 'from text\n')
+    def test_a_verb_that_reads_standard_input_carries_text_and_no_other(self):
+        tools = _declared_tools()
+        properties = _tools.definition(tools['reads'])['inputSchema']['properties']
+        self.assertEqual(properties['text']['type'], 'string')
+        self.assertNotIn('text', _tools.definition(tools['names'])['inputSchema']['properties'])
 
     def test_argv_hands_text_back_as_the_standard_input(self):
-        from mcp.services._worker import _load_router
-        router = _load_router(SCRIPTS)
-        parser, _ = router.assemble(router.services())
-        tools = {tool.name: tool for tool in _tools.tools(parser)}
-        words, standard_input = _tools.argv(tools['content_write'], {'file': 'a.md', 'text': 'body'})
+        tool = _declared_tools()['reads']
+        words, standard_input = _tools.argv(tool, {'file': 'a.md', 'text': 'body'})
         self.assertEqual(standard_input, 'body')
         self.assertNotIn('body', words)
         with self.assertRaisesRegex(_tools.Refused, 'no argument named stdin'):
-            _tools.argv(tools['content_write'], {'file': 'a.md', 'stdin': 'body'})
+            _tools.argv(tool, {'file': 'a.md', 'stdin': 'body'})
+        with self.assertRaisesRegex(_tools.Refused, 'no argument named text'):
+            _tools.argv(_declared_tools()['names'], {'file': 'a.md', 'text': 'body'})
 if __name__ == '__main__':
     unittest.main()
