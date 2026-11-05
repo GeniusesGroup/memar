@@ -4,7 +4,7 @@ Labels: Draft
 Start Date: 2026-10-30
 ---
 # Test Rule — Tests First and Scoped
-A rule of this repository, held for the [Test](../../test.md) protocol. Tests before the work is the protocol's own claim ([The Expectation Is Written Before the Work](../../test.md#the-expectation-is-written-before-the-work)); this rule adds how a run is bounded, which the protocol leaves to the organization. It applies only to work whose product is software, a throwaway script included; the protocol does not.
+A rule of this repository, held for the [Test](../../test.md) protocol. Tests before the work is the protocol's own claim ([The Expectation Is Written Before the Work](../../test.md#the-expectation-is-written-before-the-work)); this rule adds how a run is bounded, which the protocol leaves to the organization. It applies only to work whose product is software, a throwaway script included; the protocol does not. The third and fourth clauses are the test step of [Modularity Rule — A Refactor Moves in Order](../../../../knowledge/modularity/rules/refactor/refactor.md).
 
 ## The rule
 - **Every service has its tests before its code, however small,** and the new tests are seen to fail before any line of the service ([Test Practice → The Cycle](../../test.practice.md#the-cycle)). A service with no test of its own is not done.

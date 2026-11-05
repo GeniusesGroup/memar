@@ -3,7 +3,7 @@ Title: "Task Rule — Commits Are Few and Readable"
 Start Date: 2026-11-01
 ---
 # Task Rule — Commits Are Few and Readable
-A rule of this repository for the shape of a task's commits. The statements are the owner's, 2026-10-14 and 2026-10-15.
+A rule of this repository for the shape of a task's commits. The statements are the owner's, 2026-10-14 and 2026-10-15. The last clause is the pure-move step of [Modularity Rule — A Refactor Moves in Order](../../../../../modules/knowledge/modularity/rules/refactor/refactor.md), which states the order of a whole refactor.
 
 ## The rule
 - **A commit made by mistake or left incomplete, before it is pushed, is amended or folded,** and is not followed by a second commit.
