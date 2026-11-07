@@ -20,6 +20,3 @@ An organization may keep this rule or drop it, and dropping it is a real option 
 - It does not claim the language restricts where a `sc` may be written. The language states no placement, and the sentence that once said otherwise has left the language documents.
 - It does not claim the restriction is inherent to Scope. [Type → Scope](../../../../docs/type.md#scope--type-as-semantic-boundary) is the level at which a need for a boundary outside a Method would be reconsidered.
 - It does not change what this toolchain does. [core/src/parse.ts](../../core/src/parse.ts) still refuses a top-level `sc` with the label `scope-placement`, `core/test/refusal.test.ts` still carries the top-level refuse row under that label, and `core/test/form.test.ts` the in-body accept row.
-
-## Open questions
-This rule's own open state — including the M1 limitation on what the accept row actually proves — lives in its handoff.

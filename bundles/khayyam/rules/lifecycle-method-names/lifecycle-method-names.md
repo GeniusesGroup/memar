@@ -22,6 +22,3 @@ An organization may use different conventional names (`Close`, `Dispose`, `IsEmp
 - It does not claim the grammar reserves `Deinit`, `Free`, or `IsNull`.
 - It does not claim every type must implement these methods.
 - It does not claim automated teardown insertion; that is [Memory → Teardown is explicit, and automation writes source](../../../../modules/computer/memory/memory.md#teardown-is-explicit-and-automation-writes-source).
-
-## Open questions
-This rule's own open state lives in its handoff.

@@ -17,8 +17,3 @@
   - Stock Markets: need to show related data to traders to know the quality of organizations in making profit.
 - Limit the account to accept certain transaction types — Materials, Labor, Investments ([LinkedIn: 5 budgeting methods](https://www.linkedin.com/pulse/5-budgeting-methods-everyone-should-know-about-advantages-ehab-sobhy/)); Budget kinds: Budget, Budget_Zero_based, Budget_Incremental, Budget_Activity_Based, Budget_Value_Proposition, Budget_Flexible.
 - Budget labels: Blocking, Continuous, Withdrawal, Deposit.
-
-## Open questions
-
-- Are the Materials/Labor/Investments budget labels the budget module's data, or reference-type labels on the transaction side? The same list rides the transaction shortcut comments — converge with [reference](../../../modules/economics/transaction/edges/reference/reference.md) (Reference types → Open questions), one home.
-- Budget Status-kind words Executed/Inspected (from the transaction status-labels backlog): this module's `labels/` vocabulary or general words under `thing/labels/` ([Documentation → Status](../../../modules-plugable/knowledge/documentation/documentation.md#status))?

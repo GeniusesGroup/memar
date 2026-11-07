@@ -20,6 +20,3 @@ An organization may require capability-style abstraction names, forbid them outr
 - It does not claim the grammar rejects capability-framed abstraction names.
 - It does not claim every `Filterable`-shaped name is wrong — only that this repository discourages the pattern by default.
 - It does not govern capsule names, method names, or variable names; those live under sibling rules.
-
-## Open questions
-This rule's own open state lives in its handoff.

@@ -25,6 +25,3 @@ An organization may keep the vocabulary and the wording, narrow it, or drop the 
 - **It does not claim the words it names are absent.** `if` is not a keyword here; it is also not thereby forbidden as a name, since an identifier may spell anything the grammar's identifier admits ([Khayyam → Language Keyword in a Glance](../../../../docs/khayyam/khayyam.md#language-keyword-in-a-glance)). The Rule fires on a name nothing supplies, not on a spelling.
 - **It does not claim a diagnostic contract, a code, or a recovery behavior**, and it does not name the library operation behind any of the words. Which declaration meets a need is that library's business, per [Rule → Which Module a Rule Belongs To](../../../../modules/process/rule/rule.md#which-module-a-rule-belongs-to) on a rule's home being its subject's module.
 - **It does not claim anything about what any body of Khayyam source does.** No file or count in this repository is evidence for or against it, and none is cited.
-
-## Open questions
-This Rule's own open state — how much of the refusal the report covers, and how an organization states its vocabulary — lives in its handoff.

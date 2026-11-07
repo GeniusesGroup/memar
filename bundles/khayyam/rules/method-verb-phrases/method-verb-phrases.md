@@ -14,7 +14,7 @@ Query methods — those whose influenced variables receive data and whose implem
 
 The receiver supplies context for what is acted on; the method name does not repeat the owner's or field abstraction's name unless the bare verb is ambiguous in the sources ([receiver method names rule](../receiver-method-names/receiver-method-names.md)).
 
-`Get…` and `Set…` prefixes are neither required nor forbidden by this rule. Whether they belong in this repository is an open question — see the handoff.
+`Get…` and `Set…` prefixes are neither required nor forbidden by this rule.
 
 A generic `Read` on a `Field_X` accessor is not recommended: when one abstraction composes several field abstractions, each would offer `Read` and the call site loses which field is queried; `Read` is also a homonym of stream I/O read (Deißenböck & Pizka 2005). How a field abstraction's query method is named is open in the handoff.
 
@@ -42,9 +42,5 @@ An organization may require `Get`/`Set`, allow bare nouns when the receiver is a
 
 ## What this rule does not claim
 - It does not claim the grammar rejects non-verb method names.
-- It does not forbid or require `Get`/`Set` prefixes — that question is open in the handoff.
 - It does not prescribe `Read` as the default field accessor.
 - It does not override the [receiver method names rule](../receiver-method-names/receiver-method-names.md) or the [qualified names rule](../qualified-names/qualified-names.md).
-
-## Open questions
-This rule's own open state lives in its handoff.

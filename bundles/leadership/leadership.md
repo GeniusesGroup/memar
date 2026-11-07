@@ -6,11 +6,9 @@
 -->
 
 # Leadership
-
 **Status: composition bundle — deliberately NOT a module.** This bundle owns no schema of its own (no node, no edge, no rule). It is a named composition of capabilities that live in other modules, provided for organizations that want "leadership" features without the umbrella word ever entering the data model.
 
 ## Why a bundle and not a module
-
 "Leadership" is an **umbrella concept**, not an operational management concept. A module must own a complete capability (edges with identifiable semantics + processing, installable/removable as a unit; bare edges forbidden). No such capability exists here to own:
 
 - Delegation of authority → `modules/rights/delegate`
@@ -22,11 +20,9 @@
 Each of those is already a first-class capability elsewhere. A `leadership` module would have nothing of its own to own — it would be a reification of a colloquial word, precisely the failure this document argues against. A bundle that composes them is the honest answer to "where do we put this concept": the word lives here, the semantics live in the real modules.
 
 ## Summary of the position
-
 "Leadership" must not be placed at the same tier as operational management concepts (Planning, Budgeting, Coordination, Incentive, Governance, Delegation, Feedback, Process, ...). It is a colloquial label covering a set of behaviors, relationships, and organizational mechanisms. It is not useless — the problem starts when the umbrella is mistaken for a real entity, i.e. when the word itself replaces the concrete components underneath it. Those concrete mechanisms are what this bundle composes.
 
 ## The three usages that keep getting conflated
-
 1. **Leadership as a common word** — everyday language, no fixed meaning.
 2. **Leadership as a philosophical-normative concept** — e.g. Simon Sinek's "Leadership is a lifestyle, not a position". Inspiring, but this has moved into ethics/philosophy of life; ask ten people what "leadership behavior" is, get ten different answers, and nothing measurable comes out.
 3. **Leadership as a research subject in organizational science** — decades of attempts at operationalization (Trait Theory, Behavioral Theory, Situational Leadership, Transformational, Transactional, Servant Leadership).
@@ -34,7 +30,6 @@ Each of those is already a first-class capability elsewhere. A `leadership` modu
 Compare: "inventory level" or "delivery time" are understood nearly identically by everyone in management; after roughly a century of research, "Leadership" still has fundamental disagreement about what it even refers to. That is a signal about the weak boundaries of the concept itself.
 
 ## The post-hoc label critique
-
 Much of what is called "great leadership" is an interpretive label applied after the fact: a team succeeds → "they had a good leader"; the same team fails → "they had a weak leader". This is a post hoc explanation. What actually produced the outcome may be:
 
 - a suitable organizational structure,
@@ -46,7 +41,6 @@ Much of what is called "great leadership" is an interpretive label applied after
 All of it gets collapsed into one magic word. This resembles explaining natural phenomena with the 19th-century "vital force" (élan vital): a word that names the mystery instead of explaining it.
 
 ## What entity is it? (the modeling danger)
-
 If we tried to model "leadership" as an entity, the first question is: what does the term refer to?
 
 - A Role?
@@ -58,17 +52,14 @@ If we tried to model "leadership" as an entity, the first question is: what does
 The leadership literature gives no stable answer — sometimes the person is called the leadership, sometimes the behavior, sometimes the outcome, sometimes the culture. Using one term for several different entities is a warning sign in modeling, and it is precisely why it must not be made a sibling of operational concepts like Planning (an observable activity), Budget (a concrete artifact), Process (a modelable structure), or Incentive (a specific mechanism).
 
 ## The maturity trajectory (why staying at the word level is suspicious)
-
 Mature sciences show a characteristic path: vague concept → theories → operationalization → measurable variables → the original umbrella word fades while the concrete mechanisms take over. "Intelligence" is the canonical example: working psychologists rarely argue about Intelligence as such; they work with Working Memory, Processing Speed, Verbal Reasoning, Spatial Ability.
 
 "Leadership" broke this pattern: after ~100 years of research, most of the literature is still at the word level. Bestsellers still say "Be a better leader" — not "improve trust formation mechanisms", "improve organizational alignment", or "improve coordination structures". A word that resists decomposition for a century is, at minimum, a word to classify very carefully.
 
 ## Misattributed findings
-
 Much of the value currently credited to "leadership research" was actually produced by other disciplines and later relabeled: personality psychology, social psychology, cognitive science, sociology, network science. Trait Theory, for instance, belongs to psychology/cognitive science in origin and is not specific to leadership at all. If extraversion correlates with social influence, that discovery belongs to personality psychology; "leadership" is merely one of its application sites. Findings should be evaluated independently of the word — the word did not create them.
 
 ## What this bundle composes (concrete capabilities)
-
 | Umbrella gesture | Concrete capability | Lives in |
 |---|---|---|
 | "Empower people to act for you" | Delegation | `modules/rights/delegate` |
@@ -82,10 +73,9 @@ Rules for this bundle:
 
 - It must never define a schema entity named "leader/leadership" (no attribute, no node type, no abstract capability edge).
 - A GUI service request phrased as "add leadership to X" must be decomposed into the table above before design work starts.
-- If a genuinely operationalized leadership-like construct ever reaches consensus in the literature (see unresolved #1), *then* this bundle may be promoted to a real module owning that construct.
+- If a genuinely operationalized leadership-like construct ever reaches consensus in the literature, *then* this bundle may be promoted to a real module owning that construct.
 
 ## Related
-
 - [`modules/management/README.md`](../../modules/management/README.md) — Fayol's functions, incl. Commanding (leading)
 - [`modules/management/group/README.md`](../../modules/management/group/README.md) — membership decomposition, oversight membership
 - [`modules/management/role/README.md`](../../modules/management/role/README.md) — roles as sets of behaviors/norms
@@ -97,7 +87,7 @@ Rules for this bundle:
 
 - The umbrella word is convenient shorthand; refusing it makes communication wordier ("trust formation mechanisms" vs "leadership"), and the team must stay disciplined about decomposing instead of just banning the word.
 - A composition bundle adds one more indirection layer: readers looking for "leadership functionality" must hop through this README to the owning modules.
-- The position rests partly on an unsettled empirical bet: the word may yet be successfully decomposed (see unresolved #1), in which case a precise, legitimate construct could re-emerge and this bundle would need revision or promotion to a module.
+- The position rests partly on an unsettled empirical bet: the word may yet be successfully decomposed, in which case a precise, legitimate construct could re-emerge and this bundle would need revision or promotion to a module.
 
 ### Rationale and alternatives
 
@@ -114,16 +104,6 @@ Rules for this bundle:
 - Operationalization of "Intelligence" into Working Memory / Processing Speed / Verbal Reasoning / Spatial Ability — the positive example of a discipline dissolving its umbrella word.
 - Ambiguity of Value / Utility / Welfare in early economics, later given rigorous mathematical frameworks — the counterexample showing an ambiguous word can mature, and why hypothesis #2 below cannot be dismissed.
 - Related umbrella abstractions with the same failure mode when reified: Quality, Culture, Trust.
-
-### Unresolved questions
-
-1. **Word problem or discipline problem?** Is the fault in the word "Leadership" itself, or in the insufficient maturity of management science as a discipline? Two hypotheses remain open and logically exclusive:
-   - (a) Leadership is inherently an umbrella concept, irreducible to operational components;
-   - (b) Leadership is simply not yet decomposed and modeled well enough.
-   Notably, after ~100 years of research there is still no consensus choosing between them — which is itself the strongest evidence in favor of treating the word cautiously.
-2. Should `role` ever define a generic "lead" role edge for groups, or only concrete roles (C-level manager, judge, shift lead) with delegation? (Connects to the mechanism-choice question in `group/README.md` unresolved #1.)
-3. Is the mentor/mentee edge set sufficient as the concrete decomposition of one leadership-adjacent mechanism, or do we need more (e.g. sponsorship, supervision, coaching as distinct edges)?
-4. How should a GUI service expose "assign a lead" without introducing the umbrella word into the data model — what is the canonical phrasing/edge set?
 
 ### Future possibilities
 

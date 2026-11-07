@@ -4,5 +4,4 @@ Finance is the area of economics that studies how individuals and businesses acq
 In these financial systems, assets are bought, sold, or traded as financial instruments, such as currencies, loans, bonds, shares, stocks, options, futures, swaps, etc. Assets can also be banked, invested, and insured to maximize value and minimize loss. In practice, risks are always present in any financial action and entities.
 
 ## Financial economics
-
 [Financial economics](https://en.wikipedia.org/wiki/Financial_economics) is the branch of economics characterized by a "concentration on monetary activities", in which "money of one type or another is likely to appear on both sides of a trade". Its concern is thus the interrelation of financial variables, such as share prices, interest rates and exchange rates, as opposed to those concerning the real economy. It has two main areas of focus: asset pricing and corporate finance; the first being the perspective of providers of capital, i.e. investors, and the second of users of capital. It thus provides the theoretical underpinning for much of finance.

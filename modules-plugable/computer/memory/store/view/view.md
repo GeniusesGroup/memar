@@ -25,4 +25,4 @@ The view is a consumer of the capsule and a capability it can do without, so it 
 - **The task folder waits for the migration.** The folder of `.agents/tasks` is given to the view only when the migration has removed the old folders and the task logs that still lie there, and the same change adds the folder to the ignore list of version control.
 
 ### The cases
-They are code, in [`tests/view.py`](tests/view.py) and, for the verb, `bundles/memar/services/view/tests/refresh.py`; each runs the builder over `volatile` and over `git-store` with a test presentation, because the presentation of a Task is the task module's, built by a later task.
+They are code, in [`tests/view.py`](tests/view.py) and, for the verb, `bundles/memar/services/view/tests/refresh.py`; each runs the builder over `volatile` and over `memar-git` with a test presentation, because the presentation of a Task is the task module's, built by a later task.

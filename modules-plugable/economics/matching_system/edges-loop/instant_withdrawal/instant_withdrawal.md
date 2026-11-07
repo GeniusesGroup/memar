@@ -4,9 +4,7 @@ Instant withdrawal means when transaction register, the first part of transactio
 It usually use in a situation that transaction is part of bigger contract such as in [Pre-purchase inspection](https://en.wikipedia.org/wiki/Pre-purchase_inspection) that transaction MUST complete if and if third-party professional service evaluate seller statement about the (house, car, ...).
 
 ## Model
-
 - `[transaction-[:instant_withdrawal]->(___)`
 
 ## Policies (rules)
-
 ## Fields

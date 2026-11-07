@@ -4,14 +4,12 @@
 As all know, We develop and adopt software in any organization for one main goal as to increase productivity and profit.
 
 ## Goals
-
 - Let service developers easily add more specific services by GUI.
 - Continue developing the software in low-code manner.
 - Compile an application as **UniKernel** instead of regular OSs binaries.
 - Develop high available and distributed software without any admin in any infrastructure layers (DevOps culture goal).
 
 ## Not Goals
-
 - ??
 
 # Enterprise

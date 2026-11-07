@@ -23,6 +23,3 @@ An organization may allow large files, body-first authoring, multi-abstraction p
 - It does not claim tooling must fold or sort declarations.
 - It does not claim one file equals one capsule or one abstraction — only that one abstraction per protocol file is the strong default, with the observer/mutator companion-file exception stated above.
 - It does not require splitting existing multi-abstraction files that form one tight family; judgment stays with the module owner.
-
-## Open questions
-This rule's own open state lives in its handoff.

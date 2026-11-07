@@ -28,6 +28,3 @@ An organization may keep this rule, replace it with a stricter one, or drop it. 
 - It does not claim the language fixes the base a URI is resolved from. The default above is this rule's, and a project's may differ; what no project may do is resolve from something undeclared. What a module's manifest says, what it claims, and how one reaches it belong to [dependency management](../../../../modules/computer/module/dependency/dependency.md), and this rule does not restate them.
 - It does not claim anything about what a program means. Two URIs that resolve to one file are a resolution policy, and resolution policy is the framework layer's to vary.
 - It does not change what the toolchain does. The toolchain does not yet consult a manifest, because where one is looked for is undecided; what it does is refuse with a sentence naming what is missing, and the sentence names a manifest rather than a file.
-
-## Open questions
-This rule's own open state — including whether a URI may carry more than a name, and what a resolver may complete — lives in its handoff.

@@ -36,6 +36,3 @@ An organization may keep this rule, replace it with a package qualifier or an al
 - It does not claim qualification is the right remedy. The language document's position is that the remedy is a redesign, and this rule is the bridge to it, not the destination.
 - It does not claim a name is good because it is qualified. The [identifier naming rule](../identifier-naming/identifier-naming.md) is where style lives, and the two are independent.
 - It does not claim which module owns a concept declared twice, and it does not name a capsule that gives up a name to an abstraction. Both are judgments about the sources; the rule states only that no counter or fallback step stands in for them.
-
-## Open questions
-This rule's own open state lives in its handoff.

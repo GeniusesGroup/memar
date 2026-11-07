@@ -28,6 +28,3 @@ An organization may keep every clue block whole until a person removes it, or dr
 - It does not claim a matched declaration is correct. The match is by name and arity; whether the Khayyam types are right is the port's question, answered elsewhere.
 - It does not claim anything about Go that is not in a clue block, or about the Go reference itself.
 - It does not claim a removed block means the Go file is fully ported. Whether a Go file is transferred is the port's ledger's to state, from the Go source, not from the block.
-
-## Open questions
-This rule's own open state lives in its handoff.

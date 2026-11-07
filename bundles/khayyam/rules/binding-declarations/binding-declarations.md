@@ -32,6 +32,3 @@ An organization may name its companion whatever it likes and keep every declarat
 - It does not claim a unit so named must exist. The rule names what such a unit holds and does not require it, so an owner may write one before the crossing it will carry is known.
 - It does not claim anything about the file-layout rule's other subjects — file size, declaration order, or one abstraction per protocol file — which it cites and does not restate.
 - It does not claim the sources' 59 unmeant provisions are a defect of this rule. They are a consequence of the body-less spelling the language states ([Khayyam → Method](../../../../docs/khayyam/khayyam.md#method) at `:89`), and applying this rule to them is a decision for the folders that own them.
-
-## Open questions
-This rule's own open state — including the facet key's spelling, whether the stronger refusal half belongs here, and the unowned question of how a correspondence is recorded — lives in its handoff.

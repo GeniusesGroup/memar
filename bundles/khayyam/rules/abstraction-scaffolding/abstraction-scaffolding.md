@@ -33,6 +33,3 @@ An organization may disable scaffolding, require hand-written delegation only, o
 - It does not claim the linter must implement every bullet today.
 - It does not claim generated delegation changes what a program means without the author accepting the edit.
 - It does not claim searchable `impl` blocks exist; discovery is tool-assisted graph traversal.
-
-## Open questions
-This rule's own open state lives in its handoff.

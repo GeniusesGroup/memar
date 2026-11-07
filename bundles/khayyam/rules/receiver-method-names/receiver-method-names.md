@@ -41,9 +41,6 @@ An organization may qualify every method name, drop the qualifier only where two
 ## What this rule does not claim
 - It does not claim a method name must be bare. It claims the prefix is redundant when the method is reached only through its receiver, and leaves the choice to the organization.
 - It does not claim methods and declarations are the same question. A declaration that another file meets by name — an abstraction, a field accessor, a composition entry — is governed by the [qualified names rule](../qualified-names/qualified-names.md). Where a name would be both a declaration and a bare method name, this rule keeps the method bare and the declaration is qualified under that rule.
-- It does not claim one unit may declare the same bare method name under two owners. That is open in the handoff, and a prefixed or numbered name a tool emits for the second owner meanwhile is a report, not a resolution.
+- A prefixed or numbered name a tool emits for a second owner of the same bare method name is a report, not a resolution.
 - It does not claim the receiver is always a variable. The type form ``W32.Sum(a, b)(total, err)`` is legal, and a rule that assumed a variable receiver would be wrong about it.
 - It does not claim the language checks anything here. Nothing in the grammar requires a method name to be bare or to repeat its owner; both spellings analyze.
-
-## Open questions
-This rule's own open state lives in its handoff.

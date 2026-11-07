@@ -36,6 +36,3 @@ An organization may separate every declaration, separate nothing, or group metho
 - It does not claim the language reads blank lines. The grammar ignores them, and both layouts analyze the same.
 - It does not claim anything about files without textual comments, or about the order of declarations.
 - It does not claim that the clue block's Go text follows any layout.
-
-## Open questions
-This rule's own open state lives in its handoff.

@@ -22,6 +22,3 @@ An organization may keep utility capsules for transitional code, generated ports
 - It does not claim the grammar rejects `Utils` or `Helpers` as identifiers.
 - It does not claim every shared helper must become a domain capsule immediately during porting.
 - It does not govern abstraction or method naming; see sibling rules.
-
-## Open questions
-This rule's own open state lives in its handoff.

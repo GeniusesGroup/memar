@@ -31,12 +31,6 @@ Endorsement refers to transfer transaction ownership to another entity, serving 
 
 - Negotiable-instrument endorsement (signing the back of a check); matches the "transfer of a commitment-bearing document, not of a transaction" reading.
 
-### Unresolved questions
-
-- Is it a shortcut edge?? `SUSPENDED_BY` (TODO above) — if suspension is a separate relation, endorsement owns the new-transaction creation and `SUSPENDED_BY` belongs to a status/suspension mechanism.
-- Final module home (settlement placeholder vs dedicated conditional-fulfilment module; shared with guarantor).
-- Endorsement of a guaranteed transaction: which fires first at maturity — guarantor payment or suspension?
-
 ### Future possibilities
 
 - Endorsement chains as a first-class navigable view (who transferred to whom) for dispute/case tooling.

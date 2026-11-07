@@ -31,6 +31,3 @@ An organization may require a full word, forbid one-letter names, or leave gener
 - It does not claim a one-letter name is good style. It claims it is better than `result0` and no worse than any other mechanical choice.
 - It does not claim the last segment is always the right word; a type whose meaning sits in its module part loses it here.
 - It does not claim anything about names an author wrote.
-
-## Open questions
-This rule's own open state lives in its handoff.

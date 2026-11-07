@@ -18,7 +18,6 @@ We implement it on some language like [C], [Go](https://github.com/GeniusesGroup
 ["Chapar Khaneh"](https://en.wikipedia.org/wiki/Chapar_Khaneh) (Persian: چاپارخانه‎, IPA: [tʃɒːˈpɒːɾ xɒːˈne], courier-house) is a Persian term for the postal service used during the Achaemenid era. The system was created by Cyrus the Great, the founder of the Persian Empire, and later developed by Darius the Great, as the royal method of communication throughout the empire. Each "Chapar Khaneh" was a station mainly located along the Royal Road, a 2500 km ancient highway, which stretched from the Sardis to Susa, connecting most of the major cities of the empire.
 
 ## Idea backlog from service code comments
-
 Nothing below is ratified. Prefer existing homes over inventing new modules.
 
 ### Router discovery

@@ -30,6 +30,3 @@ An organization may write every such method by hand, or keep the generic paramet
 - It does not claim Khayyam has or lacks generics. It claims only that a constraint naming one abstraction is that abstraction in a Khayyam signature.
 - It does not claim an open type parameter has a Khayyam form.
 - It does not claim the resolved type is the one the author would choose; it is the one the constraint names.
-
-## Open questions
-This rule's own open state lives in its handoff.

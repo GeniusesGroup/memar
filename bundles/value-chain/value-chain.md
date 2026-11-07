@@ -2,7 +2,6 @@
 A [value chain](https://en.wikipedia.org/wiki/Value_chain) looks at all the steps involved in bringing a product from the ideation phase to sellable item, and it seeks ways to bolster the value to the customer.
 
 ## Naming the whole production-to-distribution process
-
 **Value chain** is the chosen name for the whole process from production to distribution — creation, production, storage, and distribution of a good or service. The candidate names weighed beside it:
 
 - **Supply chain** — the physical flow of goods and services from raw-material supplier to final consumer, including purchasing, production, assembly, transport, and warehousing.

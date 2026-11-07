@@ -1,5 +1,4 @@
 # Good
-
 A good is a physical/economic item tracked for inventory. It is pluggable, not core: each organization may draw the good/service boundary differently, and the accounting kernel works fine without any of them — a transaction over an account whose `count_unit` is "kg" needs no `good` node at all. What this module adds is inventory-facing semantics (`reserve-quantity`, `best_before`, `material`, `branch`) attached to products/stocks as capabilities. Chosen ingredients on an invoice line ([item-ingredient](edges/item-ingredient/README.md)) are the same capability at order time, not Invoice kernel.
 
 ## Discussion
@@ -10,17 +9,12 @@ A good is a physical/economic item tracked for inventory. It is pluggable, not c
 
 ### Rationale and alternatives
 
-- Kept out of core per the capability test in [product](../../../modules/economics/product/README.md): good is one way an organization may specialize a priceable thing, not a structural requirement of invoice/transaction.
+- Kept out of core: good is one way an organization may specialize a priceable thing, not a structural requirement of invoice/transaction.
 - Alternative rejected: making `good` core alongside product — it would force every deployment to carry inventory concepts and re-couple the kernel to the physical-goods frame the redesign removed.
 
 ### Prior art
 
 - ERP "material master" / inventory item — here decomposed into product (core) + good capabilities (pluggable).
-
-### Unresolved questions
-
-- Is `good` a specialization edge of `product`, or an independent node type that products reference? (Same question for [service](../service/README.md) — resolve both together.)
-- Do `batch` and `good` overlap on lot/expiry tracking, or is `batch` the right home for `best_before`?
 
 ### Future possibilities
 

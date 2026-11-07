@@ -23,6 +23,3 @@ An organization may keep this rule, answer it differently, or drop it: a second 
 - It does not claim the language states a comment form. The language documents none; this document is where the choice lives instead.
 - It does not claim what a comment says, whether a file carries one, or how much a declaration is written down — that is the [comment policy rule](../comment-policy/comment-policy.md).
 - It does not claim this repository's forms are the right ones. It records the ones this toolchain uses.
-
-## Open questions
-This rule's own open state lives in its handoff.

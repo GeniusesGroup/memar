@@ -1,9 +1,7 @@
 # Channel communications (temporary plugable home)
-
 Temporary home under `modules-plugable/knowledge/channel-comms` for the geniuses.group editorial / channel content program until a permanent org-comms domain is designated.
 
 ## Channel content program
-
 - **The geniuses.group channel content program is org comms material.** The retired chat produced a
   complete editorial framework: the ten recurring genres ("why is this word called this", "what
   everyone measures", "solutions that became problems", "concepts extracted from their industry",

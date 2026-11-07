@@ -18,8 +18,3 @@
 
 - **Here, not on `product`:** a product is priced without any index, and an organization in stable money removes this capability whole.
 - **Here, not in pricing:** the edge produces a discovered series and an event; what to do about a divergence is a pricing rule's policy.
-
-## Open questions
-
-- Is the threshold measured from the base date, or over a rolling window (the movement in recent months)?
-- May one product be evaluated against several indices, each with its own threshold, and is one divergence event raised per index?

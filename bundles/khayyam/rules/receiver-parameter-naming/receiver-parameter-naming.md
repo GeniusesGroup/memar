@@ -19,6 +19,3 @@ An organization may require `self`, forbid it, or use another convention (`this`
 ## What this rule does not claim
 - It does not claim the grammar requires `self` or any particular owner name.
 - It does not govern method names on the receiver; those are the [method verb phrases rule](../method-verb-phrases/method-verb-phrases.md) and [receiver method names rule](../receiver-method-names/receiver-method-names.md).
-
-## Open questions
-This rule's own open state lives in its handoff.

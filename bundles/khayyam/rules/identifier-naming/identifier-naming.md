@@ -32,6 +32,3 @@ An organization may keep any convention it likes here — ASCII only, one script
 - It does not claim case-sensitivity or the reservation of the seven keywords, which are the language's own.
 - It does not claim a name may collide with another module's; that is the [qualified names rule](../qualified-names/qualified-names.md), independent of style.
 - It does not claim utility-oriented capsule names (`Utils`, `Helpers`, `Common`) are forbidden; that is the [domain capsule naming rule](../domain-capsule-naming/domain-capsule-naming.md).
-
-## Open questions
-This rule's own open state lives in its handoff.
