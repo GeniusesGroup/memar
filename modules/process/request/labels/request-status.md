@@ -11,10 +11,4 @@
 ## Placement
 
 - These names are filed on the status module.
-- [status.md](../../status.md) puts a domain's own statuses on that domain. These names describe a request lifecycle, so the request module is the other candidate home.
-- The doc stays here until that is decided. Whether Compensated is the transaction-side link is the open question below.
-
-## Open questions
-
-- reconcile with memar process/request lifecycle; is Compensated the transaction-side link (`transaction.handoff.md` §6)?
-
+- `status.md` puts a domain's own statuses on that domain. These names describe a request lifecycle, so the request module is the other candidate home.

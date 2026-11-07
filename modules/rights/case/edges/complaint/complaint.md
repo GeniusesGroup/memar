@@ -19,6 +19,3 @@ A complaint (shekvaieh) is a claim-type label that groups claim types, together 
 - **Not a kind under** [claims](../../../../../modules-plugable/rights/claims/claims.md). Kinds are optional accusations. A complaint groups claim types. It is not itself one accusation edge.
 - **The folder** is [claim labels](../../../../../modules-plugable/rights/claims/labels/labels.md), on the pattern of law labels.
 - What would falsify the placement of the grouping in a label and not in the graph: a complaint node, or a complaint edge, as the grouping of claim types. Model v4 point 14. The label folder above is where the grouping lives.
-
-## Open questions
-- None for the attachment. Civil and criminal are labels and are not registered here. Execution is a compelled service whose input is not only a number. Whether a numeric constraint belongs on the split is asked on the claim labels handoff.

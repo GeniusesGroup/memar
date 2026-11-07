@@ -35,7 +35,6 @@ Two definitional stances from the 2026-08-04/05 discussion constrain the design:
 Terms like ERP and BPMS carry vendor-specific branding and inconsistent, ambiguous meaning across the industry, even though the underlying problems they address — decomposing a unit of work into subordinate units, tracking each independently, and knowing when a larger unit is done because its parts are done — are the same problem being solved repeatedly, differently, in unrelated tools (a project tracker, a manufacturing system, an issue tracker, a helpdesk). A single, well-defined primitive avoids re-solving this problem separately for every domain that happens to need it.
 
 ## Guide-level explanation
-
 A Task is general enough to represent, among other things:
 
 - **A project** is itself a Task — e.g. constructing the company's headquarters is a Task that someone (not necessarily a human) is responsible for pursuing and delegating its sub-Tasks to, and that can remain active for the life of the project while splitting into thousands of finer Tasks.
@@ -46,52 +45,30 @@ A Task is general enough to represent, among other things:
 
 Things commonly modeled as standalone concepts are expected to reduce to **behaviors, policies, or rules attached to a Task** rather than sibling entities:
 
-- Deadline, priority, reminder, escalation, delegation — responsibilities of managing one Task, not five features. ("Reminder" = a Task plus a policy about notifying; the industry's standalone reminder products are the concept re-derived badly.)
+- Deadline, reminder, escalation, delegation — responsibilities of managing one Task, not five features. ("Reminder" = a Task plus a policy about notifying; the industry's standalone reminder products are the concept re-derived badly.) Priority_Rank is Thing's, not Task's.
 - "Sprint"-like time constraints — plausibly a time-bound rule/constraint on a set of Tasks, not a Task subtype.
 
 ## Reference-level explanation
-
 Deliberately not addressed in this seed document. This is where the real design work belongs: the actual fields of a Task, how subordinate/dependency relationships between Tasks are represented, and the precise mechanics of status and completion propagation from subordinate Tasks to a parent.
 
 ## Drawbacks
-
 Not fully explored yet; concerns worth carrying into the dedicated chat:
 
 - A primitive general enough to cover a project, a production run, an issue, and a ticket risks becoming too undifferentiated to do useful classification or validation work, unless it is later paired with enough structure to distinguish meaningfully different uses without reintroducing the same category-proliferation problem this RFC is trying to avoid.
 - Automatic completion propagation from subordinate Tasks to a parent needs real semantics: partial completion, a failed or rejected subordinate, optional versus required subordinates, and parallel versus sequential dependency structures. This is comparable in depth to long-studied workflow-modeling problems and should not be treated as an incidental detail.
 - The flat-Task stance cuts against two decades of user training (Project/Epic/Story/Task tooling); even if technically right, onboarding and UI projections will need to reconstruct familiar hierarchies as projections, not as the model.
-- "Task" is itself under suspicion of being a familiar industry word rather than a fundamental entity (see unresolved #8); committing the primitive name early may produce renaming churn later — accepted for now, tracked as an open question with no better word currently identified (Omid explicitly keeps a weak guard: if a better word emerges, the rename is allowed).
+- "Task" is itself under suspicion of being a familiar industry word rather than a fundamental entity; committing the primitive name early may produce renaming churn later — accepted for now, with no better word currently identified (Omid explicitly keeps a weak guard: if a better word emerges, the rename is allowed).
 
 ## Rationale and alternatives
-
 - Deferred in general to the dedicated chat. Two stances already taken:
 - **Flat Task over the industry hierarchy**: `Project → Epic → Story → Task/Bug` presumes scale-graded entity types. Under the dictionary definition, all of these are "pieces of work undertaken"; what differs (duration, subtask count, number of responsible parties, resource breadth, dependency depth) are attributes and relations. Rejected alternative: separate Project/Epic entity types — reintroduces the ERP-style category proliferation this RFC exists to avoid.
-- **Word choice deferred, not decided**: "Task" is kept as the working name for lack of a better word and for lexical fit (same argument style as `user`), while the question "is Task the fundamental entity, or another industry label on something deeper?" stays open (unresolved #8).
+- **Word choice deferred, not decided**: "Task" is kept as the working name for lack of a better word and for lexical fit (same argument style as `user`), while the question "is Task the fundamental entity, or another industry label on something deeper?" stays open.
 
 ## Prior art
-
 Not addressed yet, beyond points worth carrying forward:
 
 - Rejecting vendor-branded terms like ERP or BPMS does not necessarily mean rejecting the underlying technical and academic literature on workflow modeling (task decomposition, dependency graphs, exception handling in process models), which exists independently of any specific commercial product and predates most of the branded tools built on top of it. That literature may be worth reviewing in the dedicated chat, independent of any vendor terminology.
 - The recurring reduction pattern observed across this project (and Memar before it): Service → maybe Capability; Repository → maybe Storage Policy; Aggregate → maybe Boundary; Event → maybe Observation; and here: Project → maybe Task; Department → maybe Group (see [`group/README.md`](../../group/README.md)); Reminder → maybe Rule; Sprint → maybe Time Constraint. The working question in every case: *is this an independent concept, or a configuration of a more fundamental one?*
 
-## Unresolved questions
-
-Essentially everything beyond the Summary, Motivation, and Guide-level explanation above, including at minimum:
-
-1. What fields does a Task actually have?
-2. What does the state/status model look like, and what are the valid transitions?
-3. How are subordinate/dependency relationships between Tasks represented?
-4. How exactly does completion propagate from subordinate Tasks to a parent, including partial completion and failure cases?
-5. Does anything need to distinguish a Task used as "a project" from one used as "a ticket" at the schema level, or is the same shape genuinely sufficient for both?
-6. How does this concept connect to the Contributor "Tasks" field already specified in Memar's documentation spec (originally `rfc-contributor.md`, merged into the root Documentation specification in memar commit `74fec11`)? (Link to be finalized against the current memar layout.)
-7. **What is the definition of Task?** Working candidates: "a commitment to achieve an objective" vs "any piece of work undertaken or attempted" (the dictionary reading Omid defends). The choice determines whether "project is a Task" is a special case or a category error.
-8. **Is Task itself fundamental?** Hypothesis to keep open: like Code in Memar turned out to be reducible (Capability, Constraint, Responsibility, Identity), Task may reduce to something like Commitment, Responsibility, or Agreement — itself the product of other Tasks. Test question: if we deleted "Task" from the model, would the model collapse? (No better word has been found yet; "Task" remains the working name — unresolved, not settled.)
-9. **Goal ambiguity**: when a Task references a goal, is that the Task's own objective or the organization's goal? Note the regress: an organization's goals document is itself a Task (writing it — requested presumably by the founders, with proposals for improvement attached). Mission/Vision/Strategy/Roadmap/Objective are therefore suspected to be artifacts produced by Tasks (and agreements), not base entities.
-10. **Graph, not tree**: a Task relates simultaneously to Goal, Role, Resource, Rule, Agreement, Document, Decision, and other Tasks. Any hierarchical presentation (subtasks, wbs) is a projection; the model must not assume single-parent or acyclic-only structures (see the organizational-reasoning handoff).
-11. **Normative bootstrap (philosophy of law)**: a new organization is expected to be founded *inside* the software — the collective agreement to start, even choosing the organization's name, would be Tasks with recorded opinions and a confirming vote — but that means the software's own concepts (task, law) become the founding fabric of the new organization. Do each organization's base laws need to be ratified per instance, or is "you accept the ratified laws of Geniuses.Group as base identity" itself the first law? The underlying distinction to model first is Law vs Consent vs Source of Authority — seeded in the normative-bootstrap handoff.
-12. **Capacity analysis → diagnosis, not rule**: increased role count must not directly trigger "hire". The proper relation is Staff↔Task: when assigned work exceeds capacity and due dates slip, the system should first identify the problem (reasoning, not an 80s expert-system rule); hiring is only one possible diagnosis output — reduced motivation, scope creep, or need for automation are alternatives (see the organizational-reasoning handoff).
-
 ## Future possibilities
-
 Deferred to the dedicated chat.

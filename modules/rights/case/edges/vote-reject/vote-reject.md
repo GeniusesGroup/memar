@@ -28,8 +28,3 @@ One seated person's recorded rejection of this case. It stays in the pool when l
 - **Nearest alternative rejected:** an accept on this same case at a lower amount, or at a different service, with the remainder deemed rejected. That is the source shape this revision departs from.
 - **Proposal, not a drawn edge:** this reject may point at one `process/request`. Accept does not. A consensus case does not grow a new request on this edge.
 - A vote on one case is never a vote on another case. Hearing two claims together does not change that.
-
-## Open questions
-- **The draft request has no home edge.** `process/request` exists and carries the edges listed above. The request the proposal calls "the draft request attached to the case" has no edge attaching it: not `process/request` via `sub_request_of`, and not `claim_service`, whose endpoint is a service rather than a request. Who may edit it, and after votes exist, is not recorded either.
-- **The owning module of the vote-to-request edge is not stated.** `case.handoff.md` asks which edge attaches the draft request. Which module owns the pointer is a separate question and is not recorded.
-- The pointer to one request is a proposal. It is not an edge with create, validation, and trigger rules. Timeline text stays the explanation. A field on [vote accept](../vote-accept/vote-accept.md) is not the home.

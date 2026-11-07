@@ -33,6 +33,3 @@ The seated persons' consensus on one case, recomputed from that case's votes. It
 - **Rejected:** a consensus shortcut that merges attached requests, or conditional accepts, into one executable service on this case. The later case carries its own fresh votes.
 - **Nearest alternative rejected:** a history edge beside the shortcut. The votes are enough.
 - **Nearest alternative rejected:** stopping continuation because the parties stop paying. The stop is the margin.
-
-## Open questions
-- The vote-to-request pointer is a proposal. This shortcut does not draw that edge. On the consensus case the ballot is fresh accept or reject of the one filed service, and that case grows no new request.

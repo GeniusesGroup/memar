@@ -15,13 +15,5 @@
 ## Placement
 
 - **Correct here — the timeline kind vocabulary is the timeline capability's own** (module skeleton: `timeline/edges/`; only timeline gives these labels meaning; prefer existing homes over inventing new modules).
-- The edge itself is user-to-group ([edges-loop/timeline](../../edges-loop/timeline/timeline.md) already models `(group)-[:---]->(timeline)` and ChannelID use) — this file records *which kinds* of timeline feeds exist; keep kind vocabulary beside the timeline capability, not in [group](../../../group/group.md).
+- The edge itself is user-to-group (see [edges-loop/timeline](../../edges-loop/timeline/timeline.md) for ChannelID use) — this file records *which kinds* of timeline feeds exist; keep kind vocabulary beside the timeline capability, not in [group](../../../group/group.md).
 - Who may read a Private vs Public feed is access policy → rules (core never knows Rule); the labels alone record no audience set (no bare edges).
-
-## Open questions
-
-- Is a timeline a group node with kind labels, or distinct edge kinds?
-- Do the kinds overlap the knowledge/content domain (feeds are content streams — [knowledge/content](../../../../knowledge/content/content.md))?
-- Relation to `UserNotificationTimeline`: notifications as timeline rows vs a separate notification capability?
-- Direction/naming unconfirmed — nothing ratified.
-

@@ -71,7 +71,7 @@ A Test states expectations **of the contract its subject's defining document sta
 
 - **A Test does not assert an implementation's incidental structure.** What a method is called internally, how many allocations a path makes, what order an implementation happens to observe, and what a private helper returns are not the contract unless the defining document says they are. A Test that asserts one of these binds the system to an accident, and the next conforming implementation then fails a check that was never about the contract.
 - **A Test that must reach past the contract has found a gap, not a workaround.** If satisfying a checkable expectation requires reaching something the contract does not promise, the expectation belongs to a contract the system has not stated. The correct response is to state the contract, not to widen the Test's reach.
-- **A Test holds no state that decides the next Test's outcome.** A Test's verdict follows from the instance under check and the expectations it states, not from what an earlier Test left behind. Ordering dependence between Tests makes the suite's verdict a property of the order rather than of the system, which removes the verdict's meaning as evidence.
+- **A Test's verdict is independent of any other Test.** A Test's verdict follows from the instance under check and the expectations it states, not from what an earlier Test left behind. Ordering dependence between Tests makes the suite's verdict a property of the order rather than of the system, which removes the verdict's meaning as evidence.
 
 ### The Expectation Is Written Before the Work
 The written form of a named Process's expectations is produced **before** the enactment that is judged against it, and that ordering is not a preference about workflow. Its ground is reach.
@@ -191,7 +191,7 @@ The realization of the protocol this document states in this repository: the Rul
 
 It sits under `process/` beside [rule](../rule/) and [rules-engine](../rules-engine/), which are the evaluation abstractions for rules in general. What distinguishes this module from those is its subject: those evaluate authored conditions at runtime or against analysis input, while this one carries the conditions about the process of writing and keeping a Test, and the runner that would apply them.
 
-### What this folder does not hold yet
+### What is not yet designed here
 There is no `protocol/` folder here, and its absence is current state rather than an oversight. What a runner exposes — what it is asked to do, what it returns, how it reports an outcome — has not been designed, and writing declarations for a mechanism that has no agreed contract would state a decision this module has not made ([modules → Why a folder may exist before it holds code](../../README.md#why-a-folder-may-exist-before-it-holds-code)). The open state is recorded in the protocol document's handoff.
 
 Concretely, this repository today has **no runner for the language its modules are written in**. The test artifacts present under `modules/` are archived from the previous language under a migration marker, so none of them is executable, and no scheme discovers them. Nothing in the protocol requires a runner, per [Test, Check, and Runner](#test-check-and-runner); the obligation it states is that a Test exists, and a Test exists whether or not anything has run it.

@@ -17,9 +17,3 @@
 - The RFC-2119-shaped level set is generic constraint vocabulary — if other domains (rights law, rule conditions) reuse it, it rises to the rule/constraint domain as *configuration* of this edge, not a forked copy (parameters-vs-semantics).
 - Who assigns which level, and whether `Mandatory` blocks completion — policy → rules (core never knows Rule).
 
-## Open questions
-
-- Is this a general constraint vocabulary reusable beyond tasks (rights law, rule domain) — one shared MUST/SHOULD/MAY set with per-edge application?
-- Levels as labels on one task-skill edge vs three edge kinds?
-- Direction/naming unconfirmed — nothing ratified.
-

@@ -1,17 +1,13 @@
 # Case — pilot context
-
 Copy of the justice-pilot project context, placed beside the case draft so a later chat can load the dated decisions without the Cursor store. The dated user-input sections below are unchanged. The development plan is not in this package. The review trail was critique v1-v4, model v1-v6, and the synthesis. What each record was is in the last entry of `case.changelog.md`.
 
 # Project context
-
-Stable decisions for modeling `organization`. Execution detail is in development-plan.md. That plan is not in this package. Only phase 0 is authorized. Each later phase needs its own explicit approval.
+Stable decisions for modeling `organization`. Execution detail is in the development-plan document. That plan is not in this package. Only phase 0 is authorized. Each later phase needs its own explicit approval.
 
 ## Goal
-
 Model organization domains the Memar way so that an open question does not force the model to change again. A domain folder is a view of nodes and edges, not a final map. Go files in the tree are temporary and will later be rewritten in Khayyam. This phase does not do that rewrite.
 
 ## Constraints
-
 - The pilot writes no code. No strong model. Cap: 6 runs, `composer-2.5` and `grok-4.7` only.
 - The pilot runs in the cloud. Drafts stay in `docs/pilot-justice/` in the Project store. Omid copies approved files into his repository by hand. Agents do not commit, push, branch, or open a PR.
 - Text an agent can receive is English. A Persian legal term appears only as a gloss, for example petition (dadkhast).
@@ -24,13 +20,11 @@ Model organization domains the Memar way so that an open question does not force
 - A human or an AI agent (hushvar) may do any part of the work.
 
 ## Phase 0 decisions
-
 A petition is currently an ordered edge among several `case` nodes. An independent node needs a strong argument. Each claim has its own parties and roles. A single list of persons leaves that role ambiguous. The weight of the work is critiquing that model. The comparative set is accepted: Iran from Omid's premises plus scholarship, one civil-law system, one common-law system, one ODR system.
 
 Pilot questions: a separate ruling per claim; whether functional roles are needed and where they are registered; which parts need `user` and which need `role`.
 
 ## User inputs 2026-09-26, justice pilot
-
 Ideas that come from Memar or from Omid are judged on their own. They are not scored by how well they match a country's procedure. A prior-art run is in progress. That run is evidence, not a compatibility target.
 
 Decided: the pilot designs the best dispute-resolution model between persons. Matching any country's law is not a goal.
@@ -50,7 +44,6 @@ Open:
 - An earlier judge's vote stays in the pool and is outvoted. A judgment is never overturned. It becomes a minority.
 
 ## User inputs 2026-09-27, justice pilot
-
 Decided:
 
 - A complaint (shekvaieh) is a tag or label that groups claim types, plus the text explanation a type already carries. It is not a node. He treats typed categories as a paper-era aid: an agent can derive claims from a conversation. Tags stay because Memar already recognizes them.
@@ -87,7 +80,6 @@ Open:
 - Which edges connect claims, and in which module.
 
 ## User inputs 2026-09-27 afternoon
-
 Decided:
 
 - Every judge, expert, or other opinion-giver records an independent opinion and an independent vote. One person drafting and the others signing is rejected. Until every required judge has voted, no party sees any judge's or expert's vote or explanatory text. Conditional visibility of a content record is a requirement to note for the content and timeline domains. Those domains are not modeled in this record.
@@ -116,7 +108,6 @@ Left open, and not closed by this record:
 - The four score examples stay examples. They are not a vote weight, and no scoring formula is stated.
 
 ## User inputs 2026-09-27 evening
-
 Decided:
 
 - Do not hide a judge's identity inside the justice domain. Domain-specific secrecy may backfire. Drop the alias "Judge 1" and drop the separate competence-claim as the way identity is revealed. A person hiding their own identity is a choice in the user domain. Note that for the user domain. Do not model it here.
@@ -133,7 +124,6 @@ Blocked, not solved:
 - Whether a consensus case may itself be conditionally accepted stays blocked. The margin rule does not stop that chain.
 
 ## User inputs 2026-09-28, justice pilot
-
 Recorded here as his points. The comparison is model v6. That record proposes one shape. It does not leave the three candidates open as a menu.
 
 1. Conditional accept has problems, as the consensus claim does. The pilot must still leave a usable solution, or a later phase will be forced to add conditional accept.

@@ -26,6 +26,3 @@ An organization that keeps a Test beside what it tests will find this Rule unusa
 - It does not claim the marker is a language feature. It is a convention of this repository's source tree; a language whose own tools reserve a suffix for Test artifacts would constrain naming for reasons outside this document.
 - It does not claim a Test's name is its subject statement. The statement inside the Test is the obligation; the name is the reader's shortcut to it.
 - It does not govern another language's ecosystem. A runner that comes from outside Memar and finds Tests only by a marker — `node --test` over `*.test.ts`, Python's `unittest` over `test_*.py` — imposes that marker on the files it runs, and this rule makes no claim about that convention; what it claims is that nothing in Memar's own naming needs one.
-
-## Open questions
-This rule's own open state lives in its handoff.

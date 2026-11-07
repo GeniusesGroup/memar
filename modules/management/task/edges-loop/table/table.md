@@ -14,9 +14,3 @@
 - Recorded here only because the comment sat in the module's `edges-loop/` — the folder documents the source, it does not promote boards to a stored grouping.
 - If a board ever becomes persisted state (a saved grouping users create), that would be a stored node/edge and a new review — nothing in the source says so.
 
-## Open questions
-
-- Is a board a GUI projection (per projection ≠ domain model) or a persisted grouping?
-- Column vocabulary is shared with Scrum labels ([task-labels](../task-labels/task-labels.md)) — one vocabulary consumed by the view, or does the board define its own states?
-- Eisenhower "table view" in [task-labels](../task-labels/task-labels.md) — same projection family?
-

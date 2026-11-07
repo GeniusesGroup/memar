@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Group_Joined in "modules/management/group/edges/joined/protocol/group-joined.kh"
+
+tp Domain mt (self Group_Joined) () (s String) {
+    CharacterRun_From.FromCharacterRun("Group")(s, VoidError)
+}
+
+tp Summary mt (self Group_Joined) () (s String) {
+    CharacterRun_From.FromCharacterRun("What is said of one joined edge: a member in one role")(s, VoidError)
+}
+
+tp Overview mt (self Group_Joined) () (s String) {
+    CharacterRun_From.FromCharacterRun("One joined edge from a group to a user, written with its reverse joined_to in one batch, for each role the member holds. GetRole is the role word, a declared label word an organization chooses; it is in the edge's key, so the members in one role are one read. GetJoinedAt is the instant the membership began, a value of the edge. Who holds the thing now is Ownership's claimer_is, and who accepted the membership is the Request of the join; neither is a value of this edge.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Group_Joined) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Group_Joined) () (s String) {
+    CharacterRun_From.FromCharacterRun("Each value is keyed on the edge by the TypeUUID of its type, never by an English word.")(s, VoidError)
+}

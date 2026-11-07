@@ -75,7 +75,7 @@ Modularity is not defined by directories, but Modules in this repository are **r
 
 Each Rule in `rules/` is a folder (or equivalent unit) containing at minimum:
 
-- a main document naming the Rule and stating what it is, why it exists, what it does not claim, and its enforcement class;
+- a main document naming the Rule and stating what it is, why it exists and its enforcement class;
 - a citation to the document that owns the Rule's **normative claim** (the concept doc, protocol doc, or type doc where the subject is defined);
 - the enforcement class: compiler gate, governance report, source rewrite, resolver behavior, or rule-engine evaluation — as appropriate to the subject;
 - scope: unit, repository, organization, or runtime graph — as appropriate.

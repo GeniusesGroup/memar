@@ -5,7 +5,7 @@
 
     python modules/knowledge/text/tests/text_bytes_check.py
 
-The subject is `Text_Check` (`services/text-check/text-check.kh`) and its refusals in `errors/bytes.kh`: the
+The subject is `Text_Check` (`services/text-check/protocol/text-check.kh`) and its refusals in `errors/bytes.kh`: the
 first fault of the bytes of a text that holds for every text is a refusal of its own.
 """
 from __future__ import annotations
@@ -35,11 +35,11 @@ class Check(unittest.TestCase):
 
     def test_a_replacement_character_is_refused(self) -> None:
         with self.assertRaises(errors.Text_Error_Bytes_Replacement):
-            check.check_text('a � b\n')
+            check.check_text('a \ufffd b\n')
 
     def test_the_marks_of_mojibake_are_refused(self) -> None:
         with self.assertRaises(errors.Text_Error_Bytes_Mojibake):
-            check.check_text('itâ€™s\n')
+            check.check_text('it\u00e2\u20ac\u2122s\n')
 
     def test_mixed_line_endings_are_refused(self) -> None:
         with self.assertRaises(errors.Text_Error_Bytes_MixedEndings):

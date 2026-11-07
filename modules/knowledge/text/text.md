@@ -15,18 +15,32 @@ In [literary theory, a text](https://en.wikipedia.org/wiki/Text_(literary_theory
 - `Field_Text` / `GetText` — the surface a holder of text answers to. The body
   comes from the generator (an `Implements` intent), never hand-written.
 - `Field_TextID` / `TextID` — a text's identity. A text is a thing, so its
-  identity is a `ThingUUID` from the thing domain; the text domain does not
-  declare a competing identifier. A text's identity is unique across all
-  domains, and therefore unique across all languages: the same text in two
-  languages is two texts, which is what makes `(text)-[:text_language]->(language_human)`
-  a relation between two things rather than a field.
+  identity is a `MemoryAddress`; the text domain does not declare a competing
+  identifier. A text's identity is unique across all domains, and therefore
+  unique across all languages: the same text in two languages is two texts,
+  which is what makes `(text)-[:text_language]->(language_human)` a relation
+  between two things rather than a field.
 - `TextModel` — what a thing in the text domain's model must be: the thing
   domain's model, a text identity, and text. The `uri` domain composes
   `TextModel`, which is the shape of the decision above seen from outside: a
   URI is a thing that reads as text.
 
+## Where things live
+Read the module by folder, not by opening every file in `protocol/`:
+
+| Folder | Holds |
+| --- | --- |
+| [`protocol/`](protocol/) | Shared concepts of Text: `Text`, `Field_TextID`, `Field_Text_Scope`, `Field_Text_Holder`, `Text_Holders`, port `Text_Holders_Of_Text`, structure (`Text_Section` / `Text_Item` / `Text_Span` / `Text_Link` and their editable/mutator/observer facets), events (made/changed/removed), module-wide ports (`Text_Codec`, line-ending), shared values (`text-names`, `text-version`) |
+| [`services/<name>/protocol/`](services/) | One service's contract — including `edit-text` (and its edit-only ports), `text-check`, `place-text` (`Text_Place`), `text-nodes`, `structure-codec`, `fold-text` (`Text_Fold`, normalize before lex). Never put a `Service` in the main `protocol/` ([Protocol folder → Placement test](../protocol/rules/protocol-folder/protocol-folder.md#placement-test-refuse-the-main-folder)) |
+| Pluggable [IR words model](../../../modules-plugable/knowledge/text/lexical-models/ir-words/ir-words.md) | Lexical_Model for word/phrase cut via [Lexer](../../computer/lexer/lexer.md) `Lex_Source` |
+| [`services/*.py`](services/) | Current Python realizations (flat names); new work puts realizations **beside** that service's `protocol/` with the same base name |
+| [`errors/`](errors/) | Refusals and failures of this domain |
+| [`edges/`](edges/), [`edges-loop/`](edges-loop/) | Graph edges this domain owns |
+| [`widgets/`](widgets/), [`ui/`](ui/) | Aggregation: [`text-to-labels`](widgets/text-to-labels/protocol/text-to-labels.kh) (`Text_Fold` → `Lex_Source` → `Label_Intern`); not base services |
+| Pluggable [Likeness](../../../modules-plugable/knowledge/text/likeness/likeness.md) / [Retrieval](../../../modules-plugable/knowledge/text/retrieval/retrieval.md) | Optional; not required to understand kernel Text |
+
 ## Editing a held text
-Exact-text replacement and the writing of a whole text are the text domain's own act, declared in [`services/edit-text/edit-text.kh`](services/edit-text/edit-text.kh); it reaches a text only through the port [`protocol/text-edit-store.kh`](protocol/text-edit-store.kh), reads and writes bytes through the codec port [`protocol/text-codec.kh`](protocol/text-codec.kh), takes its line ending from [`protocol/text-line-ending-rule.kh`](protocol/text-line-ending-rule.kh), and holds the text under the lock [`protocol/text-edit-lock.kh`](protocol/text-edit-lock.kh), whose refusals and failures are in [`errors/edit.kh`](errors/edit.kh).
+Exact-text replacement and the writing of a whole text are the text domain's own act, declared in [`services/edit-text/protocol/edit-text.kh`](services/edit-text/protocol/edit-text.kh); it reaches a text only through the port [`services/edit-text/protocol/text-edit-store.kh`](services/edit-text/protocol/text-edit-store.kh), reads and writes bytes through the module codec port [`protocol/text-codec.kh`](protocol/text-codec.kh), takes its line ending from [`protocol/text-line-ending-rule.kh`](protocol/text-line-ending-rule.kh), and holds the text under the lock [`services/edit-text/protocol/text-edit-lock.kh`](services/edit-text/protocol/text-edit-lock.kh), whose refusals and failures are in [`errors/edit.kh`](errors/edit.kh).
 
 ## Durable storage
 A text’s durable value is the character sequence of the `Text` — the bytes of that sequence as the text domain stores them as a memory part. How a Files body codec embeds those part bytes inside one node body is private to the bound codec and is not Text’s concern. **Escaped JSON** that wraps a long body (the JSON codec’s `$files.text` object) is **not** Text’s durable form. Memar projects follow [Text Rule — Long Body Not JSON-Escaped](rules/long-body-not-json-escaped/long-body-not-json-escaped.md): bind a Files body codec that does not force that shape; JSON is not mandatory; [Syllab](../../computer/codec/syllab/syllab.md) is the intended bind once its Files body codec exists.
@@ -40,29 +54,10 @@ A `Text` is a name in the human world — a title, a label, a sentence. It need
 not be unique, and it is not unique: two things may hold equal text. What is
 unique is the text's identity, not its words.
 
-## Text Search
-As [describe in the wikipedia](https://en.wikipedia.org/wiki/Full-text_search) in text retrieval, full-text search refers to techniques for searching a single computer-stored document or a collection in a full-text database. Full-text search is distinguished from searches based on metadata or on parts of the original texts represented in databases (such as titles, abstracts, selected sections, or bibliographical references).
-
-The kept structure that ranks texts by likeness, with the measurements, is in [Text Likeness](likeness/likeness.md).
-
-### Index vs [Concordance](https://en.wikipedia.org/wiki/Concordance_(publishing))
-## accuracy(accurate) vs. precision vs. recall
-The best quality scientific observations are both accurate and precise.
-
-## Topics
-- query caching? how?
-- features supported by commercial search engines like boolean operators, negation, stemming, relevance feedback and clustering
-- support user context like the user’s location
-- result summarization
-- proximity information
-- use of link structure. Simple experiments indicate PageRank can be personalized by increasing the weight of a user’s home page or bookmarks.
-- Use of link text, we are experimenting with using text surrounding links in addition to the link text itself.
+## Text Search and retrieval
+**Likeness** (ranking texts by kept word signatures) and **retrieval** (words + typed field predicates + bound scoring) are not this kernel module's subject. They are optional pluggable capabilities under [Text (pluggable)](../../../modules-plugable/knowledge/text/text.md): [Likeness](../../../modules-plugable/knowledge/text/likeness/likeness.md) and [Retrieval](../../../modules-plugable/knowledge/text/retrieval/retrieval.md). Kernel Text stays extensible: an organization may omit either or both, use only graph standing among texts, or bind other methods. Identifiers follow [Identifiers Are Memory Addresses](../../computer/memory/address/rules/identifiers-are-memory-addresses/identifiers-are-memory-addresses.md).
 
 ## Articles
-- https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/334.pdf
-- https://www.elastic.co/search-labs/blog/articles/lexical-and-semantic-search-with-elasticsearch
-- https://en.wikipedia.org/wiki/Bag-of-words_model
-- https://en.wikipedia.org/wiki/Okapi_BM25
 - https://en.wikipedia.org/wiki/Linguistics
 - https://en.wikipedia.org/wiki/Lexicology
 - https://en.wikipedia.org/wiki/Word
@@ -148,7 +143,7 @@ A check answers whether a node's text is fit to be kept and read. [Content](../c
 - **A node belongs to a domain by a label,** and a text node names the authoring syntax it is written in by a label, the syntax's id; a text with none is judged by this domain alone.
 
 ## Structure of a text
-A text is read as a structure apart from how any language writes it: sections of a level, items with an optional name and links placed in their value, each node saying which part of the encoded form it was decoded from, with mutators that change a node while the encoding keeps the bytes of the rest. The Khayyam abstractions are the root `Text_Section` (level 0) with its `Text_Item` entries, `Text_Link`, `Text_Span`, their editable forms, `Text_Nodes` that makes nodes, the codec `Text_Structure_Codec` and the named-text view `Text_Place` in [`protocol/`](protocol/) (Draft). Only a codec says that a section of level 2 is written `##`; a domain that reads a text as a structure, such as the changelog, names no markup symbol. How this structure relates to the ruling that markup is annotation on the spans of one plain value, and to the caution that Text may have no view of the structure of a document, is open: see the handoff.
+A text is read as a structure apart from how any language writes it: sections of a level, items with an optional name and links placed in their value, each node saying which part of the encoded form it was decoded from, with mutators that change a node while the encoding keeps the bytes of the rest. The Khayyam abstractions are the root `Text_Section` (level 0) with its `Text_Item` entries, `Text_Link`, `Text_Span`, and their editable forms in [`protocol/`](protocol/); the services `Text_Nodes`, `Text_Structure_Codec`, and `Text_Place` live under [`services/`](services/) in each service's `protocol/` (Draft). Only a codec says that a section of level 2 is written `##`; a domain that reads a text as a structure, such as the changelog, names no markup symbol. How this structure relates to the ruling that markup is annotation on the spans of one plain value, and to the caution that Text may have no view of the structure of a document, is open: see the handoff.
 
 ## Widgets
 A text is shown through a widget, and the widget's contract is the same shape

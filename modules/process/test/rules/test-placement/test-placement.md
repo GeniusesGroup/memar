@@ -28,6 +28,3 @@ An organization may keep a Test beside what it tests, gather all Tests at the re
 - It does not claim a folder is where a Test is *found* by a runner. Discovery is a mechanism's business, per [Test → Test, Check, and Runner](../../test.md#test-check-and-runner); a runner that ignores this folder is free to do so, at the cost of not running the Tests.
 - It does not claim a Test may be absent because a module's implementation is small, new, or believed correct. Absence is decided by whether the module's surface has decidable expectations, per [Test → A Test Is Part of the System That Owes It](../../test.md#a-test-is-part-of-the-system-that-owes-it).
 - It does not claim the module folder itself is a module's unit of ownership in the abstract sense; that is [Modularity](../../../../knowledge/modularity/modularity.md), and this rule follows the representation this repository uses.
-
-## Open questions
-This rule's own open state lives in its handoff.

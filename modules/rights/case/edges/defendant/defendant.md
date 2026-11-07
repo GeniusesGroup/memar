@@ -2,11 +2,9 @@
 The user the case is brought against. One defendant on this case. Any user type may be that user.
 
 ## Model
-
 - `(case)-[:defendant]->(user)`
 
 ## Policies (rules)
-
 - The word is the label already written on [participant](../participant/participant.md): the person being sued or accused. The edge is that part on this case. It is not a role node.
 - Organization and group are user types (`(user)-[:organization]`, `(user)-[:group]`). The end may be a group or an organization.
 - On a registry inquiry, the defendant is the target organization.
@@ -18,12 +16,6 @@ The user the case is brought against. One defendant on this case. Any user type 
 - Who may name the defendant is not recorded. The participant file has no who-may-assign rule.
 
 ## Placement
-
 - **Here, as its own edge.** Same reason as [plaintiff](../plaintiff/plaintiff.md): the part is per case, and the edge type is the part.
 - **Nearest alternative rejected:** reading the defendant off the service parameters (the debited account) and storing no edge. The service endpoint is unresolved, and a complaint can name a person the service does not debit. The part has to be stated even when the invocation is not a transfer.
 - **Not** the stolen edge. Stolen stays an edge of that kind of claim. Kidnap is an edge from the case to the kidnapped user. Neither is this part, and this file does not redraw them.
-
-## Open questions
-
-- None for the end. A group or an organization may be the one defendant. A second defendant is a second claim.
-

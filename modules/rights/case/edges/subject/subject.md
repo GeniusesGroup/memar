@@ -14,6 +14,3 @@ Subject (mouzu) is the case. It is not a second node beside the request.
 - **Not an edge.** The attribute-or-edge test already sends the prose to [text](../../../../knowledge/text/README.md) and the invoked service off the case. Those two edges are the split between "why" and "what is asked." They are not two concepts with two lifecycles.
 - **Nearest alternative rejected:** a subject node and a request node, each with its own ruling. That split would survive only if a ruling must be able to accept one and refuse the other. No such ruling is recorded. One vote pair on the case is the ruling.
 - What would make this placement wrong: a complaint whose proposition is accepted and whose service is refused, or the reverse, and that split has to be queried as two results. Then each part needs its own votes.
-
-## Open questions
-- The changed input is the proposal that a reject may point at one `process/request`. The vote-to-request edge is not drawn. Same parties and the same amount do not decide it.

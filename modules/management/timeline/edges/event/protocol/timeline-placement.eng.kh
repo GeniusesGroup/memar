@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Timeline_Placement in "modules/management/timeline/edges/event/protocol/timeline-placement.kh"
+
+tp Domain mt (self Timeline_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)
+}
+
+tp Summary mt (self Timeline_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("What is said of one placing of a thing on a timeline")(s, VoidError)
+}
+
+tp Overview mt (self Timeline_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("A placement is no node: it is the typed values of one event_is edge from the timeline to the thing placed. GetNumber is the placement's place in the timeline's order, from 1, the next number across every placement of the timeline whatever it places, never reused and never changed. GetPlacedAt is the instant of placing. GetReason is why the thing appears on this timeline, given being false when none was stated; none is required of a placement. A placement holds no kind, no placer and no reply: the kind is a label on the thing, the placer is Ownership's creator of it, and a reply is Content's edge.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Timeline_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Timeline_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("Each value is keyed on the edge by the TypeUUID of its type, never by an English word.")(s, VoidError)
+}

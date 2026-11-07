@@ -18,12 +18,5 @@
 
 - **Correct here — production work is task-side.** The vocabulary describes *work* (job-order, production-planning, approval statuses of making) and the task module is its existing home (module skeleton: `task/edges/`); no new module is warranted (prefer existing homes over inventing new modules).
 - **Not `economics/product`:** the product-side material questions have their own per-edge doc — [material](../../../../economics/product/edges/material/material.md) ("Material or Ingredient") — keep product identity there and this task-side relation here; no second copy of the product questions.
-- The label-suggestion behavior ("other labels suggest to users") is a view/projection concern — pluggable GUI, never task-kernel code; approval statuses stay open against the general status domain (see Open questions below); any "MUST approve before Active" enforcement is rule material (core never knows Rule).
-
-## Open questions
-
-- Production as task *kind* (label / edges-loop type) vs an edge to a production/product node — which is it? ("project IS a task" precedent.)
-- Material dependency / ByProduct / product lines: task-side relation or product-side identity? Converge with [material](../../../../economics/product/edges/material/material.md) — one home, not two.
-- Production statuses vs the general status domain (../modules-plugable/knowledge/documentation/documentation.md#status): own status set or labels?
-- Suggestion of labels: GUI projection or stored semantics?
+- The label-suggestion behavior ("other labels suggest to users") is a view/projection concern — pluggable GUI, never task-kernel code; approval statuses stay open against the general status domain; any "MUST approve before Active" enforcement is rule material (core never knows Rule).
 

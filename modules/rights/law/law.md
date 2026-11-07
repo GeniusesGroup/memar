@@ -5,14 +5,12 @@ A law is one signed instrument. The legal order is the set of such instruments t
 A law node carries a human-language sentence and a machine-checkable form of the same norm, signed together with a goal, an explanation of its words, and an executive guarantee. Names people use for that sentence are labels on comments. A change after the signature is a new node. Specific statutes are instances of this node.
 
 ## Introduction
-
 ### Motivation
 A statute book that treats a title as identity and then writes numbered articles and rider-notes mixes purpose, interpretation, exception, and procedure into one linear text. Coverage hides in notes; how the text will take effect can be omitted; later precision rewrites the norm. Judges and officers then fill the gaps with preference.
 
 This type keeps a law clear because a change after a binding signature is a different law, and that change has a large cognitive cost for the people who live under it. A rate moving from 20 percent to 30 percent is a new node because its effects are large.
 
 ## Explanation
-
 ### Definition
 A law node is one instrument. It does not store the legal order on itself. The order is which instruments are in force together.
 

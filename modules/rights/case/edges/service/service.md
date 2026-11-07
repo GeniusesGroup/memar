@@ -1,5 +1,4 @@
 # Claim service
-
 ## Model
 - Candidate (unconfirmed): `(case)-[:claim_service]->(service)` — a claim must name a service run by a specific organization; endpoint noted as `service_p.UUID` (source was `package label` holding comments only, no edge code).
 - Phase-0 draft: one case names one service. The UUID note is an implementation sketch. It is not part of the edge.
@@ -19,9 +18,3 @@
 - **Not economics [service](../../../../../modules-plugable/economics/service/service.md) by default:** the label says which organization's service a *claim* must call — that is claim/case semantics; the service module only runs. Economics service is a non-inventory offering. It is not, on its own record, this endpoint.
 - Order-of-services sequence semantics is missing processing — until who-orders/what-order-triggers exists, no edge stands (no bare edges).
 - Phase-0 draft: the structural edge stays on the case because every complaint names the service it invokes. That is Code. Which organization service is legal to name is a rule, and the identity-theft sequence is still missing, so the edge stays a candidate.
-
-## Open questions
-- Is ClaimService an edge to the service domain (economics) — and does the order-of-services need sequence semantics (an ordered claim path, not a list note)?
-- Does it move into [claims](../../../../../modules-plugable/rights/claims/claims.md) with the accusations, or stay a case-side structural label?
-- Direction and naming unconfirmed — nothing ratified.
-- What else, if anything, the registry inquiry connects besides the target organization as defendant is open on [registry-inquiry](../../../../../modules-plugable/rights/claims/edges/registry-inquiry/registry-inquiry.md). Later claims do not wait on it.

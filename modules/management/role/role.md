@@ -11,7 +11,6 @@ A [role](https://en.wikipedia.org/wiki/Role) (also rôle or social role) is a se
 The notion of the role can be and is examined in the social sciences, specifically economics, sociology and organizational theory.
 
 ## Dictionary
-
 role  [rəʊl]
 
 n.

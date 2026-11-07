@@ -20,7 +20,7 @@ This Draft records positions already established in the sources and in owner rul
 ## Explanation
 
 ### The number tower
-A numeric width is named by its number system and its width in bits: `I` for a signed integer, `W` for a whole (unsigned) integer, and `R` for a real number in floating point — for example `I16`, `W64`, and `R32` in the Khayyam realization under `modules/math/`. Each such name is a concrete width and therefore a capsule; the concept a width is an instance of — such as `Signed` — is an abstraction.
+A numeric width is named by its number system and its width in bits: `I` for a signed integer, `W` for a whole (unsigned) integer, and `R` for a real number in floating point — for example `I16`, `W64`, and `R32` in the Khayyam realization under `modules/math/`. Each such name is a concrete width and therefore a capsule; the concept a width is an instance of — such as `Signed` or [`Float`](protocol/float.kh) — is an abstraction. A protocol that needs a floating magnitude imports [`Float`](protocol/float.kh); realization may bind any numeric width. Domain-opaque ordinals stay their own abstractions and are not replaced by `Float`.
 
 Truth values follow the same split: the capsule of one truth value (1 for true and 0 for false) is distinct from the concept of Boolean truth.
 

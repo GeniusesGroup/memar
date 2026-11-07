@@ -2,7 +2,7 @@
 
 ## Model
 
-- `(group)-[:---]->(timeline)`
+- No edge joins the group and the timeline of one node: they share its address ([Timeline → How domains connect through a timeline](../../timeline.md#how-domains-connect-through-a-timeline)). A domain that wants to mark that a thing has data in it writes the optional edge declared once on Thing ([Data in](../../../../identity/thing/edges/data_in/data_in.md#model)).
 
 ## Policies (rules)
 
