@@ -18,7 +18,7 @@ def decode_text(raw: bytes) -> str:
 def check_text(text: str) -> None:
     if text.startswith('﻿'):
         raise _m_errors.Text_Error_Bytes_Bom('the text starts with a byte-order mark')
-    if '�' in text:
+    if '\ufffd' in text:
         raise _m_errors.Text_Error_Bytes_Replacement('the text holds a replacement character')
     if _m_text_check.mojibake_hints(text):
         raise _m_errors.Text_Error_Bytes_Mojibake('the text holds the marks of mojibake')

@@ -13,8 +13,3 @@
 
 - Stays in the question module as a question-to-question relation.
 - Which file owns Hint — this relation or the option-side note — is the open dedup, not a reason to add a module.
-
-## Open questions
-
-- reconcile the duplicate Hint comment
-

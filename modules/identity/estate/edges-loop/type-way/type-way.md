@@ -2,7 +2,6 @@
 A [way](https://wiki.openstreetmap.org/wiki/Way) normally represents a linear feature on the ground (such as a road, wall, or river).
 
 ## Dictionary
-
 way  [weɪ]
 
 n.   

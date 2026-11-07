@@ -23,11 +23,6 @@ Each user must have a valid public key. New CPU structures have a unique immutab
 
 - WebAuthn / passkeys and TPM-backed keys implement hardware-rooted public-key identity; the "unique immutable CPU key" claim aligns with that family but is not yet specified here.
 
-### Unresolved questions
-
-- The "unique immutable CPU key" claim is stated but not designed: how is it provisioned, verified, and revocable, and what happens to a `User`'s identity when the hardware key is the root of trust but the hardware is lost or replaced? Not yet resolved.
-- How user authentication connects to the `rule`/Code-vs-Rule model (is an authentication requirement Code or a per-organization Rule?) is not yet decided here.
-
 ### Future possibilities
 
 - A key-recovery/multi-device design (threshold or delegated recovery) so identity survives hardware loss.
@@ -39,8 +34,6 @@ Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothi
 
 ### Labels to find users
 - **Idea**: labels to find a user by many factors, e.g. relations of a user to an organization (buy insurance, ...).
-- **Review questions**: is this a stored edge at all, or a derived lookup over relations the user already has (analytics is always pluggable — the discovery belongs there if it is derived)? If stored, who maintains it — organization membership, social connections, or a user-side index — and does it then duplicate those edges (no bare edges: what does assigning one trigger)?
 
 ### Shown verification
 - **Idea**: a verified mark on a user. Legal data must be set. After the mark is on, the passport image cannot be removed. The mark may be fed by another platform's data. The note reads the mark as something shown, not as an authentication step.
-- **Review questions**: is the mark a label on the user, or a status? Authentication stays the public key above — does this mark belong entirely outside that section? Who may turn it on?

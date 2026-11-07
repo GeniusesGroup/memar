@@ -13,9 +13,4 @@
 ## Placement
 
 - Stays in the content module: both names relate content records to content records.
-- Whether Discussion duplicates a timeline group chat is open below. The note stays on this edge until that converges.
-
-## Open questions
-
-- does the Discussion relation duplicate management/timeline group chats? Is the uri requirement satisfied by the uri domain (reference-not-embed)?
-
+- Whether Discussion duplicates another way of conversing is open below. The note stays on this edge until that converges.

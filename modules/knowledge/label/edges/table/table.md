@@ -7,4 +7,4 @@
 
 ## Policies (rules)
 
-- e.g. `Scrum Board` for `task` labels
+- e.g. `Scrum Board` for the labels of a stream of work

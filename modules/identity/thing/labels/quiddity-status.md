@@ -12,10 +12,4 @@
 
 ## Placement
 
-- Candidate home is this status module. [status.md](../../status.md) says every quiddity, even a label, can carry a status, and these names were filed here.
-- Whether Locked, Closed, and Failure collapse into one suspended state, and whether the provenance pair belongs on an audit record, is open below.
-
-## Open questions
-
-- are Locked/Closed/Failure distinct states or one Suspended with a reason? Do provenance states belong to audit-log?
-
+- Candidate home is this status module. `status.md` says every quiddity, even a label, can carry a status, and these names were filed here.

@@ -15,7 +15,7 @@ import (
 
 // It can point to any domain records e.g. product, invoice, ...
 // It can be use in other way than domain indicate e.g.
-// - welcome message by group-associated domain data.
+// - welcome message by the data of the associated domain.
 // - Map domain to share static or live location
 // - PhotoUpdated
 // - Call

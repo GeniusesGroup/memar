@@ -11,12 +11,7 @@
 
 ## Placement
 
-- Filed under `computer/software`'s `edges/`, but the Go comment calls it the *user domain's* accepted protocols, and no second node is named anywhere — so neither bucket is proven. Not moved: the contradiction is recorded here and in `software.handoff.md`, and placement follows the answer.
-
-## Open questions
-
-- Whose facet is it — user's or software's? Every other facet of this shape composes an identity field; this one composes none, so nothing says what record carries the accepted channels.
-- Three booleans versus one flag word: whether the channels are independent requirements (booleans) or one protocol set (flag) is the same question `instance_of/edges/audit-log`'s `log_p.Level` flag answers differently.
+- Filed under `computer/software`'s `edges/`, but the Go comment calls it the *user domain's* accepted protocols, and no second node is named anywhere — so neither bucket is proven. Not moved: placement follows whose facet it is.
 
 ## Source
 

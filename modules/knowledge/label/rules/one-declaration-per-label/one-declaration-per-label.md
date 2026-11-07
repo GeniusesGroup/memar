@@ -13,7 +13,7 @@ A rule of this repository, held for [Label](../../label.md), so that every word 
 - **Khayyam has no enum.** A vocabulary is not written as `enum.Enum` in Python either: each word is a Type whose identity and contract sit in its file, explained by Type's detail methods when the language is Khayyam ([`type.kh`](../../../../computer/type/protocol/type.kh); owner ruling 2026-11-01).
 
 ## Why it exists
-Owner (2026-11-01): aggregating Status, TaskKind and topics into Enums or one Python bag made a second mechanism beside Label and hid each word from content search. One declaration per label is the address; Catalog and `memar label` walk the tree. Owner (2026-11-02): the `Label_` prefix on the file hid the word in the path; the Type name keeps it.
+Owner (2026-11-01): aggregating Status, kinds of act and topics into Enums or one Python bag made a second mechanism beside Label and hid each word from content search. One declaration per label is the address; Catalog and `memar label` walk the tree. Owner (2026-11-02): the `Label_` prefix on the file hid the word in the path; the Type name keeps it.
 
 ## Keep it or drop it
 An organization that keeps a bag file remains able to attach labels, and loses the one-address check and the Type discipline Memar's tools assume.

@@ -14,7 +14,7 @@ tp Summary mt (self Label) () (s String) {
 }
 
 tp Overview mt (self Label) () (s String) {
-    CharacterRun_From.FromCharacterRun("A title that links a record to others outside the structure of their ids. The title alone is no identity: a topic and a task kind may be titled alike, and the identifier tells them apart. A label is declared as code in the labels folder of the module whose it is, and what it means is what its own detail methods say, when it expires and which label replaces it are those of the type. A label takes another label, its kind, by composing it.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A title that links a record to others outside the structure of their ids. The title alone is no identity: a topic and a kind of act may be titled alike, and the identifier tells them apart. A label is declared as code in the labels folder of the module whose it is, and what it means is what its own detail methods say, when it expires and which label replaces it are those of the type. A label takes another label, its kind, by composing it.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Label) () (s String) {

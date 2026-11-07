@@ -12,9 +12,3 @@
 
 - Stays in `question_option/edges`: the source named an option-to-form relation.
 - Membership, ordering, or gating is unrecorded. Hint's single owner is the same open dedup as [to-question](../../../question/edges/to-question/to-question.md).
-
-## Open questions
-
-- reconcile the duplicate Hint comment: which source owns Hint — this file, the question-side [to-question](../../../question/edges/to-question/to-question.md), or the option-side [hint](../hint/hint.md)?
-- what does the option-to-form relation mean — form membership, ordering, or gating? Semantics unrecorded (no bare edges).
-

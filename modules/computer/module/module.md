@@ -3,19 +3,16 @@ Use to store modules that shape the application.
 Also indicate which modules include in any type of applications e.g. GUI, server, CMD, ...
 
 ## Model
-
 - `(software)-[:---]->(software_module)`
 
 ## Identifier
-
 A module's identifier is its **domain** — the name the application knows it by,
 e.g. `product`, `content`. It is the module node's identity in the graph, so
-`Field_ModuleID` returns the same `ThingUUID` every other node identifier in this
-repository returns. See `module.handoff.md` for the Go
-comment this came from and for the field the Go left commented out.
+`Field_ModuleID` returns a `MemoryAddress`, the same identifier every other node
+in this repository uses. See `module.handoff.md` for the Go comment this came
+from and for the field the Go left commented out.
 
 ## Runtime surface
-
 `protocol/bs.kh` carries two abstractions, and the difference between them is
 the module's whole runtime story:
 

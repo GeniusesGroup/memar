@@ -15,7 +15,7 @@ This document specifies Memar's Type module: what every realization of a Type ca
 A Type identified in one place, described in another, and versioned in a third drifts apart: the identifier a process compares, the text a person reads, and the record of whether the Type is still supported each change on their own schedule, and no party can tell which copy is authoritative. [Type → Human-facing identity](../../../docs/type.md#human-facing-identity) names this failure for human-facing metadata. This module gives each of these concerns one home, on the Type itself.
 
 ### Methodology
-The requirements are derived downward from [Type](../../../docs/type.md) — its nominal identity, its rule for stateless Types, its Type metadata, and its principle that structure is fixed by definition — and from what a consumer already reads off a Type, chiefly [The Error](../../process/error/error.md), which composes this module's identity, life cycle, and details. Where neither supports a requirement, the paired handoff records it as open instead of this document stating it.
+The requirements are derived downward from [Type](../../../docs/type.md) — its nominal identity, its rule for stateless Types, its Type metadata, and its principle that structure is fixed by definition — and from what a consumer already reads off a Type, chiefly [The Error](../../process/error/error.md), which composes this module's identity, life cycle, and details. Where neither supports a requirement, this document does not state it.
 
 ## Explanation
 
@@ -44,7 +44,7 @@ The human-facing details are kept in companion artifacts beside the Type's defin
 ### Type life cycle
 A Type holds a position in its own life cycle — where its definition stands between first release and the end of its support — and that position is part of what a consumer reads off it. This is a different subject from the stages [Type → Method — Type as Callable Behavior](../../../docs/type.md#method--type-as-callable-behavior) names for a Method (definition, composition, specialization, execution): it records the standing of the Type's definition among its consumers, not a stage of the Type's use. The issue date, expiry date, and replacing Type among the Type's details belong to the same record.
 
-[The Error → Composition](../../process/error/error.md#composition) already relies on four positions: `Experimental`, `Stable`, `Deprecated`, and `EndOfLife`. The set of positions this module requires is not yet stated, and the paired handoff records the ruling it waits on; until that ruling is given, no realization's list of positions is normative.
+[The Error → Composition](../../process/error/error.md#composition) already relies on four positions: `Experimental`, `Stable`, `Deprecated`, and `EndOfLife`. The set of positions this module requires is not yet stated, so no realization's list of positions is normative.
 
 ### Reading a Type
 What a consumer may observe of a Type through this module is its identity, its details, and its life-cycle position, and the module offers reading operations over each of them and no operation that changes any of them.

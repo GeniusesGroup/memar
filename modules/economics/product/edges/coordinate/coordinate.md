@@ -11,13 +11,7 @@
 
 ## Placement
 
-- **Not an edge; strip from the product model.** Standing review in [product.md](../../product.md) already asks: "Is coordinate lookup a GUI concern to strip from the model?" — this doc answers **yes, strip**: it is a derived query (role → members → coordinates), owned by whoever serves the view:
+- **Not an edge; strip from the product model.** The coordinate lookup is a GUI concern stripped from the model: it is a derived query (role → members → coordinates), owned by whoever serves the view:
   - coordinate values: identity analytics (`geography-coordinate`, pluggable);
   - the role-based resolution: [management/role](../../../../management/role/role.md) membership + GUI layer.
 - Root-vs-pluggable verdict: **not in root `product`; not a new capability either** — no module is needed for a recipe over existing data.
-
-## Open questions
-
-- If transport/invoice genuinely needs a stored link, is it `(invoice)-[:coordinate]->(coordinate)` maintained by the transport/service capability — i.e. an invoice-side edge, not product-side?
-- Confirm against the repeated "coordinate via StaffID" variant — same recipe, staff entry point.
-

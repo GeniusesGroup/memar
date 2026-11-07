@@ -7,5 +7,5 @@
 
 ## Policies (rules)
 
-- Just a `user` or `group` with indicated `label` can made a `comment` relation to the `comment` with `reply` edge.
+- Just a `user` or a set of users with indicated `label` can made a `comment` relation to the `comment` with `reply` edge.
 - e.g. just `1st friendship cycle` CAN reply to my comment.

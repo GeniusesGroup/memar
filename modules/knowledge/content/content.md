@@ -12,8 +12,6 @@ The document does not propose a new markup language. It identifies distinct **co
 
 A central discovery running through the document: much of what appeared at first to require new semantic primitives turned out to already be solved — better — by a proper type system with absolute encapsulation (no unwrapped primitives). What a type system does not reach is content that carries no predefined field to hold its meaning: **unstructured content** — content of any medium, which is a Type like everything else and become independently addressable entities, so what meaning they carry attaches to them as Reference edges rather than as a schema they would have had to be shaped to carry. This is where the [Semantic](#semantic-definition-and-scope) and [Addressability](#addressability) topics concentrate their weight.
 
-Several concerns remain genuinely open at the end of this document — most notably the relationship between Layout and Theme, and, stated in [Text](../text/text.md#structural-notation-within-an-authoring-syntax), where the boundary lies between necessary structural notation and embedded semantic tagging within an Authoring Syntax itself. These are documented as open questions, not resolved.
-
 ## Introduction
 
 ### Motivation
@@ -111,6 +109,8 @@ A second, related question surfaced from the same discovery thread: reference ed
 > Any part of content that needs to carry an independent relation, property, or rule should become an independently addressable entity.
 
 This was deliberately phrased as **Addressable Entity**, not "Thing," because it remains unresolved whether, in the eventual model, this coincides with the project's general `Thing` primitive or is a distinct concept.
+
+**Khayyam export.** Document and section identity under Addressability is [`Addressable_Entity`](./protocol/addressable-entity.kh): equality of that identity; a filesystem Path does not conform. That type is identity of an addressable material, not a retrieval Locator in the [Reference vs. Locator](#reference-as-a-relation-not-a-property) sense. Other media keep stating their own addresses; consumers that need document/section identity import this export and mint no second material-address type.
 
 **This principle is honestly circular and this document does not resolve the circularity.** One cannot know in advance that a fragment "needs" a relation until that need actually arises — but by then, the fragment has often already been produced/stored without independent addressability, making retrofitting costly. The principle explains *after the fact* why a fragment became addressable; it does not tell an author, *in advance*, which fragments to make addressable. An alternative framing worth pursuing in future work: instead of asking "what might need a relation," ask "what units are *naturally* independently referenced within a given medium's own conventions" (a word, a sentence, an image region, a video timestamp) — an observable, empirical question rather than a predictive one.
 
@@ -266,6 +266,88 @@ That asymmetry says what such a rendering may be used for, and the answer is not
 What makes such a rendering legitimate rather than malformed is that it names its reader. A Facet is defined by the reader's relationship to its content ([Documentation → Facet](../../../modules-plugable/knowledge/documentation/documentation.md#facet)), and a rendering is classifiable the same way: a diagram produced so that a person can see at a glance whether a plan took the right path is a well-formed artifact of the human-oversight class, and it stops being well-formed at the moment some later reader is expected to recover the model from it. The medium is not neutral in what it carries ([Cognition → A Conversation as Two Cognitive Systems Connected Through a Medium](../../../docs/cognition.md#a-conversation-as-two-cognitive-systems-connected-through-a-medium)), and a notation chosen because a human eye reads it quickly is not thereby a notation a token stream reads at all — that is a property of the artifact's declared reader, not a defect in the artifact.
 
 This settles only the consequence for renderers. The broader question above — the appropriate replacement for tree/graph notation in a fully non-visual-neutral Authoring Model — is left open, along with the rest of this topic.
+
+## Proposals and replacement
+Status of this section: **Tentative**. It states the owner's rulings of 2026-11-05.
+
+A piece of work may produce many contents, each answered by replies that say what to change. When one of them is finally accepted, it stands in place of the content it was meant to replace. Other tools call this an issue, a branch, a pull request and a merge. Here it is edges already declared between contents, so commits, branches and "the latest of a kind" leave the model. Who may decide is a rights question, who decided is the Request's, and what a text is and how it is searched are Text's.
+
+### The edges
+Content declares no edge of its own for a proposal. Three declared edges serve:
+- **A proposal** is an ordinary content that replies to the content it would replace, `(proposal)-[:reply_to]->(content)` ([reply](edges/reply/reply.md)), and carries the Status word `Proposed` through Label's `label` edge ([Label](../label/label.md)).
+- **Accepting a proposal** is one write of Thing's [supersedes](../../identity/thing/edges/supersedes/supersedes.md), `(proposal)-[:supersedes]->(content)`. A relation several domains need is defined once, and Thing defines this one ([Modeling → A relation several domains need is defined once](../../../docs/modeling.md#a-relation-several-domains-need-is-defined-once)).
+- **The path of changes** of a content is its line of `supersedes` edges, read along their reverse.
+
+### Under change before the change exists
+Someone can say they are changing a content before any proposal exists. They do this with the Ownership edge [claimer](../../rights/ownership/edges/claimer/claimer.md), `(content)-[:claimer_is]->(user)`, which means "this user holds the work of this content now". It hangs on the content, and Content adds no edge for it.
+- **Who intends to change a content** is the set of its `claimer_is` sides.
+- **Who has proposed a change** is the set of contents that reply to it and carry `Proposed`, each with the proposal's `creator`.
+- **Who has changed it** is the content that supersedes it.
+- **Keeping two writers apart** is not done by the edge. Two `claimer_is` sides on one content are visible to both writers. Whether the second claim is refused is a rule an organization may choose either way ([Kernel Neutrality](../modularity/rules/kernel-neutrality/kernel-neutrality.md#the-rule)), so it is not Content's. The conflict that matters is caught when a proposal is accepted: an acceptance against a content that is no longer current is refused.
+
+A claim is ended (Graph `end_edge`) when the work is given up or its proposal is decided. Ending it is the claimer's act, or the act of the widget that decides the proposal.
+
+### Approval and the current content
+Accepting a proposal is one `supersedes` write from the proposal to the content it replies to, done by a party allowed to do it. **At most one `supersedes` enters a content**: the write is refused when the content is already superseded, and the store's compare-and-swap on the content's reverse side makes sure two acceptances can never both succeed. Thing owns the edge and its write; this rule of when a content may take it is Content's ([Supersedes → Policies](../../identity/thing/edges/supersedes/supersedes.md#policies-rules)), and its refusal is [`Content_Error_AlreadySuperseded`](errors/supersedes.kh).
+
+After that, the proposal is the current content wherever the earlier content stood. A content is **current** when nothing supersedes it. The current content reached from any content is found by following the reverse of `supersedes` until there are no more. There is at most one at each step, so the path is a line and never a tree. This read is Content's (Graph `path`), and a module that holds a content reads its current content this way. The module does not have to move its own edge on every change. Whether a module holds its first content by an edge of its own, and how a content is added to a module where none stood before or removed from one, is the module's subject. Both are queued (see [Open decisions](#open-decisions-on-proposals)). No shortcut edge to the current content is kept: it would hold what the line of `supersedes` already derives.
+
+The earlier content stays readable, and so does every proposal. The discussion of each step is the replies to the proposals along it. Nothing is ended or erased to make a replacement. Because every node is connected in the graph, whoever reaches a module's node can walk the whole chain of replacements and replies at no great cost, which a version-control history could not offer.
+
+**Approval of correctness is a different thing from acceptance.** A verdict that a content is correct, given by a reviewer who did not do the work, is a content of kind `approval` ([Documentation — Approval](../../../modules-plugable/knowledge/documentation/approval/approval.md)) together with the Ownership edge [confirmation](../../rights/ownership/edges/confirmation/confirmation.md). It is evidence. Acceptance is the act that makes a proposal current. An organization may require an `approved` verdict before an acceptance. That rule is a choice, held by rights or by the widget that accepts, and Content fixes none of it.
+
+### Who decides
+Who decided an acceptance is the Request's: the Request that wrote the `supersedes` edge names who asked it ([Request](../../process/request/request.md)), so the edge carries no decider field. The write does not judge whether the decider is allowed. Who may accept or withdraw a proposal is a question for rights. For example: the owners of the target may accept a proposal. It is queued to rights. The widget that accepts a proposal combines rights' answer with Content's write, because joining another domain's answer is a widget's work ([Widget aggregates](../../computer/ui/rules/widget-aggregates/widget-aggregates.md#the-rule)).
+
+### Several proposals on one content
+Contents P1, P2 and P3 may each be meant to replace the same content C, with replies between them asking for changes.
+- **Each one replies to C, not to the one before it.** Each proposal replies to the content it would stand in place of, so the target of all three is C, and "what is proposed for C" is one read of the replies to C that carry `Proposed`.
+- **The requests for change reply to the proposals.** The reply that asked P1 for a change is `(R1)-[:reply_to]->(P1)`. A reply has no kind of its own beyond the kind label of the content that replies.
+- **Only one can be accepted.** When P3 is accepted, C is superseded, so accepting P1 or P2 is refused afterwards. The other open proposals stay as they are and read as **stale**: being stale is read from the target, not stored, and nothing is written on them.
+
+### Relation to replies
+- **Only `supersedes` decides which content is current.** A reply is something said about a content, and no reply sets anything aside. A reply that carries `Proposed` becomes current only by the `supersedes` write.
+- **The current content of a kind** is the contents of that kind that nothing supersedes.
+
+### What text owns and what content owns
+| Concern | Owner |
+| --- | --- |
+| The value read: the characters, the language, the checks of the bytes | Text ([Text → Model](../text/text.md#model), [Checking text](../text/text.md#checking-text)) |
+| Successive values of one text while it is drafted, and the edit that writes them ([Editing a held text](../text/text.md#editing-a-held-text)) | Text |
+| Translations, and suggested translations, between texts | Text ([translation](../text/edges/translation/translation.md), [translation suggestion](../text/edges/translation_suggestion/translation_suggestion.md)) |
+| Search and likeness over texts | Pluggable text ([Retrieval](../../../modules-plugable/knowledge/text/retrieval/retrieval.md), [Likeness](../../../modules-plugable/knowledge/text/likeness/likeness.md)); kernel [Text](../text/text.md#text-search-and-retrieval) only points |
+| Which text a content holds | Content (`Content_Store`) |
+| Which content is proposed for which; the rule that at most one `supersedes` enters a content; the current content; the path of changes | Content (this section) |
+| The `supersedes` edge itself | Thing |
+| Replies, quotes, forwards and attachments between contents | Content |
+| The kind of a content, and the Status word `Proposed` | Label (moving from `Content_Store`) |
+| Who decided an acceptance | Request |
+| Who claims, created or confirmed; who may decide | Rights (Ownership) |
+
+A **version** of a module's content is a content on the line of `supersedes` edges, which is Content's. A **revision** of a text is Text's. Whether a text may still be edited in place once its content has been proposed or replied to is queued to Text. If the text changed after a reply was written, the reply would no longer read the text it answered.
+
+### What leaves the model
+| Earlier mechanism | Becomes |
+| --- | --- |
+| commit, history, log | the line of `supersedes` edges, read backwards |
+| branch, pull request | a proposal: a content that replies to its target and carries `Proposed` |
+| review comment | a reply to the proposal (`reply_to`) |
+| merge | the `supersedes` write |
+| merge conflict | an acceptance refused because the target is already superseded |
+| "the latest of a kind" | not a read: the current content is the one nothing supersedes |
+| "I am working on this file" | `claimer_is` on the content |
+
+### Abstractions
+Proposing is a widget's composition of `Content_Add`, `reply_to` and Label's attach of `Proposed`. Accepting is Thing's write of `supersedes` under Content's rule that at most one enters a content. Content's refusal of a second one is [`Content_Error_AlreadySuperseded`](errors/supersedes.kh); Thing's service for the write is Thing's and is owed there. A proposal is rejected or withdrawn by replacing its Status word `Proposed` with `Rejected` or `Withdrawn` through Label's `Label_Replace` (owner, 2026-11-05).
+
+### Considered and not chosen
+- **Moving the module's edge on every acceptance.** It needs the module domain to write on every change, which takes a second domain into one decision. The current content is read along `supersedes` instead.
+- **A proposal replying to the proposal before it.** This makes the chain P1 → P2 → P3, so a reader has to walk through discussion to find the target. Each proposal replies to the content it would replace instead.
+
+### Open decisions on proposals
+1. Who may accept a proposal, and whether a second `claimer_is` on one content is refused. These are queued to rights.
+2. How a content is added to a module where none stood before, how one is removed, and whether a module holds its first content by an edge of its own. These are queued to the module domain.
+3. Whether a text is fixed once its content is proposed or replied to. This is queued to Text.
 
 ## Deleting, moving, restoring, and committing
 These acts on files and history are the file domain's, stated in [Filesystem Practice → Deleting, moving, restoring, and committing](../../../modules-plugable/computer/memory/filesystem/filesystem.practice.md#deleting-moving-restoring-and-committing).

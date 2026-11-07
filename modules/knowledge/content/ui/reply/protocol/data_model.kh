@@ -14,7 +14,7 @@ import (
 // DataModel indicate the domain record data fields.
 type DataModel interface {
 	comment_p.Field_CommentID
-	ReplyTo() comment_p.UUID // Comment can be reply to other comment just in the same group.
+	ReplyTo() comment_p.UUID // Comment can be reply to other comment just in the same discussion.
 
 	request_p.Field_RequestID
 	audit_time_p.Field_Request

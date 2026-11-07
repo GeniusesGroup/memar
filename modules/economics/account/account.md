@@ -6,10 +6,11 @@ An account is the bookkeeping holder of one countable quantity. It is not financ
 - The kernel of this domain is exactly one edge: [bookkeeping](edges/bookkeeping/README.md) — the realized effect of a transaction on this account.
 
 ## Policies (rules)
-- Balance is not stored on the account node; it is the `Balance` snapshot of the account's latest bookkeeping record ([bookkeeping](edges/bookkeeping/README.md) §8; `account.handoff.md`).
+- Balance is not stored on the account node; it is the `Balance` snapshot of the account's latest bookkeeping record ([bookkeeping](edges/bookkeeping/README.md) §8).
 - Availability (blocked/holdable amounts) is NOT account state. It is evaluated from active rules (see `modules-plugable/economics/restriction`); there is deliberately no `AvailableBalance` field.
 - A bookkeeping balance expresses holding/possession, not legal title. Legal ownership is modeled once in `rights/ownership` and may attach to any node, including accounts.
 - Negative balance is neither allowed nor forbidden by the kernel; it is governed by pluggable rules (credit, overdraft policies).
+- Words such as Real and Personal are labels on an account, registered in [account labels](../../../modules-plugable/economics/account/labels/labels.md). They are not kinds of account.
 - Everything else — settlement references, transfer limits, main/preferred account preferences, credit flags, cash capability — is pluggable and must not enter this module's kernel.
 
 ## Discussion
@@ -26,11 +27,6 @@ An account is the bookkeeping holder of one countable quantity. It is not financ
 ### Prior art
 - The classic ledger "account page" — here the page is the set of bookkeeping edges and the account is just the node they hang from.
 - Core banking systems keep status/holds as account fields; this model moves them to rules on purpose.
-
-### Unresolved questions
-- Should the account expose a cached "last index" pointer for O(1) balance reads, or is that purely an engine detail?
-- `Field_AccountID` and the account UUID type carry legacy "financial" framing; rename pending.
-- Words such as Real and Personal are labels on an account, registered in [account labels](../../../modules-plugable/economics/account/labels/labels.md). They are not kinds of account.
 
 ### Future possibilities
 - Account grouping (sub-ledgers, multi-account persons) as pluggable relationship modules, not new core types.

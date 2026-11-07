@@ -13,8 +13,3 @@
 
 - Stays in the skill module: both lists are vocabulary for a skill, not a separate capability.
 - Whether proficiency is an ordered scale, and whether the classes are labels or a taxonomy, is open below.
-
-## Open questions
-
-- is proficiency a scale (orderable) or a set of labels? Do skill classes become labels or a taxonomy?
-

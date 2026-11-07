@@ -8,4 +8,4 @@
 ## Policies (rules)
 
 - a biography or biographical sketch
-- an account of the life of something (a user, a group, an animal, a coin, a building, ...)
+- an account of the life of something (a user, an organization, an animal, a coin, a building, ...)

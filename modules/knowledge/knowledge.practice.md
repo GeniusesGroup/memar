@@ -12,7 +12,7 @@ Asking before accepting or producing any knowledge artifact — the discipline t
 
 - Turn every load-bearing claim into a question before building on it: what is defined here, what is assumed, what evidence exists, what would change the answer?
 - When a term is used without a Memar definition, apply the default-meaning rule ([Terminology → The Default Meaning of an Unreferenced Term](../../docs/terminology.md#the-default-meaning-of-an-unreferenced-term)) and ask rather than assume ([Cognition → Discourse Norms](../../docs/cognition.md#discourse-norms-derived-from-this-model)).
-- Record open questions where they can be found again — a document's paired handoff, not a chat scrollback ([knowledge.md → Communication Channels Produce Knowledge but Are Not Knowledge Repositories](./knowledge.md#communication-channels-produce-knowledge-but-are-not-knowledge-repositories)).
+- Record open questions where they can be found again — a `question` content on the timeline of the task it concerns, not a chat scrollback and not a document ([knowledge.md → Communication Channels Produce Knowledge but Are Not Knowledge Repositories](./knowledge.md#communication-channels-produce-knowledge-but-are-not-knowledge-repositories)).
 
 ---
 

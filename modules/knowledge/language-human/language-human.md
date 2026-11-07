@@ -14,8 +14,8 @@ contract that reads and writes such records lives with the text domain, at
 `modules/knowledge/text/edges/language/protocol/`.
 
 ## Identity
-A language's identifier is the base identifier every domain uses — the thing
-domain's `ThingUUID` — so a language record is a thing and this domain mints no
+A language's identifier is the base identifier every domain uses — a
+`MemoryAddress` — so a language record is a thing and this domain mints no
 identifier of its own. The field surface `Field_LanguageUUID`, with the accessor
 `LanguageID`, is what a record composed of a language offers; the bodies come
 from the generator that the abstraction's `Implements` intent drives.
@@ -36,7 +36,3 @@ This prose is content, not source. It is written by a method on the error type
 itself, and no such method exists yet, which is why
 `errors/locale.eng.kh` and `errors/locale.per.kh` are unconverted — see the
 handoff.
-
-## Open questions
-What this conversion left undecided, and what belongs to another domain, is in
-`language-human.handoff.md`.

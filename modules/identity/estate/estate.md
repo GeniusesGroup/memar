@@ -2,7 +2,6 @@
 Estate is an area where houses or buildings of a similar type have all been built together in a planned way.
 
 ## Positions confirmed in discussion (2026-08-05..09)
-
 The modeling definition is deliberately **not settled yet** — narrative, hypotheses, and the full open-question map live in `estate.handoff.md`. What IS settled:
 
 - **Land and building are two different estates.** A building is not an attribute/extension of its land; quantities like occupancy, density, and shadowing are observations over the building–land relation, not properties of either side. The spatial relations between estates live in [`edges/estate`](edges/estate/README.md).

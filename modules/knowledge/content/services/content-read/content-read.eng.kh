@@ -14,7 +14,7 @@ tp Summary mt (self Content_Read) () (s String) {
 }
 
 tp Overview mt (self Content_Read) () (s String) {
-    CharacterRun_From.FromCharacterRun("Answers the kind and the text of the content of the given UUID, found being false when no content of that UUID is kept. It reads no timeline and changes nothing.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Answers the kind and the text of the content of the given UUID, found being false when no content of that UUID is kept. It reads nothing but the content and changes nothing.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Content_Read) () (s String) {

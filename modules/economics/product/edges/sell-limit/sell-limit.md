@@ -11,13 +11,6 @@
 
 ## Placement
 
-- **Core `product` keeps only a structural rule attachment; the semantics belong to the rule domain.** Who-may-buy is organization policy, not product identity — the kernel must not learn it (Core never knows Rule, decided in `rule.handoff.md`). The precedent already filed in this folder is [customable](../customable/customable.md): `(product)-[:customable_by]->(rule)` with the rules-engine deciding.
-- No dedicated module: "which groups may buy" is a *parameter* list, not a processing semantics (parameters-vs-semantics ⇒ one rules module + configuration). The three `Type_SellLimit_*` flags should migrate into rule configuration — this answers the standing review question in [product.md](../../product.md) ("Do SellLimit flags belong here or to the rule domain?") toward **rule domain**.
+- **Core `product` keeps only a structural rule attachment; the semantics belong to the rule domain.** Who-may-buy is organization policy, not product identity — the kernel must not learn it (Core never knows Rule). The precedent already filed in this folder is [customable](../customable/customable.md): `(product)-[:customable_by]->(rule)` with the rules-engine deciding.
+- No dedicated module: "which groups may buy" is a *parameter* list, not a processing semantics (parameters-vs-semantics ⇒ one rules module + configuration). The three `Type_SellLimit_*` flags should migrate into rule configuration — the rule domain owns them.
 - Not [restriction](../../../../../modules-plugable/economics/restriction/restriction.md): that module is quantity constraints on a target, not sales audience.
-
-## Open questions
-
-- Separate edge, or converge into the existing `customable` / generic `condition_is` attachment (one structural edge, many rules)?
-- Product-role basis is shared with `Type_NeedApprove` — is `product-role` itself a missing edge (see [product.md](../../product.md) backlog)?
-- Direction and naming (`sell_limit_is` vs flag-space) unconfirmed — nothing ratified.
-

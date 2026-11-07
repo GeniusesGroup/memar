@@ -7,4 +7,4 @@
 
 ## Policies (rules)
 
-- e.g. Just mentioned `user` can forward this `comment` in other timeline.
+- e.g. Just mentioned `user` can forward this `comment` elsewhere.

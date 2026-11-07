@@ -11,8 +11,3 @@
 ## Placement
 
 - Stays on the question. The cap was recorded on the question, and it is not a status shared by every node.
-
-## Open questions
-
-- Which users: people who may answer, people who may see the question, or attempts by one user?
-- Is the cap a rule evaluated at answer time, or a number stored on the question?

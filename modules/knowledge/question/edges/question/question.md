@@ -16,8 +16,3 @@
 
 - Stays on the question record in this module: the names are flags of a question, not a separate capability.
 - Whether the set is closed or organizational-open, and where Significance lives, are open below.
-
-## Open questions
-
-- closed kernel set or organizational-open? Does Significance belong to the endorsement/score edges?
-

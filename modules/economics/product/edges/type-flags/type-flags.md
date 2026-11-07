@@ -20,13 +20,6 @@
 - Flag *meanings* that leak other domains migrate with their owners when those capabilities migrate: SellLimit_* → rule configuration; Provider_* → service module; coordinate-by-role (on `Type_Transport`) is a lookup recipe to strip ([coordinate](../coordinate/coordinate.md)).
 - **Not core-by-necessity as vocabulary:** an org without goods/services reconfigures flags; core keeps only the ability to carry org-chosen type bits.
 
-## Open questions
-
-- Is the Good/Service split a flag pair or two identity lenses (per the confirmed multi-typing position in [product.md](../../product.md))?
-- Do SellLimit flags belong here or to the rule domain? ([sell-limit](../sell-limit/sell-limit.md) answers: rule domain.)
-- PreSale semantics unresolved (marked `??` in code) — converge with [buy-limit](../buy-limit/buy-limit.md) open questions.
-- Closed kernel set or organizational-open flag vocabulary?
-
 ## Source
 
 > Source: `modules/economics/product/edges/product.kh` (in code).

@@ -12,9 +12,3 @@ n.
 ## Model
 
 - `(estate)-[:neighborhood]->(estate)`
-
-## Open questions (from the Estate session, 2026-08-05..09)
-
-- Is neighborhood a direct spatial edge between two estates (consistent with the spatial-relations criterion), or a derived observation over geometry — and in either case, Simple, Shortcut, or Boundary edge?
-- Does `neighbors_conflict` (sibling edge) belong to the same spatial layer, or is it social/managerial (a dispute, i.e. rights/case territory) riding on the neighborhood relation?
-- Both endpoints and the edge's final classification must be decided together with the estate-relation set — see [estate](../estate/README.md).

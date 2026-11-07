@@ -13,4 +13,4 @@ class Label_Draft(DeclaredLabel):
 
     @classmethod
     def Overview(cls) -> str:
-        return "Direction is not yet settled; real, unresolved questions remain, recorded in the document's paired handoff."
+        return "Direction is not yet settled; real, unresolved questions remain, each a question content on the timeline of a task."

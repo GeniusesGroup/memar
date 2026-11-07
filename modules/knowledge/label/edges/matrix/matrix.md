@@ -9,4 +9,4 @@
 
 ## Policies (rules)
 
-- e.g. `Eisenhower Matrix` in `task` labels
+- e.g. `Eisenhower Matrix` in the labels of a stream of work

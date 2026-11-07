@@ -19,7 +19,7 @@ The ecosystem's package managers — whatever their differences — share one ar
 - **The tool/registry/library separation eroded.** A platform's build tool grew into a package manager grew into a de facto central registry, and "the standard library" became inseparable from "the standard toolchain's module system" — making it hard to use the libraries without adopting the whole apparatus.
 
 ### Methodology
-The position was formed by arguing the repository-reference alternative against the package-manager default across its strongest counter-arguments (transitive pinning, fork workflows, download cost). Those counter-arguments are recorded below rather than dropped; where they remain genuinely open, they are listed as unresolved questions.
+The position was formed by arguing the repository-reference alternative against the package-manager default across its strongest counter-arguments (transitive pinning, fork workflows, download cost). Those counter-arguments are recorded below rather than dropped.
 
 ## Explanation
 

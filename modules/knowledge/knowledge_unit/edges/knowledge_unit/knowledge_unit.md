@@ -13,8 +13,3 @@
 
 - Stays on the knowledge-unit module: the ladder is a candidate structure of education units, not a new module.
 - Whether it is a label taxonomy or a set of containment edges is open below.
-
-## Open questions
-
-- is this a taxonomy (labels) or containment edges? The unbounded ends suggest the hierarchy is organizational-open.
-

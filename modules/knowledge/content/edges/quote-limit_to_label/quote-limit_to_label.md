@@ -7,5 +7,5 @@
 
 ## Policies (rules)
 
-- e.g. Just a `user` or `group` with indicated `label` can embed this `comment` in other `comment`.
+- e.g. Just a `user` or a set of users with indicated `label` can embed this `comment` in other `comment`.
 - e.g. just `1st friendship cycle` CAN quote to my comment.

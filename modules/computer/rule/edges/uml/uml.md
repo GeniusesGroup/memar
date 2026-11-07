@@ -3,12 +3,10 @@
 provides a way to visualize the architecture and design of a system, similar to the function of a blueprint.
 
 ## Model
-
 - `(rule)-[:uml_is]->(object)`
 - `(object)-[:is_uml_for]->(rule)`
 
 ## Policies (rules)
-
 - The service called in the process of rule
 - or action service
 - e.g.
@@ -16,5 +14,4 @@ provides a way to visualize the architecture and design of a system, similar to 
   - then call UserEarnCoin(UserID, invoice.TotalPayment/1000)
 
 ## TODO
-
 ## Fields

@@ -14,8 +14,3 @@
 
 - Stays with the answer module: these are result labels of an answer, a value list rather than a separate capability.
 - Whether Correct/Wrong is a scored result or a binary label is open below; that choice does not move the vocabulary.
-
-## Open questions
-
-- is Correct/Wrong a scored result (criterion points) or a binary label?
-

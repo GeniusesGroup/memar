@@ -53,12 +53,5 @@ WRB	wh-adverb
 ## Placement
 
 - **Not an edge — nothing here enters the graph schema; the vocabulary stays in the text module (this doc beside the source home `edges-loop/`).** The declarations are candidate *values* consumed by the existing [text_type](../../edges/text_type/text_type.md) edge ("Each text MUST have a specific type") — parameters-vs-semantics: which types exist is configuration of that edge, not a new capability and not a module.
-- The `Type_Localization` half may split off: if it turns out to be query-time behavior rather than a type value, it moves to the query/search capability ([query](../query/query.md); cross-domain search analytics is always pluggable). Until that question is answered the type flag stays here — this answers the standing review in [text.md](../../text.md) ("is Localization a text type or a query-time behavior?") as **open, defaulting to this home**.
+- The `Type_Localization` half may split off: if it turns out to be query-time behavior rather than a type value, it moves to the query/search capability ([query](../query/query.md); cross-domain search analytics is always pluggable). The type flag stays here.
 - PERSON / GPE / POS: candidate [label](../../../label/label.md) vocabulary (names are labels; UUIDs are identity) — if ratified, they become label or token-analyzer configuration, still not an edge.
-
-## Open questions
-
-- Is Localization a text type or a query-time behavior? Does the POS tag list become a uri/label vocabulary? (the standing questions from [text.md](../../text.md), carried here with the source)
-- `TODO::: right or wrong?` — who signs off location-aware answers (user-privacy of location in query responses)?
-- Are PERSON/GPE annotation vocabulary stored on tokens ([tokens](../../edges/tokens/tokens.md)) or produced by the analyzer — derived output ⇒ pluggable analytics?
-
