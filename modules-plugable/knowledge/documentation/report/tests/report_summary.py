@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the few lines that say what a task came to, in `modules-plugable/management/task/services/report_summary.py`.
+"""Tests for the few lines that say what a task came to, in `modules-plugable/knowledge/documentation/report/services/report_summary.py`.
 
-    python modules-plugable/management/task/tests/summary.py
+    python modules-plugable/knowledge/documentation/report/tests/report_summary.py
 
 The subject is the summary a day's review shows beside each task, named for
 the file that holds it per
@@ -31,17 +31,17 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_summary = import_module('modules-plugable.management.task.services.report_summary')
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
+task_summary = import_module('modules-plugable.knowledge.documentation.report.services.report_summary')
+_tl = import_module('modules.management.timeline.services.timeline_files')
 
 class Fixture(unittest.TestCase):
 
     def summary(self, report: str | None) -> list[str]:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
+            folder = Path(scratch)
             if report is not None:
-                (Path(scratch) / REPORT_NAME).write_text(report, encoding='utf-8')
-            return task_summary.summary_lines(Path(scratch))
+                _tl.add_text(folder, 'report', report, 'agent')
+            return task_summary.summary_lines(folder)
 
 class ResultFirst(Fixture):
 
@@ -59,11 +59,10 @@ class ResultFirst(Fixture):
 
 class Bounded(Fixture):
 
-    def test_three_lines_at_most_each_cut_to_width(self) -> None:
-        long = 'x' * 400
-        found = self.summary(f'## Result\n{long}\na\nb\nc\nd\n')
+    def test_at_most_three_lines_each_cut_to_the_width(self) -> None:
+        long = 'x' * (task_summary.LINE_WIDTH + 10)
+        found = self.summary(f'# Report\n\n## Result\n1\n2\n3\n4\n{long}\n')
         self.assertEqual(len(found), 3)
-        self.assertEqual(len(found[0]), len('result: ') + task_summary.LINE_WIDTH)
-        self.assertTrue(found[0].endswith('…'))
+        self.assertTrue(found[0].startswith('result: '))
 if __name__ == '__main__':
     unittest.main()

@@ -19,7 +19,6 @@ from modules.identity.thing.labels.Queued import Label_Queued
 from modules.identity.thing.labels.Blocked import Label_Blocked
 from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 task_dir = _m_memar_location.task_dir
 from pathlib import Path
@@ -29,8 +28,6 @@ DependsOn = _m_dependency.DependsOn
 Reader = _m_dependency.Reader
 Ref = _m_dependency.Ref
 refused_for_writing = _m_dependency.refused_for_writing
-_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
-Priority = _m_priority.Priority
 from modules.computer.software.services.project_find import project_by_path
 from modules.computer.software.edges.manifest.services.preferences import TASKS_KEY, preferences_path
 _m_folder = import_module('modules-plugable.management.task.services.folder')
@@ -50,20 +47,17 @@ project_root = _m_task_location.project_root
 register = _m_task_location.register
 _m_log = import_module('bundles.memar_git.services.log')
 record = _m_log.record
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-checked_title = _m_plan_file.checked_title
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+checked_title = _m_plan_text.checked_title
 _m_depends = import_module('modules-plugable.management.task.services.depends')
 BLOCKED_EVENT = _m_depends.BLOCKED_EVENT
 reconcile = _m_depends.reconcile
 _m_plan_depends = import_module('modules-plugable.management.task.services.plan_depends')
 set_depends_on = _m_plan_depends.set_depends_on
-_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
-add_label = _m_plan_labels.add_label
-checked_label = _m_plan_labels.checked_label
-registry_for = _m_plan_labels.registry_for
-_m_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
-set_priority = _m_plan_priority.set_priority
+_m_plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
+checked_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label').checked_label
+attach = import_module('modules.knowledge.label.services.attach_label').attach
+TaskLabelStore = import_module('modules-plugable.management.task.services.task_label_store').TaskLabelStore
 _m_plan_write = import_module('modules-plugable.management.task.services.plan_write')
 queue_plan = _m_plan_write.queue_plan
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
@@ -72,7 +66,7 @@ has_plan = _m_task_files.has_plan
 create_task = _m_task_files.create_task
 _m_claim = import_module('modules-plugable.management.task.services.claim')
 is_claimed = _m_claim.is_claimed
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 from modules.knowledge.label.primitive.label import Labels
 from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
@@ -109,7 +103,7 @@ def linked_conversation(task_id: str, parent: str) -> str:
         fail(f'no task {parent}: --parent names a task that is there, the one this task came from')
     return task.conversation
 
-def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, priority: int | str | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
+def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | None=None, queued: bool=False, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> tuple[str, Path]:
     """Ensure the task's facts and its plan and report contents on the records branch (and role folders); return its id and path.
 
     TITLE is required when the folder has no task yet, and unused when it
@@ -125,12 +119,12 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     refused, and a location that cannot be made fails with a message. The
     first call of a day also reaps the task folders that have been idle past
     the limit, other than this one. QUEUED leaves a new plan queued, or queues
-    an active one; PRIORITY, checked before anything is made, is written into a
-    new plan or set on the one that is there; so are LABELS, each `KIND=WORD`
+    an active one; LABELS, each `KIND=WORD`
     checked against its kind before anything is made and added to the plan
     (several of one kind are kept, none is twice); a topic the project
     declares nowhere is refused, with the declaration to write and the
-    declared topics near it (`checked_label`).
+    declared topics near it (`checked_label`). Priority is not this service's:
+    the ensure widget sets it through Thing after open.
 
     PROJECT, a name or a folder, is required to make a folder, and an empty
     one is refused: the project is always named, and the folder the process
@@ -142,7 +136,6 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     task with an unmet one is written Blocked, and an existing queued one
     becomes Blocked (`task_depends`).
     """
-    priority = None if priority is None else Priority.checked(priority)
     cited = DependsOn.normalized((Ref.parse(word) for word in depends_on or []))
     sid = TaskId.new() if task_id is None else task_id
     folder = task_dir(sid)
@@ -154,9 +147,9 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         fail(PROJECT_REQUIRED)
     given = None
     if labels is not None:
-        given, registry = (Labels(), registry_for(project))
+        given, held = (Labels(), _m_plan_registry.read(project))
         for text in labels:
-            given = given.with_label(checked_label(text, project, registry))
+            given = given.with_label(checked_label(text, held, project))
     has_plan_now = has_plan(folder)
     title = checked_title(title, required=not has_plan_now)
     parent = (parent or '').strip() or None
@@ -176,17 +169,15 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     if not has_plan_now:
         waits = bool(cited) and bool(reader.unmet(cited))
         status = Label_Blocked.key if waits else Label_Queued.key if queued else Label_Active.key
-        create_task(path, sid, title, parent, conversation, project, status, priority, given, now.text() or None)
+        create_task(path, sid, title, parent, conversation, project, status, given, now.text() or None)
         record('opened', sid, f'parent {parent}' if parent else '', folder=path)
         if waits:
             record(BLOCKED_EVENT, sid, '; '.join(reader.unmet(cited)), folder=path)
     else:
         if queued:
             queue_plan(stores_at(path), project, sid, is_claimed(path))
-        if priority is not None:
-            set_priority(stores_at(path), project, sid, priority)
         for label in given or ():
-            add_label(stores_at(path), project, sid, label)
+            attach(TaskLabelStore(stores_at(path), project), sid, label)
         if cited:
             set_depends_on(stores_at(path), project, sid, now)
             reconcile(read_task(path), reader)

@@ -9,11 +9,11 @@ Steps = import_module('modules-plugable.knowledge.documentation.plan.primitive.s
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 Task = _m_folder.Task
 measured_idle = _m_folder.measured_idle
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-is_complete = _m_plan_file.is_complete
-part_text = _m_plan_file.part_text
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-report_shape_problem = _m_report_file.report_shape_problem
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+is_complete = _m_plan_text.is_complete
+part_text = _m_plan_text.part_text
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
+report_shape_problem = _m_report_text.report_shape_problem
 EMPTY_REQUEST_IDLE_DAYS = 1
 _CHECKBOX = re.compile('^\\s*[-*]\\s+\\[([ xX])\\]')
 
@@ -30,10 +30,10 @@ def concerns(task: Task) -> list[str]:
             found.append(problem)
     if task.shape or task.front is None or is_complete(task.status):
         return found
-    plan = task.path / 'plan.md'
     if not task.status:
         found.append('it has no status')
     try:
+        plan = import_module('modules-plugable.management.task.services.task_memory').plan_path(task.path)
         if task.status == Label_Active.key and all_steps_checked(part_text(plan, Steps.heading)):
             found.append('every step is checked, yet the status is active')
         if not part_text(plan, Request.heading):

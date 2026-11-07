@@ -28,14 +28,14 @@ A **plan** is one agreement about one task, in writing, made before the work is 
 The task's identifier is not a field of the plan: the task is the timeline that holds it. A task has one Status, held by the task and changed only by a Request ([Request](../../../../modules/process/request/request.md)); a plan does not repeat it.
 
 ### Rounds
-Each round of critique can end in a separate plan, so one task may hold several; the same holds for its reports ([Report → Rounds](../report/report.md#rounds)). The owner ruled so on 2026-10-23.
+Each round of critique can end in a separate plan, so one task may hold several; the same holds for its reports ([Report → Rounds](../report/facet.md#rounds)). The owner ruled so on 2026-10-23.
 
 - **A plan is a content and is never overwritten or removed.** A later plan is one more content in the same timeline, so each round keeps its own history and nothing else needs to record it.
 - **The current plan is the latest of its kind.** A reader that wants one plan reads the current one; a reader that wants the history reads the timeline.
 - **A change to a finished task is a round or a new task by what it changes.** If the request and the check the task was agreed with are unchanged, the work was not done as asked, and the change is another round of the same task: a new plan and later a new report. If the request or the check changes, it is a new task, with an edge to the one it follows.
 
 ### Reader relationship
-A plan is **read to begin work**: the reader is an agent or a person who is about to carry out one agreed task and knows nothing of the task that agreed it. It needs what was asked and what checks it done, to tell done from merely attempted; the reason, to tell a requirement from an accident of the moment; the attempt, to tell what has been ruled out; and what comes next, so as not to guess where to pick up. It does not need how the work ended, which is the [report](../report/report.md)'s subject.
+A plan is **read to begin work**: the reader is an agent or a person who is about to carry out one agreed task and knows nothing of the task that agreed it. It needs what was asked and what checks it done, to tell done from merely attempted; the reason, to tell a requirement from an accident of the moment; the attempt, to tell what has been ruled out; and what comes next, so as not to guess where to pick up. It does not need how the work ended, which is the [report](../report/facet.md)'s subject.
 
 This is not [Practice's reader relationship](../practice/practice.md#reader-relationship): a plan is followed to accomplish one thing once, agreed between named parties, with a shape a program must read to find the parts.
 
@@ -54,6 +54,9 @@ Each requirement is decidable from a stated input by a party that did not write 
 2. **The plan's check is that something was done**: a change applied, or a decision recorded where it governs. A task whose outcome would be a finding or a proposal is a step of the plan of the work it improves ([A task is for work](../../../management/task/rules/a-task-is-for-work/a-task-is-for-work.md)), and a plan whose only check is a proposal is not ready.
 3. **A task may hold several plans, and a plan is never rewritten into an earlier one** ([Rounds](#rounds)).
 4. **A plan receives no record beside it** ([No Record Is Written Beside a Document](../rules/no-record-beside-a-document/no-record-beside-a-document.md)).
+
+### What the plan facet keeps beside the shape
+The plan facet owns which acts a plan may carry and the refusal text ([plan_acts](services/plan_acts.py)), the readers of a plan's front matter ([plan_front](services/plan_front.py)), the registry of the declared labels built once by a command and passed down, with no cache ([plan_registry](services/plan_registry.py)) and the widget that applies the acts policy and then resolves a written label ([plan_label](widgets/plan_label.py)). A cache of the declarations is the SDK's, not the facet's.
 
 ### Why plan and report stay separate
 The plan and the report are two kinds and not one, on the attribute where they do not overlap: the place each is consumed. A plan is read before any work exists, to begin it; a report is read after, to account for it. They are written by different acts at different moments. They are kept apart even though they may share a type for their shape, because a shape is code and is shared without sharing a responsibility.

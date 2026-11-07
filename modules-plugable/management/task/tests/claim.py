@@ -63,7 +63,6 @@ suite_scratch = _m_test_scratch.suite_scratch
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 memar_fs = _m_memar_location
 sys.path.insert(2, str(TESTS))
-import earlier_shape
 import shape
 task_files = import_module('modules-plugable.management.task.services.task_memory')
 task_claim = import_module('modules-plugable.management.task.services.claim')
@@ -72,14 +71,14 @@ Claim = _m_claim.Claim
 task_find = import_module('modules-plugable.management.task.services.list')
 task_temp = import_module('modules-plugable.management.task.services.temp')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
-_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
-Priority = _m_priority.Priority
-task_report = import_module('modules-plugable.management.task.services.report_file')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
+set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
+ensure_open = import_module('modules-plugable.management.task.widgets.ensure.ensure').open
+task_report = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 
-def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None) -> str:
-    ranked = f'Priority: {priority}\n' if priority is not None else ''
-    return f'---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: {opened}\nProject: P\n{ranked}---\n# {title}\n\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n'
+def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', project: str='P') -> str:
+    return f'---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: {opened}\nProject: {project}\n---\n# {title}\n\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n'
 
 class Fixture(unittest.TestCase):
 
@@ -93,21 +92,26 @@ class Fixture(unittest.TestCase):
         project = unittest.mock.patch.object(task_ensure, 'project_root', return_value=self.fake_root)
         project.start()
         self.addCleanup(project.stop)
+        subprocess.run(['git', 'init', '-q', str(self.fake_root)], check=True, capture_output=True)
 
     def task(self, sid: str, status: str, **plan) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
+        plan.setdefault('project', str(self.fake_root))
+        priority = plan.pop('priority', None)
+        project = plan.get('project', str(self.fake_root))
         shape.from_plan_text(folder, plan_text(status, **plan))
+        if priority is not None:
+            set_on(sid, int(priority), memar_fs.memar_root())
         return folder
 
     def root_old(self, sid: str) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
-        earlier_shape.create_plan_md(folder, sid, 'T', None, None, self.fake_root, 'queued', None, None, None)
         return folder
 
     def status_of(self, folder: Path) -> str:
-        return task_plan.read_plan(folder / task_plan.PLAN_NAME).status
+        return import_module('modules-plugable.management.task.services.folder').read_task(folder).status
 
     def refused(self, call, *args) -> str:
         with self.assertRaises(SystemExit) as raised:
@@ -129,13 +133,12 @@ class QueuedIsAStatus(Fixture):
         with contextlib.redirect_stdout(io.StringIO()):
             sid, path = task_ensure.ensure_task(None, 'Queued task', None, queued=True, project=str(self.fake_root))
         self.assertEqual(self.status_of(path), 'queued')
-        self.assertEqual(Priority.of(task_plan.read_plan(path / task_plan.PLAN_NAME).front), 5)
+        self.assertEqual(rank_of(sid, None), 1)
 
     def test_new_queued_with_a_priority_records_it(self) -> None:
         with contextlib.redirect_stdout(io.StringIO()):
-            sid, path = task_ensure.ensure_task(None, 'Urgent task', None, queued=True, priority=9, project=str(self.fake_root))
-        front = task_plan.read_plan(path / task_plan.PLAN_NAME).front
-        self.assertEqual(Priority.of(front), 9)
+            sid, path = ensure_open(None, 'Urgent task', None, queued=True, priority=9, project=str(self.fake_root))
+        self.assertEqual(rank_of(sid, None), 9)
         self.assertEqual(self.status_of(path), 'queued')
 
     def test_new_queued_queues_an_open_plan_no_one_has_claimed(self) -> None:
@@ -170,11 +173,9 @@ class ClaimTakesOne(Fixture):
 
     def test_a_task_of_the_generation_before_is_refused_naming_its_writer_and_the_conversion_and_is_left_as_it_is(self) -> None:
         old = self.root_old('20261012T000013Z-1-0')
-        written = (old / 'plan.md').read_bytes()
         text = self.refused(task_claim.claim_folder, old)
         self.assertIn('EndOfLife', text)
         self.assertIn('task_conversion', text)
-        self.assertEqual((old / 'plan.md').read_bytes(), written)
         self.assertFalse((old / Claim.NAME).exists())
 
     def test_the_claim_verb_claims_by_id(self) -> None:

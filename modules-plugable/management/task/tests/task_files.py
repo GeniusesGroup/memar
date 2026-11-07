@@ -24,12 +24,11 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
-import earlier_shape
 BUDGET_SECONDS = 30
 files = import_module('modules-plugable.management.task.services.task_files')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 errors = import_module('modules-plugable.management.task.errors.errors')
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 from modules.knowledge.label.primitive.label import Labels
 
 class Fixture(unittest.TestCase):
@@ -41,7 +40,7 @@ class Fixture(unittest.TestCase):
         self.folder.mkdir()
 
     def made(self) -> None:
-        files.create_task(self.folder, 'T-1', 'A: title', None, None, Path('/work'), 'queued', 7, None, None)
+        files.create_task(self.folder, 'T-1', 'A: title', None, None, Path('/work'), 'queued', None, None)
 
 class Facts(Fixture):
 
@@ -49,7 +48,7 @@ class Facts(Fixture):
         self.made()
         self.assertTrue((self.folder / 'task.yaml').is_file())
         self.assertEqual(timeline_files.read_contents(self.folder), [])
-        self.assertFalse((self.folder / 'plan.md').exists())
+        self.assertTrue((self.folder / 'task.yaml').is_file())
 
     def test_a_folder_without_task_yaml_is_not_a_task_yet(self) -> None:
         timeline_files.write_content(self.folder, 'plan', 'x\n', 'agent')
@@ -61,28 +60,15 @@ class Facts(Fixture):
         facts = files.read_facts(self.folder)
         self.assertEqual(facts['title'], 'A: title')
         self.assertEqual(facts['status'], 'queued')
-        self.assertEqual(facts['priority'], '7')
-
-    def test_the_priority_is_replaced_against_the_version_read(self) -> None:
-        self.made()
-        stores = files.stores_at(self.folder)
-        priority, version = stores.read_priority(None, 'T-1')
-        self.assertEqual(priority, 7)
-        stores.replace_priority(None, 'T-1', 3, version)
-        self.assertEqual(stores.read_priority(None, 'T-1')[0], 3)
-        with self.assertRaises(errors.Task_Error_Changed):
-            stores.replace_priority(None, 'T-1', 9, version)
-        self.assertEqual(stores.read_priority(None, 'T-1')[0], 3)
+        self.assertNotIn('priority', facts)
 
     def test_changing_one_fact_keeps_the_others_and_a_stale_other_fact_does_not_conflict(self) -> None:
         self.made()
         stores = files.stores_at(self.folder)
-        _, priority_version = stores.read_priority(None, 'T-1')
         _, status_version = stores.read_status(None, 'T-1')
         stores.replace_status(None, 'T-1', 'active', status_version)
-        stores.replace_priority(None, 'T-1', 2, priority_version)
         facts = files.read_facts(self.folder)
-        self.assertEqual((facts['status'], facts['priority'], facts['title']), ('active', '2', 'A: title'))
+        self.assertEqual((facts['status'], facts['title']), ('active', 'A: title'))
 
     def test_labels_and_depends_on_round_trip(self) -> None:
         self.made()
@@ -97,33 +83,31 @@ class Facts(Fixture):
 
     def test_a_missing_task_is_not_found(self) -> None:
         with self.assertRaises(errors.Task_Error_NotFound):
-            files.stores_at(self.folder).read_priority(None, 'T-1')
+            files.stores_at(self.folder).read_status(None, 'T-1')
 
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 
 class Reading(Fixture):
 
     def old(self, status: str = '') -> None:
-        earlier_shape.create_plan_md(self.folder, 'T-1', 'Title', None, None, Path('/work'), 'active', None, None, None)
         status_line = f'Status: {status}\n' if status else ''
-        (self.folder / 'report.md').write_text(f'---\nID: T-1\nTitle: Title\n{status_line}---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n', encoding='utf-8', newline='\n')
 
     def other(self) -> Path:
         folder = self.folder.parent / 'T-2'
         folder.mkdir()
-        files.create_task(folder, 'T-2', 'Title', None, None, Path('/work'), 'active', None, None, None)
+        files.create_task(folder, 'T-2', 'Title', None, None, Path('/work'), 'active', None, None)
         return folder
 
     def test_a_new_shape_report_has_no_status_channel_and_still_yields_its_body(self) -> None:
         self.made()
-        self.assertEqual(_m_report_file.read_report_status(self.folder), '')
+        self.assertEqual(_m_report_text.read_report_status(self.folder), '')
         timeline_files.add_text(self.folder, 'report', '# Report\n\n## Decisions needed\n- one\n', 'agent', fields={'status': 'Complete'})
-        self.assertEqual(_m_report_file.read_report_status(self.folder), '')
-        self.assertEqual(_m_report_file.decisions_needed(self.folder), ['- one'])
+        self.assertEqual(_m_report_text.read_report_status(self.folder), '')
+        self.assertEqual(_m_report_text.decisions_needed(self.folder), ['- one'])
 
     def test_a_report_status_in_the_old_shape_is_read_from_its_front_matter(self) -> None:
         self.old('Complete')
-        self.assertEqual(_m_report_file.read_report_status(self.folder), 'complete')
+        self.assertEqual(_m_report_text.read_report_status(self.folder), 'complete')
 
     def test_a_record_is_read_from_the_bytes_of_its_files(self) -> None:
         self.made()

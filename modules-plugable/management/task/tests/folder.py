@@ -50,9 +50,9 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 task_folder = import_module('modules-plugable.management.task.services.folder')
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-plan_skeleton = _m_plan_file.plan_skeleton
+import shape
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+plan_skeleton = _m_plan_text.plan_skeleton
 OLDEST = '20261001-T000000Z-1'
 NEWEST = '20261003-T000000Z-1'
 EARLIER_FORM = '1111-18dc000000000001-0'
@@ -77,9 +77,9 @@ class Fixture(unittest.TestCase):
     def task(self, sid: str, plan: str | bytes | None=None) -> Path:
         path = memar_fs.task_dir(sid, create=True)
         if isinstance(plan, bytes):
-            (path / PLAN_NAME).write_bytes(plan)
+            (path / shape.FACTS_NAME).write_bytes(plan)
         elif plan is not None:
-            (path / PLAN_NAME).write_text(plan, encoding='utf-8', newline='\n')
+            shape.from_plan_text(path, plan)
         return path
 
 class TaskRead(Fixture):

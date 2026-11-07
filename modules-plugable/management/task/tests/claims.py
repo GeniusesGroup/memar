@@ -71,8 +71,10 @@ Claim = _m_claim.Claim
 task_claims = import_module('modules-plugable.management.task.services.claims')
 task_temp = import_module('modules-plugable.management.task.services.temp')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
-task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
+plan_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label')
+set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
 
 def declare_topic(project: Path, fresh) -> None:
     """Declare the topic FRESH in PROJECT, as a module of it would: a Label_<Word> file of a `labels/` folder."""
@@ -91,21 +93,20 @@ def declare_topic(project: Path, fresh) -> None:
         f"        return 'work on {word}'\n",
         encoding='utf-8',
     )
-    task_plan_labels.forget()
-
-def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', priority: str | None=None, project: str='P', topic: str | tuple[str, ...] | None=None) -> str:
-    ranked = f'Priority: {priority}\n' if priority is not None else ''
+    
+def plan_text(status: str, request: str='Do the thing.', title: str='T', opened: str='2026-10-12T00:00:00Z', project: str='P', topic: str | tuple[str, ...] | None=None) -> str:
     topics = () if topic is None else (topic,) if isinstance(topic, str) else tuple(topic)
+    labels = ''
     if topics:
         where = Path(project)
         lines = []
         for word in topics:
-            label, fresh = task_plan_labels.registry_for(where).resolve(f'Topic={word}')
+            label, fresh = plan_registry.read(where).registry.resolve(f'Topic={word}')
             if fresh is not None:
                 declare_topic(where, fresh)
             lines.append(f'  - {label}\n')
-        ranked += 'Labels:\n' + ''.join(lines)
-    return f'---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: {opened}\nProject: {project}\n{ranked}---\n# {title}\n\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n'
+        labels = 'Labels:\n' + ''.join(lines)
+    return f'---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: {opened}\nProject: {project}\n{labels}---\n# {title}\n\n## Request\n{request}\n\n## Why\n\n## Steps\n\n## Next\n'
 
 class Fixture(unittest.TestCase):
 
@@ -123,11 +124,15 @@ class Fixture(unittest.TestCase):
     def task(self, sid: str, status: str, **plan) -> Path:
         folder = memar_fs.task_dir(sid)
         folder.mkdir(parents=True)
+        priority = plan.pop('priority', None)
+        project = plan.get('project', 'P')
         shape.from_plan_text(folder, plan_text(status, **plan))
+        if priority is not None:
+            set_on(sid, int(priority), memar_fs.memar_root())
         return folder
 
     def status_of(self, folder: Path) -> str:
-        return task_plan.read_plan(folder / task_plan.PLAN_NAME).status
+        return import_module('modules-plugable.management.task.services.folder').read_task(folder).status
 
     def refused(self, call, *args) -> str:
         with self.assertRaises(SystemExit) as raised:
@@ -138,7 +143,8 @@ class ClaimsTakesN(Fixture):
 
     def setUp(self) -> None:
         super().setUp()
-        self.project = self.git_project('project-x')
+        subprocess.run(['git', 'init', '-q', str(self.fake_root)], check=True, capture_output=True)
+        self.project = self.fake_root
 
     def git_project(self, name: str) -> Path:
         folder = self.fake_root / name
@@ -158,7 +164,7 @@ class ClaimsTakesN(Fixture):
 
     def test_the_highest_priority_comes_first_and_the_oldest_among_equals(self) -> None:
         low = self.task('20261012T000040Z-1-0', 'queued', opened='2026-10-12T00:00:00Z', priority='2')
-        plain_old = self.task('20261012T000041Z-1-0', 'queued', opened='2026-10-12T01:00:00Z')
+        plain_old = self.task('20261012T000041Z-1-0', 'queued', opened='2026-10-12T01:00:00Z', priority='5')
         high = self.task('20261012T000042Z-1-0', 'queued', opened='2026-10-12T05:00:00Z', priority='9')
         plain_new = self.task('20261012T000043Z-1-0', 'queued', opened='2026-10-12T02:00:00Z', priority='5')
         self.task('20261012T000044Z-1-0', 'active', opened='2026-10-11T00:00:00Z', priority='10')
@@ -228,8 +234,8 @@ class ClaimsTakesN(Fixture):
 
     def test_two_projects_queued_tasks_never_mix(self) -> None:
         other_project = self.git_project('project-y')
-        theirs = self.task('20261012T000049Z-1-0', 'queued', priority='10', project=str(other_project))
-        unnamed = self.task('20261012T000036Z-1-0', 'queued', priority='10', project='P')
+        theirs = self.task('20261012T000049Z-1-0', 'queued', project=str(other_project))
+        unnamed = self.task('20261012T000036Z-1-0', 'queued', project='P')
         mine = self.task('20261012T000039Z-1-0', 'queued')
         taken, _ = self.claims(5)
         self.assertEqual(taken, [mine.name])
@@ -284,14 +290,11 @@ class ClaimsTakesN(Fixture):
         for folder in folders:
             self.assertEqual(self.status_of(folder), 'active')
 
-class ClaimsByTopic(Fixture):
+class ClaimsByTopic(ClaimsTakesN):
     """The batch rule: the first task's topic pulls the rest of the batch (the owner's ruling of 2026-10-13)."""
 
     def setUp(self) -> None:
         super().setUp()
-        self.project = self.fake_root / 'project-x'
-        self.project.mkdir()
-        subprocess.run(['git', 'init', '-q', str(self.project)], check=True, capture_output=True)
 
     def task(self, sid: str, status: str, **plan) -> Path:
         plan.setdefault('project', str(self.project))
@@ -412,7 +415,7 @@ class ClaimsByTopic(Fixture):
         self.assertEqual(task_claims.batch_topic('Topic=Khayyam LSP'), 'khayyam-lsp')
         self.assertIsNone(task_claims.batch_topic(None))
         with self.assertRaises(SystemExit) as refused:
-            task_claims.batch_topic('TaskKind=design')
+            task_claims.batch_topic('design')
         self.assertIn('a batch is of one topic', str(refused.exception.code))
 
     def test_a_task_whose_request_is_empty_never_sets_the_topic(self) -> None:

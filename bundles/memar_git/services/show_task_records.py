@@ -31,17 +31,12 @@ find_tasks = _m_list.find_tasks
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 read_task = _m_folder.read_task
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 has_task = _m_task_files.has_task
-plan_path = _m_task_files.plan_path
-report_path = _m_task_files.report_path
-read_plan = _m_plan_file.read_plan
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
-decisions_needed = _m_report_file.decisions_needed
-handback_problem = _m_report_file.handback_problem
+_m_tl = import_module('modules.management.timeline.services.timeline_files')
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
+decisions_needed = _m_report_text.decisions_needed
+handback_problem = _m_report_text.handback_problem
 from modules.computer.software.primitive.project_name import ProjectName
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
@@ -57,7 +52,12 @@ def _relative(path: str) -> str:
     return PurePosixPath(posix).as_posix()
 
 def listing(task_id: str, project_path: Path) -> list[str]:
-    """The files the task has on the records branch."""
+    """The files the task has in its temp folder, else on the records branch."""
+    folder = folder_of(task_id)
+    if folder.is_dir():
+        found = sorted(path.relative_to(folder).as_posix() for path in folder.rglob('*') if path.is_file())
+        if found:
+            return found
     found = sorted(task_branch.held(project_path, task_id))
     if found:
         return found
@@ -65,11 +65,10 @@ def listing(task_id: str, project_path: Path) -> list[str]:
     return []
 
 def _kind_label(name: str) -> str | None:
-    """NAME as a content kind word: plan or report (legacy filename spellings still accepted)."""
     lower = name.strip().lower()
-    if lower in ('plan', PLAN_NAME, 'plan.md'):
+    if lower == 'plan':
         return 'plan'
-    if lower in ('report', REPORT_NAME, 'report.md'):
+    if lower == 'report':
         return 'report'
     return None
 
@@ -81,19 +80,31 @@ def _content_number(name: str) -> str | None:
             return str(int(digits))
     return None
 
+def _names(folder: Path, task_id: str, project_path: Path) -> list[str]:
+    names = set(task_branch.held(project_path, task_id))
+    if folder.is_dir():
+        names.update(entry.name for entry in folder.iterdir() if entry.is_file())
+    return sorted(names)
+
 def _read_kind(folder: Path, task_id: str, project_path: Path, kind: str) -> tuple[str, bytes] | None:
-    """Latest content of KIND as (agent-facing label, bytes); label is the kind word, content number optional."""
-    path = plan_path(folder) if kind == 'plan' else report_path(folder)
-    name = Path(getattr(path, 'name', path)).name
-    held = _read_blob(folder, task_id, project_path, name)
-    if held is None and name not in (PLAN_NAME, REPORT_NAME):
-        held = _read_blob(folder, task_id, project_path, PLAN_NAME if kind == 'plan' else REPORT_NAME)
-    if held is None:
+    best: tuple[int, str, bytes] | None = None
+    for name in _names(folder, task_id, project_path):
+        number = _content_number(name)
+        if number is None:
+            continue
+        held = _read_blob(folder, task_id, project_path, name)
+        if held is None:
+            continue
+        content = _m_tl.content_of(int(number), held[1])
+        if content.header.get('kind') != kind:
+            continue
+        rank = int(number)
+        if best is None or rank > best[0]:
+            best = (rank, name, held[1])
+    if best is None:
         return None
-    _source, data = held
-    number = _content_number(name)
-    label = f'{kind} (content {number})' if number is not None else kind
-    return (label, data)
+    rank, name, data = best
+    return (f'{kind} (content {rank})', data)
 
 def _read_blob(folder: Path, task_id: str, project_path: Path, name: str) -> tuple[str, bytes] | None:
     local = folder / name

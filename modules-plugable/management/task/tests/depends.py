@@ -67,7 +67,8 @@ sys.dont_write_bytecode = True
 import shape
 depends_on = import_module('modules-plugable.management.task.services.dependency')
 import modules.computer.software.services.project_registry as registry
-new_chats = import_module('modules-plugable.ai.services.get_new_chats_ask')
+new_chats = import_module('modules-plugable.management.agency.widgets.new_chats_ask.new_chats_ask')
+
 task_claim = import_module('modules-plugable.management.task.services.claim')
 task_claims = import_module('modules-plugable.management.task.services.claims')
 task_depends = import_module('modules-plugable.management.task.services.depends')
@@ -77,7 +78,7 @@ task_files = import_module('modules-plugable.management.task.services.task_files
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_find = import_module('modules-plugable.management.task.services.list')
 task_log = import_module('bundles.memar_git.services.log')
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 task_show = import_module('bundles.memar_git.services.show_task_records')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
 _m_folder = import_module('modules-plugable.management.task.services.folder')
@@ -118,7 +119,7 @@ class Fixture(unittest.TestCase):
         shape.add_report(folder, 'complete')
 
     def status_of(self, folder: Path) -> str:
-        return task_plan.read_plan(folder / task_plan.PLAN_NAME).status
+        return read_task(folder).status
 
     def refused(self, call, *args, **kwargs) -> str:
         with self.assertRaises(SystemExit) as raised:
@@ -265,8 +266,10 @@ class Writing(Fixture):
         self.assertIn('project nowhere-at-all does not resolve', why)
 
     def test_a_task_closed_and_kept_on_the_branch_satisfies_a_dependency(self) -> None:
-        self.branch['kept', 'plan.md'] = plan_text('complete', self.project).encode()
-        self.branch['kept', 'report.md'] = b'---\nTitle: T\nStatus: Complete\n---\n# Report\n'
+        held = {'title': 'T', 'status': 'complete', 'project': str(self.project), 'start_date': '2026-10-12T00:00:00Z', 'writer': import_module('modules-plugable.management.task.services.task_generation').TASK_TYPE_UUID}
+        self.branch['kept', 'task.yaml'] = task_files.facts_bytes(held)
+        self.branch['kept', 'content.00001.md'] = plan_text('complete', self.project).split('---\n', 2)[2].encode('utf-8')
+        self.branch['kept', 'content.00002.md'] = b'---\nkind: report\nauthor: agent\nplaced_at: 2026-10-12T00:00:00Z\nstatus: complete\n---\n# Report\n'
         mine = self.task('mine', 'queued')
         self.printed(task_depends_on.change, 'mine', ['kept'], [])
         self.assertEqual(self.status_of(mine), 'queued')

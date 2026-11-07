@@ -18,13 +18,13 @@ _header = import_module('modules.knowledge.text.services.header_text')
 read_contents = _tl.read_contents
 latest_content = _tl.latest_content
 write_content = _tl.write_content
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 _generation = import_module('modules-plugable.management.task.services.task_generation')
-plan_skeleton = _m_plan_file.plan_skeleton
-read_bytes = _m_plan_file.read_bytes
-status_word = _m_plan_file.status_word
-REWRITE_ATTEMPTS = _m_plan_file.REWRITE_ATTEMPTS
-REWRITE_PAUSE_SECONDS = _m_plan_file.REWRITE_PAUSE_SECONDS
+plan_skeleton = _m_plan_text.plan_skeleton
+read_bytes = _m_plan_text.read_bytes
+status_word = _m_plan_text.status_word
+REWRITE_ATTEMPTS = _m_plan_text.REWRITE_ATTEMPTS
+REWRITE_PAUSE_SECONDS = _m_plan_text.REWRITE_PAUSE_SECONDS
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 PLAN = _m_record.PLAN
 REPORT = _m_record.REPORT
@@ -32,14 +32,12 @@ _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primi
 PlanKey = _m_plan_key.PlanKey
 _m_report_key = import_module('modules-plugable.knowledge.documentation.report.primitive.report_key')
 ReportKey = _m_report_key.ReportKey
-_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
-Priority = _m_priority.Priority
 from modules.knowledge.label.primitive.label import Labels
 
 TASK_FACTS_NAME = 'task.yaml'
 AUTHOR = 'memar'
-FACTS = ('title', 'status', 'priority', 'labels', 'depends_on', 'parent', 'conversation', 'project', 'participants', 'start_date', 'writer', 'converted_from')
-FRONT_KEY = {'title': PlanKey.TITLE, 'priority': PlanKey.PRIORITY, 'labels': PlanKey.LABELS, 'depends_on': PlanKey.DEPENDS_ON, 'parent': PlanKey.PARENT, 'conversation': PlanKey.CONVERSATION, 'project': PlanKey.PROJECT, 'start_date': PlanKey.START_DATE}
+FACTS = ('title', 'status', 'labels', 'depends_on', 'priority_rank', 'parent', 'conversation', 'project', 'participants', 'start_date', 'writer', 'converted_from')
+FRONT_KEY = {'title': PlanKey.TITLE, 'labels': PlanKey.LABELS, 'depends_on': PlanKey.DEPENDS_ON, 'parent': PlanKey.PARENT, 'conversation': PlanKey.CONVERSATION, 'project': PlanKey.PROJECT, 'start_date': PlanKey.START_DATE}
 BLOCK_FACTS = ('labels', 'participants')
 PLAIN_START = '"\'[]{}&*!|>%@`-?#,'
 
@@ -166,10 +164,10 @@ def plan_body(folder: Path) -> str | None:
 
 def report_lines(folder) -> list:
     content = latest_content(folder, 'report')
-    if content is None:
-        return []
-    front = ['---', f'{ReportKey.ID.written}: {_task_id(folder)}', '---']
-    return [*front, *content.body.splitlines()]
+    if content is not None:
+        front = ['---', f'{ReportKey.ID.written}: {_task_id(folder)}', '---']
+        return [*front, *content.body.splitlines()]
+    return []
 
 
 def facts_bytes(facts: dict) -> bytes:
@@ -188,9 +186,9 @@ def write_facts(folder, facts: dict) -> None:
         fail(f'task {task} could not be recorded on the records branch ({error})')
 
 
-def create_task(folder, task: str, title: str, parent, conversation, project: Path, status: str, priority, labels, depends_on) -> None:
+def create_task(folder, task: str, title: str, parent, conversation, project: Path, status: str, labels, depends_on) -> None:
     opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-    write_facts(task, {'title': title, 'status': status_word(status), 'priority': priority, 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened, 'writer': _generation.TASK_TYPE_UUID})
+    write_facts(task, {'title': title, 'status': status_word(status), 'labels': '\n'.join(labels.lines()) if labels else '', 'depends_on': depends_on, 'parent': parent, 'conversation': conversation, 'project': project, 'start_date': opened, 'writer': _generation.TASK_TYPE_UUID})
 
 
 def _yaml_write(task_id: str, fact: str, value: str, expected: str, project=None) -> str:
@@ -231,13 +229,6 @@ class FileTaskStores:
     def _replace(self, project, task, fact: str, value: str, expected: str) -> str:
         return _yaml_write(self._task(project, task), fact, value, expected, project)
 
-    def read_priority(self, project, task) -> tuple:
-        text, version = self._read(project, task, 'priority')
-        return (Priority.of({PlanKey.PRIORITY.key: text}), version)
-
-    def replace_priority(self, project, task, priority, expected: str) -> str:
-        return self._replace(project, task, 'priority', str(priority), expected)
-
     def read_status(self, project, task) -> tuple:
         return self._read(project, task, 'status')
 
@@ -258,6 +249,12 @@ class FileTaskStores:
 
     def replace_depends_on(self, project, task, cited, expected: str) -> str:
         return self._replace(project, task, 'depends_on', cited.text() if cited else '', expected)
+
+    def read_priority_rank(self, project, task) -> tuple:
+        return self._read(project, task, 'priority_rank')
+
+    def replace_priority_rank(self, project, task, rank: str, expected: str) -> str:
+        return self._replace(project, task, 'priority_rank', str(rank), expected)
 
 
 def stores_at(folder) -> FileTaskStores:

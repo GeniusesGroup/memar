@@ -21,8 +21,9 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
-import earlier_shape
 BUDGET_SECONDS = 30
+task_files_mod = import_module('modules-plugable.management.task.services.task_files')
+_gen = import_module('modules-plugable.management.task.services.task_generation')
 files = import_module('modules-plugable.management.task.services.task_memory')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 folder_module = import_module('modules-plugable.management.task.services.folder')
@@ -31,9 +32,9 @@ task_records = import_module('modules-plugable.management.task.services.task_rec
 task_claims = import_module('modules-plugable.management.task.services.claims')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 dependency = import_module('modules-plugable.management.task.services.dependency')
-report_file = import_module('modules-plugable.management.task.services.report_file')
-report_summary = import_module('modules-plugable.management.task.services.report_summary')
-plan_file = import_module('modules-plugable.management.task.services.plan_file')
+report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
+report_summary = import_module('modules-plugable.knowledge.documentation.report.services.report_summary')
+plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 layout = import_module('modules-plugable.management.task.services.layout')
 Reader = dependency.Reader
 Ref = dependency.Ref
@@ -60,28 +61,22 @@ class Fixture(unittest.TestCase):
         project.start()
         self.addCleanup(project.stop)
 
-    def old(self, sid: str, status: str = 'active', request: str = 'Do the thing.', steps: str = '- [ ] 1. a', report: str | None = None, decisions: str = '- none') -> Path:
-        folder = memar_fs.task_dir(sid, create=True)
-        earlier_shape.create_plan_md(folder, sid, 'T', None, None, self.project, status, None, None, None)
-        text = (folder / 'plan.md').read_text(encoding='utf-8')
-        (folder / 'plan.md').write_text(text.replace('## Request\n', f'## Request\n{request}\n').replace('## Steps\n', f'## Steps\n{steps}\n'), encoding='utf-8', newline='\n')
-        status_line = f'Status: {report.capitalize()}' if report else 'Status:'
-        (folder / 'report.md').write_text(f'---\nID: {sid}\nTitle: T\n{status_line}\n---\n{report_body(decisions)}', encoding='utf-8', newline='\n')
-        return folder
-
     def new(self, sid: str, status: str = 'active', request: str = 'Do the thing.', steps: str = '- [ ] 1. a', report: str | None = None, decisions: str = '- none') -> Path:
         folder = memar_fs.task_dir(sid, create=True)
-        files.create_task(folder, sid, 'T', None, None, self.project, status, None, None, None)
+        from datetime import datetime, timezone
+        opened = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+        held = {'title': 'T', 'status': status, 'project': str(self.project), 'start_date': opened, 'writer': _gen.TASK_TYPE_UUID}
+        (folder / task_files_mod.TASK_FACTS_NAME).write_bytes(task_files_mod.facts_bytes(held))
         timeline_files.add_text(folder, 'plan', plan_body(request, steps), 'agent')
         timeline_files.add_text(folder, 'report', report_body(decisions), 'agent', fields={'status': report} if report else None)
         return folder
 
     def both(self, sid: str, **options):
-        return (('old', self.old(sid + '-o', **options)), ('new', self.new(sid + '-n', **options)))
+        return (('new', self.new(sid + '-n', **options)),)
 
 class Folders(Fixture):
 
-    def test_a_task_is_read_and_is_a_task_folder_in_either_shape(self) -> None:
+    def test_a_task_is_read_and_is_a_task_folder(self) -> None:
         for shape, folder in self.both('named'):
             with self.subTest(shape=shape):
                 self.assertTrue(folder_module.is_task_folder(folder))
@@ -89,7 +84,7 @@ class Folders(Fixture):
                 self.assertTrue(task.has_plan)
                 self.assertEqual((task.status, task.front['title']), ('active', 'T'))
 
-    def test_only_the_task_status_queued_keeps_a_task_queued_in_either_shape(self) -> None:
+    def test_only_the_task_status_queued_keeps_a_task_queued(self) -> None:
         for shape, folder in self.both('queued', status='queued', report='active'):
             with self.subTest(shape=shape):
                 self.assertIn('Queued', folder_module.queued_why(folder_module.read_task(folder)))
@@ -99,34 +94,31 @@ class Folders(Fixture):
 
 class Concerns(Fixture):
 
-    def test_every_step_checked_and_active_is_flagged_in_either_shape(self) -> None:
+    def test_every_step_checked_and_active_is_flagged(self) -> None:
         for shape, folder in self.both('steps', steps='- [x] 1. a'):
             with self.subTest(shape=shape):
                 self.assertIn('every step is checked, yet the status is active', task_concerns.concerns(folder_module.read_task(folder)))
 
-    def test_a_sound_task_has_none_in_either_shape(self) -> None:
+    def test_a_sound_task_has_none(self) -> None:
         for shape, folder in self.both('sound'):
             with self.subTest(shape=shape):
                 self.assertEqual(task_concerns.concerns(folder_module.read_task(folder)), [])
 
 class Reports(Fixture):
 
-    def test_the_status_the_decisions_and_the_summary_are_read_in_either_shape(self) -> None:
+    def test_the_status_the_decisions_and_the_summary_are_read(self) -> None:
         for shape, folder in self.both('report', status='complete', report='complete', decisions='- one\n- two'):
             with self.subTest(shape=shape):
-                if shape == 'old':
-                    self.assertEqual(report_file.read_report_status(folder), 'complete')
-                else:
-                    self.assertEqual(report_file.read_report_status(folder), '')
-                    self.assertEqual(folder_module.read_task(folder).status, 'complete')
-                self.assertEqual(report_file.decisions_needed(folder), ['- one', '- two'])
-                self.assertIsNone(report_file.handback_problem(folder, 'complete'))
+                self.assertEqual(report_text.read_report_status(folder), '')
+                self.assertEqual(folder_module.read_task(folder).status, 'complete')
+                self.assertEqual(report_text.decisions_needed(folder), ['- one', '- two'])
+                self.assertIsNone(report_text.handback_problem(folder, 'complete'))
                 self.assertEqual(report_summary.summary_lines(folder), ['result: It came to this.'])
 
-    def test_a_report_without_a_status_field_is_still_a_hand_back_in_either_shape(self) -> None:
+    def test_a_report_without_a_status_field_is_still_a_hand_back(self) -> None:
         for shape, folder in self.both('nostatus'):
             with self.subTest(shape=shape):
-                self.assertIsNone(report_file.handback_problem(folder, 'active'))
+                self.assertIsNone(report_text.handback_problem(folder, 'active'))
 
 class Dependencies(Fixture):
 
@@ -143,7 +135,7 @@ class Dependencies(Fixture):
     def unmet(self, sid: str) -> list:
         return Reader(self.fake_root).unmet([Ref.parse(sid)])
 
-    def test_a_cited_task_is_met_when_its_status_is_complete_in_either_shape(self) -> None:
+    def test_a_cited_task_is_met_when_its_status_is_complete(self) -> None:
         for shape, folder in self.both('done', status='complete', report='complete'):
             with self.subTest(shape=shape):
                 self.assertEqual(self.unmet(folder.name), [])
@@ -154,7 +146,7 @@ class Dependencies(Fixture):
             with self.subTest(shape=shape):
                 self.assertEqual(self.unmet(folder.name), [f'{folder.name} (active)'])
 
-    def test_a_closed_task_is_read_from_the_branch_in_either_shape(self) -> None:
+    def test_a_closed_task_is_read_from_the_branch(self) -> None:
         for shape, folder in self.both('closed', status='complete', report='complete'):
             kept = {path.name: path.read_bytes() for path in folder.iterdir() if path.is_file()}
             for path in folder.iterdir():
@@ -168,7 +160,7 @@ class Dependencies(Fixture):
 
 class Records(Fixture):
 
-    def test_the_live_folders_of_a_project_hold_a_task_of_either_shape(self) -> None:
+    def test_the_live_folders_of_a_project_hold_a_task(self) -> None:
         own = self.fake_root / '.agents' / 'tasks'
         own.mkdir(parents=True)
         for shape, folder in self.both('live'):
@@ -182,42 +174,13 @@ class Layout(Fixture):
         self.assertTrue(layout.belongs_at_top('task.yaml'))
         self.assertTrue(layout.belongs_at_top('content.00001.md'))
         self.assertFalse(layout.belongs_at_top('content.1.md'))
-        self.assertTrue(layout.belongs_at_top('plan.md'))
-
-class OldShapeStays(Fixture):
-
-    def snapshot(self, folder: Path) -> dict:
-        return {path.name: path.read_bytes() for path in folder.iterdir() if path.is_file()}
-
-    def test_a_reader_never_rewrites_an_old_task_into_the_new_shape(self) -> None:
-        folder = self.old('stays', status='queued')
-        before = self.snapshot(folder)
-        folder_module.read_task(folder)
-        task_concerns.concerns(folder_module.read_task(folder))
-        report_file.read_report_status(folder)
-        report_file.handback_problem(folder, 'queued')
-        plan_file.part_text(folder / 'plan.md', 'Request')
-        files.plan_text(folder)
-        files.report_text(folder)
-        self.assertEqual(self.snapshot(folder), before)
-        self.assertFalse((folder / 'task.yaml').exists())
-
-    def test_a_writer_refuses_an_old_task_and_leaves_it_as_it_is(self) -> None:
-        folder = self.old('writer', status='queued')
-        before = self.snapshot(folder)
-        priority = import_module('modules-plugable.management.task.services.priority')
-        with self.assertRaises(SystemExit) as refused:
-            priority.set_task_priority('writer', '3')
-        self.assertIn('EndOfLife', str(refused.exception.code))
-        self.assertEqual(self.snapshot(folder), before)
-        self.assertFalse((folder / 'task.yaml').exists())
-        self.assertEqual(list(folder.glob('content.*')), [])
+        self.assertFalse(layout.belongs_at_top('notes.md'))
 
 class Claims(Fixture):
 
-    def test_claims_name_the_plan_of_a_task_of_either_shape(self) -> None:
+    def test_claims_name_the_plan_of_a_task(self) -> None:
         for shape, build in (('new', self.new),):
-            folder = build(f'20261031T000000Z-{shape}-0', status='queued')
+            folder = build('20261031T000000Z-new-0', status='queued', request='Work to claim.')
             out = io.StringIO()
             with contextlib.redirect_stdout(out), unittest.mock.patch.object(task_claims, 'brief_text', return_value='brief'):
                 task_claims.claims(1, str(self.project))
@@ -229,7 +192,7 @@ class Claims(Fixture):
 
 class Digest(Fixture):
 
-    def test_the_digest_names_the_report_of_a_task_of_either_shape(self) -> None:
+    def test_the_digest_names_the_report_of_a_task(self) -> None:
         digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
         for shape, folder in self.both('digest', status='complete', report='complete'):
             out = io.StringIO()
@@ -241,7 +204,7 @@ class Digest(Fixture):
 
 class Sweep(Fixture):
 
-    def test_a_finished_task_is_known_to_be_finished_and_an_active_one_is_not_in_either_shape(self) -> None:
+    def test_a_finished_task_is_known_to_be_finished_and_an_active_one_is_not(self) -> None:
         sweep = import_module('bundles.memar_git.services.sweep_idle_task_folders')
         for shape, folder in self.both('done', status='complete', report='complete'):
             with self.subTest(shape=shape):
@@ -252,7 +215,7 @@ class Sweep(Fixture):
 
 class Scratch(Fixture):
 
-    def test_a_scratch_file_in_a_task_folder_of_either_shape_is_refused_outside_its_temp(self) -> None:
+    def test_a_scratch_file_in_a_task_folder_is_refused_outside_its_temp(self) -> None:
         write = import_module('bundles.memar_fs.services.text_edit_command')
         refused = import_module('bundles.memar_fs.errors.errors').ScratchInTaskFolder
         for shape, folder in self.both('scratch'):

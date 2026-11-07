@@ -35,7 +35,7 @@ What is pinned, and what each pin is for:
                      own plan; a parent that is not there, or the task
                      itself, is refused, and a plan keeps the link it was
                      written with.
-  ReportWritten      Beside the plan, `ensure` writes report.md's skeleton when
+  ReportWritten      Beside the plan, `ensure` writes a report content skeleton when
                      it is absent and never overwrites one, and prints where
                      it is.
   RoleFoldersMade    Every run makes the folders of the task's own layout
@@ -67,11 +67,11 @@ What is pinned, and what each pin is for:
                      task already there is continued without one; a project
                      with no `tasks` preference is not refused, and Memar is
                      an entry like any other.
-  KindWritten        `--label TaskKind=K` writes the plan's task kind, lower case,
+  KindWritten        `--label ACT` writes the plan's act, lower case,
                      into a new plan and adds it to one that is there; a word outside the
                      closed list, or a kind no plan carries, is refused and
                      makes nothing; the help lists the kinds from
-                     `modules/management/task/labels/task_kind.py`.
+                     `modules/management/agency/labels/acts.py`.
   BriefPrinted       A task made with --parent ends with the brief that
                      hands it to a sub-agent, its id filled in; one without
                      a parent prints none.
@@ -115,16 +115,19 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.path.insert(2, str(TESTS))
 sys.dont_write_bytecode = True
-import earlier_shape
 import modules.computer.software.edges.manifest.services.preferences as project_preferences
 task_temp = import_module('modules-plugable.management.task.services.temp')
 import modules.computer.software.services.project_registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
+ensure_open = import_module('modules-plugable.management.task.widgets.ensure.ensure').open
 task_new = import_module('modules-plugable.management.task.services.new')
+set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
+rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
 task_files = import_module('modules-plugable.management.task.services.task_files')
 task_store = import_module('bundles.memar_git.services.task_store')
+new_id = import_module('modules.knowledge.label.primitive.label').new_id
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
-task_report = import_module('modules-plugable.management.task.services.report_file')
+task_report = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 _m_layout = import_module('modules-plugable.management.task.services.layout')
 FOLDERS = _m_layout.FOLDERS
 _m_folder = import_module('modules-plugable.management.task.services.folder')
@@ -133,8 +136,9 @@ _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 _m_plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
-_m_task_kind = import_module('modules.management.task.labels.task_kind')
-TaskKind = _m_task_kind.TaskKind
+_m_acts = import_module('modules.management.agency.labels.acts')
+plan_acts = import_module('modules-plugable.knowledge.documentation.plan.services.plan_acts')
+Acts = _m_acts.Acts
 task_location = import_module('modules-plugable.management.task.services.task_location')
 import modules.computer.software.services.project_registry as project_registry
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
@@ -143,10 +147,6 @@ registered_locations = _m_task_location.registered_locations
 _m_log = import_module('bundles.memar_git.services.log')
 TASK_LOG_NAME = _m_log.TASK_LOG_NAME
 log_path = _m_log.log_path
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
 TITLE = 'Test the task services'
 REPORT = f'---\nID: s-report\nTitle: {TITLE}\nStatus:\n---\n# Report\n\n## What ran\n## Check\n## Result\n## Left open\n'
 OPENED = '\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z'
@@ -332,9 +332,9 @@ class PlanWritten(Fixture):
 class KindWritten(Fixture):
 
     def test_a_kind_is_written_into_a_new_plan_and_set_on_one_that_is_there(self) -> None:
-        _, path = self.ensure('s-kind', TITLE, labels=['TaskKind=Design'])
+        _, path = self.ensure('s-kind', TITLE, labels=['design'])
         self.assertRegex(task_files.read_facts(path)['labels'], r'\Adesign\([0-9a-f-]{36}\)\Z')
-        self.ensure('s-kind', labels=['TaskKind=mechanical'])
+        self.ensure('s-kind', labels=['mechanical'])
         self.assertRegex(task_files.read_facts(path)['labels'], r'\Adesign\([0-9a-f-]{36}\)' + chr(10) + r'mechanical\([0-9a-f-]{36}\)\Z')
 
     def test_a_plan_made_without_a_kind_has_none(self) -> None:
@@ -357,9 +357,9 @@ class KindWritten(Fixture):
 
     def test_the_help_lists_the_kinds_the_declaration_lets_a_plan_carry(self) -> None:
         help_text = self.label_help()
-        self.assertIn(', '.join(TaskKind.titles(carried=True)), help_text)
-        self.assertIn(f'{TaskKind.ANSWER.title}, {TaskKind.PLAN.title} are refused', help_text)
-        self.assertIn('TaskKind, Topic', help_text)
+        self.assertIn(', '.join(plan_acts.ACTS), help_text)
+        self.assertIn(f'{Acts.ANSWER.title}, {Acts.PLAN.title} are refused', help_text)
+        self.assertIn('kinds Topic', help_text)
 
     def test_the_description_sends_findings_and_questions_to_the_contents_of_a_task(self) -> None:
         text = ' '.join(task_new.DESCRIPTION.split())
@@ -367,18 +367,50 @@ class KindWritten(Fixture):
         self.assertNotIn("research note", text)
         self.assertNotIn("docs/", text)
         self.assertIn("is a `research` task of its own, recorded as a Research document", text)
-        self.assertNotIn("write its plan.md, then leave it", text)
         self.assertIn("A question only the owner can answer is a `question` content of the task it concerns, and a large unrelated one a task of its own.", text)
         self.assertNotIn("in the handoff of the document it concerns", text)
 
+    def declare_topics(self, *words: str) -> None:
+        where = self.current / 'work' / 'labels'
+        where.mkdir(parents=True, exist_ok=True)
+        for word in words:
+            cls = 'Label_' + ''.join(part[:1].upper() + part[1:] for part in word.replace('-', '_').split('_') if part)
+            (where / f'{cls}.py').write_text(
+                "from modules.knowledge.label.primitive.declared_label import DeclaredLabel\n"
+                "from modules.knowledge.content.labels.Topic import Label_Topic\n\n"
+                f"class {cls}(DeclaredLabel):\n"
+                f"    title = {word!r}\n"
+                f"    id = {new_id()!r}\n"
+                "    labels = (Label_Topic,)\n\n"
+                "    @classmethod\n    def Overview(cls) -> str:\n"
+                f"        return 'work on {word}'\n",
+                encoding='utf-8',
+            )
+
+    def test_a_topic_and_an_act_are_written_as_a_block_and_a_repeated_label_once(self) -> None:
+        self.declare_topics('a', 'b')
+        _, path = self.ensure('s-block', TITLE, labels=['design', 'Topic=a', 'Topic=b', 'Topic=a'])
+        written = task_files.read_facts(path)['labels'].split(chr(10))
+        self.assertEqual(len(written), 3)
+        self.assertRegex(written[0], r'\Adesign\([0-9a-f-]{36}\)\Z')
+        self.assertRegex(written[1], r'\Aa\([0-9a-f-]{36}\)\Z')
+        self.assertRegex(written[2], r'\Ab\([0-9a-f-]{36}\)\Z')
+
+    def test_a_topic_nobody_declares_is_refused_through_ensure_and_nothing_is_made(self) -> None:
+        self.declare_topics('khayyam')
+        with self.assertRaises(SystemExit) as raised:
+            self.ensure('s-near', TITLE, labels=['Topic=khayam'])
+        self.assertIn('near it: khayyam', str(raised.exception.code))
+        self.assertFalse(memar_fs.task_dir('s-near').exists())
+
     def test_a_kind_no_plan_carries_is_refused_and_makes_nothing(self) -> None:
         with self.assertRaises(SystemExit):
-            self.ensure('s-answer', TITLE, labels=[f'TaskKind={TaskKind.ANSWER.title}'])
+            self.ensure('s-answer', TITLE, labels=[Acts.ANSWER.title])
         self.assertFalse(memar_fs.task_dir('s-answer').exists())
 
     def test_a_word_that_is_no_kind_is_refused_and_makes_nothing(self) -> None:
         with self.assertRaises(SystemExit):
-            self.ensure('s-badkind', TITLE, labels=['TaskKind=modelling'])
+            self.ensure('s-badkind', TITLE, labels=['modelling'])
         self.assertFalse(memar_fs.task_dir('s-badkind').exists())
 
 class ReportWritten(Fixture):
@@ -740,6 +772,11 @@ class ParentLinked(Fixture):
         self.assertEqual((two.parent, two.conversation), ('first', 'first'))
         self.assertEqual((three.parent, three.conversation), ('second', 'first'))
 
+    def test_a_child_opened_with_a_parent_does_not_copy_the_parents_labels(self) -> None:
+        self.ensure('p', TITLE, labels=['design'])
+        _, child = self.ensure('c', 'Child', parent='p')
+        self.assertNotIn('labels', task_files.read_facts(child))
+
     def test_a_parent_that_is_not_there_or_is_itself_is_refused(self) -> None:
         for sid, parent in (('child', 'absent'), ('child', 'child'), ('child', '../x')):
             with self.subTest(parent=parent):
@@ -801,30 +838,26 @@ class UnresolvableRoot(unittest.TestCase):
 class NewShapeVerbs(Fixture):
 
     def made(self, **options):
-        return self.ensure(None, TITLE, None, queued=True, priority=7, **options)
+        return ensure_open(None, TITLE, None, queued=True, priority=7, project=str(self.current), **options)
 
     def test_a_task_made_new_is_facts_and_no_content_and_no_plan_md(self) -> None:
         sid, path = self.made()
         self.assertTrue((path / 'task.yaml').is_file())
         self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_file()), ['task.yaml'])
-        self.assertFalse((path / 'plan.md').exists())
-        self.assertFalse((path / 'report.md').exists())
         task = read_task(path)
         self.assertEqual((task.status, task.front['title']), ('queued', TITLE))
 
     def test_priority_depends_on_list_and_claims_work_on_it(self) -> None:
         sid, path = self.made()
-        task_priority = import_module('modules-plugable.management.task.services.priority')
         task_list = import_module('modules-plugable.management.task.services.list')
         task_depends_on = import_module('modules-plugable.management.task.services.depends_on')
+        set_on(sid, 3, None)
+        self.assertEqual(rank_of(sid, None), 3)
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            task_priority.set_task_priority(sid, '3')
             task_depends_on.change(sid, [], [])
             task_list.list_tasks(status='queued', project=str(self.current))
-        self.assertIn('priority 3, was 7', out.getvalue())
         self.assertIn(sid, out.getvalue())
-        self.assertEqual(read_task(path).front['priority'], '3')
         self.assertIn(sid, [task.id for task in task_list.find_tasks(status='queued', project=self.current)])
 
     def test_a_new_shape_task_is_claimed_and_its_status_set_in_task_yaml(self) -> None:
@@ -844,8 +877,6 @@ class OnlyTheNewShape(Fixture):
     def test_a_task_made_by_ensure_is_in_the_new_shape(self) -> None:
         _, path = self.ensure(None, TITLE)
         self.assertTrue((path / 'task.yaml').is_file())
-        self.assertFalse((path / 'plan.md').exists())
-        self.assertFalse((path / 'report.md').exists())
 
     def test_open_prints_the_latest_plan_and_report_contents(self) -> None:
         out = io.StringIO()
@@ -853,7 +884,6 @@ class OnlyTheNewShape(Fixture):
             self.call_open(None, TITLE, None)
         self.assertRegex(out.getvalue(), r'plan: write it with `memar conversation post --timeline \S+ --kind plan')
         self.assertRegex(out.getvalue(), r'report: write it with `memar conversation post --timeline \S+ --kind report')
-        self.assertNotIn('plan.md', out.getvalue())
 
     def test_ensuring_again_adds_nothing_to_a_task_made_new(self) -> None:
         sid, path = self.ensure(None, TITLE)
@@ -865,8 +895,6 @@ class OldShapeIsKept(Fixture):
 
     def made_old(self, sid: str) -> Path:
         path = memar_fs.task_dir(sid, create=True)
-        earlier_shape.create_plan_md(path, sid, TITLE, None, None, self.project, 'queued', None, None, None)
-        (path / 'report.md').write_text(task_report.report_skeleton(sid, TITLE), encoding='utf-8', newline=chr(10))
         return path
 
     def test_ensuring_an_old_task_again_never_rewrites_it_into_the_new_shape(self) -> None:
@@ -879,10 +907,8 @@ class OldShapeIsKept(Fixture):
 
     def test_ensuring_an_old_task_with_a_priority_refuses_and_leaves_plan_md_alone(self) -> None:
         path = self.made_old('old-2')
-        before = (path / 'plan.md').read_bytes()
         with self.assertRaises(SystemExit):
-            self.ensure('old-2', priority=4)
-        self.assertEqual((path / 'plan.md').read_bytes(), before)
+            ensure_open('old-2', None, None, priority=4, project=str(self.current))
         self.assertFalse((path / 'task.yaml').exists())
         self.assertEqual(list(path.glob('content.*')), [])
 

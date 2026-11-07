@@ -61,26 +61,22 @@ _m_task_location = import_module('modules-plugable.management.task.services.task
 locations_of = _m_task_location.locations_of
 project_root = _m_task_location.project_root
 same_path = _m_task_location.same_path
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-status_word = _m_plan_file.status_word
-_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
-Priority = _m_priority.Priority
-_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
-labels_of = _m_plan_labels.labels_of
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+status_word = _m_plan_text.status_word
+rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
+labels_of = import_module('modules-plugable.knowledge.documentation.plan.services.plan_front').labels_of
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 PLAN = _m_record.PLAN
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
-disagreement = _m_report_file.disagreement
-read_report_status = _m_report_file.read_report_status
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
+disagreement = _m_report_text.disagreement
+read_report_status = _m_report_text.read_report_status
 from modules.computer.software.primitive.project_name import ProjectName
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 LIST_COMMAND = 'list'
-NO_PLAN = f'(no {PLAN_NAME})'
-NO_FRONT_MATTER = f'({PLAN_NAME} has no front matter)'
-UNREADABLE_PLAN = f'({PLAN_NAME} cannot be read)'
+NO_PLAN = '(no plan)'
+NO_FRONT_MATTER = '(plan has no front matter)'
+UNREADABLE_PLAN = '(plan cannot be read)'
 DISAGREES = 'disagrees:'
 CONCERNS = 'concerns:'
 
@@ -142,7 +138,12 @@ def find_tasks(text: str | None=None, status: str | None=None, conversation: str
     """
     own = locations_of(project) if project is not None else []
     everywhere = conversation is not None or project is not None
-    tasks = [read_task(folder) for folder in task_folders(projects=everywhere, locations=own)]
+    store = import_module('bundles.memar_git.services.task_store')
+    store.scan((_m_folder.TASK_FACTS_NAME,))
+    try:
+        tasks = [read_task(folder) for folder in task_folders(projects=everywhere, locations=own)]
+    finally:
+        store.forget_scan()
     if project is not None:
         tasks = [task for task in tasks if of_project(task, project, own)]
     if text:
@@ -153,6 +154,12 @@ def find_tasks(text: str | None=None, status: str | None=None, conversation: str
         wanted = conversation_named_by(conversation)
         tasks = [task for task in tasks if task.conversation == wanted]
     return grouped(tasks)
+
+def _project_for_rank(task: Task) -> Path | None:
+    named = ((task.front or {}).get(PlanKey.PROJECT.key) or '').strip()
+    if not named:
+        return None
+    return project_root(project_by_path(named))
 
 def print_task(task: Task, *, idle: float | None=None, reader: Reader | None=None, everyone: list[Task] | None=None) -> None:
     """One list line and its notes; IDLE when measured; with READER, the task's dependencies and who depends on it, among EVERYONE."""
@@ -167,7 +174,7 @@ def print_task(task: Task, *, idle: float | None=None, reader: Reader | None=Non
         note(f"project: {task.front.get('project', '')}")
     if task.has_plan and task.readable:
         note(f"status: {task.status or 'none'}")
-        note(f'priority: {Priority.of(task.front)}')
+        note(f'priority: {rank_of(task.id, _project_for_rank(task))}')
         if labels_of(task.front):
             note(f"labels: {', '.join((label.title for label in labels_of(task.front)))}")
         why = disagreement(task.status, read_report_status(task.path))
@@ -211,7 +218,7 @@ def list_tasks(text: str | None=None, status: str | None=None, idle_days: float 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
     """`memar task list`."""
-    lister = verbs.add_parser(LIST_COMMAND, help="list task folders, newest first, a conversation's together", description=f"List Memar's own task folders, newest first, with the tasks of one conversation next\nto each other: id, title, project, status, priority, the task it came from, path. A folder\nwith no plan.md, one that cannot be read, or one without front matter is listed and marked so.\nA task whose {REPORT_NAME} Status disagrees with its plan's, or whose status is not\n{', '.join(Label_Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why; one not complete that looks\nfinished or abandoned is marked `{CONCERNS}`. A mark moves nothing. A task with a `{PlanKey.DEPENDS_ON.written}` shows\neach task it cites and where that stands, and a cited task shows who depends on it as `{DEPENDS_FOR}`;\nlisting also brings the Status of a task with dependencies up to date, as `claims` does\n(`memar task depends-on --help`). A plan or a report in an\nearlier shape is marked likewise. A folder in a project's own task location is listed only\nwhen asked for: {ProjectName.FLAG} lists every task of that project, --conversation every task\nlinked with that one; --status and --idle-days keep only what they name.")
+    lister = verbs.add_parser(LIST_COMMAND, help="list task folders, newest first, a conversation's together", description=f"List Memar's own task folders, newest first, with the tasks of one conversation next\nto each other: id, title, project, status, priority, the task it came from, path. A folder\nwith no plan, one that cannot be read, or one without front matter is listed and marked so.\nA task whose report Status disagrees with its plan's, or whose status is not\n{', '.join(Label_Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why; one not complete that looks\nfinished or abandoned is marked `{CONCERNS}`. A mark moves nothing. A task with a `{PlanKey.DEPENDS_ON.written}` shows\neach task it cites and where that stands, and a cited task shows who depends on it as `{DEPENDS_FOR}`;\nlisting also brings the Status of a task with dependencies up to date, as `claims` does\n(`memar task depends-on --help`). A plan or a report in an\nearlier shape is marked likewise. A folder in a project's own task location is listed only\nwhen asked for: {ProjectName.FLAG} lists every task of that project, --conversation every task\nlinked with that one; --status and --idle-days keep only what they name.")
     lister.add_argument('text', nargs='?', metavar='TEXT', help='show only tasks whose id, title, or project holds TEXT, in any case; one word or a short phrase, not a question to answer')
     lister.add_argument('--status', type=status_word, choices=Label_Status.keys(PLAN.kind), default=None, help='show only tasks whose task has this status')
     lister.add_argument('--idle-days', type=float, default=None, metavar='DAYS', help='show only tasks in which nothing has changed for at least DAYS days, and say how long')

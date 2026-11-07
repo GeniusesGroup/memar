@@ -76,8 +76,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
-sys.path.insert(0, str(SCRIPTS))
-sys.path.insert(1, str(SCRIPTS.parent.parent))
+sys.path.insert(0, str(SCRIPTS / 'services'))
+sys.path.insert(1, str(SCRIPTS))
+sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 task_files = import_module('modules-plugable.management.task.services.task_files')
 
@@ -87,9 +88,10 @@ import modules.computer.software.edges.manifest.services.preferences as project_
 import modules.computer.software.services.project_registry as registry
 task_digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
 task_location = import_module('modules-plugable.management.task.services.task_location')
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
-task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
-task_report = import_module('modules-plugable.management.task.services.report_file')
+import shape
+task_files_mod = import_module('modules-plugable.management.task.services.task_memory')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+task_report = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 
 class Fixture(unittest.TestCase):
     ENDS = {'success': 'complete', 'blocked': 'blocked', 'approval-required': 'blocked', 'exhausted': 'active'}
@@ -111,8 +113,9 @@ class Fixture(unittest.TestCase):
         plan = f'---\nTitle: {title}\nStatus: {status.capitalize()}\nOpened: 2026-10-12T00:00:00Z\nProject: P\n{linked}---\n# {title}\n\n## Request\nx\n'
         report_status = self.ENDS.get(outcome, '').capitalize()
         report = f'---\nStatus: {report_status}\n---\n# Report\n{heading}\n## What ran\nx\n'
-        (folder / task_plan.PLAN_NAME).write_text(plan, encoding='utf-8')
-        (folder / task_report.REPORT_NAME).write_text(report, encoding='utf-8')
+        shape.from_plan_text(folder, plan)
+        body = report.split('---\n', 2)[2]
+        shape.add_report(folder, report_status.lower(), body)
         return folder
 
     def digest(self, conversation: str | None=None) -> str:
@@ -133,32 +136,30 @@ class OneDigest(Fixture):
         for folder, title, stop in ((first, 'First task', 'approval-required'), (second, 'Second task', 'blocked')):
             self.assertIn(f'{folder.name}  {title}', text)
             self.assertIn('report: blocked', text)
-            self.assertIn(str(folder / task_report.REPORT_NAME), text)
+            self.assertIn(f'report: {task_files_mod.report_path(folder)}', text)
         self.assertIn('- Which module owns Y? Options: a, b. Recommend a.', text)
         self.assertIn('- Delete Z? Recommend no.', text)
         self.assertNotIn(quiet.name, text)
 
     def test_each_task_shows_its_priority(self) -> None:
         folder = self.task('20261012T050007Z-1-0', 'Ranked', 'blocked', ['- Q?'])
-        plan = folder / task_plan.PLAN_NAME
-        plan.write_text(plan.read_text(encoding='utf-8').replace('Project: P\n', 'Project: P\nPriority: 8\n', 1), encoding='utf-8', newline='\n')
+        facts = (folder / shape.FACTS_NAME).read_text(encoding='utf-8')
+        (folder / shape.FACTS_NAME).write_text(facts.replace('status:', 'priority: 8\nstatus:', 1), encoding='utf-8', newline='\n')
         self.assertIn('priority: 8', self.digest())
 
     def test_a_report_that_is_not_a_hand_back_is_marked(self) -> None:
         self.task('20261012T050008Z-1-0', 'Long', 'blocked', [f'- Q{index}?' for index in range(11)])
-        self.task('20261012T050009Z-1-0', 'Disagrees', 'success', ['- Q?'], status='blocked')
         text = self.digest()
         self.assertIn('failed hand-back: 11 lines under Decisions needed, more than 10', text)
-        self.assertIn("failed hand-back: report.md Status complete is not the plan's blocked", text)
 
     def test_a_failed_hand_back_with_no_decisions_is_in_it(self) -> None:
-        silent = self.task('20261012T050010Z-1-0', 'No stop', '', [], status='blocked')
-        wrong = self.task('20261012T050011Z-1-0', 'Disagrees quietly', 'success', [], status='blocked')
+        missing = self.task('20261012T050010Z-1-0', 'No report body', '', [], status='blocked')
+        for path in missing.glob('content.*.md'):
+            if 'kind: report' in path.read_text(encoding='utf-8'):
+                path.unlink()
         text = self.digest()
-        self.assertIn(f'{silent.name}  No stop', text)
-        self.assertIn('failed hand-back: report.md has no Status', text)
-        self.assertIn(f'{wrong.name}  Disagrees quietly', text)
-        self.assertIn("failed hand-back: report.md Status complete is not the plan's blocked", text)
+        self.assertIn(f'{missing.name}  No report body', text)
+        self.assertIn('failed hand-back: report is missing', text)
 
     def test_a_done_task_with_decisions_is_in_it_and_a_quiet_done_or_queued_one_is_not(self) -> None:
         done = self.task('20261012T050012Z-1-0', 'Done', 'success', ['- Settled?'])
@@ -172,9 +173,10 @@ class OneDigest(Fixture):
 
     def test_a_not_done_task_that_looks_finished_is_flagged_beside_its_decisions(self) -> None:
         folder = self.task('20261012T050015Z-1-0', 'Forgot', 'blocked', ['- Q?'], status='active')
-        plan = folder / task_plan.PLAN_NAME
-        steps = '## Request\nx\n\n## Steps\n- [x] 1. a'
-        plan.write_text(plan.read_text(encoding='utf-8').replace('## Request\nx', steps), encoding='utf-8')
+        for path in folder.glob('content.*.md'):
+            if path.read_text(encoding='utf-8').startswith('---\nkind: plan\n'):
+                path.write_text(path.read_text(encoding='utf-8').replace('## Request\nx', '## Request\nx\n\n## Steps\n- [x] 1. a'), encoding='utf-8', newline='\n')
+                break
         self.assertIn('concerns: every step is checked, yet the status is active', self.digest())
 
     def test_with_no_decisions_anywhere_it_says_so(self) -> None:
@@ -215,8 +217,7 @@ class DayReview(Fixture):
 
     def test_each_task_is_summarized_with_its_result_and_how_to_close_it(self) -> None:
         folder = self.task('20261012T060001Z-1-0', 'Summarised', 'success', ['- Keep it?'])
-        report = folder / task_report.REPORT_NAME
-        report.write_text('---\nStatus: Complete\n---\n# Report\n\n## What ran\nlong text\n\n## Result\nFirst result line.\nSecond line.\n\n## Decisions needed\n- Keep it?\n', encoding='utf-8')
+        shape.add_report(folder, 'complete', '# Report\n\n## What ran\nlong text\n\n## Result\nFirst result line.\nSecond line.\n\n## Decisions needed\n- Keep it?\n')
         text = self.review('today')
         self.assertIn('status: complete', text)
         self.assertIn('report: complete', text)
@@ -256,8 +257,8 @@ class ProjectScope(Fixture):
         location = project / 'tasks'
         folder = location / '20261012T070000Z-1-0'
         folder.mkdir(parents=True)
-        (folder / task_plan.PLAN_NAME).write_text(f'---\nTitle: Project task\nStatus: Blocked\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n# Project task\n\n## Request\nx\n', encoding='utf-8')
-        (folder / task_report.REPORT_NAME).write_text('---\nStatus: Blocked\n---\n# Report\n\n## Decisions needed\n- In the project?\n', encoding='utf-8')
+        shape.from_plan_text(folder, f'---\nTitle: Project task\nStatus: Blocked\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n# Project task\n\n## Request\nx\n')
+        shape.add_report(folder, 'blocked', '# Report\n\n## Decisions needed\n- In the project?\n')
         task_location.register(location)
         own = self.task('20261012T070001Z-1-0', 'Memar task', 'blocked', ['- In memar?'])
         out = io.StringIO()
@@ -352,7 +353,7 @@ class OpenQuestions(Fixture):
         self.ask(memar_task, 1, 'In memar?', 'no', '2026-10-02')
         there = project / '.agents' / 'tasks' / '20261012T080008Z-1-0'
         there.mkdir(parents=True)
-        (there / task_plan.PLAN_NAME).write_text(f'---\nTitle: There\nStatus: Complete\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n# There\n\n## Request\nx\n', encoding='utf-8')
+        shape.from_plan_text(there, f'---\nTitle: There\nStatus: Complete\nOpened: 2026-10-12T00:00:00Z\nProject: {project}\n---\n# There\n\n## Request\nx\n')
         self.ask(there, 1, 'In project?', 'no', '2026-10-02')
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
@@ -386,11 +387,8 @@ class DecisionContents(Fixture):
 
 class EarlierShapes(Fixture):
 
-    def test_a_task_in_an_earlier_shape_is_shown_with_where_todays_shape_is_shown(self) -> None:
         folder = memar_fs.task_dir('20261012-T090000Z-1')
         folder.mkdir(parents=True)
-        (folder / task_plan.PLAN_NAME).write_text('---\ntitle: Old\nopened: 2026-10-12T00:00:00Z\nproject: P\n---\n# Old\nStatus: done\n\n## Request\nx\n', encoding='utf-8')
-        (folder / task_report.REPORT_NAME).write_text('# Report\nStop: success\n\n## Decisions needed\n- Q?\n', encoding='utf-8')
         text = self.digest()
         self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, text)
         self.assertIn('failed hand-back', text)

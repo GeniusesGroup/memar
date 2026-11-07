@@ -28,7 +28,7 @@ A **report** is one pass of work accounted for: what ran, what the task's own ch
 The task's identifier is not a field of the report: the task is the timeline that holds it. A task has one Status, held by the task and changed only by a Request ([Request](../../../../modules/process/request/request.md)); a report does not repeat it.
 
 ### Rounds
-A report is bound to a pass of work, not to the task for good: each round of critique ends in a report of what ran and what is to be done, so one task may hold several, as it may hold several plans ([Plan → Rounds](../plan/plan.md#rounds)). The owner ruled so on 2026-10-23.
+A report is bound to a pass of work, not to the task for good: each round of critique ends in a report of what ran and what is to be done, so one task may hold several, as it may hold several plans ([Plan → Rounds](../plan/facet.md#rounds)). The owner ruled so on 2026-10-23.
 
 - **A report is a content and is never overwritten or removed.** The next pass places another, so each round's account stays as it was written.
 - **The current report is the latest of its kind.** A reader that wants one report reads the current one; a reader that wants the history reads the timeline.
@@ -59,7 +59,7 @@ Each requirement is decidable from a stated input by a party that did not write 
 5. **A report receives no record beside it** ([No Record Is Written Beside a Document](../rules/no-record-beside-a-document/no-record-beside-a-document.md)).
 
 ### Why report and plan stay separate
-The report and the plan are two kinds and not one, on the attribute where they do not overlap: the place each is consumed. A plan is read before any work exists, to begin it; a report is read after, to account for it. They are written by different acts at different moments, and they are kept apart even though they may share a type for their shape, because a shape is code and is shared without sharing a responsibility. See [Plan → Why plan and report stay separate](../plan/plan.md#why-plan-and-report-stay-separate).
+The report and the plan are two kinds and not one, on the attribute where they do not overlap: the place each is consumed. A plan is read before any work exists, to begin it; a report is read after, to account for it. They are written by different acts at different moments, and they are kept apart even though they may share a type for their shape, because a shape is code and is shared without sharing a responsibility. See [Plan → Why plan and report stay separate](../plan/facet.md#why-plan-and-report-stay-separate).
 
 ### Why the module is named `report`
 The module is named for the kind of content it governs, not for the task that uses it. `report` is the word this project already uses for the artifact, and a name carrying the task would claim that the kind exists to serve a task, when the same kind may be consumed elsewhere as a template for the same account.

@@ -15,8 +15,8 @@ Nothing here writes anything: names are read and compared.
 
 What is pinned, and what each pin is for:
 
-  TopHoldsOnly   The top holds plan.md and report.md, and the claim Memar
-                 writes there while an agent holds the task (with its
+  TopHoldsOnly   The top holds task.yaml, timeline contents, and the claim
+                 Memar writes there while an agent holds the task (with its
                  takeover), and nothing else; the names are the ones the
                  services that write those files declare.
   OwnLayout      The task keeps its own small layout (owner, 2026-10-20,
@@ -47,22 +47,17 @@ _m_layout = import_module('modules-plugable.management.task.services.layout')
 FOLDERS = _m_layout.FOLDERS
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
-
 class TopHoldsOnly(unittest.TestCase):
 
-    def test_the_top_holds_the_plan_the_report_and_the_claim(self) -> None:
-        self.assertEqual(task_layout.TOP_NAMES, (PLAN_NAME, REPORT_NAME, 'task.yaml', Claim.NAME, Claim.TAKEOVER_NAME))
-        self.assertEqual((PLAN_NAME, REPORT_NAME, Claim.NAME), ('plan.md', 'report.md', 'claim'))
+    def test_the_top_holds_task_facts_and_the_claim(self) -> None:
+        self.assertEqual(task_layout.TOP_NAMES, ('task.yaml', Claim.NAME, Claim.TAKEOVER_NAME))
+        self.assertTrue(task_layout.belongs_at_top('content.00001.md'))
 
     def test_a_folder_of_the_layout_belongs_at_the_top_and_a_stray_does_not(self) -> None:
         for name in (*task_layout.TOP_NAMES, *FOLDERS):
             with self.subTest(name=name):
                 self.assertTrue(task_layout.belongs_at_top(name))
-        for name in ('entry.md', 'make_reviews.py', 'msg1.txt', 'scratch', 'Plan.md'):
+        for name in ('entry.md', 'make_reviews.py', 'msg1.txt', 'scratch', 'Notes.md'):
             with self.subTest(name=name):
                 self.assertFalse(task_layout.belongs_at_top(name))
 

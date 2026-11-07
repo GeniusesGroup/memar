@@ -54,9 +54,8 @@ sys.dont_write_bytecode = True
 task_concerns = import_module('modules-plugable.management.task.services.concerns')
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 read_task = _m_folder.read_task
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
+import shape
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 DAY = 24 * 60 * 60
 
 def plan_text(status: str | None='active', request: str='Do the thing.', steps: str='- [ ] 1. a') -> str:
@@ -70,13 +69,17 @@ class Fixture(unittest.TestCase):
         self.addCleanup(self.scratch.cleanup)
         self.root = Path(self.scratch.name)
 
-    def concerns(self, text: str, idle_days: float=3) -> list[str]:
+    def concerns(self, text: str, idle_days: float=3, legacy: bool=False) -> list[str]:
         folder = self.root / '20261001T000000Z-1-0'
         folder.mkdir(exist_ok=True)
-        plan = folder / PLAN_NAME
-        plan.write_text(text, encoding='utf-8', newline='\n')
+        if legacy:
+            plan.write_text(text, encoding='utf-8', newline='\n')
+            touch = plan
+        else:
+            shape.from_plan_text(folder, text)
+            touch = folder / shape.FACTS_NAME
         when = time.time() - idle_days * DAY
-        os.utime(plan, (when, when))
+        os.utime(touch, (when, when))
         os.utime(folder, (when, when))
         return task_concerns.concerns(read_task(folder))
 
@@ -120,29 +123,28 @@ class NoStatus(Fixture):
 
 class EarlierShape(Fixture):
 
-    def flagged(self, plan: str, report: str | None=None) -> list[str]:
+    def flagged(self, plan: str, report: str | None=None, legacy_plan: bool=False) -> list[str]:
         folder = self.root / '20261001T000000Z-1-0'
-        found = self.concerns(plan)
+        found = self.concerns(plan, legacy=legacy_plan)
         if report is not None:
-            (folder / 'report.md').write_text(report, encoding='utf-8', newline='\n')
             return task_concerns.concerns(read_task(folder))
         return found
 
     def test_an_earlier_plan_is_flagged_once_with_the_remedy_and_not_for_having_no_status(self) -> None:
         old = '---\ntitle: T\nopened: x\nproject: P\n---\n# T\nStatus: open\n\n## Request\nr\n'
-        found = self.flagged(old)
+        found = self.flagged(old, legacy_plan=True)
         self.assertEqual(len(found), 1)
         self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, found[0])
         self.assertIn('earlier shape', found[0])
 
     def test_an_earlier_complete_plan_is_flagged_too(self) -> None:
         old = '---\ntitle: T\nopened: x\nproject: P\n---\n# T\nStatus: done\n\n## Request\nr\n'
-        self.assertEqual(len(self.flagged(old)), 1)
+        self.assertEqual(len(self.flagged(old, legacy_plan=True)), 1)
 
     def test_an_earlier_report_is_flagged_with_the_remedy(self) -> None:
         found = self.flagged(plan_text(status='complete'), '# Report\nStop: success\n')
         self.assertEqual(len(found), 1)
-        self.assertIn('report.md is in an earlier shape', found[0])
+        self.assertIn('its report is in an earlier shape', found[0])
         self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, found[0])
 
     def test_todays_shapes_raise_nothing(self) -> None:
@@ -158,6 +160,6 @@ class NothingDeleted(Fixture):
     def test_flagging_leaves_the_folder_as_it_was(self) -> None:
         self.concerns(plan_text(request='', steps='- [x] 1. a'))
         folder = self.root / '20261001T000000Z-1-0'
-        self.assertEqual(sorted((path.name for path in folder.iterdir())), [PLAN_NAME])
+        self.assertEqual(sorted((path.name for path in folder.iterdir() if path.is_file())), [shape.FACTS_NAME, 'content.00001.md'])
 if __name__ == '__main__':
     unittest.main()

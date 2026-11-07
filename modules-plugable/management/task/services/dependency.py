@@ -37,7 +37,6 @@ the Status a dependency gives a task is `task_depends`.
 from __future__ import annotations
 from modules.identity.thing.labels.Complete import Label_Complete
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
 import re
 from pathlib import Path
 from typing import ClassVar, Iterable, NamedTuple
@@ -55,16 +54,14 @@ record_names = _m_task_files.record_names
 record_of = _m_task_files.record_of
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-front_key = _m_plan_file.front_key
-front_matter = _m_plan_file.front_matter
-read_plan = _m_plan_file.read_plan
-status_word = _m_plan_file.status_word
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+front_key = _m_plan_text.front_key
+front_matter = _m_plan_text.front_matter
+status_word = _m_plan_text.status_word
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
+_m_folder_read = import_module('modules-plugable.management.task.services.folder')
+read_task = _m_folder_read.read_task
 DEPENDS_FOR = 'Depends_for'
 SEPARATOR = ','
 PROJECT_SEPARATOR = '/'
@@ -190,20 +187,18 @@ class Reader:
         except SystemExit as refused:
             return str(refused.code).removeprefix('error: ')
         if folder.is_dir() and has_task(folder):
-            plan = read_plan(folder / PLAN_NAME)
-            named = (plan.front or {}).get(PlanKey.PROJECT.key, '').strip()
-            return Found(ref.id, plan.front, plan.status, Path(named) if named else where)
+            task = read_task(folder)
+            named = (task.front or {}).get(PlanKey.PROJECT.key, '').strip()
+            return Found(ref.id, task.front, task.status, Path(named) if named else where)
+        if where is None and not ref.project:
+            where = import_module('bundles.memar_git.services.task_store').records_project()
         if where is not None:
             # TODO(memory-port): one git start per cited task is still one start per record; read all cited tasks in one batch (task 20261023-T074643Z-5420).
-            held = read_many_from_branch(where, ref.id, [PLAN_NAME, REPORT_NAME, TASK_FACTS_NAME])
+            held = read_many_from_branch(where, ref.id, [TASK_FACTS_NAME])
             if TASK_FACTS_NAME in held:
                 held = read_many_from_branch(where, ref.id, record_names(held_on_branch(where, ref.id)))
                 record = record_of(held)
                 return Found(ref.id, record[0], record[1], where)
-            kept = held.get(PLAN_NAME)
-            if kept is not None:
-                front, status = _front_status(kept)
-                return Found(ref.id, front, status, where)
         return "cannot be found: it has no task folder, and the project's records branch holds nothing for it"
 
     def unmet(self, refs: Iterable[Ref], home: Path | None=None) -> list[str]:

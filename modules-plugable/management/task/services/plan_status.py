@@ -5,7 +5,7 @@ from __future__ import annotations
 from modules.knowledge.label.labels.Status import Label_Status
 from importlib import import_module
 from machine.console import fail
-status_word = import_module('modules-plugable.management.task.services.plan_file').status_word
+status_word = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text').status_word
 PLAN = import_module('modules-plugable.knowledge.documentation.primitive.record').PLAN
 change_fact = import_module('modules-plugable.management.task.services.fact_retry').change_fact
 

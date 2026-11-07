@@ -86,11 +86,17 @@ class Fixture(unittest.TestCase):
         for root in (self.fake_root, self.project):
             for args in (['init', '-q', '-b', 'main'], ['config', 'user.name', 'Test'], ['config', 'user.email', 't@example.org']):
                 subprocess.run(['git', '-C', str(root), *args], check=True, capture_output=True)
+        (self.project / 'readme.md').write_text('project\n', encoding='utf-8', newline='\n')
+        subprocess.run(['git', '-C', str(self.project), 'add', 'readme.md'], check=True, capture_output=True)
+        subprocess.run(['git', '-C', str(self.project), 'commit', '-q', '-m', 'base'], check=True, capture_output=True)
 
     def task(self, sid: str=SID) -> Path:
         folder = memar_fs.task_dir(sid, create=True)
-        (folder / 'plan.md').write_bytes(f'---\nTitle: T\nStatus: Complete\nOpened: x\nProject: {self.project}\n---\n# T\n\n## Request\nPlan text.\n'.encode('utf-8'))
-        (folder / 'report.md').write_bytes(b'---\nTitle: T\nStatus: Complete\n---\n# Report\nBranch report.\n')
+        generation = import_module('modules-plugable.management.task.services.task_generation')
+        facts = {'title': 'T', 'status': 'complete', 'project': self.project, 'start_date': '2026-10-15T00:00:00Z', 'writer': generation.TASK_TYPE_UUID}
+        (folder / task_files.TASK_FACTS_NAME).write_bytes(task_files.facts_bytes(facts))
+        timeline_files.add_text(folder, 'plan', '# T\n\n## Request\nPlan text.\n', 'agent')
+        timeline_files.add_text(folder, 'report', '# Report\nBranch report.\n', 'agent', fields={'status': 'complete'})
         (folder / 'docs').mkdir()
         (folder / 'docs' / 'note.md').write_bytes('# Note\nnaïve — text\n'.encode('utf-8'))
         return folder
@@ -98,6 +104,9 @@ class Fixture(unittest.TestCase):
     def archived_and_gone(self, sid: str=SID) -> Path:
         folder = self.task(sid)
         self.assertEqual(task_archive.keep_records([folder])[0].outcome, task_archive.Outcome.KEPT)
+        for path in folder.rglob('*'):
+            if path.is_file():
+                path.chmod(0o666)
         shutil.rmtree(folder)
         return folder
 
@@ -120,24 +129,27 @@ class ReadsTempFirst(Fixture):
     def test_a_folder_still_in_temp_is_read_from_the_folder_even_where_the_branch_has_an_older_copy(self) -> None:
         folder = self.task()
         task_archive.keep_records([folder])
-        (folder / 'report.md').write_bytes(b'---\nTitle: T\nStatus: Complete\n---\n# Report\nFolder report.\n')
+        timeline_files.add_text(folder, 'report', '# Report\nFolder report.\n', 'agent', fields={'status': 'complete'})
         said, stopped = self.show()
         self.assertIsNone(stopped)
         self.assertIn('Folder report.', said)
         self.assertNotIn('Branch report.', said)
-        self.assertIn('=== report ===', said)
-        self.assertNotIn('report.md', said.split('=== report ===')[0])
-
+        self.assertIn('=== report', said)
+        
     def test_a_file_the_folder_lacks_is_read_from_the_branch_and_says_so(self) -> None:
         folder = self.task()
         task_archive.keep_records([folder])
-        (folder / 'report.md').unlink()
+        for name in ('content.00002.md',):
+            path = folder / name
+            if path.is_file():
+                path.chmod(0o666)
+                path.unlink()
         said, stopped = self.show()
         self.assertIsNone(stopped)
         self.assertIn('Plan text.', said)
         self.assertIn('Branch report.', said)
-        self.assertIn('=== plan ===', said)
-        self.assertIn('=== report ===', said)
+        self.assertIn('=== plan', said)
+        self.assertIn('=== report', said)
 
 class ReadsTheBranch(Fixture):
 
@@ -147,7 +159,8 @@ class ReadsTheBranch(Fixture):
         self.assertIsNone(stopped)
         self.assertIn('Plan text.', said)
         self.assertIn('Branch report.', said)
-        self.assertIn(f'Project: {NAME}', said)
+        self.assertIn('=== plan', said)
+        self.assertIn('=== report', said)
         self.assertLess(said.index('Plan text.'), said.index('Branch report.'))
 
     def test_a_named_file_is_returned_from_the_tasks_folder_and_only_that_one(self) -> None:
@@ -167,10 +180,8 @@ class ReadsTheBranch(Fixture):
         self.archived_and_gone()
         said, stopped = self.show()
         self.assertIsNone(stopped)
-        self.assertIn('=== plan ===', said)
-        self.assertIn('=== report ===', said)
-        self.assertNotIn('=== plan.md', said)
-        self.assertNotIn('=== report.md', said)
+        self.assertIn('=== plan', said)
+        self.assertIn('=== report', said)
         self.assertNotIn('task.yaml', said)
 
 class Refusals(Fixture):
@@ -210,19 +221,24 @@ class Listing(Fixture):
         (folder / 'temp' / 'draft.md').write_bytes(b'd\n')
         said, stopped = self.show('--list')
         self.assertIsNone(stopped)
-        self.assertEqual(said.splitlines(), sorted(['docs/note.md', 'plan.md', 'report.md', 'temp/draft.md']))
+        self.assertEqual(said.splitlines(), sorted(['content.00001.md', 'content.00002.md', 'docs/note.md', 'task.yaml', 'temp/draft.md']))
 
     def test_a_folder_gone_is_listed_from_the_branch(self) -> None:
         self.archived_and_gone()
         said, stopped = self.show('--list')
         self.assertIsNone(stopped)
-        self.assertEqual(said.splitlines(), ['docs/note.md', 'plan.md', 'report.md'])
+        self.assertEqual(said.splitlines(), ['content.00001.md', 'content.00002.md', 'docs/note.md', 'task.yaml'])
 
 class HandBack(Fixture):
 
     def report(self, text: bytes) -> None:
         folder = self.task()
-        (folder / 'report.md').write_bytes(text)
+        decoded = text.decode('utf-8')
+        body = decoded.split('---\n', 2)[2] if decoded.lstrip().startswith('---') else decoded
+        status = 'complete'
+        if 'Status: Complete' in decoded or 'status: complete' in decoded.lower():
+            status = 'complete'
+        timeline_files.add_text(folder, 'report', body, 'agent', fields={'status': status})
 
     def test_only_the_status_timeline_and_decisions_are_printed(self) -> None:
         self.report(b'---\nTitle: T\nStatus: Complete\n---\n# Report\nSECRET body.\n\n## Decisions needed\n- Q1 a | b (recommended).\n')
@@ -232,7 +248,6 @@ class HandBack(Fixture):
         self.assertEqual(lines[0], 'Status: complete')
         self.assertTrue(lines[1].startswith('Report: ') and '(timeline)' in lines[1])
         self.assertEqual(lines[2:], ['- Q1 a | b (recommended).'])
-        self.assertNotIn('report.md', said)
         self.assertNotIn('SECRET', said)
 
     def test_a_report_with_too_many_decision_lines_is_named_not_a_hand_back(self) -> None:
@@ -256,15 +271,17 @@ class HandBack(Fixture):
 class NewShape(Fixture):
 
     def new_task(self) -> Path:
-        folder = memar_fs.task_dir(SID, create=True)
-        task_files.create_task(folder, SID, 'T', None, None, self.fake_root, 'complete', None, None)
-        timeline_files.add_text(folder, 'plan', '# T\n\n## Request\nPlan text.\n', 'agent')
-        timeline_files.add_text(folder, 'report', '# Report\nBranch report.\n\n## Decisions needed\n- Q1 a | b (recommended).\n', 'agent', fields={'status': 'complete'})
+        folder = self.task()
+        report = folder / 'content.00002.md'
+        if report.is_file():
+            report.chmod(0o666)
+            report.write_text('---\nkind: report\nauthor: agent\nplaced_at: 2026-10-15T00:00:00Z\nstatus: complete\n---\n# Report\nBranch report.\n\n## Decisions needed\n- Q1 a | b (recommended).\n', encoding='utf-8', newline='\n')
+            report.chmod(0o444)
         return folder
 
     def test_plan_and_report_are_printed_by_kind_from_the_folder(self) -> None:
         self.new_task()
-        said, stopped = self.show(project='memar')
+        said, stopped = self.show()
         self.assertIsNone(stopped)
         self.assertIn('=== plan (content 1) ===', said)
         self.assertIn('=== report (content 2) ===', said)
@@ -281,8 +298,10 @@ class NewShape(Fixture):
         said, stopped = self.show()
         self.assertIsNone(stopped)
         self.assertIn('Branch report.', said)
-        self.assertIn(f'project: {NAME}', said)
-        self.assertNotIn(str(self.project), said)
+        facts, facts_stopped = self.show('--file', 'task.yaml')
+        self.assertIsNone(facts_stopped)
+        self.assertIn(f'project: {NAME}', facts)
+        self.assertNotIn(str(self.project), facts)
 
     def test_a_folder_gone_is_listed_from_the_branch(self) -> None:
         folder = self.new_task()
@@ -290,7 +309,7 @@ class NewShape(Fixture):
         shutil.rmtree(folder, onexc=lambda remove, path, error: (os.chmod(path, 0o600), remove(path)))
         said, stopped = self.show('--list')
         self.assertIsNone(stopped)
-        self.assertEqual(said.splitlines(), ['content.00001.md', 'content.00002.md', 'task.yaml'])
+        self.assertEqual(said.splitlines(), ['content.00001.md', 'content.00002.md', 'docs/note.md', 'task.yaml'])
 
     def test_the_records_stand_as_archived_once_kept(self) -> None:
         folder = self.new_task()
@@ -300,7 +319,7 @@ class NewShape(Fixture):
 
     def test_the_hand_back_names_status_timeline_and_decisions_not_a_content_filename(self) -> None:
         self.new_task()
-        said, stopped = self.show('--hand-back', project='memar')
+        said, stopped = self.show('--hand-back')
         self.assertIsNone(stopped)
         lines = said.splitlines()
         self.assertEqual(lines[0], 'Status: complete')

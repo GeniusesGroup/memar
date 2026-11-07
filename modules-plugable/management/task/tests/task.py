@@ -1,76 +1,8 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar task` in `modules-plugable/management/task/task.py` and the services that declare its verbs.
-
-    python modules-plugable/management/task/tests/task.py
-
-The subject is the task command — its help, its arguments, and which
-service answers each verb — named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
-in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-What each service does is pinned by its own suite beside this one; a behavior
-pinned in two files is one of them to forget.
-
-Nothing here writes outside its scratch folder. The Memar root the services
-resolve is patched onto one, made under the folder `modules/process/test/services/test_scratch.py`
-names, and removed again. The command is assembled by the launcher from the
-task services alone, so another domain's services are not this suite's
-subject. The subprocesses run ask for `--help` only, which resolves no root and
-writes nothing.
-
-What is pinned, and what each pin is for:
-
-  HelpSaysWhatToRun  Each help states its own work only (owner, 2026-10-14).
-                     `memar task --help` states the domain's: what a task
-                     and a task are, that the folder's top holds only
-                     plan.md and report.md (and Memar's claim) and the rest
-                     goes in the task's own folders by kind, temp/ for what
-                     no record needs, the Status words and that
-                     a task ends when its report and plan state the same
-                     one, who writes into another task's folder, that each
-                     location keeps its own log; nothing of a move its own
-                     run would make before a verb; and none of a sub-verb's command
-                     lines, files, or recipes. No sub-verb sends its reader
-                     back there for its own work. `ensure` says what it writes
-                     (the plan's outline, the report's skeleton, the short
-                     hand-back), where the folder lies, how a task is handed
-                     to a sub-agent, queued, or continued; `claims` carries
-                     the whole recipe for an agent told only to "do some of
-                     the queued tasks" — the project always named, one fresh
-                     sub-agent per batch of one topic, each report read, one
-                     `digest --conversation` at the end; `digest` the owner's
-                     review and what a hand-back is; `close` when it may be
-                     run; and each verb's own help what it accepts. No
-                     external runner is named, and `memar --help`'s line for
-                     `task` names queued tasks, so an agent starting from
-                     the top reaches `claims`.
-  EachServiceDeclaresItsVerb
-                     Each verb is declared by the service that answers it, and
-                     the services the others share declare none.
-  VerbsDispatch      Each verb reaches its one service with the arguments as
-                     parsed; the verb that added tasks to a plan is gone.
-  NothingBeforeAnyVerb
-                     `memar task` only groups its verbs: nothing runs
-                     before a verb's own service, and a folder an earlier
-                     Memar left directly in temp/ is not read: not listed, not moved.
-  CommandEndToEnd    What a caller types — `ensure`, then `list` — opens a folder,
-                     prints its id and path, and finds it again, through the
-                     real services; and `memar task <verb> --help` answers
-                     through the launcher for every verb.
-  StaleCopiesAreNotNew
-                     `ensure` does not ask whether the skill copies are stale:
-                     that is `memar update`'s question.
-  NoOneTimeMigration No file of the scripts folder names a one-time
-                     migration script or what only such a script owns, and
-                     none is one of them: such a script lives in the task
-                     that does the change (the task's `services/` folder). Only
-                     this suite's own list names them.
-
-Usage is the interface. Do not duplicate these recipes as prose catalogs.
-"""
 from __future__ import annotations
+from importlib import import_module
 TIER = 'system'
 BUDGET_SECONDS = 150
 from machine.plugable_import import load as plugable_load
@@ -98,6 +30,8 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 task = import_module('modules-plugable.management.task.task')
+set_status_service = import_module('modules-plugable.knowledge.label.status.services.set_status')
+SET_STATUS_LINE = f'memar service {set_status_service.SERVICE_SET} --thing ID --word WORD'
 task_archive = import_module('bundles.memar_git.services.archive_task_records')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
@@ -113,12 +47,9 @@ task_location = import_module('modules-plugable.management.task.services.task_lo
 task_log = import_module('bundles.memar_git.services.log')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
-task_priority = import_module('modules-plugable.management.task.services.priority')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 task_start = import_module('modules-plugable.ai.services.get_task_init_context')
-task_label = import_module('modules-plugable.management.task.services.label_add')
-task_labels = import_module('modules-plugable.management.task.services.label_list')
-task_report = import_module('modules-plugable.management.task.services.report_file')
+task_report = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 task_show = import_module('bundles.memar_git.services.show_task_records')
 LAUNCHER = SCRIPTS / 'memar'
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
@@ -128,7 +59,6 @@ TASK_SERVICES = launcher.services_of('task')
 TITLE = 'Test the task command'
 
 def command(*arguments: str) -> int:
-    """`memar task ARGUMENTS`, assembled from the task services alone."""
     with unittest.mock.patch.object(launcher, 'services', return_value=TASK_SERVICES):
         return launcher.main(['task', *arguments])
 
@@ -166,30 +96,38 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_the_domain_help_says_what_a_task_is(self) -> None:
         text = flat(run_help())
-        for phrase in ('A task is one thing the person asked for', 'Its folder is its record', 'One task is one folder', 'gets a task of its own', "Work inside the task's folder, not in the checkout", 'read what `ensure` says first'):
+        for phrase in ('A task is one thing the person asked for', "Its record lives on the project's records branch", 'One task is one id', 'gets a task of its own', 'Scratch while working goes in the task\'s temp/', 'read what `ensure` says first'):
             self.assertIn(phrase, text)
+        for name in ('task.yaml',):
+            self.assertNotIn(name, text)
 
-    def test_the_domain_help_says_the_top_holds_only_the_plan_and_the_report_and_where_the_rest_goes(self) -> None:
+    def test_the_domain_help_says_where_scratch_and_claims_go(self) -> None:
         text = flat(run_help())
-        for phrase in ("The folder's top holds only task.yaml and its numbered contents", 'the `claim` file Memar writes there', 'Put nothing else at the top', 'a script (.py, .mjs, .js, .ps1, .sh) in services/', 'a test in tests/', 'besides its folders, services/, tests/, temp/,', 'a file of another kind, or what the record does not need, in temp/'):
+        for phrase in ("Scratch while working goes in the task's temp/", "A claim while an agent holds the task is Memar's (`claim`)", 'Role folders the work may use: services/, tests/, temp/'):
             self.assertIn(phrase, text)
+        for name in ('task.yaml',):
+            self.assertNotIn(name, text)
 
     def test_the_domain_help_gives_the_status_words_and_how_a_task_ends(self) -> None:
         text = run_help()
         for phrase in ('Queued     Waiting to be taken up', 'Active     Being worked on', 'Complete   the check passed', 'Blocked    it waits on an answer or an approval', 'Active     its budget ended'):
             self.assertIn(phrase, text)
         text = flat(text)
-        for phrase in ('Queued, Active, Blocked, or Complete', 'finished or not', 'its Status in task.yaml is set', 'the report does not repeat the Status', 'Complete once its check has passed'):
+        for phrase in ('Queued, Active, Blocked, or Complete', SET_STATUS_LINE, 'the report does not repeat the Status', 'Complete once its check has passed'):
             self.assertIn(phrase, text)
+        for name in ('task.yaml',):
+            self.assertNotIn(name, text)
 
-    def test_the_domain_help_says_who_writes_into_another_tasks_folder_and_where_each_log_is(self) -> None:
+    def test_the_domain_help_says_who_posts_a_sub_agents_report(self) -> None:
         text = flat(run_help())
-        for phrase in ('Write only inside your own folder', "Two writes reach another task's folder, both from the task it came from", "writes the report.md of a sub-agent that could only return text, and sets that task's Status", 'keeps its own log of what was done to its folders, tasks.log at its top'):
+        for phrase in ('posts the report of a sub-agent that could only return text, and sets that task\'s Status', 'Read plan and report with `memar git show-task-records`'):
             self.assertIn(phrase, text)
+        for name in ('task.yaml',):
+            self.assertNotIn(name, text)
 
     def test_the_domain_help_points_to_archive_for_where_the_records_are(self) -> None:
         text = flat(run_help())
-        for phrase in ("its records stay, kept by `archive` on its project's records branch and never pushed", '`close` and the sweep act only on a task already archived', 'neither acts on a task whose Status is Queued', '`archive --help` says what is kept and where'):
+        for phrase in ("its records stay on its project's records branch and are never pushed", '`close` and the sweep act only on a task already archived', 'neither acts on a task whose Status is Queued'):
             self.assertIn(phrase, text)
         self.assertNotIn("Committing a task's changes commits the records", text)
 
@@ -204,7 +142,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
             self.assertNotIn(phrase, text)
 
     def test_no_sub_verb_sends_its_reader_to_the_domain_help_for_its_own_work(self) -> None:
-        for verb in ('ensure', 'list', 'claim', 'claims', 'priority', 'get-decisions-digest', 'depends-on'):
+        for verb in ('ensure', 'list', 'claim', 'claims', 'get-decisions-digest', 'depends-on'):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb)).lower()
                 self.assertNotIn('when to use', text)
@@ -213,14 +151,21 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_new_says_what_it_writes_and_leaves_the_rest_to_the_file(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('a text is added and never written over', 'memar conversation post --timeline ID --kind plan|report', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', 'use it as printed', '`memar content write`'):
+        for phrase in ('a text is added and never written over', 'memar conversation post --timeline ID --kind plan|report', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', SET_STATUS_LINE, 'No filesystem path is printed'):
             self.assertIn(phrase, text)
-        for phrase in ('Title: TITLE', 'written in PascalCase', 'Once a day', 'drive or filesystem root is refused'):
+        for phrase in ('Title: TITLE', 'written in PascalCase', 'Once a day', 'drive or filesystem root is refused', 'task.yaml'):
             self.assertNotIn(phrase, text)
 
     def test_new_says_how_a_task_is_handed_over_queued_and_continued(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('open its task with --parent', 'write the whole task into its plan.md — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar ai get-task-plan-carry-out-brief ID` prints again', '--label KIND=WORD', 'To only add work', '--queued', "never do a queued task's work in your own context", 'To continue a task another task left', '`memar task list`', 'start from its Next'):
+        for phrase in ('open its task with --parent', 'post the whole task as its plan content — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar ai get-task-plan-carry-out-brief ID` prints again', '--label ACT', 'To only add work', '--queued', "never do a queued task's work in your own context", 'To continue a task another task left', '`memar task ids`', 'start from its Next'):
+            self.assertIn(phrase, text)
+        for name in ('task.yaml',):
+            self.assertNotIn(name, text)
+
+    def test_new_sends_later_work_on_a_result_back_to_its_task(self) -> None:
+        text = flat(run_help('ensure'))
+        for phrase in ("A task is one thing asked with one check", "a full context, a plan a sub-agent can read or the end of a session is not a new thing asked", 'a new plan content on the same task', 'a ruling of the owner since is a content of kind `decision`', 'later-work-returns-to-its-task.md', 'a new task is for work new in itself', 'A sub-agent or a new chat that continues a task is handed that task', 'and no task is opened for it', 'To hand a thing new in itself to a sub-agent', 'independent, opened with no --parent', 'never as your child session, so that none of its messages come back to you', 'opened-chat-is-left-alone.md', 'a later act is a content posted with that word as its --kind'):
             self.assertIn(phrase, text)
 
     def test_new_does_not_repeat_what_the_domain_states(self) -> None:
@@ -230,8 +175,10 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_claims_carries_the_recipe_for_an_agent_told_only_to_do_queued_tasks(self) -> None:
         text = flat(run_help('claims'))
-        for phrase in ('do some of the queued tasks', '--project NAME or --project-path PATH is required: one run serves one project', '"Do 5 tasks of X" means `claims 5 --project X`', 'there is no default project and no way to take from all', 'ask the owner rather than guess', '`memar task list --status queued`', 'N is yours to choose', 'the highest priority first, the oldest opened first among equals', 'Hand the batch of one topic to one fresh sub-agent', 'each task keeping its own plan.md and report.md', 'never one sub-agent for tasks of different topics', 'never in your own context', 'read its report.md: its Status and its Decisions needed', 'a Status that disagrees with its plan', 'failed hand-back', "run `memar task get-decisions-digest --conversation ID`, ID your own task's", 'give the owner that one digest', 'Memar starts no agent'):
+        for phrase in ('do some of the queued tasks', '--project NAME or --project-path PATH is required: one run serves one project', '"Do 5 tasks of X" means `claims 5 --project X`', 'there is no default project and no way to take from all', 'ask the owner rather than guess', '`memar task list --status queued`', 'N is yours to choose', 'the highest priority first, the oldest opened first among equals', 'Hand the batch of one topic to one fresh sub-agent', 'each task keeping its own plan and report contents (by kind)', 'never one sub-agent for tasks of different topics', 'never in your own context', 'read its report with `memar git show-task-records`', 'memar conversation post --kind report', SET_STATUS_LINE, 'a Status that disagrees with its plan', 'failed hand-back', "run `memar task get-decisions-digest --conversation ID`, ID your own task's", 'give the owner that one digest', 'Memar starts no agent'):
             self.assertIn(phrase, text)
+        for name in ('task.yaml',):
+            self.assertNotIn(name, text)
 
     def test_the_review_and_the_hand_back_are_digests(self) -> None:
         text = flat(run_help('get-decisions-digest'))
@@ -246,7 +193,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
             self.assertIn(phrase, text)
 
     def test_no_external_runner_is_left_in_the_help(self) -> None:
-        texts = [run_help(), *(run_help(verb) for verb in ('ensure', 'claim', 'claims', 'get-decisions-digest', 'priority'))]
+        texts = [run_help(), *(run_help(verb) for verb in ('ensure', 'claim', 'claims', 'get-decisions-digest'))]
         for text in texts:
             for word in ('launch', 'runner', '`run`', 'task run'):
                 self.assertNotIn(word, text)
@@ -255,7 +202,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
         self.assertIn('queued tasks', task.SUMMARY)
 
     def test_each_verbs_help_says_what_it_accepts(self) -> None:
-        for verb, phrases in (('ensure', ('--task-id', '--title TITLE', '--parent ID', '--project NAME', '--project-path PATH', 'for one task', 'Nothing else goes in the hand-over')), ('list', ('whose id, title, or project holds TEXT', 'one word or a short phrase, not a question', '--status {queued,active,blocked,complete}', '--conversation ID', '--idle-days DAYS', '--project NAME', '--project-path PATH', "List Memar's own task folders", 'the calling folder is never read', 'earlier shape')), ('ensure', ('--queued', 'an existing active one no one has claimed is queued', '--priority N', '1 to 10', 'higher goes sooner')), ('claim', ('ID', 'another agent holds, is refused', 'taken over', 'Nothing keeps a claim fresh', f'{Claim.stale_hours()} hours')), ('claims', ('N', 'highest priority first', 'oldest', 'brief', 'Fewer queued than N is not an error', 'no default', "never mixes two projects'", 'one fresh sub-agent per batch of one topic', '--label Topic=T', '--fill')), ('priority', ('ID', 'N', '1 to 10', '5 when', 'higher goes sooner', 'Anyone, a person or an agent, may change it')), ('get-decisions-digest', ('--conversation ID', 'Decisions needed', 'priority', 'failed hand-back', 'marked `failed hand-back` with why', 'Queued tasks are left out', 'With --day: the review', 'The review closes nothing itself')), ('depends-on', ('ID', '--add', '--drop'))):
+        for verb, phrases in (('ensure', ('--task-id', '--title TITLE', '--parent ID', '--project NAME', '--project-path PATH', 'No filesystem path is printed', 'Nothing else goes in the hand-over')), ('list', ('whose id, title, or project holds TEXT', 'one word or a short phrase, not a question', '--status {queued,active,blocked,complete}', '--conversation ID', '--idle-days DAYS', '--project NAME', '--project-path PATH', "List Memar's own task folders", 'the calling folder is never read', 'earlier shape')), ('ensure', ('--queued', 'an existing active one no one has claimed is queued', '--priority N', '1 to 10', 'higher goes sooner')), ('claim', ('ID', 'another agent holds, is refused', 'taken over', 'Nothing keeps a claim fresh', f'{Claim.stale_hours()} hours')), ('claims', ('N', 'highest priority first', 'oldest', 'brief', 'Fewer queued than N is not an error', 'no default', "never mixes two projects'", 'one fresh sub-agent per batch of one topic', '--label Topic=T', '--fill')), ('get-decisions-digest', ('--conversation ID', 'Decisions needed', 'priority', 'failed hand-back', 'marked `failed hand-back` with why', 'Queued tasks are left out', 'With --day: the review', 'The review closes nothing itself')), ('depends-on', ('ID', '--add', '--drop'))):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb))
                 for phrase in phrases:
@@ -291,7 +238,6 @@ class NoOneTimeMigration(unittest.TestCase):
 class EachServiceDeclaresItsVerb(unittest.TestCase):
 
     class Recorded:
-        """Where a service's verb goes, remembering the names it registers."""
 
         def __init__(self) -> None:
             self.names: list[str] = []
@@ -302,7 +248,7 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             return self.group.add_parser(name, **kwargs)
 
     def test_each_verb_is_declared_by_the_service_that_answers_it(self) -> None:
-        for module, declared in ((task, ['task']), (task_new, ['ensure']), (task_find, ['list']), (task_claim, ['claim']), (task_claims, ['claims']), (task_priority, ['priority']), (task_digest, ['get-decisions-digest'])):
+        for module, declared in ((task, ['task']), (task_new, ['ensure']), (task_find, ['list']), (task_claim, ['claim']), (task_claims, ['claims']), (task_digest, ['get-decisions-digest'])):
             with self.subTest(verbs=declared):
                 verbs = self.Recorded()
                 run = module.describe(verbs)
@@ -324,12 +270,12 @@ class EachServiceDeclaresItsVerb(unittest.TestCase):
             return dict(found[0].choices) if found else {}
         top, before = launcher.assemble(TASK_SERVICES)
         self.assertEqual(before, [])
-        self.assertEqual(sorted(verbs_of(verbs_of(top)['task'])), sorted(['claim', 'claims', 'depends-on', 'get-decisions-digest', 'list', 'ensure', 'priority']))
+        self.assertEqual(sorted(verbs_of(verbs_of(top)['task'])), sorted(['claim', 'claims', 'depends-on', 'get-decisions-digest', 'ids', 'list', 'ensure']))
 
 class VerbsDispatch(Fixture):
 
     def test_each_verb_reaches_its_service_with_the_parsed_arguments(self) -> None:
-        for argv, module, name, expected in ((['ensure', '--title', 'T'], task_new, 'open_task', (None, 'T', None)), (['ensure', '--task-id', 's-1', '--parent', 's-0'], task_new, 'open_task', ('s-1', None, 's-0')), (['list'], task_find, 'list_tasks', (None, None, None, None, None)), (['list', 'word', '--status', 'blocked', '--idle-days', '3', '--conversation', 's-0'], task_find, 'list_tasks', ('word', 'blocked', 3.0, 's-0', None)), (['list', '--project-path', '<F>'], task_find, 'list_tasks', (None, None, None, None, '<F>')), (['list', '--project', 'p'], task_find, 'list_tasks', (None, None, None, None, '<F>')), (['ensure', '--title', 'T', '--queued'], task_new, 'open_task', (None, 'T', None, True, None)), (['ensure', '--title', 'T', '--queued', '--priority', '8'], task_new, 'open_task', (None, 'T', None, True, 8)), (['list', '--status', 'queued'], task_find, 'list_tasks', (None, 'queued', None, None, None)), (['claim', 's-1'], task_claim, 'claim', ('s-1',)), (['claims', '5'], task_claims, 'claims', (5, None)), (['claims', '2', '--project-path', '<F>'], task_claims, 'claims', (2, '<F>')), (['priority', 's-1', '8'], task_priority, 'set_task_priority', ('s-1', '8')), (['ensure', '--title', 'T', '--label', 'Topic=docs', '--label', 'TaskKind=design'], task_new, 'open_task', (None, 'T', None, False, None, ['Topic=docs', 'TaskKind=design'])), (['claims', '5', '--project', 'p', '--label', 'Topic=docs'], task_claims, 'claims', (5, '<F>', 'docs', False)), (['claims', '5', '--project', 'p', '--fill'], task_claims, 'claims', (5, '<F>', None, True)), (['get-decisions-digest'], task_digest, 'get_decisions_digest', (None, None, None)), (['get-decisions-digest', '--conversation', 's-0'], task_digest, 'get_decisions_digest', ('s-0', None, None))):
+        for argv, module, name, expected in ((['ensure', '--title', 'T'], task_new, 'open_task', (None, 'T', None)), (['ensure', '--task-id', 's-1', '--parent', 's-0'], task_new, 'open_task', ('s-1', None, 's-0')), (['ensure', '--title', 'T', '--queued'], task_new, 'open_task', (None, 'T', None, True, None)), (['ensure', '--title', 'T', '--queued', '--priority', '8'], task_new, 'open_task', (None, 'T', None, True, 8)), (['claim', 's-1'], task_claim, 'claim', ('s-1',)), (['claims', '5'], task_claims, 'claims', (5, None)), (['claims', '2', '--project-path', '<F>'], task_claims, 'claims', (2, '<F>')), (['ensure', '--title', 'T', '--label', 'Topic=docs', '--label', 'TaskKind=design'], task_new, 'open_task', (None, 'T', None, False, None, ['Topic=docs', 'TaskKind=design'])), (['claims', '5', '--project', 'p', '--label', 'Topic=docs'], task_claims, 'claims', (5, '<F>', 'docs', False)), (['claims', '5', '--project', 'p', '--fill'], task_claims, 'claims', (5, '<F>', None, True)), (['get-decisions-digest'], task_digest, 'get_decisions_digest', (None, None, None)), (['get-decisions-digest', '--conversation', 's-0'], task_digest, 'get_decisions_digest', ('s-0', None, None))):
             folder = self.fake_root / 'p'
             folder.mkdir(exist_ok=True)
             argv = [str(folder) if word == '<F>' else word for word in argv]
@@ -354,7 +300,7 @@ class VerbsDispatch(Fixture):
         service.assert_not_called()
 
     def test_every_verb_that_takes_a_project_takes_one_flag_per_kind_and_never_both(self) -> None:
-        for argv, module, name in ((['ensure', '--title', 'T'], task_new, 'open_task'), (['list'], task_find, 'list_tasks'), (['claims', '5'], task_claims, 'claims'), (['get-decisions-digest'], task_digest, 'get_decisions_digest')):
+        for argv, module, name in ((['ensure', '--title', 'T'], task_new, 'open_task'), (['claims', '5'], task_claims, 'claims'), (['get-decisions-digest'], task_digest, 'get_decisions_digest')):
             with self.subTest(verb=argv[0]):
                 folder = str(self.fake_root)
                 with unittest.mock.patch.object(module, name) as service, contextlib.redirect_stderr(io.StringIO()):
@@ -367,7 +313,7 @@ class VerbsDispatch(Fixture):
                 service.assert_not_called()
 
     def test_project_always_takes_a_value_and_no_service_runs_without_one(self) -> None:
-        for argv, module, name in ((['list', 'word', '--project'], task_find, 'list_tasks'), (['list', 'word', '--project-path'], task_find, 'list_tasks'), (['claims', '5', '--project'], task_claims, 'claims'), (['get-decisions-digest', '--day', 'today', '--project'], task_digest, 'get_decisions_digest')):
+        for argv, module, name in ((['claims', '5', '--project'], task_claims, 'claims'), (['get-decisions-digest', '--day', 'today', '--project'], task_digest, 'get_decisions_digest')):
             with self.subTest(argv=argv):
                 with unittest.mock.patch.object(module, name) as service, contextlib.redirect_stderr(io.StringIO()):
                     with self.assertRaises(SystemExit):
@@ -386,10 +332,10 @@ class NothingBeforeAnyVerb(Fixture):
     def left_in_temp(self, sid: str, idle_days: float) -> Path:
         left = memar_fs.scratch_root() / sid
         left.mkdir(parents=True)
-        plan = left / task_plan.PLAN_NAME
-        plan.write_text(task_plan.plan_skeleton('20261009T120000Z-1-0', 'Left behind', '2026-10-09T12:00:00Z', Path('/w')), encoding='utf-8', newline='\n')
+        import shape
+        shape.from_plan_text(left, task_plan.plan_skeleton('20261009T120000Z-1-0', 'Left behind', '2026-10-09T12:00:00Z', Path('/w')))
         when = time.time() - idle_days * 24 * 60 * 60
-        for path in (plan, left):
+        for path in (left / shape.FACTS_NAME, left):
             os.utime(path, (when, when))
         return left
 
@@ -397,8 +343,8 @@ class NothingBeforeAnyVerb(Fixture):
         for sid, idle in (('20261009T120000Z-42-0', 2), ('20261009T120000Z-43-0', 0)):
             left = self.left_in_temp(sid, idle_days=idle)
             err = io.StringIO()
-            with contextlib.redirect_stderr(err):
-                listed = self.run_main('list')
+            with contextlib.redirect_stderr(err), unittest.mock.patch.object(import_module('modules-plugable.management.task.services.ids_source'), 'records_rows', return_value=[]):
+                listed = self.run_main('ids', '--label', 'active')
             self.assertNotIn(sid, listed)
             self.assertEqual(err.getvalue(), '')
             self.assertTrue(left.is_dir())
@@ -406,18 +352,19 @@ class NothingBeforeAnyVerb(Fixture):
 
 class CommandEndToEnd(Fixture):
 
-    def test_new_prints_the_id_and_path_and_list_finds_it(self) -> None:
+    def test_new_prints_the_id_and_path_and_ids_finds_it(self) -> None:
         text = self.run_main('ensure', '--task-id', '20261003T000000Z-1-0', '--title', TITLE, '--project-path', str(self.fake_root))
         path = memar_fs.task_dir('20261003T000000Z-1-0')
         self.assertIn('task_id: 20261003T000000Z-1-0', text)
         self.assertIn(f'path: {path}', text)
         self.assertTrue((path / 'task.yaml').is_file())
-        listed = self.run_main('list', '--status', 'active')
-        self.assertIn(f'20261003T000000Z-1-0  {TITLE}', listed)
+        with unittest.mock.patch.object(import_module('modules-plugable.management.task.services.ids_source'), 'records_rows', return_value=[]):
+            listed = self.run_main('ids', '--label', 'active')
+        self.assertEqual(listed.strip(), 'next:')
 
     def test_the_launcher_reaches_each_verbs_help(self) -> None:
         self.assertIn('one folder for the task you are about to do', run_help())
-        for verb, phrase in (('ensure', '--parent ID'), ('list', '--conversation ID'), ('claim', 'ID'), ('claims', 'N'), ('get-decisions-digest', '--conversation ID'), ('priority', 'ID'), ('depends-on', 'ID')):
+        for verb, phrase in (('ensure', '--parent ID'), ('list', '--conversation ID'), ('claim', 'ID'), ('claims', 'N'), ('get-decisions-digest', '--conversation ID'), ('depends-on', 'ID')):
             with self.subTest(verb=verb):
                 self.assertIn(phrase, run_help(verb))
 

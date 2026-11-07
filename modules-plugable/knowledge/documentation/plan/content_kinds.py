@@ -7,5 +7,5 @@ A kind of content is a template, so it is declared by the module that owns the
 template and by no central list: a word whose template is not a document of
 this folder is a label and not a kind.
 """
-TEMPLATE = 'plan.md'
+TEMPLATE = 'facet.md'
 KINDS = ('plan',)

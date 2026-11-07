@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/management/task/services/plan_file.py — a task's plan.md: what a plan is and how it is read, for the services that read and write it.
+"""modules-plugable/knowledge/documentation/plan/services/plan_text.py — a plan content: what a plan is and how it is read, for the services that read and write it.
 
 One format, imported by every service that touches a plan: `task_new` writes
 one, `task_find` reads one to list a task, `task_gc` reads one to
@@ -9,11 +9,13 @@ decide a sweep. A format known to several files but written in none would be
 several parsers for one shape, and a plan listed one way and swept another is
 the drift the shared `task_id` exists to avoid for ids.
 
-Why plan.md. A task that stops mid-work leaves a folder, and whoever comes
-next — another agent, or the same person tomorrow — needs what was asked and
-what comes next without the first task's context. plan.md is that record.
-The title is asked for when the plan is first written because an id says only
-when a task opened, not what it is about.
+A task that stops mid-work leaves a folder, and whoever comes next — another
+agent, or the same person tomorrow — needs what was asked and what comes next
+without the first task's context. Today that lives in the task's facts
+(`task.yaml`) and the latest content of kind plan on its timeline; this module
+reads the plan body and the facts fields that used to live in plan front
+matter. The title is asked for when the plan is first written because an id
+says only when a task opened, not what it is about.
 
 One task is one task. When work is finished is disputed for a conversation —
 the person may come back, a sub-agent that has reported may be handed more —
@@ -31,17 +33,10 @@ like the others rather than a mark beside them, so `list --status queued`
 finds the waiting tasks and the sweep, which keeps whatever is not complete, keeps
 them. The status line is rewritten (`set_status`) when a task is queued or
 claimed, and nothing else in the plan is touched. Several writers reach one
-plan — a claim, a priority, a person editing — so a rewrite is never a read
+plan — a claim, a person editing — so a rewrite is never a read
 followed blindly by a write that would put back what another changed
 meanwhile: it is checked against the plan as it is just before it lands, and
 lands whole (`task_plan_rewrite`).
-
-Which waiting task goes first is the plan's `priority` (`modules-plugable/knowledge/documentation/plan/primitive/priority.py`
-declares what it is). It is the plan's own because it is a fact about the task,
-read wherever the plan is read — `list`, `claims`, `digest` — and changed by
-anyone (`task_priority`), so it is one key rewritten in place
-(`set_priority`) like the status line, not a queue kept somewhere else that
-could disagree with the plans.
 
 What a waiting task is about, and what act it is, are the plan's `labels`
 (`modules/knowledge/label/primitive/label.py` declares what a label is;
@@ -49,7 +44,7 @@ What a waiting task is about, and what act it is, are the plan's `labels`
 carries): as many as the task needs, one `- Kind: word` line each in a block
 under the key, so that `claims` can give one agent the tasks of one topic and
 keep its context on it. A label is added or removed by one line
-(`task_plan_labels`), like the priority is rewritten in place.
+(`task_plan_labels`).
 
 One Status vocabulary serves every Memar document (modules-plugable/knowledge/documentation/documentation.md,
 section Status), declared once in `modules/knowledge/status/primitive/status.py`; the Statuses a plan may
@@ -64,15 +59,15 @@ the change, never here (the task that does the change, in its `services/` folder
 at one that is gone once its work is done, and a plan left in an earlier shape
 is rewritten by whoever keeps it.
 
-plan.md is scratch, not a document, and is reaped with its folder: a topic's
+A plan content is scratch, not a document, and is reaped with its folder: a topic's
 lasting open state belongs in that topic's handoff, and closing by type moves
 it there, so a plan that outlived its folder would be a second handoff nobody
 maintains.
 
 A plan is changed one front-matter field at a time, each field in a file of its own beside this one:
-`task_plan_status`, `task_plan_priority` and `task_plan_labels`, each
+`task_plan_status` and `task_plan_labels`, each
 with its field's words and checks, over `task_plan_rewrite`, the one way a plan's lines are
-replaced. This file holds what they and every reader share: the shape, the front matter, and the
+replaced. Priority_Rank is not a plan field: it is set through Thing. This file holds what they and every reader share: the shape, the front matter, and the
 reading.
 """
 from __future__ import annotations
@@ -90,7 +85,6 @@ REPORT = _m_record.REPORT
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 from modules.knowledge.label.primitive.label import Labels
-PLAN_NAME = PLAN.file_name
 EARLIER_SHAPE_REMEDY = "only today's shape is read, which `memar task ensure --help` shows; rewrite it in that shape"
 EARLIER_STATUS_WORDS = ('open', 'done')
 EARLIER_LABEL_KEYS = ('topic', 'kind')
@@ -114,7 +108,7 @@ def checked_title(title: str | None, *, required: bool) -> str | None:
             fail('a title is one line; this one holds a line break')
         title = title.strip() or None
     if title is None and required:
-        fail(f"--title is required: say in one line what the task is, for the folder's {PLAN_NAME}")
+        fail(f"--title is required: say in one line what the task is, for the folder's plan")
     return title
 
 def status_word(word: str) -> str:
@@ -126,21 +120,20 @@ def front_key(key: str) -> str:
     """KEY as the front matter writes it: the written form a record's key declares (`ID`, `Start Date`), else PascalCase, a capital for a one-word key."""
     return WRITTEN.get(key.lower(), key.capitalize())
 
-def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: str | None=None, conversation: str | None=None, status: str=Label_Active.key, priority: int | None=None, labels: Labels | None=None, depends_on: str | None=None) -> str:
-    """A new plan.md: front matter naming its task and carrying its status (active unless queued), the title as its heading, and the parts.
+def plan_skeleton(task: str, title: str, opened: str, project: Path, *, parent: str | None=None, conversation: str | None=None, status: str=Label_Active.key, labels: Labels | None=None, depends_on: str | None=None) -> str:
+    """A new plan content: front matter naming its task and carrying its status (active unless queued), the title as its heading, and the parts.
 
     TASK is the id of the task the plan belongs to, written into the
     record as its `ID` so that a reader finds it inside the document rather
     than by reading the name of the folder the record sits in
-    ([Documentation — Plan](../../../modules-plugable/knowledge/documentation/plan/plan.md)).
+    ([Documentation — Plan](../facet.md)). Facts of the task live in `task.yaml`.
     PARENT and CONVERSATION are written only for a task opened from another
-    one; a task without them is the first of its own conversation. PRIORITY
-    is written only when given; absent, the plan reads as `Priority.DEFAULT`.
+    one; a task without them is the first of its own conversation.
     LABELS is written as a block only when it holds a label: the caller has
-    checked each against its kind (`task_plan_labels`). DEPENDS_ON is written only when given, as the text of
+    checked each against its kind (`plan_label`). DEPENDS_ON is written only when given, as the text of
     the type that checked it (`modules-plugable/management/task/services/dependency.py`).
     """
-    given = {PlanKey.ID: task, PlanKey.TITLE: title, PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.PRIORITY: priority, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
+    given = {PlanKey.ID: task, PlanKey.TITLE: title, PlanKey.START_DATE: opened, PlanKey.PROJECT: project, PlanKey.PARENT: parent, PlanKey.CONVERSATION: conversation, PlanKey.LABELS: labels, PlanKey.DEPENDS_ON: depends_on}
     front = ['---']
     for key in PLAN.keys:
         if key is PlanKey.LABELS:
@@ -213,7 +206,7 @@ def read_plan(path: Path) -> Plan:
     written; nothing else gives a plan a status. A plan in an earlier shape
     reads as one with no status, and `plan_shape_problem` says why.
     """
-    if not path.exists() and path.name == PLAN_NAME:
+    if not path.exists():
         held = import_module('modules-plugable.management.task.services.task_files').plan_front(path.parent)
         if held is not None:
             return Plan(*held)
@@ -253,7 +246,7 @@ def plan_shape_problem(lines: list[str]) -> str | None:
         return None
     return f"its plan is in an earlier shape ({'; '.join(found)}); {EARLIER_SHAPE_REMEDY}"
 
-def plan_file_problem(path: Path) -> str | None:
+def plan_text_problem(path: Path) -> str | None:
     """`plan_shape_problem` of the plan at PATH; None when it is not in an earlier shape or cannot be read."""
     try:
         return plan_shape_problem(read_bytes(path).decode('utf-8-sig').splitlines())
@@ -263,7 +256,7 @@ def plan_file_problem(path: Path) -> str | None:
 def part_text(path: Path, part: str) -> str:
     """What PATH says under its `## PART` heading, up to the next `##`, stripped; empty when it has none."""
     held = None
-    if not path.exists() and path.name == PLAN_NAME:
+    if not path.exists():
         held = import_module('modules-plugable.management.task.services.task_files').plan_body(path.parent)
     lines = held.splitlines() if held is not None else read_bytes(path).decode('utf-8-sig').splitlines()
     found: list[str] | None = None

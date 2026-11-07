@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
 """modules-plugable/management/task/services/new.py — the verb `memar task ensure`: its help, and what it prints once a task's folder is open.
 
 Why one folder per task, under ONE root. Parallel agent tasks edit one
@@ -38,9 +37,9 @@ A task can be opened, or its written plan left, `--queued`: waiting for an
 agent to take it (`task_claim`) and hand it to a fresh sub-agent, rather
 than worked by the conversation that opened it. Only an active plan no one has
 claimed is queued again, so a task being worked, or one finished, is never
-put back in line. `--priority` says where in that line: written into a new
-plan, or set on the one that is there (`task_plan`), so queuing and ranking
-a task is one command. `--label KIND=WORD`, repeatable, says what the task is
+put back in line. `--priority` is owned by the ensure widget: after open it
+sets Priority_Rank through Thing, so queuing and ranking a task is one
+command without the ensure service doing Priority's work. `--label KIND=WORD`, repeatable, says what the task is
 about and what act it is, the same way (`task_plan_labels`); they are the
 task's own, never copied from the parent's, since a copy would hide the
 decision of what the new task is about. A topic is one the project declares;
@@ -85,8 +84,11 @@ its Request (said by the brief's `start` output).
 The folder itself is ensured by `task_ensure`, and its plan written or queued by
 `task_plan_write`; this file is the verb's face over them.
 """
+
 from __future__ import annotations
 from importlib import import_module
+_m_set_status = import_module('modules-plugable.knowledge.label.status.services.set_status')
+SET_STATUS_LINE = f'memar service {_m_set_status.SERVICE_SET} --thing ID --word WORD'
 from machine.plugable_import import load as plugable_load
 import argparse
 from typing import Callable
@@ -97,7 +99,6 @@ PLAN_BRIEF_COMMAND = _m_plan_brief.PLAN_BRIEF_COMMAND
 brief_text = _m_plan_brief.brief_text
 _m_ensure = import_module('modules-plugable.management.task.services.ensure')
 ENSURE_COMMAND = _m_ensure.ENSURE_COMMAND
-ensure_task = _m_ensure.ensure_task
 named_project = _m_ensure.named_project
 recorded_project = _m_ensure.recorded_project
 _m_depends = import_module('modules-plugable.management.task.services.depends')
@@ -109,28 +110,27 @@ in_project_location = _m_task_location.in_project_location
 memar_own_note = _m_task_location.memar_own_note
 project_location_note = _m_task_location.project_location_note
 unignored_note = _m_task_location.unignored_note
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
-MODEL_RULE = _m_plan_labels.MODEL_RULE
-TASK_KIND = _m_plan_labels.TASK_KIND
-TASK_KINDS = _m_plan_labels.TASK_KINDS
-TOPIC = _m_plan_labels.TOPIC
-kinds_listing = _m_plan_labels.kinds_listing
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+_m_plan_front = import_module('modules-plugable.knowledge.documentation.plan.services.plan_front')
+_m_plan_acts = import_module('modules-plugable.knowledge.documentation.plan.services.plan_acts')
+MODEL_RULE = _m_plan_acts.MODEL_RULE
+ACTS = _m_plan_acts.ACTS
+TOPIC = _m_plan_front.TOPIC
+kinds_listing = _m_plan_front.kinds_listing
+OPENED_CHAT_RULE = '/modules-plugable/management/task/rules/opened-chat-is-left-alone/opened-chat-is-left-alone.md'
+LATER_WORK_RULE = '/modules-plugable/management/task/rules/later-work-returns-to-its-task/later-work-returns-to-its-task.md'
 DELEGATION_MODEL_RULE = '/modules-plugable/management/task/rules/delegation-names-the-lowest-model/delegation-names-the-lowest-model.md'
 HAND_BACK_RULE = '/modules-plugable/management/task/rules/delegator-writes-the-refused-hand-back/delegator-writes-the-refused-hand-back.md'
 ABSTRACTION_RULE = '/modules/computer/software/rules/abstraction-first/abstraction-first.md'
 TESTS_RULE = '/modules/process/test/rules/tests-first-and-scoped/tests-first-and-scoped.md'
-_m_task_kind = import_module('modules.management.task.labels.task_kind')
-TaskKind = _m_task_kind.TaskKind
-_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
-Priority = _m_priority.Priority
+_m_acts = import_module('modules.management.agency.labels.acts')
+Acts = _m_acts.Acts
+Priority_Rank = import_module('modules-plugable.identity.thing.priority.primitive.rank').Priority_Rank
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 REPORT = _m_record.REPORT
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 accepts_contents = _m_task_files.accepts_contents
 plan_path = _m_task_files.plan_path
@@ -139,10 +139,6 @@ _m_post = import_module('modules-plugable.management.timeline.widgets.conversati
 POST_COMMAND = _m_post.POST_COMMAND
 _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
-_m_label_add = import_module('modules-plugable.management.task.services.label_add')
-LABEL_COMMAND = _m_label_add.LABEL_COMMAND
-_m_label_list = import_module('modules-plugable.management.task.services.label_list')
-LABELS_COMMAND = _m_label_list.LABELS_COMMAND
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 _m_new_chats = plugable_load('ai.services.get_new_chats_ask')
@@ -150,8 +146,8 @@ NEW_CHATS_COMMAND = _m_new_chats.NEW_CHATS_COMMAND
 DEPENDS_FLAG = f'--{DEPENDS_COMMAND}'
 
 def open_task(task_id: str | None, title: str | None, parent: str | None, queued: bool=False, priority: int | None=None, labels: list[str] | None=None, project: str | None=None, depends_on: list[str] | None=None) -> None:
-    """`ensure`: ensure the task on the records branch and print its id (never a filesystem path)."""
-    sid, path = ensure_task(task_id, title, parent, queued, priority, labels, project, depends_on)
+    ensure_open = import_module('modules-plugable.management.task.widgets.ensure.ensure').open
+    sid, path = ensure_open(task_id, title, parent, queued, priority, labels, project, depends_on)
     note(f'task_id: {sid}')
     for kind in ('plan', 'report'):
         note(f'{kind}: write it with `memar conversation {POST_COMMAND} --timeline {sid} --kind {kind} --content-file FILE` (or the text on standard input); it is added as the next content of kind {kind}, the current {kind} being the latest')
@@ -159,17 +155,16 @@ def open_task(task_id: str | None, title: str | None, parent: str | None, queued
         note('brief:')
         note(f'    {brief_text(sid)}')
     del path
-DESCRIPTION = f"""Ensure one task on the records branch, and print its id, plan, and\nreport. Open one for work to be done, whose check is a change applied or a\ndecision recorded, before any other work of that task. A task whose outcome is\njust that it was done — committing, a rename, one edit, a lookup, a handful of\ntool calls — opens none and starts no sub-agent. An inquiry — looking into Memar or\nthe work to answer the task's own questions — opens none either: it is a step\nof the task it serves, and what it finds is a content of that task. A research that gathers and concludes what many other tasks will build\non, as Lexer's did, is a `research` task of its own, recorded as a Research document. Open\na new task only for work that is truly independent. A problem found later in\na finished task's work goes back to that task's chat; a new task is\nfor work new in itself. Name the project with the flag for what you have, never\none in the other's place, and never turn a name you were told into a guessed\npath. A folder with no {PLAN_NAME} needs --title, one line saying what the task\nis; a folder that has one is continued as it is. Pass the printed id back as\n--task-id to continue the same task later. No filesystem path is printed:\nthe task lives on the records branch; write plan and report only with\n`memar conversation {POST_COMMAND}`.\n\nA task made now has contents, not\nfiles to write over: its plan is its latest content of kind plan and its\nreport its latest of kind report, each a text added with `memar conversation {POST_COMMAND}\n--timeline ID --kind plan|report --content-file FILE` (or the text on standard\ninput), which prints the number of the new content; a text is added and\nnever written over, and the same verb adds a text of any other kind (see its\n--help). A task still in the old shape keeps its {PLAN_NAME} and {REPORT_NAME}, never\noverwritten by this verb. The plan's sections are Request (what was asked,\nand what checks it is done), Why (the reason, in your own words), Steps (each\nlocal or delegated, each naming the governing documents it reads and the tests\nit adds or runs: a step that names none cannot start) and Next (what the next\ntask does first); keep its Status line current as the task moves. Before you end, write the report: what ran, the\ncheck, the result, its Status. An agent that ends a task someone else will\nread hands back short: the report's Status and path, and, only when it needs a\ndecision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`.\n\nBefore handing work to another agent, decide where it runs by two questions, and\nwrite both answers in your plan for each task: does your conversation need\nits result, and does it need the owner during the work (questions, critique,\nback-and-forth)? Its result needed and the owner not: a sub-agent, which returns\nonly its hand-back. The owner needed, whether or not you wait for it: a new chat\n(`memar ai {NEW_CHATS_COMMAND}`). A chat opened for a task whose result your work does not need\nis then left alone: do not read it, poll it, ask it for news, or follow it up, because every\nlook spends your context for nothing and the owner answers its questions there; what a later\ntask needs is in that task's report. Its result not needed: independent, written\nwhole and then left: its chat opened or listed for the owner when it needs the\nowner, and otherwise a sub-agent once your own work leaves room, or, to only\nadd work, queued (below). A chat with nothing to ask the owner only gives the\nowner one more chat to watch. The owner's\nwords never pick: "open a task", "create a chat", "ask an agent" name the\nwork, not where it runs, and an agent app's own default does not pick either. An\napp's tool that starts a chat gives it at most your own model, so work whose\nneed is above your own is a sub-agent with the model named, as the rule\n(`memar content resolve-path {MODEL_RULE}`) says.\n\nTo hand a task to a sub-agent: open its task with --parent (the task you\nwork in) and --label {TASK_KIND}=KIND, write the whole task into its {PLAN_NAME} — Request, the\ncheck that says it is done, the shape of its report, and Why — and hand the\nsub-agent only the brief `ensure` prints, which `memar ai {PLAN_BRIEF_COMMAND} ID` prints\nagain. Nothing else goes in the hand-over. Name the model when you start it, as the rule (`memar content resolve-path {MODEL_RULE}`) says: an\napp's default may not be the level the task needs. Write in the plan who checks the result, and name the lowest level that is enough, never the strongest by habit (`memar content resolve-path {DELEGATION_MODEL_RULE}`). If the harness refuses the sub-agent's report write, you write it (`memar content resolve-path {HAND_BACK_RULE}`). Before any code of a software requirement, its abstraction is written in Khayyam and approved, and its tests come first, run scoped and under a time limit (`memar content resolve-path {ABSTRACTION_RULE}`, `memar content resolve-path {TESTS_RULE}`). While it works, do what its result cannot\nchange and wait for the rest, as you would for the owner's answer. A task may\nstop at any time and for any time, as an issue may: one that stops to wait on\nanother records it in its plan's Depends_on (`{DEPENDS_COMMAND}`) and is Blocked.\n\nTo only add work, open each task with --queued and a --priority and a --label {TOPIC}=T\n(`memar label {LABELS_COMMAND}` lists them; `memar label {LABEL_COMMAND}` adds or removes one\nlater), post its plan, then leave it: never do a queued task's work\nin your own context. A question only the owner can answer is a `question` content of the task it concerns, and a large unrelated one a task of its own.\n\nTo continue a task another task left, find it with `memar task ids` or `memar content find --from tasks`,\nopen it with `--task-id ID`, and start from its Next."""
+DESCRIPTION = f"""Ensure one task on the records branch, and print its id, plan, and\nreport. Open one for work to be done, whose check is a change applied or a\ndecision recorded, before any other work of that task. A task whose outcome is\njust that it was done — committing, a rename, one edit, a lookup, a handful of\ntool calls — opens none and starts no sub-agent. An inquiry — looking into Memar or\nthe work to answer the task's own questions — opens none either: it is a step\nof the task it serves, and what it finds is a content of that task. A research that gathers and concludes what many other tasks will build\non, as Lexer's did, is a `research` task of its own, recorded as a Research document. Open\na new task only for work that is truly independent. A task is one thing asked with one check:\nlater work on a finished task's result (a problem found in it, a ruling applied to it, the rest of it\nan agent's limit left) goes back to that task, as a new plan content on the same task, and a ruling of the\nowner since is a content of kind `decision` on it; a full context, a plan a sub-agent can read or the end of a session is not a new thing asked,\nand a new task is for work new in itself (`memar content resolve-path {LATER_WORK_RULE}`). Name the project with the flag for what you have, never\none in the other's place, and never turn a name you were told into a guessed\npath. A task with no plan content needs --title, one line saying what the task\nis; one that has a plan is continued as it is. Pass the printed id back as\n--task-id to continue the same task later. No filesystem path is printed:\nthe task lives on the records branch; write plan and report only with\n`memar conversation {POST_COMMAND}`; set Status with `{SET_STATUS_LINE}`.\n\nA task holds contents, not files to write over: its plan is its latest content of\nkind plan and its report its latest of kind report, each a text added with\n`memar conversation {POST_COMMAND} --timeline ID --kind plan|report --content-file FILE`\n(or the text on standard input), which prints the number of the new content; a\ntext is added and never written over, and the same verb adds a text of any other\nkind (see its --help). Read plan and report with `memar git show-task-records`\n(by kind). The plan's sections are Request (what was asked, and what checks it is\ndone), Why (the reason, in your own words), Steps (each local or delegated, each\nnaming the governing documents it reads and the tests it adds or runs: a step that\nnames none cannot start) and Next (what the next task does first). Before you end,\npost the report (what ran, the check, the result) and set Status with\n`{SET_STATUS_LINE}`. An agent that ends a task someone else will read hands back\nshort: the Status and, only when it needs a decision, at most\n{REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`.\n\nBefore handing work to another agent, decide where it runs by two questions, and\nwrite both answers in your plan for each task: does your conversation need\nits result, and does it need the owner during the work (questions, critique,\nback-and-forth)? Its result needed and the owner not: a sub-agent, which returns\nonly its hand-back. The owner needed, whether or not you wait for it: a new chat\n(`memar ai {NEW_CHATS_COMMAND}`). A chat opened for a task whose result your work does not need\nis then left alone: do not read it, poll it, ask it for news, or follow it up, because every\nlook spends your context for nothing and the owner answers its questions there; what a later\ntask needs is in that task's report. Its result not needed: independent, opened with no --parent, written\nwhole and then left: its chat opened independent, never as your child session, so that none of its messages come back to you (`memar content resolve-path {OPENED_CHAT_RULE}`), or listed for the owner when it needs the\nowner, and otherwise a sub-agent once your own work leaves room, or, to only\nadd work, queued (below). A chat with nothing to ask the owner only gives the\nowner one more chat to watch. The owner's\nwords never pick: "open a task", "create a chat", "ask an agent" name the\nwork, not where it runs, and an agent app's own default does not pick either. An\napp's tool that starts a chat gives it at most your own model, so work whose\nneed is above your own is a sub-agent with the model named, as the rule\n(`memar content resolve-path {MODEL_RULE}`) says.\n\nA sub-agent or a new chat that continues a task is handed that task: the new plan content, the decision contents and the brief\n`memar ai {PLAN_BRIEF_COMMAND} ID` prints, and no task is opened for it.\nTo hand a thing new in itself to a sub-agent: open its task with --parent (the task you\nwork in) and --label ACT (one of {', '.join(ACTS)}), post the whole task as its plan content — Request, the\ncheck that says it is done, the shape of its report, and Why — and hand the\nsub-agent only the brief `ensure` prints, which `memar ai {PLAN_BRIEF_COMMAND} ID` prints\nagain. Nothing else goes in the hand-over. Name the model when you start it, as the rule (`memar content resolve-path {MODEL_RULE}`) says: an\napp's default may not be the level the task needs. Write in the plan who checks the result, and name the lowest level that is enough, never the strongest by habit (`memar content resolve-path {DELEGATION_MODEL_RULE}`). If the harness refuses the sub-agent's report post, you post it (`memar content resolve-path {HAND_BACK_RULE}`). Before any code of a software requirement, its abstraction is written in Khayyam and approved, and its tests come first, run scoped and under a time limit (`memar content resolve-path {ABSTRACTION_RULE}`, `memar content resolve-path {TESTS_RULE}`). While it works, do what its result cannot\nchange and wait for the rest, as you would for the owner's answer. A task may\nstop at any time and for any time, as an issue may: one that stops to wait on\nanother records it in its plan's Depends_on (`{DEPENDS_COMMAND}`) and is Blocked.\n\nTo only add work, open each task with --queued and a --priority and a --label {TOPIC}=T\n(the declared Topics are the label declarations in the `labels/` folders of the project's modules,\nfound with `memar content search`), post its plan, then leave it: never do a queued task's work\nin your own context. A question only the owner can answer is a `question` content of the task it concerns, and a large unrelated one a task of its own.\n\nTo continue a task another task left, find it with `memar task ids` or `memar content find --from tasks`,\nopen it with `--task-id ID`, and start from its Next."""
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar task ensure`."""
     opener = verbs.add_parser(ENSURE_COMMAND, help='ensure one task and print its id', description=DESCRIPTION)
     TaskId.add_flag(opener, 'reuse this task id instead of minting one (rerun is idempotent)')
-    opener.add_argument('--title', default=None, help=f'one line saying what the task is; required unless the folder has a {PLAN_NAME}')
-    opener.add_argument('--parent', default=None, metavar='ID', help='the task this task came from: the delegating task, or the previous task of the conversation')
+    opener.add_argument('--title', default=None, help='one line saying what the task is; required unless the task already has a plan content')
+    opener.add_argument('--parent', default=None, metavar='ID', help='the task this task came from: the delegating task whose result it needs; none for an independent task')
     opener.add_argument('--queued', action='store_true', help='leave the task queued for an agent to claim rather than open for you: a new plan is written queued, and an existing active one no one has claimed is queued')
-    opener.add_argument('--priority', type=int, default=None, metavar='N', help=f'how soon a queued task is taken, {Priority.range_words()}: the higher goes sooner; {Priority.default_words()}')
-    opener.add_argument('--label', action='append', default=None, metavar='KIND=WORD', help=f"a word that links the task to others (kinds {kinds_listing()}); may be repeated; add one only when another task is to be found by it. {TOPIC}=T is what the task is about: `claims` batches the queued tasks of one topic. {TASK_KIND}=K is what it is: {', '.join(TASK_KINDS)} ({', '.join((word for word in TaskKind.titles() if word not in TASK_KINDS))} are refused); the kind is only where the model the task needs starts: `memar content resolve-path {MODEL_RULE}` names the rule. Not copied from --parent")
+    opener.add_argument('--priority', type=int, default=None, metavar='N', help=f'after open, set Priority_Rank via Thing ({Priority_Rank.listing()}); higher goes sooner among queued peers; absence ranks as the lowest; owned by the ensure widget, not the ensure service')
+    opener.add_argument('--label', action='append', default=None, metavar='WORD or KIND=WORD', help=f"a label: an act word, or a word that links the task to others (kinds {kinds_listing()}); may be repeated; add one only when another task is to be found by it. {TOPIC}=T is what the task is about: `claims` batches the queued tasks of one topic. A bare act word, {', '.join(ACTS)}, is a label of its own, written without a kind ({', '.join((word for word in Acts.titles() if word not in ACTS))} are refused): it says what act the task starts with, and only where the model it needs starts, `memar content resolve-path {MODEL_RULE}` names the rule; a later act is a content posted with that word as its --kind. Not copied from --parent")
     opener.add_argument(DEPENDS_FLAG, action='append', default=None, metavar='REF', help=f"a task this one cannot start until it is Complete, ID or project/ID for a task of another project; may be repeated. Written to the plan's {PlanKey.DEPENDS_ON.written}; while one is not Complete the task is Blocked and cannot be claimed or started (`memar task {DEPENDS_COMMAND} --help`)")
     add_project_flags(opener, 'the project the task belongs to', required=True)
     return run

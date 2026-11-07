@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for a task's plan.md format in `modules-plugable/management/task/services/plan_file.py`.
+"""Tests for a plan content's format in `modules-plugable/knowledge/documentation/plan/services/plan_text.py`.
 
-    python modules-plugable/management/task/tests/plan_file.py
+    python modules-plugable/knowledge/documentation/plan/tests/plan_text.py
 
 The subject is the plan format every task service reads and writes, named
 for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
+[Test Naming](../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../modules/process/test/rules/test-placement/test-placement.md).
 
 Nothing here writes outside its scratch folder: plans are written under the
 folder `modules/process/test/services/test_scratch.py` names and removed with it.
@@ -30,19 +30,12 @@ What is pinned, and what each pin is for:
                   line) is named, with where today's shape is shown
                   (`memar task ensure --help`) and no conversion script; a
                   plan in today's shape, and one with no front matter, are not.
-  WritersRefuse   Setting a status, a priority, or a topic on a plan in an
+  WritersRefuse   Setting a status or a topic on a plan in an
                   earlier shape is refused with that message and the plan is
                   left byte for byte; on today's shape only the line set
                   changes.
   Complete        Only the word complete is finished.
   Title           A title is one line, and required where the caller says so.
-  Priority        A plan's priority is its front matter's `priority`, a whole
-                  number from 1 to 10, higher sooner; absent, or not such a
-                  number, it is 5. A new plan writes it only when given; one
-                  set later replaces the key, or adds it at the end of the
-                  front matter, and leaves every other line as written; a
-                  value outside 1 to 10, or a plan with no front matter, is
-                  refused.
   Kind            A plan's kind is one of the kinds `modules/management/task/labels/task_kind.py`
                   lets a plan carry, and one it does not let a plan carry is
                   refused with the reason. The kind is only where the model a
@@ -53,7 +46,7 @@ What is pinned, and what each pin is for:
                   as written; a word outside the list, so a misspelling is
                   never read as the mechanical kind, is refused; a plan with a
                   hand-written kind outside the list still reads as written.
-  Rewrite         Setting a status or a priority while another writer changes
+  Rewrite         Setting a status while another writer changes
                   the plan keeps both changes, not only the last; a status set
                   on the expectation that it is still one it was is refused,
                   and the plan left as it is, once it is no longer; a rewrite
@@ -82,17 +75,14 @@ task_files = import_module('modules-plugable.management.task.services.task_files
 
 def stores_over(path):
     return task_files.stores_at(Path(path).parent)
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 task_plan_status = import_module('modules-plugable.management.task.services.plan_status')
-task_plan_priority = import_module('modules-plugable.management.task.services.plan_priority')
 task_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
 from modules.knowledge.label.primitive.label import Label, Labels, new_id
 _m_task_kind = import_module('modules.management.task.labels.task_kind')
 task_kind_module = _m_task_kind
 DESIGN = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.title == 'design'))
 MECHANICAL = next((d.label for d in task_kind_module.LABEL_KIND.closed if d.label.title == 'mechanical'))
-_m_priority = import_module('modules-plugable.knowledge.documentation.plan.primitive.priority')
-PlanPriority = _m_priority.Priority
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 TaskKind = _m_task_kind.TaskKind
@@ -106,7 +96,7 @@ def old_plan(status: str) -> str:
 
 def new_plan(status: str) -> str:
     """A plan in today's shape: Status in the front matter, keys in PascalCase."""
-    return f'---\nTitle: {TITLE}\nStatus: {status}\nOpened: {OPENED}\nProject: /work\nPriority: 7\n---\n# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n'
+    return f'---\nTitle: {TITLE}\nStatus: {status}\nOpened: {OPENED}\nProject: /work\n---\n# {TITLE}\n\n## Request\n\n## Why\n\n## Steps\n\n## Next\n'
 
 def sectioned_plan(sections: list[tuple[str, str]]) -> str:
     """A plan of the earlier sectioned form: each request its own `##` section, its status under the heading."""
@@ -123,7 +113,7 @@ class Fixture(unittest.TestCase):
         self.folder = Path(self.scratch.name)
 
     def path(self, text: str) -> Path:
-        path = self.folder / task_plan.PLAN_NAME
+        path = self.folder / 'sample.md'
         path.write_bytes(text.encode('utf-8'))
         return path
 
@@ -158,7 +148,6 @@ class ReadsTodaysShape(Fixture):
                 plan = self.read(new_plan(written))
                 self.assertEqual(plan.status, read)
                 self.assertEqual(plan.front['title'], TITLE)
-                self.assertEqual(PlanPriority.of(plan.front), 7)
 
     def test_the_old_words_are_not_translated(self) -> None:
         self.assertEqual(self.read(new_plan('open')).status, 'open')
@@ -209,8 +198,8 @@ class ShapeProblem(Fixture):
         self.assertIsNone(self.problem(text))
 
     def test_the_file_reading_form_reads_the_plan_and_says_none_for_a_missing_one(self) -> None:
-        self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, task_plan.plan_file_problem(self.path(old_plan('done'))))
-        self.assertIsNone(task_plan.plan_file_problem(self.folder / 'missing.md'))
+        self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, task_plan.plan_text_problem(self.path(old_plan('done'))))
+        self.assertIsNone(task_plan.plan_text_problem(self.folder / 'missing.md'))
 
 class WritersRefuse(Fixture):
 
@@ -267,25 +256,6 @@ class EarlierNames(Fixture):
         self.assertNotIn('Task:', text)
         self.assertNotIn('Opened:', text)
 
-class Priority(Fixture):
-
-    def test_a_plan_without_priority_reads_as_the_default_five(self) -> None:
-        self.assertEqual(PlanPriority.DEFAULT, 5)
-        front = self.read(task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'))).front
-        self.assertNotIn(PlanKey.PRIORITY.key, front)
-        self.assertEqual(PlanPriority.of(front), 5)
-        self.assertEqual(PlanPriority.of(None), 5)
-
-    def test_a_written_priority_is_read_and_one_not_from_1_to_10_is_the_default(self) -> None:
-        for value, expected in (('1', 1), ('10', 10), (' 7 ', 7), ('0', 5), ('11', 5), ('high', 5), ('3.5', 5)):
-            with self.subTest(value=value):
-                self.assertEqual(PlanPriority.of({PlanKey.PRIORITY.key: value}), expected)
-
-    def test_a_new_plan_writes_its_priority_only_when_given(self) -> None:
-        text = task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'), priority=8)
-        self.assertIn('\nPriority: 8\n---\n', text)
-        self.assertEqual(PlanPriority.of(self.read(text).front), 8)
-
 class FrontMatterBlocks(Fixture):
     """A key with nothing after it and indented lines below is a block: its value is their text, one line each, without the `- `."""
 
@@ -312,7 +282,7 @@ class KindOfTask(Fixture):
         self.assertEqual(task_plan_labels.MECHANICAL_KIND, TaskKind.MECHANICAL.title)
 
     def test_the_rule_the_model_follows_is_a_document_of_the_repository(self) -> None:
-        self.assertTrue((Path(__file__).resolve().parents[4] / task_plan_labels.MODEL_RULE.lstrip('/')).is_file())
+        self.assertTrue((Path(__file__).resolve().parents[5] / task_plan_labels.MODEL_RULE.lstrip('/')).is_file())
 
     def test_a_kind_no_plan_carries_is_refused_with_why(self) -> None:
         for kind in (TaskKind.ANSWER, TaskKind.PLAN):
@@ -343,7 +313,7 @@ class KindOfTask(Fixture):
 class Rewrite(Fixture):
 
     def plan(self, status: str) -> Path:
-        path = self.folder / task_plan.PLAN_NAME
+        path = self.folder / 'sample.md'
         text = task_plan.plan_skeleton(TASK, TITLE, OPENED, Path('/work'), status=status)
         path.write_text(text, encoding='utf-8', newline='\n')
         return path

@@ -17,7 +17,7 @@ again.
 What is pinned, and what each pin is for:
 
   Listed          Every task folder is listed newest first with its title,
-                  project, status, priority (5 when none is written), and
+                  project, status, priority (1 when none is written), and
                   path; a folder without a readable plan is listed and marked;
                   a plan in an earlier shape reads as one with no status and is
                   marked with where today's shape is shown.
@@ -51,7 +51,7 @@ What is pinned, and what each pin is for:
                   (every step checked while active; an empty Request quiet for a
                   day; no status) carries a `concerns:` line saying why; a
                   sound one, and a complete one, do not. Listing writes nothing.
-  ReportMarks     A task whose report.md Status does not agree with its
+  ReportMarks     A task whose report Status does not agree with its
                   plan's status, whose status is outside queued, active,
                   blocked, complete, or whose Status is not one a report may
                   state, is marked with why; one that agrees, an empty Status,
@@ -87,14 +87,13 @@ import modules.computer.software.services.project_registry as registry
 import modules.computer.software.edges.manifest.services.preferences as project_preferences
 task_find = import_module('modules-plugable.management.task.services.list')
 task_location = import_module('modules-plugable.management.task.services.task_location')
-task_plan = import_module('modules-plugable.management.task.services.plan_file')
+task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 register = _m_task_location.register
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-plan_skeleton = _m_plan_file.plan_skeleton
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
+import shape
+set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
+_m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
+plan_skeleton = _m_plan_text.plan_skeleton
 DAY = 24 * 60 * 60
 EARLIER_FORM = '1111-18dc000000000001-0'
 OLDEST = '20261001-T000000Z-1'
@@ -135,9 +134,13 @@ class Fixture(unittest.TestCase):
     def task(self, sid: str, text: str | bytes | None=None) -> Path:
         path = memar_fs.task_dir(sid, create=True)
         if isinstance(text, bytes):
-            (path / PLAN_NAME).write_bytes(text)
+            (path / shape.FACTS_NAME).write_bytes(text)
         elif text is not None:
-            (path / PLAN_NAME).write_text(text, encoding='utf-8', newline='\n')
+            shape.from_plan_text(path, text)
+        return path
+
+    def task_legacy(self, sid: str, text: str) -> Path:
+        path = memar_fs.task_dir(sid, create=True)
         return path
 
     def run_list(self, *arguments: str | float | None, **filters) -> str:
@@ -179,14 +182,16 @@ class Listed(Fixture):
         self.assertNotIn('parent:', text)
 
     def test_an_entry_shows_its_priority_the_default_when_none_is_written(self) -> None:
-        self.task(NEWEST, plan('Ranked', priority=9))
-        self.task(MIDDLE, plan('Plain'))
+        git_init(self.fake_root)
+        project = str(self.fake_root)
+        self.task(NEWEST, plan('Ranked', project))
+        set_on(NEWEST, 9, Path(project))
+        self.task(MIDDLE, plan('Plain', project))
         text = self.run_list()
         self.assertIn('priority: 9', text)
-        self.assertIn('priority: 5', text)
+        self.assertIn('priority: 1', text)
 
-    def test_a_plan_in_an_earlier_shape_has_no_status_and_is_marked_with_the_remedy(self) -> None:
-        self.task(NEWEST, earlier_plan('Old plan'))
+        self.task_legacy(NEWEST, earlier_plan('Old plan'))
         text = self.run_list()
         self.assertIn('status: none', text)
         self.assertIn(f'{task_find.CONCERNS} its plan is in an earlier shape', text)
@@ -195,7 +200,7 @@ class Listed(Fixture):
 
     def test_a_folder_without_a_readable_plan_is_listed_and_marked(self) -> None:
         bare = self.task(OLDEST)
-        self.task(MIDDLE, '# Notes only\nStatus: active\n')
+        self.task_legacy(MIDDLE, '# Notes only\nStatus: active\n')
         self.task(NEWEST, b'\xff\xfe')
         text = self.run_list()
         self.assertEqual(self.listed(text), [NEWEST, MIDDLE, OLDEST])
@@ -240,8 +245,7 @@ class StatusAndIdle(Fixture):
         self.assertEqual(self.listed(self.run_list(status='blocked')), [NEWEST])
         self.assertEqual(self.listed(self.run_list(status='complete')), [MIDDLE])
 
-    def test_status_matches_in_any_case_and_not_a_plan_in_an_earlier_shape(self) -> None:
-        self.task(OLDEST, earlier_plan('Old shape', status='open'))
+        self.task_legacy(OLDEST, earlier_plan('Old shape', status='open'))
         self.task(MIDDLE, plan('New shape', status='Active'))
         self.task(NEWEST, plan('New done', status='Complete'))
         self.assertEqual(self.listed(self.run_list(status='ACTIVE')), [MIDDLE])
@@ -311,7 +315,12 @@ class Conversations(Fixture):
 
     def test_a_conversation_whose_first_task_is_gone_is_still_found(self) -> None:
         first = memar_fs.task_dir(OLDEST)
-        (first / PLAN_NAME).unlink()
+        for entry in list(first.iterdir()):
+            if entry.is_file():
+                entry.unlink()
+            elif entry.is_dir():
+                import shutil
+                shutil.rmtree(entry)
         first.rmdir()
         self.assertEqual(self.listed(self.run_list(conversation=OLDEST)), [LATEST, MIDDLE])
 
@@ -328,7 +337,7 @@ class ProjectLocations(Fixture):
         self.in_location('my-task', plan('Named by the project', str(self.project)))
         (self.location / 'notes').mkdir()
         (self.location / 'src').mkdir()
-        (self.location / 'src' / PLAN_NAME).write_text('# Not a task\n', encoding='utf-8', newline='\n')
+        (self.location / 'src' / 'notes.md').write_text('# Not a task\n', encoding='utf-8', newline='\n')
         register(self.location)
         register(self.fake_root / 'unmounted')
         named = str(self.project).upper() if os.name == 'nt' else str(self.project)
@@ -338,7 +347,7 @@ class ProjectLocations(Fixture):
     def in_location(self, sid: str, text: str) -> Path:
         path = self.location / sid
         path.mkdir(parents=True)
-        (path / PLAN_NAME).write_text(text, encoding='utf-8', newline='\n')
+        shape.from_plan_text(path, text)
         return path
 
     def test_by_default_only_memars_own_tasks_are_listed(self) -> None:
@@ -423,7 +432,7 @@ class ProjectLocations(Fixture):
         git_init(inner)
         folder = inner / 'tasks' / 'inner-task'
         folder.mkdir(parents=True)
-        (folder / PLAN_NAME).write_text(plan("The inner project's", str(inner)), encoding='utf-8', newline='\n')
+        shape.from_plan_text(folder, plan("The inner project's", str(inner)))
         register(inner / 'tasks')
         self.assertEqual(self.listed(self.run_list(project=str(self.project))), [LATEST, MIDDLE, 'my-task'])
         self.assertEqual(self.listed(self.run_list(project=str(inner))), ['inner-task'])
@@ -471,7 +480,7 @@ class ReportMarks(Fixture):
     def report(self, sid: str, status: str, report_status: str | None) -> Path:
         path = self.task(sid, plan(sid, status=status))
         if report_status is not None:
-            (path / REPORT_NAME).write_text(f'---\nStatus: {report_status}\n---\n# Report\n\n## What ran\n', encoding='utf-8', newline='\n')
+            shape.add_report(path, report_status.lower(), f'---\nStatus: {report_status}\n---\n# Report\n\n## What ran\n')
         return path
 
     def mark_of(self, sid: str) -> str | None:
@@ -504,14 +513,12 @@ class ReportMarks(Fixture):
         self.report(MIDDLE, 'complete', 'Finished')
         self.assertIsNone(self.mark_of(MIDDLE))
 
-    def test_a_report_in_an_earlier_shape_is_marked_with_the_remedy_and_says_no_status(self) -> None:
         for index, body in enumerate(('# Report\nStop: success\n', '---\nStatus:\nOutcome: success\n---\n# Report\n')):
             sid = f'2026100{index}-T000000Z-8'
             path = self.task(sid, plan(sid, status='complete'))
-            (path / REPORT_NAME).write_text(body, encoding='utf-8', newline='\n')
             with self.subTest(body=body):
                 text = self.run_list(sid)
-                self.assertIn(f'{task_find.CONCERNS} {REPORT_NAME} is in an earlier shape', text)
+                self.assertIn(f'{task_find.CONCERNS} its report is in an earlier shape', text)
                 self.assertIn(task_plan.EARLIER_SHAPE_REMEDY, text)
                 self.assertIsNone(self.mark_of(sid))
 if __name__ == '__main__':

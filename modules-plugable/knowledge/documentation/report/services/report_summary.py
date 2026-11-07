@@ -5,9 +5,8 @@ from importlib import import_module
 Result = import_module('modules-plugable.knowledge.documentation.report.primitive.result').Result
 WhatRan = import_module('modules-plugable.knowledge.documentation.report.primitive.what_ran').WhatRan
 from pathlib import Path
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
-report_part = _m_report_file.report_part
+_m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
+report_part = _m_report_text.report_part
 RESULT_HEADING = Result.heading
 RAN_HEADING = WhatRan.heading
 SUMMARY_LINES = 3
@@ -19,4 +18,4 @@ def summary_lines(folder: Path) -> list[str]:
         if lines:
             cut = [line if len(line) <= LINE_WIDTH else line[:LINE_WIDTH - 1] + '…' for line in lines]
             return [f'{label}: {cut[0]}', *cut[1:]]
-    return [f'no summary: {REPORT_NAME} has no {RESULT_HEADING} or {RAN_HEADING} text']
+    return [f'no summary: report has no {RESULT_HEADING} or {RAN_HEADING} text']

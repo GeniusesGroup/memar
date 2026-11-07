@@ -39,7 +39,7 @@ conversation = import_module(f'{base}.conversation')
 post = import_module(f'{base}.services.post')
 latest = import_module(f'{base}.services.latest')
 task_files = import_module('modules-plugable.management.task.services.task_memory')
-plan_file = import_module('modules-plugable.management.task.services.plan_file')
+plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 placement_errors = import_module('modules.management.timeline.errors.placement')
 bytes_errors = import_module('modules.knowledge.text.errors.bytes')
@@ -149,10 +149,11 @@ class Fixture(unittest.TestCase):
         self.addCleanup(located.stop)
 
     def made(self) -> None:
-        task_files.create_task(self.folder, 'T-1', 'A title', None, None, self.project, 'queued', 7, None, None)
+        task_files.create_task(self.folder, 'T-1', 'A title', None, None, self.project, 'queued', None, None)
 
     def old(self) -> None:
-        (self.folder / plan_file.PLAN_NAME).write_text('---\nTitle: T\nStatus: Queued\nStart Date: 2026-10-13T00:00:00Z\n---\n# T\n', encoding='utf-8', newline='\n')
+        import shape
+        shape.from_plan_text(self.folder, '---\nTitle: T\nStatus: Queued\nStart Date: 2026-10-13T00:00:00Z\nProject: P\n---\n# T\n')
 
     def posted(self, kind: str, text: str, author: str | None = None, refs: tuple = ()) -> str:
         out = io.StringIO()
@@ -266,13 +267,6 @@ class Verb(Fixture):
         said = self.refused(post.checked_kind, 'no-such-kind-anywhere', self.project)
         self.assertIn('no-such-kind-anywhere', said)
         self.assertEqual(post.checked_kind('plan', self.project), 'plan')
-
-    def test_a_task_in_the_old_shape_is_refused_by_name_and_untouched(self) -> None:
-        self.old()
-        before = sorted(path.name for path in self.folder.iterdir())
-        said = self.refused(self.posted, 'plan', 'x\n')
-        self.assertIn(task_files.OLD_SHAPE_READER, said)
-        self.assertEqual(sorted(path.name for path in self.folder.iterdir()), before)
 
     def test_a_uuid_that_is_no_timeline_is_refused(self) -> None:
         said = self.refused(self.posted, 'plan', 'x\n')
