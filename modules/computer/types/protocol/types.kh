@@ -1,11 +1,21 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp READONLY_Type in "modules/computer/adt/container/protocol/container.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Type_ID in "modules/computer/type/protocol/id.kh"
+tp Type_Value_Equality in "modules/computer/type/protocol/value-order.kh"
+tp Type_Value_Order in "modules/computer/type/protocol/value-order.kh"
+tp Error in "modules/process/error/protocol/error.kh"
 
-// DataTypes is a container that store some datatype
-tp Computer_Types ab {
+// Types is a container that stores some types
+tp Types ab {
     READONLY_Type
 }
+
+tp Register mt (self Types) (dt Type) (err Error)
+tp GetByID mt (self Types) (id Type_ID) (dt Type, err Error)
+tp GetValueEquality mt (self Types) (id Type_ID) (equality Type_Value_Equality, err Error)
+tp GetValueOrder mt (self Types) (id Type_ID) (order Type_Value_Order, err Error)
 
 // TODO(go-migrate):
 /*

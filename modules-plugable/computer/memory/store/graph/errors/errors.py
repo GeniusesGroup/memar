@@ -16,9 +16,10 @@ class Bad(enum.Enum):
     RELATION = 'BadRelation'
     SIDE = 'BadSide'
     FIELDS = 'BadFields'
+    ORDER = 'BadOrder'
 
     def summary(self) -> str:
-        return {Bad.LAYOUT: 'a layout that does not match the bound layout for the relation', Bad.LIMIT: 'a limit below one', Bad.REF: 'a side_ref that is not of the form or is not held', Bad.PATTERN: 'a pattern that is not of the form', Bad.EDGE: 'an edge that is not of the form', Bad.RELATION: 'a relation that is not a TypeUUID', Bad.SIDE: 'a side that is not the TypeUUID envelope', Bad.FIELDS: 'edge fields that are not a TypeUUID map'}[self]
+        return {Bad.LAYOUT: 'a layout that does not match the bound layout for the relation', Bad.LIMIT: 'a limit below one', Bad.REF: 'a side_ref that is not of the form or is not held', Bad.PATTERN: 'a pattern that is not of the form', Bad.EDGE: 'an edge that is not of the form', Bad.RELATION: 'a relation that is not a TypeUUID', Bad.SIDE: 'a side that is not the TypeUUID envelope', Bad.FIELDS: 'edge fields that are not a TypeUUID map', Bad.ORDER: 'an order by a field with no bound type registry, with a cursor, or with a type that does not declare an order'}[self]
 
 class NotLayable(Raised, ValueError):
 

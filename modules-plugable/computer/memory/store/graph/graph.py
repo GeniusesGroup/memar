@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
+import functools
+import json
 import struct
+import uuid
 from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Sequence
@@ -78,6 +81,7 @@ class Graph_ListSidesQuery:
     After: bytes = b''
     Limit: int = 0
     Descending: bool = False
+    OrderField: bytes = b''
 
 @dataclass(frozen=True)
 class Graph_Side:
@@ -147,6 +151,7 @@ class Graph_Store:
         self.layout = layout
         self.parameters = Parameters(compare_and_write=store.parameters.compare_and_write)
         self.limits = store.limits
+        self._types: Any = None
         self.capabilities = store.capabilities
 
     def get(self, addresses: Sequence[bytes]) -> Any:
@@ -386,8 +391,48 @@ class Graph_Store:
             return answer
         return refs
 
+    def bind_types(self, types: Any) -> 'Graph_Store':
+        self._types = types
+        return self
+
     def list_sides(self, query: Graph_ListSidesQuery) -> Any:
+        if query.OrderField:
+            return self._list_ordered(query)
         return self._list_direction(query.From, query.Relation, DIRECTION_OUT, query.After, query.Limit, query.Descending)
+
+    def _list_ordered(self, query: Graph_ListSidesQuery) -> Any:
+        if self._types is None or query.After:
+            return Refused(Refusal.MALFORMED, Bad.ORDER.summary())
+        order = self._types.get_value_order(query.OrderField)
+        if hasattr(order, 'summary'):
+            return Refused(Refusal.MALFORMED, order.summary())
+        sides = self._list_direction(query.From, query.Relation, DIRECTION_OUT, b'', 0, False)
+        if isinstance(sides, (Refused, Unavailable)):
+            return sides
+        key = str(uuid.UUID(bytes=query.OrderField))
+        held: list[tuple[Graph_Side, bytes]] = []
+        absent: list[Graph_Side] = []
+        for each in sides:
+            fields = _m_side.fields_map_or_refuse(each.Fields)
+            if fields is None:
+                return Refused(Refusal.MALFORMED, Bad.FIELDS.summary())
+            if key in fields:
+                held.append((each, json.dumps(fields[key], ensure_ascii=False, separators=(',', ':')).encode('utf-8')))
+            else:
+                absent.append(each)
+        failure: list[Any] = []
+
+        def compare(a: tuple[Graph_Side, bytes], b: tuple[Graph_Side, bytes]) -> int:
+            sign = order.compare_values(a[1], b[1])
+            if hasattr(sign, 'summary'):
+                failure.append(sign)
+                return 0
+            return sign
+        held.sort(key=functools.cmp_to_key(compare), reverse=query.Descending)
+        if failure:
+            return Refused(Refusal.MALFORMED, failure[0].summary())
+        items = [each for each, _ in held] + absent
+        return tuple(items[:query.Limit] if query.Limit else items)
 
     def _list_direction(self, frm: bytes, relation: bytes, direction: int, after: bytes, limit: int, descending: bool) -> Any:
         if limit < 0:

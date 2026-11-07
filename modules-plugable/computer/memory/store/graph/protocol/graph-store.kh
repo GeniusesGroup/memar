@@ -6,6 +6,7 @@ tp Store in "modules/computer/memory/store/protocol/store.kh"
 tp Store_Seam in "modules/computer/memory/store/protocol/store-seam.kh"
 tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
 tp W64 in "modules/math/integer/unsigned-64.kh"
+tp Types in "modules/computer/types/protocol/types.kh"
 tp Graph_Layout in "modules-plugable/computer/memory/store/graph/protocol/graph-layout.kh"
 tp Graph_PutEdge in "modules-plugable/computer/memory/store/graph/protocol/graph-put-edge.kh"
 tp Graph_PutEdges in "modules-plugable/computer/memory/store/graph/protocol/graph-put-edges.kh"
@@ -30,6 +31,8 @@ tp Graph_Store ab {
 tp Layable mt (self Graph_Store) (store Store) (can Boolean)
 
 tp Lay mt (self Graph_Store) (store Store, layout Graph_Layout) (laid Graph_Store, err Error)
+
+tp BindTypes mt (self Graph_Store) (types Types) (bound Graph_Store, err Error)
 
 tp PutEdge mt (self Graph_Store) (edge Graph_PutEdge) (ref Graph_SideRef, err Error)
 

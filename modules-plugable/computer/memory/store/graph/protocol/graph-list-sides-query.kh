@@ -16,3 +16,5 @@ tp GetAfter mt (self Graph_ListSidesQuery) () (after Graph_SideRef, given Boolea
 tp GetLimit mt (self Graph_ListSidesQuery) () (limit W32, given Boolean)
 
 tp GetDescending mt (self Graph_ListSidesQuery) () (descending Boolean)
+
+tp GetOrderField mt (self Graph_ListSidesQuery) () (field Computer_Buffer, given Boolean)

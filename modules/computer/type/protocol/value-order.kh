@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp I8 in "modules/math/integer/signed-8.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Type_Value_Equality ab
+
+tp ValuesEqual mt (self Type_Value_Equality) (a Computer_Buffer, b Computer_Buffer) (equal Boolean, err Error)
+
+tp Type_Value_Order ab {
+    Type_Value_Equality
+}
+
+tp CompareValues mt (self Type_Value_Order) (a Computer_Buffer, b Computer_Buffer) (sign I8, err Error)

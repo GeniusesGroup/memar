@@ -251,7 +251,7 @@ def own_error_types(module):
 class ErrorsFolder(unittest.TestCase):
 
     def test_the_errors_are_declared_in_the_errors_folder(self) -> None:
-        self.assertEqual([each.name for each in _m_errors.Bad], ['LAYOUT', 'LIMIT', 'REF', 'PATTERN', 'EDGE', 'RELATION', 'SIDE', 'FIELDS'])
+        self.assertEqual([each.name for each in _m_errors.Bad], ['LAYOUT', 'LIMIT', 'REF', 'PATTERN', 'EDGE', 'RELATION', 'SIDE', 'FIELDS', 'ORDER'])
         self.assertTrue(all((each.summary() for each in _m_errors.Bad)))
         self.assertTrue(issubclass(_m_errors.NotLayable, ValueError))
 
