@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for which files of a task folder are kept, in `modules-plugable/computer/git/services/keep.py`.
+"""Tests for which files of a task folder are kept, in `bundles/memar_git/services/keep.py`.
 
     python modules-plugable/management/task/tests/keep.py
 
@@ -38,12 +38,12 @@ import tempfile
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'bundles').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_keep = import_module('modules-plugable.computer.git.services.keep')
-Reason = import_module('modules-plugable.computer.git.services.keep').Reason
+task_keep = import_module('bundles.memar_git.services.keep')
+Reason = import_module('bundles.memar_git.services.keep').Reason
 
 class Fixture(unittest.TestCase):
 

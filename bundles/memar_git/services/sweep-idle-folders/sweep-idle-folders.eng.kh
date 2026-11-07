@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Sweep_Idle in "modules-plugable/computer/git/services/sweep-idle-folders/sweep-idle-folders.kh"
+tp Sweep_Idle in "bundles/memar_git/services/sweep-idle-folders/sweep-idle-folders.kh"
 
 tp Domain mt (self Sweep_Idle) () (s String) {
     CharacterRun_From.FromCharacterRun("Git")(s, VoidError)

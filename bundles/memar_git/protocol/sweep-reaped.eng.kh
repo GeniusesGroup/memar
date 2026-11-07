@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Sweep_Reaped in "modules-plugable/computer/git/protocol/sweep-reaped.kh"
+tp Sweep_Reaped in "bundles/memar_git/protocol/sweep-reaped.kh"
 
 tp Domain mt (self Sweep_Reaped) () (s String) {
     CharacterRun_From.FromCharacterRun("Git")(s, VoidError)

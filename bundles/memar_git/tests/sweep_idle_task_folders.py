@@ -24,14 +24,14 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'bundles').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_gc = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
-task_store = import_module('modules-plugable.computer.git.services.task_store')
-TASK_LOG_NAME = import_module('modules-plugable.computer.git.services.log').TASK_LOG_NAME
-log_path = import_module('modules-plugable.computer.git.services.log').log_path
+task_gc = import_module('bundles.memar_git.services.sweep_idle_task_folders')
+task_store = import_module('bundles.memar_git.services.task_store')
+TASK_LOG_NAME = import_module('bundles.memar_git.services.log').TASK_LOG_NAME
+log_path = import_module('bundles.memar_git.services.log').log_path
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
 SID = '20261001-T000000Z-1111'
@@ -64,7 +64,7 @@ class DailyFlush(Fixture):
         swept = task_gc.flush_records()
         self.assertIn(SID, swept.flushed)
         self.assertTrue(swept.tip)
-        held = import_module('modules-plugable.computer.git.services.branch').held(self.fake_root, SID)
+        held = import_module('bundles.memar_git.services.branch').held(self.fake_root, SID)
         self.assertIn(PLAN_NAME, held)
 
     def test_gc_prints_flushed_and_tip(self) -> None:

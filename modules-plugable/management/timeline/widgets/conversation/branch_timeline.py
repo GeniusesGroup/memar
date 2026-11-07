@@ -16,7 +16,7 @@ CONTENT_PATTERN = _m_files.CONTENT_PATTERN
 content_name = _m_files.content_name
 content_of = _m_files.content_of
 INSTANT_FORMAT = _m_files.INSTANT_FORMAT
-_m_task_store = import_module('modules-plugable.computer.git.services.task_store')
+_m_task_store = import_module('bundles.memar_git.services.task_store')
 
 class BranchTimeline:
 

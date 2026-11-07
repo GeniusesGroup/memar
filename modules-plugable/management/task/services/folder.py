@@ -34,7 +34,7 @@ read_facts = _m_task_files.read_facts
 DAY_SECONDS = 24 * 60 * 60
 
 def _store():
-    return import_module('modules-plugable.computer.git.services.task_store')
+    return import_module('bundles.memar_git.services.task_store')
 
 def _task_id(task) -> str:
     return task if isinstance(task, str) else Path(task).name

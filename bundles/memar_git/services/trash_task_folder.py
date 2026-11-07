@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/close.py — one task's folder moved to the OS trash, on its starter's word.
+"""bundles/memar_git/services/close.py — one task's folder moved to the OS trash, on its starter's word.
 
 The sweep in `task_gc` is how folders normally go; `close` remains for the
 case where the person who started the task has already said the work is

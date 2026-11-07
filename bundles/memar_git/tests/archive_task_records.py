@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for keeping a task's records in `modules-plugable/computer/git/services/archive_task_records.py`.
+"""Tests for keeping a task's records in `bundles/memar_git/services/archive_task_records.py`.
 
     python modules-plugable/management/task/tests/archive.py
 
@@ -69,14 +69,14 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'bundles').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
+task_archive = import_module('bundles.memar_git.services.archive_task_records')
 from modules.computer.software.services.project_registry import add_project
-Outcome = import_module('modules-plugable.computer.git.services.archive_task_records').Outcome
-State = import_module('modules-plugable.computer.git.services.archive_task_records').State
+Outcome = import_module('bundles.memar_git.services.archive_task_records').Outcome
+State = import_module('bundles.memar_git.services.archive_task_records').State
 NAME = 'example'
 BRANCH = memar_fs.RECORDS_BRANCH
 
@@ -364,7 +364,7 @@ class BranchNameIsOneConstant(unittest.TestCase):
         # The services moved out of bundles/memar into the module shelves, so the whole tree of code is read.
         # Match only the assignment that defines the constant — the branch name string alone is too common
         # when the records branch is named like the project (`memar`).
-        top = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
+        top = next(p for p in TESTS.parents if p.name == 'bundles').parent
         shelves = [top / name for name in ('bundles', 'modules', 'modules-plugable')]
         needle = f"RECORDS_BRANCH = '{BRANCH}'"
         spelled = sorted(path.relative_to(top).as_posix() for shelf in shelves for path in shelf.rglob('*.py') if not {'tests', 'temp'} & set(path.relative_to(top).parts) and needle in path.read_text(encoding='utf-8', errors='replace'))

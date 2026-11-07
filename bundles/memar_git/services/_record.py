@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""computer/git/services/_record.py — `record`: commit files onto a branch other than the one checked out, without touching HEAD, the shared index or the working tree.
+"""bundles/memar_git/services/_record.py — `record`: commit files onto a branch other than the one checked out, without touching HEAD, the shared index or the working tree.
 """
 from __future__ import annotations
 import argparse
@@ -96,7 +96,7 @@ def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str]
         parent = f'parent {tip}\n' if tip else ''
         body = f'tree {tree}\n{parent}author {author}\ncommitter {committer}\n\n{message}\n'
         made = plumb(['hash-object', '-t', 'commit', '-w', '--stdin'], root, data=body.encode('utf-8'))
-        moved, lock = patiently(['update-ref', '-m', 'modules-plugable/computer/git/services/_host_git_cli.py record', ref, made, tip or zero], root, lock_deadline())
+        moved, lock = patiently(['update-ref', '-m', 'bundles/memar_git/services/_host_git_cli.py record', ref, made, tip or zero], root, lock_deadline())
         if moved.returncode == 0:
             print(made)
             after = f' on {tip[:12]}' if tip else ', its first commit'

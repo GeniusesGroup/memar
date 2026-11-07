@@ -10,8 +10,7 @@ a hit on the branch is never overridden by a worktree copy under `.agents/tasks/
 """
 from __future__ import annotations
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
-_m_git_records = plugable_load('computer.git.services._git_records')
+_m_git_records = import_module('bundles.memar_git.services._git_records')
 git_records = _m_git_records
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH

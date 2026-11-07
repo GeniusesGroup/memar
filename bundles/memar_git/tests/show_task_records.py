@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for reading a task's records in `modules-plugable/computer/git/services/show.py`.
+"""Tests for reading a task's records in `bundles/memar_git/services/show.py`.
 
     python modules-plugable/management/task/tests/show.py
 
@@ -59,12 +59,12 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'bundles').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
-task_show = import_module('modules-plugable.computer.git.services.show_task_records')
+task_archive = import_module('bundles.memar_git.services.archive_task_records')
+task_show = import_module('bundles.memar_git.services.show_task_records')
 task_files = import_module('modules-plugable.management.task.services.task_files')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 from modules.computer.software.services.project_registry import add_project
@@ -83,8 +83,9 @@ class Fixture(unittest.TestCase):
         self.project = self.fake_root / 'work' / NAME
         self.project.mkdir(parents=True)
         add_project(NAME, self.project)
-        for args in (['init', '-q', '-b', 'main'], ['config', 'user.name', 'Test'], ['config', 'user.email', 't@example.org']):
-            subprocess.run(['git', '-C', str(self.project), *args], check=True, capture_output=True)
+        for root in (self.fake_root, self.project):
+            for args in (['init', '-q', '-b', 'main'], ['config', 'user.name', 'Test'], ['config', 'user.email', 't@example.org']):
+                subprocess.run(['git', '-C', str(root), *args], check=True, capture_output=True)
 
     def task(self, sid: str=SID) -> Path:
         folder = memar_fs.task_dir(sid, create=True)
@@ -105,7 +106,7 @@ class Fixture(unittest.TestCase):
         parser = argparse.ArgumentParser()
         verbs = parser.add_subparsers()
         run = task_show.describe(verbs)
-        flags = {'path': ['--project-path', str(self.project)], 'name': ['--project', NAME], None: []}[project]
+        flags = {'path': ['--project-path', str(self.project)], 'memar': ['--project-path', str(self.fake_root)], 'name': ['--project', NAME], None: []}[project]
         out = io.StringIO()
         try:
             with contextlib.redirect_stdout(out):
@@ -124,7 +125,8 @@ class ReadsTempFirst(Fixture):
         self.assertIsNone(stopped)
         self.assertIn('Folder report.', said)
         self.assertNotIn('Branch report.', said)
-        self.assertIn(str(folder / 'report.md'), said)
+        self.assertIn('=== report ===', said)
+        self.assertNotIn('report.md', said.split('=== report ===')[0])
 
     def test_a_file_the_folder_lacks_is_read_from_the_branch_and_says_so(self) -> None:
         folder = self.task()
@@ -134,7 +136,8 @@ class ReadsTempFirst(Fixture):
         self.assertIsNone(stopped)
         self.assertIn('Plan text.', said)
         self.assertIn('Branch report.', said)
-        self.assertIn(task_archive.reference(SID) + 'report.md', said)
+        self.assertIn('=== plan ===', said)
+        self.assertIn('=== report ===', said)
 
 class ReadsTheBranch(Fixture):
 
@@ -160,10 +163,15 @@ class ReadsTheBranch(Fixture):
         self.assertIsNone(stopped)
         self.assertIn('Plan text.', said)
 
-    def test_each_file_is_headed_by_its_name_and_where_it_came_from(self) -> None:
+    def test_plan_and_report_are_headed_by_kind_not_filename(self) -> None:
         self.archived_and_gone()
-        said, _ = self.show()
-        self.assertIn(f'=== plan.md ({task_archive.reference(SID)}plan.md)', said)
+        said, stopped = self.show()
+        self.assertIsNone(stopped)
+        self.assertIn('=== plan ===', said)
+        self.assertIn('=== report ===', said)
+        self.assertNotIn('=== plan.md', said)
+        self.assertNotIn('=== report.md', said)
+        self.assertNotIn('task.yaml', said)
 
 class Refusals(Fixture):
 
@@ -216,14 +224,15 @@ class HandBack(Fixture):
         folder = self.task()
         (folder / 'report.md').write_bytes(text)
 
-    def test_only_the_status_the_path_and_the_decisions_are_printed(self) -> None:
+    def test_only_the_status_timeline_and_decisions_are_printed(self) -> None:
         self.report(b'---\nTitle: T\nStatus: Complete\n---\n# Report\nSECRET body.\n\n## Decisions needed\n- Q1 a | b (recommended).\n')
         said, stopped = self.show('--hand-back')
         self.assertIsNone(stopped)
         lines = said.splitlines()
         self.assertEqual(lines[0], 'Status: complete')
-        self.assertTrue(lines[1].startswith('Report: ') and lines[1].endswith('report.md'))
+        self.assertTrue(lines[1].startswith('Report: ') and '(timeline)' in lines[1])
         self.assertEqual(lines[2:], ['- Q1 a | b (recommended).'])
+        self.assertNotIn('report.md', said)
         self.assertNotIn('SECRET', said)
 
     def test_a_report_with_too_many_decision_lines_is_named_not_a_hand_back(self) -> None:
@@ -243,24 +252,27 @@ class HandBack(Fixture):
     def test_a_task_with_no_folder_is_refused(self) -> None:
         said, stopped = self.show('--hand-back')
         self.assertEqual(said, '')
-        self.assertIn('no folder in temp', stopped)
+        self.assertIn(f'no task {SID}', stopped or '')
 class NewShape(Fixture):
 
     def new_task(self) -> Path:
         folder = memar_fs.task_dir(SID, create=True)
-        task_files.create_task(folder, SID, 'T', None, None, self.project, 'complete', None, None, None)
+        task_files.create_task(folder, SID, 'T', None, None, self.fake_root, 'complete', None, None)
         timeline_files.add_text(folder, 'plan', '# T\n\n## Request\nPlan text.\n', 'agent')
         timeline_files.add_text(folder, 'report', '# Report\nBranch report.\n\n## Decisions needed\n- Q1 a | b (recommended).\n', 'agent', fields={'status': 'complete'})
         return folder
 
-    def test_the_facts_and_every_content_are_printed_by_default_from_the_folder(self) -> None:
-        folder = self.new_task()
-        said, stopped = self.show()
+    def test_plan_and_report_are_printed_by_kind_from_the_folder(self) -> None:
+        self.new_task()
+        said, stopped = self.show(project='memar')
         self.assertIsNone(stopped)
-        self.assertIn('=== task.yaml', said)
+        self.assertIn('=== plan (content 1) ===', said)
+        self.assertIn('=== report (content 2) ===', said)
         self.assertIn('Plan text.', said)
         self.assertIn('Branch report.', said)
-        self.assertIn(str(folder / 'content.00002.md'), said)
+        self.assertNotIn('task.yaml', said)
+        self.assertNotIn('content.00001.md', said)
+        self.assertNotIn('content.00002.md', said)
 
     def test_a_folder_gone_is_read_from_the_branch_with_the_project_by_its_name(self) -> None:
         folder = self.new_task()
@@ -286,14 +298,16 @@ class NewShape(Fixture):
         task_archive.keep_records([folder])
         self.assertEqual(task_archive.standing(folder).state, task_archive.State.ARCHIVED)
 
-    def test_the_hand_back_is_read_from_the_latest_report_content(self) -> None:
-        folder = self.new_task()
-        said, stopped = self.show('--hand-back')
+    def test_the_hand_back_names_status_timeline_and_decisions_not_a_content_filename(self) -> None:
+        self.new_task()
+        said, stopped = self.show('--hand-back', project='memar')
         self.assertIsNone(stopped)
         lines = said.splitlines()
         self.assertEqual(lines[0], 'Status: complete')
-        self.assertEqual(lines[1], f"Report: {folder / 'content.00002.md'}")
+        self.assertTrue(lines[1].startswith('Report: ') and '(timeline)' in lines[1])
         self.assertEqual(lines[2:], ['- Q1 a | b (recommended).'])
+        self.assertNotIn('content.', said)
+        self.assertNotIn('task.yaml', said)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -37,7 +37,7 @@ _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 project_folder_of = _m_folder.project_folder_of
 read_task = _m_folder.read_task
-_m_gc = plugable_load('computer.git.services.sweep_idle_task_folders')
+_m_gc = import_module('bundles.memar_git.services.sweep_idle_task_folders')
 reap_once_a_day = _m_gc.reap_once_a_day
 _m_layout = import_module('modules-plugable.management.task.services.layout')
 ensure_folders = _m_layout.ensure_folders
@@ -48,7 +48,7 @@ in_project_location = _m_task_location.in_project_location
 project_location = _m_task_location.project_location
 project_root = _m_task_location.project_root
 register = _m_task_location.register
-_m_log = plugable_load('computer.git.services.log')
+_m_log = import_module('bundles.memar_git.services.log')
 record = _m_log.record
 _m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
 PLAN_NAME = _m_plan_file.PLAN_NAME
@@ -105,7 +105,7 @@ def linked_conversation(task_id: str, parent: str) -> str:
         fail('--parent names this task itself; name the task this task came from')
     folder = folder_of(parent)
     task = read_task(folder)
-    if not task.has_plan and not import_module('modules-plugable.computer.git.services.task_store').on_branch(parent):
+    if not task.has_plan and not import_module('bundles.memar_git.services.task_store').on_branch(parent):
         fail(f'no task {parent}: --parent names a task that is there, the one this task came from')
     return task.conversation
 
@@ -147,7 +147,7 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     sid = TaskId.new() if task_id is None else task_id
     folder = task_dir(sid)
     project = named_project(project)
-    store = import_module('modules-plugable.computer.git.services.task_store')
+    store = import_module('bundles.memar_git.services.task_store')
     if project is None and store.on_branch(sid):
         project = recorded_project(folder) or store.project_of_task(sid)
     if project is None and not has_plan(folder):

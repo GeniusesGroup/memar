@@ -13,8 +13,8 @@ text that names them asks it
 ([A Fact in Code Is Written Once](../../../../modules-plugable/knowledge/documentation/documentation.md#a-fact-in-code-is-written-once)).
 """
 from __future__ import annotations
-from machine.plugable_import import load as plugable_load
-_m_git_records = plugable_load('computer.git.services._git_records')
+from importlib import import_module
+_m_git_records = import_module('bundles.memar_git.services._git_records')
 reference = _m_git_records.reference
 import argparse
 from enum import Enum

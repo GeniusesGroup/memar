@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/task_store.py — tasks live on RECORDS_BRANCH only.
+"""bundles/memar_git/services/task_store.py — tasks live on RECORDS_BRANCH only.
 
 Durable trees are on `RECORDS_BRANCH` at `.agents/tasks/<id>/`. Services read and
 write bytes through git plumbing (`held` / `read` / `record`); there is no
@@ -66,6 +66,25 @@ def tree(task_id: str, project: Path | None=None) -> dict[str, bytes]:
         return {}
     return task_branch.read_many(project, task_id, list(held))
 
+_scanned: dict[str, dict[str, bytes]] | None = None
+
+def scan(names: tuple[str, ...]) -> None:
+    """Read NAMES of every task in one pass and keep them for `light` until the next write; a scan of all tasks calls this first."""
+    global _scanned
+    _scanned = task_branch.read_named_of_all(records_project(), names)
+
+def light(task_id: str, names: tuple[str, ...]) -> dict[str, bytes]:
+    """Those of NAMES that TASK_ID holds on the branch: from the last `scan` when it has the task, else read for this task alone."""
+    if _scanned is not None and task_id in _scanned:
+        return {name: data for name, data in _scanned[task_id].items() if name in names}
+    project = records_project()
+    held = task_branch.held(project, task_id)
+    return task_branch.read_many(project, task_id, [name for name in names if name in held])
+
+def forget_scan() -> None:
+    global _scanned
+    _scanned = None
+
 def resolve_project_name(named: str, project: Path | None=None) -> Path:
     if project is not None and Path(project).is_dir():
         return Path(project)
@@ -113,6 +132,7 @@ def put_files(task_id: str, updates: dict[str, bytes], project: Path | None=None
 def flush_bytes(task_id: str, files: dict[str, bytes], project: Path | None=None, *, message: str | None=None) -> str:
     """Replace TASK_ID's tree on the branch with FILES in one commit."""
     project = project or records_project()
+    forget_scan()
     with tempfile.TemporaryDirectory(dir=scratch_root(), prefix='record-') as workdir:
         scratch = Path(workdir)
         folder = scratch / 'tree'

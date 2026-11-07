@@ -43,7 +43,7 @@ class Claim:
 
     def _lock_dir(self) -> Path:
         from importlib import import_module
-        claim_dir = import_module('modules-plugable.computer.git.services.task_store').claim_dir
+        claim_dir = import_module('bundles.memar_git.services.task_store').claim_dir
         return claim_dir(self.task_id)
 
     @property

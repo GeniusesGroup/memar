@@ -242,7 +242,7 @@ class Digest(Fixture):
 class Sweep(Fixture):
 
     def test_a_finished_task_is_known_to_be_finished_and_an_active_one_is_not_in_either_shape(self) -> None:
-        sweep = import_module('modules-plugable.computer.git.services.sweep_idle_task_folders')
+        sweep = import_module('bundles.memar_git.services.sweep_idle_task_folders')
         for shape, folder in self.both('done', status='complete', report='complete'):
             with self.subTest(shape=shape):
                 self.assertIsNone(sweep.unfinished(folder_module.read_task(folder)))

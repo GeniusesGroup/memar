@@ -82,4 +82,4 @@ def ensure_dir_link(link: Path, target: Path, *, replace: bool=False) -> None:
     print(f'linked {link} -> {target}', file=sys.stderr)
 
 def host_git_cli() -> Path:
-    return import_module('bundles.memar.services.location.memar_location').checkout_root() / 'modules-plugable' / 'computer' / 'git' / 'services' / '_host_git_cli.py'
+    return import_module('bundles.memar.services.location.memar_location').checkout_root() / 'bundles' / 'memar_git' / 'services' / '_host_git_cli.py'

@@ -19,7 +19,7 @@ has_task = _m_task_files.has_task
 accepts_contents = _m_task_files.accepts_contents
 _m_branch_timeline = import_module('modules-plugable.management.timeline.widgets.conversation.branch_timeline')
 BranchTimeline = _m_branch_timeline.BranchTimeline
-_m_task_store = import_module('modules-plugable.computer.git.services.task_store')
+_m_task_store = import_module('bundles.memar_git.services.task_store')
 DOMAIN = 'conversation'
 
 

@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/_git_records.py — a project's records branch, read: what it holds, by whom it is cited, and the bytes of its files.
+"""bundles/memar_git/services/_git_records.py — a project's records branch, read: what it holds, by whom it is cited, and the bytes of its files.
 
 A project's tasks' records are kept on the branch `memar_location.RECORDS_BRANCH` of
 the project's own repository, each task at `RECORDS_RELATIVE/<id>/` in the branch's tree,
-by `memar git archive-task-records` (`modules-plugable/computer/git/services/archive_task_records.py`). Two modules read
+by `memar git archive-task-records` (`bundles/memar_git/services/archive_task_records.py`). Two modules read
 that branch: the task module, which prints one task by its id, and the content module,
 whose `find` and `search` read every task's records when they are asked to. The content
 module may not import the task module, which imports it, so what both need is here, on the

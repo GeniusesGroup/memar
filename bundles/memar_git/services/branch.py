@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/branch.py — a project's records branch: what it holds, and the one way a commit is added to it.
+"""bundles/memar_git/services/branch.py — a project's records branch: what it holds, and the one way a commit is added to it.
 
 A project's tasks' records are kept on a branch of the project's own
 repository (`memar_location.RECORDS_BRANCH`), each task
@@ -23,7 +23,7 @@ write" is a comparison of ids and not of text.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_git_records = import_module('modules-plugable.computer.git.services._git_records')
+_m_git_records = import_module('bundles.memar_git.services._git_records')
 git_records = _m_git_records
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
@@ -47,7 +47,7 @@ def _git(project: Path, args: list[str], data: bytes | None=None) -> subprocess.
     return subprocess.run([found, '-C', str(project), *args], input=data, capture_output=True)
 
 def reference(task_id: str) -> str:
-    """How a task's records are named wherever they are cited: the branch, a colon, the task's folder on it; `modules-plugable/computer/git/services/_git_records.py` holds the form, which the content module reads too."""
+    """How a task's records are named wherever they are cited: the branch, a colon, the task's folder on it; `bundles/memar_git/services/_git_records.py` holds the form, which the content module reads too."""
     return git_records.reference(task_id)
 
 def folder_on_branch(task_id: str) -> str:
@@ -113,6 +113,41 @@ def read_many(project: Path, task_id: str, relatives: list[str]) -> dict[str, by
             found[each] = out[at:at + size]
             at += size + 1
     return found
+
+def read_named_of_all(project: Path, names: tuple[str, ...]) -> dict[str, dict[str, bytes]]:
+    """For every task the branch holds, the bytes of those of NAMES it holds; a task that holds none of them has an empty map.
+
+    Three git starts however many tasks there are: one for the branch, one listing every file, one
+    reading the blobs asked for. A scan that asks `held` and `read_many` of each task starts git
+    for each task, and that cost grows with the tasks until no verb that scans can answer.
+    """
+    if not exists(project):
+        return {}
+    prefix = RECORDS_RELATIVE.as_posix() + '/'
+    listed = _git(project, ['ls-tree', '-r', '-z', f'refs/heads/{RECORDS_BRANCH}', '--', prefix])
+    if listed.returncode != 0:
+        return {}
+    tasks: dict[str, dict[str, str]] = {}
+    for record in filter(None, listed.stdout.decode('utf-8', 'replace').split('\x00')):
+        meta, _, path = record.partition('\t')
+        task_id, _, relative = path.removeprefix(prefix).partition('/')
+        wanted = tasks.setdefault(task_id, {})
+        if relative in names:
+            wanted[relative] = meta.split()[2]
+    blobs = sorted({blob for wanted in tasks.values() for blob in wanted.values()})
+    done = _git(project, ['cat-file', '--batch'], ''.join(f'{blob}\n' for blob in blobs).encode('utf-8'))
+    out, at, content = (done.stdout, 0, {})
+    for blob in blobs:
+        end = out.find(b'\n', at)
+        if end < 0:
+            break
+        header = out[at:end].decode('utf-8', 'replace').split()
+        at = end + 1
+        if len(header) == 3 and header[1] == 'blob':
+            size = int(header[2])
+            content[blob] = out[at:at + size]
+            at += size + 1
+    return {task_id: {name: content[blob] for name, blob in wanted.items() if blob in content} for task_id, wanted in tasks.items()}
 
 def blob_ids(project: Path, files: list[Path]) -> list[str]:
     """The blob id each of FILES would have in PROJECT's repository, the bytes as they are, in order."""

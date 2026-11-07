@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/keep.py — which files of a task folder its records keep, and which they leave out.
+"""bundles/memar_git/services/keep.py — which files of a task folder its records keep, and which they leave out.
 
 A task's record is its folder: the plan, the report, and every file the work
 made, filed by kind in the role folders (`task_layout`). A report links the

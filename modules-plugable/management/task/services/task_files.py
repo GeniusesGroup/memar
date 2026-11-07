@@ -75,7 +75,7 @@ def _task_id(task) -> str:
 
 
 def has_task(folder) -> bool:
-    store = import_module('modules-plugable.computer.git.services.task_store')
+    store = import_module('bundles.memar_git.services.task_store')
     if TASK_FACTS_NAME in store.tree(_task_id(folder)):
         return True
     return isinstance(folder, Path) and (folder / TASK_FACTS_NAME).is_file()
@@ -86,7 +86,7 @@ def has_plan(folder) -> bool:
 
 
 def read_facts(folder) -> dict | None:
-    store = import_module('modules-plugable.computer.git.services.task_store')
+    store = import_module('bundles.memar_git.services.task_store')
     data = store.tree(_task_id(folder)).get(TASK_FACTS_NAME)
     if data is not None:
         return _header.parse(data.decode('utf-8-sig').splitlines())
@@ -178,8 +178,8 @@ def facts_bytes(facts: dict) -> bytes:
 
 def write_facts(folder, facts: dict) -> None:
     """Write facts onto the records branch for the task id (folder Path or id string)."""
-    store = import_module('modules-plugable.computer.git.services.task_store')
-    refused = import_module('modules-plugable.computer.git.services.branch').RecordRefused
+    store = import_module('bundles.memar_git.services.task_store')
+    refused = import_module('bundles.memar_git.services.branch').RecordRefused
     task = _task_id(folder)
     project = facts.get('project')
     try:
@@ -194,8 +194,8 @@ def create_task(folder, task: str, title: str, parent, conversation, project: Pa
 
 
 def _yaml_write(task_id: str, fact: str, value: str, expected: str, project=None) -> str:
-    store = import_module('modules-plugable.computer.git.services.task_store')
-    refused = import_module('modules-plugable.computer.git.services.branch').RecordRefused
+    store = import_module('bundles.memar_git.services.task_store')
+    refused = import_module('bundles.memar_git.services.branch').RecordRefused
     data = store.tree(task_id).get(TASK_FACTS_NAME)
     if data is None:
         raise Task_Error_NotFound()

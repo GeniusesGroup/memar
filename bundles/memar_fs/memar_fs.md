@@ -12,14 +12,9 @@ This bundle offers the acts on files and folders that an agent or a tool reaches
 - **The explanation lives in the tool.** Every command verb (all but Copy) carries its constraint in its own help, and the listing of the command verbs reaches an agent with MCP as tools and an agent without it as a `commands` listing. No skill, project instruction or document needs to explain these acts in prose, or to name the path of a script.
 
 ## The verbs and what each refuses
-| Verb | What it is | Refusals |
-| --- | --- | --- |
-| Link | a directory link, a junction on Windows when needed | NotAFolder, LinkExists |
-| Tree | a folder drawn with ASCII branches; a link to a folder is followed, so a link cycle never ends | NotAFolder |
-| Copy | whether a copy differs from its source; a library service, not a command | none |
-| Trash | a non-empty list of paths to the recycle bin | PathAbsent |
+The verbs, their parameters, their refusals and their errors are declared in [`services/`](./services/) and [`errors/`](./errors/). A failure that is not the caller's call to change is an error of its own, never a refusal.
 
-Failures that are not the caller's call to change are errors of their own, never refusals: LinkFailed, TrashFailed, RootUnresolved. A refusal changes nothing, except that Trash goes path by path and the paths before the refused one are already done.
+A refusal changes nothing, except that Trash goes path by path and the paths before the refused one are already done.
 
 ## What it holds and what it leaves
 It holds the four acts and the listing, and the services they stand on: the lock a daily job or a run takes (`fs_lock`), the adapters of the text domain's edit port to a real folder (`text_edit_store`, `text_edit_lock`) and the wiring of `memar content edit` and `memar content write` to the text domain's edit service (`text_edit_command`, reached from `content_text_edit` and `content_text_write`), the trash mechanism the verbs call (`fs_trash`), the storage the files adapter of the store stands on (`storage`), and the helpers they share (`_fs_common`). What a Memar repository is (`bundles/memar/services/location/repository.py`), the folders a copy never carries (`bundles/memar/services/machine/copy_excluded.py`), the target folder of a run and the lock of one install at a time (`bundles/memar/services/install/services/target.py` and `lock.py`) are of the Memar bundle, which asks them of the machine and not of this bundle. The filesystem module keeps only its Khayyam abstractions, documents, manifest and rules.

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for closing a task in `modules-plugable/computer/git/services/close.py`.
+"""Tests for closing a task in `bundles/memar_git/services/close.py`.
 
     python modules-plugable/management/task/tests/close.py
 
@@ -61,17 +61,17 @@ import unittest
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'bundles').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_archive = import_module('modules-plugable.computer.git.services.archive_task_records')
-task_close = import_module('modules-plugable.computer.git.services.trash_task_folder')
+task_archive = import_module('bundles.memar_git.services.archive_task_records')
+task_close = import_module('bundles.memar_git.services.trash_task_folder')
 from modules.computer.software.services.project_registry import add_project
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 register = _m_task_location.register
-TASK_LOG_NAME = import_module('modules-plugable.computer.git.services.log').TASK_LOG_NAME
-log_path = import_module('modules-plugable.computer.git.services.log').log_path
+TASK_LOG_NAME = import_module('bundles.memar_git.services.log').TASK_LOG_NAME
+log_path = import_module('bundles.memar_git.services.log').log_path
 
 class Fixture(unittest.TestCase):
 

@@ -44,7 +44,7 @@ from typing import ClassVar, Iterable, NamedTuple
 from machine.console import fail
 from modules.computer.software.services.project_find import project_by_name
 from modules.computer.software.primitive.project_path import ProjectPath
-_m_branch = plugable_load('computer.git.services.branch')
+_m_branch = import_module('bundles.memar_git.services.branch')
 read_from_branch = _m_branch.read
 read_many_from_branch = _m_branch.read_many
 held_on_branch = _m_branch.held

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the task log in `modules-plugable/computer/git/services/log.py`.
+"""Tests for the task log in `bundles/memar_git/services/log.py`.
 
-    python modules-plugable/computer/git/tests/log.py
+    python bundles/memar_git/tests/log.py
 
 The subject is the log a person reads for a task that is gone, named for the
 file that holds it per
@@ -40,11 +40,11 @@ import unittest.mock
 from datetime import datetime
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'bundles').parent / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task_log = import_module('modules-plugable.computer.git.services.log')
+task_log = import_module('bundles.memar_git.services.log')
 
 class OneLinePerEvent(unittest.TestCase):
 

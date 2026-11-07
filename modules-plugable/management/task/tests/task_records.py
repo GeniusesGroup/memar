@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the source `tasks` of `memar content find` and `memar content search`, in `modules-plugable/management/task/services/task_records.py`, `modules/knowledge/text/primitive/corpus_source.py` and `modules-plugable/computer/git/services/_git_records.py`.
+"""Tests for the source `tasks` of `memar content find` and `memar content search`, in `modules-plugable/management/task/services/task_records.py`, `modules/knowledge/text/primitive/corpus_source.py` and `bundles/memar_git/services/_git_records.py`.
 
     python modules-plugable/management/task/tests/task_records.py
 

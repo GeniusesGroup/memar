@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/archive_task_records.py — a task's records kept on a branch of its project's repository.
+"""bundles/memar_git/services/archive_task_records.py — a task's records kept on a branch of its project's repository.
 
 A live task folder is scratch: it is swept once its task is done, and it
 holds a claim that means nothing on another clone. Its record is not scratch:
@@ -275,10 +275,15 @@ def keep_records(folders: Iterable[Path], *, write: bool=True) -> list[Kept]:
 def related_tasks(folder: Path) -> list[Path]:
     """FOLDER and every task folder whose Parent chain leads to it, FOLDER first, each once."""
     children: dict[str, list[Path]] = {}
-    for entry in task_folders(projects=True):
-        parent = read_task(entry).parent
-        if parent:
-            children.setdefault(parent, []).append(entry)
+    store = import_module('bundles.memar_git.services.task_store')
+    store.scan((TASK_FACTS_NAME, PLAN_NAME))
+    try:
+        for entry in task_folders(projects=True):
+            parent = read_task(entry).parent
+            if parent:
+                children.setdefault(parent, []).append(entry)
+    finally:
+        store.forget_scan()
     found = [folder]
     for each in found:
         for child in children.get(each.name, []):
@@ -288,7 +293,7 @@ def related_tasks(folder: Path) -> list[Path]:
 
 def archive(task_id: str) -> None:
     """`archive`: confirm TASK_ID is on the records branch (tasks are written there directly)."""
-    _m_task_store = import_module('modules-plugable.computer.git.services.task_store')
+    _m_task_store = import_module('bundles.memar_git.services.task_store')
     if not _m_task_store.on_branch(task_id):
         fail(f'no task {task_id} on {RECORDS_BRANCH}')
     note(f'on branch: {task_id}')

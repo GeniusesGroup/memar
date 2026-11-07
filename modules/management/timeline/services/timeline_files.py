@@ -45,7 +45,7 @@ def _tree(folder: Path) -> dict[str, bytes] | None:
     The store wins when the id is on the branch, even if a scratch Path for the
     same id exists — so a test mkdir under tasks_root cannot hide branch state.
     """
-    store = import_module('modules-plugable.computer.git.services.task_store')
+    store = import_module('bundles.memar_git.services.task_store')
     tid = _task_id(folder)
     if store.on_branch(tid):
         return store.tree(tid)
@@ -117,7 +117,7 @@ def write_content(folder: Path, kind: str, text: str, author: str, follows: int 
         name = content_name(number)
         tree = _tree(folder)
         if tree is not None:
-            store = import_module('modules-plugable.computer.git.services.task_store')
+            store = import_module('bundles.memar_git.services.task_store')
             tid = _task_id(folder)
             if name in tree:
                 continue

@@ -3,7 +3,7 @@
 
 """Tests for path-invoked git and filesystem constraint scripts.
 
-    python modules-plugable/computer/git/tests/host_constraints.py
+    python bundles/memar_git/tests/host_constraints.py
 
 Nothing here deletes anything but the scratch repository the commit tests make
 for themselves beside this file. The trash verbs are asserted by what they refuse
@@ -95,7 +95,7 @@ import unittest
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-REPO = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent
+REPO = next(p for p in TESTS.parents if p.name == 'bundles').parent
 GIT_SERVICES = TESTS.parent / 'services'
 GIT_CLI = GIT_SERVICES / '_host_git_cli.py'
 FS_SERVICES = REPO / 'modules-plugable' / 'computer' / 'memory' / 'filesystem' / 'services'
@@ -714,7 +714,7 @@ class CommitCitesItsTasks(ScratchRepository):
         import os
         import subprocess
         from importlib import import_module
-        folder_on_branch = import_module('modules-plugable.computer.git.services.branch').folder_on_branch
+        folder_on_branch = import_module('bundles.memar_git.services.branch').folder_on_branch
         env = dict(os.environ, GIT_INDEX_FILE=str(self.repo / '.git' / 'records.index'))
 
         def plumb(*args: str, data: str | None=None) -> str:
@@ -924,6 +924,6 @@ class RecordWritesAnotherBranch(ScratchRepository):
 def _load(name: str, file: str):
     """Load one helper module of the git shelf by its services file name."""
     stem = Path(file).stem
-    return importlib.import_module(f'modules-plugable.computer.git.services.{stem}')
+    return importlib.import_module(f'bundles.memar_git.services.{stem}')
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/log.py — the task log: one line per thing done to a task.
+"""bundles/memar_git/services/log.py — the task log: one line per thing done to a task.
 
 Opening, closing, reaping, moving, and each sweep are recorded here, one
 tab-separated line each — time, event, id, detail — under the Memar scratch

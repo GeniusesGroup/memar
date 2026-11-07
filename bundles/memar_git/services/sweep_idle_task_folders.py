@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/sweep_idle_task_folders.py — daily verify of the records branch.
+"""bundles/memar_git/services/sweep_idle_task_folders.py — daily verify of the records branch.
 
 Tasks live on `RECORDS_BRANCH` only; there is no task folder to trash or flush.
 The daily ensure verifies the tip and trims the task log.
@@ -23,8 +23,8 @@ import sys
 from datetime import datetime, timedelta, timezone
 from typing import Callable, NamedTuple
 from machine.console import note
-_m_task_store = import_module('modules-plugable.computer.git.services.task_store')
-_m_branch = import_module('modules-plugable.computer.git.services.branch')
+_m_task_store = import_module('bundles.memar_git.services.task_store')
+_m_branch = import_module('bundles.memar_git.services.branch')
 RecordRefused = _m_branch.RecordRefused
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 prune_registry = _m_task_location.prune_registry

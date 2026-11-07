@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/git/services/_host_git_cli.py — the path-invoked face of the git verbs, which now live in `bundles/memar_git`.
+"""bundles/memar_git/services/_host_git_cli.py — the path-invoked face of the git verbs, which now live in `bundles/memar_git`.
 
 Every verb but `record` forwards to the bundle (`memar git VERB`); `record` stays here with the records branch it serves
 and goes with it. This script goes when the last instruction naming its path is replaced by the verb.
@@ -10,18 +10,18 @@ from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-_REPO = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent
+_REPO = next(p for p in Path(__file__).resolve().parents if p.name == 'bundles').parent
 if __package__ in (None, ''):
     for _folder in (_REPO, _REPO / 'bundles' / 'memar', _REPO / 'bundles' / 'memar' / 'services'):
         if str(_folder) not in sys.path:
             sys.path.insert(0, str(_folder))
-    __package__ = 'modules-plugable.computer.git.services'
+    __package__ = 'bundles.memar_git.services'
 from importlib import import_module
 from . import _record as git_record
 from machine.console import use_utf8_stdio
 BUNDLE = 'bundles.memar_git.'
 VERBS = ('rename', 'remove', 'stash', 'restore', 'undelete', 'commit', 'uncommit', 'reindex')
-DESCRIPTION = '''modules-plugable/computer/git/services/_host_git_cli.py — git operations that do not lose work
+DESCRIPTION = '''bundles/memar_git/services/_host_git_cli.py — git operations that do not lose work
 
 Git already does all of this. Each command here does it with the constraint a
 task keeps wanting to skip, and says which in its own --help.

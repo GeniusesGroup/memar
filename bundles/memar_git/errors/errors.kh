@@ -113,3 +113,11 @@ tp Error_Memar_Git_Locked ab {
 tp Error_Memar_Git_MoveFailed ab {
     Error
 }
+
+tp Sweep_Error_NotMoved cp {
+	Error
+}
+
+tp Sweep_Error_LimitTooShort cp {
+	Error
+}

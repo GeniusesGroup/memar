@@ -27,7 +27,7 @@ def handle(task_id: str) -> str:
     return task_id
 
 def tree_names(task_id: str) -> list[str]:
-    held = import_module('modules-plugable.computer.git.services.task_store').tree(task_id)
+    held = import_module('bundles.memar_git.services.task_store').tree(task_id)
     if held:
         return sorted(held)
     folder = _m_folder.folder_of(task_id)

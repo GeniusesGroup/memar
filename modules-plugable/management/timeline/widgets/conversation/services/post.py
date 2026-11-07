@@ -81,7 +81,7 @@ def checked_refs(values, timeline: str) -> tuple:
 def post_text(timeline: str, kind: str, content_file: str | None, author: str | None, refs=()) -> int:
     held = checked_refs(refs, timeline)
     files = _m_conversation.file_timeline(timeline, held)
-    store = import_module('modules-plugable.computer.git.services.task_store')
+    store = import_module('bundles.memar_git.services.task_store')
     facts = read_facts(timeline) or {}
     project = (facts.get('project') or '').strip()
     word = checked_kind(kind, Path(project) if project else None)
