@@ -1,22 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/_git_records.py — a project's records branch, read: what it holds, by whom it is cited, and the bytes of its files.
-
-A project's tasks' records are kept on the branch `memar_location.RECORDS_BRANCH` of
-the project's own repository, each task at `RECORDS_RELATIVE/<id>/` in the branch's tree,
-by `memar git archive-task-records` (`bundles/memar_git/services/archive_task_records.py`). Two modules read
-that branch: the task module, which prints one task by its id, and the content module,
-whose `find` and `search` read every task's records when they are asked to. The content
-module may not import the task module, which imports it, so what both need is here, on the
-shelf below both: how a task's records are cited, and git's read-only commands on the
-branch. Nothing here writes; writing is `_host_git_cli.py record`'s, through the task module.
-
-Every function is told the repository and never reads the folder the process runs in. Each
-asks git with `-C PROJECT`, so a folder inside another repository is not taken for that
-repository: `is_top` says whether PROJECT is a repository's own top folder.
-"""
 from __future__ import annotations
+from bundles.memar_git.errors.errors import GitFailed, GitNotInstalled
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 RECORDS_BRANCH = _m_memar_location.RECORDS_BRANCH
@@ -24,27 +9,22 @@ RECORDS_RELATIVE = _m_memar_location.RECORDS_RELATIVE
 import os
 import shutil
 import subprocess
-import sys
 from pathlib import Path
 GIT_MISSING = '`git` is not on PATH; run the Memar bootstrap for this machine (install.sh / install.ps1), which installs it'
 
 def git(project: Path, args: list[str], data: bytes | None=None) -> subprocess.CompletedProcess[bytes]:
-    """Run git's ARGS on the repository PROJECT, never on the folder the process runs in."""
     found = shutil.which('git')
     if found is None:
-        sys.exit(f'error: {GIT_MISSING}')
+        raise GitNotInstalled(f'{GIT_MISSING}')
     return subprocess.run([found, '-C', str(project), *args], input=data, capture_output=True)
 
 def folder_on_branch(task_id: str) -> str:
-    """The path of a task's folder in the branch's tree, without a trailing slash."""
     return f'{RECORDS_RELATIVE.as_posix()}/{task_id}'
 
 def reference(task_id: str) -> str:
-    """How a task's records are named wherever they are cited: the branch, a colon, the task's folder on it."""
     return f'{RECORDS_BRANCH}:{folder_on_branch(task_id)}/'
 
 def is_top(project: Path) -> bool:
-    """Whether PROJECT is the top folder of a git repository: a folder inside another project's repository is not one."""
     if not project.is_dir():
         return False
     top = git(project, ['rev-parse', '--show-toplevel'])
@@ -54,11 +34,9 @@ def is_top(project: Path) -> bool:
     return told == os.path.normcase(str(project.resolve()))
 
 def exists(project: Path) -> bool:
-    """Whether PROJECT's repository has the records branch."""
     return git(project, ['rev-parse', '--verify', '-q', f'refs/heads/{RECORDS_BRANCH}']).returncode == 0
 
 def every_file(project: Path) -> list[tuple[str, str, str]]:
-    """Each file the branch holds under its tasks' folder, as (task id, path from the task's folder, blob id), in the branch's order; none without the branch."""
     prefix = RECORDS_RELATIVE.as_posix() + '/'
     listed = git(project, ['ls-tree', '-r', '-z', f'refs/heads/{RECORDS_BRANCH}', '--', prefix])
     if listed.returncode != 0:
@@ -73,13 +51,12 @@ def every_file(project: Path) -> list[tuple[str, str, str]]:
     return found
 
 def blobs(project: Path, ids: list[str]) -> dict[str, bytes]:
-    """The bytes of each blob of IDS in PROJECT's repository, read in one `git cat-file --batch`; an id git does not hold is left out."""
     if not ids:
         return {}
     asked = ''.join((f'{each}\n' for each in ids)).encode('ascii')
     done = git(project, ['cat-file', '--batch'], asked)
     if done.returncode != 0:
-        sys.exit(f"error: git cat-file failed: {done.stderr.decode('utf-8', 'replace').strip()}")
+        raise GitFailed(f"git cat-file failed: {done.stderr.decode('utf-8', 'replace').strip()}")
     out, at, found = (done.stdout, 0, {})
     while at < len(out):
         end = out.index(b'\n', at)

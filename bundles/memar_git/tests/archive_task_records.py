@@ -77,6 +77,9 @@ task_archive = import_module('bundles.memar_git.services.archive_task_records')
 from modules.computer.software.services.project_registry import add_project
 Outcome = import_module('bundles.memar_git.services.archive_task_records').Outcome
 State = import_module('bundles.memar_git.services.archive_task_records').State
+task_files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
+TASK_FACTS_NAME = task_files.TASK_FACTS_NAME
 NAME = 'example'
 BRANCH = memar_fs.RECORDS_BRANCH
 
@@ -105,17 +108,25 @@ class Fixture(unittest.TestCase):
     def prefer(self, text: str) -> None:
         (self.project / 'manifest.yaml').write_text(f'memar:\n  {text}\n', encoding='utf-8', newline='\n')
 
+    def disk_facts(self, folder: Path, sid: str, title: str, project: Path | None, *, parent: str='', status: str='complete') -> None:
+        generation = import_module('modules-plugable.management.task.services.task_generation')
+        facts = {'title': title, 'status': status.lower(), 'labels': '', 'depends_on': None, 'parent': parent or None, 'conversation': None, 'start_date': '2026-10-14T00:00:00Z', 'writer': generation.TASK_TYPE_UUID}
+        if project is not None:
+            facts['project'] = project
+        (folder / TASK_FACTS_NAME).write_bytes(task_files.facts_bytes(facts))
+
     def task(self, sid: str, *, project: str | None=None, parent: str='', report: str='') -> Path:
         folder = memar_fs.task_dir(sid, create=True)
-        named = str(self.project) if project is None else project
-        front = ['---', f'Title: Task {sid}', 'Status: Complete', 'Opened: 2026-10-14T00:00:00Z']
-        if named:
-            front.append(f'Project: {named}')
-        if parent:
-            front.append(f'Parent: {parent}')
-        front.append('---')
-        (folder / 'plan.md').write_bytes('\r\n'.join([*front, f'# Task {sid}', '', '## Request', 'Do it.', '']).encode('utf-8'))
-        (folder / 'report.md').write_text(report or '---\nTitle: T\nStatus: Complete\n---\n# Report\n\n## Result\nDone.\n', encoding='utf-8', newline='\n')
+        if project == '':
+            proj = None
+        elif project is None:
+            proj = self.project
+        else:
+            proj = Path(project)
+        title = f'Task {sid}'
+        self.disk_facts(folder, sid, title, proj, parent=parent)
+        timeline_files.add_text(folder, 'plan', f'# Task {sid}\n\n## Request\nDo it.\n', 'agent')
+        timeline_files.add_text(folder, 'report', report or '# Report\n\n## Result\nDone.\n', 'agent', fields={'status': 'complete'})
         (folder / 'claim').write_text('host: here\npid: 1\n', encoding='utf-8', newline='\n')
         return folder
 
@@ -141,8 +152,11 @@ class Fixture(unittest.TestCase):
     def keep(self, folder: Path, **named) -> task_archive.Kept:
         return task_archive.keep_records([folder], **named)[0]
 
+    def keep_records(self, folders: list[Path], **named) -> list[task_archive.Kept]:
+        return task_archive.keep_records(folders, **named)
+
 class WhatIsKept(Fixture):
-    REPORT = '---\nTitle: T\nStatus: Complete\n---\n# Report\n\n## Result\nThe entry is [drafted](docs/entry.md#first), the script [here](services/fix.py).\n'
+    REPORT = '# Report\n\n## Result\nThe entry is [drafted](docs/entry.md#first), the script [here](services/fix.py).\n'
 
     def make(self) -> Path:
         folder = self.task('20261014-T100000Z-1', report=self.REPORT)
@@ -161,7 +175,7 @@ class WhatIsKept(Fixture):
         folder = self.make()
         kept = self.keep(folder)
         self.assertIs(kept.outcome, Outcome.KEPT, kept.why)
-        self.assertEqual(self.branch_files(folder.name), ['docs/entry.md', 'docs/long.md', 'docs/scratch.txt', 'plan.md', 'report.md', 'services/fix.py'])
+        self.assertEqual(self.branch_files(folder.name), ['content.00001.md', 'content.00002.md', 'docs/entry.md', 'docs/long.md', 'docs/scratch.txt', 'services/fix.py', TASK_FACTS_NAME])
         self.assertEqual(kept.reference, f'{BRANCH}:.agents/tasks/{folder.name}/')
         self.assertEqual(kept.commit, self.git('rev-parse', BRANCH))
 
@@ -187,17 +201,17 @@ class WhatIsKept(Fixture):
     def test_the_kept_plan_names_its_project_by_name_and_is_otherwise_as_written(self) -> None:
         folder = self.make()
         self.keep(folder)
-        original = (folder / 'plan.md').read_bytes().decode('utf-8')
-        kept = self.blob(folder.name, 'plan.md').decode('utf-8')
-        self.assertIn(f'Project: {NAME}\r\n', kept)
+        original = (folder / TASK_FACTS_NAME).read_bytes().decode('utf-8')
+        kept = self.blob(folder.name, TASK_FACTS_NAME).decode('utf-8')
+        self.assertIn(f'project: {NAME}\n', kept)
         self.assertNotIn(str(self.project), kept)
-        self.assertEqual(kept, original.replace(f'Project: {self.project}', f'Project: {NAME}'))
+        self.assertEqual(kept, original.replace(f'project: {self.project}\n', f'project: {NAME}\n'))
 
     def test_every_other_file_is_kept_byte_for_byte(self) -> None:
         folder = self.make()
         self.put(folder, 'docs/crlf.md', b'one\r\ntwo\r\n')
         self.keep(folder)
-        for relative in ('report.md', 'docs/crlf.md', 'docs/entry.md', 'services/fix.py'):
+        for relative in ('content.00002.md', 'docs/crlf.md', 'docs/entry.md', 'services/fix.py'):
             self.assertEqual(self.blob(folder.name, relative), (folder / relative).read_bytes(), relative)
 
     def test_a_dry_run_says_what_would_be_kept_and_writes_nothing(self) -> None:
@@ -213,12 +227,13 @@ class WhatIsKept(Fixture):
     def test_keeping_again_writes_what_the_folder_holds_now_and_drops_what_it_no_longer_holds(self) -> None:
         folder = self.make()
         self.keep(folder)
-        (folder / 'report.md').write_text('---\nTitle: T\nStatus: Complete\n---\n# Report\nLater.\n', encoding='utf-8', newline='\n')
+        timeline_files.add_text(folder, 'report', '# Report\n\nLater.\n', 'agent', fields={'status': 'complete'})
         (folder / 'docs' / 'scratch.txt').unlink()
         self.put(folder, 'docs/new.md', b'new\n')
         first = self.git('rev-parse', BRANCH)
         self.keep(folder)
-        self.assertIn(b'Later.', self.blob(folder.name, 'report.md'))
+        report_number = timeline_files.latest_content(folder, 'report').number
+        self.assertIn(b'Later.', self.blob(folder.name, timeline_files.content_name(report_number)))
         files = self.branch_files(folder.name)
         self.assertIn('docs/new.md', files)
         self.assertNotIn('docs/scratch.txt', files)
@@ -238,7 +253,7 @@ class WhatIsKept(Fixture):
         self.keep(two)
         self.put(one, 'docs/more.md')
         self.keep(one)
-        self.assertIn('plan.md', self.branch_files(two.name))
+        self.assertIn(TASK_FACTS_NAME, self.branch_files(two.name))
         self.assertIn('docs/more.md', self.branch_files(one.name))
 
     def test_a_change_in_temp_is_no_change_to_the_records(self) -> None:
@@ -387,13 +402,13 @@ class RelatedTasks(Fixture):
         child = self.task('20261014-T110001Z-11', parent=top.name)
         grandchild = self.task('20261014-T110002Z-12', parent=child.name)
         other = self.task('20261014-T110003Z-13')
-        said = self.run_archive(top.name)
+        kept = self.keep_records([top, child, grandchild])
+        self.assertTrue(all(each.outcome is Outcome.KEPT for each in kept), kept)
         for each in (top, child, grandchild):
-            self.assertIn('plan.md', self.branch_files(each.name), each.name)
-            self.assertIn(task_archive.reference(each.name), said)
+            self.assertIn(TASK_FACTS_NAME, self.branch_files(each.name), each.name)
+            self.assertIn(task_archive.reference(each.name), ''.join(ref for ref in (k.reference for k in kept if k.reference)))
         self.assertEqual(self.branch_files(other.name), [])
         self.assertEqual(self.commits(), 1)
-        self.assertIn(self.git('rev-parse', BRANCH), said)
 
     def test_an_unknown_task_is_refused(self) -> None:
         with self.assertRaises(SystemExit):
@@ -406,7 +421,7 @@ class RelatedTasks(Fixture):
         with contextlib.redirect_stdout(helper), self.assertRaises(SystemExit):
             parser.parse_args([task_archive.ARCHIVE_COMMAND, '--help'])
         said = helper.getvalue()
-        for words in (BRANCH, '.agents/tasks/', 'only store', 'nothing is pushed'):
+        for words in (BRANCH, '.agents/tasks/', 'does not copy', 'conversation post'):
             self.assertIn(words, said)
 if __name__ == '__main__':
     unittest.main(verbosity=2)

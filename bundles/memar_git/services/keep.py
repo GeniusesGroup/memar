@@ -1,30 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/keep.py — which files of a task folder its records keep, and which they leave out.
-
-A task's record is its folder: the plan, the report, and every file the work
-made, filed by kind in the role folders (`task_layout`). A report links the
-files it presents; a file it does not link may still be what a later task
-needs, so the folder is kept whole and only what has no
-place in a record is left out:
-
-    the claim            Memar's mark that an agent holds the task, meaningless on another clone
-    __pycache__          a cache the interpreter makes, rebuilt on demand
-    a .git part          a repository inside the folder (a test's scratch repository): a path
-                         with that part cannot be a tree entry of another repository
-    a link               not a file, and it may point out of the folder
-    the folder's `temp`  what the work made that the record does not need (`task_temp`)
-    a binary file        a NUL in its first BINARY_PROBE_BYTES bytes: an archive, a cache, an index
-    a large file         over KEEP_LIMIT_BYTES and not a document; a document, written text, is
-                         kept at any size, since text is the record
-    a name a manifest    holding a tab or a line break, which the file `_host_git_cli.py record`
-    cannot carry         reads cannot hold
-
-Each leave-out is reported with its reason and its size, a folder once with
-the files it held, so the commit that records the task says what it did not
-keep and why (`task_archive`).
-"""
 from __future__ import annotations
 from importlib import import_module
 import os
@@ -45,7 +20,6 @@ CACHE_FOLDER = '__pycache__'
 GIT_PART = '.git'
 
 class Reason(Enum):
-    """Why a path is left out of a task's records."""
     CLAIM = "Memar's claim, not part of the record"
     CACHE = 'a Python cache, rebuilt on demand'
     GIT = 'a .git part: a repository inside the task'
@@ -60,19 +34,16 @@ class Reason(Enum):
         return self.value
 
 class Left(NamedTuple):
-    """One path left out: where (a folder once, for the files it held), why, how many files, how many bytes."""
     path: str
     reason: Reason
     files: int
     size: int
 
 class Selection(NamedTuple):
-    """What a task folder's records keep, as posix paths from the folder, sorted; and what they leave out."""
     kept: tuple[str, ...]
     left: tuple[Left, ...]
 
 def _measured(path: Path) -> tuple[int, int]:
-    """How many files PATH holds, and their bytes: PATH itself when a file."""
     if not path.is_dir() or path.is_symlink():
         try:
             return (1, path.lstat().st_size)
@@ -105,7 +76,6 @@ def _folder_reason(name: str, at_top: bool) -> Reason | None:
     return None
 
 def select(folder: Path) -> Selection:
-    """The files of FOLDER its records keep, and the paths they leave out."""
     kept: list[str] = []
     left: list[Left] = []
 

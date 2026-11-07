@@ -42,6 +42,20 @@ _LAYOUT_VALUES = Graph_Default_Layout_Value_Codec()
 _pack = _m_address.pack
 _take = _m_address.take
 
+LAYOUT_KEY = 'graph-layout'
+GRAPH_BINDING = 'graph'
+LAYOUT_WORDS = {'compact': LAYOUT_COMPACT, 'per-edge': LAYOUT_PER_EDGE}
+
+def layout_of(project: Any) -> tuple[int | None, str]:
+    preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
+    values = preferences.class_values_preference(project, LAYOUT_KEY)
+    if values is None:
+        return (None, f'`{LAYOUT_KEY}` is not `graph=layout` pairs separated by commas, each class once')
+    word = values.get(GRAPH_BINDING, 'compact')
+    if word not in LAYOUT_WORDS:
+        return (None, f'`{word}` is not a layout of `{LAYOUT_KEY}` (' + ', '.join(LAYOUT_WORDS) + ')')
+    return (LAYOUT_WORDS[word], '')
+
 def layable(store: Any) -> bool:
     p = store.parameters
     return p.address_length is None and (not p.dense) and (p.value_length is None)
@@ -94,6 +108,7 @@ class Graph_Pattern_Step:
     ToSlot: int
     FieldPrefix: bytes = b''
     RequireFieldPrefix: bool = False
+    Absent: bool = False
 
 @dataclass(frozen=True)
 class Graph_Pattern:
@@ -601,9 +616,12 @@ class Graph_Store:
         sides = self._expand_sides(bound[step.FromSlot].Vertex, step.Relation, step.Direction)
         if isinstance(sides, (Refused, Unavailable)):
             return sides
-        for each in sides:
-            if step.RequireFieldPrefix and not each.Fields.startswith(step.FieldPrefix):
-                continue
+        passing = [each for each in sides if not step.RequireFieldPrefix or each.Fields.startswith(step.FieldPrefix)]
+        if step.Absent:
+            if passing:
+                return None
+            return self._match_steps(steps, index + 1, bound, rows, limit)
+        for each in passing:
             nxt = dict(bound)
             nxt[step.ToSlot] = Graph_Binding(step.ToSlot, each.To, each.Ref, True)
             err = self._match_steps(steps, index + 1, nxt, rows, limit)

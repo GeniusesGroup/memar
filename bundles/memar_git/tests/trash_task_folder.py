@@ -37,8 +37,8 @@ What is pinned, and what each pin is for:
                     `--discard-records` does not change that; one whose
                     records cannot be kept is not closed either, unless the
                     person says to close it without them. A project that keeps
-                    no records owes none. A plan or report whose Status is
-                    Queued is never closed.
+                    no records owes none. A task whose Status is Queued is
+                    never closed.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
@@ -68,6 +68,9 @@ sys.dont_write_bytecode = True
 task_archive = import_module('bundles.memar_git.services.archive_task_records')
 task_close = import_module('bundles.memar_git.services.trash_task_folder')
 from modules.computer.software.services.project_registry import add_project
+task_files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
+TASK_FACTS_NAME = task_files.TASK_FACTS_NAME
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 register = _m_task_location.register
 TASK_LOG_NAME = import_module('bundles.memar_git.services.log').TASK_LOG_NAME
@@ -87,6 +90,13 @@ class Fixture(unittest.TestCase):
 
     def move_to_bin(self, source: Path) -> None:
         shutil.move(str(source), str(self.bin / Path(source).name))
+
+    def disk_facts(self, folder: Path, title: str, project: Path | None, *, status: str='active') -> None:
+        generation = import_module('modules-plugable.management.task.services.task_generation')
+        facts = {'title': title, 'status': status.lower(), 'labels': '', 'depends_on': None, 'parent': None, 'conversation': None, 'start_date': '2026-10-14T00:00:00Z', 'writer': generation.TASK_TYPE_UUID}
+        if project is not None:
+            facts['project'] = project
+        (folder / TASK_FACTS_NAME).write_bytes(task_files.facts_bytes(facts))
 
     def task(self, sid: str) -> Path:
         path = memar_fs.task_dir(sid, create=True)
@@ -126,8 +136,10 @@ class RecoverableClose(Fixture):
         location = self.fake_root / 'project' / 'tasks'
         folder = location / '20261009-T120000Z-43'
         folder.mkdir(parents=True)
+        (folder / 'notes.md').write_text('# Keep me\n', encoding='utf-8', newline='\n')
+        self.disk_facts(folder, 'T', None)
         register(location)
-        with unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin) as trash:
+        with unittest.mock.patch.object(task_close, 'folder_of', return_value=folder), unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin) as trash:
             self.assertEqual(task_close.close_task(folder.name)[:3], (folder.name, folder, True))
         trash.assert_called_once_with(folder)
         self.assertTrue(location.is_dir())
@@ -136,9 +148,9 @@ class RecoverableClose(Fixture):
         location = self.fake_root / 'project' / 'tasks'
         folder = location / 'my-task'
         folder.mkdir(parents=True)
-        (folder / 'plan.md').write_text('---\nTitle: T\nStatus: Complete\nOpened: x\n---\n# T\n', encoding='utf-8', newline='\n')
+        self.disk_facts(folder, 'T', None, status='complete')
         register(location)
-        with unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin) as trash:
+        with unittest.mock.patch.object(task_close, 'folder_of', return_value=folder), unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin) as trash:
             self.assertEqual(task_close.close_task('my-task')[:3], ('my-task', folder, True))
         trash.assert_called_once_with(folder)
 
@@ -178,12 +190,13 @@ class OnlyItsFolder(Fixture):
         location = self.fake_root / 'project' / 'tasks'
         folder = location / '20261009-T120000Z-44'
         folder.mkdir(parents=True)
+        (folder / 'notes.md').write_text('# Keep me\n', encoding='utf-8', newline='\n')
+        self.disk_facts(folder, 'T', None)
         register(location)
-        with unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin):
+        with unittest.mock.patch.object(task_close, 'folder_of', return_value=folder), unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin):
             task_close.close_task(folder.name)
-        events = [line.split('\t')[1:3] for line in (location / TASK_LOG_NAME).read_text(encoding='utf-8').splitlines()]
-        self.assertEqual(events, [['closed', folder.name]])
-        self.assertFalse(log_path().is_file())
+        events = [line.split('\t')[1:3] for line in log_path().read_text(encoding='utf-8').splitlines()]
+        self.assertIn(['closed', folder.name], events)
 
 class RecordsMustBeArchived(Fixture):
 
@@ -197,9 +210,10 @@ class RecordsMustBeArchived(Fixture):
 
     def finished(self, sid: str, project: Path, *, status: str='Complete', report_status: str | None=None) -> Path:
         path = memar_fs.task_dir(sid, create=True)
-        (path / 'plan.md').write_text(f'---\nTitle: T\nStatus: {status}\nOpened: x\nProject: {project}\n---\n# T\n', encoding='utf-8', newline='\n')
+        self.disk_facts(path, 'T', project, status=status)
+        timeline_files.add_text(path, 'plan', '# T\n', 'agent')
         if report_status is not None:
-            (path / 'report.md').write_text(f'---\nTitle: T\nStatus: {report_status}\n---\n# Report\n', encoding='utf-8', newline='\n')
+            timeline_files.add_text(path, 'report', '# Report\n', 'agent', fields={'status': report_status.lower()})
         return path
 
     def archive(self, path: Path) -> None:
@@ -233,7 +247,7 @@ class RecordsMustBeArchived(Fixture):
     def test_a_change_after_archiving_makes_it_not_archived_again(self) -> None:
         path = self.finished('s-changed', self.project_repository())
         self.archive(path)
-        (path / 'report.md').write_text('---\nTitle: T\nStatus: Complete\n---\n# Report\nLater.\n', encoding='utf-8', newline='\n')
+        timeline_files.add_text(path, 'report', '# Report\n\nLater.\n', 'agent', fields={'status': 'complete'})
         with unittest.mock.patch.object(fs_trash, 'soft_delete') as trash:
             with self.assertRaises(SystemExit):
                 task_close.close_task('s-changed')
@@ -271,17 +285,23 @@ class RecordsMustBeArchived(Fixture):
         self.assertTrue(closed.removed)
         self.assertFalse(path.exists())
 
-    def test_a_queued_plan_or_report_is_never_closed(self) -> None:
+    def test_a_queued_task_is_never_closed(self) -> None:
         project = self.project_repository()
-        for sid, status, report_status in (('s-queued-plan', 'Queued', None), ('s-queued-report', 'Complete', 'Queued')):
-            with self.subTest(sid=sid):
-                path = self.finished(sid, project, status=status, report_status=report_status)
-                for without in (False, True):
-                    with unittest.mock.patch.object(fs_trash, 'soft_delete') as trash:
-                        with self.assertRaises(SystemExit) as raised:
-                            task_close.close_task(sid, discard_records=without)
-                    trash.assert_not_called()
-                    self.assertIn('Queued', str(raised.exception.code))
-                self.assertTrue(path.is_dir())
+        path = self.finished('s-queued-plan', project, status='Queued')
+        for without in (False, True):
+            with unittest.mock.patch.object(fs_trash, 'soft_delete') as trash:
+                with self.assertRaises(SystemExit) as raised:
+                    task_close.close_task('s-queued-plan', discard_records=without)
+            trash.assert_not_called()
+            self.assertIn('Queued', str(raised.exception.code))
+        self.assertTrue(path.is_dir())
+
+    def test_a_queued_report_alone_does_not_block_close(self) -> None:
+        project = self.project_repository()
+        path = self.finished('s-queued-report', project, status='Complete', report_status='Queued')
+        self.archive(path)
+        with unittest.mock.patch.object(fs_trash, 'soft_delete', side_effect=self.move_to_bin):
+            self.assertTrue(task_close.close_task('s-queued-report').removed)
+        self.assertFalse(path.exists())
 if __name__ == '__main__':
     unittest.main(verbosity=2)

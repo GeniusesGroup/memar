@@ -34,7 +34,8 @@ def refresh(project):
     if isinstance(opened, memory.OpenRefused):
         return opened
     try:
-        return view.build(opened, shown, project / folder)
+        guard = import_module('bundles.memar_git.memar_git').unignored
+        return view.build(opened, shown, project / folder, guard=guard)
     finally:
         opened.close()
 

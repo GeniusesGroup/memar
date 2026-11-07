@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
+tp GitStore_Lag in "bundles/memar_git/protocol/git-store-lag.kh"
+tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
+
+tp GitStore_LagReport ab {
+    Service
+    Field_ProjectUUID
+}
+
+tp Report mt (self GitStore_LagReport) (class Record_Class) (lag GitStore_Lag, replicated Boolean, err Error)

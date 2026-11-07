@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp View_Folder in "modules-plugable/computer/memory/store/view/protocol/view-folder.kh"
+
+tp View_Guard ab
+
+tp Check mt (self View_Guard) (folder View_Folder) (allowed Boolean, why String)

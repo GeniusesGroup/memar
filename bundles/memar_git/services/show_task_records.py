@@ -1,13 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/show.py — a task's plan and report from the records branch.
-
-Tasks live on `RECORDS_BRANCH`. Materialization under temp/task-store is
-ephemeral; this verb reads the branch (hydrating when a Path reader needs it).
-A file is named by its path from the task's folder; the project is told by
-`--project` or `--project-path`, never the folder this runs in.
-"""
 from __future__ import annotations
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
@@ -44,7 +36,6 @@ SHOW_COMMAND = 'show-task-records'
 PROJECT_REQUIRED = f"name the project the task belongs to with {ProjectName.either_words()}: the branch is the project's"
 
 def _relative(path: str) -> str:
-    """PATH as a plain relative path from the task's folder, refused when it could leave it."""
     posix = path.replace('\\', '/')
     parts = PurePosixPath(posix).parts
     if not path or posix.startswith('/') or ':' in posix or any((part in ('..', '.') for part in parts)):
@@ -52,10 +43,9 @@ def _relative(path: str) -> str:
     return PurePosixPath(posix).as_posix()
 
 def listing(task_id: str, project_path: Path) -> list[str]:
-    """The files the task has in its temp folder, else on the records branch."""
     folder = folder_of(task_id)
     if folder.is_dir():
-        found = sorted(path.relative_to(folder).as_posix() for path in folder.rglob('*') if path.is_file())
+        found = sorted((path.relative_to(folder).as_posix() for path in folder.rglob('*') if path.is_file()))
         if found:
             return found
     found = sorted(task_branch.held(project_path, task_id))
@@ -83,7 +73,7 @@ def _content_number(name: str) -> str | None:
 def _names(folder: Path, task_id: str, project_path: Path) -> list[str]:
     names = set(task_branch.held(project_path, task_id))
     if folder.is_dir():
-        names.update(entry.name for entry in folder.iterdir() if entry.is_file())
+        names.update((entry.name for entry in folder.iterdir() if entry.is_file()))
     return sorted(names)
 
 def _read_kind(folder: Path, task_id: str, project_path: Path, kind: str) -> tuple[str, bytes] | None:
@@ -116,7 +106,6 @@ def _read_blob(folder: Path, task_id: str, project_path: Path, name: str) -> tup
     return None
 
 def show(task_id: str, project_path: Path, files: list[str]) -> None:
-    """Print the latest plan and report by kind when FILES is empty, else each named file or kind word."""
     folder = folder_of(task_id)
     if not files:
         printed = 0
@@ -165,7 +154,6 @@ def show(task_id: str, project_path: Path, files: list[str]) -> None:
         sys.stdout.write('\n')
 
 def dependency_lines(task, project_path: Path) -> None:
-    """Print, under the plan, where each of TASK's dependencies stands and which tasks depend on it (derived, from Memar's tasks and the project's); nothing when neither."""
     reader = Reader(home_of(task) or project_path)
     everyone = {each.id: each for each in [*find_tasks(), *find_tasks(project=project_path)]}
     lines = [*notes_for(task, reader, everyone.values()), *(f'concerns: {each}' for each in concerns_for(task, reader))]
@@ -173,7 +161,6 @@ def dependency_lines(task, project_path: Path) -> None:
         sys.stdout.write('=== dependencies\n' + '\n'.join(lines) + '\n\n')
 
 def hand_back(task_id: str) -> None:
-    """Print TASK_ID's hand-back: Status, timeline place, and Decisions needed — never a content filename."""
     folder = folder_of(task_id)
     task = read_task(folder) if folder.is_dir() else read_task(task_id)
     if not task.has_plan:
@@ -187,7 +174,6 @@ def hand_back(task_id: str) -> None:
     sys.stdout.write('\n'.join(lines) + '\n')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar git show-task-records`."""
     shower = verbs.add_parser(SHOW_COMMAND, help="print a task's latest plan and report by kind, or named files, from the records branch", description=f"Print the latest **plan** and **report** contents of TASK_ID (found by kind on its\ntimeline, not by a filename), or the files named with --file, each under a line\nsaying where it came from. Prefer no --file: agents read plan and report as kinds.\n`--file plan` or `--file report` select by kind; a rare blob may still be named as a\npath under the task's tree. Material is read from the branch {RECORDS_BRANCH} of the\nproject (required). --list prints the raw tree names for debugging, not for ordinary\nagent work.\n\nA task that waits on another resumes when the owner says a task it waits for is done, or when\nevery task its Depends_on cites is Complete. It reads the hand-back alone (--hand-back),\nand no more of the report unless a step names a part; a task not Complete, or one holding\ndecisions, has its decisions answered as `memar ai get-task-questions-answer-brief` says, and what that leaves goes to the owner, before the plan goes on. The decisions made are consumed, not\nargued again, unless the chat's own work meets a problem with one. A report is a claim: read the passages it cites, at the cited lines, before\nbuilding on it.")
     TaskId.add_flag(shower, 'the task whose records to print', required=True)
     shower.add_argument('--file', action='append', default=[], metavar='PATH', help='optional: `plan` or `report` (by kind), or a rare path under the task tree; without it, latest plan and report')

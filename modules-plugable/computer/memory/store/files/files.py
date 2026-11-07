@@ -612,7 +612,7 @@ class FilesAdapter:
             self._medium = None
 
     def working_tree(self) -> Path | None:
-        return self.project if (self.project / '.git').exists() else self.project
+        return self.project
 
     def sibling(self) -> 'FilesAdapter':
         folder = self.project.parent / f'sibling-{uuid.uuid4().hex[:8]}'

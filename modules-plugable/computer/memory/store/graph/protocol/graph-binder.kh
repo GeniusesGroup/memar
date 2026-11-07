@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Graph_Store in "modules-plugable/computer/memory/store/graph/protocol/graph-store.kh"
+tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
+
+tp Graph_Binder ab {
+    Field_ProjectUUID
+}
+
+tp Bind mt (self Graph_Binder) () (graph Graph_Store, err Error)

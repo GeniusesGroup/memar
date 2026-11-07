@@ -68,7 +68,7 @@ class Refresh(unittest.TestCase):
         return (status or 0, said.getvalue())
 
     def test_builds_the_class_the_key_names_with_its_presentation(self) -> None:
-        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        self.with_block('memar:\n  memory: notes=memar-git\n  view: notes=view\n')
         _m_view.register('notes', _m_view_tests.present)
         opened = _m_memory.open(self.project, 'notes', _m_record.Needs())
         self.opened.append(opened)
@@ -82,14 +82,14 @@ class Refresh(unittest.TestCase):
         self.assertIn('0 file(s) written', said)
 
     def test_a_project_without_a_view_is_refused(self) -> None:
-        self.with_block('memar:\n  memory: notes=git-store\n')
+        self.with_block('memar:\n  memory: notes=memar-git\n')
         status, said = self.run_verb()
         self.assertEqual(status, 1)
         self.assertIn(_m_view.VIEW_KEY, said)
         self.assertFalse((self.project / 'view').exists())
 
     def test_a_class_without_a_presentation_is_refused(self) -> None:
-        self.with_block('memar:\n  memory: unshown=git-store\n  view: unshown=view\n')
+        self.with_block('memar:\n  memory: unshown=memar-git\n  view: unshown=view\n')
         status, said = self.run_verb()
         self.assertEqual(status, 1)
         self.assertIn('presentation', said)
@@ -134,12 +134,12 @@ class Answers(unittest.TestCase):
         memory_errors = import_module('bundles.memar.services.memory.errors.errors')
         answer = _m_refresh.refresh(None)
         self.assertEqual((type(answer), answer.reason), (errors.RefreshRefused, errors.RefreshRefusal.NO_PROJECT))
-        self.with_block('memar:\n  memory: notes=git-store\n')
+        self.with_block('memar:\n  memory: notes=memar-git\n')
         answer = _m_refresh.refresh(self.project)
         self.assertEqual((type(answer), answer.reason), (errors.RefreshRefused, errors.RefreshRefusal.NO_VIEW))
         self.with_block('memar:\n  view: one\n')
         self.assertIsInstance(_m_refresh.refresh(self.project), view_errors.BadPreference)
-        self.with_block('memar:\n  memory: unshown=git-store\n  view: unshown=view\n')
+        self.with_block('memar:\n  memory: unshown=memar-git\n  view: unshown=view\n')
         answer = _m_refresh.refresh(self.project)
         self.assertEqual((type(answer), answer.reason), (errors.RefreshRefused, errors.RefreshRefusal.NO_PRESENTATION))
         self.with_block('memar:\n  view: notes=view\n')
@@ -147,7 +147,7 @@ class Answers(unittest.TestCase):
         self.assertIsInstance(_m_refresh.refresh(self.project), memory_errors.OpenRefused)
 
     def test_a_refresh_that_builds_answers_built(self) -> None:
-        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        self.with_block('memar:\n  memory: notes=memar-git\n  view: notes=view\n')
         _m_view.register('notes', _m_view_tests.present)
         opened = _m_memory.open(self.project, 'notes', _m_record.Needs())
         self.opened.append(opened)
@@ -165,14 +165,14 @@ class Closes(unittest.TestCase):
         return unittest.mock.patch.object(_m_record.Record, 'close', autospec=True, side_effect=_m_record.Record.close)
 
     def test_a_refresh_closes_the_class_it_opened(self) -> None:
-        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        self.with_block('memar:\n  memory: notes=memar-git\n  view: notes=view\n')
         _m_view.register('notes', _m_view_tests.present)
         with self.closing() as closed:
             self.assertIsInstance(_m_refresh.refresh(self.project), _m_view.Built)
         self.assertEqual(closed.call_count, 1)
 
     def test_a_refused_build_closes_it_too(self) -> None:
-        self.with_block('memar:\n  memory: notes=git-store\n  view: notes=view\n')
+        self.with_block('memar:\n  memory: notes=memar-git\n  view: notes=view\n')
         _m_view.register('notes', _m_view_tests.present)
         (self.project / 'view').mkdir()
         (self.project / 'view' / 'foreign.txt').write_bytes(b'mine')

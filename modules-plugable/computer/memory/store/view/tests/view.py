@@ -26,7 +26,7 @@ sys.dont_write_bytecode = True
 _m_scratch = import_module('modules.process.test.services.test_scratch')
 _m_volatile = import_module('modules.computer.memory.volatile.volatile')
 _m_record = import_module('modules-plugable.computer.memory.store.record.record')
-_m_git_store = import_module('modules-plugable.computer.memory.store.git-store.git-store')
+_m_memar_git = import_module('bundles.memar_git.memar_git')
 _m_view = import_module('modules-plugable.computer.memory.store.view.view')
 Committed = import_module('modules.computer.memory.store.protocol.store').Committed
 VIEW = 'view'
@@ -82,7 +82,7 @@ class Cases:
         return (record, folder / VIEW)
 
     def build(self, record: Any, folder: Path) -> Any:
-        return _m_view.build(record, present, folder)
+        return _m_view.build(record, present, folder, guard=_m_memar_git.unignored)
 
     def test_view_is_deterministic(self) -> None:
         record, folder = self.three_nodes()
@@ -167,7 +167,7 @@ class Cases:
         record, folder = self.three_nodes()
         self.build(record, folder)
         shown = {'alpha'}
-        built = _m_view.build(record, lambda node: {path: data for path, data in present(node).items() if path.split('/')[1][:-4] in shown}, folder)
+        built = _m_view.build(record, lambda node: {path: data for path, data in present(node).items() if path.split('/')[1][:-4] in shown}, folder, guard=_m_memar_git.unignored)
         self.assertEqual((built.written, built.removed), (0, 2))
         self.assertFalse((folder / node_id(3).hex()).exists())
 
@@ -175,7 +175,7 @@ class Cases:
         record, folder = self.three_nodes()
         for wrong in (lambda node: {'../outside.txt': b'x'}, lambda node: {'same.txt': node.id}):
             with self.subTest():
-                refused = _m_view.build(record, wrong, folder)
+                refused = _m_view.build(record, wrong, folder, guard=_m_memar_git.unignored)
                 self.assertIsInstance(refused, _m_view.ViewRefused)
                 self.assertEqual(refused.reason, _m_view.ViewRefusal.MALFORMED_PATH)
                 self.assertFalse(folder.exists())
@@ -195,7 +195,7 @@ class OverGitStore(Cases, unittest.TestCase):
         data = repository.parent / f'{repository.name}-data'
         data.mkdir()
         self.made.append(data)
-        adapter = _m_git_store.GitStoreAdapter(str(repository), 'refs/memar/notes', data_area=str(data))
+        adapter = _m_memar_git.GitStoreAdapter(str(repository), 'refs/memar/notes', data_area=str(data))
         self.closing.append(adapter)
         return (_m_record.RecordAdapter(adapter).open(), repository)
 
@@ -274,7 +274,7 @@ class ErrorsFolder(unittest.TestCase):
         write(record, 1, alpha=b'one\n')
         scratch = scratch_repository()
         try:
-            answer = _m_view.build(record, lambda node: {'../out.txt': b'x'}, scratch / VIEW)
+            answer = _m_view.build(record, lambda node: {'../out.txt': b'x'}, scratch / VIEW, guard=_m_memar_git.unignored)
         finally:
             _m_scratch.remove_tree(scratch)
         self.assertIsInstance(answer, errors.ViewRefused)

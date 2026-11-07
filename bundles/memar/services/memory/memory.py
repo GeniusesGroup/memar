@@ -8,6 +8,7 @@ from types import ModuleType
 from typing import Any
 STORE_CAPSULES = 'modules-plugable.computer.memory.store'
 BIND = 'bind'
+BUNDLE_MEDIA = {'memar-git': 'bundles.memar_git.memar_git'}
 _m_errors = import_module('bundles.memar.services.memory.errors.errors')
 _m_store_errors = import_module('modules.computer.memory.store.errors.errors')
 OpeningRefusal = _m_errors.OpeningRefusal
@@ -18,7 +19,7 @@ def adapter_module(name: str) -> ModuleType | None:
     if not CAPABILITY_NAME.fullmatch(name):
         return None
     try:
-        module = import_module(f'{STORE_CAPSULES}.{name}.{name}')
+        module = import_module(BUNDLE_MEDIA.get(name) or f'{STORE_CAPSULES}.{name}.{name}')
     except ImportError:
         return None
     return module if callable(getattr(module, BIND, None)) else None
@@ -34,9 +35,8 @@ def _shares(module: ModuleType, project: Path, other: str, adapter: Any) -> bool
     except _m_store_errors.Raised:
         return False
 
-def open(project: Path, class_name: str, needs: Any) -> Any:
+def _bound_store(project: Path, class_name: str, needs: Any, layable: Any) -> Any:
     preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
-    record = import_module(f'{STORE_CAPSULES}.record.record')
     where = preferences.preferences_path(project)
     bindings = preferences.memory_preference(project)
     if bindings is None:
@@ -53,11 +53,26 @@ def open(project: Path, class_name: str, needs: Any) -> Any:
     if others:
         return OpenRefused(OpeningRefusal.SHARED_STORE, f'the class `{class_name}` and {", ".join((f"`{other}`" for other in others))} are bound to one store of `{name}` in {where}')
     store = adapter.open()
-    if not record.layable(store):
+    if not layable(store):
         _close(store)
         return OpenRefused(OpeningRefusal.LESS_THAN_NEEDED, f'the class `{class_name}` is bound to `{name}`, whose store is not a sparse store of any address and value length')
     unmet = needs.unmet(store)
     if unmet:
         _close(store)
         return OpenRefused(OpeningRefusal.LESS_THAN_NEEDED, f'the class `{class_name}` needs of `{name}` ' + '; '.join(unmet))
-    return record.Record(store)
+    return store
+
+def open(project: Path, class_name: str, needs: Any) -> Any:
+    record = import_module(f'{STORE_CAPSULES}.record.record')
+    store = _bound_store(project, class_name, needs, record.layable)
+    return store if isinstance(store, OpenRefused) else record.Record(store)
+
+def open_graph(project: Path, needs: Any) -> Any:
+    graph = import_module(f'{STORE_CAPSULES}.graph.graph')
+    preferences = import_module('modules.computer.software.edges.manifest.services.preferences')
+    class_name = graph.GRAPH_BINDING
+    layout, detail = graph.layout_of(project)
+    if layout is None:
+        return OpenRefused(OpeningRefusal.MALFORMED, f'{detail} in {preferences.preferences_path(project)}, so `{class_name}` cannot be opened')
+    store = _bound_store(project, class_name, needs, graph.layable)
+    return store if isinstance(store, OpenRefused) else graph.Graph_Store(store, layout)

@@ -62,4 +62,4 @@ hasPart:
       contentUrl: https://github.com/GeniusesGroup/memar/tree/main/.agents/skills/memar
       encodingFormat: text/markdown
 memar:
-  memory: work-records=git-store
+  memory: work-records=memar-git

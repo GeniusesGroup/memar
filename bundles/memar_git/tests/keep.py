@@ -65,12 +65,12 @@ class Fixture(unittest.TestCase):
 class KeepsTheWholeFolder(Fixture):
 
     def test_every_file_is_kept_whether_or_not_a_report_links_to_it(self) -> None:
-        for name in ('plan.md', 'report.md', 'docs/entry.md', 'docs/scratch.txt', 'services/fix.py', 'tests/t.py', 'x/y/z.json'):
+        for name in ('task.yaml', 'content.00001.md', 'docs/entry.md', 'docs/scratch.txt', 'services/fix.py', 'tests/t.py', 'x/y/z.json'):
             self.put(name)
-        self.assertEqual(task_keep.select(self.folder).kept, ('docs/entry.md', 'docs/scratch.txt', 'plan.md', 'report.md', 'services/fix.py', 'tests/t.py', 'x/y/z.json'))
+        self.assertEqual(task_keep.select(self.folder).kept, ('content.00001.md', 'docs/entry.md', 'docs/scratch.txt', 'services/fix.py', 'task.yaml', 'tests/t.py', 'x/y/z.json'))
 
     def test_nothing_left_out_means_nothing_listed(self) -> None:
-        self.put('plan.md')
+        self.put('task.yaml')
         self.assertEqual(task_keep.select(self.folder).left, ())
 
     def test_a_folder_that_holds_nothing_has_no_files(self) -> None:
@@ -80,12 +80,12 @@ class KeepsTheWholeFolder(Fixture):
 class LeavesOut(Fixture):
 
     def test_the_claim_and_its_takeover_marker(self) -> None:
-        self.put('plan.md')
+        self.put('task.yaml')
         self.put('claim')
         self.put('claim.takeover')
         self.assertEqual(sorted(self.left()), ['claim', 'claim.takeover'])
         self.assertIs(self.left()['claim'].reason, Reason.CLAIM)
-        self.assertEqual(task_keep.select(self.folder).kept, ('plan.md',))
+        self.assertEqual(task_keep.select(self.folder).kept, ('task.yaml',))
 
     def test_a_claim_below_the_top_is_an_ordinary_file(self) -> None:
         self.put('docs/claim')

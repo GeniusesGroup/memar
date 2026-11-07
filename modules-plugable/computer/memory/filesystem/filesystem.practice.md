@@ -61,7 +61,7 @@ The outcome — full dependency, projection-only, or none — must be an explici
 - Banning the filesystem — the check may well conclude *yes, use it*. The error is the default, not the outcome.
 
 ## Deleting, moving, restoring, and committing
-These acts are owned by the `memar git` verbs (the tools `git_commit`, `git_remove`, `git_rename`, `git_restore`, …) and the `memar fs` verbs of [`bundles/memar_fs/`](../../../../bundles/memar_fs/memar_fs.md). Their `--help` is the authority; this section does not restate them.
+These acts are owned by the verbs of [`bundles/memar_git/`](../../../../bundles/memar_git/memar_git.md) and the verbs of [`bundles/memar_fs/`](../../../../bundles/memar_fs/memar_fs.md). Their `--help` is the authority; this section does not restate them.
 
 ## Putting text into a file
 Putting text into a file is owned by the verbs `memar content write` and `memar content edit` of [`bundles/memar_fs/`](../../../../bundles/memar_fs/memar_fs.md) (`--help` of each). Their help is the authority; this section does not restate them.

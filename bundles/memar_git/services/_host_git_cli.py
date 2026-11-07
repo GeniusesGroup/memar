@@ -1,16 +1,10 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/_host_git_cli.py — the path-invoked face of the git verbs, which now live in `bundles/memar_git`.
-
-Every verb but `record` forwards to the bundle (`memar git VERB`); `record` stays here with the records branch it serves
-and goes with it. This script goes when the last instruction naming its path is replaced by the verb.
-"""
 from __future__ import annotations
 import argparse
 import sys
 from pathlib import Path
-_REPO = next(p for p in Path(__file__).resolve().parents if p.name == 'bundles').parent
+_REPO = next((p for p in Path(__file__).resolve().parents if p.name == 'bundles')).parent
 if __package__ in (None, ''):
     for _folder in (_REPO, _REPO / 'bundles' / 'memar', _REPO / 'bundles' / 'memar' / 'services'):
         if str(_folder) not in sys.path:
@@ -21,37 +15,7 @@ from . import _record as git_record
 from machine.console import use_utf8_stdio
 BUNDLE = 'bundles.memar_git.'
 VERBS = ('rename', 'remove', 'stash', 'restore', 'undelete', 'commit', 'uncommit', 'reindex')
-DESCRIPTION = '''bundles/memar_git/services/_host_git_cli.py — git operations that do not lose work
-
-Git already does all of this. Each command here does it with the constraint a
-task keeps wanting to skip, and says which in its own --help.
-
-Deleting, moving, discarding, stashing, restoring, and committing go through
-this file and the path-invoked services under
-bundles/memar_fs/services/ (tree, trash, link,
-and the fs_*.py libraries beside them). Never the host's
-own command for those acts — rm, Remove-Item, git rm, git restore, git checkout
-of paths, git clean, a plain git commit — and never a command a runtime rewrites.
-Run each with Python by path inside the checkout; none is a memar verb.
-
-In a working tree other tasks share, commit only this task's paths. The
-records of the task's tasks are not among them: memar git archive-task-records
-keeps them on the records branch. Every commit names the tasks it carries
-out with --task-id for each, or says --no-task; the message itself names
-none. Commits follow the whole piece of work, by area (usually the top folder
-a change lies in), staged in place from git status and git diff --stat; a
-sub-agent never commits. A move rides with the commit while git still sees a
-rename; otherwise commit the move alone first. Run memar content check on the
-files the work changed before the commit, and commit only when it reports no
-problems. When a commit stops partway, do what its message says; never delete
-a lock file to get past one. Every verb that acts on a repository takes
---repository PATH and never reads the folder it is run from. If these files
-are not at hand or do not cover the act, stop and say so.
-
-One thing git does that looks like a bug: a file that matches .gitignore but
-is already tracked still shows up as modified. Ignoring does not untrack, and
-restoring it away is not the fix.
-'''
+DESCRIPTION = "bundles/memar_git/services/_host_git_cli.py — git operations that do not lose work\n\nGit already does all of this. Each command here does it with the constraint a\ntask keeps wanting to skip, and says which in its own --help.\n\nDeleting, moving, discarding, stashing, restoring, and committing go through\nthis file and the path-invoked services under\nbundles/memar_fs/services/ (tree, trash, link,\nand the fs_*.py libraries beside them). Never the host's\nown command for those acts — rm, Remove-Item, git rm, git restore, git checkout\nof paths, git clean, a plain git commit — and never a command a runtime rewrites.\nRun each with Python by path inside the checkout; none is a memar verb.\n\nIn a working tree other tasks share, commit only this task's paths. The\nrecords of the task's tasks are not among them: memar git archive-task-records\nkeeps them on the records branch. Every commit names the tasks it carries\nout with --task-id for each, or says --no-task; the message itself names\nnone. Commits follow the whole piece of work, by area (usually the top folder\na change lies in), staged in place from git status and git diff --stat; a\nsub-agent never commits. A move rides with the commit while git still sees a\nrename; otherwise commit the move alone first. Run memar content check on the\nfiles the work changed before the commit, and commit only when it reports no\nproblems. When a commit stops partway, do what its message says; never delete\na lock file to get past one. Every verb that acts on a repository takes\n--repository PATH and never reads the folder it is run from. If these files\nare not at hand or do not cover the act, stop and say so.\n\nOne thing git does that looks like a bug: a file that matches .gitignore but\nis already tracked still shows up as modified. Ignoring does not untrack, and\nrestoring it away is not the fix.\n"
 
 def main() -> int:
     use_utf8_stdio()

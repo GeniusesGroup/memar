@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp View_Guard in "modules-plugable/computer/memory/store/view/protocol/view-guard.kh"
+
+tp Domain mt (self View_Guard) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memory View")(s, VoidError)
+}
+
+tp Summary mt (self View_Guard) () (s String) {
+    CharacterRun_From.FromCharacterRun("What decides whether a folder may be built in")(s, VoidError)
+}
+
+tp Overview mt (self View_Guard) () (s String) {
+    CharacterRun_From.FromCharacterRun("What decides whether a folder may be built in: it answers why not, or nothing when it may.")(s, VoidError)
+}
+
+tp UserActionNote mt (self View_Guard) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self View_Guard) () (s String) {
+    CharacterRun_From.FromCharacterRun("The guard is given to the builder by the caller, who knows the medium the folder is kept in; the builder asks it before it writes and refuses with its reason.")(s, VoidError)
+}

@@ -32,8 +32,8 @@ task_gc = import_module('bundles.memar_git.services.sweep_idle_task_folders')
 task_store = import_module('bundles.memar_git.services.task_store')
 TASK_LOG_NAME = import_module('bundles.memar_git.services.log').TASK_LOG_NAME
 log_path = import_module('bundles.memar_git.services.log').log_path
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
+task_files = import_module('modules-plugable.management.task.services.task_files')
+timeline_files = import_module('modules.management.timeline.services.timeline_files')
 SID = '20261001-T000000Z-1111'
 
 class Fixture(unittest.TestCase):
@@ -53,8 +53,9 @@ class Fixture(unittest.TestCase):
 
     def materialize(self, sid: str=SID) -> Path:
         folder = memar_fs.task_dir(sid, create=True)
-        (folder / PLAN_NAME).write_text('---\nTitle: T\nStatus: Active\nProject: ' + str(self.fake_root) + '\nOpened: x\n---\n# T\n\n## Request\nWork.\n', encoding='utf-8', newline='\n')
-        (folder / 'report.md').write_text('---\nTitle: T\n---\n# Report\nDone.\n', encoding='utf-8', newline='\n')
+        task_files.create_task(folder, sid, 'T', None, None, self.fake_root, 'active', None, None)
+        timeline_files.add_text(folder, 'plan', '# T\n\n## Request\nWork.\n', 'agent')
+        timeline_files.add_text(folder, 'report', '# Report\nDone.\n', 'agent')
         return folder
 
 class DailyFlush(Fixture):
@@ -65,7 +66,7 @@ class DailyFlush(Fixture):
         self.assertIn(SID, swept.flushed)
         self.assertTrue(swept.tip)
         held = import_module('bundles.memar_git.services.branch').held(self.fake_root, SID)
-        self.assertIn(PLAN_NAME, held)
+        self.assertIn(task_files.TASK_FACTS_NAME, held)
 
     def test_gc_prints_flushed_and_tip(self) -> None:
         self.materialize()

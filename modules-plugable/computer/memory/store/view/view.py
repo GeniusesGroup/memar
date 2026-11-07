@@ -4,7 +4,6 @@ from __future__ import annotations
 import hashlib
 import os
 import stat
-import subprocess
 from dataclasses import dataclass, field
 from importlib import import_module
 from pathlib import Path, PurePosixPath
@@ -47,19 +46,6 @@ class Built:
 
 def _token(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
-
-def _unignored(folder: Path) -> str | None:
-    probe = folder
-    while not probe.exists():
-        probe = probe.parent
-    top = subprocess.run(['git', '-C', str(probe), 'rev-parse', '--show-toplevel'], capture_output=True, text=True)
-    if top.returncode != 0:
-        return None
-    relative = os.path.relpath(folder, Path(top.stdout.strip()))
-    if relative == '.' or relative.startswith('..'):
-        return f'{folder} is the top of a working tree' if relative == '.' else None
-    ignored = subprocess.run(['git', '-C', top.stdout.strip(), 'check-ignore', '-q', Path(relative).as_posix() + '/'], capture_output=True)
-    return None if ignored.returncode == 0 else f'{folder} is in the working tree {top.stdout.strip()}, which does not ignore it; add it to the ignore list first'
 
 def _listed(folder: Path) -> dict[str, str] | None:
     try:
@@ -116,9 +102,9 @@ def _write(path: Path, data: bytes) -> None:
     path.write_bytes(data)
     os.chmod(path, stat.S_IREAD)
 
-def build(record: Any, presentation: Presentation, folder: Path) -> Built | ViewRefused:
+def build(record: Any, presentation: Presentation, folder: Path, *, guard: Callable[[Path], str | None]) -> Built | ViewRefused:
     folder = Path(folder).resolve()
-    why = _unignored(folder)
+    why = guard(folder)
     if why:
         return ViewRefused(ViewRefusal.UNIGNORED_FOLDER, why)
     listed = _listed(folder) if folder.is_dir() else {}

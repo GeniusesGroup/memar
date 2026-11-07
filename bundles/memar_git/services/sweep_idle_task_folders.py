@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/sweep_idle_task_folders.py — daily verify of the records branch.
-
-Tasks live on `RECORDS_BRANCH` only; there is no task folder to trash or flush.
-The daily ensure verifies the tip and trims the task log.
-"""
 from __future__ import annotations
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
@@ -82,7 +76,6 @@ def trim_log() -> None:
         pass
 
 def flush_records(keep: str | None=None, by: str='') -> Sweep:
-    """Verify the records branch tip; drop any leftover retired task-store folder."""
     del keep
     record('flushed', '', f"daily records{by and f', by {by}'}")
     _m_task_store.drop_legacy_task_store()
@@ -122,7 +115,7 @@ def collect(keep: str | None, idle_days: float | None) -> None:
         note(f'{NOT_SWEPT}: {location}')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    collector = verbs.add_parser(GC_COMMAND, help='verify the records branch tip', description=f"Verify the tip of {RECORDS_BRANCH} (tasks at {RECORDS_RELATIVE.as_posix()}/<id>/).\nThere is no task folder to sweep: tasks live on the branch. The daily `ensure`\nruns this once a day. --idle-days is ignored.")
+    collector = verbs.add_parser(GC_COMMAND, help='verify the records branch tip', description=f'Verify the tip of {RECORDS_BRANCH} (tasks at {RECORDS_RELATIVE.as_posix()}/<id>/).\nThere is no task folder to sweep: tasks live on the branch. The daily `ensure`\nruns this once a day. --idle-days is ignored.')
     TaskId.add_flag(collector, 'ignored; kept for compatibility')
     collector.add_argument('--idle-days', type=float, default=None, metavar='DAYS', help='ignored; kept so older callers do not break')
     return run

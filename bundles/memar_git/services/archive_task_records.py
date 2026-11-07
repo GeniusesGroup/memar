@@ -1,55 +1,5 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/archive_task_records.py — a task's records kept on a branch of its project's repository.
-
-A live task folder is scratch: it is swept once its task is done, and it
-holds a claim that means nothing on another clone. Its record is not scratch:
-changelogs and handoffs cite task ids, and a cited id whose folder the sweep
-has sent to the trash cites nothing. So the two are two concerns with two
-locations: the folder stays where it is and goes as it
-always went, and its records are kept in the project's own repository, on the
-branch `memar_location.RECORDS_BRANCH` names, at
-`.agents/tasks/<id>/` in that branch's tree. A branch, because the full
-records would otherwise grow the history of the work; a branch of the project's
-own repository, because that is where the project's people already are, and
-nothing is pushed: publishing the branch is the owner's act. What is kept is
-read by id (`task_show`) and by content: `memar content find` and `search`
-read the branch with `--from tasks` (owner, 2026-10-19), so a later task
-can find what an earlier one wrote.
-
-**What is kept.** The whole folder (`task_keep`), except the claim, caches,
-a path with a `.git` part, binary files, a non-document file over 256 KB, and
-the task's own `temp` folder. The plan is kept naming its project by the
-project's registered name rather than by the path it has on the computer that
-opened it, which means nothing elsewhere (`memar software find` turns the name
-into this computer's path); every other byte is kept as written. The commit's
-message lists each leave-out with its size and reason.
-
-**Who may have records.** Every project, unless its preferences say
-`records: off` (`project_preferences`); a project must be a git repository and
-must have a registered name. What cannot be kept — a project folder not on this
-computer, no registered name, a `records` value it may not take, a project that
-is no repository or has the records branch checked out, a commit that fails —
-is refused with why, and the caller that would move the folder leaves it where
-it is: a record dropped without a word is the defect this file exists to end. A
-folder with no plan, or a plan naming no project, has no project to keep
-anything in, and owes nothing.
-
-**Archived.** A task is archived when the branch holds, for every file
-keeping it now would write, the same bytes (`standing`): a change in a kept file
-after archiving makes it not archived until it is archived again, and a change in
-`temp` does not. `close` acts only on an archived task; the sweep archives
-before it trashes (`task_close`, `task_gc`).
-
-`archive` is the verb the agent of a task runs before committing a task: it keeps the
-records of the task named and of every task whose Parent chain leads to it
-— the tasks it handed work to — in one commit, and prints where each one's
-records are, so they are named in the commit of the work. Keeping again writes
-what the folder holds now, drops what it no longer holds, and makes no commit
-when nothing changed. A task any of them cannot be kept stops the verb before
-anything is written.
-"""
 from __future__ import annotations
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
@@ -77,15 +27,11 @@ from .keep import KEEP_LIMIT_BYTES, Left, Selection, select
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 same_path = _m_task_location.same_path
 from .log import record
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
 facts_named_project = _m_task_files.facts_named_project
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
 _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_FOLDER = _m_temp.TEMP_FOLDER
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
@@ -93,13 +39,11 @@ TaskId = _m_task_id.TaskId
 ARCHIVE_COMMAND = 'archive-task-records'
 
 class Outcome(Enum):
-    """How keeping one task's records ended."""
     KEPT = 'kept'
     NOT_OWED = 'not owed'
     REFUSED = 'refused'
 
 class Kept(NamedTuple):
-    """One task's keeping: how it ended, where its records are when kept, why when not, the files kept, and the branch's tip after."""
     outcome: Outcome
     reference: str | None
     why: str = ''
@@ -107,19 +51,16 @@ class Kept(NamedTuple):
     commit: str | None = None
 
 class State(Enum):
-    """Whether a task's records are on the branch as keeping would write them now."""
     ARCHIVED = 'archived'
     WAITING = 'not archived'
     NOT_OWED = 'not owed'
     REFUSED = 'refused'
 
 class Standing(NamedTuple):
-    """A task's State, and why when it is not owed or refused."""
     state: State
     why: str = ''
 
 class Owed(NamedTuple):
-    """A task whose records are owed: its folder, its id, its project, the project's registered name, and what keeping takes."""
     folder: Path
     project: Path
     name: str
@@ -129,12 +70,10 @@ def _project_of(task: Task) -> str:
     return (task.front or {}).get(PlanKey.PROJECT.key, '').strip()
 
 def project_name(project: Path) -> str | None:
-    """PROJECT's own registered name, the first on its entry; None when it has no entry."""
     entry = next((each for each in read_entries() if same_path(each.path, project)), None)
     return entry.names[0] if entry is not None and entry.names else None
 
 def _named_plan(data: bytes, name: str) -> bytes:
-    """The plan bytes DATA with its front matter's Project value replaced by NAME, every other byte as written."""
     lines = data.decode('utf-8-sig').splitlines(keepends=True)
     key = f'{PlanKey.PROJECT.written}:'
     if lines and lines[0].strip() == '---':
@@ -149,15 +88,14 @@ def _named_plan(data: bytes, name: str) -> bytes:
     return ''.join(lines).encode('utf-8')
 
 def owed(folder: Path) -> Owed | Kept:
-    """What keeping FOLDER's records takes, or the Kept that says they are not owed or cannot be kept."""
     task = read_task(folder)
     if not task.has_plan:
-        return Kept(Outcome.NOT_OWED, None, f'it has no {PLAN_NAME}')
+        return Kept(Outcome.NOT_OWED, None, 'it has no plan')
     if not task.readable or task.front is None:
-        return Kept(Outcome.REFUSED, None, f'its {PLAN_NAME} cannot be read, so its project is not known')
+        return Kept(Outcome.REFUSED, None, 'its task facts cannot be read, so its project is not known')
     named = _project_of(task)
     if not named:
-        return Kept(Outcome.NOT_OWED, None, f'its {PLAN_NAME} names no project to keep its records in')
+        return Kept(Outcome.NOT_OWED, None, 'its task facts name no project to keep its records in')
     project = Path(named)
     if not project.is_dir():
         try:
@@ -181,17 +119,11 @@ def owed(folder: Path) -> Owed | Kept:
     return Owed(folder, project, name, select(folder))
 
 def _entries(owing: Owed, workdir: Path) -> dict[str, Path]:
-    """The branch path and the source file of each file keeping OWING writes; the plan is a copy in WORKDIR naming its project."""
     sid = owing.folder.name
     entries: dict[str, Path] = {}
     for relative in owing.selection.kept:
         source = owing.folder / relative
-        if relative == PLAN_NAME:
-            named = workdir / sid / PLAN_NAME
-            named.parent.mkdir(parents=True, exist_ok=True)
-            named.write_bytes(_named_plan(source.read_bytes(), owing.name))
-            source = named
-        elif relative == TASK_FACTS_NAME:
+        if relative == TASK_FACTS_NAME:
             named = workdir / sid / TASK_FACTS_NAME
             named.parent.mkdir(parents=True, exist_ok=True)
             named.write_bytes(facts_named_project(source.read_bytes(), owing.name))
@@ -200,7 +132,6 @@ def _entries(owing: Owed, workdir: Path) -> dict[str, Path]:
     return entries
 
 def standing(folder: Path) -> Standing:
-    """Whether FOLDER's records are on the branch as keeping them now would write them; nothing is written."""
     judged = owed(folder)
     if isinstance(judged, Kept):
         return Standing(State.NOT_OWED if judged.outcome is Outcome.NOT_OWED else State.REFUSED, judged.why)
@@ -221,7 +152,6 @@ def _left_line(left: Left) -> str:
     return f'  {left.path} ({held}{_size(left.size)}): {left.reason.sentence}'
 
 def _message(group: list[Owed]) -> str:
-    """The commit message for GROUP's tasks: their ids, then each leave-out with its size and reason."""
     ids = ', '.join((each.folder.name for each in group))
     lines = [f"Record {('task' if len(group) == 1 else 'tasks')} {ids}", '']
     for each in group:
@@ -233,12 +163,6 @@ def _message(group: list[Owed]) -> str:
     return '\n'.join(lines) + '\n'
 
 def keep_records(folders: Iterable[Path], *, write: bool=True) -> list[Kept]:
-    """Keep the records of FOLDERS on their projects' branches, one commit for each project's tasks; one Kept for each folder, in order.
-
-    A project's tasks are committed together, and a task that is not
-    owed or cannot be kept does not hold the others back. Unless WRITE, nothing
-    is written, and what would be is returned: a dry run.
-    """
     folders = list(folders)
     outcomes: list[Kept | None] = [None] * len(folders)
     groups: dict[str, list[tuple[int, Owed]]] = {}
@@ -273,10 +197,9 @@ def keep_records(folders: Iterable[Path], *, write: bool=True) -> list[Kept]:
     return [each for each in outcomes if each is not None]
 
 def related_tasks(folder: Path) -> list[Path]:
-    """FOLDER and every task folder whose Parent chain leads to it, FOLDER first, each once."""
     children: dict[str, list[Path]] = {}
     store = import_module('bundles.memar_git.services.task_store')
-    store.scan((TASK_FACTS_NAME, PLAN_NAME))
+    store.scan((TASK_FACTS_NAME,))
     try:
         for entry in task_folders(projects=True):
             parent = read_task(entry).parent
@@ -292,7 +215,6 @@ def related_tasks(folder: Path) -> list[Path]:
     return found
 
 def archive(task_id: str) -> None:
-    """`archive`: confirm TASK_ID is on the records branch (tasks are written there directly)."""
     _m_task_store = import_module('bundles.memar_git.services.task_store')
     if not _m_task_store.on_branch(task_id):
         fail(f'no task {task_id} on {RECORDS_BRANCH}')
@@ -301,8 +223,7 @@ def archive(task_id: str) -> None:
     note(f'commit: {_m_task_store.verify_tip()}')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar git archive-task-records`."""
-    parser = verbs.add_parser(ARCHIVE_COMMAND, help="confirm a task is on its project's records branch", description=f"Confirm the task TASK_ID is on {RECORDS_BRANCH} at {RECORDS_RELATIVE.as_posix()}/<id>/.\nTasks are written to the branch by ensure and conversation post; this verb does not copy from a folder.")
+    parser = verbs.add_parser(ARCHIVE_COMMAND, help="confirm a task is on its project's records branch", description=f'Confirm the task TASK_ID is on {RECORDS_BRANCH} at {RECORDS_RELATIVE.as_posix()}/<id>/.\nTasks are written to the branch by ensure and conversation post; this verb does not copy from a folder.')
     TaskId.add_flag(parser, 'the task whose work is being committed', required=True)
     return run
 

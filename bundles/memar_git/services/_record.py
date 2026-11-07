@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
-
-"""bundles/memar_git/services/_record.py — `record`: commit files onto a branch other than the one checked out, without touching HEAD, the shared index or the working tree.
-"""
 from __future__ import annotations
+from bundles.memar_git.errors.errors import EmptyMessage, GitFailed, NotHead, NothingToCommit, ReplacementMalformed
 import argparse
 import sys
 from pathlib import Path
@@ -13,30 +11,28 @@ from bundles.memar_git.services._run import plumb, repository_flag, repository_r
 RECORD_ATTEMPTS = 8
 
 def _manifest_entries(manifest: Path) -> dict[str, Path]:
-    """The branch path and source file of each line of MANIFEST (`BRANCH-PATH<TAB>SOURCE-FILE`), refusing any that is not sound."""
     try:
         lines = manifest.read_bytes().decode('utf-8-sig').splitlines()
     except (OSError, UnicodeDecodeError) as error:
-        sys.exit(f'error: the manifest {manifest} cannot be read ({error})')
+        raise ReplacementMalformed(f'the manifest {manifest} cannot be read ({error})')
     entries: dict[str, Path] = {}
     for line in filter(None, lines):
         target, separator, source = line.partition('\t')
         if not separator or not target or (not source):
-            sys.exit(f'error: a manifest line is BRANCH-PATH, a tab, SOURCE-FILE, not {line!r}')
+            raise ReplacementMalformed(f'a manifest line is BRANCH-PATH, a tab, SOURCE-FILE, not {line!r}')
         if not _inside_branch(target):
-            sys.exit(f'error: {target!r} is not a path inside the branch: it must be relative, with no empty, `.` or `..` part, no backslash, and no `.git` part')
+            raise ReplacementMalformed(f'{target!r} is not a path inside the branch: it must be relative, with no empty, `.` or `..` part, no backslash, and no `.git` part')
         path = Path(source)
         if not path.is_file():
-            sys.exit(f'error: the source of {target} is not a file: {source}')
+            raise ReplacementMalformed(f'the source of {target} is not a file: {source}')
         if '\n' in source:
-            sys.exit(f'error: the source file {source!r} holds a line break in its name and cannot be recorded')
+            raise ReplacementMalformed(f'the source file {source!r} holds a line break in its name and cannot be recorded')
         if target in entries:
-            sys.exit(f'error: the manifest names {target} twice')
+            raise ReplacementMalformed(f'the manifest names {target} twice')
         entries[target] = path
     return entries
 
 def _inside_branch(path: str) -> bool:
-    """Whether PATH is a plain relative path in a branch's tree: no empty, `.`, `..` or `.git` part, no backslash."""
     return '\\' not in path and (not any((part in ('', '.', '..') or part.lower() == '.git' for part in path.split('/'))))
 
 def folders_to_replace(replace: list[str], replace_file: Path | None) -> list[str]:
@@ -44,30 +40,22 @@ def folders_to_replace(replace: list[str], replace_file: Path | None) -> list[st
     return [*(name.strip('/') for name in replace), *(name for name in listed if name)]
 
 def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str], message_file: Path, replace_file: Path | None=None) -> None:
-    """Commit files onto BRANCH, a branch other than the one checked out, without moving HEAD, the shared index or the working tree.
-
-    The tree is built in a private index from the branch's tip: the folders
-    REPLACE named are emptied, then each manifest entry is written as a blob,
-    byte for byte, and put at its path. The branch is moved with `update-ref`
-    against the tip it read, so a writer that got there first makes this one
-    start again from the new tip; the commit made never loses theirs.
-    """
     root = repository_root(repository)
     ref = f'refs/heads/{branch}'
     if run_captured(['check-ref-format', ref], cwd=root).returncode != 0:
-        sys.exit(f'error: {branch!r} is not a branch name git accepts')
+        raise ReplacementMalformed(f'{branch!r} is not a branch name git accepts')
     if run_captured(['symbolic-ref', '-q', 'HEAD'], cwd=root).stdout.strip() == ref:
-        sys.exit(f'error: {branch} is the branch checked out in {root}; moving it would leave the shared index and the working tree behind it. Nothing was written.')
+        raise NotHead(f'{branch} is the branch checked out in {root}; moving it would leave the shared index and the working tree behind it. Nothing was written.')
     entries = _manifest_entries(manifest)
     folders = folders_to_replace(replace, replace_file)
     for folder in folders:
         if not _inside_branch(folder):
-            sys.exit(f'error: --replace {folder!r} is not a folder inside the branch')
+            raise ReplacementMalformed(f'--replace {folder!r} is not a folder inside the branch')
     if not entries and (not folders):
-        sys.exit('error: the manifest names no file and nothing is to be replaced; there is nothing to record')
+        raise NothingToCommit('the manifest names no file and nothing is to be replaced; there is nothing to record')
     message = message_file.read_bytes().decode('utf-8').replace('\r\n', '\n').strip()
     if not message:
-        sys.exit(f'error: {message_file} is empty; a commit needs a message')
+        raise EmptyMessage(f'{message_file} is empty; a commit needs a message')
     shas: dict[str, str] = {}
     if entries:
         listed = ''.join((f'{path}\n' for path in entries.values()))
@@ -92,7 +80,7 @@ def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str]
             print(f'nothing to record: {branch} already holds all of it at {tip[:12]}.', file=sys.stderr)
             return
         if not tip and (not shas):
-            sys.exit(f'error: {branch} does not exist and the manifest names no file, so there is nothing to make it of')
+            raise NothingToCommit(f'{branch} does not exist and the manifest names no file, so there is nothing to make it of')
         parent = f'parent {tip}\n' if tip else ''
         body = f'tree {tree}\n{parent}author {author}\ncommitter {committer}\n\n{message}\n'
         made = plumb(['hash-object', '-t', 'commit', '-w', '--stdin'], root, data=body.encode('utf-8'))
@@ -105,11 +93,10 @@ def cmd_record(repository: Path, branch: str, manifest: Path, replace: list[str]
         if lock is not None:
             stopped(f'the commit object {made} was written, but {branch} was not moved: a lock is held.', f'Nothing to undo. {once(lock).capitalize()}, rerun the same command.', moved, lock)
         if run_captured(['rev-parse', '--verify', '-q', ref], cwd=root).stdout.strip() == tip:
-            sys.exit(f'error: git update-ref {ref} failed: {stderr_of(moved)}')
-    sys.exit(f'error: {branch} moved under this command {RECORD_ATTEMPTS} times, so nothing was written to it. Rerun it.')
+            raise GitFailed(f'git update-ref {ref} failed: {stderr_of(moved)}')
+    raise GitFailed(f'{branch} moved under this command {RECORD_ATTEMPTS} times, so nothing was written to it. Rerun it.')
 
 def add_parser(sub: argparse._SubParsersAction) -> None:
-    """Declare this verb on the command's subparsers."""
     p_record = sub.add_parser('record', help='commit files onto another branch without touching HEAD, the shared index or the working tree', description=f"Write one commit on the branch BRANCH of the repository, holding the files\nthe manifest lists, and leave HEAD, the shared index, the working tree and\nevery other branch exactly as they are. BRANCH is made, with no parent, if it\ndoes not exist; it may not be the branch checked out. The manifest is a file\nof lines, each BRANCH-PATH, a tab, and SOURCE-FILE: the file's bytes are put\nat that path as they are, with no line-ending or other conversion. Each\n--replace folder is emptied first, so the commit holds that folder as the\nmanifest gives it. A result the branch already holds makes no commit and\nsays so. It prints the branch's tip, never pushes, and never reads the\nfolder it runs from.\n\n{LOCK_NOTE}", formatter_class=argparse.RawDescriptionHelpFormatter)
     repository_flag(p_record)
     p_record.add_argument('--branch', required=True, metavar='NAME', help='the branch to commit on, made if it is missing')
