@@ -7,6 +7,6 @@ class AssumptionsAndConstraints(Section):
     heading = 'Assumptions and Constraints'
     purpose = 'the underlying assumptions a decision or design relies on (cost, schedule, available technology, and similar), and any additional constraints the environment imposes on it'
     use = "for what is taken as given for this document's purposes"
-    distinct_from = "the paired handoff's Open Questions: an assumption or constraint is taken as given, not an open question the document is still trying to settle"
+    distinct_from = "open questions, each a question content of a task: an assumption or constraint is taken as given, not an open question the document is still trying to settle"
     order = 6
     labels = ('optional-section',)

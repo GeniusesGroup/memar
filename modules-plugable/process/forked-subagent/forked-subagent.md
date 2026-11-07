@@ -4,34 +4,29 @@ Start Date: 2026-10-15
 ID: 497795
 ---
 # Forked Sub-Agent
-
 ## Abstract
 This document states Memar's position on one capability of an agent runtime that Memar does not own: a **sub-agent started as a fork of its parent's context at a chosen point**, rather than as a cold start. The runtime is outside Memar's authority, so the document records an expectation and the conditions on which a task Memar governs may rely on it, not a requirement Memar can enforce. The expectation has five parts: the parent marks a point in its context and starts K children (say 10) that each begin with exactly the context up to that point and then a short task of their own; the shared part is paid for once and read by every child at the cheaper read price; each child works apart from the parent and returns only its answer, which the parent appends to its own context; from any earlier marked point the parent may start another wave while earlier children run on unaffected; and parent and children, of every wave, share the prefix up to their fork point. The reason is cost and quality: a cold child pays again, at the write price, for the skill and the documents the parent already read, which pushes work into few large tasks, and a brief cannot carry the rules the parent has read. The document carries the open questions about the mechanism that Memar cannot answer from outside, and states what Memar does until the capability is offered. Nothing here is a claim that any runtime offers it.
 
 ## Introduction
-
 ### Motivation
 Memar's operating practice asks every agent to load the Memar skill and the governing documents of each step before acting, and asks a delegating task to hand a sub-agent only a brief while the whole task is written in the sub-agent's plan (`memar task ensure --help`). A sub-agent therefore starts cold: it knows what its brief and plan say, and it pays to load the skill and the documents again. Two failures follow, and both are failures of the runtime's shape, not of the agents.
 
 1. **The same material is paid for once per child.** The prefix a cold child reads is the same tens of kilobytes every time, yet a prefix cache reuses only a prefix that is unchanged, and a child's brief comes first and differs from child to child. The material that follows the brief cannot be a hit across children, so each child pays the full write price for what the parent has already paid for. The cost of loading, set against the size of the task, then decides how work is cut: tasks are made few and large to amortize the load, and a small, well-isolated task costs more to start than to do.
-2. **A brief restates, and a cold child can still miss.** What a sub-agent knows is what the delegator wrote down for it ([Agency → Context](../../../docs/agency.md#context)). The rules the parent has read are not in a cold child's context unless the brief repeats them, and a brief that repeats them is a second copy to keep consistent with the first.
+2. **A brief restates, and a cold child can still miss.** What a sub-agent knows is what the delegator wrote down for it ([Agency → Context](../../../modules/management/agency/agency.md#context)). The rules the parent has read are not in a cold child's context unless the brief repeats them, and a brief that repeats them is a second copy to keep consistent with the first.
 
 ### Methodology
-The document consumes [Agency](../../../docs/agency.md) and [Cognition](../../../docs/cognition.md) and adds no definition to either. It was modeled as [Modeling Practice](../../../docs/modeling.practice.md#the-modeling-workflow) asks, before it states anything: the concepts are listed under [Concepts](#concepts), each treated as provisional; the responsibility boundary between Memar and the runtime is drawn under [What Memar Owns and What the Runtime Owns](#what-memar-owns-and-what-the-runtime-owns); and the questions the modeling raised are in the paired handoff. The cost reasoning is stated under [Cost](#cost) in terms of prices, not of any vendor's figures, since a figure is a runtime's to publish and changes.
+The document consumes [Agency](../../../modules/management/agency/agency.md) and [Cognition](../../../docs/cognition.md) and adds no definition to either. It was modeled as [Modeling Practice](../../../docs/modeling.practice.md#the-modeling-workflow) asks, before it states anything: the concepts are listed under [Concepts](#concepts), each treated as provisional; the responsibility boundary between Memar and the runtime is drawn under [What Memar Owns and What the Runtime Owns](#what-memar-owns-and-what-the-runtime-owns). The cost reasoning is stated under [Cost](#cost) in terms of prices, not of any vendor's figures, since a figure is a runtime's to publish and changes.
 
 ## Explanation
-
 ### Position
 A runtime that offers it makes a sub-agent available in two relations to its parent's context, not one.
 
 - **A cold start**: the child's context is its brief. Everything the child needs is written for it.
 - **A fork**: the child's context is the parent's context up to a marked point, followed by the child's own task.
 
-Both are [delegation](../../../docs/agency.md#delegation) of a responsibility to an Agent; they differ in what [Context](../../../docs/agency.md#context) the delegator hands over, and neither changes who stays accountable. Memar's position is that an agent runtime serving Memar's work should offer the fork, because the work Memar describes — many independent checks, reviews, searches, and per-file edits from one prepared context — is the case the fork serves, and because the cold start remains right where the child must *not* inherit the parent's context.
+Both are [delegation](../../../modules/management/agency/agency.md#delegation) of a responsibility to an Agent; they differ in what [Context](../../../modules/management/agency/agency.md#context) the delegator hands over, and neither changes who stays accountable. Memar's position is that an agent runtime serving Memar's work should offer the fork, because the work Memar describes — many independent checks, reviews, searches, and per-file edits from one prepared context — is the case the fork serves, and because the cold start remains right where the child must *not* inherit the parent's context.
 
 ### Concepts
-Each is provisional until the open questions in the handoff that touch it are settled.
-
 - **Parent.** The agent whose context is forked. It loads what the work and all its sub-agents need, then marks.
 - **Fork point.** A marked position in the parent's context. It is a position, not a copy: what lies before it is shared by everything started from it.
 - **Child.** A sub-agent started at a fork point. Its context is the shared prefix plus its own task, and it grows apart from the parent's thereafter.
@@ -48,7 +43,7 @@ A runtime serving Memar's work is expected to meet each of these. They are state
 4. **Fork again from any earlier point.** From a marked point the parent can start another wave without disturbing children still running from an earlier one. A running child continues on its own context, unaffected by later forks and by the parent's later turns.
 5. **Everything shares the common part.** The parent and the children of every wave share the prefix up to their fork point.
 
-What the expectation does not say: how a point is marked, how many children may run at once, whether a child may itself fork, or what the answer's shape is. Those are the runtime's, and where Memar's work needs one of them it is a question in the handoff.
+What the expectation does not say: how a point is marked, how many children may run at once, whether a child may itself fork, or what the answer's shape is. Those are the runtime's, and where Memar's work needs one of them it is a `question` content of the task.
 
 ### What Memar Owns and What the Runtime Owns
 The runtime owns the mechanism: the cache, the marking, the starting, and the price. Memar owns two things and states them so the runtime's choices do not decide them by default.
@@ -76,9 +71,6 @@ The reasoning is the cost of a step over the whole work, rework included, as [Ta
 Memar sizes a task by the cost of loading the skill against the size of the task, and batches related tasks into one agent where they share what they read. This is a workaround for the missing capability, not a position on how work should be cut, and it is the part of Memar's practice that the capability would make unnecessary for the read-heavy case. Where a runtime offers a fork, nothing in Memar's documents forbids using it; the delegating task still opens each child's task, writes its task, and reads its answer as a claim.
 
 ### Relationship to Other Concepts
-- [Agency](../../../docs/agency.md): the fork is a delegation whose handed Context is the delegator's own, up to a point.
+- [Agency](../../../modules/management/agency/agency.md): the fork is a delegation whose handed Context is the delegator's own, up to a point.
 - [Cognition](../../../docs/cognition.md): the parent's context is a budget, and the answers a parent appends are what grows it; a fork keeps the children's working out of it.
 - [Modeling](../../../docs/modeling.md): this document records an expectation about a surface outside Memar and does not model a module of Memar's, which is why it is here and not in a category of [Modules](../../../modules/README.md).
-
-### Open Questions
-The questions Memar cannot answer from outside are carried in the paired handoff, where they are revised as they are answered: whether a fork's shared prefix is a cache hit for every child started within the cache's life and what that life is; what happens to a running child when the parent's context is compacted; whether a child can be told that it is a fork and must not fork further; and whether a `fork` agent type that some builds' tool descriptions mention is this capability.

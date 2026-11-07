@@ -10,7 +10,6 @@ This document specifies the fair-comparison essay: the method a project follows 
 A comparison is an essay about other projects conducted under the examining project's own principles: it states the other project's self-definition first, separates layers, judges it against its own purpose before measuring it against the examining project, and writes toward absorbing what is durable into that project's homes. It is not a rejection list, not a scoreboard, and not a place where a principle may live only — whatever an essay concludes about its own project graduates into the documents that own it. [The essay's required shape](#the-essays-required-shape) is fixed; the sections below add obligations to it. Four requirements carry an effective date, because the essays already written do not satisfy them and a rule retrofitted onto the corpus it did not govern would be a claim about work that never ran under it.
 
 ## Introduction
-
 ### Motivation
 Neighbouring projects routinely get offered as substitutes for a framework's own method, and the question "why not just use X?" deserves a written, fair answer rather than an assertion. Two failure modes make such an answer hard to write and harder to keep true. The first is tone: an answer that dismisses a neighbouring project is worthless as evidence and corrodes the reader's trust in every other claim beside it. The second is storage: a method kept outside the project's document set cannot be cited by a governing document, and drifts from the conventions that govern everything else it sits beside.
 
@@ -18,7 +17,6 @@ Neighbouring projects routinely get offered as substitutes for a framework's own
 The method is not designed in the abstract. It accumulated from working comparisons, each conducted under the fairness rules below, each feeding what it surfaced back into the documents that own it. Two structural decisions came first. Comparisons are deliberately outside the facet system, because an essay's reader relationship — examining the comparative argument — is none of the reader relationships the facet specifications state, and forcing it into one would give it a status ladder it must not have. Those specifications are the subfolders of the [documentation module](../documentation.md), each stating its own reader relationship; an essay needs a relationship of its own rather than one borrowed from them. The four dated requirements at the end came from specific gaps the rules were silent on: claims that no reader could tell from verified ones, a collapsed history mistaken for thin evidence, a count that moved on recount, and a project whose disclosure reached its code but not its own front door.
 
 ## Explanation
-
 ### What a comparison is
 - An essay for humans (and agents) who ask: "Why not just use X instead of this project?"
 - A place that may record **negative or partial results**: X is good at Y; X does not replace this project's job.
@@ -51,7 +49,7 @@ Each project states its own standing principles and cites the documents that own
 - One continuous mental model as internal knowledge — a project carries one, and adapters may multiply but the model must not ([Knowledge → A project carries one continuous mental model](../../../../modules/knowledge/knowledge.md#a-project-carries-one-continuous-mental-model)).
 - Executable projections where generation belongs in code services — not endless prose recipes for each concrete artifact ([Knowledge → Knowledge and Code](../../../../modules/knowledge/knowledge.md#knowledge-and-code)).
 - Memar is not distributed as host-tool plugins or marketplace cards; a consuming project installs a pointer ([Using Memar in another project](../../../../README.md#using-memar-in-another-project)).
-- Prompt / harness technique sits under Communication, not under Agency's foundation ([Agency → Prompt Engineering and Harness Engineering](../../../../docs/agency.md#prompt-engineering-and-harness-engineering)).
+- Prompt / harness technique sits under Communication, not under Agency's foundation ([Agency → Prompt Engineering and Harness Engineering](../../../../modules/management/agency/agency.md#prompt-engineering-and-harness-engineering)).
 
 ### The essay's required shape
 An essay carries the header block that makes its evidence checkable: the compared project with a link to it, the commit or revision inspected, and the method — including what was not executed ([Content Rule → No fabricated information](../documentation.md#content-rule-no-fabricated-or-redundant-provenance)). It then follows the stages of the type `EssayStage`, in that order, as numbered sections; the last, Open for critique, carries the disclosure quota below.

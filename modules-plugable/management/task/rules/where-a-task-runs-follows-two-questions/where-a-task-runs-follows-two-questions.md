@@ -9,7 +9,7 @@ A rule of this repository for a conversation that hands a task to another agent.
 - **Two questions decide, and both answers are written in the plan:** does the conversation need the task's result, and does the task need the owner (questions, critique, back-and-forth)?
 - **A result needed and no owner needed: a sub-agent that returns only its hand-back.**
 - **The owner needed, whether or not the conversation waits: a new chat.** Whether the task needs the owner alone decides a new chat; a chat with nothing to ask the owner only gives the owner one more chat to watch.
-- **A task whose result the conversation does not need is independent:** its plan is written whole and the conversation is done with it. Its chat is opened when it needs the owner; otherwise it goes to a sub-agent once the conversation's own work leaves room, or stays queued. A chat opened for it is then [left alone](../opened-chat-is-left-alone/opened-chat-is-left-alone.md).
+- **A task whose result the conversation does not need is independent:** its plan is written whole and the conversation is done with it. Its chat is opened when it needs the owner; otherwise it goes to a sub-agent once the conversation's own work leaves room, or stays queued. Its task is opened with no `--parent`, its chat is opened independent and not as the opener's child, and it is then [left alone](../opened-chat-is-left-alone/opened-chat-is-left-alone.md). A chat that only continues a task is on that same task ([later work returns to its task](../later-work-returns-to-its-task/later-work-returns-to-its-task.md)).
 - **A conversation that waits for tasks in new chats cannot learn that they ended,** so it asks the owner to tell it.
 
 ## Why it exists

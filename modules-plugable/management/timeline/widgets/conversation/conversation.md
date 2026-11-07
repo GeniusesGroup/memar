@@ -3,7 +3,6 @@ Title: "Conversation"
 Start Date: 2026-10-31
 ---
 # Conversation
-
 ## Abstract
 A conversation is a widget of the [timeline](../../../../../modules/management/timeline/timeline.md) domain, not a concept of its own ([Widget](../../../../../modules/computer/ui/widget/widget.md)). It aggregates the services of timeline, of [content](../../../../../modules/knowledge/content/content.md) and, through them, of [text](../../../../../modules/knowledge/text/text.md), so that what is said about a task is placed, read and said across the timelines of the task and of its parent. It is pluggable, since it composes pluggable services and no core domain needs it ([A Widget Aggregates, a Service Does One Thing](../../../../../modules/computer/ui/rules/widget-aggregates/widget-aggregates.md)).
 
@@ -14,4 +13,4 @@ A conversation is a widget of the [timeline](../../../../../modules/management/t
 - What is called joining a conversation is therefore the placing of a content in the timeline of a task and in the timeline of its parent. [`Share`](conversation.kh) places a content in one more timeline and answers its number there.
 
 ## Saying and Reading
-`Post` says a text into a timeline: it checks the text, creates its content and places it, and answers the placement's number; `Latest` reads the latest content of a kind. They are the verbs `memar conversation post` and `memar conversation latest`, whose helps say their words. The widget owns no check of a template: the check of a kind that has one is composed by name, and a general check by kind is owed by the content domain.
+`Post` says a text into a timeline: it checks the text, creates its content and places it, and answers the placement's number; `Latest` reads the latest content of a kind. They are the verbs `memar conversation post` and `memar conversation latest`, whose helps say their words. The widget owns no check of a template: the check of a kind that has one is composed by name, and a general check by kind is owed by the content domain. `Latest` and the check of `Post` against the latest of a kind are withdrawn by the [Timeline](../../../../../modules/management/timeline/timeline.md) design: the widget is to read the contents of a kind placed on a timeline (the read by label is the widget's, not Timeline's), the plan-kind contents nothing supersedes, the replies to a content placed on a timeline or on its parent's or a child's, and the contents not yet replied to; `Post` is to write the content's Ownership `creator` in place of a placer, attach the kind as a label and write the content's `reply_to` edges; the service-migration task changes `conversation.kh` and the code together.

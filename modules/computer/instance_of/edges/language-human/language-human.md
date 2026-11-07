@@ -13,11 +13,6 @@
 
 - Two distinct nodes (instance, language-human), so an ordinary `edges/` relation of `instance_of`. The far end is the knowledge domain's `language-human`, reached by UUID only.
 
-## Open questions
-
-- `Status()`'s vocabulary is undecided — the same gap the software-side edge records in `software.handoff.md`.
-- `computer/software/edges/language-human` states the same relation shape on `Field_SoftwareID`; whether the software's language and a running instance's language are one requirement read twice or two is unasked.
-
 ## Source
 
 > Source: `modules/computer/instance_of/edges/language-human/protocol/data_model.kh` (in code).

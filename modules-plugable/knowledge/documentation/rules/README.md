@@ -4,6 +4,7 @@ Rules for the conditions a document is held to. The general Memar concept of Rul
 | Rule | Subject | Tier | What it is |
 | --- | --- | --- | --- |
 | [A Document Restates No Code](./document-restates-no-code/document-restates-no-code.md) | What a document may say of code | Governance | A section that only describes a file's members is a copy and goes |
+| [A Document Names Only Its Own Domain](./document-names-only-its-own-domain/document-names-only-its-own-domain.md) | Which concepts and rules a document may name | Governance | A document names its own module's concepts and its imports'; a rule is stated once and linked |
 | [No Record Is Written Beside a Document](./no-record-beside-a-document/no-record-beside-a-document.md) | Where a change, a decision or a question is kept | Governance | A record is a content on a task's timeline, never a file beside the document |
 | [A Rejected Position Leaves the Body](./rejected-position-leaves-the-body/rejected-position-leaves-the-body.md) | What a body says of a replaced formulation | Governance | The body states what holds; a rejected position is deleted and its alternative goes to a decision's Options |
 | [No Derivative Inventory](./no-derivative-inventory/no-derivative-inventory.md) | What a document lists and what the doer reads | Governance | A pointer file lists no collection, and the doer enumerates no document set the task does not need |

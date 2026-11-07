@@ -1,27 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/knowledge/documentation/services/content_check.py — `memar content check`: what is wrong with a text file, reported before it is inherited.
-
-Two sets of rules, separated by what they hold for. The encoding and newline
-rules hold for every text file in every project, because a shell damages a file
-the same way whatever the file is for. Memar's written-surface rules — no blank
-line under a heading, no blank line after the closing front-matter fence, no run
-of blank lines, a link that resolves to a file and a heading — are Memar's own
-conventions and apply only inside a Memar repository, which is asked of
-`bundles/memar/services/location/repository.py` rather than
-assumed.
-
-A link that points up the layers of the written content is a
-warning for the same kind of reason: it is a debt, repaid when its text is
-upgraded, and never a defect a link is deleted to clear.
-
-The bytes of a file are judged in `modules/knowledge/text/services/text_check.py`,
-the links and anchors of a Markdown document in `links` of the Markdown module, and
-a normative-references list's entries in `normative_references_check`; this file
-holds the Memar rules that remain, the folder walk, and the report: it composes the
-domains' parts and decides none of them.
-"""
 from __future__ import annotations
 from importlib import import_module
 _m_repository = import_module('bundles.memar.services.location.repository')
@@ -48,9 +27,14 @@ list_problems = _m_normative_references_check.list_problems
 list_warnings = _m_normative_references_check.list_warnings
 _m_temp_duplicate = import_module('modules-plugable.knowledge.documentation.services.temp_duplicate')
 temp_duplicate_problems = _m_temp_duplicate.temp_duplicate_problems
+open_questions_problems = import_module('modules-plugable.knowledge.documentation.services.open_questions').open_questions_problems
+denial_findings = import_module('modules-plugable.knowledge.documentation.services.denial').denial_findings
+restated_field_problems = import_module('modules-plugable.knowledge.documentation.services.restated_fields').restated_field_problems
+foreign_domain_hints = import_module('modules-plugable.knowledge.documentation.services.foreign_domain').foreign_domain_hints
+HINTS_KEY = 'document-hints'
 CHECKED_SUFFIXES = ('.md', '.kh', '.py', '.ts', '.json', '.yaml', '.yml', '.txt', '.ps1', '.sh', '.bat', '.cmd')
 def describe(verbs):
-    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, a blank line after the closing front-matter fence, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
+    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, a blank line after the closing front-matter fence, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist, a section of Open, Unresolved or Review Questions or of questions for the owner, a heading or a sentence whose subject holds or knows nothing (the body states what a thing holds), and a table whose first column restates at least three names a `.kh` file of the document's own module declares; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; a weaker denial (has no, is not a, owns no, carries no), any denial in a document under a rules folder, and a link to the main document or folder of a module the document's module does not import in its `.kh` files or whose imports cannot be read (not judged in bundles/ or under a widgets folder) are printed apart as hints; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
     parser.add_argument('files', nargs='+', help='files or folders (any path)')
     parser.add_argument('-v', '--verbose', action='store_true', help='also print clean files')
     parser.add_argument('--memar-rules', dest='memar_rules', action='store_true', default=None, help="apply Memar's Markdown conventions; the default asks whether the folder is a Memar repository")
@@ -61,22 +45,6 @@ def run(args: argparse.Namespace) -> None:
     cmd_check(args, content_root())
 
 def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True, *, root: Path) -> list[str]:
-    """Report what is wrong with a text file. Empty list means clean.
-
-    `root` is the checkout a root-relative link (`/docs/...`) resolves under,
-    the one `memar content resolve-path` resolves against.
-
-    `memar_rules` decides whether the Markdown rules are applied at all. They are
-    Memar's own conventions — no blank line under a heading, no blank line after
-    the closing front-matter fence, linear load-bearing logic, a relative link
-    that resolves — and a file in a project that has not adopted Memar is not a
-    Memar document, so a missing blank line there is not a defect and reporting
-    it tells the owner their repository is wrong for a reason they never agreed to. The encoding and newline rules are different:
-    they hold for every text file in every project, because a shell damages a
-    file the same way whatever the file is for. So the two sets are separated by
-    a flag rather than by a list, and the caller decides by asking
-    `bundles/memar/services/location/repository.py` whether the folder is a Memar repository.
-    """
     cache: dict = {} if link_cache is None else link_cache
     problems, text = file_problems(path)
     if text is None:
@@ -99,6 +67,11 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
         visible = without_code(text)
         problems.extend(anchor_problems(visible, text))
         problems.extend(link_problems(path, visible, cache, root))
+        problems.extend(open_questions_problems(visible))
+        denial_problems, denial_hints = denial_findings(visible, path)
+        problems.extend(denial_problems)
+        problems.extend(restated_field_problems(path, text, cache, root))
+        cache[(HINTS_KEY, str(path))] = denial_hints + foreign_domain_hints(path, visible, cache, root)
     if path.suffix == '.md':
         problems.extend(list_problems(path, root))
     if memar_rules:
@@ -106,11 +79,6 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
     return problems
 
 def upward_warnings(path: Path, link_cache: dict | None=None) -> list[str]:
-    """Every link in a Markdown document that points up the citation layers.
-
-    A warning and not a problem (Documentation -> Citation Direction): an
-    upward link is a debt, and a link is never deleted to comply.
-    """
     if path.suffix != '.md':
         return []
     try:
@@ -120,13 +88,19 @@ def upward_warnings(path: Path, link_cache: dict | None=None) -> list[str]:
     cache: dict = {} if link_cache is None else link_cache
     return upward_link_warnings(path, without_code(text), cache)
 
-def checkable_files(folder: Path) -> list[Path]:
-    """Every checked file a walk of `folder` should look at.
+def document_hints(path: Path, link_cache: dict, root: Path) -> list[str]:
+    if path.suffix != '.md':
+        return []
+    kept = link_cache.get((HINTS_KEY, str(path)))
+    if kept is not None:
+        return kept
+    try:
+        visible = without_code(path.read_text(encoding='utf-8'))
+    except (OSError, UnicodeDecodeError):
+        return []
+    return denial_findings(visible, path)[1] + foreign_domain_hints(path, visible, link_cache, root)
 
-    A walk is how the tool chooses for itself, so it chooses only what the
-    project owns. An installed dependency tree is not this project's work, and a
-    report that raises it on every run is a report about the tool, not the tree.
-    """
+def checkable_files(folder: Path) -> list[Path]:
     return [path for path in sorted(folder.rglob('*')) if path.is_file() and path.suffix in CHECKED_SUFFIXES and (not is_generated(path.relative_to(folder).parts[:-1]))]
 
 def cmd_check(args: argparse.Namespace, root: Path) -> None:
@@ -182,7 +156,19 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
             print('\nowed marks on one side only (hints, not counted as problems):')
             for hint in hints:
                 print(f'  - {hint}')
-    dropped = sum((list_drops(path, root) for path in files if path.suffix == '.md'))
+    if memar_rules:
+        document_rule_hints: list[str] = []
+        for path in files:
+            try:
+                shown = path.relative_to(root)
+            except ValueError:
+                shown = path
+            document_rule_hints.extend((f'{shown}: {text}' for text in document_hints(path, link_cache, root)))
+        if document_rule_hints:
+            print('\nhints (not counted as problems):')
+            for hint in document_rule_hints:
+                print(f'  - {hint}')
+    dropped =sum((list_drops(path, root) for path in files if path.suffix == '.md'))
     print(f"\nchecked {len(files)} file{('s' if len(files) != 1 else '')}, {total} problem{('s' if total != 1 else '')}" + (f", {len(warnings)} warning{('s' if len(warnings) != 1 else '')}" if warnings else '') + (f", {dropped} passage{('s' if dropped != 1 else '')} of Memar dropped by this project's lists" if dropped else ''))
     if not memar_rules:
         print("not a Memar repository, so Memar's Markdown conventions were not applied: encoding, newlines, and decoding damage only")

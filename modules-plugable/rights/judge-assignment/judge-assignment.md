@@ -2,13 +2,11 @@
 Which users receive a [judge](../../../modules/rights/case/edges/judge/judge.md) edge on a case. One edge serves an organization that calls itself arbitration, a state court, and a social network that resolves disputes among members. Who may sit is the pluggable part.
 
 ## Model
-
 - This module writes judge edges. It does not define the edge or the vote. There is no second adjudicator type.
 - Continuation depends on the vote margin, not on a fixed count and not on how long the parties pay. This module does not choose 1, then 3, then 5, and it does not choose a stop at 5 or at an expert panel of 11, 13, or 15.
 - The examples of about 20 percent from the middle, and about 80 percent the same way, are examples. An organization may put its own thresholds here. They are not kernel constants, and this draft does not adopt those two numbers as its schedule.
 
 ## Policies (rules)
-
 - A seated user is not plaintiff or defendant on that case. That limit is on the judge edge. This module does not relax it.
 - A judge may accept the maximum a party will pay, or decline the seat. The cost inputs are on [filing fee](../filing-fee/filing-fee.md). There is no wealth cap on how long the case continues.
 - While the margin rule allows continuation, this module may seat further judges. When the margin rule stops continuation, it stops seating. A new judge who enters outside the seated count and records an opinion is an example, not this rule.
@@ -23,13 +21,8 @@ Which users receive a [judge](../../../modules/rights/case/edges/judge/judge.md)
 - Conflict of interest and anti-fraud apply to judges. They are not designed here.
 
 ## Placement
-
 - **Pluggable.** Who may name a judge, and which thresholds stop continuation, can change without a new edge type.
 - **Nearest alternative rejected:** one selection method frozen on the judge edge for every organization.
 - **Nearest alternative rejected:** a second adjudicator type for a person the parties named.
 - **Nearest alternative rejected:** that "party-named judges via pluggable module is probably not right". That premise is not supported as stated. The worry belongs on **mislabeling** (calling a contract-named private adjudicator a *roster judge*) or on **missing qualification rules**, not on party naming itself. Critique v2.
 - **Nearest alternative rejected:** a kernel count of seats.
-
-## Open questions
-
-- Whether any person may be a judge stays open. It does not block party-named judges as a pluggable rule, and it does not add a second type.

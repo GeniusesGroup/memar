@@ -14,7 +14,6 @@ A Practice-facet document (a **Skill file**, named `SKILL.md`) is a short, imper
 An earlier draft tried to govern Skill files with the same schema as Explanation-facet documents (identity, citations, contributor attribution, a topic-first body). That schema is wrong for this facet: a Skill file is read by an agent mid-task, under real context-budget pressure, and every field that isn't the procedure itself is pure cost. The three real ecosystems examined here reached that same conclusion independently, which is stronger evidence than reasoning it out from scratch would have been.
 
 ## Explanation
-
 ### Reader relationship
 Content meant to be *followed* to accomplish something: step-by-step procedures, agent instructions, Skill files, and any document whose primary purpose is for a reader — human or AI agent — to execute a sequence of actions and produce a result. The reader of such a document is acting rather than interpreting, which is why its front matter is two fields and its body is a procedure; the facet that sits nearest it, and the one it is most often confused with, states its own reader relationship in [Explanation](../explanation/explanation.md#reader-relationship).
 

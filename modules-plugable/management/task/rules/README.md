@@ -10,7 +10,6 @@ One folder per rule; each cites where the owner's word is recorded and may be ch
 | [Commits Are Few and Readable](./commits-are-few-and-readable/commits-are-few-and-readable.md) | Fold mistakes, group by top folder, move alone |
 | [Old Task Folders Are Swept by the Owner's Ruling](./old-task-folders-are-swept-by-ruling/old-task-folders-are-swept-by-ruling.md) | What becomes of a folder the daily sweep leaves |
 | [A Further Task Is Queued, Never Done in the Conversation](./queue-a-further-task-never-do-it-here/queue-a-further-task-never-do-it-here.md) | Queue with a whole plan and leave it |
-| [A Priority Change States Its Reason](./a-priority-change-states-its-reason/a-priority-change-states-its-reason.md) | The reason is written in the plan |
 | [Queued Work Is Taken for One Project and Handed Out by One Topic](./one-topic-one-project-per-delegated-batch/one-topic-one-project-per-delegated-batch.md) | Scope and batching of taken work |
 | [Where a Task Runs Follows Two Questions](./where-a-task-runs-follows-two-questions/where-a-task-runs-follows-two-questions.md) | Result needed, owner needed |
 | [A Blocking Task Is Recorded in Depends_on](./a-blocking-task-is-recorded-in-depends-on/a-blocking-task-is-recorded-in-depends-on.md) | The conversation waits on a record |

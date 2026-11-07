@@ -6,6 +6,7 @@ Start Date: 2026-11-01
 A rule of this repository, held for [Documentation](../../documentation.md), which owns the claim in [Content Rule: No Fabricated or Redundant Provenance](../../documentation.md#content-rule-no-fabricated-or-redundant-provenance). This rule states the check applied to what a document lists and to what the doer reads.
 
 ## The rule
+- **No document is a cache of values another place derives.** A count, a list of members, a status, a date, a hash or a table that a file, a command or a graph already yields is not written into a document; the document names the place that yields it ([A Fact in Code Is Written Once](../../documentation.md#a-fact-in-code-is-written-once)).
 - **A README or other pointer file carries no membership list** of a directory, a script set or a comparison folder; it points at the collection and the reader lists it.
 - **The doer enumerates no document set the task does not require.** Listing documents because they exist is an inventory; where a folder's README is its index, the index serves the reader and the folder's documents are not opened one by one.
 - **Discovery is not restarted on every turn.** Once the knowledge the task needs is in context, working from it is not a shortcut around the discovery rule.

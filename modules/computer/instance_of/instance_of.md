@@ -2,28 +2,24 @@
 Node is running version of applications. Any application CAN have many running instance.
 
 ## Model
-
 - `(software)-[:instance_of]->(software)`
 
 ## Policies (rules)
-
 - A Software Instance (SI) node represents an instance of an off-the-shelf software product or equivalent proprietary item of software.
 
 ## Identity
-
-`Field_InstanceUUID` is the running instance's own identity and resolves to `ThingUUID`, like every
-other domain identity in this repository. The Go source already said so: `type UUID thing_p.UUID`,
-"UUID as InstanceID or software(application) node instance".
+`Field_InstanceUUID` is the running instance's own identity and resolves to
+`MemoryAddress`, like every other domain identity in this repository. The Go
+source once said `type UUID thing_p.UUID`, "UUID as InstanceID or
+software(application) node instance"; identifiers are now memory addresses.
 
 ## Address
-
 A node's address is `Address`, a named `String`, and the record also carries the address in binary
 form for the wire. The address *type* (domain name, host name, IPv4, IPv6, GP) is the separate
 label space in [edges/net-address](edges/net-address/net-address.md); this edge carries the label
 as `Field_LabelType` and the payload.
 
 ## Health
-
 Health is a ping over the stream timeout mechanism. The ping request carries a time to live, and
 that is the time domain's `Field_TimeToLive` from
 [identity/time/edges/ttl](../../identity/time/edges/ttl/ttl.md), not a second TTL declared here.
@@ -33,13 +29,11 @@ The health record itself is `NodeHealthDataModel`: the instance, the node on the
 ping (`Observer_Health_SideNodeID`), the ping time, the jitter time, and the audit pair.
 
 ## Resource
-
 `ResourceType` names what a resource is; the record carries a list of them and a parallel list of
 amounts written as strings. The desired/actual duality is the label space in
 [edges/node-resource](edges/node-resource/node-resource.md), not a value here.
 
 ## Audit log
-
 `AuditLogDataModel` is memar's `ProcessLog_Event` and nothing more for now; the Go source carried
 its own `TODO::: other condition`.
 
@@ -48,7 +42,6 @@ mode is disabled the logger must not save that log type on the desired node, but
 dispatch it to any client that requested any types, even when the type is not enabled.**
 
 ## Peer services
-
 Two peer services are specified here rather than implemented:
 
 - **Ping peer**: endpoints use PING to verify that their peers are still alive, or to check
@@ -58,7 +51,6 @@ Two peer services are specified here rather than implemented:
   same PONG comment as ping peer, which is almost certainly a copy.
 
 ## Node metrics and deployment
-
 `edges/node-metric/` holds the node's own manifest, from which a server's main file is generated.
 The settled content, from the Go source:
 
@@ -84,9 +76,7 @@ The settled content, from the Go source:
   records are garbage collected.
 
 ## Idea backlog
-
 Review discipline per modules/management/vocabulary-discipline.handoff.md. Nothing below is ratified.
 
 ### Health and audit-log (data models with idea semantics)
 - **Idea**: ping via stream timeout with TTL/RTT (health); audit-log config where disabled modes still must Dispatch to subscribed clients even when not saved locally.
-- **Review questions**: audit-log dispatch semantics vs storage policy - rule or code?

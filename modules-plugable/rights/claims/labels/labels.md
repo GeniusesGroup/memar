@@ -10,12 +10,10 @@ Registered meanings of the words people attach when they name a kind of claim.
 A name such as complaint (shekvaieh) is a [label](../../../../modules/knowledge/label/label.md) on a claim type. It is not a field of the [case](../../../../modules/rights/case/case.md) node and not a second kind of case. This module is where those words are written down. The attachment edge stays the label domain's `(thing)-[:label]`. This module does not add another one.
 
 ## Introduction
-
 ### Motivation
 A complaint was easy to redraw as the case node, or as an edge. The afternoon input keeps the word and gives each claim-type label a folder, on the pattern of law labels. Writing the meaning here keeps the word from becoming the dispute.
 
 ## Explanation
-
 ### Definition
 An organization includes this module when it wants a registry of claim-type labels. Each document under this module is one registered word: what a reader may mean by it, and what it does not do.
 

@@ -10,12 +10,10 @@ Basic statutes an organization may adopt. Not the law type.
 This module holds statutes written on the [law](../../../../modules/rights/law/law.md) type. A bundle includes the ones that organization wants. The type stays what a law node is. These documents are instances.
 
 ## Introduction
-
 ### Motivation
 Rules about retroactivity, about two contradictory laws executing together, about when a contract binds, and about whether a law may take the place of a contract, are themselves laws. They are not fields of the law type, and they are not one module each under rights.
 
 ## Explanation
-
 ### Definition
 A document in this module is a statute the organization adopts, edits, or passes by. Four are written. Further basic statutes are added as their own documents here.
 

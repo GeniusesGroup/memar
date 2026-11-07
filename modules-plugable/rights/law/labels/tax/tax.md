@@ -10,7 +10,6 @@ A comment label for a law the commenter reads as a levy.
 Tax is one word a person may attach beside a comment. Another person may attach [extortion](../extortion/extortion.md) to a comment on the same law. Neither word is the law.
 
 ## Explanation
-
 ### Definition
 The commenter means: they read the instrument as a levy owed under its human code.
 

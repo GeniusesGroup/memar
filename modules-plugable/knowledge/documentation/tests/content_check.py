@@ -1,79 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for `memar content check` in `modules-plugable/knowledge/documentation/services/content_check.py`: its judgement of links, its walk, and its rule sets.
-
-    python modules-plugable/knowledge/documentation/tests/content_check.py
-
-The subject is the checker, named for the file that holds it per
-[Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
-in the `tests/` folder of the shelf that owns it per
-[Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-
-Nothing here writes outside its scratch folder. Every document is written into
-one, made under the folder `modules/process/test/services/test_scratch.py` names, and removed
-again, and no test reads the repository's own
-`docs/`: a test that asserts against the tree stops being a test of the rule and
-becomes a report on whatever the tree currently holds.
-
-What is pinned, and what each pin is for:
-
-  LinkStandIn         A folder README that git records as a symlink and a
-                      checkout without symlink support writes as a text file
-                      holding only its target, with no final newline, is not
-                      judged as text; any other file, or a README naming
-                      nothing beside it, still is.
-  ReachableLink       A relative link whose target is beside the document is
-                      not a problem. The whole point of the check is to report
-                      what a reader cannot follow, so a check that reported
-                      sound links would be worse than none.
-  MovedDocument       The reason the check exists. A document moved one folder
-                      deep leaves its links naming files that are no longer
-                      there, and the link itself is unchanged text — nothing
-                      about reading the document tells you it broke.
-  NamedHeading        A link to another document names a heading, and the
-                      heading is checked in the document the link names rather
-                      than in the one holding the link. Half a link resolving
-                      is a reader landing somewhere real and wrong.
-  SharedCacheAnswers  Every link to one document gets the same answer, and the
-                      document is read once to give it: a cache keyed by
-                      anything other than the file would let one document's
-                      headings answer for another's.
-  UnreadableTarget    A target this run cannot read is not reported as a
-                      document with no such heading. Silence is the honest
-                      answer there, and a wrong report is worse than none.
-  CodeIsNotALink      A link written inside backticks or a fenced block is text
-                      about links. The same text as a real link must be judged
-                      differently only by where it is, never by what it says.
-  ExternalIsNotJudged A URI with a scheme, and a protocol-relative `//host`,
-                      are not files this run can resolve and are left alone.
-  RootRelativeIsJudged A link from the checkout's root (`/docs/...`) is
-                      judged, file and anchor, against the root the run is
-                      given, as `memar content resolve-path` resolves it.
-  RejectedInABody    Whether a body holds a rejected-alternative record is not
-  IsNotJudged        decidable from the text, and is deliberately not checked.
-                       The specification of the field and a record in the field
-                       differ only in what the text is for. The class is pinned
-                       in `RejectedInABodyIsNotJudged` so the question is not
-                       reopened blind.
-  WalkLooksOnlyAt     A folder run skips what a copy of this project never
-  WhatTheProjectOwns  carries, by the decision already written for the two
-                      things that copy a checkout; a named file is still
-                      checked.
-  MemarRulesAutoDetect  Without a flag the folder decides: inside a Memar
-                       repository the Markdown conventions apply, outside only
-                       encoding and newlines do; an explicit flag wins.
-  HandoffFilesAreNotJudgedByName  A `*.handoff.md` file is checked as any
-                      Markdown file; no decision is made by its name.
-  CitationDirection   A relative link from the base to the modules is a
-                      warning, per Documentation -> Citation Direction: a
-                      debt, never a problem and never a changed exit; a
-                      link within a layer or down to the base, a path in a
-                      code span, a README pointing into its own folder, and
-                      files outside the layers are not warned about.
-
-Usage is the interface. Do not duplicate these recipes as prose catalogs.
-"""
 from __future__ import annotations
 from importlib import import_module
 _m_test_scratch = import_module('modules.process.test.services.test_scratch')
@@ -93,9 +20,9 @@ sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 content_check = import_module('modules-plugable.knowledge.documentation.services.content_check')
+BUDGET_SECONDS = 60
 
 class LinkFixture(unittest.TestCase):
-    """A scratch tree to write documents into, cleaned up however the run ends."""
 
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
@@ -116,7 +43,6 @@ class LinkFixture(unittest.TestCase):
         return [p for p in self.problems(path) if 'does not exist' in p or 'names no heading' in p]
 
 class LinkStandIn(LinkFixture):
-    """A README that git records as a symlink is a text file naming its target on a checkout without symlink support."""
 
     def test_a_readme_holding_only_its_siblings_name_is_clean(self) -> None:
         self.write('m/m.md', '# M\n')
@@ -271,14 +197,6 @@ class ExternalIsNotJudged(LinkFixture):
         self.assertEqual(self.only_link_problems(path), [])
 
 class RootRelativeIsJudged(LinkFixture):
-    """A link from the checkout's root (`/docs/...`) is judged against the root the run is given.
-
-    This pin replaced `test_site_root_path_is_left_alone` (task
-    20261016-T135246Z-23188): such a link was skipped as a server's site root,
-    and the Memar skill writes every link in that form, so none of its links
-    was checked. It resolves as `memar content resolve-path` resolves it, against the
-    checkout, never against the linking document's folder.
-    """
 
     def test_a_root_relative_link_to_a_heading_there_is_not_reported(self) -> None:
         self.write('docs/cognition.md', '# Cognition\n## Abstract\n')
@@ -321,15 +239,6 @@ class InPageAnchorStillJudged(LinkFixture):
         self.assertTrue(any(('names no heading' in p for p in found)))
 
 class RejectedInABodyIsNotJudged(LinkFixture):
-    """The negative result, pinned so a later task does not retry it blind.
-
-    Whether a body holds a rejected-alternative record is not decidable from
-    the text: the document that *specifies* the field carries a section by the
-    field's name in its own body. So no such check exists, and these two tests
-    say which way each candidate shape is expected to fall if one is ever
-    written — the specification's own heading, and a body naming the field's
-    home — rather than leaving the question open again.
-    """
 
     def test_the_facet_specification_carries_the_heading_and_is_clean(self) -> None:
         path = self.write('modules-plugable/knowledge/documentation/changelog/changelog.md', '# Documentation Changelog\n## Optional Sections\n#### Considered and not done\n- alternatives examined and rejected\n')
@@ -340,18 +249,6 @@ class RejectedInABodyIsNotJudged(LinkFixture):
         self.assertEqual(self.problems(path), [])
 
 class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
-    """A folder run skips what a copy of this project never carries.
-
-    An installed dependency tree is not this repository's work, and a report that
-    raises the same problems inside it on every run is a report about the tool
-    rather than about the tree — after long enough it is a report nobody reads.
-    The patterns come from `machine/copy_excluded`, which already holds that
-    answer for the two things that copy part of a checkout elsewhere; a second
-    list here would be a second answer to one question.
-
-    Naming a file explicitly still checks it. A walk is how the tool chooses for
-    itself; a named path is a decision somebody already made.
-    """
 
     def install(self, relative: str, text: str='x') -> Path:
         path = self.root / relative
@@ -395,7 +292,6 @@ class WalkLooksOnlyAtWhatTheProjectOwns(LinkFixture):
                 self.assertFalse([p for p in walked if p.startswith(f'{folder}/')], walked)
 
 class RepositoryFixture(LinkFixture):
-    """A scratch tree that is a Memar repository, for the rules that ask for one."""
 
     def make_repo(self) -> Path:
         repo = self.root / 'Memar'
@@ -453,16 +349,6 @@ class MemarRulesAutoDetect(RepositoryFixture):
         self.assertTrue(content_check.check_file(inside, {}, False, root=self.root))
 
 class CitationDirection(RepositoryFixture):
-    """A relative link up the layers is a warning: a debt, never a problem.
-
-    The rule is Documentation -> Citation Direction: the base (docs/, its
-    khayyam/ and comparisons/ included) and the modules
-    (modules/, bundles/). A document may link within its own
-    layer or down to the base; a base document names a module as a concept.
-    Files outside the two layers are not judged, and a folder's README may
-    link anywhere inside its own folder. A link up is never deleted to comply,
-    so the check warns about it and does not count it as a problem.
-    """
 
     def setUp(self) -> None:
         super().setUp()
@@ -553,13 +439,6 @@ class CitationDirection(RepositoryFixture):
         self.assertEqual(self.upward(path), [])
 
 class OwedMarkIsAHint(LinkFixture):
-    """`Owed: <id>` in a document and `owed:<id>` in a pending Test's title find each other.
-
-    Per Content Rule -> Owed or planned capability and Test Practice -> Pending:
-    an identifier on one side only is reported, as a hint apart from the
-    problems and never changing the exit; the check reads the identifiers and
-    opens no path.
-    """
 
     def run_check(self, memar_rules: bool=True) -> tuple[str, int]:
         import argparse
@@ -627,7 +506,7 @@ class OwedMarkIsAHint(LinkFixture):
         self.assertEqual(code, 0)
 
 class HandoffFilesAreNotJudgedByName(LinkFixture):
-    ENTRY = '## Open Questions\n### Q?\n- **State**: x\n'
+    ENTRY = '## Decisions\n### D?\n- **State**: x\n'
 
     def run_check(self, memar_rules: bool=True) -> tuple[str, int]:
         import argparse
@@ -652,6 +531,66 @@ class HandoffFilesAreNotJudgedByName(LinkFixture):
 
     def test_the_check_no_longer_names_the_entry_lint(self) -> None:
         self.assertFalse(hasattr(content_check, 'entry_warnings'))
+
+    def test_an_open_questions_section_in_a_handoff_file_is_a_problem_as_in_any_document(self) -> None:
+        self.write('a.handoff.md', '# A handoff\n## Open Questions\n### Q?\n- **State**: x\n')
+        out, code = self.run_check()
+        self.assertIn('Open Questions', out)
+        self.assertEqual(code, 1)
+
+class DocumentRulesInTheCheck(LinkFixture):
+
+    def run_check(self, memar_rules: bool=True) -> tuple[str, int]:
+        import argparse
+        import contextlib
+        import io
+        args = argparse.Namespace(files=[str(self.root)], verbose=False, memar_rules=memar_rules)
+        out = io.StringIO()
+        code = 0
+        with contextlib.redirect_stdout(out):
+            try:
+                content_check.cmd_check(args, self.root)
+            except SystemExit as stop:
+                code = stop.code or 0
+        return (out.getvalue(), code)
+
+    def test_each_decided_breach_is_a_problem_of_the_file(self) -> None:
+        self.write('modules/a/protocol/a.kh', 'tp Thing ab {\n}\n\ntp GetName mt (self Thing) () (name Thing)\n\ntp GetSize mt (self Thing) () (size Thing)\n')
+        self.write('modules/c/c.md', '# C\n')
+        self.write('modules/c/protocol/c.kh', 'tp C ab {\n}\n')
+        path = self.write('modules/a/a.md', '# A\nA group holds no Topics.\nSee [C](../c/c.md).\n| Name | Meaning |\n|---|---|\n| GetName | x |\n| GetSize | y |\n| Thing | z |\n## Open Questions\n- Q?\n')
+        found = self.problems(path)
+        for mark in ('no-record-beside-a-document.md', 'documentation.md#written-surface', 'document-restates-no-code.md'):
+            with self.subTest(mark=mark):
+                self.assertEqual(len([p for p in found if mark in p]), 1, found)
+        self.assertEqual([p for p in found if 'document-names-only-its-own-domain.md' in p], [])
+
+    def test_check_file_keeps_the_hints_so_they_are_not_computed_again(self) -> None:
+        self.write('modules/c/c.md', '# C\n')
+        path = self.write('modules/d/d.md', '# D\nA plan is not a schedule.\nSee [C](../c/c.md).\n')
+        cache: dict = {}
+        content_check.check_file(path, cache, root=self.root)
+        kept = cache[('document-hints', str(path))]
+        self.assertEqual(len(kept), 2, kept)
+        cache[('document-hints', str(path))] = ['kept']
+        self.assertEqual(content_check.document_hints(path, cache, self.root), ['kept'])
+
+    def test_hints_are_printed_apart_and_change_no_exit(self) -> None:
+        self.write('modules/c/c.md', '# C\n')
+        self.write('modules/d/d.md', '# D\nA plan is not a schedule.\nSee [C](../c/c.md).\n')
+        out, code = self.run_check()
+        self.assertIn('hints (not counted as problems)', out)
+        self.assertIn('is not a', out)
+        self.assertIn('modules/c', out.replace('\\', '/'))
+        self.assertIn('0 problems', out)
+        self.assertEqual(code, 0)
+
+    def test_no_memar_rules_judges_none_of_them(self) -> None:
+        self.write('modules/a/a.md', '# A\nA group holds no Topics.\n## Open Questions\nA plan is not a schedule.\n')
+        out, code = self.run_check(memar_rules=False)
+        self.assertNotIn('Open Questions', out)
+        self.assertNotIn('hints', out)
+        self.assertEqual(code, 0)
 
 class TempHoldsNoContent(LinkFixture):
     FRONT = '---\nkind: plan\nauthor: memar\nplaced_at: 2026-11-01T06:08:50Z\ncontent: cccb33f5-d955-467e-bb6a-39cedd3e0d77\n---\n'

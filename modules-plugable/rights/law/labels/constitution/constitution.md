@@ -10,7 +10,6 @@ A comment label for a law the commenter treats as foundational.
 Constitution is a word a person may attach beside a comment on a [law](../../../../../modules/rights/law/law.md). It is not a kind of law, not a rank, and not a harder path for change.
 
 ## Explanation
-
 ### Definition
 The commenter means: this instrument is one they treat as foundational for the group that lives under it.
 

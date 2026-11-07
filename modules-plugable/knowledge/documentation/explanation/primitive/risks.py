@@ -7,6 +7,6 @@ class Risks(Section):
     heading = 'Risks'
     purpose = 'known threats or uncertainties to whatever the document proposes succeeding'
     use = 'for what could go wrong externally, not what the design itself costs'
-    distinct_from = 'open questions (recorded in the paired handoff), which are about what the design has not decided yet'
+    distinct_from = 'open questions (each a question content of a task), which are about what the design has not decided yet'
     order = 8
     labels = ('optional-section',)

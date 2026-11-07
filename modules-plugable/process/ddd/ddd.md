@@ -4,12 +4,10 @@ Start Date: "2026-09-16"
 ID: "497102"
 ---
 # Domain-Driven Design
-
 ## Abstract
 This document states Memar's position on **Domain-Driven Design**. The phrase is ordinary compositional English — *domain*, *driven*, *design* — and Memar's documents already speak those words at their general meaning; the acronym that circulates over them is a Business Term whose accumulated senses Memar does not inherit. The document accepts the umbrella's existence, records what under that name is sound for Memar's work, what is problematic, and where each piece actually lives in Memar's own documents. What it gathers are commitments Memar already holds — that design is driven by the subject matter rather than by tools, technologies, presentations, industry taxonomies, or mechanisms; that the model is the primary architectural artifact; that terminology is an architectural dependency; that abstractions are justified by responsibility rather than by data alone; and that boundaries stay conceptual until a realization is justified — each owned by [Modeling](../../../docs/modeling.md), [Terminology](../../../docs/terminology.md), [Modularity](../../../modules/knowledge/modularity/modularity.md), [Process](../../../modules/process/process.md), or [Protocol](../../../modules/knowledge/protocol/protocol.md) and not restated here. Worked examples are deliberately absent.
 
 ## Introduction
-
 ### Motivation
 Left without a Memar position, the phrase "Domain-Driven Design" does not stay empty. It arrives with the medium — a brief, a job description, a model's training prior — already filled by whichever formulation circulates most widely, and the reader treats that fill as if it were Memar's. Wide circulation is not authority ([Cognition → Discourse Norms](../../../docs/cognition.md#discourse-norms-derived-from-this-model)), and the mechanism is not anyone's bad faith: a Business Term accumulates senses because adoption, not precision, is what shaped it ([Terminology → Business Terms](../../../docs/terminology.md#business-terms)). An unexamined default is not neutrality; it is delegation — the same failure [filesystem.md](../../computer/memory/filesystem/filesystem.md) names for another inherited surface.
 
@@ -19,7 +17,6 @@ Two further costs follow. Agents asked to work "the DDD way" answer from literat
 The document consumes [Modeling](../../../docs/modeling.md), [Terminology](../../../docs/terminology.md), [Modularity](../../../modules/knowledge/modularity/modularity.md), [Process](../../../modules/process/process.md), and [Protocol](../../../modules/knowledge/protocol/protocol.md) — including Terminology's existing classification of the acronym as a Business Term, which this document consumes rather than revises — and adds no modeling, terminology, or modularity definition of its own. What it defines is confined to the protocol layer: the reading of the name, the criterion for what the name gathers, the conformance rule when the name is invoked, and the refusals that follow. Citation runs down to those base documents, per the [citation direction](../../knowledge/documentation/documentation.md#citation-direction). Ecosystem formulations of Domain-Driven Design are examined as prior art to critique — what travels well under the three words, what does not — never as authority for Memar's rules. A canopy term is related only where a Memar document already defines a home; where none exists, the absence is recorded rather than filled. Worked examples are excluded so the reasons remain the load-bearing content.
 
 ## Explanation
-
 ### Memar's Stance on the Name
 **Domain-Driven Design** names a direction: design driven by the domain. Memar's stance is the one [filesystem.md → Memar's Stance on the Filesystem Protocol Surface](../../computer/memory/filesystem/filesystem.md#memars-stance-on-the-filesystem-protocol-surface) takes toward another widely held name: acknowledge the surface, refuse the unexamined default, and state Memar's own criteria for what under that name is kept, refused, or still undefined.
 

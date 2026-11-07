@@ -10,7 +10,6 @@ A label a person may attach to any node to mark material a reader may not want t
 Sensitivity is one word beside a comment. It can be attached to any node. It is not a rank, and it is not [Toxic](../toxic/toxic.md).
 
 ## Explanation
-
 ### Definition
 The commenter means: the node should be approachable with a warning, or grouped with other material of that kind.
 

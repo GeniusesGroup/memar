@@ -11,6 +11,7 @@ A rule of this repository, held for [Documentation](../../documentation.md). The
 - **Nothing is appended to a file that already exists.** No `*.changelog.md`, `*.handoff.md` or `*.research.NNN.md` is created or added to; the files that exist wait for their migration, which reads them whole and loses nothing. The verb that appended to such a file is removed.
 - **A content is never edited.** A correction is a new content that replies to the earlier one. A change that cannot be made in the task it was found in is made by a new task.
 - **A question is its own task.** Questions that are related are one content on an existing task, and a question is never written on an unrelated task.
+- **No document has an Open Questions section,** of any facet and in any organization, and no sentence of a document points the reader to questions held elsewhere; a question found while writing is posted as a `question` content at once, and the document states only what holds. A rule of any module that lets a document keep its questions is wrong under this one.
 - **A practice is a rule.** A new `*.practice.md` is not written beside a document; what it would say is a rule of the module that owns the subject, in its `rules` folder.
 
 ## Why it exists

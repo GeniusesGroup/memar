@@ -10,12 +10,10 @@ Registered meanings of the words people attach when they comment on a law.
 A name such as constitution, articles, tax, or extortion is a [label](../../../../modules/knowledge/label/label.md) beside a comment. It is not a field of the [law](../../../../modules/rights/law/law.md) node and not a second kind of law. This module is where those words are written down. The attachment edge stays the label domain's `(thing)-[:label]`. This module does not add another one.
 
 ## Introduction
-
 ### Motivation
 The type already says a name is a label. Without a place to write what the word means, each document repeats the point, and a word such as constitution starts to look like a rank. Writing the meaning here keeps the word, and keeps it from governing the signed payload.
 
 ## Explanation
-
 ### Definition
 An organization includes this module when it wants a registry of law-comment labels. Each document under this module is one registered word: what a reader may mean by it, and what it does not do.
 
@@ -24,7 +22,7 @@ Attaching a label is a commenter's act. Registration does not choose who may att
 ### What a registered label does not do
 - It does not make a second kind of law. The same signature, companions, and new-node rule apply to every instrument.
 - It does not block a change. A later instrument is a new node whether or not someone has called the earlier one a constitution.
-- It does not hold a wish. If the human code and the computer code do not state it, the label does not state it either.
+- It states what the human code and the computer code state.
 - It is not the node's identity. Rival texts are compared as nodes. The labels are how commenters name them.
 - It is not a rank. A word whose meaning is "harder to change" or "higher than other laws" is not registered. Accepting one such word accepts the next.
 

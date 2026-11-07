@@ -24,6 +24,3 @@ A claim of its own, like any other claim. He compares it to theft. It asks a tar
 - **Nearest alternative rejected:** a kernel node type "inquiry," distinct from case. A claim is a case.
 - **Nearest alternative rejected:** delivering the underlying records to the requester.
 - What would make a gate necessary: a merits case that cannot be filed until this inquiry exists and is accepted. That requirement is not recorded.
-
-## Open questions
-- None for a second defendant. The package's content shape is a note for the content domain, not an end of this claim.

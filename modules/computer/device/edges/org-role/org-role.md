@@ -12,9 +12,3 @@
 
 - **Uncertain (create now, decide later).** Structural labels may stay at the thing/channel entry point (this module), but producer/consumer semantics that intersect the economics product chain are a pluggable candidate: a relationship needing processing semantics keeps edge + processing in one module, and economics product-chain processing would install/remove as a whole — not bare labels in core device.
 - No new core module either way: while the labels are only vocab, they are parameters; the verdict flips only when supply-chain processing appears.
-
-## Open questions
-
-- Is Producer/Consumer an edge to Organization or a label?
-- Where does it intersect the economics product chain?
-

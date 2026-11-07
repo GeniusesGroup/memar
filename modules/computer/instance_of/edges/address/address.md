@@ -11,12 +11,7 @@
 
 ## Placement
 
-- An `edges/` relation of `instance_of`: the near end is the node (`Field_InstanceUUID`), the far end is the address typed by a label. Two distinct nodes if the address is a node of its own; an attribute record otherwise — the bucket question below decides which, and nothing moves until it does.
-
-## Open questions
-
-- Is the address a node of its own — then `(instance)-[:address]->(address)` — or an attribute record on the instance? The source declares a record and two business services; no relation label exists.
-- `BS_RegisterNodeAddresses` had empty request and response bodies in the Go; who may register a neighbor's addresses, and what that registration triggers, is stated nowhere.
+- An `edges/` relation of `instance_of`: the near end is the node (`Field_InstanceUUID`), the far end is the address typed by a label. Two distinct nodes if the address is a node of its own; an attribute record otherwise.
 
 ## Source
 

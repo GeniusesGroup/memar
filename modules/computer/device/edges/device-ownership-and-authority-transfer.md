@@ -49,20 +49,13 @@ No third model for granting command authority is currently anticipated.
 Not yet developed — deferred to the dedicated future chat referenced throughout this document.
 
 ## Drawbacks
-Not yet developed. One tension worth flagging for that future discussion: the fallback chain above and the "no shared arbiter needed" rule interact in a way that is not yet fully specified — e.g., if a seller declares a transfer but the device also has a distinct original manufacturer, is the seller's declaration alone sufficient, or does the manufacturer always need independent notification regardless of who declares the transfer? This is left open rather than guessed at here.
+Not yet developed.
 
 ## Rationale and alternatives
 Not yet developed.
 
 ## Prior art
 Not yet developed.
-
-## Unresolved questions
-- How do two different governance organizations (buyer's and seller's) communicate and reconcile an ownership transfer between themselves? (Explicitly deferred to a dedicated future chat.)
-- Exact format and cryptographic scheme for the digital-invoice-embedded transfer token (step 5 of the fallback chain).
-- Defined policy/duration for plug-and-play baseline functionality before a full transfer occurs.
-- Exact mechanism for re-disclosing manufacturer data-collection consent to each subsequent owner.
-- How this connects back to this RFC (unwritten)'s open question about provisioning a device's initial trust anchor before its first Discovery.
 
 ## Future possibilities
 - This RFC is expected to grow into one or more modules/services in the `organization` repository once the design is further along.

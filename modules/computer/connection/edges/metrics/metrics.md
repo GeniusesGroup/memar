@@ -14,11 +14,6 @@
 
 - **Core `connection` keeps the raw counters as engine state; firewall/attack semantics read from them would be a pluggable.** Byte/packet counters are state of the pipes themselves — core-by-necessity detail of the connection; reading them as attack detection or firewall policy is processing that installs and removes as a whole (pluggable security/firewall capability attaching to connection), and any aggregation over the counters is always pluggable analytics. Entry point: connection — never split counter storage from the connection while it is engine detail.
 
-## Open questions
-
-- Is timing really replaced by calendar-event?
-- Are failed-packet counters firewall policy or engine detail?
-
 ## Source
 
 > Source: `modules/computer/connection/edges/metrics/` (in code).

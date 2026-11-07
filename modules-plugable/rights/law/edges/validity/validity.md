@@ -4,22 +4,18 @@ Start Date: 2026-09-13
 ID: 497081
 ---
 # Law Validity
-
 ## Abstract
 This page answers how long a law may bind people who did not vote for it. Two sunset records are one doctrine with two attachment points: [Time-bounding of laws' validity and separating infrastructural anchors from soft laws (Time-Bounded Laws)](validity.md#time-bounding-of-laws-validity-and-separating-infrastructural-anchors-from-soft-laws-time-bounded-laws) expires each citizen's vote at death or emigration yet shields hard infrastructural anchors behind a prepaid Deconstruction Cost, and [Forced annulment of votes' effect upon death or emigration and generational reset of laws (Civic Vote Sunset & Generational Sovereignty)](validity.md#forced-annulment-of-votes-effect-upon-death-or-emigration-and-generational-reset-of-laws-civic-vote-sunset--generational-sovereignty) attaches the same expiry to the law — past statutes survive only by the new generation's re-affirmation. Information originates in the vote and also attaches to the law. Civic maturity is an event — accepting the laws, joining — not a calendar age. Silence is not assent: inherited law needs an affirmative act. The *form* of a law is not this page's subject; that type lives at kernel [Law](../../../../../modules/rights/law/law.md).
 
 ## Introduction
-
 ### Motivation
 A vote that outlives the citizen, and a statute that outlives every voter who made it, impose the dead on the living. The two records on this page attack that inheritance at different attachment points — the vote's weight, and the law's remaining force — and they share one substrate: a citizenship-status-aware vote registry. What a legal text must contain is a different failure, already answered by the kernel type; mixing the two makes an objection to a coding gate look like an objection to generational reset.
 
 ## Explanation
-
 ### The problem the answers share
 For how long may a law bind future generations, and what remains standing when the vote that built it is annulled? Each record takes a position on duration (does the law die with its voters' status, does the vote die while the law lives, or does the law live only through re-approval?) and substrate (what remains standing when the vote is annulled?). Form — what a law node contains — is not asked here.
 
 ### Approaches
-
 #### The four-facet engineering structure of a law (text, purpose, interpretation, sanction)
 The form of a law is the kernel type at [Law](../../../../../modules/rights/law/law.md), not a statute of a government bundle. This heading is kept so inbound anchors do not break. Do not restate the type here.
 

@@ -11,13 +11,7 @@
 
 ## Placement
 
-- This folder holds no relation at all: it is a deployment manifest plus a main-file generator, content the module skeleton would place under `services/` or `internal/`, not `edges/`. Recorded rather than moved — the Phase 0 wrong-kind-folder pass owns that decision.
-
-## Open questions
-
-- Bucket: no two-node relation exists here (see Placement), so `edges/` is proven wrong by the folder's own contents.
-- The manifest's domain-name hash (SHA-512/256) disagrees with `software/edges/manifest`'s SHA-256 of the same input.
-- Only Go residue exists; a conversion re-models the manifest from the domain document, not from the struct.
+- This folder holds a deployment manifest plus a main-file generator, content the module skeleton would place under `services/` or `internal/`, not `edges/`. Recorded rather than moved — the Phase 0 wrong-kind-folder pass owns that decision.
 
 ## Source
 

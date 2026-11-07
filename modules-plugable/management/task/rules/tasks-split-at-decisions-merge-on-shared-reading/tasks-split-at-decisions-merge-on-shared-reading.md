@@ -10,7 +10,7 @@ A rule of this repository for how large a delegated or queued task should be. Mo
 - **Split** at a decision the owner must take; at a change that can be tested alone and whose files and governing reading differ from its neighbours'; and at a unit that can run in parallel with the rest.
 - **Merge** tasks that follow one another on the same files and the same governing reading: they pay one load.
 - **Related tasks queued under one topic go to one agent,** each keeping its own plan and report ([queued work is handed out by one topic](../one-topic-one-project-per-delegated-batch/one-topic-one-project-per-delegated-batch.md)).
-- **Past about half the window, the rest goes to a new task linked to this one.** Batching is not free, since the re-reads of a growing context outgrow a fresh task's load after a while; it pays only for tasks that share files and reading.
+- **Past about half the window, the rest goes to a new chat or sub-agent on this same task,** not to a new task: a limit of the agent is not a new thing asked ([later work returns to its task](../later-work-returns-to-its-task/later-work-returns-to-its-task.md)). Batching is not free, since the re-reads of a growing context outgrow a fresh task's load after a while; it pays only for tasks that share files and reading.
 - **Load less for the kind of step before merging to share a load:** a read-only or mechanical step needs less than a step that reasons.
 - **Tasks are small in their decisions, not in their steps.** A small task keeps isolation, a cheap restart after a failure, one reviewable change per decision, and no compaction in the middle of the work.
 

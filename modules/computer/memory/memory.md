@@ -114,7 +114,7 @@ A developer's obligation to understand memory — what allocates, what copies, w
 The arena-allocation experiments in collector-equipped languages — including one language's own, later shelved, arena proposal — are evidence that allocation placement is a real, felt cost even under tracing collection; the contract rules above generalize that felt cost into a stated discipline.
 
 ### Address-sized integers are not numeric widths
-An address-sized integer belongs to the memory domain, not to the numeric tower. No math capsule is declared for it; it goes with the pointer to the references (2026-10-26, tentative), and which declaration receives a reference `uintptr` is tracked in the paired handoff.
+An address-sized integer belongs to the memory domain, not to the numeric tower. No math capsule is declared for it; it goes with the pointer to the references (2026-10-26, tentative).
 
 ### Retention is reached through one contract
 Whatever retains state, in volatile or non-volatile memory, is reached through one contract: a store of bytes under addresses, read by `get` and `list` and written only by an atomic `batch` under expectations. A block device, a page, a record store, a key-value store and a file system differ in the kind of address they take and in the values they hold, and in nothing else. The owner ruled on 2026-10-26 that a category holds no contract ([Category → The rules](../../knowledge/modularity/labels/category.md#the-rules)), so this folder is a category and the contract is divided into modules, each a bounded responsibility of its own; the division and its reasons are in Memory Handoff:
@@ -124,4 +124,4 @@ Whatever retains state, in volatile or non-volatile memory, is reached through o
 - [Reference](reference/protocol/reference.kh) is the handle to a datum, which shares a word with referring to an address and nothing else.
 The capsules and the optional operations of the store are pluggable and stand at `modules-plugable/computer/memory/store/`, the mirror of the store module; the guest surfaces and the allocator that realize no one store stand directly at `modules-plugable/computer/memory/`.
 
-This category is provisional until the rules of this document that a party can be held to (reclamation, teardown, copy and ownership, the contract terms) are divided into modules too, since a category's document says what its subject is and nothing more; the handoff records it.
+This category is provisional until the rules of this document that a party can be held to (reclamation, teardown, copy and ownership, the contract terms) are divided into modules too, since a category's document says what its subject is and nothing more.
