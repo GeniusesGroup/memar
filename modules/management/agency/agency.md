@@ -8,6 +8,30 @@ ID: 496330
 ## Abstract
 Agency is modeled here as a fundamental concept for understanding systems that can act, make decisions, assume responsibilities, or act on behalf of another system. AI Agent is treated as one manifestation of Agency, not as its definition — Agent is an older and more general concept than Artificial Intelligence, and reducing it to AI discards accumulated knowledge about delegation, responsibility, authority, representation, decision-making, trust, and contracts. The document's central claim is that most problems attributed to AI Agents — ambiguous delegation, missing context, undocumented knowledge, unclear acceptance criteria — predate AI and are not solved by changing tools; they are solved by modeling Agency correctly. `Agent` and `agent_for` are treated as relational: a System occupies the Agent or Principal position within a relationship rather than becoming a new kind of entity by doing so. Delegation, Responsibility, Authority, Capability, Context, Knowledge, Trust, and Accountability are modeled as distinct, non-substitutable concepts whose conflation is identified as a recurring source of failure. Agency is both an intrinsic capability of a System and a relational condition, and a System that has both is an Agent — a thing lacking the intrinsic capability does not become an Agent by being instructed to act. The document records its remaining open questions — most centrally, how accountability propagates through delegated Agency — as deliberately left unresolved rather than forced to a premature answer, in the paired Agency Handoff.
 
+## Module home
+This document is the main document of `modules/management/agency`. It was moved from `docs/agency.md` (2026-11-03).
+
+### What this module owns
+- The concepts of Agency, Agent, Principal, Delegation, Responsibility, Authority, Context, and the `agent_for` relation, as this document defines them.
+- Services and widgets that compose **context for an agent** (human UI or intelligence runtime) from other domains' contracts: what to read, in what order, what is durable across sessions, what is per-event.
+- Reaction of an agent to events on a [timeline](../timeline/timeline.md) that belongs to a [group](../group/group.md) (a task is one such subject): which context address to bind, which brief to produce, which chat or claim to open — without owning task facts, content bodies, or text search.
+
+### What this module does not own
+- **Task** facts, relations, status, priority, claim — [task](../task/task.md) and its pluggable layer.
+- **Content** placement and kinds — [content](../../knowledge/content/content.md).
+- **Text** values, likeness, and search indexes — [text](../../knowledge/text/text.md).
+- **AI type-spaces** (image, text, voice detection/generation) — [modules-plugable/ai](../../../modules-plugable/ai/ai.md). Prompt-cache and durable context for *intelligence* runtimes are agency's AI-facing realization, not the AI module's subject.
+- Aggregation of another domain's answers inside a base service — only widgets aggregate ([widget-aggregates](../../computer/ui/rules/widget-aggregates/widget-aggregates.md)).
+
+### Redesign direction (Tentative)
+Current verbs under `modules-plugable/ai/services/` that assemble agent context from task folders and filesystem paths are **misplaced execution** of agency work. They move here (conceptually first; realization after Khayyam abstractions): address in, ordered context out. Any rewritten service leaves the filesystem behind and reaches durable state only through a memory/record **adapter**; until that split is complete, each service type isolates storage in its own method so the move is local.
+
+**Init context (20261103-T104450Z-19204):** `Context_Compose` under [`widgets/context_compose/`](widgets/context_compose/context_compose.kh) — address (task id) in, ordered parts out. Realization: `modules-plugable/management/agency/widgets/context_compose/`. `memar ai get-task-init-context` remains the stable command face.
+
+**Briefs and new-chats-ask (20261103-T104513Z-19204):** `Plan_Carry_Out_Brief`, `Questions_Answer_Brief`, and `New_Chats_Ask` under [`widgets/plan_carry_out_brief/`](widgets/plan_carry_out_brief/plan_carry_out_brief.kh), [`widgets/questions_answer_brief/`](widgets/questions_answer_brief/questions_answer_brief.kh), and [`widgets/new_chats_ask/`](widgets/new_chats_ask/new_chats_ask.kh). Realization under `modules-plugable/management/agency/widgets/`. The `memar ai` verbs remain the stable command faces.
+
+Durable shared context across chats (research `20261103-T100552Z-14796`, owner 2026-11-03): agents pay a large Stable body of materials again on every new chat, and a vendor prompt cache is opportunistic and short-lived, so agency fixes the compose and bind structure first and connects a vendor cache, a local durable store or a light Memar-hosted model afterwards, each as an adapter. Deferring the structure is refused, for the reason early filesystem coupling of services was. A takeup of context binds a principal to an ordered composition of addressable materials; agency holds the order and the bind, and the bodies stay with the content owners ([Addressability](../../knowledge/content/content.md#addressability)). Each entry belongs to one layer: Stable (revised by its owner), Session (an input the task owns, referenced by the bind) or Event (this message's delta); Stable compositions are cut in segments so that one revision invalidates little. The composition is declared in [protocol/](protocol/composition-version.kh) ([entry](protocol/composition-entry.kh), [layers](protocol/context-layer-kinds.kh), [binding](protocol/takeup-binding.kh)), decided by [Prefix Stability](protocol/prefix-stability.kh) and [Context Continuity](protocol/context-continuity.kh), served by [resolve](services/resolve-composition/protocol/resolve-composition.kh), [bind](services/bind-takeup/protocol/bind-takeup.kh) and [invalidate](services/invalidate-composition/protocol/invalidate-composition.kh), and serialized by [the widget](widgets/serialize-for-intelligence/protocol/serialize-for-intelligence.kh). Its behaviour is the rules [A composition version fixes its entries](../../../modules-plugable/management/agency/rules/a-composition-version-fixes-its-entries/a-composition-version-fixes-its-entries.md) and [The Stable segment is reproducible](../../../modules-plugable/management/agency/rules/the-stable-segment-is-reproducible/the-stable-segment-is-reproducible.md). Context Continuity is the materials' surface of [Interaction With an Agent](#interaction-with-an-agent), one of its dimensions; a precomposed cache blob is a derived artifact for prefix hits, and [documentation](#documentation-as-an-agency-mechanism) remains the mechanism for knowledge.
+
 ## Introduction
 
 ### Motivation
@@ -107,7 +131,7 @@ Both halves of that definition hold, and neither replaces the other. The intrins
 This definition is deliberately broader than "acting on behalf of another." A system may exhibit agency without having been explicitly delegated a responsibility by another system. For example, a human may pursue a self-generated objective without acting on behalf of another person or organization. Likewise, an autonomous system may pursue an objective without receiving an individual instruction for every action it takes. Therefore, delegation is not a necessary condition for all forms of agency. However, delegation becomes fundamental when agency exists **on behalf of another system**. This distinction allows both intrinsic and relational manifestations of agency to be represented without forcing one to replace the other.
 
 #### Agency as a Property of Systems
-Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. Whether a Principal is external to a System that acts is relative to where that System's boundary is drawn for the analysis in hand — a boundary is an analytical choice made by the observer, not an inherent property of the system's material ([System → Key Properties](./system.md#key-properties)) — so a Principal that is one of the System's own internal Systems is not external to it, and redescribing a self-directed act as delegation to an internal System states where the boundary was drawn rather than dissolving the distinction between intrinsic and delegated Agency. Where both descriptions fit the same act, the model works with both: the two are not mutually exclusive kinds of Agency ([Intrinsic and Delegated Agency](#intrinsic-and-delegated-agency)).
+Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. Whether a Principal is external to a System that acts is relative to where that System's boundary is drawn for the analysis in hand — a boundary is an analytical choice made by the observer, not an inherent property of the system's material ([System → Key Properties](../../../docs/system.md#key-properties)) — so a Principal that is one of the System's own internal Systems is not external to it, and redescribing a self-directed act as delegation to an internal System states where the boundary was drawn rather than dissolving the distinction between intrinsic and delegated Agency. Where both descriptions fit the same act, the model works with both: the two are not mutually exclusive kinds of Agency ([Intrinsic and Delegated Agency](#intrinsic-and-delegated-agency)).
 
 This allows the model to represent:
 
@@ -240,7 +264,7 @@ with:
 The same principle applies to software and organizations.
 
 #### From Observer to Agent
-Roles arise from relationships, and the same System may move between them. A common sequence: a System first observes another System from outside — frequently by coming to understand the protocols that govern the observed System's processes — and only afterwards enters a relationship in which it acts upon that System. Understanding a protocol ordinarily precedes acting under it; see [Protocol → Protocols and External Observers](../modules/knowledge/protocol/protocol.md#protocols-and-external-observers).
+Roles arise from relationships, and the same System may move between them. A common sequence: a System first observes another System from outside — frequently by coming to understand the protocols that govern the observed System's processes — and only afterwards enters a relationship in which it acts upon that System. Understanding a protocol ordinarily precedes acting under it; see [Protocol → Protocols and External Observers](../../knowledge/protocol/protocol.md#protocols-and-external-observers).
 
 The transition matters for modeling: "observer" and "agent" are positions relative to a relationship, not permanent types of the System occupying them. A patient who studies a hospital's complaint procedure and then files a complaint has not changed kind; the same System has moved from one role to another as new relationships formed. Modeling either role as an intrinsic property of the System freezes what is usually a fluid, repeatable shift.
 
@@ -514,7 +538,7 @@ Therefore:
 > **Delegation establishes a relationship; it does not prescribe every action.**
 
 ### Agency in Process Execution
-Agency is not limited to situations in which one System delegates work to another System through a Principal–Agent relationship. A process can also depend on a System being capable of taking responsibility for a bounded portion of the process progression and determining how that responsibility is executed. See [Process → Concurrency](../modules/process/process.md#concurrency) for the Process-side treatment this topic supplies the Agency grounding for — in particular, the Worker/CPU-core distinction and the escalating decision chain there (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking) are a Concurrency-specific instance of the general responsibility-before-synchronization principle this topic states below, under *Agency Before Synchronization*.
+Agency is not limited to situations in which one System delegates work to another System through a Principal–Agent relationship. A process can also depend on a System being capable of taking responsibility for a bounded portion of the process progression and determining how that responsibility is executed. See [Process → Concurrency](../../process/process.md#concurrency) for the Process-side treatment this topic supplies the Agency grounding for — in particular, the Worker/CPU-core distinction and the escalating decision chain there (shared state → shared mutable state → shared invariant → common ownership → partitionable responsibility → scheduling → synchronization → locking) are a Concurrency-specific instance of the general responsibility-before-synchronization principle this topic states below, under *Agency Before Synchronization*.
 
 This distinction is important because the Agent relationship used to describe representation (`agent_for`) is not the only relationship through which Agency becomes relevant. A process may assign execution responsibility to a System without that System becoming a representative of the process, a domain entity, or a Principal's Agent in the narrower representational sense.
 
@@ -543,9 +567,9 @@ Account 123
 The important property is not the identity of the particular Agent but the existence of a well-defined responsibility boundary at the time the process is progressing. This makes Agency useful for modeling execution independently of the mechanism used to realize it.
 
 #### Execution Agent
-An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type. It remains descriptive terminology defined here, not a Concept Process needs of its own: naming an Execution Agent presupposes Agency and Process alike, and a Concept qualifies as independent only when it can be defined without first defining another. Process cites this term — see [Process → Agency and Execution Responsibility](../modules/process/process.md#agency-and-execution-responsibility) — rather than defining it.
+An **Execution Agent** is an Agent that assumes responsibility for advancing some bounded part of a Process. The term describes a use of Agency, not a new entity type. It remains descriptive terminology defined here, not a Concept Process needs of its own: naming an Execution Agent presupposes Agency and Process alike, and a Concept qualifies as independent only when it can be defined without first defining another. Process cites this term — see [Process → Agency and Execution Responsibility](../../process/process.md#agency-and-execution-responsibility) — rather than defining it.
 
-An Execution Agent may be represented by many different mechanisms, including a Worker, Actor, process, thread, service instance, device, human operator, or another system. None of those representations is intrinsically an Agent merely because it has the corresponding implementation name. See [Process → Concurrency](../modules/process/process.md#concurrency) for Worker's own treatment there, including its distinction from a physical CPU core.
+An Execution Agent may be represented by many different mechanisms, including a Worker, Actor, process, thread, service instance, device, human operator, or another system. None of those representations is intrinsically an Agent merely because it has the corresponding implementation name. See [Process → Concurrency](../../process/process.md#concurrency) for Worker's own treatment there, including its distinction from a physical CPU core.
 
 Conversely, a Worker can be an expression of Agency when it is not merely an execution primitive but a bounded acting unit with an identifiable responsibility, relevant capabilities, available knowledge, and authority to perform the work assigned to it.
 
@@ -972,7 +996,7 @@ Knowledge Space
 Agent B
 ```
 
-This is one reason [knowledge management](../modules/knowledge/knowledge.md) is not merely an administrative concern.
+This is one reason [knowledge management](../../knowledge/knowledge.md) is not merely an administrative concern.
 
 It is part of the infrastructure through which collective Agency operates.
 
@@ -981,7 +1005,7 @@ Many failures attributed to AI Agents are not fundamentally AI problems.
 
 They may be manifestations of weaknesses in:
 
-- [Knowledge Management](../modules/knowledge/knowledge.md)
+- [Knowledge Management](../../knowledge/knowledge.md)
 - responsibility definition,
 - delegation,
 - documentation,
@@ -1020,7 +1044,7 @@ But the deeper problem may be:
 
 > "The organization has no mechanism for transferring and preserving understanding."
 
-This connects Agency directly to [Knowledge Management](../modules/knowledge/knowledge.md).
+This connects Agency directly to [Knowledge Management](../../knowledge/knowledge.md).
 
 ### Contracts
 A Contract establishes expectations between participants.
@@ -1492,7 +1516,7 @@ It becomes harmful when it prevents communication or implies that knowledge outs
 Agency therefore requires attention to the boundaries around responsibility and knowledge.
 
 ### Professional Categories as False Taxonomies
-The professional categories above are an instance of a [false taxonomy](./modeling.md#false-taxonomies-hide-shared-structure): a classification useful for a local purpose that is mistaken for the structure of what it divides. Frontend and Backend may be useful skill classifications. They become a false taxonomy when they imply that:
+The professional categories above are an instance of a [false taxonomy](../../../docs/modeling.md#false-taxonomies-hide-shared-structure): a classification useful for a local purpose that is mistaken for the structure of what it divides. Frontend and Backend may be useful skill classifications. They become a false taxonomy when they imply that:
 
 - modeling belongs only to Backend,
 - semantics belongs only to Frontend,
@@ -1955,7 +1979,7 @@ In particular, Agency should not become a container into which every concept rel
 Its scope should remain centered on the capacity and structure of systems that act.
 
 #### Agency and Type Categories
-Type's four categories — Capsule, Method, Abstraction, and Scope — classify Types by semantic role ([Categories of Type](./type.md#categories-of-type)); none classifies a System, and Agent and Principal name the endpoint positions of `agent_for` rather than entities with an explicit identity and defined contract ([The `agent_for` Relationship](#the-agent_for-relationship)). Agency therefore cuts across these categories; which of them realizes an agentive System is not answered here.
+Type's four categories — Capsule, Method, Abstraction, and Scope — classify Types by semantic role ([Categories of Type](../../../docs/type.md#categories-of-type)); none classifies a System, and Agent and Principal name the endpoint positions of `agent_for` rather than entities with an explicit identity and defined contract ([The `agent_for` Relationship](#the-agent_for-relationship)). Agency therefore cuts across these categories; which of them realizes an agentive System is not answered here.
 
 ### Terminology
 The following terminology principles should be maintained. This list has been extended from an earlier draft to cover every concept that receives its own topic above; the earlier version defined Agency, Agent, Principal, `agent_for`, Delegation, Responsibility, Authority, Capability, Context, Knowledge, and Autonomy, but left Trust, Contract, Accountability, Execution, Decision-Making, Goal, and Communication undefined here despite each having a full topic elsewhere in this document — an inconsistency between the glossary and the body that is corrected below.
@@ -1990,7 +2014,7 @@ What a system is able to do.
 Information and conditions relevant to the Agent's current action.
 
 #### Knowledge
-Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](../modules/knowledge/knowledge.md), building on the foundational definition in [System → Knowledge and Science](./system.md#knowledge-and-science).
+Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](../../knowledge/knowledge.md), building on the foundational definition in [System → Knowledge and Science](../../../docs/system.md#knowledge-and-science).
 
 #### Autonomy
 The degree to which an Agent can determine or execute actions without direct specification of each individual action.
@@ -2025,7 +2049,7 @@ An Agent that assumes responsibility for advancing a bounded part of a Process. 
 The relationship through which an Agent is responsible for advancing a bounded part of a Process or managing relevant process state. It is distinct from `agent_for`, which expresses acting on behalf of a Principal.
 
 ### Working Principles
-Until the open questions, recorded in the Agency Handoff, are resolved, the following principles provide a stable working model:
+The following principles provide a stable working model:
 
 1. **Model Agency before AI Agent.**
 2. **Do not redefine Agent around Artificial Intelligence.**
