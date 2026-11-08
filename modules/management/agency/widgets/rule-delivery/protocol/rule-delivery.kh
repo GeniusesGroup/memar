@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp Text_To_Labels in "modules/knowledge/text/widgets/text-to-labels/protocol/text-to-labels.kh"
+tp Find_Rules in "modules/process/rule/services/find-rules/protocol/find-rules.kh"
+tp Rule_Hits in "modules/process/rule/services/find-rules/protocol/rule-hit.kh"
+
+tp Rule_Delivery ab {
+	Text_To_Labels
+	Find_Rules
+}
+
+tp ForSubject mt (self Rule_Delivery) (subject Text) (hits Rule_Hits, err Error)

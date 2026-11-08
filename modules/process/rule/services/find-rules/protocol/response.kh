@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Rule_Hits in "modules/process/rule/services/find-rules/protocol/rule-hit.kh"
+
+tp Find_Rules_Response ab
+
+tp GetHits mt (self Find_Rules_Response) () (hits Rule_Hits)

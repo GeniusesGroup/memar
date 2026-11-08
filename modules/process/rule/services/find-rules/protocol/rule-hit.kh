@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Rule_Claim in "modules/process/rule/protocol/claim.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp W32 in "modules/math/integer/unsigned-32.kh"
+
+tp Rule_Hit ab {
+	Rule_Claim
+}
+
+tp GetWhy mt (self Rule_Hit) () (why String)
+
+tp Rule_Hits ab {
+	Details
+}
+
+tp GetCount mt (self Rule_Hits) () (count W32)
+
+tp GetHitAt mt (self Rule_Hits) (position W32) (hit Rule_Hit, err Error)

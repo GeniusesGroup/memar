@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Find_Rules in "modules/process/rule/services/find-rules/protocol/find-rules.kh"
+
+tp Domain mt (self Find_Rules) () (s String) {
+    CharacterRun_From.FromCharacterRun("Rule")(s, VoidError)
+}
+
+tp Summary mt (self Find_Rules) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finds the rules that bear on a subject")(s, VoidError)
+}
+
+tp Overview mt (self Find_Rules) () (s String) {
+    CharacterRun_From.FromCharacterRun("Takes a subject, the Topic labels that narrow it and the most hits wanted, and returns the contents that carry the label Rule, best first. Each hit is the rule's document and anchor with its Why line. It returns no rule text: the reader opens the ones that govern the step.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Find_Rules) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Find_Rules) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task 20261108-T114321Z-21456. Ranking by word likeness is informative; Topic labels narrow it.")(s, VoidError)
+}

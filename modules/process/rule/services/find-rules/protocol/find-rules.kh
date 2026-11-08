@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Find_Rules_Request in "modules/process/rule/services/find-rules/protocol/request.kh"
+tp Find_Rules_Response in "modules/process/rule/services/find-rules/protocol/response.kh"
+
+tp Find_Rules ab {
+	Service
+}
+
+tp Do mt (self Find_Rules) (req Find_Rules_Request) (res Find_Rules_Response, err Error)
