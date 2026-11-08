@@ -7,7 +7,7 @@ package settlement_p
 import (
 	event_p "memar/process/event/protocol"
 
-	rule_p "org/modules/computer/rule/protocol"
+	rule_p "org/modules/process/rule/protocol"
 	thing_p "org/modules/identity/thing/protocol"
 )
 

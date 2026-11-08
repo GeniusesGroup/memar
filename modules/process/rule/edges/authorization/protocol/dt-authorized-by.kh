@@ -11,7 +11,7 @@ tp AuthorizedBy mt (self Field_AuthorizedBy) () (t ThingUUID)
 package authorization_p
 
 import (
-	rule_p "org/modules/computer/rule/protocol"
+	rule_p "org/modules/process/rule/protocol"
 )
 
 type Field_AuthorizedBy interface {

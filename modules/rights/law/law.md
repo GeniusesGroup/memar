@@ -21,7 +21,7 @@ The human-language sentence is [human code](edges/human_code/human_code.md). The
 A record opens for a binding signature together with these companions:
 
 1. **Human code** — the sentence a person reads.
-2. **Computer code** — the machine-checkable form of that sentence, realized by edges to [Rule](../../computer/rule/rule.md) nodes. A form that no input can satisfy is not opened for a signature.
+2. **Computer code** — the machine-checkable form of that sentence, realized by edges to [Rule](../../process/rule/rule_node.md) nodes. A form that no input can satisfy is not opened for a signature.
 3. **Goal** — why the instrument was written, carried in the payload so the reason is not lost. It does not outrank human code or computer code. If following the goal would produce a result those two refuse, the record is not ready for a signature. A goal that only states the reason more generally than the sentence is still a goal.
 4. **Explanation** — a definition of the words used in the human code. A definition that changes who the sentence binds, or what it counts, belongs in the human code.
 5. **Executive guarantee** — how the instrument takes effect in the world. Punishment for disobedience is one form of that path. A constitutive or power-conferring text has an operational path as well. The instrument can be in force before that path has been used. Using the path is not what makes the signature valid.
@@ -43,6 +43,6 @@ Signatures, delegation, and the public critique of a proposition are the [electi
 ### Boundaries
 - **Law is an independent source.** `Right -> law = ...` collapses that source into an attribute. A [contract](../contract/contract.md) is the source for an arrangement its parties sign.
 - **A signature is a consent record.** The vote edges in this folder record that consent. They are the signature, and the law text is the thing signed.
-- **A law is realized as Rules.** A [Rule](../../computer/rule/rule.md) is an executable conditional policy reacting to events. Computer code is the machine-checkable claim, realized by edges to Rule nodes. The law is the instrument people sign. The Rules are how it executes. A Rule added after the signature is a new law, because the Rule set is inside the digest.
+- **A law is realized as Rules.** A [Rule](../../process/rule/rule.md) is an executable conditional policy reacting to events. Computer code is the machine-checkable claim, realized by edges to Rule nodes. The law is the instrument people sign. The Rules are how it executes. A Rule added after the signature is a new law, because the Rule set is inside the digest.
 - **Instances are laws written on this structure.** Coverage ratios, infrastructure anchors, and similar proposals belong to the bundle that runs them. No-retroactivity, when a contract yields to a law, and whether a law supersedes a contract, are statutes in [laws](../../../modules-plugable/rights/law/laws/laws.md), not this type.
 - **What a vote does to another law is not this type.** That effect is an optional edge of a [case](../case/case.md), included from [claims](../../../modules-plugable/rights/claims/claims.md).

@@ -20,7 +20,7 @@ import (
 	request_p "memar/process/request/protocol"
 	audit_time_p "memar/process/time/protocol"
 
-	rule_p "org/modules/computer/rule/protocol"
+	rule_p "org/modules/process/rule/protocol"
 )
 
 // DataModel indicate the domain record data fields.

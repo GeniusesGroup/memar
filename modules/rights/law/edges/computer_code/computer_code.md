@@ -1,5 +1,5 @@
 # Computer code
-Machine-checkable realization of the law text, realized by edges to [Rule](../../../../computer/rule/rule.md) nodes. The human-language sentence is [human code](../human_code/human_code.md). The word code alone names neither.
+Machine-checkable realization of the law text, realized by edges to [Rule](../../../../process/rule/rule_node.md) nodes. The human-language sentence is [human code](../human_code/human_code.md). The word code alone names neither.
 
 ## Model
 - `(law)-[:computer_code_is]->(text)`

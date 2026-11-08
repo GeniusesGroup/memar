@@ -8,7 +8,7 @@ This identity receives every new fact of these edges of that thing, across organ
   - Delivery — push to the follower, or pull by the follower; open below.
 - AAA:
   - **Authentication** — the follower's identity is verified before the edge exists.
-  - **Authorization** — the followed thing's owner decides, by rule, which identities may follow which edge kinds. The rule attaches through the generic `condition_is` attachment, so this relation never references the [rule](../../../../computer/rule/rule.md) domain; evaluating it is the authorization capability's work ([access-control](../../../../../modules-plugable/management/access-control/access-control.md), [authorization](../../../../../modules-plugable/management/authorization/authorization.md)).
+  - **Authorization** — the followed thing's owner decides, by rule, which identities may follow which edge kinds. The rule attaches through the generic `condition_is` attachment, so this relation never references the [rule](../../../../process/rule/rule.md) domain; evaluating it is the authorization capability's work ([access-control](../../../../../modules-plugable/management/access-control/access-control.md), [authorization](../../../../../modules-plugable/management/authorization/authorization.md)).
   - **Accounting** — each delivery is metered, and the owner's rule may charge for it ([service charging](../../../../../bundles/government/modules/payment-rails-and-service-charging/payment-rails-and-service-charging.md)).
 - A delivery carries the new version of the followed edge as the owner keeps it, not a copy that replaces it. A delivery, a failed delivery, and a revocation are each a fact with its time.
 

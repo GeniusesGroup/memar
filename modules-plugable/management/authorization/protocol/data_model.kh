@@ -2,7 +2,7 @@
 
 tp Field_GroupID in "modules/management/group/protocol/dt-uuid.kh"
 tp Field_GroupPolicy in "modules-plugable/management/authorization/protocol/dt-policy.kh"
-tp Field_RuleID in "modules/computer/rule/protocol/dt-uuid.kh"
+tp Field_RuleID in "modules/process/rule/protocol/dt-uuid.kh"
 
 tp GroupAuthorizationDataModel ab {
 	Field_GroupID

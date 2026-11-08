@@ -57,7 +57,7 @@ The residue rules are kept rather than retired for the same reason they are stat
 A file belongs under `targets/go/` when it is the bridge between Go and Khayyam, or a reader the bridge needs, or a Rule about the residue that bridge leaves:
 
 - **The bridge and its readers** — [`abstraction_bridge.py`](./abstraction_bridge.py) and the modules it is one call into: the Go lexer and parser, the Khayyam reader, the comment reader, the residue block, the naming tables, the frontend check, and their tests.
-- **The residue rules** — [`rules/`](./rules/README.md), whose subject is what the port left in a `.kh` file. A Rule whose subject is a Khayyam program is the [language catalog's](../../rules/README.md) whatever tool applies it; enforcement does not decide a Rule's home ([Rule → Which Module a Rule Belongs To](../../../../modules/computer/rule/rule.md)).
+- **The residue rules** — [`rules/`](./rules/README.md), whose subject is what the port left in a `.kh` file. A Rule whose subject is a Khayyam program is the [language catalog's](../../rules/README.md) whatever tool applies it; enforcement does not decide a Rule's home ([Rule → Which Module a Rule Belongs To](../../../../modules/process/rule/rule.md)).
 - **This folder's own records** — this document and the research that carries the port's measurement.
 
 What does **not** belong here:

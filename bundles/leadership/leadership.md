@@ -15,7 +15,7 @@
 - Mentorship / sponsorship relationships → `modules/identity/person/edges/social_connections` (mentor, mentee)
 - Oversight membership, small single-purpose membership edges → `modules/management/group/README.md`
 - Concrete positions (C-level manager, judge, shift lead) → `modules/management/role`
-- Incentive design → rules domain (`modules/computer/rule`)
+- Incentive design → rules domain (`modules/process/rule`)
 
 Each of those is already a first-class capability elsewhere. A `leadership` module would have nothing of its own to own — it would be a reification of a colloquial word, precisely the failure this document argues against. A bundle that composes them is the honest answer to "where do we put this concept": the word lives here, the semantics live in the real modules.
 
@@ -66,7 +66,7 @@ Much of the value currently credited to "leadership research" was actually produ
 | "Develop people" | Mentor/mentee, sponsorship edges | `modules/identity/person/edges/social_connections` |
 | "Guide the group" | Concrete roles + oversight membership | `modules/management/role`, `modules/management/group` |
 | "Align and coordinate" | Coordination structures, task decomposition | `modules/management/task`, `modules/management/department` |
-| "Motivate" | Incentive rules | `modules/computer/rule` |
+| "Motivate" | Incentive rules | `modules/process/rule` |
 | "Communicate direction" | Timeline/event broadcast | `modules/management/timeline` |
 
 Rules for this bundle:

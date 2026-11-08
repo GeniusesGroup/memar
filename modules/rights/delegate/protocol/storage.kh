@@ -48,7 +48,7 @@ import (
 	error_p "memar/process/error/protocol"
 
 	storage_p "memar/storage/protocol"
-	rule_p "org/modules/computer/rule/protocol"
+	rule_p "org/modules/process/rule/protocol"
 	user_p "org/modules/identity/user/protocol"
 )
 

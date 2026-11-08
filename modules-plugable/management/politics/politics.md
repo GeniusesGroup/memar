@@ -30,4 +30,4 @@ Two villages each gain if a new road passes beside that village. A shorter road 
 OpenStax states that the discipline of political science focuses primarily on these interactions as they involve governments. This page keeps the activity. The apparatus of a government is a different module.
 
 ### Where it sits
-A [Rule](../../../modules/computer/rule/rule.md) executes a chosen policy on events after an answer is instituted. This page is the activity of reaching that answer. It lives under plugable management as the nearest parent until a sharper home is named. It is a concept page: a graph type is a later step, and the folder can move.
+A [Rule](../../../modules/process/rule/rule.md) executes a chosen policy on events after an answer is instituted. This page is the activity of reaching that answer. It lives under plugable management as the nearest parent until a sharper home is named. It is a concept page: a graph type is a later step, and the folder can move.

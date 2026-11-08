@@ -12,7 +12,7 @@ These rules are this repository's own, over its graph of vertices and edges:
 
 - An edge becomes its own module only when it carries independent domain semantics — identity, lifecycle, authorization, rules, processing. A purely structural or classifying relation does not.
 - No bare edges. An edge with no stated who-may-create-or-remove and what it triggers does not exist. An apparently simple `member_of` or `related_to` is either a real capability with rules or a shortcut over a deeper path.
-- Kernel does not reference the [rule](computer/rule/rule.md) domain directly: a generic `condition_is` edge connects a subject to a rule node, and the rules engine decides the semantics.
+- Kernel does not reference the [rule](process/rule/rule_node.md) domain directly: a generic `condition_is` edge connects a subject to a rule node, and the rules engine decides the semantics.
 - Cross-domain analytics sit under the category's `analytics` namespace in `modules-plugable/`, named by the knowledge produced; domain analytics sit inside the pluggable that produces them. A query crossing categories has no home yet.
 - Behavior binds to a module's UUID, never to a name, so two organizations may ship the same term with different identity and different rules.
 

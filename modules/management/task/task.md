@@ -17,7 +17,7 @@ Each domain does its own work. Task answers how a piece of work relates to other
 | Who may act for whom; accepting or declining a duty | [delegate](../../rights/delegate/delegate.md) | nothing; assignment is a delegation |
 | Which work goes first | a UI widget of the plural `tasks` domain | nothing |
 | What the Task requires of the worker (skills) | [skill](../../knowledge/skill/skill.md), [requires](edges/requires/requires.md) | the requirement edge only |
-| The check, the cycle guard, any policy | [rule](../../computer/rule/rule.md), through the generic `condition_is` | the attachment point |
+| The check, the cycle guard, any policy | [rule](../../process/rule/rule_node.md), through the generic `condition_is` | the attachment point |
 | The kinds a Task is of, and the words of its position | [label](../../knowledge/label/label.md), through its [`label` edge](../../knowledge/label/edges/label/label.md) | nothing of its own; the word is a label on the Task |
 | Time, calendars, notification, budget | their own domains | nothing |
 | How an edge or a vertex is written, read or exchanged | the [Graph store](../../../modules-plugable/computer/memory/store/graph/graph.md) and its medium adapters | nothing |
