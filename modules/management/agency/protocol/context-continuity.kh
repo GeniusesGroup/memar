@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Takeup_Binding in "modules/management/agency/protocol/takeup-binding.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Context_Continuity ab
+
+tp Holds mt (self Context_Continuity) (first Takeup_Binding, second Takeup_Binding) (holds Boolean)

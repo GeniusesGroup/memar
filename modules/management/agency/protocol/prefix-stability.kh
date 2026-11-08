@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Composition_Version in "modules/management/agency/protocol/composition-version.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Prefix_Stability ab
+
+tp Holds mt (self Prefix_Stability) (version Composition_Version, firstStable Computer_Buffer, secondStable Computer_Buffer) (holds Boolean)
