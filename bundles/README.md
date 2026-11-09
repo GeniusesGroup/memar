@@ -16,5 +16,5 @@ This folder's membership is not a taxonomy. A bundle is opened when a compositio
 ## What does not belong here
 - **A reusable module** — it lives in [`modules/`](../modules/README.md), under the category layout [the modules README](../modules/README.md) decides.
 - **A record that runs nothing** — a record sits with the subject it records, not here as a bundle of its own: the Go port's residue, once the folder `modules/go-port/`, is the Go target's research record, inside the bundle whose target it records.
-- **Specifications and general claims** — those live in [`docs/`](../docs/README.md); a bundle realizes a composition, it does not restate the contracts of the modules it composes.
+- **Specifications and general claims** — those live in the modules that own their subjects; a bundle realizes a composition, it does not restate the contracts of the modules it composes.
 - **Generated output** — compiled artifacts and caches live in git-ignored `build/` folders inside the bundle that produces them.

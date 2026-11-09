@@ -1,0 +1,13 @@
+# Control Flow Rules (`modules/process/control-flow/rules/`)
+Rules for the conditions this repository holds the ways execution changes course to — how an execution ends, and what it may end without passing through any decision first. The general Memar concept of Rule is defined in [`modules/process/rule/rule.md`](../../rule/rule.md); the subject these Rules check is the [Control Flow](../control-flow.md) protocol, whose document owns the contract and states its conditions positively rather than as a list of things a grammar refuses. The folder is here because that is where the subject's module is: the module index names [`modules/process/control-flow/control-flow.md`](../control-flow.md) as the implementation module for this protocol, and [Rule → Which Module a Rule Belongs To](../../rule/rule.md#which-module-a-rule-belongs-to) fixes the home of a Rule by its subject.
+
+| Rule | Subject | Tier | What it is |
+| --- | --- | --- | --- |
+| [Halt Declaration](./halt-declaration/halt-declaration.md) | An operation whose ending is declared | Governance | Halting is an operation of the contract layer, written where the caller reads it, with the governance over its use left to the organization |
+| [Method Exit](./method-exit/method-exit.md) | An execution that leaves a method before the last command of its body | Governance | The exit is an operation of the flow-control library, reached through the module that owns it rather than through a keyword of the grammar |
+
+Each concern is stated by the Rule whose subject it is, and a Rule about a failure rather than about the flow that carries it is held by the module that owns failures: a failure the process meeting it may not disregard is the [Disregarded Error Rule](../../error/rules/disregarded-error/disregarded-error.md), in [`modules/process/error/rules/`](../../error/rules/README.md). That separation is what [Rule → Which Module a Rule Belongs To](../../rule/rule.md#which-module-a-rule-belongs-to) requires, and it is why this catalog holds no Rule about a failure as such.
+
+The Rules here are enforced by no check this repository runs today, per [Linter → Configuration and override](../../../computer/linter/linter.md#configuration-and-override); an organization adopting this repository's Rules may keep, relax, or replace either without forking anything.
+
+The [Control Flow model](../control-flow.md) names four concepts this folder's Rules may reach — Branch Scope, Flow Decision, Conditional Pair, and Halt — and says which of them each Rule may speak about and which it may not; the third of those has no Rule yet, and the inventory of what is still stated at document level is in the Rule handoff.

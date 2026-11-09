@@ -6,7 +6,7 @@
 // visitor, a reducer, a fold — is the ordinary shape of that.
 //
 // The language's position: a method's influencing group may receive a `vr`, an
-// `sc`, or an `mt` (docs/khayyam/method.md → Type-level arguments for `sc` and
+// `sc`, or an `mt` (modules/computer/khayyam/method/method.md → Type-level arguments for `sc` and
 // `mt`), so a method is a legal argument; nothing states how a name writes one.
 
 tp Text cp {

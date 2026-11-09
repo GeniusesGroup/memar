@@ -11,7 +11,7 @@ Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../REA
 An abstraction name uses PascalCase and domain-concept framing — what the abstraction *is* in the domain (`Reader`, `Writer`, `Repository`). Names that frame a technical capability or adjective (`Readable`, `Writable`, `Filterable`) are discouraged in this repository: they often signal over-abstraction risk and obscure which domain concept owns the behavior.
 
 ## Why it exists
-Abstractions are pure behavioral specifications ([Abstraction in Khayyam](../../../../docs/khayyam/abstraction.md)); their names are what the rest of the sources must write. A capability suffix invites interfaces that describe what code *can do* rather than what domain role it plays, which is the same trajectory that produces `Filterable` beside `User` instead of a named domain abstraction.
+Abstractions are pure behavioral specifications ([Abstraction in Khayyam](../../../../modules/computer/khayyam/abstraction/abstraction.md)); their names are what the rest of the sources must write. A capability suffix invites interfaces that describe what code *can do* rather than what domain role it plays, which is the same trajectory that produces `Filterable` beside `User` instead of a named domain abstraction.
 
 ## Keep it or drop it
 An organization may require capability-style abstraction names, forbid them outright, or apply this only in public API surfaces. This repository applies the heuristic repository-wide as convention, not as a compiler gate.

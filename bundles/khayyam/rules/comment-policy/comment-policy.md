@@ -9,7 +9,7 @@ Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../REA
 
 ## The rule
 - Every `.kh` file in this repository opens with the repository's license header, carried in a `/* … */` block comment, and the `LEGAL` reference it names is kept resolvable.
-- A `.kh` file carries no other comment: a type's human-facing text — its name, its summary, the note a user or a maintainer reads — is a value one of the type's own methods writes ([Khayyam → Self-Documenting Code and Naming](../../../../docs/khayyam/khayyam.md#self-documenting-code-and-naming)), and a comment that says it is refused by the [Type Rule — No Comments in Code](../../../../modules/computer/type/rules/no-comments-in-code/no-comments-in-code.md), which owns that condition.
+- A `.kh` file carries no other comment: a type's human-facing text — its name, its summary, the note a user or a maintainer reads — is a value one of the type's own methods writes ([Khayyam → Self-Documenting Code and Naming](../../../../modules/computer/khayyam/khayyam.md#self-documenting-code-and-naming)), and a comment that says it is refused by the [Type Rule — No Comments in Code](../../../../modules/computer/type/rules/no-comments-in-code/no-comments-in-code.md), which owns that condition.
 
 ## Why it exists
 The header is the one piece of prose every reader of a `.kh` file meets first, and a file that carries it and a file that does not are not two styles of the same thing — one of them is out of compliance with the repository's terms. The documentation clause that once allowed a comment where no documentation method existed was retired on 2026-10-30 at the owner's word: the ported sources' comments are repaired when a task changes a file, and no new comment is written.

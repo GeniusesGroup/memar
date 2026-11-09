@@ -21,7 +21,7 @@ tp Status mt (self Timer) () (s Timer_Status)
 ```
 
 ## Why it exists
-A Go interface parameterized by a type is, in every use the sources make of it, a contract whose type is fixed by its constraint: `Timer[TIME time_p.Time, ST TimerStatus]` means a timer whose `When` returns a time and whose `Status` returns a timer status. An abstraction-owned signature names abstractions ([Abstraction → What You Cannot Do](../../../../../../docs/khayyam/abstraction.md#what-you-cannot-do)), and the constraint is exactly the abstraction the signature names. Leaving those methods in the clue block leaves the contract incomplete for no reason the documents give.
+A Go interface parameterized by a type is, in every use the sources make of it, a contract whose type is fixed by its constraint: `Timer[TIME time_p.Time, ST TimerStatus]` means a timer whose `When` returns a time and whose `Status` returns a timer status. An abstraction-owned signature names abstractions ([Abstraction → What You Cannot Do](../../../../../../modules/computer/khayyam/abstraction/abstraction.md#what-you-cannot-do)), and the constraint is exactly the abstraction the signature names. Leaving those methods in the clue block leaves the contract incomplete for no reason the documents give.
 
 ## Keep it or drop it
 An organization may write every such method by hand, or keep the generic parameters until Khayyam states a form for them. The rule applies only where the answer is mechanical, and reports the rest.

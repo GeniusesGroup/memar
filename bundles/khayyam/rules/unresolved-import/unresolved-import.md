@@ -5,7 +5,7 @@ Start Date: 2026-09-26
 ID: "497332"
 ---
 # Khayyam Rule — Unresolved Import
-Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the first of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) states that the value is a URI, and what a tool does when the URI it names resolves to nothing is the tool's own condition.
+Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the first of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: [Khayyam → Import Mechanism (`in`)](../../../../modules/computer/khayyam/khayyam.md#import-mechanism-in) states that the value is a URI, and what a tool does when the URI it names resolves to nothing is the tool's own condition.
 
 ## The rule
 An `in` declaration whose URI resolves to nothing refuses the unit, with the implementation label `unresolved-import`. [core/src/frontend.ts](../../core/src/frontend.ts) checks this by reading the URI through the injected file system; the matrix's row is *an unresolvable import path (a URI with no file behind it)*.

@@ -5,7 +5,7 @@ Start Date: 2026-09-29
 ID: "497402"
 ---
 # Khayyam Rule — File Layout
-Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for how source files in this repository are sized and ordered. It is a governance rule of this repository, not a grammar requirement: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) states that `in` includes named entities from other files; it does not legislate file length or declaration order.
+Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for how source files in this repository are sized and ordered. It is a governance rule of this repository, not a grammar requirement: [Khayyam → Import Mechanism (`in`)](../../../../modules/computer/khayyam/khayyam.md#import-mechanism-in) states that `in` includes named entities from other files; it does not legislate file length or declaration order.
 
 ## The rule
 - **Short files for single responsibility**: each `.kh` file should stay small enough to express one coherent responsibility; the file-as-import-unit model encourages splitting rather than accumulation.

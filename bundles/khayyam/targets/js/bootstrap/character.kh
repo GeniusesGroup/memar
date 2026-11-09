@@ -8,7 +8,7 @@
 // answer the target gives is recorded in bootstrap.test.ts.
 //
 // The language's position: no primitive types, and every value is wrapped in a
-// named capsule (docs/khayyam/khayyam.md → Type Principles Realized).
+// named capsule (modules/computer/khayyam/khayyam.md → Type Principles Realized).
 
 tp Character cp {
 }

@@ -5,7 +5,7 @@ Start Date: 2026-09-29
 ID: "497404"
 ---
 # Khayyam Rule — Lifecycle Method Names
-Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for conventional method names that express teardown and absence on a type's contract. It is a governance rule of this repository: [Khayyam → How Khayyam realizes Memory](../../../../docs/khayyam/khayyam.md#how-khayyam-realizes-memory) and [Memory](../../../../modules/computer/memory/memory.md) state that absence and teardown are expressed through methods, not keywords; this rule names the spellings this repository uses.
+Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the rule for conventional method names that express teardown and absence on a type's contract. It is a governance rule of this repository: [Khayyam → How Khayyam realizes Memory](../../../../modules/computer/khayyam/khayyam.md#how-khayyam-realizes-memory) and [Memory](../../../../modules/computer/memory/memory.md) state that absence and teardown are expressed through methods, not keywords; this rule names the spellings this repository uses.
 
 ## The rule
 When a capsule acquires resources that need explicit release, this repository uses `Deinit()` or `Free()` as the conventional teardown method names. When a type can represent absence, this repository uses `IsNull()` as the conventional absence query name. Path-complete invocation of teardown methods is governance-checked by the [Linter](../../../../modules/computer/linter/linter.md) under [Memory → Safety enforcement is governance](../../../../modules/computer/memory/memory.md#safety-enforcement-is-governance).

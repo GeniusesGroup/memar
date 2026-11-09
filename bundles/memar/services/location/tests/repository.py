@@ -61,7 +61,7 @@ class EnclosingRepository(unittest.TestCase):
     def make_repo(self, where: Path) -> Path:
         where.mkdir(parents=True, exist_ok=True)
         (where / 'README.md').write_text('# Memar\n', encoding='utf-8')
-        (where / 'docs').mkdir(exist_ok=True)
+        (where / 'modules').mkdir(exist_ok=True)
         skill = where / '.agents' / 'skills' / 'memar' / 'SKILL.md'
         skill.parent.mkdir(parents=True, exist_ok=True)
         skill.write_text('# Memar\n', encoding='utf-8')
@@ -69,13 +69,14 @@ class EnclosingRepository(unittest.TestCase):
 
     def test_a_file_inside_returns_the_repository(self):
         repo = self.make_repo(self.root / 'Memar')
-        inner = repo / 'docs' / 'cognition.md'
+        inner = repo / 'modules' / 'knowledge' / 'cognition' / 'cognition.md'
+        inner.parent.mkdir(parents=True, exist_ok=True)
         inner.write_text('# Cognition\n', encoding='utf-8')
         self.assertEqual(memar_repository.enclosing_repository(inner), repo)
 
     def test_a_directory_inside_returns_the_repository(self):
         repo = self.make_repo(self.root / 'Memar')
-        self.assertEqual(memar_repository.enclosing_repository(repo / 'docs'), repo)
+        self.assertEqual(memar_repository.enclosing_repository(repo / 'modules'), repo)
 
     def test_the_repository_root_returns_itself(self):
         repo = self.make_repo(self.root / 'Memar')
@@ -91,7 +92,8 @@ class EnclosingRepository(unittest.TestCase):
     def test_a_nested_repository_resolves_to_the_inner_one(self):
         outer = self.make_repo(self.root / 'outer')
         inner = self.make_repo(outer / 'inner')
-        leaf = inner / 'docs' / 'leaf.md'
+        leaf = inner / 'modules' / 'knowledge' / 'leaf.md'
+        leaf.parent.mkdir(parents=True, exist_ok=True)
         leaf.write_text('# Leaf\n', encoding='utf-8')
         self.assertEqual(memar_repository.enclosing_repository(leaf), inner)
 
@@ -99,8 +101,8 @@ class EnclosingRepository(unittest.TestCase):
         partial = self.root / 'partial'
         partial.mkdir()
         (partial / 'README.md').write_text('# Memar\n', encoding='utf-8')
-        (partial / 'docs').mkdir()
-        target = partial / 'docs' / 'note.md'
+        (partial / 'modules').mkdir()
+        target = partial / 'modules' / 'note.md'
         target.write_text('# Note\n', encoding='utf-8')
         self.assertIsNone(memar_repository.enclosing_repository(target))
 if __name__ == '__main__':

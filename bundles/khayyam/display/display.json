@@ -6,7 +6,7 @@
   "authority": {
     "language": "docs/khayyam/khayyam.md (Explanation -> Keywords -> Language Keyword in a Glance; Import Mechanism (in); Type; Capsule; Method; Abstraction; Scope; Variable)",
     "categories": "docs/khayyam/khayyam.md (Type Principles Realized) - Capsule, Abstraction, Method and Scope are four categories of one concept, Type, and the subtype keyword names the category",
-    "compositionBlock": "docs/khayyam/encapsulation.md (Capsule Structure and Privacy) and docs/khayyam/khayyam.md (Capsule) - a field line is `fieldName fieldType`; a one-token line in the same block is a bare abstraction name",
+    "compositionBlock": "docs/khayyam/encapsulation/encapsulation.md (Capsule Structure and Privacy) and docs/khayyam/khayyam.md (Capsule) - a field line is `fieldName fieldType`; a one-token line in the same block is a bare abstraction name",
     "identityVocabulary": "bundles/khayyam/core/src/sr.ts - the toolchain's semantic representation already names these identities (CapsuleDecl, AbstractionDecl, MethodDecl, ScopeDecl, TypeInclude, VarInclude, Field, Param, VarDecl, Subtype); a role name is the display name of one of them"
   },
   "consumers": [
@@ -191,7 +191,7 @@
       },
       "origin": "owner (named \"file URL\")",
       "identity": "The path an inclusion routes to.",
-      "appliesTo": "The quoted `{path}` of an `in` inclusion. The language calls this a file URI and a path, and holds that an `in` address is a source-level path, not a network locator (docs/khayyam/modularity.md, Inclusion Is Not Module Definition) - so the role is not named `url`.",
+      "appliesTo": "The quoted `{path}` of an `in` inclusion. The language calls this a file URI and a path, and holds that an `in` address is a source-level path, not a network locator (docs/khayyam/modularity/modularity.md, Inclusion Is Not Module Definition) - so the role is not named `url`.",
       "implementedBy": "grammar-scope",
       "scopes": ["string.quoted.double.file-uri.khayyam"],
       "attributes": { "color": "khayyam.file-uri.color", "fontStyle": "khayyam.file-uri.fontStyle" }
@@ -259,7 +259,7 @@
       },
       "origin": "proposed",
       "identity": "A Type named in a type position, whose category and origin this file does not state.",
-      "appliesTo": "The type of a `vr` declaration, and a one-token line in a `cp` or `ab` block, which is a bare abstraction name and therefore a type reference (docs/khayyam/encapsulation.md, Capsule Structure and Privacy).",
+      "appliesTo": "The type of a `vr` declaration, and a one-token line in a `cp` or `ab` block, which is a bare abstraction name and therefore a type reference (docs/khayyam/encapsulation/encapsulation.md, Capsule Structure and Privacy).",
       "implementedBy": "grammar-scope",
       "scopes": ["entity.name.type.khayyam"],
       "attributes": { "color": "khayyam.type-reference.color", "fontStyle": "khayyam.type-reference.fontStyle" }
@@ -340,7 +340,7 @@
       },
       "origin": "proposed",
       "identity": "A Capsule's field, which is private to the Capsule.",
-      "appliesTo": "The name in a `fieldName fieldType` line inside a `cp` block (docs/khayyam/encapsulation.md, Capsule Structure and Privacy; sr.ts - Field).",
+      "appliesTo": "The name in a `fieldName fieldType` line inside a `cp` block (docs/khayyam/encapsulation/encapsulation.md, Capsule Structure and Privacy; sr.ts - Field).",
       "implementedBy": "grammar-scope",
       "scopes": ["variable.other.field.khayyam"],
       "attributes": { "color": "khayyam.capsule-field.color", "fontStyle": "khayyam.capsule-field.fontStyle" }

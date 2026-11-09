@@ -164,7 +164,7 @@ class KhayyamParser:
                 # file-level variable included from another file, and the path is
                 # the URI naming that file rather than a type the name is bound
                 # to -- `docs/khayyam/khayyam.md`, Import Mechanism (`in`),
-                # Variable Inclusion, and `docs/khayyam/variable.md`, Variable
+                # Variable Inclusion, and `docs/khayyam/variable/variable.md`, Variable
                 # Scope and Visibility. It is read as the inclusion it is, under
                 # the name the frontend's own realization gives it (`vr-in` in
                 # `bundles/khayyam/core/src/sr.ts` and `parse.ts`), which is the
@@ -239,7 +239,7 @@ class KhayyamParser:
 def body_is_bodyless(body: Sequence[Token]) -> bool:
     """Whether a method's block holds no content, which is the body-less method
     the language has: `tp {name} mt (self {owner}) (...) (...) { }`, admitted for
-    an abstraction's contract and for FFI -- `docs/khayyam/method.md`, Body-less
+    an abstraction's contract and for FFI -- `docs/khayyam/method/method.md`, Body-less
     Methods (FFI and Contracts), and `docs/khayyam/khayyam.md`, Method. A block
     holding something is a method with a body, and no Go interface method has
     one."""

@@ -22,6 +22,6 @@ An organization may keep its open questions in a list of its own, and then keeps
 
 ## What this rule does not claim
 - It does not give the fields of a `question` content or the verbs that post it; the types of the handoff module and `memar conversation post --help` say them.
-- It does not list the kinds that always reach the owner; [Cognition Practice → Norm Application Points](../../../../../docs/cognition.practice.md#norm-application-points) does.
+- It does not list the kinds that always reach the owner; [Cognition Rule → Critique Intake](../../../../../modules/knowledge/cognition/rules/critique-intake/critique-intake.md) does.
 - An entry already standing in a handoff file waits for its migration into a content of its task.
 - This repository runs no check of it today.

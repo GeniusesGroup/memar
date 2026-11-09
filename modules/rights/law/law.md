@@ -34,9 +34,9 @@ The human code is the sentence in the payload a person reads before signing. The
 
 The instrument is the same wherever people bind themselves by it. A society's statute and an organization's articles of association are both laws of this type. The type is not the government of a society. That narrowing is the same mistake as treating [politics](../../../modules-plugable/management/politics/politics.md) as the theater of rulers.
 
-Human-readable bodies live in the [text](../../knowledge/text/README.md) domain; this type holds relations to them. That is the [attribute-or-edge test](../../../docs/modeling.md#the-attribute-or-edge-test): this node does not own storage, translation, or search of prose. The relations themselves live under `edges/`; the code-level interface is `edges/aggregation.kh`. Identity of a node is `protocol/dt-uuid.kh`.
+Human-readable bodies live in the [text](../../knowledge/text/README.md) domain; this type holds relations to them. That is the [attribute-or-edge test](../../../modules/knowledge/modeling/modeling.md#the-attribute-or-edge-test): this node does not own storage, translation, or search of prose. The relations themselves live under `edges/`; the code-level interface is `edges/aggregation.kh`. Identity of a node is `protocol/dt-uuid.kh`.
 
-This type is **Code** in Memar's [structure/policy split](../../../docs/modeling.md#separating-structure-code-from-policy-rule): it says what a law node is. A statute — a density cap, a tax rate, a deconstruction fund — is an **instance** of the node, written onto that structure.
+This type is **Code** in Memar's [structure/policy split](../../../modules/knowledge/modeling/modeling.md#separating-structure-code-from-policy-rule): it says what a law node is. A statute — a density cap, a tax rate, a deconstruction fund — is an **instance** of the node, written onto that structure.
 
 Signatures, delegation, and the public critique of a proposition are the [election](ui/election/election.md) widget.
 

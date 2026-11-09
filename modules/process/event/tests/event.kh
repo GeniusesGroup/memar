@@ -21,7 +21,7 @@
 // E2 — Every member of that composition is an abstraction, so the base contract names behavior and
 // no type identity.
 // Stated at: `modules/process/event/event.md` -> What an Event Is, which grounds the composition in
-// `docs/khayyam/abstraction.md` -> Behavior Over Type Identity; and What an Event Is Not, whose third
+// `modules/computer/khayyam/abstraction/abstraction.md` -> Behavior Over Type Identity; and What an Event Is Not, whose third
 // separation refuses the composition any representation.
 // Decided by: for each entry of the block E1 read, follow its `in` to the file it names and read the
 // kind of the declaration behind that name. Three `ab` declarations decide for E2. Any entry whose
@@ -36,7 +36,7 @@
 
 // E4 — The `Event` capsule satisfies the `Event` abstraction.
 // Stated at: `modules/process/event/event.md` -> What an Event Is, for the identity and time a
-// receiver is promised; the satisfaction itself is `docs/khayyam/abstraction.md` -> Abstraction
+// receiver is promised; the satisfaction itself is `modules/computer/khayyam/abstraction/abstraction.md` -> Abstraction
 // Realization, which judges it by method name and receiver and not by where either was written.
 // Decided by: read `modules/process/event/event.kh` for the methods whose owner group names `Event`,
 // then read `modules/computer/type/protocol/type.observers.kh` and

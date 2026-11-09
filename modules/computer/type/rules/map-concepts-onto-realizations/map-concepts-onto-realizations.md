@@ -4,7 +4,7 @@ Labels: Draft
 Start Date: 2026-11-09
 ---
 # Type Rule — Map Concepts onto Realizations
-A rule of this repository, held for [Type](../../type.md), for turning identified concepts into named realizations. It applies after [Modeling](../../../../../docs/modeling.md) has decided that a concept exists.
+A rule of this repository, held for [Type](../../type.md), for turning identified concepts into named realizations. It applies after [Modeling](../../../../../modules/knowledge/modeling/modeling.md) has decided that a concept exists.
 
 ## The rule
 - **One concept is one named entity.** Nominal identity: never merge semantically distinct concepts because their structures match; never split one concept because structures differ.

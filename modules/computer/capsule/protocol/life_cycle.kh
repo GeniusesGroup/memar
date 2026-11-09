@@ -5,12 +5,12 @@ tp Error in "modules/process/error/protocol/error.kh"
 tp CapsuleLifeCycle ab {
 	// Init and Reinit are not members of this protocol. Initialization and re-initialization are the
 	// capsule's own behavior, through its own named methods carrying its own domain arguments
-	// (docs/khayyam/variable.md#overview). Reusing an instance through a pool is a contract term the
+	// (modules/computer/khayyam/variable/variable.md#overview). Reusing an instance through a pool is a contract term the
 	// pooling library states (docs/protocols/memory/memory.md#copy-and-ownership-semantics-are-contract-members).
 }
 
 // Deinit is the teardown surface for a capsule whose acquisition requires a release
-// (docs/khayyam/khayyam.md#how-khayyam-realizes-memory).
+// (modules/computer/khayyam/khayyam.md#how-khayyam-realizes-memory).
 tp Deinit mt (self CapsuleLifeCycle) () (err Error)
 
 // TODO(go-migrate):

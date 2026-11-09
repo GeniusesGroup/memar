@@ -5,7 +5,7 @@
 // Because it requires nothing, every type satisfies it; that is why it belongs only
 // in the element and value positions of the raw ADT protocols.
 // A domain protocol never takes or returns it: a domain concept that holds elements is its own
-// type whose methods take and return the domain element type (docs/khayyam/polymorphism.md).
+// type whose methods take and return the domain element type (modules/computer/khayyam/polymorphism/polymorphism.md).
 tp Container_Element ab
 
 // TODO(go-migrate):

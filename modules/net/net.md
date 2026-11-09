@@ -171,7 +171,7 @@ Transmitting will not block caller to be non blocking and queue frames for conge
 A situation might be occur that a port available when a frame queued but when the time to send is come, the port broken and sender don't know about this.
 
 ### Edge computing
-Network cost is transmission plus routing plus state — minimizing a header's byte count is not minimizing the total. Moving data across a network to be processed or stored far from where it arose must be justified by more than habit; when locality reduces total cost, the architecture should make execution and storage at the edge possible and economically preferable — the low-power Chapar switching fabric and nearby coordinators included. This is an architectural preference, not a mandate on applications: no topology is forced on anyone, and the [Memar ecosystem](../../docs/system.md#ecosystem)'s tooling (code generation, coordinator services) is expected to make the local choice the easy choice.
+Network cost is transmission plus routing plus state — minimizing a header's byte count is not minimizing the total. Moving data across a network to be processed or stored far from where it arose must be justified by more than habit; when locality reduces total cost, the architecture should make execution and storage at the edge possible and economically preferable — the low-power Chapar switching fabric and nearby coordinators included. This is an architectural preference, not a mandate on applications: no topology is forced on anyone, and the [Memar ecosystem](../../modules/knowledge/system/system.md#ecosystem)'s tooling (code generation, coordinator services) is expected to make the local choice the easy choice.
 
 ### Place in the stack
 The project's network protocols map onto OSI for orientation:

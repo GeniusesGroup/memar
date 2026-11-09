@@ -5,7 +5,7 @@
 // method of its own that reaches the field and calls on the value held there.
 // The behaviour it calls is body-less on a concrete capsule, which is the
 // language's own signal that the implementation comes from the link phase
-// (docs/khayyam/khayyam.md → Method), so the host supplies the behaviour and the
+// (modules/computer/khayyam/khayyam.md → Method), so the host supplies the behaviour and the
 // value, and the program supplies the shape of the calls.
 
 tp Text cp {

@@ -15,7 +15,7 @@ from khayyam_source import parse_khayyam_source
 
 class VariableInclusion(unittest.TestCase):
     """`vr {name} in "{path}"` -- the Variable Inclusion form of `docs/khayyam/khayyam.md`,
-    Import Mechanism (`in`), and of `docs/khayyam/variable.md`, Variable Scope and
+    Import Mechanism (`in`), and of `docs/khayyam/variable/variable.md`, Variable Scope and
     Visibility: a file-level variable included from another file, addressed by the
     URI that names the file. The name names a variable, not a type, and the address
     is that URI rather than a type reference."""

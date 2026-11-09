@@ -4,7 +4,7 @@ Start Date: 2026-10-16
 ID: "497823"
 ---
 # Content Rule — Normative References
-This is the rule for what an act reads before it starts: for each kind of act, the sections of Memar's documents it cannot be carried out without having read, listed in this folder one list per kind beside one list every act reads. It is a rule of Memar's scripts, whose `task` concern declares the kinds of act ([`task_kind.py`](../../../../management/task/labels/task_kind.py); `memar content get-act-context --help` names them), and it lives in the scripts' `rules/` folder as [Where Rules Live](../../../../../modules/process/rule/rule.md#where-rules-live-rules-beside-protocol) says; it moves to the `rules/` folder of the scripts' `task` module when the scripts become modules (task 20261015-T123046Z-17544), since its subject is the kinds that module declares ([Which Module a Rule Belongs To](../../../../../modules/process/rule/rule.md#which-module-a-rule-belongs-to)).
+This is the rule for what an act reads before it starts: for each kind of act, the sections of Memar's documents it cannot be carried out without having read, listed in this folder one list per kind beside one list every act reads. It is a rule of Memar's scripts, whose `agency` domain declares the kinds of act ([`acts.py`](../../../../management/agency/labels/acts.py); `memar content get-act-context --help` names them), and it lives in the scripts' `rules/` folder as [Where Rules Live](../../../../../modules/process/rule/rule.md#where-rules-live-rules-beside-protocol) says; it moves to the `rules/` folder of the scripts' `task` module when the scripts become modules (task 20261015-T123046Z-17544), since its subject is the kinds that module declares ([Which Module a Rule Belongs To](../../../../../modules/process/rule/rule.md#which-module-a-rule-belongs-to)).
 
 ## The rule
 Before an act starts, the agent doing it reads, in its own context, every section named by the entries of `normative_references-every_act.md` and of the list of each kind its act is.
@@ -23,7 +23,7 @@ A list is a file `normative_references-<word>.md` in a declared place, `<word>` 
 An entry is one line at column 0, outside a fenced block: a list item whose text begins with a link to the section, then ` — ` and one sentence saying why the act reads it, then, last on the line, the review mark — a code span holding `reviewed` and the hash `memar content get-section FILE '#anchor' --hash` prints for that section. For illustration:
 
 ```
-- [Modeling Practice → The Modeling Workflow](../../../../../docs/modeling.practice.md#the-modeling-workflow) — a design ends in a module's contract, and its eighth step is the gate. `reviewed c8900bbbb4cb`
+- [Modeling Rule → Modeling Workflow](../../../modeling/rules/modeling-workflow/modeling-workflow.md) — a design ends in a module's contract, and its eighth step is the gate. `reviewed c8900bbbb4cb`
 ```
 
 - **The link** is relative, to a Markdown file of the place's repository, with an anchor for a section or none for a whole document; in a project's list it may instead be a passage of Memar named by Memar's published URL, which is read and hashed from Memar's checkout. It is never root-relative (`/docs/...`), which in a project's list could mean the project's root or Memar's.
@@ -42,10 +42,10 @@ A list is read only where lists are declared to live, so that a fixture or an il
 - **Anywhere else**, a file named like a list is never read, and `memar content check` warns of it.
 
 ## Enforcement
-- **Resolver behaviour**: the composer behind `memar ai get-task-init-context` and `memar content get-act-context` prints, for an act's kinds, the every-act sections and then each kind's, each section once, reading the lists and the sections from the live files on every call; a section changed since its mark is printed as it reads now, marked so.
+- **Resolver behaviour**: the composer owned here (`modules/knowledge/content/services/act_context.py`), reached as `memar content get-act-context` and used by `memar ai get-task-init-context`, prints, for an act's kinds, the every-act sections and then each kind's, each section once, reading the lists and the sections from the live files on every call; a section changed since its mark is printed as it reads now, marked so. Agency widgets may invoke the same composition.
 - **Governance report**: `memar content check` reports an entry whose link or anchor resolves to nothing, whose mark is missing or differs from its section's current hash, a list whose word names no kind, and a drop that drops nothing, has no reason, or names an every-act section.
 
-The composer reads this folder and a project's declared places, and `task_kind.py` names no section (tasks 20261016-T135247Z-13740 and 20261016-T135247Z-15984). A project's drop is printed in the context where the passage stood and counted on its first line and in `memar content check`'s summary line; a declared folder that does not exist is said on the first line.
+The composer reads this folder and a project's declared places, and `acts.py` names no section (tasks 20261016-T135247Z-13740 and 20261016-T135247Z-15984). A project's drop is printed in the context where the passage stood and counted on its first line and in `memar content check`'s summary line; a declared folder that does not exist is said on the first line.
 
 ## Scope
 Memar's checkout, whose lists bind the acts of every project's tasks, software or not; and each project's declared places, whose lists add to Memar's or drop from them for that project's tasks only.
@@ -62,8 +62,8 @@ The lists are Markdown, provisionally. [A Fact in Code Is Written Once](../../..
 ## What this rule does not claim
 - It does not claim that the lists hold everything that governs a step: the governing documents of a step's subject are still found by searching for its terms, as the Memar skill says.
 - It does not claim that a section a list omits binds nothing; it claims only that the sections it names bind before the act.
-- It does not define the kinds of act or their words; `task_kind.py` does.
+- It does not define the kinds of act or their words; `acts.py` does.
 - It does not claim the every-act sections are derived from Cognition's model; they stand by the owner's ruling, stated in their list with its reason.
 
 ## Names are provisional
-Every name this rule introduces — `normative_references`, `every_act`, the list file names, the preference key — is provisional by the owner's ruling (2026-10-16) that choosing a name is never finished and improving one is a standing task; task 20261016-T135248Z-22376 studies and decides them, and leaves the `TODO` that [A Name an Agent Doubts](../../../../../docs/terminology.md#a-name-an-agent-doubts) asks for beside each name it keeps in doubt.
+Every name this rule introduces — `normative_references`, `every_act`, the list file names, the preference key — is provisional by the owner's ruling (2026-10-16) that choosing a name is never finished and improving one is a standing task; task 20261016-T135248Z-22376 studies and decides them, and leaves the `TODO` that [A Name an Agent Doubts](../../../../../modules/knowledge/terminology/terminology.md#a-name-an-agent-doubts) asks for beside each name it keeps in doubt.

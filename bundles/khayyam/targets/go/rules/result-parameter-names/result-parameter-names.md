@@ -22,7 +22,7 @@ tp A mt (self T) (s String) (st Status, st1 Status)
 ```
 
 ## Why it exists
-`result0` says only that the Go signature named nothing; it carries no meaning a reader can use and repeats across every signature of the sources. The type is the one thing known about the value, so its initial is the shortest name that says something, and the same derivation everywhere makes the name predictable ([Method in Khayyam → Method Structure](../../../../../../docs/khayyam/method.md#method-structure) writes every parameter by name in the two variable groups).
+`result0` says only that the Go signature named nothing; it carries no meaning a reader can use and repeats across every signature of the sources. The type is the one thing known about the value, so its initial is the shortest name that says something, and the same derivation everywhere makes the name predictable ([Method in Khayyam → Method Structure](../../../../../../modules/computer/khayyam/method/method.md#method-structure) writes every parameter by name in the two variable groups).
 
 ## Keep it or drop it
 An organization may require a full word, forbid one-letter names, or leave generated names until an author chooses. The rule replaces one generated name with another that carries more; it does not claim the author's choice.

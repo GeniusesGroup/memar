@@ -10,7 +10,7 @@ A rule of this repository, held for [Approval](../../approval.md), which owns th
 - **A document that cites an approval states what it examined,** not only that it exists.
 
 ## Why it exists
-An audit by a party that did not do the work, over evidence it gathered and weighed itself, is the strongest scrutiny available inside one collaboration. [Terminology → On Independent Verification, Today](../../../../../../docs/terminology.md#on-independent-verification-today) states what that is worth against an outside institution.
+An audit by a party that did not do the work, over evidence it gathered and weighed itself, is the strongest scrutiny available inside one collaboration. [Terminology → On Independent Verification, Today](../../../../../../modules/knowledge/terminology/terminology.md#on-independent-verification-today) states what that is worth against an outside institution.
 
 ## Keep it or drop it
 An organization may present an approval as a certification. It then claims an independence it does not have, to readers who cannot tell.

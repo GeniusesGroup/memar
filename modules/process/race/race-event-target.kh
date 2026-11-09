@@ -10,7 +10,7 @@ tp Locker in "modules/process/sync/protocol/locker.kh"
 // Race_EventTarget receives `Event` and does with it what a race detector does, which begins with
 // establishing whether the occurrence is a race report at all. The signature is the capability's
 // own rather than a narrowed one, because a capsule satisfies an abstraction only when its
-// influencing types match exactly — `docs/khayyam/abstraction.md` -> Abstraction Realization
+// influencing types match exactly — `modules/computer/khayyam/abstraction/abstraction.md` -> Abstraction Realization
 // (Implicit Satisfaction) — so a method taking `Race_Event` would satisfy nothing and would leave
 // this capsule unable to be a `Detector`. Where the contract is stated:
 // `modules/process/event/event.md` -> The EventTarget capability.

@@ -13,7 +13,7 @@ sys.dont_write_bytecode = True
 Catalog = import_module('modules.knowledge.content.primitive.catalog').Catalog
 BUDGET_SECONDS = 10
 FOLDER = TESTS.parent / 'primitive'
-CATALOG = Catalog(FOLDER, 'essay-stage')
+CATALOG = Catalog(['.'.join(path.relative_to(TOP).with_suffix('').parts) for path in sorted(FOLDER.glob('*.py')) if not path.name.startswith('_')], 'essay-stage')
 NAMES = ('What each project is', 'Source status of the inspected checkout', 'What the other project has that this one does not', 'Where this project is stronger', 'Failure modes in the other project', 'Costs and limits on both sides', 'The adoption filter', 'The possible relationship between the projects', 'The decision', 'Open for critique')
 
 class EssayStagePins(unittest.TestCase):

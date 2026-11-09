@@ -7,9 +7,9 @@
 //
 // The language's position: fields are always private and the only way to read or
 // modify a capsule's internal state is through methods attached to that capsule
-// (docs/khayyam/encapsulation.md → Capsule Structure and Privacy), and a
+// (modules/computer/khayyam/encapsulation/encapsulation.md → Capsule Structure and Privacy), and a
 // receiving method cannot touch a passed capsule's fields
-// (docs/khayyam/khayyam.md → Method). What a body's statement may write is not
+// (modules/computer/khayyam/khayyam.md → Method). What a body's statement may write is not
 // stated anywhere, so what the owner has settled is what a field is *for*: it is
 // a variable, and a variable is handed to a method. The rule that a body may
 // reach `self.field` is a rule of this toolchain rather than a claim about the

@@ -189,10 +189,10 @@ class MakesOnlyWhatIsMissing(Fixture):
         self.assertEqual((again.made, again.present), ([], list(ensure_folders.ROLE_FOLDERS)))
 
     def test_a_file_in_a_roles_place_is_reported_and_left(self) -> None:
-        (self.folder / 'docs').write_text('not a folder\n', encoding='utf-8', newline='\n')
+        (self.folder / 'protocol').write_text('not a folder\n', encoding='utf-8', newline='\n')
         done = ensure_folders.ensure_role_folders(self.folder)
-        self.assertEqual(done.blocked, ['docs'])
-        self.assertEqual((self.folder / 'docs').read_text(encoding='utf-8'), 'not a folder\n')
+        self.assertEqual(done.blocked, ['protocol'])
+        self.assertEqual((self.folder / 'protocol').read_text(encoding='utf-8'), 'not a folder\n')
 
 class CommandSaysWhatItDid(Fixture):
 
@@ -200,11 +200,11 @@ class CommandSaysWhatItDid(Fixture):
         (self.folder / 'tests').mkdir()
         code, printed = command(ensure_folders.FOLDERS_COMMAND, str(self.folder))
         self.assertEqual(code, 0)
-        self.assertIn('made: protocol/, primitive/, rules/, errors/, services/, docs/, temp/', printed)
+        self.assertIn('made: protocol/, primitive/, rules/, errors/, services/, temp/', printed)
         self.assertIn('already there: tests/', printed)
         _, printed = command(ensure_folders.FOLDERS_COMMAND, str(self.folder))
         self.assertNotIn('made:', printed)
-        self.assertIn('already there: protocol/, primitive/, rules/, errors/, tests/, services/, docs/, temp/', printed)
+        self.assertIn('already there: protocol/, primitive/, rules/, errors/, tests/, services/, temp/', printed)
 
     def test_no_path_is_refused_and_the_current_folder_is_never_read(self) -> None:
         with contextlib.chdir(self.folder), contextlib.redirect_stderr(io.StringIO()):
@@ -231,7 +231,7 @@ class HelpDeclaresIt(unittest.TestCase):
         self.assertIn('help of the verb that makes them', domain)
         verb = run_help(ensure_folders.FOLDERS_COMMAND)
         self.assertNotIn('current folder', verb)
-        self.assertIn('protocol/, primitive/, rules/, errors/, tests/, services/, docs/, temp/', verb)
+        self.assertIn('protocol/, primitive/, rules/, errors/, tests/, services/, temp/', verb)
         self.assertIn('nothing is deleted or renamed', verb)
         self.assertIn('modules/README.md', verb)
         for role in ensure_folders.Role:

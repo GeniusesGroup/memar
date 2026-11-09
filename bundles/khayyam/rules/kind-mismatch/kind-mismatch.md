@@ -5,7 +5,7 @@ Start Date: 2026-09-26
 ID: "497334"
 ---
 # Khayyam Rule — Kind Mismatch
-Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the third of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: [Khayyam → Import Mechanism (`in`)](../../../../docs/khayyam/khayyam.md#import-mechanism-in) offers two line forms, a `tp` form and a `vr` form, and whether the form matches what the target declares is a tool's condition.
+Khayyam's rules live one rule per folder under [`bundles/khayyam/rules/`](../README.md), and this is the third of the four import-resolution rules. It is a compiler-gate rule of this toolchain, not a statement of the language: [Khayyam → Import Mechanism (`in`)](../../../../modules/computer/khayyam/khayyam.md#import-mechanism-in) offers two line forms, a `tp` form and a `vr` form, and whether the form matches what the target declares is a tool's condition.
 
 ## The rule
 An `in` declaration whose form disagrees with the declared kind of the named entity refuses the unit, with the implementation label `kind-mismatch`: a `tp … in` naming something the target declares with `vr`, or a `vr … in` naming something it declares with `tp`. [core/src/frontend.ts](../../core/src/frontend.ts) checks the declared form of the target declaration against the form of the inclusion.

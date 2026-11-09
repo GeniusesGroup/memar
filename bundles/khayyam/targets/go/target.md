@@ -62,6 +62,6 @@ A file belongs under `targets/go/` when it is the bridge between Go and Khayyam,
 
 What does **not** belong here:
 - **A mechanism whose subject is Khayyam rather than the port** — the declaration-rename service reads Khayyam names and outlives this folder, so it is [`services/rename/`](../../services/rename/), not here.
-- **The language's own rules and specification** — [`rules/` at the module root](../../rules/README.md) and [`docs/khayyam/`](../../../../docs/khayyam/README.md).
+- **The language's own rules and specification** — [`rules/` at the module root](../../rules/README.md) and [`modules/computer/khayyam/`](../../../../modules/computer/khayyam/README.md).
 - **The port's record at large** — what the port measured and what it left undecided is research, one bounded inquiry beside this document rather than material spread through this one.
 - **Anything about the Go language itself** — a condition on a Go source file is Go's to state, not this folder's.

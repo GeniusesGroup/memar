@@ -29,7 +29,7 @@ A drawing of a graph or network diagram is a pictorial representation of the ver
 ## What it is to the memory contract
 An edge remains a **value under an address** of the memory contract ([Memory Store → The contract](../../../../../modules/computer/memory/store/store.md#the-contract)): the reverse side of an edge is written in the same atomic `batch`, and a derived (shortcut) edge is a cache rebuilt from `changes`. Graph adds **no** new address kind and **no** new durability or isolation guarantee.
 
-What it **does** add is a **capsule of layouts and services** over that contract (and, for high-degree layouts, over [Key-Value](../key_value/key_value.md)): how many edges of one relation on one vertex are addressed, how their sides are listed without a world scan, how a consumer names which layout it uses, and how **typed** edge fields are addressed and filtered without a domain module inside Graph. That responsibility evolves alone from Record’s “one domain key → one part” and from a raw key-value engine, which is why the capsule is justified ([Modeling → Abstract](../../../../../docs/modeling.md#abstract); owner decision 2026-11-01 on task `20261101-T123647Z-15992`). Domains supply **relation TypeUUIDs** (label identities) and field TypeUUIDs; they do not invent adjacency, ASCII relation names, or English field keys on the wire.
+What it **does** add is a **capsule of layouts and services** over that contract (and, for high-degree layouts, over [Key-Value](../key_value/key_value.md)): how many edges of one relation on one vertex are addressed, how their sides are listed without a world scan, how a consumer names which layout it uses, and how **typed** edge fields are addressed and filtered without a domain module inside Graph. That responsibility evolves alone from Record’s “one domain key → one part” and from a raw key-value engine, which is why the capsule is justified ([Modeling → Abstract](../../../../../modules/knowledge/modeling/modeling.md#abstract); owner decision 2026-11-01 on task `20261101-T123647Z-15992`). Domains supply **relation TypeUUIDs** (label identities) and field TypeUUIDs; they do not invent adjacency, ASCII relation names, or English field keys on the wire.
 
 The abstract datatype of a graph (primary node, secondary node, edge) stays at [`modules/computer/adt/graph/`](../../../../../modules/computer/adt/graph/protocol/graph.kh). Relations live in each domain’s `edges/` folders ([Modules → Edge folder](../../../../../modules/modules.md#edge-folder)). This module stores them and **refuses** delivery that is not graph-theoretic ([Refusal contract](#refusal-contract-graph-forces-its-shape)).
 
@@ -111,7 +111,7 @@ Not every sequence of facts is a graph. Forcing a graph view where the natural a
 
 Prefer a **time-series** (or another non-graph) structure when **most** of the following hold:
 
-- Each new fact is meaningful on its own and does **not** primarily mean “this vertex is related to that vertex” ([Modeling → Modeling State Change as Events](../../../../../docs/modeling.md#modeling-state-change-as-events-not-destructive-updates) — inherently time-series readings).
+- Each new fact is meaningful on its own and does **not** primarily mean “this vertex is related to that vertex” ([Modeling → Modeling State Change as Events](../../../../../modules/knowledge/modeling/modeling.md#modeling-state-change-as-events-not-destructive-updates) — inherently time-series readings).
 - The dominant query is a **time range** (or latest-N) on one stream, not “sides of relation R from vertex V” in both directions.
 - Maintaining a reverse edge would be noise: nothing asks “which streams mention this sample?” as a first-class neighbour read.
 
@@ -141,7 +141,7 @@ Domain agents need a **complete** graph surface here so they do not invent adjac
 Patterns are **structured values**, not an opaque query string. A text dialect (Cypher-like) may later compile *into* these types; the protocol agents call is the structured form so requirements stay decidable ([Protocol](../../../../../modules/knowledge/protocol/protocol.md#abstract)).
 
 ### Inherited graph languages are references, not authority
-GQL, openCypher, SQL/PGQ, Gremlin and kin are **evidence of repeated needs**, not models to copy wholesale ([Resist defaults that arrive with the medium](../../../../../docs/cognition.md#resist-defaults-that-arrive-with-the-medium)). Weaknesses to keep out of Memar’s protocol:
+GQL, openCypher, SQL/PGQ, Gremlin and kin are **evidence of repeated needs**, not models to copy wholesale ([Resist defaults that arrive with the medium](../../../../../modules/knowledge/cognition/cognition.md#resist-defaults-that-arrive-with-the-medium)). Weaknesses to keep out of Memar’s protocol:
 
 | Inherited habit | Why it fails Memar | What we do instead |
 | --- | --- | --- |

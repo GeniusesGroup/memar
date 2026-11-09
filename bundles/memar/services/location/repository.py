@@ -19,19 +19,19 @@ from pathlib import Path
 SKILL_MARKER = Path('.agents') / 'skills' / 'memar' / 'SKILL.md'
 
 def is_memar_repository(path: Path) -> bool:
-    """A Memar repository: the entry document, the docs tree, and the skill."""
-    return (path / 'README.md').is_file() and (path / 'docs').is_dir() and (path / SKILL_MARKER).is_file()
+    """A Memar repository: the entry document, the modules tree, and the skill."""
+    return (path / 'README.md').is_file() and (path / 'modules').is_dir() and (path / SKILL_MARKER).is_file()
 
 def not_a_repository(path: Path) -> str:
     """Why PATH is not a Memar repository, in the words every refusal uses."""
-    return f'{path} is not a Memar repository (no README.md, docs/, and {SKILL_MARKER.as_posix()})'
+    return f'{path} is not a Memar repository (no README.md, modules/, and {SKILL_MARKER.as_posix()})'
 
 def enclosing_repository(start: Path) -> Path | None:
     """The Memar repository a path sits inside, or None.
 
     `is_memar_repository` answers about a folder you name. This answers about a
     file you name, which is the question a caller actually has when it checks
-    `docs/cognition.md` rather than the repository root: the file is a Memar
+    `modules/knowledge/cognition/cognition.md` rather than the repository root: the file is a Memar
     document because of where it is, not because of what is in it. The walk stops
     at the first ancestor that qualifies, so a repository inside a repository
     resolves to the inner one — which is the one whose conventions its documents

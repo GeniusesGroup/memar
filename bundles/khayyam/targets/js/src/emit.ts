@@ -182,7 +182,7 @@ interface Reached {
  *  the owner parameter, a dot, and the field's name. What a field is, is what a
  *  `vr` is — a slot the program writes through and a call hands over — so this is
  *  the only form of it a body may write: the privacy rule is about a *passed*
- *  capsule's fields (docs/khayyam/encapsulation.md → Capsule Structure and
+ *  capsule's fields (docs/khayyam/encapsulation/encapsulation.md → Capsule Structure and
  *  Privacy), and a method reaching its own capsule's state is what that rule
  *  leaves to the capsule's own methods. */
 function fieldOf(

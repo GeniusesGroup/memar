@@ -11,7 +11,7 @@ description: procedures for working with knowledge in Memar — questioning, res
 Asking before accepting or producing any knowledge artifact — the discipline that keeps an assertion from becoming stored "knowledge" unexamined.
 
 - Turn every load-bearing claim into a question before building on it: what is defined here, what is assumed, what evidence exists, what would change the answer?
-- When a term is used without a Memar definition, apply the default-meaning rule ([Terminology → The Default Meaning of an Unreferenced Term](../../docs/terminology.md#the-default-meaning-of-an-unreferenced-term)) and ask rather than assume ([Cognition → Discourse Norms](../../docs/cognition.md#discourse-norms-derived-from-this-model)).
+- When a term is used without a Memar definition, apply the default-meaning rule ([Terminology → The Default Meaning of an Unreferenced Term](../../modules/knowledge/terminology/terminology.md#the-default-meaning-of-an-unreferenced-term)) and ask rather than assume ([Cognition → Discourse Norms](../../modules/knowledge/cognition/cognition.md#discourse-norms-derived-from-this-model)).
 - Record open questions where they can be found again — a `question` content on the timeline of the task it concerns, not a chat scrollback and not a document ([knowledge.md → Communication Channels Produce Knowledge but Are Not Knowledge Repositories](./knowledge.md#communication-channels-produce-knowledge-but-are-not-knowledge-repositories)).
 
 ---
@@ -30,4 +30,4 @@ Judging whether something qualifies as knowledge — for the system, not just fo
 
 - Test the artifact against the principles in [knowledge.md](./knowledge.md#principles-for-modeling-knowledge): does it carry its identity independently of its location? Are its relationships explicit? Can its context (rationale, rejected alternatives, dissent) be recovered?
 - Distinguish the conclusion from the knowledge: an artifact that states only the decision, without the reasoning that produced it, stores a conclusion, not knowledge ([knowledge.md → Knowledge Requires Explicit Context Recovery](./knowledge.md#knowledge-requires-explicit-context-recovery)).
-- Proportion the evaluation to the strength of the model evaluated, per the discourse norm in [Cognition](../../docs/cognition.md#assume-hidden-reasoning-may-exist-and-require-criticism-to-be-proportional--without-licensing-silence); critique procedure proper is owned by [cognition.practice.md](../../docs/cognition.practice.md).
+- Proportion the evaluation to the strength of the model evaluated, per the discourse norm in [Cognition](../../modules/knowledge/cognition/cognition.md#assume-hidden-reasoning-may-exist-and-require-criticism-to-be-proportional--without-licensing-silence); critique procedure proper is owned by [Cognition Rule — Critique Procedure](./cognition/rules/critique-procedure/critique-procedure.md).

@@ -41,7 +41,7 @@
 // not by any declaration saying so.
 // Stated at: `modules/process/event/event.md` -> A target accepts only the kind of event it declared,
 // which says the specialization satisfies the capability because satisfaction is structural and by
-// method name; the criterion is `docs/khayyam/abstraction.md` -> Abstraction Realization.
+// method name; the criterion is `modules/computer/khayyam/abstraction/abstraction.md` -> Abstraction Realization.
 // Decided by: find the specialization the sources hold for a kind of event, then read the capsule
 // realizing it and compare each of its three methods with the three E1 read, by name, by the number
 // of influencing variables, and by the influenced variables and their types in order. Three matching

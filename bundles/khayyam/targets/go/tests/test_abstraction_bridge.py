@@ -288,7 +288,7 @@ class KhayyamToGo(Refusals):
         # `vr {name} in "{path}"` is an inclusion, and the inclusion is not what
         # would give it a Go form here -- the value it names is. A file-level
         # variable is a module-level constant, singleton or shared configuration
-        # value (`docs/khayyam/variable.md`, Variable Scope and Visibility), and
+        # value (`docs/khayyam/variable/variable.md`, Variable Scope and Visibility), and
         # this direction emits Go interfaces and refuses what has none (this
         # module's own docstring). A type inclusion earns its Go `import`
         # because an emitted signature references the name it introduces; no
@@ -349,7 +349,7 @@ class KhayyamToGo(Refusals):
         )
 
     def test_an_empty_body_is_the_body_less_method_the_language_has_and_is_written(self):
-        # `docs/khayyam/method.md`, Body-less Methods (FFI and Contracts): "A method
+        # `docs/khayyam/method/method.md`, Body-less Methods (FFI and Contracts): "A method
         # can be defined without a body (`{}`)"; the same file's Method Structure
         # writes it as `tp {name} mt (self {owner}) (...) (...) { }`, and
         # `docs/khayyam/khayyam.md` lists it among the syntax rules. A body holding

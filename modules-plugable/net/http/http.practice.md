@@ -49,7 +49,7 @@ Answer each question about **one concern at a time** — the answer may differ p
 ---
 
 ## Recording the Decision
-The outcome — HTTP as guest surface for named concerns, projection-only (locators and browsers), or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../../docs/framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
+The outcome — HTTP as guest surface for named concerns, projection-only (locators and browsers), or none — must be an explicit, recorded decision, not a silent default: Memar's framework standard is that no aspect of the design space may be assumed by default; every assumption must be the outcome of an explicit decision ([Framework → Goal-Oriented Frameworks and Purpose Space](../../../modules/knowledge/framework/framework.md#goal-oriented-frameworks-and-purpose-space)). Record it where the project's decisions live (a Task or Decision artifact), with the answers above as its rationale.
 
 ---
 

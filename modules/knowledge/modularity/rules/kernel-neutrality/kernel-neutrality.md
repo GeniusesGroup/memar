@@ -4,7 +4,7 @@ Start Date: 2026-10-20
 ID: 496333
 ---
 # Modularity Rule — Kernel Neutrality
-Modularity's rules live one rule per directory under [`modules/knowledge/modularity/rules/`](../README.md), and this is the rule for what a kernel module may fix: its subject, and no choice another organization may make otherwise. It is held for the placements [Kernel](../../labels/kernel.md) and [Pluggable](../../labels/pluggable.md), and it is to modules what [Khayyam → Minimal Legislation](../../../../../docs/khayyam/khayyam.md#minimal-legislation-a-principle) is to the grammar.
+Modularity's rules live one rule per directory under [`modules/knowledge/modularity/rules/`](../README.md), and this is the rule for what a kernel module may fix: its subject, and no choice another organization may make otherwise. It is held for the placements [Kernel](../../labels/kernel.md) and [Pluggable](../../labels/pluggable.md), and it is to modules what [Khayyam → Minimal Legislation](../../../../../modules/computer/khayyam/khayyam.md#minimal-legislation-a-principle) is to the grammar.
 
 ## The rule
 - **A kernel module states what its subject is and requires, and fixes no choice an organization may make otherwise.** A taxonomy, a list of names (folder roles, categories, label or status words), a vocabulary, a policy or a workflow is a choice when a second organization could make it differently and the module's subject would mean the same. A choice is a pluggable module attached to the kernel module, or the composition's (a bundle, a project's `memar:` preferences), and the kernel module reaches it only through an abstraction it owns.

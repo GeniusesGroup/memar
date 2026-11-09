@@ -8,5 +8,5 @@ A thing carries a mark for each domain that has written data on it, so asking wh
 
 ## Policies (rules)
 - Written by the domain whose data it marks, in the same batch as the first edge of that domain on the thing.
-- Thing owns the mark and declares it once. [A relation several domains need is defined once](../../../../../docs/modeling.md#a-relation-several-domains-need-is-defined-once), in the domain that covers every record those domains are; a domain that wants the mark uses this edge and declares none of its own.
+- Thing owns the mark and declares it once. [A relation several domains need is defined once](../../../../../modules/knowledge/modeling/modeling.md#a-relation-several-domains-need-is-defined-once), in the domain that covers every record those domains are; a domain that wants the mark uses this edge and declares none of its own.
 - What the data is, and what its edges mean, stay with the marked domain.

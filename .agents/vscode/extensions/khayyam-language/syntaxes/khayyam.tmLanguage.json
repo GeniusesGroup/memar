@@ -44,7 +44,7 @@
       ]
     },
     "capsule-declaration": {
-      "comment": "Roles: keyword, subtype, capsule, capsule-field, type-reference. A capsule is `tp {name} cp { ... }`; its body is field lines `fieldName fieldType` plus one-token lines that are bare abstraction names, which are type references (docs/khayyam/khayyam.md, Capsule; docs/khayyam/encapsulation.md, Capsule Structure and Privacy). The second rule is the same declaration without a block, so the name keeps its role while the block is still being typed.",
+      "comment": "Roles: keyword, subtype, capsule, capsule-field, type-reference. A capsule is `tp {name} cp { ... }`; its body is field lines `fieldName fieldType` plus one-token lines that are bare abstraction names, which are type references (docs/khayyam/khayyam.md, Capsule; docs/khayyam/encapsulation/encapsulation.md, Capsule Structure and Privacy). The second rule is the same declaration without a block, so the name keeps its role while the block is still being typed.",
       "patterns": [
         {
           "begin": "\\b(tp)[^\\S\\n]+([\\p{L}_][\\p{L}\\p{Nd}_]*)[^\\S\\n]+(cp)\\b[^\\S\\n]*\\{",

@@ -127,7 +127,7 @@ Both halves of that definition hold, and neither replaces the other. The intrins
 This definition is deliberately broader than "acting on behalf of another." A system may exhibit agency without having been explicitly delegated a responsibility by another system. For example, a human may pursue a self-generated objective without acting on behalf of another person or organization. Likewise, an autonomous system may pursue an objective without receiving an individual instruction for every action it takes. Therefore, delegation is not a necessary condition for all forms of agency. However, delegation becomes fundamental when agency exists **on behalf of another system**. This distinction allows both intrinsic and relational manifestations of agency to be represented without forcing one to replace the other.
 
 #### Agency as a Property of Systems
-Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. Whether a Principal is external to a System that acts is relative to where that System's boundary is drawn for the analysis in hand — a boundary is an analytical choice made by the observer, not an inherent property of the system's material ([System → Key Properties](../../../docs/system.md#key-properties)) — so a Principal that is one of the System's own internal Systems is not external to it, and redescribing a self-directed act as delegation to an internal System states where the boundary was drawn rather than dissolving the distinction between intrinsic and delegated Agency. Where both descriptions fit the same act, the model works with both: the two are not mutually exclusive kinds of Agency ([Intrinsic and Delegated Agency](#intrinsic-and-delegated-agency)).
+Agency can also be considered independently of delegation. A system may possess or exhibit agency even when no external Principal is present. Whether a Principal is external to a System that acts is relative to where that System's boundary is drawn for the analysis in hand — a boundary is an analytical choice made by the observer, not an inherent property of the system's material ([System → Key Properties](../../../modules/knowledge/system/system.md#key-properties)) — so a Principal that is one of the System's own internal Systems is not external to it, and redescribing a self-directed act as delegation to an internal System states where the boundary was drawn rather than dissolving the distinction between intrinsic and delegated Agency. Where both descriptions fit the same act, the model works with both: the two are not mutually exclusive kinds of Agency ([Intrinsic and Delegated Agency](#intrinsic-and-delegated-agency)).
 
 This allows the model to represent:
 
@@ -1512,7 +1512,7 @@ It becomes harmful when it prevents communication or implies that knowledge outs
 Agency therefore requires attention to the boundaries around responsibility and knowledge.
 
 ### Professional Categories as False Taxonomies
-The professional categories above are an instance of a [false taxonomy](../../../docs/modeling.md#false-taxonomies-hide-shared-structure): a classification useful for a local purpose that is mistaken for the structure of what it divides. Frontend and Backend may be useful skill classifications. They become a false taxonomy when they imply that:
+The professional categories above are an instance of a [false taxonomy](../../../modules/knowledge/modeling/modeling.md#false-taxonomies-hide-shared-structure): a classification useful for a local purpose that is mistaken for the structure of what it divides. Frontend and Backend may be useful skill classifications. They become a false taxonomy when they imply that:
 
 - modeling belongs only to Backend,
 - semantics belongs only to Frontend,
@@ -2010,7 +2010,7 @@ What a system is able to do.
 Information and conditions relevant to the Agent's current action.
 
 #### Knowledge
-Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](../../knowledge/knowledge.md), building on the foundational definition in [System → Knowledge and Science](../../../docs/system.md#knowledge-and-science).
+Understanding available to a System to support interpretation, decision, and action; the concept itself is defined in [Knowledge](../../knowledge/knowledge.md), building on the foundational definition in [System → Knowledge and Science](../../../modules/knowledge/system/system.md#knowledge-and-science).
 
 #### Autonomy
 The degree to which an Agent can determine or execute actions without direct specification of each individual action.
