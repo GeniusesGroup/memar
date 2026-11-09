@@ -9,3 +9,7 @@ tp Timeline_Error_NotFound cp {
 tp Timeline_Error_Changed cp {
 	Error
 }
+
+tp Timeline_Error_SameContent cp {
+	Error
+}

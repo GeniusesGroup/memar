@@ -7,3 +7,7 @@ class Timeline_Error_NotFound(Exception):
 
 class Timeline_Error_Changed(Exception):
     pass
+
+
+class Timeline_Error_SameContent(Exception):
+    pass

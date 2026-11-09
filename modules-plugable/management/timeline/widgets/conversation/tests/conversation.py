@@ -9,11 +9,13 @@ The subject is the Khayyam of `conversation.kh` (`Post`, `Latest`, `Share`) over
 `Timeline_Place` and `Timeline_Latest`. What is pinned:
 
   Widget     `Post` checks the bytes and the kind's own check, creates the content, places it and answers the
-             number; a refused check creates nothing; a refused placement leaves the content unplaced; `Latest`
-             answers the latest text of a kind; `Share` places a content with the kind it was created with.
+             number; a refused check creates nothing; a text equal to the latest of the kind raises
+             Timeline_Error_SameContent and creates nothing; a refused placement leaves the content unplaced;
+             `Latest` answers the latest text of a kind; `Share` places a content with the kind it was created with.
   Verb       `memar conversation post` reads the text from a file or standard input and places it in the timeline
-             of the UUID; a second post follows it; a stale latest is refused and nothing is written; a UUID that is
-             no timeline, or a task in the old shape, is refused; `latest` prints the text.
+             of the UUID; a second post follows it; a text equal to the latest of the kind is refused and nothing
+             is written; a stale latest is refused and nothing is written; a UUID that is no timeline, or a task
+             in the old shape, is refused; `latest` prints the text.
 """
 from __future__ import annotations
 from importlib import import_module
@@ -29,6 +31,7 @@ import tempfile
 import unittest
 import unittest.mock
 from pathlib import Path
+BUDGET_SECONDS = 60
 TESTS = Path(__file__).resolve().parent
 SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
 sys.path.insert(0, str(SCRIPTS))
@@ -88,6 +91,14 @@ class Widget(unittest.TestCase):
         with self.assertRaises(bytes_errors.Text_Error_Bytes_NoFinalNewline):
             conversation.Conversation().post(memory, memory, 'T', 'no newline', 'message', 'u', 0)
         self.assertEqual((memory.contents, memory.placements), ({}, []))
+
+    def test_a_text_equal_to_the_latest_of_its_kind_creates_nothing(self) -> None:
+        memory = Memory()
+        widget = conversation.Conversation()
+        widget.post(memory, memory, 'T', 'same\n', 'message', 'u', 0)
+        with self.assertRaises(placement_errors.Timeline_Error_SameContent):
+            widget.post(memory, memory, 'T', 'same\n', 'message', 'u', 1)
+        self.assertEqual((len(memory.contents), len(memory.placements)), (1, 1))
 
     def test_the_check_of_a_kind_with_a_template_runs_and_a_kind_without_one_has_none(self) -> None:
         memory = Memory()
@@ -182,6 +193,12 @@ class Verb(Fixture):
         self.posted('plan', 'two\n')
         stored = timeline_files.latest_content(self.folder, 'plan')
         self.assertEqual((stored.number, stored.header['follows']), (2, '1'))
+
+    def test_a_text_equal_to_the_latest_of_its_kind_is_refused_and_nothing_is_written(self) -> None:
+        with unittest.mock.patch.object(post, 'checked_kind', return_value='plan'), unittest.mock.patch.object(post, 'read_text', return_value='same\n'), unittest.mock.patch.object(post, 'checked_refs', return_value=()), unittest.mock.patch.object(post._m_conversation, 'file_timeline', return_value='files'), unittest.mock.patch.object(post, 'read_facts', return_value={'project': str(self.project)}), unittest.mock.patch.object(post._m_latest, 'read_latest', return_value=(7, 'c', True)), unittest.mock.patch.object(post.Conversation, 'post', side_effect=placement_errors.Timeline_Error_SameContent()):
+            said = self.refused(post.post_text, 'T-1', 'plan', None, None, ())
+        self.assertIn('7', said)
+        self.assertIn('same', said.lower())
 
     def test_a_kind_with_none_yet_is_posted_without_follows(self) -> None:
         self.made()

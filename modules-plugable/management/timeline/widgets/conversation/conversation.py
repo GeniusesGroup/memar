@@ -35,6 +35,9 @@ class Conversation:
         check = self.kind_checks.get(kind)
         if check is not None:
             check(text)
+        _, latest_text, found = self.latest(placements, contents, timeline, kind)
+        if found and latest_text == text:
+            raise _m_errors.Timeline_Error_SameContent()
         content = _m_content_add.add_content(contents, text, kind)
         return _m_place.place_content(placements, timeline, content, kind, placer, after, clock=self.clock)
 
@@ -57,9 +60,7 @@ def file_timeline(timeline: str, refs=()):
 
 
 def not_found_reason(timeline: str) -> str:
-    files = _m_task_store.tree(timeline)
-    if 'plan.md' in files and 'task.yaml' not in files:
-        return f'timeline {timeline} is in the old shape (plan.md and report.md), which {_m_task_files.OLD_SHAPE_READER} reads; nothing was written'
+    """Describe an absent timeline without interpreting predecessor files."""
     return f'no timeline {timeline}, so nothing was read or written'
 
 

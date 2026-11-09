@@ -19,10 +19,12 @@ _m_structure = import_module('modules.knowledge.text.errors.structure')
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 AUTHOR = _m_task_files.AUTHOR
 read_facts = _m_task_files.read_facts
-_m_plan_labels = import_module('modules-plugable.management.task.services.plan_labels')
-TOPIC = _m_plan_labels.TOPIC
-checked_label = _m_plan_labels.checked_label
-registry_for = _m_plan_labels.registry_for
+_m_plan_front = import_module('modules-plugable.knowledge.documentation.plan.services.plan_front')
+TOPIC = _m_plan_front.TOPIC
+_m_plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
+checked_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label').checked_label
+_m_acts = import_module('modules.management.agency.labels.acts')
+Acts = _m_acts.Acts
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 from modules.knowledge.label.primitive.label import LabelProblem
@@ -45,9 +47,10 @@ BYTE_REFUSALS = tuple(getattr(_m_bytes, name) for name in dir(_m_bytes) if name.
 
 def checked_kind(kind: str, project: Path | None) -> str:
     word = kind.strip()
-    if word in FIXED_KINDS or word in template_kinds():
+    if word in FIXED_KINDS or word in template_kinds() or word in Acts.titles():
         return word
-    registry = registry_for(project)
+    held = _m_plan_registry.read(project)
+    registry = held.registry
     for name in registry.kinds:
         try:
             label, fresh = registry.resolve(f'{name}={word}')
@@ -55,7 +58,7 @@ def checked_kind(kind: str, project: Path | None) -> str:
             continue
         if fresh is None:
             return label.title
-    checked_label(f'{TOPIC}={word}', project, registry)
+    checked_label(f'{TOPIC}={word}', held, project)
     return word
 
 
@@ -93,6 +96,8 @@ def post_text(timeline: str, kind: str, content_file: str | None, author: str | 
         fail(f'the text is refused, so nothing was written: {problem}')
     except BYTE_REFUSALS as problem:
         fail(f'the text is refused, so nothing was written: {problem}')
+    except _m_errors.Timeline_Error_SameContent:
+        fail(f'the text is the same as content {number} of kind {word} in timeline {timeline}, so nothing was written; use that placement or post a different text')
     except _m_errors.Timeline_Error_Changed:
         fail(f'another content of kind {word} was placed in timeline {timeline} meanwhile, so nothing was written; post it again')
     except _m_errors.Timeline_Error_NotFound:
@@ -103,7 +108,7 @@ def post_text(timeline: str, kind: str, content_file: str | None, author: str | 
 
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    poster = verbs.add_parser(POST_COMMAND, help='post a text to a timeline as a content of a kind', description=f"Post a text into the timeline TIMELINE as a content of the kind KIND, and print the number of\nits placement. The text is checked for its bytes (a byte-order mark, bytes that are not UTF-8, a\nreplacement character, mojibake, mixed line endings, no final newline) and refused, with nothing\nwritten, when they are wrong. KIND is a word of the label module: plan, report, changelog, message,\na task kind, or a word the project declares (`memar label list`); any other word is refused as the\nlabel module refuses an undeclared one. The text is read from --content-file, or from standard\ninput when none is given. The placer defaults to the agent name '{AUTHOR}', never to a person. A\nplacement is added and never written over: the current plan of a task is its latest content of kind\nplan, so to change it post a new one. When another content of the kind is placed between the read\nand the write, nothing is written and the call is refused: post it again. A timeline in the old\nshape (plan.md and report.md) is refused and nothing is written to it.")
+    poster = verbs.add_parser(POST_COMMAND, help='post a text to a timeline as a content of a kind', description=f"Post a text into the timeline TIMELINE as a content of the kind KIND, and print the number of\nits placement. The text is checked for its bytes (a byte-order mark, bytes that are not UTF-8, a\nreplacement character, mojibake, mixed line endings, no final newline) and refused, with nothing\nwritten, when they are wrong. KIND is a word of the label module: plan, report, changelog, message,\nan act word, or a word the project declares; any other word is refused as the\nlabel module refuses an undeclared one. A task kind (design, implement, ...) names the act this\ncontent does: the kind belongs to a content and not to the task, a design needed again is a new\ncontent of kind design and not a reply to the earlier one, and a reply names what it replies to\nwith --refs. The text is read from --content-file, or from standard\ninput when none is given. The placer defaults to the agent name '{AUTHOR}', never to a person. A\nplacement is added and never written over: the current plan of a task is its latest content of kind\nplan, so to change it post a new one. When the text equals the latest content of the kind already placed, nothing is written and the call is refused,\nnaming that placement. When another content of the kind is placed between the read\nand the write, nothing is written and the call is refused: post it again. A timeline in the old\nshape (fixed plan/report filenames) is refused and nothing is written to it.")
     poster.add_argument('--timeline', required=True, metavar='UUID', help='the UUID of the timeline; the UUID of a task is the UUID of its timeline')
     poster.add_argument('--kind', required=True, metavar='KIND', help='the label word of the template the text is written to: message, a kind a documentation module declares for its template (plan, report, changelog, question, decision, assumption, anticipated-work, research), or a word the project declares')
     poster.add_argument('--content-file', default=None, metavar='FILE', help='the file holding the text; standard input when not given')

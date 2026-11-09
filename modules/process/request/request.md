@@ -93,5 +93,12 @@ Until the token domain issues keys, `signature` holds the SHA-256 digest of the 
 
 Owed: request.signing-key
 
+## Client-held Request identity
+A caller that may not learn whether a side-effecting verb finished — an agent whose tool call timed out, a client whose connection dropped — must not mint a second Request with the same intent. The durable identity is the Request's id ([Identity](#identity); [The write](#the-write)): the agent (or other client) **creates or receives that id before the verb runs**, invokes the verb with it, and on an unclear outcome **reads the Request's status** rather than posting again. A further service **re-examines the same Request** for execution problems and may continue or compensate it; it does not create a sibling Request for the same intent.
+
+This is not the same as [Process → Continuation and Retry](../process.md#continuation-and-retry). A process-level retry is a new interaction that refers back to an earlier one. Reusing the same Request id when the store answers Unavailable with Failed or Unreachable, or treating a Conflict that finds the Request present as "already done", is store-batch idempotency of one Request ([The write](#the-write)) — one effect, one audit node. The status words a Request may carry are named in [Request states](labels/request-status.md); their transition rules and the agent-facing create / status / re-examine services are owed.
+
+A conversation-post guard that refuses a text identical to the latest of its kind ([Timeline_Error_SameContent](../../management/timeline/errors/placement.kh)) is a local defence when the caller held no Request id; it is not a substitute for Request identity on verbs whose duplicate effect is costly.
+
 ## Other resources
 - [abp](https://docs.abp.io/en/abp/latest/Entities#auditing-interfaces)
