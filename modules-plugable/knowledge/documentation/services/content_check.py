@@ -12,7 +12,6 @@ from modules.knowledge.text.services.corpus import is_generated
 _m_links = import_module('modules-plugable.computer.codec.markdown.services.links')
 anchor_problems = _m_links.anchor_problems
 link_problems = _m_links.link_problems
-upward_link_warnings = _m_links.upward_link_warnings
 _m_markdown = import_module('modules-plugable.computer.codec.markdown.services.markdown')
 without_code = _m_markdown.without_code
 _m_owed = import_module('modules-plugable.knowledge.documentation.services.owed')
@@ -34,7 +33,7 @@ foreign_domain_hints = import_module('modules-plugable.knowledge.documentation.s
 HINTS_KEY = 'document-hints'
 CHECKED_SUFFIXES = ('.md', '.kh', '.py', '.ts', '.json', '.yaml', '.yml', '.txt', '.ps1', '.sh', '.bat', '.cmd')
 def describe(verbs):
-    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, a blank line after the closing front-matter fence, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist, a section of Open, Unresolved or Review Questions or of questions for the owner, a heading or a sentence whose subject holds or knows nothing (the body states what a thing holds), and a table whose first column restates at least three names a `.kh` file of the document's own module declares; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A relative link that points up the citation layers, a file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; a weaker denial (has no, is not a, owns no, carries no), any denial in a document under a rules folder, and a link to the main document or folder of a module the document's module does not import in its `.kh` files or whose imports cannot be read (not judged in bundles/ or under a widgets folder) are printed apart as hints; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
+    parser = verbs.add_parser('check', help='report encoding, newline, and written-surface problems in text files', description="Report what is wrong with text files: a UTF-8 BOM, invalid UTF-8, a U+FFFD replacement character, mixed or CRLF line endings, a missing final newline, and the fingerprints of mojibake; and for Markdown, two blank lines in a row, a blank line between a heading and its body, a blank line after the closing front-matter fence, an anchor with no matching heading, a relative link, or a root-relative one (/docs/...) resolved as `memar content resolve-path` resolves it, whose file or heading does not exist, a section of Open, Unresolved or Review Questions or of questions for the owner, a heading or a sentence whose subject holds or knows nothing (the body states what a thing holds), and a table whose first column restates at least three names a `.kh` file of the document's own module declares; and for a normative-references list in modules/knowledge/content/rules/normative_references/, or in a folder the `normative_references` preference of the project it lies in names, a word that names no kind, an entry whose link names no Markdown file of the repository or is root-relative, a missing review mark or one that differs from its section's hash now, a drop that drops nothing or has no reason, and a project's drop of an every-act section, which is refused; the summary line counts the passages of Memar a project's lists drop. A file named like a list outside the declared places, and one passage twice in a list, are printed apart as warnings; a weaker denial (has no, is not a, owns no, carries no), any denial in a document under a rules folder, and a link to the main document or folder of a module the document's module does not import in its `.kh` files or whose imports cannot be read (not judged in bundles/ or under a widgets folder) are printed apart as hints; None of these is counted as a problem.", formatter_class=argparse.HelpFormatter)
     parser.add_argument('files', nargs='+', help='files or folders (any path)')
     parser.add_argument('-v', '--verbose', action='store_true', help='also print clean files')
     parser.add_argument('--memar-rules', dest='memar_rules', action='store_true', default=None, help="apply Memar's Markdown conventions; the default asks whether the folder is a Memar repository")
@@ -77,16 +76,6 @@ def check_file(path: Path, link_cache: dict | None=None, memar_rules: bool=True,
     if memar_rules:
         problems.extend(temp_duplicate_problems(path))
     return problems
-
-def upward_warnings(path: Path, link_cache: dict | None=None) -> list[str]:
-    if path.suffix != '.md':
-        return []
-    try:
-        text = path.read_text(encoding='utf-8')
-    except (OSError, UnicodeDecodeError):
-        return []
-    cache: dict = {} if link_cache is None else link_cache
-    return upward_link_warnings(path, without_code(text), cache)
 
 def document_hints(path: Path, link_cache: dict, root: Path) -> list[str]:
     if path.suffix != '.md':
@@ -139,7 +128,6 @@ def cmd_check(args: argparse.Namespace, root: Path) -> None:
                 shown = path.relative_to(root)
             except ValueError:
                 shown = path
-            warnings.extend((f"{shown}:{text.removeprefix('line ')}" for text in upward_warnings(path, link_cache)))
             if path.suffix == '.md':
                 warnings.extend((f'{shown}: {text}' for text in list_warnings(path, root)))
     else:

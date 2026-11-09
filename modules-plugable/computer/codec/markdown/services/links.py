@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/computer/codec/markdown/services/links.py — the links and anchors of a Markdown document judged: headings, citation layers, relative links.
+"""modules-plugable/computer/codec/markdown/services/links.py — the links and anchors of a Markdown document judged: headings and relative links.
 
 What `memar content check` asks of a document's links, apart from its encoding and the folder walk
-(`content_check`): the fragment a heading produces, whether an in-page anchor and a relative or
-root-relative link resolve to a file and a heading, and whether a link points up the layers of the written content
-(Documentation -> Citation Direction), which is a warning rather than a problem. These are Memar's own written-surface conventions; whether
+(`content_check`): the fragment a heading produces, and whether an in-page anchor and a relative or
+root-relative link resolve to a file and a heading. These are Memar's own written-surface conventions; whether
 they apply to a file is decided by the caller.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_repository = import_module('bundles.memar.services.location.repository')
-enclosing_repository = _m_repository.enclosing_repository
 import re
 from pathlib import Path
 _m_markdown = import_module('modules-plugable.computer.codec.markdown.services.markdown')
@@ -78,59 +75,6 @@ def _fragments_of(path: Path, cache: dict[str, set[str] | None]) -> set[str] | N
         else:
             cache[key] = headings_by_fragment(without_code(text), text)
     return cache[key]
-LAYER_NAMES = ('the base (docs/)', 'the modules (modules/, bundles/)')
-
-def _repository_of(path: Path, cache: dict) -> Path | None:
-    """The Memar repository `path` sits in, asked once per folder per run."""
-    key = ('repository', str(path.parent))
-    if key not in cache:
-        found = enclosing_repository(path.parent)
-        cache[key] = found.resolve() if found is not None else None
-    return cache[key]
-
-def citation_layer(path: Path, repository: Path | None) -> int | None:
-    """Which layer of Documentation -> Citation Direction `path` belongs to.
-
-    None for a path outside every layer — outside a Memar repository, or a file
-    such as the repository's README, CONTRIBUTORS, or `.agents/` — which the
-    rule does not judge.
-    """
-    if repository is None:
-        return None
-    try:
-        parts = path.resolve().relative_to(repository).parts
-    except ValueError:
-        return None
-    if not parts:
-        return None
-    if parts[0] == 'docs':
-        return 0
-    if parts[0] in ('bundles', 'modules', 'modules-plugable'):
-        return 1
-    return None
-
-def _upward_link_warning(path: Path, file_part: str, line: int, cache: dict) -> str | None:
-    """The warning a link from `path` to a higher layer is, or None.
-
-    A warning and never a problem: an upward link is a debt, repaid when the
-    text is upgraded to name the concept, and a link is never deleted to comply
-    (Documentation -> Citation Direction).
-    """
-    repository = _repository_of(path, cache)
-    source = citation_layer(path, repository)
-    if source is None:
-        return None
-    target = path.parent / file_part
-    higher = citation_layer(target, repository)
-    if higher is None or higher <= source:
-        return None
-    if path.name == 'README.md':
-        try:
-            target.resolve().relative_to(path.parent.resolve())
-            return None
-        except ValueError:
-            pass
-    return f"line {line}: relative link {file_part} points up from {LAYER_NAMES[source]} to {LAYER_NAMES[higher]}: a debt, not a problem (Documentation -> Citation Direction). Keep the link; it is repaid when the text is upgraded to state the concept in the base's own terms, never by deleting the link."
 
 def file_links(visible: str):
     """Each link to a file in `visible`: (line, link, file part, fragment).
@@ -159,21 +103,6 @@ def link_target(path: Path, file_part: str, root: Path) -> Path:
     if is_root_relative(file_part):
         return under_root(file_part, root)
     return path.parent / file_part
-
-def upward_link_warnings(path: Path, visible: str, cache: dict) -> list[str]:
-    """Every relative link in a Markdown document that points up the layers.
-
-    A root-relative link is resolved and judged by `link_problems`; whether it
-    points up the layers is not asked here.
-    """
-    warnings: list[str] = []
-    for line, _, file_part, _ in file_links(visible):
-        if is_root_relative(file_part):
-            continue
-        upward = _upward_link_warning(path, file_part, line, cache)
-        if upward:
-            warnings.append(upward)
-    return warnings
 
 def link_problems(path: Path, visible: str, cache: dict, root: Path) -> list[str]:
     """Every relative or root-relative link in a Markdown document that does not resolve.

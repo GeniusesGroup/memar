@@ -7,10 +7,9 @@ These are base documents. Memar's modules are written in the language, and its g
 A document belongs here when it specifies a construct or concern of the Khayyam language itself — its grammar and syntax, and the design decisions and open questions behind its constructs. Compiler, linter, and runtime are not Khayyam's to specify: they are Memar's modules of those names in [`modules/`](../../modules/README.md), written in the language and standing above it. Documents enter at whatever [Status](../../modules-plugable/knowledge/documentation/explanation/explanation.md#status) they carry, including Draft, and are developed here in place.
 
 What does **not** belong here:
-- **Concept documents** (System, Type, Modeling, ...) — general concepts stay at `docs/` root. A concept's definition is owned there even when Khayyam is its first realization; Type's four categories are the standing example, defined in [Type](../type.md) and realized here as the `cp`/`mt`/`ab`/`sc` subtypes.
+- **Concept documents** (System, Type, Modeling, ...) — general concepts stay at `docs/` root. A concept's definition is owned there even when Khayyam is its first realization; Type's four categories are the standing example, defined in [Type](../../modules/computer/type/type.md) and realized here as the `cp`/`mt`/`ab`/`sc` subtypes.
 - **Module documents** — Memar's module contracts, which bind every realization whatever its language ([Framework → Khayyam and Other Languages](../framework.md#khayyam-and-other-languages)), stay with their modules in [`modules/`](../../modules/README.md). The direction runs one way: a module is written in Khayyam and cites the language down; no module's specification lives here.
 
 ## Citation direction
-A citation runs down the layers of the written content, and a link that runs up is a debt kept until its text is upgraded, never deleted to comply, as [Documentation → Citation Direction](../../modules-plugable/knowledge/documentation/documentation.md#citation-direction) states once for every layer.
 
 The documents themselves are not listed here — the folder listing is the index. This file only states the folder's role and criterion, which do not change when documents are added.

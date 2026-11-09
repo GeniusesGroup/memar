@@ -33,7 +33,7 @@ That division fixes the library's boundary at both ends. It does not decide what
 #### Branch Scope
 A named region of statements that *would* run, held inert until something drives it.
 
-Khayyam realizes this as the `sc` subtype, and [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) states the property the whole model rests on: a code scope is inert until a library-provided method drives it, because the grammar ships no control-flow keywords or logical operators of its own. The concept is not this library's to define. [Type → Scope — Type as Semantic Boundary](../../../../docs/type.md#scope--type-as-semantic-boundary) counts a namespace boundary, a module-visibility boundary, a package boundary, a transaction's isolation boundary, and a local algorithmic block as realizations of one category, and names "a local algorithmic block (as used by `if`, `loop`, `goto`)" among them. This library attaches to that category; it does not add to it.
+Khayyam realizes this as the `sc` subtype, and [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) states the property the whole model rests on: a code scope is inert until a library-provided method drives it, because the grammar ships no control-flow keywords or logical operators of its own. The concept is not this library's to define. [Type → Scope — Type as Semantic Boundary](../../../computer/type/type.md#scope--type-as-semantic-boundary) counts a namespace boundary, a module-visibility boundary, a package boundary, a transaction's isolation boundary, and a local algorithmic block as realizations of one category, and names "a local algorithmic block (as used by `if`, `loop`, `goto`)" among them. This library attaches to that category; it does not add to it.
 
 The one thing the library must add is the pairing the protocol states and the category does not: [Control Flow → Library-Defined Control Flow](../control-flow.md#library-defined-control-flow) separates them when it says a code scope names *what* would run while an explicit control-flow operation decides *when*. Entry into a Scope is therefore a property of the operation that performs it, not of the Scope itself.
 
@@ -83,7 +83,7 @@ The relation that *does* carry it already exists in this repository, under anoth
 
 ### What each concept owns, and what it does not own
 
-**Branch Scope** owns the statements a branch body contains, their nesting, and their name. It does not own when they run, whether they run, or what they mean — [Scope is a boundary, not a trigger](../../../../docs/type.md#scope--type-as-semantic-boundary), and [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) states the inertness as the reason a library-provided method exists at all.
+**Branch Scope** owns the statements a branch body contains, their nesting, and their name. It does not own when they run, whether they run, or what they mean — [Scope is a boundary, not a trigger](../../../computer/type/type.md#scope--type-as-semantic-boundary), and [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) states the inertness as the reason a library-provided method exists at all.
 
 **Flow Decision** owns when a body runs, which body runs, and where execution lands. It does not own what a condition holds; the receiver's own contract does. It does not own the grammar's lowering; [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) states that a compiler lowers `sc`-driven branches to internal jumps, and [Compiler → The compiler recognizes language primitives, not library names](../../../computer/compiler/compiler.md#the-compiler-recognizes-language-primitives-not-library-names) keeps the compiler from knowing any library name.
 
@@ -113,9 +113,9 @@ One relation that looks adjacent is not this one. `DispatchEvent` in `modules/pr
 
 ### The names to use and the names to refuse
 
-**Use `Scope`** for a branch body, and write it as `sc` in Khayyam source. [Type → Scope](../../../../docs/type.md#scope--type-as-semantic-boundary) settles the category and [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) settles the subtype.
+**Use `Scope`** for a branch body, and write it as `sc` in Khayyam source. [Type → Scope](../../../computer/type/type.md#scope--type-as-semantic-boundary) settles the category and [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) settles the subtype.
 
-**Refuse `Branch`, `Block`, `CodeBlock`, `Label`, and `labelType`** for it. The first three are new names for a category [Type](../../../../docs/type.md#categories-of-type) already has; the last two are what [`protocol/if.kh`](../protocol/if.kh) currently calls it, and `labelType` names no concept any document defines. [Terminology → The Default Meaning of an Unreferenced Term](../../../../docs/terminology.md#the-default-meaning-of-an-unreferenced-term) is what makes refusing them a decision rather than a preference: an unreferenced word carries its ordinary sense, and "label" carries the sense of a jump target, which is a different thing from a branch body.
+**Refuse `Branch`, `Block`, `CodeBlock`, `Label`, and `labelType`** for it. The first three are new names for a category [Type](../../../computer/type/type.md#categories-of-type) already has; the last two are what [`protocol/if.kh`](../protocol/if.kh) currently calls it, and `labelType` names no concept any document defines. [Terminology → The Default Meaning of an Unreferenced Term](../../../../docs/terminology.md#the-default-meaning-of-an-unreferenced-term) is what makes refusing them a decision rather than a preference: an unreferenced word carries its ordinary sense, and "label" carries the sense of a jump target, which is a different thing from a branch body.
 
 **Use `Boolean`** for a truth value — `modules/math/boolean/protocol/boolean.kh` — and let a domain-named condition be whatever type the receiver's own contract names.
 
@@ -136,7 +136,7 @@ One relation that looks adjacent is not this one. `DispatchEvent` in `modules/pr
 ### What the protocol states that the language does not
 The protocol states four things no language document states, and a library written without them would be missing a requirement rather than making a choice.
 
-**A branch is a scope plus a decision, and the two are distinct concerns.** [Control Flow → Library-Defined Control Flow](../control-flow.md#library-defined-control-flow) separates what from when. [Type → Scope](../../../../docs/type.md#scope--type-as-semantic-boundary) describes Scope by its naming, visibility, ownership, and isolation rules and says nothing about entry; [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) records the inertness as the reason a driving method must exist, without saying what driving means.
+**A branch is a scope plus a decision, and the two are distinct concerns.** [Control Flow → Library-Defined Control Flow](../control-flow.md#library-defined-control-flow) separates what from when. [Type → Scope](../../../computer/type/type.md#scope--type-as-semantic-boundary) describes Scope by its naming, visibility, ownership, and isolation rules and says nothing about entry; [Khayyam → Scope](../../../../docs/khayyam/khayyam.md#scope) records the inertness as the reason a driving method must exist, without saying what driving means.
 
 **A construct carries its dependencies in its own arguments.** [The Generic Form](../control-flow.md#the-generic-form-ifelse) requires `ELSE` to name the same condition value `IF` names. No language or toolchain document states this for a branch-shaped construct; it is a protocol rule whose only implementation today is one realization's own reading.
 

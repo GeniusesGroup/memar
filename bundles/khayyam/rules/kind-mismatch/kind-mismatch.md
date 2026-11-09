@@ -18,5 +18,5 @@ An organization may keep this rule or drop it, and the way to drop it is to wide
 
 ## What this rule does not claim
 - It does not claim the language refuses a mismatched inclusion. It states the two forms and what each includes; whether they may be mixed is not stated.
-- It does not claim a `vr` and a `tp` are the same kind of thing with different syntax. [Type → Type Categories Are Not a Hierarchy](../../../../docs/type.md#type-categories-are-not-a-hierarchy) is the level that owns that question.
+- It does not claim a `vr` and a `tp` are the same kind of thing with different syntax. [Type → Type Categories Are Not a Hierarchy](../../../../modules/computer/type/type.md#type-categories-are-not-a-hierarchy) is the level that owns that question.
 - It does not claim a diagnostic message, a code, or a recovery behavior; the diagnostics contract is deferred and the label is an implementation label.

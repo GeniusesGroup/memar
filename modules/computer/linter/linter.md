@@ -44,7 +44,7 @@ Until a notation is designed, a rule that this protocol will accept as a linter 
 - **Default** — whether a reference configuration ships the check on or off.
 - **Override** — that an organization may relax or replace the check without forking a language.
 
-The notation itself — a capability interface, a configuration schema, a Syllab-level annotation — is not settled. What is settled is that the linter does not invent rules that have no home outside it. Those members describe the authoring form a Rule takes; the claim itself is a Type on the subject it governs ([Type](../../../docs/type.md)), and a notation is one rendering of that statement rather than its carrier.
+The notation itself — a capability interface, a configuration schema, a Syllab-level annotation — is not settled. What is settled is that the linter does not invent rules that have no home outside it. Those members describe the authoring form a Rule takes; the claim itself is a Type on the subject it governs ([Type](../type/type.md)), and a notation is one rendering of that statement rather than its carrier.
 
 ### Configuration and override
 A linter ships a reference configuration, not a unique legal configuration. Organizations add, relax, and replace checks. Custom governance rules plug into the same machinery rather than living in ad-hoc scripts. A conformance suite, when one exists, tests that a linter implementation honors this protocol's split and the authorship members above — it does not freeze any one organization's rule set.

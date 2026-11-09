@@ -7,7 +7,7 @@ ID: 495440
 # The Error
 
 ## Abstract
-`Error` is the framework's abstraction for a distinct, identifiable fault condition returned by a fallible operation. This document defines what `Error` is composed of, how its identity and equality work, what crosses a process/network boundary and what does not, how tooling can discover a capsule's intent to implement it, and how an error's vocabulary must be translated whenever it crosses from a diagnostic layer into an actionable one. It absorbs — without summarizing — the boundary-discipline rule previously tracked as a separate document ("Error vs. Log") so that the full Error lifecycle, from composition through cross-boundary behavior, lives in one place. It assumes, and does not re-argue, the principle established in [Type](../../../docs/type.md) that a static concept (no per-instance dynamic data) must be its own distinct type: every concrete error (`ErrServiceNotFound`, `ErrTransactionUnavailable`, …) is generated as its own type, never instantiated from a shared generic `Error` capsule via an `Init` method.
+`Error` is the framework's abstraction for a distinct, identifiable fault condition returned by a fallible operation. This document defines what `Error` is composed of, how its identity and equality work, what crosses a process/network boundary and what does not, how tooling can discover a capsule's intent to implement it, and how an error's vocabulary must be translated whenever it crosses from a diagnostic layer into an actionable one. It absorbs — without summarizing — the boundary-discipline rule previously tracked as a separate document ("Error vs. Log") so that the full Error lifecycle, from composition through cross-boundary behavior, lives in one place. It assumes, and does not re-argue, the principle established in [Type](../../computer/type/type.md) that a static concept (no per-instance dynamic data) must be its own distinct type: every concrete error (`ErrServiceNotFound`, `ErrTransactionUnavailable`, …) is generated as its own type, never instantiated from a shared generic `Error` capsule via an `Init` method.
 
 ## Introduction
 
@@ -80,7 +80,7 @@ The point is that the dispatch is by *type*, not by string comparison or an enum
 The set admits more than these three. A new orthogonal capability interface is proposed in this topic with a concrete need behind it — not an anticipated one — and admitted by the owner of this protocol's subject ([rule.md → Who Owns and Introduces Rules](../rule/rule.md#who-owns-and-introduces-rules)) when the question generic infrastructure would ask it is one no existing capability answers, and its presence implies none of theirs.
 
 ### Multi-cause returns
-A method that can fail in more than one way returns the `Error` abstraction; a method with exactly one possible failure cause returns that concrete type directly (a covariant-return consequence of the underlying [Type](../../../docs/type.md) identity principle):
+A method that can fail in more than one way returns the `Error` abstraction; a method with exactly one possible failure cause returns that concrete type directly (a covariant-return consequence of the underlying [Type](../../computer/type/type.md) identity principle):
 
 ```khayyam
 tp Authorize mt (self Service) (token Token) (result AuthResult) (err ErrPermissionDenied)
@@ -235,7 +235,7 @@ tp ImplError mt (self ErrServiceNotFound) () () {
 This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
 
 ### Enforcement of the "each Error is its own type" rule
-Per the [Type](../../../docs/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../../modules-plugable/knowledge/documentation/explanation/explanation.md#conventions).
+Per the [Type](../../computer/type/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../../modules-plugable/knowledge/documentation/explanation/explanation.md#conventions).
 
 This rule is the load-bearing one that everything else in this document depends on. Without it:
 
@@ -244,4 +244,4 @@ This rule is the load-bearing one that everything else in this document depends 
 - The optional capability-interface pattern would collapse too, because there would be no distinct concrete types to compose capabilities onto.
 - Identity-by-`Type_ID` would degenerate to "all errors share one `Type_ID`", making the equality discussion meaningless.
 
-A reader who finds the "every error is its own type" claim surprising, or who wants the full argument for it, should read [Type](../../../docs/type.md) directly; this document does not re-argue it.
+A reader who finds the "every error is its own type" claim surprising, or who wants the full argument for it, should read [Type](../../computer/type/type.md) directly; this document does not re-argue it.

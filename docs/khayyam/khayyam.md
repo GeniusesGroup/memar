@@ -60,7 +60,7 @@ Khayyam treats the URI that names a source as the ultimate source of truth (a fi
 > **A name an `in` declaration includes is the name it declares.** The grammar offers no `as` form, so an included entity keeps its own name, and a file that needs two entities sharing a name has no way to bring both under distinct names. What such a collision means, and what a project does about one, is [Modularity in Khayyam → When Two Included Names Collide](./modularity.md#when-two-included-names-collide).
 
 ### Type
-What a type is, is [Type](../type.md#definition-of-type)'s subject. In Khayyam every type is declared in the shape below.
+What a type is, is [Type](../../modules/computer/type/type.md#definition-of-type)'s subject. In Khayyam every type is declared in the shape below.
 ```khayyam
 tp {name} {subtype} {subtype defined value}
 ```
@@ -151,13 +151,13 @@ Like the Separation of Syntax and Governance, this is not a topic with a single 
 Khayyam asks what capabilities are required rather than what concrete type a value is, and that is one reason the grammar has no generic syntax. [Abstraction in Khayyam → Behavior Over Type Identity](./abstraction.md#behavior-over-type-identity) states the principle and its reasons.
 
 ### Type Principles Realized
-The principles stated in [Type](../type.md) — Type as semantic entity, nominal identity, four categories of Type, owned rules — are realized in this language's constructs. Khayyam is currently the first and most concrete realization of these principles, so most readers meet Type through this language's syntax before they meet it as a modeling concept; that is a fact about where the principles were first put into practice, not about where Type originates. Each principle's realization is stated by the document that owns it:
+The principles stated in [Type](../../modules/computer/type/type.md) — Type as semantic entity, nominal identity, four categories of Type, owned rules — are realized in this language's constructs. Khayyam is currently the first and most concrete realization of these principles, so most readers meet Type through this language's syntax before they meet it as a modeling concept; that is a fact about where the principles were first put into practice, not about where Type originates. Each principle's realization is stated by the document that owns it:
 
-- **No primitive types**, every value wrapped in a named capsule: [Type → Type vs Implementation Type](../type.md#type-vs-implementation-type), [Variable in Khayyam → No Privileged Types](./variable.md#no-privileged-types).
+- **No primitive types**, every value wrapped in a named capsule: [Type → Type vs Implementation Type](../../modules/computer/type/type.md#type-vs-implementation-type), [Variable in Khayyam → No Privileged Types](./variable.md#no-privileged-types).
 - **Sovereign encapsulation**: [Encapsulation in Khayyam → Sovereign Encapsulation](./encapsulation.md#sovereign-encapsulation).
-- **One category-agnostic `tp` keyword, and fewer top-level constructs**: [Type → Categories of Type](../type.md#categories-of-type), [Type → Type Categories vs Language Keywords](../type.md#type-categories-vs-language-keywords).
-- **No keywords for Type metadata**: [Type → Type Metadata](../type.md#type-metadata).
-- **Method as Type**: [Type → Method — Type as Callable Behavior](../type.md#method--type-as-callable-behavior), [Method in Khayyam](./method.md).
+- **One category-agnostic `tp` keyword, and fewer top-level constructs**: [Type → Categories of Type](../../modules/computer/type/type.md#categories-of-type), [Type → Type Categories vs Language Keywords](../../modules/computer/type/type.md#type-categories-vs-language-keywords).
+- **No keywords for Type metadata**: [Type → Type Metadata](../../modules/computer/type/type.md#type-metadata).
+- **Method as Type**: [Type → Method — Type as Callable Behavior](../../modules/computer/type/type.md#method--type-as-callable-behavior), [Method in Khayyam](./method.md).
 - **Abstraction as pure specification**, satisfied structurally, with no default implementations: [Abstraction in Khayyam](./abstraction.md).
 - **Inheritance is between Abstractions**: [Inheritance in Khayyam](./inheritance.md).
 - **Behavior over type identity**: [Polymorphism in Khayyam](./polymorphism.md).
@@ -177,7 +177,7 @@ In most languages, naming is a style preference. In Khayyam, the parts of it the
 
 The grammar is designed to make the architect's intent visible at every call site.
 
-Human-facing text — a description, a name a person reads — is a value a method writes into an influenced variable. The type that owns the behavior owns that text, so another language is another method on that type, not a prose line above the declaration. Localized names and descriptions are the same family [Type → Human-facing identity](../type.md#human-facing-identity) already places on the Type. The method that returns the text, and the owner it is attached to, are not yet a worked signature; see the paired handoff.
+Human-facing text — a description, a name a person reads — is a value a method writes into an influenced variable. The type that owns the behavior owns that text, so another language is another method on that type, not a prose line above the declaration. Localized names and descriptions are the same family [Type → Human-facing identity](../../modules/computer/type/type.md#human-facing-identity) already places on the Type. The method that returns the text, and the owner it is attached to, are not yet a worked signature; see the paired handoff.
 
 This is not a one-time mechanism to be decided and then documented elsewhere — it is an ongoing tension that recurs every time a new naming rule, keyword, or grammar constraint is considered. Because of that, it stays part of this document, the same document every new construct is considered against, rather than being extracted into a separate style-guide document that would only drift from whatever this document actually specifies.
 
