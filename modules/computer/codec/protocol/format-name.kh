@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+
+// Format_Name is the short format identity used as the third segment of
+// `<base>.codec.<format>.kh` and as a Media Type codec suffix (json, syllab,
+// argv, flatbuf, …). It names an encoding, never a UI face or UI module.
+tp Format_Name ab
+
+tp GetFormatName mt (self Format_Name) () (name String)

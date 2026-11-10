@@ -17,3 +17,7 @@ A **codec** turns a value of one kind into a form and a form back into the value
 - **A codec may read more forms than it writes.** It writes one form for each value and may decode other forms of the same value, such as an older form it once wrote; the form it writes is the one a reader is shown.
 - **A form it does not decode is refused,** with `Codec_Error_NotDecodable`, and no value is guessed.
 - **Nothing is kept.** The form is computed from the value and the value from the form.
+
+## Rules
+- [Format Adjuncts](rules/format-adjuncts/format-adjuncts.md) — companion `<base>.codec.<format>.kh`; three seams; `codec-format-policy`; no format mandatory.
+- [Format Module Provides Generator](rules/format-module-provides-generator/format-module-provides-generator.md) — every format module offers `Generate_Format_Adjunct`.

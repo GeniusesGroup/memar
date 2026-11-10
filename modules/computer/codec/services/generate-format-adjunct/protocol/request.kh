@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Format_Name in "modules/computer/codec/protocol/format-name.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+
+tp Generate_Format_Adjunct_Request ab
+
+tp GetFormat mt (self Generate_Format_Adjunct_Request) () (format Format_Name)
+
+// Path of the type’s protocol base file (`<base>.kh`); the service writes or
+// completes the sibling `<base>.codec.<format>.kh`.
+tp GetTypeProtocolPath mt (self Generate_Format_Adjunct_Request) () (path String)

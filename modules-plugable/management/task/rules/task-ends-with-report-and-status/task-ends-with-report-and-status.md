@@ -4,6 +4,8 @@ Status: Draft
 ## The rule
 Before ending work on a task — finished or not — write its report, with its Status, and set its plan's Status to agree, as `memar task --help` says: a task left Active after its check passed reads to every later task as work still owed. Each pass, local or delegated, has a finite boundary, the same acceptance check, and a named end, the Status its report states: Complete, Blocked, or Active ([Status](../../../../knowledge/label/status/status.md)). Errors and exhausted budgets are never reported as Complete ([Acceptance Criteria](../../../../../modules/management/agency/agency.md#acceptance-criteria)). A task that another will read ends with a short hand-back: its report's Status and path and, only when it needs someone's decision, the few lines `memar task ensure --help` allows under `## Decisions needed`, each the question, its options, and the one it recommends. A hand-back with no Status, with more lines than that, or with a Status that disagrees with its plan is a failed hand-back, and the delegating agent does not count that task done.
 
+The same end also discharges [Process Gaps Become Rules](../../../agency/rules/process-gaps-become-rules/process-gaps-become-rules.md): lessons that are reusable process obligations are posted on the task’s timeline and written into the owning module’s rules (or left open as still owed), so the next task does not depend on recall.
+
 ## Why it exists
 A later task reads the Status to know whether work is owed.
 

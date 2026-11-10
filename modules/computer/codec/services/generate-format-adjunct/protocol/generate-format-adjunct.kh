@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Generate_Format_Adjunct_Request in "modules/computer/codec/services/generate-format-adjunct/protocol/request.kh"
+tp Generate_Format_Adjunct_Response in "modules/computer/codec/services/generate-format-adjunct/protocol/response.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Generate_Format_Adjunct is the service every Memar format-codec module must
+// offer: produce or complete the encode/decode methods in the type’s
+// `<base>.codec.<format>.kh` companion. Syllab’s Go generator is one realization
+// precedent; each format registers its own realization for the languages it supports.
+tp Generate_Format_Adjunct ab {
+    Service
+}
+
+tp Do mt (self Generate_Format_Adjunct) (req Generate_Format_Adjunct_Request) (res Generate_Format_Adjunct_Response, err Error)

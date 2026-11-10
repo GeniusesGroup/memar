@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Format_Name in "modules/computer/codec/protocol/format-name.kh"
+tp Codec_Adjunct_Mode in "modules/computer/codec/protocol/codec-adjunct-mode.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+// Codec_Format_Policy is the project preference that maps each Format_Name to a
+// Codec_Adjunct_Mode. Its manifest key is `codec-format-policy` under `memar:`;
+// the value form is `format=mode` pairs separated by commas, mode one of
+// `runtime` or `adjunct`. Unset formats use Adjunct_Required. Tools and the
+// compiler read it; agents do not load the manifest ([preferences service]).
+tp Codec_Format_Policy ab
+
+tp GetAdjunctMode mt (self Codec_Format_Policy) (format Format_Name) (mode Codec_Adjunct_Mode, err Error)

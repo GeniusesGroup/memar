@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// Codec_Adjunct_Mode is how a composition treats a format when a type has no
+// `.codec.<format>.kh` for it. Declared once here; values are the two modes below.
+tp Codec_Adjunct_Mode ab
+
+// Runtime_Generic — the format may encode/decode without a per-type adjunct
+// (JSON’s historical path). Allowed only when the composition’s policy says so.
+tp Codec_Adjunct_Mode_Runtime_Generic ab {
+    Codec_Adjunct_Mode
+}
+
+// Adjunct_Required — the compiler requires `<base>.codec.<format>.kh` for that
+// type whenever a consumer needs the format; absence is a compile error.
+tp Codec_Adjunct_Mode_Adjunct_Required ab {
+    Codec_Adjunct_Mode
+}

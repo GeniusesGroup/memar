@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Codec_Format_Policy in "modules/computer/codec/protocol/codec-format-policy.kh"
+
+tp Domain mt (self Codec_Format_Policy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Codec Format Policy")(s, VoidError)
+}
+
+tp Summary mt (self Codec_Format_Policy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Per-format compile vs runtime-generic adjunct policy")(s, VoidError)
+}
+
+tp Overview mt (self Codec_Format_Policy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Maps each format name to runtime or adjunct under memar: codec-format-policy.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Codec_Format_Policy) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Codec_Format_Policy) () (s String) {
+    CharacterRun_From.FromCharacterRun("Manifest key codec-format-policy under memar: holds format=mode pairs (runtime or adjunct), comma-separated. Example: json=runtime,syllab=adjunct,argv=adjunct. A format not listed is adjunct. Agents do not load the manifest; the compiler and tools do.")(s, VoidError)
+}
