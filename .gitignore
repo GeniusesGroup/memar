@@ -1,5 +1,6 @@
 # Directories
 temp
+bin
 __pycache__/
 
 # external packages folder

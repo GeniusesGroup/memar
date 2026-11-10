@@ -32,9 +32,8 @@ from machine.resident import STATE, ask, folder, read_line, state_of
 from resident.services._pool import Pool
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
+project_root = _m_memar_location.project_root
 COMMAND = 'serve'
-SCRIPTS = _m_memar_location.checkout_root() / 'bundles' / 'memar'
-TOP = SCRIPTS.parent.parent
 IDLE_SECONDS = 30 * 60
 IDLE_ENV = 'MEMAR_SERVER_IDLE'
 WORKERS = 4
@@ -78,9 +77,9 @@ def sent(connection, message: dict) -> None:
 
 class Resident:
 
-    def __init__(self, top: Path=TOP, scripts: Path=SCRIPTS, workers: int=WORKERS) -> None:
-        self.top = top
-        self.pool = Pool(top, scripts, workers)
+    def __init__(self, top: Path | None=None, workers: int=WORKERS) -> None:
+        self.top = project_root() if top is None else top
+        self.pool = Pool(workers)
         self.token = secrets.token_hex(16)
         self.stopping = False
         self.answered = 0
@@ -140,11 +139,10 @@ class Resident:
             return
         if gone(connection):
             return
-        taken = self.pool.acquire()
-        if taken is None:
+        worker = self.pool.acquire()
+        if worker is None:
             sent(connection, {'refused': 'busy'})
             return
-        worker, generation = taken
         healthy = False
         try:
             if gone(connection):
@@ -160,7 +158,7 @@ class Resident:
             if spent > SLOW_SECONDS:
                 self.note(f"{spent:.1f}s for {call.get('argv')!r}")
         finally:
-            self.pool.release(worker, generation, healthy)
+            self.pool.release(worker, healthy)
 
     def note(self, message: str) -> None:
         """A line in `slow.log` beside the state file, for the next person who wonders why a call took long."""
@@ -203,7 +201,7 @@ class Resident:
 
 def serve_forever() -> int:
     """The process: what `memar resident serve` runs, and what the command starts without the router."""
-    if ask(TOP, {'ping': True}) is not None:
+    if ask(project_root(), {'ping': True}) is not None:
         print('memar: a resident process is already running.', file=sys.stderr)
         return 0
     try:

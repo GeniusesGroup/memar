@@ -42,17 +42,19 @@ import machine.env_path as env_path
 import bundles.memar.services.install.services.machine as machine_layer
 
 class RecordPutsTheCommandOnPath(unittest.TestCase):
-    """The installer asks for the launcher shelf and nowhere else."""
+    """The installer asks for the release bin folder and nowhere else."""
 
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
         self.addCleanup(self.scratch.cleanup)
         self.checkout = Path(self.scratch.name) / 'Memar'
-        launcher = self.checkout / 'bundles' / 'memar'
-        launcher.mkdir(parents=True)
-        (launcher / machine_layer.LAUNCHER).write_text('#!/bin/sh\n', encoding='utf-8')
+        releases = import_module('bundles.memar.targets.python.release')
+        self.shim_name = releases.CMD_SHIM if os.name == 'nt' else releases.PROGRAM_NAME
+        command = self.checkout.joinpath(*releases.FOLDER)
+        command.mkdir(parents=True)
+        (command / self.shim_name).write_text('@echo off\n' if os.name == 'nt' else '#!/bin/sh\n', encoding='utf-8')
         (self.checkout / 'README.md').write_text('# Memar\n', encoding='utf-8')
-        (self.checkout / 'docs').mkdir()
+        (self.checkout / 'modules').mkdir()
         skill = self.checkout / '.agents' / 'skills' / 'memar' / 'SKILL.md'
         skill.parent.mkdir(parents=True)
         skill.write_text('# Memar\n', encoding='utf-8')
@@ -78,17 +80,18 @@ class RecordPutsTheCommandOnPath(unittest.TestCase):
         with contextlib.redirect_stdout(io.StringIO()):
             machine_layer.record(self.checkout)
 
-    def test_recording_asks_for_the_launcher_shelf_to_go_on_path(self):
+    def test_recording_asks_for_the_release_bin_to_go_on_path(self):
         self.record_it()
         self.assertTrue(self.asked, 'record() never reached the PATH step')
-        self.assertEqual(self.asked[0], self.checkout / 'bundles' / 'memar')
+        releases = import_module('bundles.memar.targets.python.release')
+        self.assertEqual(self.asked[0], self.checkout.joinpath(*releases.FOLDER))
 
-    def test_the_folder_it_names_is_the_one_holding_the_launcher(self):
+    def test_the_folder_it_names_is_the_one_holding_the_shim(self):
         self.record_it()
         self.assertTrue(self.passed)
         directory, answer = self.passed[0]
-        self.assertTrue(answer, 'the folder offered to PATH holds no launcher')
-        self.assertTrue((directory / machine_layer.LAUNCHER).is_file())
+        self.assertTrue(answer, 'the folder offered to PATH holds no release shim')
+        self.assertTrue((directory / self.shim_name).is_file())
 
     def test_the_test_would_notice_the_block_being_removed(self):
         saved = machine_layer.ensure_on_path
@@ -158,5 +161,58 @@ class PathStaysIdempotent(unittest.TestCase):
         reported = env_path.ensure_on_path(self.directory, lambda d: False)
         self.assertIn('holds nothing', reported[0])
         self.assertEqual(self.calls, [])
+
+class RemoveFromPath(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
+        self.addCleanup(self.scratch.cleanup)
+        self.directory = Path(self.scratch.name) / 'old-shelf'
+        self.directory.mkdir()
+        self.written: list[str] = []
+
+        def fake_set(value: str) -> None:
+            self.written.append(value)
+
+        self.fake_set = fake_set
+
+    @unittest.skipUnless(sys.platform == 'win32', 'Windows PATH is rewritten in the registry')
+    def test_a_present_entry_is_removed_from_the_persisted_path(self):
+        other = Path(self.scratch.name) / 'keep'
+        other.mkdir()
+        existing = os.pathsep.join([str(self.directory), str(other)])
+
+        class Key:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+
+        def query(_key, _name):
+            return (existing, 1)
+
+        def set_value(_key, _name, _reserved, _kind, value):
+            self.fake_set(value)
+
+        with unittest.mock.patch.object(env_path, '_broadcast_environment_change', lambda: None), unittest.mock.patch('winreg.CreateKeyEx', return_value=Key()), unittest.mock.patch('winreg.QueryValueEx', side_effect=query), unittest.mock.patch('winreg.SetValueEx', side_effect=set_value), unittest.mock.patch('winreg.KEY_SET_VALUE', 2, create=True), unittest.mock.patch('winreg.KEY_QUERY_VALUE', 1, create=True), unittest.mock.patch('winreg.HKEY_CURRENT_USER', object(), create=True), unittest.mock.patch('winreg.REG_EXPAND_SZ', 2, create=True):
+            reported = env_path.remove_from_path(self.directory)
+        self.assertIn('removed', reported[0])
+        self.assertEqual(self.written, [str(other)])
+
+    def test_an_absent_entry_writes_nothing(self):
+        if sys.platform != 'win32':
+            self.skipTest('Windows PATH is rewritten in the registry')
+
+        class Key:
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+
+        with unittest.mock.patch.object(env_path, '_broadcast_environment_change', lambda: None), unittest.mock.patch('winreg.CreateKeyEx', return_value=Key()), unittest.mock.patch('winreg.QueryValueEx', return_value=('C:\\elsewhere', 1)), unittest.mock.patch('winreg.SetValueEx') as set_value, unittest.mock.patch('winreg.KEY_SET_VALUE', 2, create=True), unittest.mock.patch('winreg.KEY_QUERY_VALUE', 1, create=True), unittest.mock.patch('winreg.HKEY_CURRENT_USER', object(), create=True), unittest.mock.patch('winreg.REG_EXPAND_SZ', 2, create=True):
+            reported = env_path.remove_from_path(self.directory)
+        self.assertIn('was not on PATH', reported[0])
+        set_value.assert_not_called()
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

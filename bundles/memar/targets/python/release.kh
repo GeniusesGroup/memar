@@ -1,0 +1,35 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+
+tp Memar_Release_Build ab {
+    Service
+}
+
+tp Build mt (self Memar_Release_Build) (source String, releases String) (release String, err Error)
+
+tp Memar_Release_Install ab {
+    Service
+}
+
+tp Install mt (self Memar_Release_Install) (source String, project String) (release String, err Error)
+
+tp Memar_Release_Current ab {
+    Service
+}
+
+tp Current mt (self Memar_Release_Current) (project String) (release String, err Error)
+
+tp Memar_Release_Stale ab {
+    Service
+}
+
+tp Why mt (self Memar_Release_Stale) (source String, project String) (why String, err Error)
+
+tp Memar_Release_Launcher ab {
+    Service
+}
+
+tp Write mt (self Memar_Release_Launcher) (project String) (err Error)

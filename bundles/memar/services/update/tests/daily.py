@@ -46,6 +46,8 @@ What is pinned, and what each pin is for:
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
+TIER = 'system'
+BUDGET_SECONDS = 60
 import contextlib
 import io
 import os
@@ -83,6 +85,9 @@ class Fixture(unittest.TestCase):
         starting = unittest.mock.patch.object(daily, 'detach', lambda command, log: self.started.append(command))
         starting.start()
         self.addCleanup(starting.stop)
+        naming = unittest.mock.patch.object(daily, 'program', lambda: ('the-program', 'entry'), create=True)
+        naming.start()
+        self.addCleanup(naming.stop)
 
     def ask(self, verb: str | None, environ: dict[str, str] | None=None, testing: bool=False) -> tuple[str, str]:
         out, err = (io.StringIO(), io.StringIO())
@@ -131,9 +136,7 @@ class OnceADay(Fixture):
     def test_the_first_verb_of_the_day_starts_the_run_and_no_later_one_does(self) -> None:
         for verb in ('content', 'task', None, 'install'):
             self.assertEqual(self.ask(verb), ('', ''))
-        self.assertEqual(self.started, [[sys.executable, str(daily.LAUNCHER), daily.UPDATE_VERB, daily.BACKGROUND_FLAG]])
-        self.assertTrue(daily.LAUNCHER.is_file())
-        self.assertEqual(daily.LAUNCHER.parent, SCRIPTS)
+        self.assertEqual(self.started, [['the-program', 'entry', daily.UPDATE_VERB, daily.BACKGROUND_FLAG]])
 
     def test_a_marker_from_yesterday_starts_it_again(self) -> None:
         self.ask('content')

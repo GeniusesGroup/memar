@@ -70,17 +70,18 @@ class DefaultLocation(unittest.TestCase):
             with unittest.mock.patch.object(memar_fs, 'recorded_root', return_value=fake_root):
                 self.assertEqual(memar_fs.memar_root(), fake_root)
 
-    def test_checkout_is_used_when_nothing_is_recorded(self) -> None:
+    def test_working_folder_repository_is_used_when_nothing_is_recorded(self) -> None:
         with unittest.mock.patch.object(memar_fs, 'recorded_root', return_value=None):
-            with unittest.mock.patch.object(memar_fs, 'is_memar_repository', return_value=True):
-                self.assertEqual(memar_fs.memar_root(), memar_fs.checkout_root())
+            with unittest.mock.patch.object(memar_fs.Path, 'cwd', return_value=REPO):
+                self.assertEqual(memar_fs.memar_root(), REPO)
 
     def test_unresolvable_root_errors_rather_than_guessing(self) -> None:
-        with unittest.mock.patch.object(memar_fs, 'recorded_root', return_value=None):
-            with unittest.mock.patch.object(memar_fs, 'checkout_root', return_value=Path('/no-such-checkout')):
-                with unittest.mock.patch.object(memar_fs, 'is_memar_repository', return_value=False):
-                    with self.assertRaises(SystemExit):
-                        memar_fs.memar_root()
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
+            with unittest.mock.patch.object(memar_fs, 'recorded_root', return_value=None):
+                with unittest.mock.patch.object(memar_fs, 'enclosing_repository', return_value=None):
+                    with unittest.mock.patch.object(memar_fs.Path, 'cwd', return_value=Path(scratch)):
+                        with self.assertRaises(SystemExit):
+                            memar_fs.memar_root()
 
     def test_checkout_root_is_this_checkout(self) -> None:
         self.assertEqual(memar_fs.checkout_root(), REPO)

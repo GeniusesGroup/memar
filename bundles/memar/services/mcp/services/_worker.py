@@ -1,18 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""mcp/services/_worker.py — the worker `memar mcp serve` starts: answers MCP's requests with Memar's verbs as tools.
-
-It speaks the part of MCP a tool server needs: `initialize`, `ping`, `tools/list` and `tools/call`;
-every other request is answered as a method it does not have. The tools are made once, when the
-worker starts, from the command line the router assembles (`_tools.py`), and a call is run by
-`_call.py`; the worker is replaced by the relay when the code they are made of changes, so it never
-has to notice that itself.
-
-The conversation runs on copies of the descriptors the worker was started with. Descriptors 0 and 1
-themselves are pointed at the null device, so that nothing a verb or a child process of one writes
-or reads outside a call can reach the conversation; during a call they are the call's.
-"""
 from __future__ import annotations
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
@@ -20,35 +8,24 @@ scratch_root = _m_memar_location.scratch_root
 import json
 import os
 import sys
-from pathlib import Path
 SERVER = {'name': 'memar', 'title': 'Memar', 'version': 'provisional'}
 PROTOCOL_VERSIONS = ('2025-06-18', '2025-03-26', '2024-11-05')
 METHOD_NOT_FOUND = -32601
 INVALID_PARAMS = -32602
 RUN = 'memar/run'
 STATUS = 'memar/status'
-
-def _load_router(scripts: Path):
-    """The router, the `memar` file beside the shelves, loaded as a module (it has no `.py`)."""
-    from importlib.machinery import SourceFileLoader
-    from importlib.util import module_from_spec, spec_from_loader
-    loader = SourceFileLoader('memar_router', str(scripts / 'memar'))
-    module = module_from_spec(spec_from_loader(loader.name, loader))
-    sys.modules[loader.name] = module
-    loader.exec_module(module)
-    return module
+INDEX = 'modules.knowledge.text.services.index'
 
 class Worker:
 
-    def __init__(self, scripts: Path, top: Path) -> None:
+    def __init__(self, router) -> None:
         from mcp.services import _call
-        recorded = _call.Globals(top)
+        recorded = _call.Globals((*router.DECLARED, INDEX))
         recorded.watch_imports()
         from mcp.mcp import COMMAND
         from mcp.services import _tools
         from modules.knowledge.text.services import index
         self.tools_module = _tools
-        router = _load_router(scripts)
         recorded.values.pop(router.__name__, None)
         self.runner = _call.Runner(router, recorded, scratch_root())
         parser, _ = router.assemble(router.services())
@@ -74,7 +51,7 @@ class Worker:
     def _result(self, method: str, params: dict) -> dict:
         if method == 'initialize':
             asked = params.get('protocolVersion')
-            return {'protocolVersion': asked if asked in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0], 'capabilities': {'tools': {'listChanged': True}}, 'serverInfo': SERVER, 'instructions': 'Each tool is one verb of the `memar` command and answers exactly what it prints. A tool\'s description holds its verb\'s help: call the tool, and do not run `memar` in a shell. The tool `commands` lists every verb and is needed only when the descriptions are not enough.'}
+            return {'protocolVersion': asked if asked in PROTOCOL_VERSIONS else PROTOCOL_VERSIONS[0], 'capabilities': {'tools': {}}, 'serverInfo': SERVER, 'instructions': 'Each tool is one verb of the `memar` command and answers exactly what it prints. A tool\'s description holds its verb\'s help: call the tool, and do not run `memar` in a shell. The tool `commands` lists every verb and is needed only when the descriptions are not enough.'}
         if method == 'ping':
             return {}
         if method == 'tools/list':
@@ -113,7 +90,7 @@ class Worker:
             os.chdir(kept_folder)
         return {'stdout': output.stdout, 'stderr': output.stderr, 'status': output.status}
 
-def main(scripts: str, top: str) -> None:
+def main(router) -> None:
     incoming = os.fdopen(os.dup(0), 'rb')
     outgoing = os.fdopen(os.dup(1), 'wb')
     null = os.open(os.devnull, os.O_RDWR)
@@ -122,7 +99,7 @@ def main(scripts: str, top: str) -> None:
     os.close(null)
     sys.stdin = open(os.devnull, encoding='utf-8')
     sys.stdout = sys.stderr
-    worker = Worker(Path(scripts), Path(top))
+    worker = Worker(router)
     for line in iter(incoming.readline, b''):
         if not line.strip():
             continue

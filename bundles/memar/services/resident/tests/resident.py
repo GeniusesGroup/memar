@@ -27,7 +27,8 @@ What is pinned:
   RefusesAWrongToken   A request without the process's token is refused and runs nothing.
   EndsWhenIdleOrAsked  The process ends after MEMAR_SERVER_IDLE seconds without a call, and on `resident stop`,
                        removing its state file; a second `serve` finds the first and ends at once.
-  CodeIsLookedAtOnce   The pool looks at the code's fingerprint at most once in `check_every` seconds, and a change is a new generation.
+  FilesDoNotReplaceWorkers
+                       A change of a Python file leaves the pool's idle worker in it; a worker that died is ended and the next call gets another.
 """
 from __future__ import annotations
 TIER = 'system'
@@ -257,30 +258,46 @@ def pool_module():
     spec.loader.exec_module(module)
     return module
 
-class CodeIsLookedAtOnce(unittest.TestCase):
+class FakeWorker:
 
-    def test_the_fingerprint_is_not_taken_twice_within_check_every(self) -> None:
-        _pool = pool_module()
-        taken = []
-        original = _pool.fingerprint
-        _pool.fingerprint = lambda top: taken.append(1) or ()
-        try:
-            pool = _pool.Pool(TOP, SCRIPTS, 1, check_every=3600.0)
-            pool.generation_now()
-            pool.generation_now()
-        finally:
-            _pool.fingerprint = original
-        self.assertEqual(len(taken), 1)
+    def __init__(self) -> None:
+        self.stopped = False
 
-    def test_a_changed_fingerprint_is_a_new_generation(self) -> None:
+    def stop(self) -> None:
+        self.stopped = True
+
+class FilesDoNotReplaceWorkers(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.project = suite_scratch() / f'resident-pool-{os.getpid()}-{time.time_ns()}'
+        (self.project / 'modules' / 'one').mkdir(parents=True)
+        self.code = self.project / 'modules' / 'one' / 'one.py'
+        self.code.write_text('A = 1\n', encoding='utf-8')
+
+    def tearDown(self) -> None:
+        remove_tree(self.project)
+
+    def pool(self):
         _pool = pool_module()
-        original, answers = (_pool.fingerprint, [('a',), ('a',), ('b',)])
-        _pool.fingerprint = lambda top: answers.pop(0)
-        try:
-            pool = _pool.Pool(TOP, SCRIPTS, 1, check_every=0.0)
-            numbers = [pool.generation_now() for _ in range(3)]
-        finally:
-            _pool.fingerprint = original
-        self.assertEqual(numbers, [0, 0, 1])
+        _pool.Worker = FakeWorker
+        return _pool.Pool(1)
+
+    def test_a_changed_python_file_leaves_the_idle_worker_in_the_pool(self) -> None:
+        pool = self.pool()
+        worker = pool.acquire()
+        pool.release(worker, True)
+        self.code.write_text('A = 22\n', encoding='utf-8')
+        (self.project / 'modules' / 'one' / 'two.py').write_text('', encoding='utf-8')
+        again = pool.acquire()
+        self.assertIs(again, worker)
+        self.assertFalse(worker.stopped)
+
+    def test_a_worker_that_died_is_ended_and_the_next_call_gets_another(self) -> None:
+        pool = self.pool()
+        worker = pool.acquire()
+        pool.release(worker, False)
+        self.assertTrue(worker.stopped)
+        other = pool.acquire()
+        self.assertIsNot(other, worker)
 if __name__ == '__main__':
     unittest.main()

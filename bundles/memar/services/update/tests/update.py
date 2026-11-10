@@ -51,6 +51,15 @@ What is pinned, and what each pin is for:
                       another holding the lock does nothing; an extension
                       refresh that fails is said in that line with what to
                       run, and stops nothing else.
+  ReleaseChecked      The check names the release as one more item: current with
+                      its name, stale with why, or none installed; it builds
+                      nothing and exits 0.
+  ReleaseApplied      --apply installs a release when it is stale or none is
+                      installed and never when it is current; a refusal is
+                      printed and makes the exit status 1.
+  ReleaseNoticed      The daily run never builds: a stale release leaves one
+                      dated line in temp/memar.log, once per UTC day, and a
+                      current release leaves nothing.
   RealSkillSeam       The skill copies' owner, asked with a home that holds no
                       agent app, answers with nothing.
   HelpSaysWhatIsChecked
@@ -78,6 +87,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import time
 import unittest.mock
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
@@ -88,12 +98,15 @@ sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 import machine.editor_extension as editor_extension
 import machine.env_location as env_location
+import bundles.memar.services.location.memar_location as memar_location
 import bundles.memar.services.update.update as update
 import bundles.memar.services.update.services.check as checking
 import bundles.memar.services.update.services.checkout as update_checkout
 import bundles.memar.services.update.services.copies as copies
 import bundles.memar.services.update.services.daily as update_daily
 from bundles.memar.services.update.services.checkout import Upstream
+release = import_module('bundles.memar.targets.python.release')
+release_errors = import_module('bundles.memar.targets.python.errors.errors')
 LAUNCHER = SCRIPTS / 'memar'
 SKILL_LINE = "stale: the Memar skill at /home/.cursor/skills/memar differs from the checkout's; refresh with: memar update --apply"
 
@@ -105,6 +118,8 @@ class Fixture(unittest.TestCase):
     standing = Upstream('origin/main', 0, 0, None)
     apps_status = 0
     mcp_ok = True
+    release_why = ''
+    release_name = 'r1'
 
     def setUp(self) -> None:
         self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
@@ -126,6 +141,21 @@ class Fixture(unittest.TestCase):
             self.asked.append('mcp_refresh')
             return self.mcp_ok
         for module, name, value in ((env_location, 'resolve_root', lambda: self.checkout), (copies, 'ask_apps', ask_apps), (copies, 'stale_mcp_lines', stale_mcp), (copies, 'refresh_mcp', refresh_mcp), (editor_extension, 'stale_extensions', lambda checkout: list(self.extensions)), (update_checkout, 'upstream_of', lambda checkout, fetch: self.standing)):
+            patched = unittest.mock.patch.object(module, name, value)
+            patched.start()
+            self.addCleanup(patched.stop)
+        def stale_why(source: Path, project: Path) -> str:
+            return self.release_why
+
+        def current(project: Path) -> str:
+            if self.release_why == 'none installed':
+                raise release_errors.NoneInstalled('none')
+            return self.release_name
+        def scratch_root() -> Path:
+            (self.checkout / 'temp').mkdir(exist_ok=True)
+            return self.checkout / 'temp'
+        self.release_install = unittest.mock.Mock(return_value='r2')
+        for module, name, value in ((release, 'stale_why', stale_why), (release, 'current', current), (release, 'install', self.release_install), (memar_location, 'memar_root', lambda: self.checkout), (memar_location, 'project_root', lambda: self.checkout), (memar_location, 'scratch_root', scratch_root)):
             patched = unittest.mock.patch.object(module, name, value)
             patched.start()
             self.addCleanup(patched.stop)
@@ -419,6 +449,125 @@ class BackgroundRun(Fixture):
         self.assertEqual(self.asked, [])
         self.installed.assert_not_called()
 
+class ReleaseChecked(Fixture):
+
+    def test_a_current_release_is_named_in_the_one_line(self) -> None:
+        code, out, _ = self.run_update()
+        self.assertEqual(code, 0)
+        self.assertEqual(len(out.splitlines()), 1)
+        self.assertIn('release: current r1', out)
+
+    def test_a_stale_release_is_a_line_with_why_and_nothing_is_built(self) -> None:
+        self.release_why = 'bundles/memar/memar_x.py is newer than release r1'
+        code, out, _ = self.run_update()
+        self.assertEqual(code, 0)
+        self.assertEqual(out.splitlines(), ['release: stale (bundles/memar/memar_x.py is newer than release r1)'])
+        self.release_install.assert_not_called()
+
+    def test_no_release_installed_is_a_line(self) -> None:
+        self.release_why = 'none installed'
+        code, out, _ = self.run_update()
+        self.assertEqual((code, out.splitlines()), (0, ['release: none installed']))
+        self.release_install.assert_not_called()
+
+    def test_quiet_still_names_a_stale_release(self) -> None:
+        self.release_why = 'a.py is newer than release r1'
+        self.assertEqual(self.run_update('--quiet')[1], 'release: stale (a.py is newer than release r1)\n')
+
+class ReleaseApplied(Fixture):
+
+    def test_a_stale_release_is_installed_from_this_checkout_into_this_project(self) -> None:
+        self.release_why = 'a.py is newer than release r1'
+        code, out, _ = self.run_update('--apply')
+        self.assertEqual(code, 0)
+        self.release_install.assert_called_once_with(self.checkout, self.checkout)
+        self.assertIn('release: installed r2', out)
+
+    def test_the_resident_process_of_the_previous_release_is_asked_to_end_after_an_install(self) -> None:
+        self.release_why = 'none installed'
+        with unittest.mock.patch('machine.resident.ask', return_value={'stopped': True}) as ask:
+            self.assertEqual(self.run_update('--apply')[0], 0)
+        self.assertEqual([call.args[1] for call in ask.call_args_list], [{'stop': True}])
+
+    def test_the_resident_process_is_left_when_the_install_is_refused(self) -> None:
+        self.release_why = 'none installed'
+        self.release_install.side_effect = release_errors.DoesNotStart('does not start')
+        with unittest.mock.patch('machine.resident.ask') as ask:
+            self.assertEqual(self.run_update('--apply')[0], 1)
+        ask.assert_not_called()
+
+    def test_none_installed_is_installed(self) -> None:
+        self.release_why = 'none installed'
+        self.assertEqual(self.run_update('--apply')[0], 0)
+        self.release_install.assert_called_once_with(self.checkout, self.checkout)
+
+    def test_a_current_release_is_not_rebuilt(self) -> None:
+        self.assertEqual(self.run_update('--apply')[0], 0)
+        self.release_install.assert_not_called()
+
+    def test_a_refusal_is_printed_and_fails_the_run_and_the_other_items_still_refresh(self) -> None:
+        self.skill_lines = [SKILL_LINE]
+        self.release_why = 'a.py is newer than release r1'
+        for refusal in (release_errors.NoBuilder('no packaging tool'), release_errors.BuildFailed('the build ended with status 1'), release_errors.DoesNotStart('does not start')):
+            with self.subTest(refusal=type(refusal).__name__):
+                self.asked.clear()
+                self.release_install.side_effect = refusal
+                code, _, err = self.run_update('--apply')
+                self.assertEqual(code, 1)
+                self.assertIn(str(refusal), err)
+                self.assertIn('release', err)
+                self.assertEqual(self.asked, [copies.APPS_STALE, copies.APPS_REFRESH])
+
+class ReleaseNoticed(Fixture):
+
+    def setUp(self) -> None:
+        super().setUp()
+        patched = unittest.mock.patch.object(update_daily, 'state_dir', lambda: self.checkout)
+        patched.start()
+        self.addCleanup(patched.stop)
+        patched = unittest.mock.patch.object(update_checkout, 'fast_forward', lambda checkout, fetch: update_checkout.Forwarded(Upstream('origin/main', 0, 0, None), 0, []))
+        patched.start()
+        self.addCleanup(patched.stop)
+        self.log = self.checkout / 'temp' / 'memar.log'
+
+    def lines(self) -> list[str]:
+        return self.log.read_text(encoding='utf-8').splitlines() if self.log.exists() else []
+
+    def test_a_current_release_writes_nothing(self) -> None:
+        self.assertEqual(self.run_update('--background')[0], 0)
+        self.assertFalse(self.log.exists())
+
+    def test_a_stale_release_leaves_one_dated_line_and_builds_nothing(self) -> None:
+        self.release_why = 'a.py is newer than release r1'
+        self.assertEqual(self.run_update('--background')[0], 0)
+        self.release_install.assert_not_called()
+        self.assertRegex(self.lines()[0], r'^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ memar: a newer release is wanted \(a\.py is newer than release r1\); run memar update --apply$')
+        self.assertEqual(len(self.lines()), 1)
+
+    def test_a_second_run_the_same_utc_day_adds_nothing(self) -> None:
+        self.release_why = 'none installed'
+        self.run_update('--background')
+        self.run_update('--background')
+        self.assertEqual(len(self.lines()), 1)
+        self.release_install.assert_not_called()
+
+    def test_a_line_from_an_earlier_day_does_not_stop_a_new_one_and_other_lines_stay(self) -> None:
+        self.log.parent.mkdir(parents=True, exist_ok=True)
+        self.log.write_text('2000-01-01T00:00:00Z memar: a newer release is wanted (old); run memar update --apply\nsomething else\n', encoding='utf-8', newline='\n')
+        self.release_why = 'none installed'
+        self.run_update('--background')
+        lines = self.lines()
+        self.assertEqual((len(lines), lines[1]), (3, 'something else'))
+        self.assertTrue(lines[2].startswith(time.strftime('%Y-%m-%d', time.gmtime())))
+
+    def test_a_line_from_today_is_not_repeated_even_with_other_lines_after_it(self) -> None:
+        stamp = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+        self.log.parent.mkdir(parents=True, exist_ok=True)
+        self.log.write_text(f'{stamp} memar: a newer release is wanted (x); run memar update --apply\nsomething else\n', encoding='utf-8', newline='\n')
+        self.release_why = 'none installed'
+        self.run_update('--background')
+        self.assertEqual(len(self.lines()), 2)
+
 class RealSkillSeam(unittest.TestCase):
 
     def test_a_home_without_agent_apps_has_no_stale_copy(self) -> None:
@@ -438,7 +587,7 @@ class HelpSaysWhatIsChecked(unittest.TestCase):
     def test_the_help_names_what_is_checked_and_what_is_never_changed(self) -> None:
         text = self.ask(update.UPDATE_VERB, '--help')
         self.assertIn('usage: memar update', text)
-        for phrase in ('--apply', '--quiet', '--offline', '--background', 'agent apps', 'MCP server', 'editor extensions', 'A command you run never changes the checkout', *self.DAILY):
+        for phrase in ('--apply', '--quiet', '--offline', '--background', 'agent apps', 'MCP server', 'editor extensions', 'release', 'never builds', 'A command you run never changes the checkout', *self.DAILY):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, text)
         for mechanism in ('memar-update', 'memar-install-apps', 'editor_extension', 'child'):

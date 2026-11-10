@@ -29,12 +29,13 @@ What is pinned:
                         edit that leaves the file's size and modification time as they were is seen
                         too, when the file was read within two seconds of its modification.
   CodeChangeReplacesWorker
-                        When the code fingerprint changes, the next request is answered by a new
-                        worker, which the app is told of by `notifications/tools/list_changed`,
-                        and the conversation goes on without a new `initialize`; a worker that
-                        dies while it starts (code broken mid-edit) is answered for with an error
-                        and the next request starts one; a batch is refused, not left waiting; the
-                        fingerprint changes when a file of the code is added or changed.
+                        A change of a Python file leaves the worker as it is (same process, no
+                        notice); a worker that died is answered for with an error and the next
+                        request starts another without a new `initialize` and without a notice;
+                        one that dies while it starts is answered for with an error and the next
+                        request starts one; a batch is refused, not left waiting; a call that
+                        outlasts `CALL_SECONDS` is answered with an error naming the limit, and
+                        its worker is killed.
   CallsCarryNoState     A module global a call changed is as its import left it at the next call.
   ArgumentsAsTyped      A call's arguments become the words the CLI would be typed with.
 """
@@ -61,7 +62,18 @@ for folder in (TOP, SCRIPTS, SCRIPTS / 'services'):
 sys.dont_write_bytecode = True
 from mcp.services import _call, _tools, serve
 ROUTER = SCRIPTS / 'memar'
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+_m_memar_location.declare_program(_m_memar_location.entry_program(str(ROUTER)))
 THIS_TASK = '20261019-T111413Z-21136'
+
+def load_router():
+    from importlib.machinery import SourceFileLoader
+    from importlib.util import module_from_spec, spec_from_loader
+    loader = SourceFileLoader('memar_router_probe', str(ROUTER))
+    module = module_from_spec(spec_from_loader(loader.name, loader))
+    sys.modules[loader.name] = module
+    loader.exec_module(module)
+    return module
 
 def cli(argv: list[str], stdin: str='') -> subprocess.CompletedProcess:
     return subprocess.run([sys.executable, str(ROUTER), *argv], input=stdin.encode('utf-8'), capture_output=True)
@@ -138,8 +150,7 @@ class ToolsAreTheVerbs(WithServer):
 
     def test_one_tool_per_leaf_verb_and_none_for_the_server_itself(self):
         import argparse
-        from mcp.services._worker import _load_router
-        router = _load_router(SCRIPTS)
+        router = load_router()
         parser, _ = router.assemble(router.services())
 
         def leaves(parser, words):
@@ -201,49 +212,89 @@ class SeesEditsWithoutRestart(unittest.TestCase):
 
 class CodeChangeReplacesWorker(unittest.TestCase):
 
-    def test_a_changed_fingerprint_brings_a_new_worker_and_a_notice(self):
+    def test_a_changed_python_file_leaves_the_worker_and_sends_no_notice(self):
+        top = suite_scratch() / f'mcp-kept-{os.getpid()}-{time.time_ns()}'
+        (top / 'modules' / 'one').mkdir(parents=True)
+        code = top / 'modules' / 'one' / 'one.py'
+        code.write_text('A = 1\n', encoding='utf-8')
         relay = serve.Relay()
-        codes = iter([('one',), ('one',), ('two',)])
-        original = serve.fingerprint
-        serve.fingerprint = lambda top=serve.TOP: next(codes)
         try:
             line = lambda number, method: json.dumps({'jsonrpc': '2.0', 'id': number, 'method': method, 'params': {}}).encode() + b'\n'
             initialize = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18'}}).encode() + b'\n'
             self.assertEqual(len(relay.handle(initialize)), 1)
             relay.handle(b'{"jsonrpc":"2.0","method":"notifications/initialized"}\n')
-            first = relay.worker
+            first, pid = (relay.worker, relay.worker.process.pid)
             self.assertEqual(len(relay.handle(line(2, 'ping'))), 1)
-            self.assertIs(relay.worker, first)
+            code.write_text('A = 22\n', encoding='utf-8')
+            (top / 'modules' / 'one' / 'two.py').write_text('', encoding='utf-8')
             sent = relay.handle(line(3, 'tools/list'))
-            self.assertIsNot(relay.worker, first)
-            self.assertEqual(json.loads(sent[0]), serve.LIST_CHANGED)
-            self.assertEqual(len(json.loads(sent[1])['result']['tools']) > 0, True)
+            self.assertEqual(len(sent), 1)
+            self.assertIn('tools', json.loads(sent[0])['result'])
+            self.assertIs(relay.worker, first)
+            self.assertEqual(relay.worker.process.pid, pid)
         finally:
-            serve.fingerprint = original
             relay.stop()
+            remove_tree(top)
 
-    def test_a_worker_that_cannot_start_is_an_error_answered_and_the_next_request_starts_one(self):
+    def test_a_worker_that_died_is_answered_for_and_the_next_request_starts_another_without_a_notice(self):
         relay = serve.Relay()
-        codes = iter([('one',), ('two',), ('two',), ('three',)])
-        original, boot = (serve.fingerprint, serve.BOOT)
-        serve.fingerprint = lambda top=serve.TOP: next(codes)
         try:
             line = lambda number, method: json.dumps({'jsonrpc': '2.0', 'id': number, 'method': method, 'params': {}}).encode() + b'\n'
             initialize = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18'}}).encode() + b'\n'
             relay.handle(initialize)
             relay.handle(b'{"jsonrpc":"2.0","method":"notifications/initialized"}\n')
-            serve.BOOT = 'import sys; sys.exit(1)'
+            died = relay.worker.process.pid
+            relay.worker.process.kill()
+            relay.worker.process.wait()
+            sent = relay.handle(line(2, 'ping'))
+            self.assertEqual(json.loads(sent[-1])['error']['code'], serve.INTERNAL_ERROR)
+            self.assertIsNone(relay.worker)
+            sent = relay.handle(line(3, 'tools/list'))
+            self.assertEqual(len(sent), 1)
+            self.assertGreater(len(json.loads(sent[0])['result']['tools']), 0)
+            self.assertNotEqual(relay.worker.process.pid, died)
+        finally:
+            relay.stop()
+
+    def test_a_worker_that_cannot_start_is_an_error_answered_and_the_next_request_starts_one(self):
+        relay = serve.Relay()
+        command = serve.worker_command
+        try:
+            line = lambda number, method: json.dumps({'jsonrpc': '2.0', 'id': number, 'method': method, 'params': {}}).encode() + b'\n'
+            initialize = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18'}}).encode() + b'\n'
+            relay.handle(initialize)
+            relay.handle(b'{"jsonrpc":"2.0","method":"notifications/initialized"}\n')
+            relay.worker.process.kill()
+            relay.worker.process.wait()
+            serve.worker_command = lambda: [sys.executable, '-c', 'import sys; sys.exit(1)']
             sent = relay.handle(line(2, 'ping'))
             self.assertEqual(json.loads(sent[-1])['error']['code'], serve.INTERNAL_ERROR)
             self.assertIsNone(relay.worker)
             sent = relay.handle(line(3, 'ping'))
             self.assertEqual(json.loads(sent[-1])['error']['code'], serve.INTERNAL_ERROR)
-            serve.BOOT = boot
+            serve.worker_command = command
             sent = relay.handle(line(4, 'tools/list'))
-            self.assertEqual(json.loads(sent[0]), serve.LIST_CHANGED)
+            self.assertEqual(len(sent), 1)
             self.assertGreater(len(json.loads(sent[-1])['result']['tools']), 0)
         finally:
-            serve.fingerprint, serve.BOOT = (original, boot)
+            serve.worker_command = command
+            relay.stop()
+
+    def test_a_call_that_outlasts_the_limit_is_answered_with_an_error_and_its_worker_is_killed(self):
+        relay = serve.Relay()
+        original, command = (serve.CALL_SECONDS, serve.worker_command)
+        serve.CALL_SECONDS = 1
+        serve.worker_command = lambda: [sys.executable, '-c', 'import sys, time; sys.stdin.readline(); time.sleep(120)']
+        try:
+            started = time.monotonic()
+            sent = relay.handle(json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {}}).encode() + b'\n')
+            self.assertLess(time.monotonic() - started, 10)
+            error = json.loads(sent[-1])['error']
+            self.assertEqual(error['code'], serve.INTERNAL_ERROR)
+            self.assertIn('1 second', error['message'])
+            self.assertIsNone(relay.worker)
+        finally:
+            serve.CALL_SECONDS, serve.worker_command = (original, command)
             relay.stop()
 
     def test_a_batch_is_refused_and_not_left_unanswered(self):
@@ -254,23 +305,24 @@ class CodeChangeReplacesWorker(unittest.TestCase):
         finally:
             relay.stop()
 
-    def test_the_fingerprint_changes_when_code_is_added_or_changed(self):
-        top = suite_scratch() / f'mcp-fingerprint-{os.getpid()}-{time.time_ns()}'
-        try:
-            (top / 'modules' / 'one').mkdir(parents=True)
-            (top / 'modules' / 'one' / 'docs').mkdir()
-            code = top / 'modules' / 'one' / 'one.py'
-            code.write_text('A = 1\n', encoding='utf-8')
-            first = serve.fingerprint(top)
-            (top / 'modules' / 'one' / 'docs' / 'note.py').write_text('', encoding='utf-8')
-            self.assertEqual(serve.fingerprint(top), first)
-            (top / 'modules' / 'one' / 'two.py').write_text('', encoding='utf-8')
-            second = serve.fingerprint(top)
-            self.assertNotEqual(second, first)
-            code.write_text('A = 22\n', encoding='utf-8')
-            self.assertNotEqual(serve.fingerprint(top), second)
-        finally:
-            remove_tree(top)
+class WorkerIsTheProgram(unittest.TestCase):
+
+    def test_the_command_is_the_program_with_the_worker_verb(self) -> None:
+        import unittest.mock
+        with unittest.mock.patch.object(serve, 'program', return_value=('the-program', 'entry')):
+            self.assertEqual(serve.worker_command(), ['the-program', 'entry', 'mcp', 'worker'])
+
+    def test_the_worker_is_started_with_exactly_that_command(self) -> None:
+        import unittest.mock
+        with unittest.mock.patch.object(serve, 'program', return_value=('the-program', 'entry')), unittest.mock.patch.object(subprocess, 'Popen') as popen:
+            popen.return_value.stdout.readline.return_value = b''
+            worker = serve.Worker()
+        self.assertEqual(popen.call_args[0][0], ['the-program', 'entry', 'mcp', 'worker'])
+        worker.reader.join(timeout=5)
+
+    def test_nothing_of_the_checkout_is_named_by_the_module(self) -> None:
+        for name in ('BOOT', 'SCRIPTS', 'TOP'):
+            self.assertFalse(hasattr(serve, name), name)
 
 class CallsCarryNoState(unittest.TestCase):
 
@@ -279,7 +331,7 @@ class CallsCarryNoState(unittest.TestCase):
         top.mkdir(parents=True)
         module_name = f'mcp_globals_probe_{os.getpid()}'
         (top / f'{module_name}.py').write_text('REPORTED = False\nKEPT = {}\n', encoding='utf-8')
-        recorded = _call.Globals(top)
+        recorded = _call.Globals((module_name,))
         sys.path.insert(0, str(top))
         loaded = _call.SourceFileLoader.exec_module
         try:
@@ -297,12 +349,42 @@ class CallsCarryNoState(unittest.TestCase):
             sys.modules.pop(module_name, None)
             remove_tree(top)
 
+    def test_a_module_is_recorded_when_its_name_is_declared_wherever_its_file_is(self):
+        import types
+        inside, outside = (f'mcp_declared_probe_{os.getpid()}', f'mcp_foreign_probe_{os.getpid()}')
+        modules = {name: types.ModuleType(name) for name in (inside, outside)}
+        for module in modules.values():
+            module.__file__ = str(Path(sys.executable).resolve())
+            module.FLAG = False
+        recorded = _call.Globals((inside,))
+        try:
+            sys.modules.update(modules)
+            for module in modules.values():
+                recorded.record(module)
+            self.assertEqual(set(recorded.values), {inside})
+            modules[inside].FLAG = True
+            modules[outside].FLAG = True
+            recorded.restore()
+            self.assertIs(modules[inside].FLAG, False)
+            self.assertIs(modules[outside].FLAG, True)
+        finally:
+            for name in modules:
+                sys.modules.pop(name, None)
+
+    def test_a_declared_module_without_a_file_is_recorded_too(self):
+        import types
+        name = f'mcp_fileless_probe_{os.getpid()}'
+        module = types.ModuleType(name)
+        module.FLAG = False
+        recorded = _call.Globals((name,))
+        recorded.record(module)
+        self.assertEqual(recorded.values, {name: {'FLAG': False}})
+
 class ArgumentsAsTyped(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        from mcp.services._worker import _load_router
-        router = _load_router(SCRIPTS)
+        router = load_router()
         parser, _ = router.assemble(router.services())
         cls.tools = {tool.name: tool for tool in _tools.tools(parser)}
 

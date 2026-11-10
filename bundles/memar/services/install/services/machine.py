@@ -62,7 +62,7 @@ take_lock = _m_lock.take_lock
 _m_fs_lock = import_module('bundles.memar_fs.services.fs_lock')
 release_lock = _m_fs_lock.release_lock
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
-checkout_root = _m_memar_location.checkout_root
+project_root = _m_memar_location.project_root
 memar_root = _m_memar_location.memar_root
 _m_repository = import_module('bundles.memar.services.location.repository')
 is_memar_repository = _m_repository.is_memar_repository
@@ -77,9 +77,20 @@ from pathlib import Path
 from machine.console import fail, note, step
 from machine.editor_extension import install_extensions
 from machine.env_location import VARIABLE, recorded_root, refuse_bogus_value, write_user_variable
-from machine.env_path import ensure_on_path
+from machine.env_path import ensure_on_path, remove_from_path
 from bundles.memar.services.install.services.development import DEVELOPMENT_KEY, mark_development
-LAUNCHER = 'memar'
+_m_release = import_module('bundles.memar.targets.python.release')
+
+def _command_shim_name() -> str:
+    return _m_release.CMD_SHIM if os.name == 'nt' else _m_release.PROGRAM_NAME
+
+def ensure_command_on_path(root: Path) -> list[str]:
+    """Prepend release `bin` when its shim is present; drop the old router shelf from PATH."""
+    folder = _m_release.releases_of(root)
+    shim = _command_shim_name()
+    lines = ensure_on_path(folder, lambda d: (d / shim).is_file())
+    lines.extend(remove_from_path(Path(root) / 'bundles' / 'memar'))
+    return lines
 
 def temporary_consequence() -> str:
     """What refusing an install's target under the temporary directory says."""
@@ -96,16 +107,16 @@ def report_installed(path: Path, *, dry_run: bool=False) -> None:
     record, and not by a shell reading a copy of the variable that a task
     opened earlier may not hold.
 
-    A re-run costs nothing, so it also puts the launcher on PATH when a move
-    left the old folder there, and writes this checkout's editor extension over
-    the installed one: re-running is how an agent updates the editor after a
-    change, and a run that only reported would leave the editor on the code it
-    was first given. A dry run only says what it would do to the editor; PATH is
-    never dry, for the same reason a record is not.
+    A re-run costs nothing, so it also puts the release `bin` on PATH when the
+    shim is there (older PATH entries are left in place), and writes this
+    checkout's editor extension over the installed one: re-running is how an
+    agent updates the editor after a change, and a run that only reported would
+    leave the editor on the code it was first given. A dry run only says what it
+    would do to the editor; PATH is never dry, for the same reason a record is not.
     """
     step(f'Memar is already installed at {path}')
     note(f'{VARIABLE} = {path}')
-    for line in ensure_on_path(path / 'bundles' / 'memar', lambda d: (d / LAUNCHER).is_file()):
+    for line in ensure_command_on_path(path):
         note(line)
     install_extensions(path, dry_run=dry_run)
 
@@ -119,7 +130,7 @@ def record(target: Path) -> None:
     note(f'written to {where}')
     note('other programs must be restarted before they see it')
     step('The memar command')
-    for line in ensure_on_path(target / 'bundles' / 'memar', lambda d: (d / LAUNCHER).is_file()):
+    for line in ensure_command_on_path(target):
         note(line)
     step('Editor extensions')
     install_extensions(target)
@@ -189,7 +200,7 @@ def mark_developer() -> None:
     checkout, which is not a project to install into. What the mark is, and where
     it is kept, is `bundles/memar/services/install/services/development.py`'s.
     """
-    checkout = recorded_root() or checkout_root()
+    checkout = recorded_root() or project_root()
     if not is_memar_repository(checkout):
         fail(f'{not_a_repository(checkout)}, so nothing was marked')
     try:

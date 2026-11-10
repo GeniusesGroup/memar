@@ -48,9 +48,6 @@ START_BACKOFF = 15
 CONNECT_SECONDS = 0.5
 TAKEN_SECONDS = 5.0
 MOST_BYTES = 64 * 1024 * 1024
-BOOT = '# memar resident process\nimport sys; from pathlib import Path; s, t = Path(sys.argv[1]), Path(sys.argv[2]); sys.path[0:0] = [str(t), str(s), str(s / "services")]; from resident.services.serve import serve_forever; raise SystemExit(serve_forever())'
-CHECKOUT = next(p for p in Path(__file__).resolve().parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
-ROUTER = CHECKOUT / 'bundles' / 'memar' / 'memar'
 CREATION_FLAGS = 512 | 134217728
 
 def folder(top: Path) -> Path:
@@ -122,7 +119,14 @@ def _decoded(line: bytes) -> dict | None:
     return answer if isinstance(answer, dict) else None
 
 def start(top: Path) -> None:
-    """Start the resident process, detached, unless a call started one a moment ago."""
+    """Start the resident process, detached, unless a call started one a moment ago.
+
+    Prefer the installed release binary so the process list names `memar`, not the
+    development interpreter; fall back to the entry that started this call when
+    no release is installed yet.
+    """
+    from bundles.memar.services.location.memar_location import program
+    from bundles.memar.targets.python.release import program_of
     marker = folder(top) / STARTING
     try:
         if time.time() - marker.stat().st_mtime < START_BACKOFF:
@@ -132,8 +136,9 @@ def start(top: Path) -> None:
     try:
         marker.parent.mkdir(parents=True, exist_ok=True)
         marker.write_text(str(os.getpid()), encoding='utf-8')
-        options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_task': True}
-        subprocess.Popen([sys.executable, '-c', BOOT, str(ROUTER.parent), str(CHECKOUT)], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
+        options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_session': True}
+        command = program_of(top) or program()
+        subprocess.Popen([*command, 'resident', 'serve'], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
     except OSError:
         pass
 

@@ -1,27 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""mcp/services/_call.py — one verb run in the worker exactly as the CLI runs it, its output captured whole.
-
-**The same run.** A call goes through the router's own `main`, with the arguments the CLI would be
-typed with, so the steps every verb owes (the daily update's notice among them), the parser and the
-runs are the CLI's, not a copy of them. What the interpreter does when a CLI process ends is done
-here too: a `SystemExit` becomes the status, its message printed on stderr as Python prints it, and
-an exception its traceback and status 1.
-
-**The same bytes.** stdout and stderr are captured at the file descriptor, not by swapping Python's
-streams alone, so what a child process the verb starts prints (git, say) is captured as the CLI's
-pipe would receive it. The streams are opened over those descriptors the way the interpreter opens
-its own, so the router's `use_utf8_stdio` and the platform's line ending act on them as on the CLI's.
-
-**Nothing carried from call to call** but what a service asked to keep. A process that runs one
-verb starts each from its modules as their import left them, and a long-lived one would not: a
-service that records "already reported" in a module global would report once per server, not once
-per call. So the scalar globals of the checkout's modules are recorded when each module is loaded
-and put back before every call, every `functools` cache of those modules is cleared after one, and
-the environment and the working folder are put back. What a service keeps on purpose, it keeps in a
-container it asked for (the content index's `keep`), which is none of these.
-"""
 from __future__ import annotations
 import io
 import os
@@ -29,6 +8,7 @@ import sys
 import traceback
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
+from typing import Iterable
 from machine.console import CALLER_ENV, MCP_CALLER
 from typing import NamedTuple
 SCALARS = (bool, int, float, str, bytes, type(None))
@@ -40,14 +20,12 @@ class Output(NamedTuple):
     status: int
 
 class Globals:
-    """The scalar globals of the checkout's modules, as each one's import left them."""
 
-    def __init__(self, top: Path) -> None:
-        self.top = os.path.normcase(str(top.resolve())) + os.sep
+    def __init__(self, declared: Iterable[str]) -> None:
+        self.declared = frozenset(declared)
         self.values: dict[str, dict[str, object]] = {}
 
     def watch_imports(self) -> None:
-        """Record each module the checkout holds when it is loaded from now on."""
         loaded = SourceFileLoader.exec_module
         record = self.record
 
@@ -57,8 +35,7 @@ class Globals:
         SourceFileLoader.exec_module = exec_module
 
     def record(self, module) -> None:
-        file = getattr(module, '__file__', None)
-        if not file or not os.path.normcase(os.path.abspath(file)).startswith(self.top):
+        if module.__name__ not in self.declared:
             return
         self.values[module.__name__] = {key: value for key, value in vars(module).items() if not key.startswith('__') and isinstance(value, SCALARS)}
 

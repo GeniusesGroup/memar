@@ -617,7 +617,7 @@ class DeveloperIsMarked(unittest.TestCase):
 
     def test_a_folder_that_is_not_a_memar_repository_is_refused(self) -> None:
         (self.checkout / 'README.md').unlink()
-        with unittest.mock.patch.object(machine_layer, 'recorded_root', return_value=None), unittest.mock.patch.object(machine_layer, 'checkout_root', return_value=self.checkout):
+        with unittest.mock.patch.object(machine_layer, 'recorded_root', return_value=None), unittest.mock.patch.object(machine_layer, 'project_root', return_value=self.checkout):
             with self.assertRaises(SystemExit) as refused:
                 machine_layer.mark_developer()
         self.assertIn('nothing was marked', str(refused.exception))

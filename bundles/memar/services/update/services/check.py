@@ -25,6 +25,7 @@ only the check needs is imported inside it.
 """
 from __future__ import annotations
 import sys
+from importlib import import_module
 from pathlib import Path
 
 def checkout_line(checkout: Path, *, fetch: bool) -> tuple[str | None, str]:
@@ -43,6 +44,36 @@ def checkout_line(checkout: Path, *, fetch: bool) -> tuple[str | None, str]:
         return (f'behind: the Memar checkout at {checkout} is {standing.behind} commit(s) behind {standing.branch}{ahead}{as_of}; to bring it up to date, run: {command}', '')
     return (None, f'the checkout at {checkout} is not behind {standing.branch}{ahead}{as_of}')
 
+def release_line() -> tuple[str | None, str]:
+    from bundles.memar.services.location.memar_location import memar_root, project_root
+    release = import_module('bundles.memar.targets.python.release')
+    why = release.stale_why(memar_root(), project_root())
+    if why == 'none installed':
+        return ('release: none installed', '')
+    if why:
+        return (f'release: stale ({why})', '')
+    return (None, f'release: current {release.current(project_root())}')
+
+def install_release() -> bool:
+    from bundles.memar.services.location.memar_location import memar_root, project_root
+    release = import_module('bundles.memar.targets.python.release')
+    refused = import_module('bundles.memar.targets.python.errors.errors').ReleaseRefused
+    try:
+        name = release.install(memar_root(), project_root())
+    except refused as error:
+        print(f'error: the release could not be installed: {error}', file=sys.stderr)
+        return False
+    print(f'release: installed {name}')
+    from bundles.memar.services.install.services.machine import ensure_command_on_path
+    for line in ensure_command_on_path(project_root()):
+        print(f'path: {line}')
+    from machine.resident import ask
+    try:
+        ask(project_root(), {'stop': True})
+    except OSError:
+        pass
+    return True
+
 def check(checkout: Path, *, apply: bool, quiet: bool, fetch: bool) -> int:
     """Name each stale thing, and with APPLY refresh the copies; the exit status."""
     import subprocess
@@ -60,11 +91,12 @@ def check(checkout: Path, *, apply: bool, quiet: bool, fetch: bool) -> int:
         return 1
     extensions = stale_extensions(checkout)
     behind, standing = checkout_line(checkout, fetch=fetch)
-    stale = [*skills, *mcp, *extension_lines(extensions), *([behind] if behind else [])]
+    release_stale, release_standing = release_line()
+    stale = [*skills, *mcp, *extension_lines(extensions), *([release_stale] if release_stale else []), *([behind] if behind else [])]
     for line in stale:
         print(line)
     if not stale and (not quiet):
-        print(f'Memar is current: the skill copies, MCP registrations and editor extensions match {checkout}, and {standing}.')
+        print(f'Memar is current: the skill copies, MCP registrations and editor extensions match {checkout}, {release_standing}, and {standing}.')
     if not apply:
         return 0
     failed = False
@@ -85,6 +117,8 @@ def check(checkout: Path, *, apply: bool, quiet: bool, fetch: bool) -> int:
         if trouble:
             print(f'error: {trouble}', file=sys.stderr)
             failed = True
+    if release_stale and not install_release():
+        failed = True
     if behind:
         print('the checkout is left as it is; run the command above to bring it up to date')
     return 1 if failed else 0

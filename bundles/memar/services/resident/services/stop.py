@@ -10,14 +10,13 @@ from machine.resident import ask
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 COMMAND = 'stop'
-TOP = _m_memar_location.checkout_root()
 
 def describe(verbs):
     verbs.add_parser(COMMAND, help='ask the resident process to end', description='Ask the resident process of this checkout to end; the next call started with MEMAR_SERVER=1 starts it again.')
     return run
 
 def run(args: argparse.Namespace) -> int:
-    if ask(TOP, {'stop': True}) is None:
+    if ask(_m_memar_location.project_root(), {'stop': True}) is None:
         print('memar: no resident process is running.', file=sys.stderr)
         return 1
     print('memar: the resident process was asked to end.')

@@ -10,17 +10,17 @@ from machine.resident import ask, folder, state_of
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 COMMAND = 'status'
-TOP = _m_memar_location.checkout_root()
 
 def describe(verbs):
     verbs.add_parser(COMMAND, help='say whether the resident process runs', description="Print the resident process's id, port and the number of calls it has answered; exit 1 when none runs.")
     return run
 
 def run(args: argparse.Namespace) -> int:
-    answer = ask(TOP, {'ping': True})
+    top = _m_memar_location.project_root()
+    answer = ask(top, {'ping': True})
     if answer is None:
         print('memar: no resident process is running.', file=sys.stderr)
         return 1
-    state = state_of(TOP) or {}
-    print(f"running: pid {answer.get('pid')}, port {state.get('port')}, {answer.get('calls')} calls answered, {answer.get('workers')} workers, state in {folder(TOP)}")
+    state = state_of(top) or {}
+    print(f"running: pid {answer.get('pid')}, port {state.get('port')}, {answer.get('calls')} calls answered, {answer.get('workers')} workers, state in {folder(top)}")
     return 0

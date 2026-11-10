@@ -19,7 +19,11 @@ Every `memar` invocation imports this file with the rest of the shelf, so what
 only the run needs is imported inside it.
 """
 from __future__ import annotations
+import time
+from importlib import import_module
 from pathlib import Path
+RELEASE_LOG = 'memar.log'
+WANTED = 'a newer release is wanted'
 
 def background_update(checkout: Path, *, fetch: bool) -> str:
     """Bring a consumer's CHECKOUT up to date, refresh what is stale, and return the line a person needs, or ''."""
@@ -66,6 +70,24 @@ def background_update(checkout: Path, *, fetch: bool) -> str:
         said.append('stale copies refreshed: ' + ', '.join(refreshed))
     return '; '.join(said)
 
+def release_wanted() -> None:
+    from bundles.memar.services.location.memar_location import memar_root, project_root, scratch_root
+    release = import_module('bundles.memar.targets.python.release')
+    why = release.stale_why(memar_root(), project_root())
+    if not why:
+        return
+    log = scratch_root() / RELEASE_LOG
+    try:
+        said = [line for line in log.read_text(encoding='utf-8').splitlines() if f'memar: {WANTED}' in line]
+    except OSError:
+        said = []
+    today = time.strftime('%Y-%m-%d', time.gmtime())
+    if said and said[-1].startswith(today):
+        return
+    stamp = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+    with log.open('a', encoding='utf-8', newline='\n') as output:
+        output.write(f'{stamp} memar: {WANTED} ({why}); run memar update --apply\n')
+
 def run_in_background(checkout: Path, *, fetch: bool) -> int:
     """The daily run on CHECKOUT: one at a time, its line left for the next `memar` command."""
     from bundles.memar.services.update.services.daily import daily_run, leave_notice, state_dir
@@ -75,6 +97,10 @@ def run_in_background(checkout: Path, *, fetch: bool) -> int:
             print('another update is running, so this one stops')
             return 0
         line = background_update(checkout, fetch=fetch)
+        try:
+            release_wanted()
+        except (OSError, RuntimeError) as error:
+            print(f'error: the release could not be checked: {error}')
         print(f"notice: {line or 'none'}")
         if line:
             leave_notice(directory, line)

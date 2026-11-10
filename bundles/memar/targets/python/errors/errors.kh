@@ -1,0 +1,23 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Error_Memar_Release_Refused ab {
+    Error
+}
+
+tp Error_Memar_Release_NoBuilder ab {
+    Error_Memar_Release_Refused
+}
+
+tp Error_Memar_Release_BuildFailed ab {
+    Error_Memar_Release_Refused
+}
+
+tp Error_Memar_Release_DoesNotStart ab {
+    Error_Memar_Release_Refused
+}
+
+tp Error_Memar_Release_NoneInstalled ab {
+    Error_Memar_Release_Refused
+}

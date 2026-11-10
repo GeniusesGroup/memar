@@ -135,3 +135,48 @@ def ensure_on_path(directory: Path, exists: callable) -> list[str]:
     except OSError as error:
         return [f'could not add {directory} to PATH ({error}); add it yourself: export PATH="{directory}:$PATH"']
     return [f'added {directory} to {where}', 'a new shell sees it; open ones do not']
+
+def _parts(source: str) -> list[str]:
+    return [part.strip().strip('"') for part in source.split(os.pathsep) if part.strip().strip('"')]
+
+def _same(left: Path, right: Path) -> bool:
+    try:
+        return left.resolve() == right.resolve()
+    except OSError:
+        return False
+
+def remove_from_path(directory: Path) -> list[str]:
+    """Drop DIRECTORY from the persisted user PATH when present; leave the process copy alone.
+
+    Idempotent: a directory that is not on the written PATH reports that and writes nothing.
+    """
+    target = Path(directory)
+    if sys.platform == 'win32':
+        import winreg
+        access = winreg.KEY_SET_VALUE | winreg.KEY_QUERY_VALUE
+        try:
+            with winreg.CreateKeyEx(winreg.HKEY_CURRENT_USER, WINDOWS_ENVIRONMENT_KEY, 0, access) as key:
+                existing, _ = winreg.QueryValueEx(key, 'PATH')
+                kept = [part for part in _parts(str(existing)) if not _same(Path(part), target)]
+                if len(kept) == len(_parts(str(existing))):
+                    return [f'{directory} was not on PATH']
+                winreg.SetValueEx(key, 'PATH', 0, winreg.REG_EXPAND_SZ, os.pathsep.join(kept))
+            _broadcast_environment_change()
+            return [f'removed {directory} from the user environment (HKCU\\Environment\\PATH)', 'a new shell sees it; open ones do not']
+        except OSError as error:
+            return [f'could not remove {directory} from PATH ({error})']
+    shell_file = '.zshrc' if (Path.home() / '.zshrc').is_file() else '.profile'
+    path = Path.home() / shell_file
+    try:
+        text = path.read_text(encoding='utf-8', errors='replace')
+    except OSError as error:
+        return [f'could not read {path} ({error})']
+    needle = f'export PATH="{directory}:$PATH"'
+    if needle not in text and f"export PATH='{directory}:$PATH'" not in text and str(directory) not in text:
+        return [f'{directory} was not on PATH']
+    lines = [line for line in text.splitlines(keepends=True) if str(directory) not in line]
+    try:
+        path.write_text(''.join(lines), encoding='utf-8')
+    except OSError as error:
+        return [f'could not rewrite {path} ({error})']
+    return [f'removed {directory} from ~/{shell_file}', 'a new shell sees it; open ones do not']

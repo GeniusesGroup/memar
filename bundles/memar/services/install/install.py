@@ -62,7 +62,7 @@ Usage is the interface. Do not duplicate these recipes as prose catalogs.
 from __future__ import annotations
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
-checkout_root = _m_memar_location.checkout_root
+project_root = _m_memar_location.project_root
 import argparse
 import sys
 import traceback
@@ -140,7 +140,7 @@ def run(args: argparse.Namespace) -> int:
         if not args.machine_only:
             into_project_and_apps(project, dry_run=args.dry_run)
         return 0
-    machine.register(str(checkout_root()))
+    machine.register(str(project_root()))
     into_project_and_apps(project, dry_run=args.dry_run)
     return 0
 

@@ -1,0 +1,110 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Memar_Release_Build in "bundles/memar/targets/python/release.kh"
+tp Memar_Release_Install in "bundles/memar/targets/python/release.kh"
+tp Memar_Release_Current in "bundles/memar/targets/python/release.kh"
+tp Memar_Release_Stale in "bundles/memar/targets/python/release.kh"
+tp Memar_Release_Launcher in "bundles/memar/targets/python/release.kh"
+
+tp Domain mt (self Memar_Release_Build) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Release_Build) () (s String) {
+    CharacterRun_From.FromCharacterRun("Build a release of the Memar server from the modules the Memar bundle declares")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Release_Build) () (s String) {
+    CharacterRun_From.FromCharacterRun("Build a release of the Memar server: one compiled program named memar holding exactly the modules the Memar bundle declares in its manifest, into a folder of its own under temp/bin of the project.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Release_Build) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Release_Build) () (s String) {
+    CharacterRun_From.FromCharacterRun("A release is built in a folder that is renamed to its name only when the build ended, so a folder under temp/bin that has a release name is whole. The build needs a Python with the packaging tool on the machine; without one it refuses and says so. A running program is never touched by a build.")(s, VoidError)
+}
+
+tp Domain mt (self Memar_Release_Install) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Release_Install) () (s String) {
+    CharacterRun_From.FromCharacterRun("Build a release, prove it starts, and make it the one new calls start")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Release_Install) () (s String) {
+    CharacterRun_From.FromCharacterRun("Build a release, prove that it starts and lists its verbs, and only then move the pointer temp/bin/current to it; the previous release stays where it is.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Release_Install) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Release_Install) () (s String) {
+    CharacterRun_From.FromCharacterRun("The pointer is replaced in one step, so a call sees the previous release or the new one and never a half. A release that does not start is set aside under a failed name, named in the refusal, and the pointer stays on the previous one. Only one install runs at a time under a lock file of temp/bin. A program that is running keeps the release it started from.")(s, VoidError)
+}
+
+tp Domain mt (self Memar_Release_Current) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Release_Current) () (s String) {
+    CharacterRun_From.FromCharacterRun("The release new calls start")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Release_Current) () (s String) {
+    CharacterRun_From.FromCharacterRun("The name of the release the pointer temp/bin/current names; an error when none is installed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Release_Current) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Release_Current) () (s String) {
+    CharacterRun_From.FromCharacterRun("The answer is read from the pointer and from no folder listing.")(s, VoidError)
+}
+
+tp Domain mt (self Memar_Release_Stale) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Release_Stale) () (s String) {
+    CharacterRun_From.FromCharacterRun("Why the installed release is not the code of the declared modules, or empty when it is")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Release_Stale) () (s String) {
+    CharacterRun_From.FromCharacterRun("Why the installed release is not the code of the declared modules, or empty when it is.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Release_Stale) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Release_Stale) () (s String) {
+    CharacterRun_From.FromCharacterRun("A release is judged from the start of its build, which its name carries, against the newest file of any declared module; none installed is stale. The daily run asks this and builds nothing.")(s, VoidError)
+}
+
+tp Domain mt (self Memar_Release_Launcher) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Memar_Release_Launcher) () (s String) {
+    CharacterRun_From.FromCharacterRun("The scripts temp/bin/memar and temp/bin/memar.cmd that start the release the pointer names")(s, VoidError)
+}
+
+tp Overview mt (self Memar_Release_Launcher) () (s String) {
+    CharacterRun_From.FromCharacterRun("The scripts temp/bin/memar and temp/bin/memar.cmd that start the release the pointer names.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Memar_Release_Launcher) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Memar_Release_Launcher) () (s String) {
+    CharacterRun_From.FromCharacterRun("They are rewritten only when their text differs and before the pointer moves, so a script held open by a running call never stops an install. An agent application is registered with these scripts and not with a release folder.")(s, VoidError)
+}

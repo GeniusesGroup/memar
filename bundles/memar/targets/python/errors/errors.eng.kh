@@ -1,0 +1,110 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Memar_Release_Refused in "bundles/memar/targets/python/errors/errors.kh"
+tp Error_Memar_Release_NoBuilder in "bundles/memar/targets/python/errors/errors.kh"
+tp Error_Memar_Release_BuildFailed in "bundles/memar/targets/python/errors/errors.kh"
+tp Error_Memar_Release_DoesNotStart in "bundles/memar/targets/python/errors/errors.kh"
+tp Error_Memar_Release_NoneInstalled in "bundles/memar/targets/python/errors/errors.kh"
+
+tp Domain mt (self Error_Memar_Release_NoBuilder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Release_NoBuilder) () (s String) {
+    CharacterRun_From.FromCharacterRun("No Python with the packaging tool is on this machine")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Release_NoBuilder) () (s String) {
+    CharacterRun_From.FromCharacterRun("No Python with the packaging tool is on this machine.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Release_NoBuilder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Install the packaging tool in a Python on the path, then run the update again.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Release_NoBuilder) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names what was looked for.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Release_BuildFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Release_BuildFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The build of the release ended with an error")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Release_BuildFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The build of the release ended with an error.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Release_BuildFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read the end of the build log the message names.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Release_BuildFailed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The build folder is left for reading and no release name is taken.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Release_DoesNotStart) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Release_DoesNotStart) () (s String) {
+    CharacterRun_From.FromCharacterRun("The release was built and does not start or does not list its verbs")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Release_DoesNotStart) () (s String) {
+    CharacterRun_From.FromCharacterRun("The release was built and does not start or does not list its verbs.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Release_DoesNotStart) () (s String) {
+    CharacterRun_From.FromCharacterRun("The pointer stays on the previous release.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Release_DoesNotStart) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the folder of the release that was refused.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Release_NoneInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Release_NoneInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("No release is installed")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Release_NoneInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("No release is installed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Release_NoneInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("Run memar update --apply to build and install one.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Release_NoneInstalled) () (s String) {
+    CharacterRun_From.FromCharacterRun("The pointer temp/bin/current does not exist.")(s, VoidError)
+}
+
+tp Domain mt (self Error_Memar_Release_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar Release")(s, VoidError)
+}
+
+tp Summary mt (self Error_Memar_Release_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("A release could not be made or installed")(s, VoidError)
+}
+
+tp Overview mt (self Error_Memar_Release_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("A release could not be made or installed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Memar_Release_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Memar_Release_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The detail names the step that stopped.")(s, VoidError)
+}

@@ -51,6 +51,7 @@ from __future__ import annotations
 from importlib import import_module
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 scratch_root = _m_memar_location.scratch_root
+program = _m_memar_location.program
 _m_fs_lock = import_module('bundles.memar_fs.services.fs_lock')
 claim_today = _m_fs_lock.claim_today
 release_lock = _m_fs_lock.release_lock
@@ -70,7 +71,6 @@ if TYPE_CHECKING:
 OPT_OUT_VARIABLE = 'MEMAR_NO_AUTO_UPDATE'
 UPDATE_VERB = 'update'
 BACKGROUND_FLAG = '--background'
-LAUNCHER = _m_memar_location.checkout_root() / 'bundles' / 'memar' / 'memar'
 UPDATE_DIRNAME = 'update'
 DAILY_MARKER_NAME = 'update.daily'
 LOCK_NAME = 'update.lock'
@@ -105,7 +105,7 @@ def detach(command: list[str], log: Path) -> subprocess.Popen:
     options: dict = {'stdin': subprocess.DEVNULL, 'stderr': subprocess.STDOUT, 'close_fds': True}
     with log.open('w', encoding='utf-8') as output:
         if os.name != 'nt':
-            return subprocess.Popen(command, stdout=output, start_new_task=True, **options)
+            return subprocess.Popen(command, stdout=output, start_new_session=True, **options)
         flags = subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP
         try:
             return subprocess.Popen(command, stdout=output, creationflags=flags | subprocess.CREATE_BREAKAWAY_FROM_JOB, **options)
@@ -116,7 +116,7 @@ def start_daily(directory: Path) -> bool:
     """Start today's background run if this is the first ask today; whether it was started."""
     if not claim_today(directory / DAILY_MARKER_NAME):
         return False
-    detach([sys.executable, str(LAUNCHER), UPDATE_VERB, BACKGROUND_FLAG], directory / LOG_NAME)
+    detach([*program(), UPDATE_VERB, BACKGROUND_FLAG], directory / LOG_NAME)
     return True
 
 def take_notice(directory: Path) -> str | None:

@@ -66,16 +66,12 @@ What is pinned, and what each pin is for:
                       router's mechanism, which is pinned to the docstring the
                       implementer reads; help that explains the implementation
                       is a non-answer printed confidently.
-  ShimBesideLauncher  `memar.cmd` sits beside `memar`, names it relative to
-                      itself, and hands it the same arguments, so a Windows
-                      shell types the same command and gets the same answer.
+  NoShelfCmdShim       The Windows shelf `memar.cmd` is gone; PATH uses `bin/memar.cmd`.
 
 Usage is the interface. Do not duplicate these recipes as prose catalogs.
 """
 from __future__ import annotations
 from importlib import import_module
-_m_test_scratch = import_module('modules.process.test.services.test_scratch')
-suite_scratch = _m_test_scratch.suite_scratch
 import concurrent.futures
 import argparse
 import ast
@@ -86,7 +82,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 import types
 import unittest
 import unittest.mock
@@ -99,7 +94,7 @@ sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
 LAUNCHER = SCRIPTS / 'memar'
-SHIM = SCRIPTS / 'memar.cmd'
+SHIM = SCRIPTS / 'memar.cmd'  # must stay absent; PATH uses bin/memar.cmd
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
 memar = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(memar)
@@ -269,38 +264,22 @@ class ContractComposes(unittest.TestCase):
 class DomainsFirst(unittest.TestCase):
 
     def test_domains_come_before_capabilities_and_private_files_are_skipped(self) -> None:
-        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
-            top = Path(folder)
-            for module, files in {'alpha': ('alpha', 'services/beta', 'services/aa', 'services/_shared'), 'zeta': ('zeta', 'services/a')}.items():
-                for name in files:
-                    path = top / 'modules' / 'group' / module / f'{name}.py'
-                    path.parent.mkdir(parents=True, exist_ok=True)
-                    path.write_text('', encoding='utf-8')
-            (top / 'modules' / 'group' / 'alpha' / 'services' / 'notes.md').write_text('', encoding='utf-8')
-            (top / 'modules' / 'group' / 'alpha' / 'tests').mkdir()
-            (top / 'modules' / 'group' / 'alpha' / 'tests' / 'alpha.py').write_text('', encoding='utf-8')
-            (top / 'modules' / 'group' / 'plain').mkdir()
-            (top / 'modules' / 'group' / 'plain' / 'other.py').write_text('', encoding='utf-8')
-            base = 'modules/group'
-            self.assertEqual(memar.services(top), [f'{base}/alpha', f'{base}/zeta', f'{base}/alpha/services/aa', f'{base}/alpha/services/beta', f'{base}/zeta/services/a'])
-            found = memar.catalog(top)
-            self.assertEqual(found[f'{base}/alpha/services/beta'], 'modules.group.alpha.services.beta')
-            self.assertEqual(found[f'{base}/zeta'], 'modules.group.zeta.zeta')
-            self.assertNotIn(f'{base}/plain', found)
-            self.assertEqual(memar.domain_of(f'{base}/alpha/services/beta', top), f'{base}/alpha')
+        base = 'modules/group'
+        names = ['modules.group.zeta.services.a', 'modules.group.alpha.services.beta', 'modules.group.alpha.alpha', 'modules.group.zeta.zeta', 'modules.group.alpha.services.aa', 'modules.group.alpha.services._shared', 'modules.group.alpha.tests.alpha', 'modules.group.alpha.errors.errors', 'modules.group.plain.other']
+        self.assertEqual(memar.services(names), [f'{base}/alpha', f'{base}/zeta', f'{base}/alpha/services/aa', f'{base}/alpha/services/beta', f'{base}/zeta/services/a'])
+        found = memar.catalog(names)
+        self.assertEqual(found[f'{base}/alpha/services/beta'], 'modules.group.alpha.services.beta')
+        self.assertEqual(found[f'{base}/zeta'], 'modules.group.zeta.zeta')
+        self.assertNotIn(f'{base}/plain', found)
+        self.assertEqual(memar.domain_of(f'{base}/alpha/services/beta', names), f'{base}/alpha')
 
     def test_a_capability_file_named_by_another_domain_is_that_domains(self) -> None:
-        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
-            top = Path(folder)
-            for name in ('alpha/alpha.py', 'alpha/services/beta_one.py', 'alpha/services/two.py', 'beta/beta.py'):
-                path = top / 'modules' / name
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text('', encoding='utf-8')
-            found = memar.catalog(top)
-            self.assertEqual(found['modules/alpha/services/beta_one'], 'modules.alpha.services.beta_one')
-            self.assertEqual(memar.domain_of('modules/alpha/services/beta_one', top), 'modules/beta')
-            self.assertEqual(memar.domain_of('modules/alpha/services/two', top), 'modules/alpha')
-            self.assertEqual(len(found), 4)
+        names = ['modules.alpha.alpha', 'modules.alpha.services.beta_one', 'modules.alpha.services.two', 'modules.beta.beta']
+        found = memar.catalog(names)
+        self.assertEqual(found['modules/alpha/services/beta_one'], 'modules.alpha.services.beta_one')
+        self.assertEqual(memar.domain_of('modules/alpha/services/beta_one', names), 'modules/beta')
+        self.assertEqual(memar.domain_of('modules/alpha/services/two', names), 'modules/alpha')
+        self.assertEqual(len(found), 4)
 
     def test_the_real_shelf_is_read_the_same_way(self) -> None:
         names = memar.services()
@@ -309,31 +288,22 @@ class DomainsFirst(unittest.TestCase):
         self.assertEqual(domains, sorted(domains, key=lambda key: (Path(key).name, key)))
 
     def test_a_nested_module_and_its_mirror_with_one_leaf_are_two_domains(self) -> None:
-        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
-            top = Path(folder)
-            for name in ('modules/computer/store/git/git.py', 'modules-plugable/computer/store/git/git.py', 'modules-plugable/other/other.py', 'modules-plugable/other/services/git_note.py', 'modules-plugable/computer/store/git/services/pull.py'):
-                path = top / name
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text('', encoding='utf-8')
-            err = io.StringIO()
-            with contextlib.redirect_stderr(err):
-                left_out = memar.catalog(top)
-            self.assertIn('more than one domain', err.getvalue())
-            self.assertNotIn('modules-plugable/other/services/git_note', left_out)
-            (top / 'modules-plugable' / 'other' / 'services' / 'git_note.py').unlink()
-            memar.entries.cache_clear()
-            found = memar.catalog(top)
-            self.assertEqual(found['modules/computer/store/git'], 'modules.computer.store.git.git')
-            self.assertEqual(found['modules-plugable/computer/store/git'], 'modules-plugable.computer.store.git.git')
-            self.assertEqual(memar.domain_of('modules-plugable/computer/store/git/services/pull', top), 'modules-plugable/computer/store/git')
+        names = ['modules.computer.store.git.git', 'modules-plugable.computer.store.git.git', 'modules-plugable.other.other', 'modules-plugable.other.services.git_note', 'modules-plugable.computer.store.git.services.pull']
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            left_out = memar.catalog(names)
+        self.assertIn('more than one domain', err.getvalue())
+        self.assertNotIn('modules-plugable/other/services/git_note', left_out)
+        kept = names[:3] + names[4:]
+        found = memar.catalog(kept)
+        self.assertEqual(found['modules/computer/store/git'], 'modules.computer.store.git.git')
+        self.assertEqual(found['modules-plugable/computer/store/git'], 'modules-plugable.computer.store.git.git')
+        self.assertEqual(memar.domain_of('modules-plugable/computer/store/git/services/pull', kept), 'modules-plugable/computer/store/git')
+
     def test_a_capability_beginning_with_its_own_mirrors_word_stays_in_its_folder(self) -> None:
-        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
-            top = Path(folder)
-            for name in ('modules/c/disk/disk.py', 'modules-plugable/c/disk/disk.py', 'modules/c/disk/services/disk_x.py'):
-                path = top / name
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_text('', encoding='utf-8')
-            self.assertEqual(memar.domain_of('modules/c/disk/services/disk_x', top), 'modules/c/disk')
+        names = ['modules.c.disk.disk', 'modules-plugable.c.disk.disk', 'modules.c.disk.services.disk_x']
+        self.assertEqual(memar.domain_of('modules/c/disk/services/disk_x', names), 'modules/c/disk')
+
     def test_a_verb_two_modules_declare_is_named_and_left_out(self) -> None:
         shelf = FakeShelf()
         shelf.modules['alpha_dup'] = types.SimpleNamespace(describe=lambda verbs: verbs.add_parser('beta', help='again'))
@@ -342,17 +312,43 @@ class DomainsFirst(unittest.TestCase):
             top, _ = shelf.assemble(['alpha', 'alpha_beta', 'alpha_dup'])
         self.assertIn('memar: alpha_dup could not declare its verb', out.getvalue())
 
+    def test_a_name_outside_the_roots_or_inside_a_folder_that_is_no_module_is_no_entry(self) -> None:
+        names = ['mcp.mcp', 'machine.resident', 'modules.a.services.services', 'modules.a.node_modules.node_modules', 'modules.a.a', 'modules.a.services.x.y']
+        self.assertEqual(sorted(memar.catalog(names)), ['modules/a'])
+
+    def test_the_shelf_spelled_short_and_long_is_one_entry(self) -> None:
+        names = ['bundles.memar.services.mcp.mcp', 'mcp.mcp', 'bundles.memar.services.mcp.services.serve', 'mcp.services.serve']
+        self.assertEqual(memar.catalog(names), {'bundles/memar/services/mcp': 'bundles.memar.services.mcp.mcp', 'bundles/memar/services/mcp/services/serve': 'bundles.memar.services.mcp.services.serve'})
+
+    def test_the_entries_the_manifest_gives_are_those_the_tree_gives(self) -> None:
+        top = memar.TOP
+        banned = set(memar.NOT_MODULES)
+        walked = set()
+        for root in ('modules', 'modules-plugable', 'bundles', 'bundles/memar/services'):
+            for folder, dirs, files in os.walk(top / root):
+                dirs[:] = [name for name in dirs if name not in banned]
+                here = Path(folder)
+                package = '.'.join(here.relative_to(top).parts)
+                if f'{here.name}.py' in files:
+                    walked.add(f'{package}.{here.name}')
+                shelf = here / 'services'
+                for path in shelf.glob('*.py') if shelf.is_dir() else ():
+                    if not path.stem.startswith('_'):
+                        walked.add(f'{package}.services.{path.stem}')
+        self.assertEqual(memar.catalog(sorted(walked)), memar.catalog())
+
+    def test_the_entries_read_no_folder(self) -> None:
+        memar.entries.cache_clear()
+        with unittest.mock.patch('os.walk', side_effect=AssertionError('walked')):
+            self.assertTrue(memar.services())
+        memar.entries.cache_clear()
+
 class PluggableRoot(unittest.TestCase):
-    """The pluggable shelf is a root the router walks, as `modules/` and `bundles/` are."""
 
     def test_a_domain_standing_only_under_modules_plugable_is_found(self) -> None:
-        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
-            top = Path(folder)
-            path = top / 'modules-plugable' / 'net' / 'mcp' / 'mcp.py'
-            path.parent.mkdir(parents=True)
-            path.write_text('', encoding='utf-8')
-            self.assertEqual(memar.catalog(top)['modules-plugable/net/mcp'], 'modules-plugable.net.mcp.mcp')
-            self.assertIn('modules-plugable/net/mcp', memar.services(top))
+        names = ['modules-plugable.net.mcp.mcp']
+        self.assertEqual(memar.catalog(names)['modules-plugable/net/mcp'], 'modules-plugable.net.mcp.mcp')
+        self.assertIn('modules-plugable/net/mcp', memar.services(names))
 
     def test_the_real_shelf_reads_the_pluggable_root_the_same_way(self) -> None:
         self.assertEqual(memar.catalog()['modules-plugable/computer/ui/command'], 'modules-plugable.computer.ui.command.command')
@@ -482,7 +478,7 @@ class HelpCarriesMemarNotTheRouter(unittest.TestCase):
     the second how it is built. The mechanism is pinned to the module docstring
     instead, which is the one text addressed to whoever opens the file.
     """
-    MECHANISM = ('memar.cmd', 'describe', 'services/', 'subprocess', 'argparse', 'route')
+    MECHANISM = ('describe', 'services/', 'subprocess', 'argparse', 'route')
 
     def setUp(self) -> None:
         raw = flat(launch('--help').stdout)
@@ -499,26 +495,14 @@ class HelpCarriesMemarNotTheRouter(unittest.TestCase):
                 self.assertNotIn(phrase, self.text)
 
     def test_the_mechanism_is_in_the_docstring_the_implementer_reads(self) -> None:
-        for phrase in ('memar.cmd', 'routes and nothing else', 'describe(verbs)'):
+        for phrase in ('memar_cli', 'routes and nothing else', 'describe(verbs)'):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase, memar.__doc__)
 
-class ShimBesideLauncher(unittest.TestCase):
+class NoShelfCmdShim(unittest.TestCase):
 
-    def test_the_shim_sits_beside_the_launcher_and_names_it_relative_to_itself(self) -> None:
+    def test_the_shelf_windows_cmd_shim_is_gone(self) -> None:
         self.assertTrue(LAUNCHER.is_file())
-        self.assertEqual(SHIM.parent, LAUNCHER.parent)
-        shim = SHIM.read_text(encoding='utf-8')
-        self.assertIn('%~dp0memar', shim)
-        self.assertRegex(shim, '(?m)^python "%MEMAR_LAUNCHER%" %\\*$')
-
-    @unittest.skipUnless(os.name == 'nt', 'a .cmd shim runs only under a Windows shell')
-    def test_the_shim_hands_the_launcher_the_same_arguments(self) -> None:
-        shim = ['cmd', '/d', '/c', str(SHIM)]
-        for arguments in (('update', '--help'), ('help',), ('no-such-verb',)):
-            with self.subTest(arguments=arguments):
-                through, direct = (launch(*arguments, command=shim), launch(*arguments))
-                self.assertEqual(through.returncode, direct.returncode)
-                self.assertEqual(through.stdout, direct.stdout)
+        self.assertFalse(SHIM.exists(), 'PATH must use bin/memar.cmd; shelf memar.cmd must not return')
 if __name__ == '__main__':
     unittest.main()

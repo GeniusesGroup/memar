@@ -10,20 +10,23 @@ things are, and the two drift.
 
 It also owns the names of the folders Memar keeps inside a checkout. Those were
 spelled out in three files that each had a copy — the shelf the `memar` router
-lives on (which install puts on PATH), the bootstrap folder under `.agents/scripts`,
-the skill folder the app layer copies, the extensions folder the editor layer
-writes — and a rename in one would have left the others pointing at a folder
-that no longer exists.
+lives on, the bootstrap folder under `.agents/scripts`, the skill folder the app
+layer copies, the extensions folder the editor layer writes — and a rename in
+one would have left the others pointing at a folder that no longer exists. The
+active command on PATH is the release `bin` folder (see `targets/python/release.py`),
+not that router shelf.
 """
 from __future__ import annotations
 
 from importlib import import_module
+import sys
 from pathlib import Path
 from machine.console import fail
 from machine.env_location import recorded_root
 
 _m_repository = import_module("bundles.memar.services.location.repository")
 is_memar_repository = _m_repository.is_memar_repository
+enclosing_repository = _m_repository.enclosing_repository
 
 # The folder Memar's own configuration lives in, relative to a checkout root.
 AGENTS_DIRNAME = ".agents"
@@ -82,20 +85,34 @@ def checkout_root(start: Path | None=None) -> Path:
         if folder.name == PLUGABLE_ROOT:
             return folder.parent
     fail(f'{here} stands under no {PLUGABLE_ROOT} folder, so no checkout is found from it.')
-def memar_root() -> Path:
-    """The Memar root scratch lives under: recorded MEMAR_ROOT else this checkout.
-
-    Fail-closed: when the recorded value names no repository and the checkout
-    this file runs inside is no Memar repository either, there is no root to
-    put scratch under, so this errors rather than guessing another folder.
-    """
+def project_root(working: Path | None=None) -> Path:
     recorded = recorded_root()
     if recorded is not None:
         return recorded
-    checkout = checkout_root()
-    if is_memar_repository(checkout):
-        return checkout
-    fail('cannot resolve a Memar root for scratch: MEMAR_ROOT names no Memar repository and this file runs inside no checkout either. Record one (memar install) or run from inside a checkout; nothing was guessed.')
+    start = Path(working if working is not None else Path.cwd()).resolve()
+    found = enclosing_repository(start)
+    if found is not None:
+        return found
+    fail(f'no project is found from {start}: MEMAR_ROOT names no Memar repository and the folder is inside none. Record one (memar install) or run from inside a Memar repository; nothing was guessed.')
+
+_PROGRAM: tuple[str, ...] | None = None
+
+def entry_program(script: str) -> tuple[str, ...]:
+    if getattr(sys, 'frozen', False):
+        return (sys.executable,)
+    return (sys.executable, str(Path(script).resolve()))
+
+def declare_program(command: tuple[str, ...]) -> None:
+    global _PROGRAM
+    _PROGRAM = tuple(command)
+
+def program() -> tuple[str, ...]:
+    if _PROGRAM is None:
+        fail('no program is declared: the entry that started this process names itself with declare_program, and nothing is guessed.')
+    return _PROGRAM
+
+def memar_root() -> Path:
+    return project_root()
 
 def scratch_root() -> Path:
     """The ONE scratch root for locks and short-lived work: <root>/temp/."""
