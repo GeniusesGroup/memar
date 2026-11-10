@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Capsule_Optional in "modules/computer/capsule/protocol/optional.kh"
+
+tp Domain mt (self Capsule_Optional) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule")(s, VoidError)
+}
+
+tp Summary mt (self Capsule_Optional) () (s String) {
+    CharacterRun_From.FromCharacterRun("Whether a subject may be absent")(s, VoidError)
+}
+
+tp Overview mt (self Capsule_Optional) () (s String) {
+    CharacterRun_From.FromCharacterRun("Optional returns whether the subject may be absent: a data slot that need not exist, or a step in a call chain that need not succeed. It is a boolean query on a subject. Do not rename the method to Capsule_Optional_Optional. Multiplicity of values as a face or codec concern is not this type.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Capsule_Optional) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Capsule_Optional) () (s String) {
+    CharacterRun_From.FromCharacterRun("Use Optional for presence queries on a subject; do not model face or codec repetition here.")(s, VoidError)
+}

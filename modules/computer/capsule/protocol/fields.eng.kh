@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Capsule_Fields in "modules/computer/capsule/protocol/fields.kh"
+
+tp Domain mt (self Capsule_Fields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule")(s, VoidError)
+}
+
+tp Summary mt (self Capsule_Fields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Ordered Capsule_Field values of a capsule")(s, VoidError)
+}
+
+tp Overview mt (self Capsule_Fields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule_Fields is the named collection of a capsule's fields. GetElement returns a Capsule_Field; GetOccupiedLength is the count. A realization may hold an Array_Dynamic internally; callers never receive Array_Dynamic as the domain result of GetFields.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Capsule_Fields) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Capsule_Fields) () (s String) {
+    CharacterRun_From.FromCharacterRun("Return Capsule_Fields from GetFields; do not return Array_Dynamic from a domain method.")(s, VoidError)
+}

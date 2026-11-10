@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp DefaultValue in "modules/computer/capsule/protocol/default-value.kh"
+
+tp Domain mt (self DefaultValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule")(s, VoidError)
+}
+
+tp Summary mt (self DefaultValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Default value of a typed subject")(s, VoidError)
+}
+
+tp Overview mt (self DefaultValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Go residue declares DefaultValue with a method that returns a value of a type parameter. That binding is not yet expressed in Khayyam and remains under TODO(go-migrate). This abstraction is not a pair of held-flag and lexical Text form; do not treat it as a Python or C default-argument surface.")(s, VoidError)
+}
+
+tp UserActionNote mt (self DefaultValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self DefaultValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Keep the TODO(go-migrate) block until DefaultValue of T is expressed.")(s, VoidError)
+}

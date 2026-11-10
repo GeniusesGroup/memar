@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Capsule_Accessor in "modules/computer/capsule/protocol/accessor.kh"
+
+tp Domain mt (self Capsule_Accessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule")(s, VoidError)
+}
+
+tp Summary mt (self Capsule_Accessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Readable access to a value")(s, VoidError)
+}
+
+tp Overview mt (self Capsule_Accessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule_Accessor is the concept of reading a value through a method. The Go residue declares Accessor with Get returning a type parameter; that binding is not yet expressed in Khayyam and remains under TODO(go-migrate) in accessor.kh. Do not invent per-type accessor abstractions or prefix Get with the abstraction name. A wrong conversion Capsule_Accessor_Module_Path was removed; the Go block is the authority for what is still owed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Capsule_Accessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Capsule_Accessor) () (s String) {
+    CharacterRun_From.FromCharacterRun("Keep the TODO(go-migrate) block until Accessor Get is expressed; write bare Get on the value's capsule when realizing.")(s, VoidError)
+}

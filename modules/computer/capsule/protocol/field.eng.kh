@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Capsule_Field in "modules/computer/capsule/protocol/field.kh"
+
+tp Domain mt (self Capsule_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("Capsule")(s, VoidError)
+}
+
+tp Summary mt (self Capsule_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("One named slot of a capsule")(s, VoidError)
+}
+
+tp Overview mt (self Capsule_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("A field has a Title, a value Type, and an Authorization policy for who may invoke accessors of that slot. Type is embedded for Details. Multiplicity for faces or codecs, lexical defaults, and mutual exclusion of slots are not this type's: faces, codecs, or Type own those where required. Request and Response read fields through Observer_Capsule_Fields.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Capsule_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Capsule_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("Declare fields in capsule; import Capsule_Field from modules/computer/capsule.")(s, VoidError)
+}
