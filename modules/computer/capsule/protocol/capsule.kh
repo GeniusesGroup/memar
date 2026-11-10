@@ -2,7 +2,7 @@
 
 tp ADT in "modules/computer/adt/protocol/adt.kh"
 tp Authorization in "modules/computer/capsule/protocol/authorization.kh"
-tp Observer_Capsule_Fields in "modules/computer/capsule/protocol/field.observers.kh"
+tp Observer_Capsule_Fields in "modules/computer/capsule/protocol/fields.observers.kh"
 tp Observer_Function_Methods in "modules/computer/function/protocol/method.observers.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 

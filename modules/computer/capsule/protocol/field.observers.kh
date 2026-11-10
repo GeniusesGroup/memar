@@ -1,12 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Capsule_Field in "modules/computer/capsule/protocol/field.kh"
-tp Capsule_Fields in "modules/computer/capsule/protocol/fields.kh"
 
 tp Observer_Field ab
 
 tp GetField mt (self Observer_Field) () (f Capsule_Field)
-
-tp Observer_Capsule_Fields ab
-
-tp GetFields mt (self Observer_Capsule_Fields) () (fields Capsule_Fields)

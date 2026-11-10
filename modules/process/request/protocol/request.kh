@@ -1,24 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Codec in "modules/computer/codec/protocol/codec.kh"
+tp Observer_Capsule_Fields in "modules/computer/capsule/protocol/fields.observers.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 
-// Request indicate request type that MUST use by any other types.
 tp Process_Request ab {
-    Type
-    Codec
+	Type
+	Codec
+	Observer_Capsule_Fields
 }
-
-// TODO(go-migrate):
-/*
-package request_p
-
-import (
-	codec_p "memar/codec/protocol"
-	datatype_p "memar/computer/datatype/protocol"
-)
-
-// Field_Request ...
-type Field_Request/*[REQ Request]* / interface {
-}
-*/
