@@ -91,12 +91,14 @@ class Worker:
         return {'stdout': output.stdout, 'stderr': output.stderr, 'status': output.status}
 
 def main(router) -> None:
+    from mcp.services._call import align_windows_std_handles
     incoming = os.fdopen(os.dup(0), 'rb')
     outgoing = os.fdopen(os.dup(1), 'wb')
     null = os.open(os.devnull, os.O_RDWR)
     os.dup2(null, 0)
     os.dup2(null, 1)
     os.close(null)
+    align_windows_std_handles()
     sys.stdin = open(os.devnull, encoding='utf-8')
     sys.stdout = sys.stderr
     worker = Worker(router)

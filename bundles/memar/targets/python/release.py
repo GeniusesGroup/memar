@@ -24,6 +24,7 @@ STAMP = '%Y%m%dT%H%M%SZ'
 CMD_SHIM = 'memar.cmd'
 RUNTIME_VENDOR = 'Memar'
 RUNTIME_RELEASES = 'releases'
+RUNTIME_SCRATCH = 'scratch'
 CMD_TEXT = '@echo off\nsetlocal\nset /p MEMAR_RELEASE=<"%~dp0current"\nset "EXE=%LOCALAPPDATA%\\Memar\\releases\\%MEMAR_RELEASE%\\memar.exe"\nif not exist "%EXE%" set "EXE=%~dp0%MEMAR_RELEASE%\\memar.exe"\n"%EXE%" %*\nexit /b %ERRORLEVEL%\n'
 SH_TEXT = '#!/bin/sh\nhere=$(dirname "$0")\nread -r release < "$here/current"\nruntime="${XDG_DATA_HOME:-$HOME/.local/share}/memar/releases/$release/memar"\nif [ -x "$runtime" ]; then exec "$runtime" "$@"; fi\nexec "$here/$release/memar" "$@"\n'
 START_SECONDS = 120
@@ -32,12 +33,21 @@ BUILD_SECONDS = 540
 def releases_of(project: Path) -> Path:
     return Path(project).joinpath(*FOLDER)
 
-def runtime_releases() -> Path:
+def runtime_home() -> Path:
     if os.name == 'nt':
         base = Path(os.environ.get('LOCALAPPDATA') or Path.home() / 'AppData' / 'Local')
-        return base / RUNTIME_VENDOR / RUNTIME_RELEASES
+        return base / RUNTIME_VENDOR
     base = Path(os.environ.get('XDG_DATA_HOME') or Path.home() / '.local' / 'share')
-    return base / 'memar' / RUNTIME_RELEASES
+    return base / 'memar'
+
+def runtime_releases() -> Path:
+    return runtime_home() / RUNTIME_RELEASES
+
+def runtime_scratch(project: Path) -> Path:
+    """Per-project scratch under the machine runtime home, when the checkout temp is not writable."""
+    import hashlib
+    key = hashlib.sha256(str(Path(project).resolve()).encode('utf-8')).hexdigest()[:16]
+    return runtime_home() / RUNTIME_SCRATCH / key
 
 def mirror_release(made: Path) -> Path:
     destination = runtime_releases() / made.name

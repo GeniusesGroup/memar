@@ -38,6 +38,10 @@ What is pinned:
                         its worker is killed.
   CallsCarryNoState     A module global a call changed is as its import left it at the next call.
   ArgumentsAsTyped      A call's arguments become the words the CLI would be typed with.
+  SuccessiveSubprocesses
+                        Two calls in one worker that each start a subprocess (git) both succeed:
+                        redirecting the CRT fds must leave Win32 standard handles aligned so the
+                        second call does not fail with WinError 6.
 """
 from __future__ import annotations
 TIER = 'system'
@@ -323,6 +327,24 @@ class WorkerIsTheProgram(unittest.TestCase):
     def test_nothing_of_the_checkout_is_named_by_the_module(self) -> None:
         for name in ('BOOT', 'SCRIPTS', 'TOP'):
             self.assertFalse(hasattr(serve, name), name)
+
+class SuccessiveSubprocesses(unittest.TestCase):
+    """A second call in the same worker must still be able to start a subprocess."""
+
+    def test_two_git_spawning_calls_in_one_worker_both_succeed(self) -> None:
+        worker = serve.Worker()
+        try:
+            init = json.dumps({'jsonrpc': '2.0', 'id': 1, 'method': 'initialize', 'params': {'protocolVersion': '2025-06-18', 'capabilities': {}, 'clientInfo': {'name': 'test', 'version': '0'}}}).encode() + b'\n'
+            self.assertIsNotNone(worker.ask(init))
+            for number in (2, 3):
+                call = json.dumps({'jsonrpc': '2.0', 'id': number, 'method': 'tools/call', 'params': {'name': 'git_show-task-records', 'arguments': {'task_id': THIS_TASK, 'list': True, 'project_path': str(TOP)}}}).encode() + b'\n'
+                answer = worker.ask(call)
+                self.assertIsNotNone(answer, number)
+                body = json.loads(answer)
+                self.assertFalse(body['result'].get('isError'), body)
+                self.assertEqual(body['result']['_meta']['memar/status'], 0, body)
+        finally:
+            worker.stop()
 
 class CallsCarryNoState(unittest.TestCase):
 

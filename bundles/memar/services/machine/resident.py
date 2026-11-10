@@ -51,9 +51,19 @@ MOST_BYTES = 64 * 1024 * 1024
 CREATION_FLAGS = 512 | 134217728
 
 def folder(top: Path) -> Path:
-    """Where the state file is: the checkout's scratch, or the folder MEMAR_SERVER_STATE names (a test's own, so it never meets the owner's process)."""
+    """Where the state file is: the checkout's scratch, or the folder MEMAR_SERVER_STATE names (a test's own, so it never meets the owner's process).
+
+    When the checkout temp is not writable to this process, the state lives under
+    the same runtime scratch the release uses for other short-lived files.
+    """
     named = os.environ.get(STATE_ENV)
-    return Path(named) if named else top.joinpath(*FOLDER)
+    if named:
+        return Path(named)
+    candidate = Path(top).joinpath(*FOLDER)
+    from bundles.memar.services.location.memar_location import _writable_dir, scratch_root
+    if _writable_dir(candidate):
+        return candidate
+    return scratch_root() / FOLDER[-1]
 
 def read_line(connection) -> bytes:
     """One line from CONNECTION, without its end; b"" when the other side closed before sending one."""

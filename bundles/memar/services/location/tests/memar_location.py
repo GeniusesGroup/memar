@@ -64,6 +64,17 @@ class DefaultLocation(unittest.TestCase):
             with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):
                 self.assertEqual(memar_fs.scratch_root(), fake_root / memar_fs.TEMP_DIRNAME)
 
+    def test_scratch_falls_back_to_runtime_when_project_temp_is_not_writable(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
+            fake_root = Path(scratch)
+            fallback = Path(scratch) / 'runtime-scratch'
+            with unittest.mock.patch.object(memar_fs, 'memar_root', return_value=fake_root):
+                with unittest.mock.patch.object(memar_fs, '_writable_dir', side_effect=lambda path: path != fake_root / memar_fs.TEMP_DIRNAME):
+                    release = import_module('bundles.memar.targets.python.release')
+                    with unittest.mock.patch.object(release, 'runtime_scratch', return_value=fallback):
+                        self.assertEqual(memar_fs.scratch_root(), fallback)
+                        self.assertTrue(fallback.is_dir())
+
     def test_recorded_root_wins_over_the_checkout(self) -> None:
         with tempfile.TemporaryDirectory(dir=suite_scratch()) as scratch:
             fake_root = Path(scratch)

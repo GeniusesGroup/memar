@@ -114,11 +114,32 @@ def program() -> tuple[str, ...]:
 def memar_root() -> Path:
     return project_root()
 
+def _writable_dir(folder: Path) -> bool:
+    """Whether this process can create and remove a file in FOLDER (making it if needed)."""
+    import os
+    try:
+        folder.mkdir(parents=True, exist_ok=True)
+        probe = folder / f'.write-{os.getpid()}'
+        probe.write_text('', encoding='utf-8')
+        probe.unlink()
+        return True
+    except OSError:
+        return False
+
 def scratch_root() -> Path:
-    """The ONE scratch root for locks and short-lived work: <root>/temp/."""
+    """The ONE scratch root for locks and short-lived work.
+
+    Prefer `<project>/temp/`. When this process cannot write there (a Sync Low-
+    integrity checkout while the release runs from a Medium LocalAppData mirror),
+    use the per-project folder under the machine runtime home instead.
+    """
     root = memar_root() / TEMP_DIRNAME
-    root.mkdir(parents=True, exist_ok=True)
-    return root
+    if _writable_dir(root):
+        return root
+    release = import_module('bundles.memar.targets.python.release')
+    fallback = release.runtime_scratch(memar_root())
+    fallback.mkdir(parents=True, exist_ok=True)
+    return fallback
 
 def tasks_root() -> Path:
     """Retired: tasks are not folders. Prefer `RECORDS_BRANCH` via task_store.

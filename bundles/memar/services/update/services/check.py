@@ -58,6 +58,11 @@ def install_release() -> bool:
     from bundles.memar.services.location.memar_location import memar_root, project_root
     release = import_module('bundles.memar.targets.python.release')
     refused = import_module('bundles.memar.targets.python.errors.errors').ReleaseRefused
+    from machine.resident import ask
+    try:
+        ask(project_root(), {'stop': True})
+    except OSError:
+        pass
     try:
         name = release.install(memar_root(), project_root())
     except refused as error:
@@ -67,11 +72,6 @@ def install_release() -> bool:
     from bundles.memar.services.install.services.machine import ensure_command_on_path
     for line in ensure_command_on_path(project_root()):
         print(f'path: {line}')
-    from machine.resident import ask
-    try:
-        ask(project_root(), {'stop': True})
-    except OSError:
-        pass
     return True
 
 def check(checkout: Path, *, apply: bool, quiet: bool, fetch: bool) -> int:

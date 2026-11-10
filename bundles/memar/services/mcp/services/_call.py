@@ -60,6 +60,24 @@ def _stream(descriptor: int, errors: str) -> io.TextIOWrapper:
     """A text stream over DESCRIPTOR as the interpreter opens stdout and stderr: the locale's encoding, the platform's line ending."""
     return open(descriptor, 'w', encoding=None, errors=errors, closefd=False)
 
+def align_windows_std_handles() -> None:
+    """Point the Win32 standard handles at CRT fds 0/1/2.
+
+    `os.dup2` updates the CRT table and does not call `SetStdHandle`. A later
+    `subprocess` that inherits stdin then duplicates an invalid Win32 handle
+    (`WinError 6`). Call this after every `dup2` of a standard fd on Windows.
+    """
+    if sys.platform != 'win32':
+        return
+    import ctypes
+    import msvcrt
+    for fd, which in ((0, -10), (1, -11), (2, -12)):
+        try:
+            handle = msvcrt.get_osfhandle(fd)
+        except OSError:
+            continue
+        ctypes.windll.kernel32.SetStdHandle(which, handle)
+
 class Runner:
     """Runs verbs through the router's `main`, one at a time, each captured whole."""
 
@@ -69,32 +87,42 @@ class Runner:
         folder = scratch / CAPTURE_FOLDER
         folder.mkdir(parents=True, exist_ok=True)
         import tempfile
-        self.captures = (tempfile.TemporaryFile(dir=folder), tempfile.TemporaryFile(dir=folder))
+        self.captures = (
+            tempfile.TemporaryFile(dir=folder),
+            tempfile.TemporaryFile(dir=folder),
+            tempfile.TemporaryFile(dir=folder),
+        )
 
     def run(self, argv: list[str], stdin: str='') -> Output:
         self.globals.restore()
         environment, folder = (dict(os.environ), os.getcwd())
         saved = (sys.stdin, sys.stdout, sys.stderr, sys.argv)
-        kept = (os.dup(1), os.dup(2))
+        kept = (os.dup(0), os.dup(1), os.dup(2))
         for capture in self.captures:
             capture.seek(0)
             capture.truncate()
-        os.dup2(self.captures[0].fileno(), 1)
-        os.dup2(self.captures[1].fileno(), 2)
+        self.captures[0].write(stdin.encode('utf-8'))
+        self.captures[0].seek(0)
+        os.dup2(self.captures[0].fileno(), 0)
+        os.dup2(self.captures[1].fileno(), 1)
+        os.dup2(self.captures[2].fileno(), 2)
+        align_windows_std_handles()
+        sys.stdin = open(0, 'r', encoding='utf-8', closefd=False)
         sys.stdout, sys.stderr = (_stream(1, 'strict'), _stream(2, 'backslashreplace'))
-        sys.stdin = io.TextIOWrapper(io.BytesIO(stdin.encode('utf-8')), encoding='utf-8')
         sys.argv = [str(self.router.__file__), *argv]
         os.environ[CALLER_ENV] = MCP_CALLER
         try:
             status = self._main(argv)
         finally:
-            for stream in (sys.stdout, sys.stderr):
+            for stream in (sys.stdout, sys.stderr, sys.stdin):
                 try:
                     stream.flush()
                 except (OSError, ValueError):
                     pass
-            os.dup2(kept[0], 1)
-            os.dup2(kept[1], 2)
+            os.dup2(kept[0], 0)
+            os.dup2(kept[1], 1)
+            os.dup2(kept[2], 2)
+            align_windows_std_handles()
             for descriptor in kept:
                 os.close(descriptor)
             sys.stdin, sys.stdout, sys.stderr, sys.argv = saved
@@ -104,7 +132,7 @@ class Runner:
             if os.getcwd() != folder:
                 os.chdir(folder)
             self.globals.clear_caches()
-        return Output(self._read(0), self._read(1), status)
+        return Output(self._read(1), self._read(2), status)
 
     def _main(self, argv: list[str]) -> int:
         try:
