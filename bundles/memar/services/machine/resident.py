@@ -40,7 +40,6 @@ from pathlib import Path
 ENABLE = 'MEMAR_SERVER'
 OFF = '0'
 STATE_ENV = 'MEMAR_SERVER_STATE'
-NOT_HANDED_OVER = frozenset({'mcp', 'resident', 'install', 'update'})
 FOLDER = ('temp', 'resident')
 STATE = 'state.json'
 STARTING = 'starting'
@@ -136,7 +135,7 @@ def start(top: Path) -> None:
     no release is installed yet.
     """
     from bundles.memar.services.location.memar_location import program
-    from bundles.memar.targets.python.release import program_of
+    from bundles.memar.targets.python.release import program_of, server_program_of
     marker = folder(top) / STARTING
     try:
         if time.time() - marker.stat().st_mtime < START_BACKOFF:
@@ -147,16 +146,20 @@ def start(top: Path) -> None:
         marker.parent.mkdir(parents=True, exist_ok=True)
         marker.write_text(str(os.getpid()), encoding='utf-8')
         options = {'creationflags': CREATION_FLAGS} if os.name == 'nt' else {'start_new_session': True}
-        command = program_of(top) or program()
-        subprocess.Popen([*command, 'resident', 'serve'], stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
+        server = server_program_of(top)
+        if server is not None:
+            command = list(server)
+        else:
+            command = [*(program_of(top) or program()), 'resident', 'serve']
+        subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, close_fds=True, **options)
     except OSError:
         pass
 
-def served(argv: list[str], top: Path) -> int | None:
-    """The status of ARGV when the resident process answered it, writing its output; None when the router is to do it."""
-    if os.environ.get(ENABLE) == OFF or not argv or argv[0] in NOT_HANDED_OVER or (not stdin_allows()):
+def served_call(call: dict, top: Path) -> int | None:
+    """The status of a face-neutral Server_Call when the resident answered it; None when the face is to run it here."""
+    if os.environ.get(ENABLE) == OFF or (not stdin_allows()):
         return None
-    answer = ask(top, {'argv': argv, 'cwd': os.getcwd(), 'env': dict(os.environ)})
+    answer = ask(top, call)
     if answer is None:
         start(top)
         return None

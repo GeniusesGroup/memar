@@ -15,6 +15,11 @@ Memar is reached by one of two routes.
 - Before deleting, moving, restoring, or committing files, call the tool of the verb that does it and read its help; the same for `memar fs`, whose bundle is [`bundles/memar_fs/`](/bundles/memar_fs/memar_fs.md); for putting text in a file, use a file-write tool or `memar content write`/`edit` (never shell text handling).
 - **Where `memar` is absent**, read those same files' opening comments and `--help` ([GitHub: paths under GeniusesGroup/memar](https://github.com/GeniusesGroup/memar)). If they cannot supply what the work needs, stop and say so.
 
+### Face and server (runtime shape)
+- **`memar` on PATH is the face** ([`bundles/memar_cli`](/bundles/memar_cli/memar_cli.md)): argv and MCP (`memar mcp serve`) live there. It is not the server binary's argv parser.
+- **The server** ([`bundles/memar`](/bundles/memar/memar.md)) answers face-neutral `Server_Call` / `Server_Answer` (JSON interim) and does not parse argv. When installed, its binary on `bin` is `memar_server`.
+- Facts about faces and the server live in those documents; this skill only names the shape so a chat does not treat the old single-binary argv path as still true. `memar update` refreshes skill copies in agent apps when this file changes.
+
 ## Fetch before each step
 Do not cache in this file — or in the chat as lasting instruction — the argv, kinds, or answer text of Memar's delivery commands. Their live help and output are the source.
 

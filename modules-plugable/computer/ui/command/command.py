@@ -28,7 +28,7 @@ import re
 import sys
 from pathlib import Path
 from typing import Callable
-SCRIPTS = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+SCRIPTS = next(p for p in Path(__file__).resolve().parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar_cli'
 ROUTER = SCRIPTS / 'memar'
 COMMANDS_COMMAND = 'commands'
 USAGE_PREFIX = re.compile('^usage:\\s*')
@@ -44,8 +44,7 @@ def _router():
     """
     for name in ('memar_router', '__main__'):
         running = sys.modules.get(name)
-        file = getattr(running, '__file__', None)
-        if file and hasattr(running, 'assemble') and (Path(file).resolve() == Path(ROUTER).resolve()):
+        if hasattr(running, 'assemble') and hasattr(running, 'services'):
             return running
     loader = importlib.machinery.SourceFileLoader('memar_router', str(ROUTER))
     spec = importlib.util.spec_from_loader(loader.name, loader)
@@ -54,11 +53,10 @@ def _router():
     return module
 
 def _children(parser: argparse.ArgumentParser) -> dict[str, tuple[argparse.ArgumentParser, str]]:
-    """The sub-verbs of PARSER, each with its parser and its one-line summary, in the order declared."""
     for action in parser._actions:
         if isinstance(action, argparse._SubParsersAction):
-            summaries = {item.dest: item.help or '' for item in action._choices_actions}
-            return {name: (child, summaries.get(name, '')) for name, child in action.choices.items()}
+            summaries = {item.dest: item.help or '' for item in action._choices_actions if item.help is not argparse.SUPPRESS}
+            return {name: (child, summaries.get(name, '')) for name, child in action.choices.items() if name in summaries}
     return {}
 
 def _usage(parser: argparse.ArgumentParser) -> str:

@@ -3,7 +3,7 @@
 
 """Tests for `memar mcp serve`, the MCP server over stdio.
 
-    python bundles/memar/services/mcp/tests/serve.py
+    python bundles/memar_cli/mcp/tests/serve.py
 
 The subject is the server `mcp/services/serve.py` starts, with the worker and its parts beside it,
 named for the file that holds the verb per
@@ -58,14 +58,15 @@ import time
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
-TOP = SCRIPTS.parent.parent
-for folder in (TOP, SCRIPTS, SCRIPTS / 'services'):
+TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
+SERVER = TOP / 'bundles' / 'memar'
+FACE = TOP / 'bundles' / 'memar_cli'
+for folder in (TOP, FACE, SERVER, SERVER / 'services'):
     if str(folder) not in sys.path:
         sys.path.insert(0, str(folder))
 sys.dont_write_bytecode = True
 from mcp.services import _call, _tools, serve
-ROUTER = SCRIPTS / 'memar'
+ROUTER = FACE / 'memar'
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 _m_memar_location.declare_program(_m_memar_location.entry_program(str(ROUTER)))
 THIS_TASK = '20261019-T111413Z-21136'

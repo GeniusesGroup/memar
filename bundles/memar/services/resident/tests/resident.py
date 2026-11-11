@@ -48,13 +48,14 @@ import time
 import unittest
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir()) / 'bundles' / 'memar'
-TOP = SCRIPTS.parent.parent
-for folder in (TOP, SCRIPTS, SCRIPTS / 'services'):
+TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
+SERVER = TOP / 'bundles' / 'memar'
+FACE = TOP / 'bundles' / 'memar_cli'
+for folder in (TOP, FACE, SERVER, SERVER / 'services'):
     if str(folder) not in sys.path:
         sys.path.insert(0, str(folder))
 sys.dont_write_bytecode = True
-ROUTER = SCRIPTS / 'memar'
+ROUTER = FACE / 'memar'
 
 def environment(state: Path | None, on: bool, idle: int=600) -> dict:
     found = {key: value for key, value in os.environ.items() if key not in ('MEMAR_SERVER', 'MEMAR_SERVER_STATE', 'MEMAR_SERVER_IDLE')}

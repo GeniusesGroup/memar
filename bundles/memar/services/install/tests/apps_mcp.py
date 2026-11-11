@@ -19,6 +19,9 @@ What is pinned:
                     starts the router with `mcp serve`; what else the setting held is kept; a
                     second run finds it current and writes nothing; an app that is absent gets
                     nothing.
+  NamesTheStableLauncher
+                    With the shim `bin/memar.cmd` (`memar` elsewhere) installed, the command is
+                    the shim with `mcp serve`; without it, the interpreter and the router.
   DryRunWritesNone  A dry run prints each entry it would write and writes none.
   RefreshesStale    A JSON or TOML entry that still names Memar but with a stale command is
                     rewritten to the current one; JSON with comments and an unreadable setting
@@ -54,7 +57,9 @@ class Home(unittest.TestCase):
         self.home = suite_scratch() / f'apps-mcp-{os.getpid()}-{time.time_ns()}'
         self.home.mkdir(parents=True)
         self.addCleanup(remove_tree, self.home)
-        for patched in (unittest.mock.patch.object(Path, 'home', return_value=self.home), unittest.mock.patch.object(layer, 'resolve_root', return_value=Path('/checkout'))):
+        self.project = self.home / 'project'
+        self.project.mkdir()
+        for patched in (unittest.mock.patch.object(Path, 'home', return_value=self.home), unittest.mock.patch.object(layer, 'resolve_root', return_value=Path('/checkout')), unittest.mock.patch.object(layer, 'project_root', return_value=self.project)):
             patched.start()
             self.addCleanup(patched.stop)
 
@@ -76,7 +81,7 @@ class RegistersOnce(Home):
         self.assertEqual(claude['theme'], 'dark')
         entry = claude['mcpServers']['memar']
         self.assertEqual(entry['args'][-2:], ['mcp', 'serve'])
-        self.assertEqual(Path(entry['args'][0]), Path('/checkout') / 'bundles' / 'memar' / 'memar')
+        self.assertEqual(Path(entry['args'][0]), Path('/checkout') / 'bundles' / 'memar_cli' / 'memar')
         toml = (self.home / '.codex' / 'config.toml').read_text(encoding='utf-8')
         self.assertTrue(toml.startswith('model = "x"\n'))
         self.assertEqual(toml.count('[mcp_servers.memar]'), 1)
@@ -84,6 +89,29 @@ class RegistersOnce(Home):
         again = self.install()
         self.assertEqual(again.count('already current'), 2)
         self.assertEqual((self.home / '.codex' / 'config.toml').read_text(encoding='utf-8'), toml)
+
+class NamesTheStableLauncher(Home):
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.shim = self.project / 'bin' / ('memar.cmd' if os.name == 'nt' else 'memar')
+
+    def test_with_the_shim_installed_the_command_is_the_shim_and_not_the_running_version(self):
+        self.shim.parent.mkdir(parents=True)
+        self.shim.write_text('shim', encoding='utf-8')
+        self.assertEqual(layer.server_command(), [str(self.shim), 'mcp', 'serve'])
+
+    def test_without_the_shim_the_command_is_the_interpreter_and_the_router(self):
+        self.assertEqual(layer.server_command(), [sys.executable, str(Path('/checkout') / 'bundles' / 'memar_cli' / 'memar'), 'mcp', 'serve'])
+
+    def test_the_registered_entry_names_the_shim(self):
+        self.shim.parent.mkdir(parents=True)
+        self.shim.write_text('shim', encoding='utf-8')
+        (self.home / '.claude').mkdir()
+        (self.home / '.claude.json').write_text('{}', encoding='utf-8')
+        self.install()
+        entry = json.loads((self.home / '.claude.json').read_text(encoding='utf-8'))['mcpServers']['memar']
+        self.assertEqual((entry['command'], entry['args']), (str(self.shim), ['mcp', 'serve']))
 
 class DryRunWritesNone(Home):
 

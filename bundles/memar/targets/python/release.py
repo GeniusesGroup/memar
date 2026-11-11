@@ -16,17 +16,25 @@ _m_bundle_modules = import_module('modules.computer.software.edges.manifest.serv
 FOLDER = ('bin',)
 POINTER = 'current'
 EXECUTABLE = 'memar.exe' if os.name == 'nt' else 'memar'
+SERVER_DIR = 'server'
+SERVER_EXECUTABLE = 'memar_server.exe' if os.name == 'nt' else 'memar_server'
 PROGRAM_NAME = 'memar'
+SERVER_PROGRAM_NAME = 'memar_server'
 ENTRY = 'memar_entry.py'
+SERVER_ENTRY = 'memar_server_entry.py'
 BUNDLE = ('bundles', 'memar')
-SHELVES = ((), BUNDLE, (*BUNDLE, 'services'))
+FACE = ('bundles', 'memar_cli')
+SHELVES = ((), BUNDLE, (*BUNDLE, 'services'), FACE)
 STAMP = '%Y%m%dT%H%M%SZ'
 CMD_SHIM = 'memar.cmd'
+SERVER_CMD_SHIM = 'memar_server.cmd'
 RUNTIME_VENDOR = 'Memar'
 RUNTIME_RELEASES = 'releases'
 RUNTIME_SCRATCH = 'scratch'
 CMD_TEXT = '@echo off\nsetlocal\nset /p MEMAR_RELEASE=<"%~dp0current"\nset "EXE=%LOCALAPPDATA%\\Memar\\releases\\%MEMAR_RELEASE%\\memar.exe"\nif not exist "%EXE%" set "EXE=%~dp0%MEMAR_RELEASE%\\memar.exe"\n"%EXE%" %*\nexit /b %ERRORLEVEL%\n'
+SERVER_CMD_TEXT = '@echo off\nsetlocal\nset /p MEMAR_RELEASE=<"%~dp0current"\nset "EXE=%LOCALAPPDATA%\\Memar\\releases\\%MEMAR_RELEASE%\\server\\memar_server.exe"\nif not exist "%EXE%" set "EXE=%~dp0%MEMAR_RELEASE%\\server\\memar_server.exe"\n"%EXE%" %*\nexit /b %ERRORLEVEL%\n'
 SH_TEXT = '#!/bin/sh\nhere=$(dirname "$0")\nread -r release < "$here/current"\nruntime="${XDG_DATA_HOME:-$HOME/.local/share}/memar/releases/$release/memar"\nif [ -x "$runtime" ]; then exec "$runtime" "$@"; fi\nexec "$here/$release/memar" "$@"\n'
+SERVER_SH_TEXT = '#!/bin/sh\nhere=$(dirname "$0")\nread -r release < "$here/current"\nruntime="${XDG_DATA_HOME:-$HOME/.local/share}/memar/releases/$release/server/memar_server"\nif [ -x "$runtime" ]; then exec "$runtime" "$@"; fi\nexec "$here/$release/server/memar_server" "$@"\n'
 START_SECONDS = 120
 BUILD_SECONDS = 540
 
@@ -66,8 +74,25 @@ def executable_of(project: Path) -> Path | None:
             return path
     return None
 
+def server_executable_of(project: Path) -> Path | None:
+    try:
+        name = current(project)
+    except _m_errors.NoneInstalled:
+        return None
+    for path in (
+        runtime_releases() / name / SERVER_DIR / SERVER_EXECUTABLE,
+        releases_of(project) / name / SERVER_DIR / SERVER_EXECUTABLE,
+    ):
+        if path.is_file():
+            return path
+    return None
+
 def program_of(project: Path) -> tuple[str, ...] | None:
     path = executable_of(project)
+    return (str(path),) if path is not None else None
+
+def server_program_of(project: Path) -> tuple[str, ...] | None:
+    path = server_executable_of(project)
     return (str(path),) if path is not None else None
 
 def release_name() -> str:
@@ -115,29 +140,34 @@ def build(source: Path, releases: Path) -> Path:
         shutil.rmtree(left, ignore_errors=True)
     work = releases / f'.build-{name}'
     work.mkdir(parents=True)
-    shutil.copyfile(source.joinpath(*BUNDLE, 'memar'), work / ENTRY)
+    shutil.copyfile(source.joinpath(*FACE, 'memar'), work / ENTRY)
+    shutil.copyfile(source.joinpath(*BUNDLE, 'memar_server'), work / SERVER_ENTRY)
     names = _m_bundle_modules.modules_of(source.joinpath(*BUNDLE))
-    command = [python, '-m', 'PyInstaller', '--noconfirm', '--onedir', '--name', PROGRAM_NAME, '--distpath', str(work / 'dist'), '--workpath', str(work / 'work'), '--specpath', str(work)]
-    for shelf in SHELVES:
-        command += ['--paths', str(source.joinpath(*shelf))]
-    command += ['--add-data', f'{source.joinpath(*BUNDLE, "manifest.yaml")}{os.pathsep}.']
-    for each in names:
-        command += ['--hidden-import', each]
-    command.append(str(work / ENTRY))
-    log = work / 'build.log'
-    try:
-        with log.open('wb') as output:
-            done = subprocess.run(command, stdout=output, stderr=subprocess.STDOUT, timeout=BUILD_SECONDS, env=child_environment())
-    except subprocess.TimeoutExpired:
-        shutil.rmtree(work, ignore_errors=True)
-        raise _m_errors.BuildFailed(f'the build took longer than {BUILD_SECONDS} seconds and was stopped') from None
-    if done.returncode != 0:
-        kept = releases / f'build-failed-{name}.log'
-        os.replace(log, kept)
-        shutil.rmtree(work, ignore_errors=True)
-        raise _m_errors.BuildFailed(f'the build ended with status {done.returncode}; its log is {kept}')
+    def _pyinstaller(entry: Path, program: str) -> None:
+        command = [python, '-m', 'PyInstaller', '--noconfirm', '--onedir', '--name', program, '--distpath', str(work / 'dist'), '--workpath', str(work / f'work-{program}'), '--specpath', str(work)]
+        for shelf in SHELVES:
+            command += ['--paths', str(source.joinpath(*shelf))]
+        command += ['--add-data', f'{source.joinpath(*BUNDLE, "manifest.yaml")}{os.pathsep}.']
+        for each in names:
+            command += ['--hidden-import', each]
+        command.append(str(entry))
+        log = work / f'build-{program}.log'
+        try:
+            with log.open('wb') as output:
+                done = subprocess.run(command, stdout=output, stderr=subprocess.STDOUT, timeout=BUILD_SECONDS, env=child_environment())
+        except subprocess.TimeoutExpired:
+            shutil.rmtree(work, ignore_errors=True)
+            raise _m_errors.BuildFailed(f'the {program} build took longer than {BUILD_SECONDS} seconds and was stopped') from None
+        if done.returncode != 0:
+            kept = releases / f'build-failed-{name}-{program}.log'
+            os.replace(log, kept)
+            shutil.rmtree(work, ignore_errors=True)
+            raise _m_errors.BuildFailed(f'the {program} build ended with status {done.returncode}; its log is {kept}')
+    _pyinstaller(work / ENTRY, PROGRAM_NAME)
+    _pyinstaller(work / SERVER_ENTRY, SERVER_PROGRAM_NAME)
     made = releases / name
     os.replace(work / 'dist' / PROGRAM_NAME, made)
+    os.replace(work / 'dist' / SERVER_PROGRAM_NAME, made / SERVER_DIR)
     shutil.rmtree(work, ignore_errors=True)
     return made
 
@@ -147,8 +177,10 @@ def starts(made: Path) -> None:
         done = subprocess.run([str(Path(made) / EXECUTABLE), '--help'], capture_output=True, text=True, encoding='utf-8', errors='replace', env=environment, timeout=START_SECONDS)
     except subprocess.TimeoutExpired:
         raise _m_errors.DoesNotStart(f'{made} did not answer --help within {START_SECONDS} seconds') from None
-    if done.returncode != 0 or 'usage:' not in done.stdout or 'did not load' in done.stderr:
+    if done.returncode != 0 or 'usage:' not in done.stdout or '<verb>' not in done.stdout or 'did not load' in done.stderr:
         raise _m_errors.DoesNotStart(f'{made} does not start and list its verbs: status {done.returncode}; {done.stderr.strip()[-300:]}')
+    if not (Path(made) / SERVER_DIR / SERVER_EXECUTABLE).is_file():
+        raise _m_errors.DoesNotStart(f'{made} has no {SERVER_DIR}/{SERVER_EXECUTABLE}')
 
 def module_file(source: Path, name: str) -> Path | None:
     base = Path(source).joinpath(*name.split('.'))
@@ -169,6 +201,9 @@ def stale_why(source: Path, project: Path) -> str:
     except _m_errors.NoneInstalled:
         return 'none installed'
     built = built_at(releases_of(project) / name)
+    face = Path(source) / 'bundles' / 'memar_cli' / 'memar'
+    if face.is_file() and face.stat().st_mtime > built:
+        return f'{face.relative_to(source).as_posix()} is newer than release {name}'
     for each in _m_bundle_modules.modules_of(Path(source).joinpath(*BUNDLE)):
         file = module_file(source, each)
         if file is not None and file.stat().st_mtime > built:
@@ -180,7 +215,12 @@ def stale(source: Path, project: Path) -> bool:
 
 def write_shims(project: Path) -> None:
     folder = releases_of(project)
-    for name, text, newline, mode in ((CMD_SHIM, CMD_TEXT, CRLF, 0o644), (PROGRAM_NAME, SH_TEXT, LF, 0o755)):
+    for name, text, newline, mode in (
+        (CMD_SHIM, CMD_TEXT, CRLF, 0o644),
+        (PROGRAM_NAME, SH_TEXT, LF, 0o755),
+        (SERVER_CMD_SHIM, SERVER_CMD_TEXT, CRLF, 0o644),
+        (SERVER_PROGRAM_NAME, SERVER_SH_TEXT, LF, 0o755),
+    ):
         wanted = text.replace(LF, newline)
         try:
             if (folder / name).read_bytes() == wanted.encode('utf-8'):

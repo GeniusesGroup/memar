@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Server_Answer in "./server-answer.kh"
+
+mt Summary (self Server_Answer) () (s str) {
+	return "what the server returns for one Server_Call"
+}
+
+mt Overview (self Server_Answer) () (s str) {
+	return "Holds the process status and the standard output and standard error the invoked runs wrote. JSON is the interim wire form."
+}

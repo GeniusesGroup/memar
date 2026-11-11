@@ -31,7 +31,10 @@ class Globals:
 
         def exec_module(loader, module):
             loaded(loader, module)
-            record(module)
+            try:
+                record(module)
+            except Exception:
+                pass
         SourceFileLoader.exec_module = exec_module
 
     def record(self, module) -> None:

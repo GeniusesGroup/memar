@@ -88,11 +88,11 @@ class Resident:
         self.guard = threading.Lock()
 
     def run(self, worker, call: dict) -> dict:
-        """The answer to one call's fields (argv, cwd, env, stdin) run by WORKER."""
+        """The answer to one Server_Call (fields, runs, cwd, env, stdin) run by WORKER."""
         with self.guard:
             self.answered += 1
             identity = self.answered
-        params = {key: call[key] for key in ('argv', 'cwd', 'env', 'stdin') if key in call}
+        params = {key: call[key] for key in ('fields', 'runs', 'cwd', 'env', 'stdin') if key in call}
         request = {'jsonrpc': '2.0', 'id': identity, 'method': RUN, 'params': params}
         line = self.pool.ask(worker, json.dumps(request, ensure_ascii=False).encode('utf-8'))
         if line is None:
@@ -134,8 +134,8 @@ class Resident:
             self.stopping = True
             sent(connection, {'stopped': True})
             return
-        if not isinstance(call.get('argv'), list):
-            sent(connection, {'refused': 'argv is a list'})
+        if not isinstance(call.get('fields'), dict) or not isinstance(call.get('runs'), list):
+            sent(connection, {'refused': 'a Server_Call has fields and runs'})
             return
         if gone(connection):
             return
@@ -156,7 +156,7 @@ class Resident:
             sent(connection, answer)
             spent = time.monotonic() - started
             if spent > SLOW_SECONDS:
-                self.note(f"{spent:.1f}s for {call.get('argv')!r}")
+                self.note(f"{spent:.1f}s for {call.get('runs')!r}")
         finally:
             self.pool.release(worker, healthy)
 

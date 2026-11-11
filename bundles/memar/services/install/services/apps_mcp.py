@@ -1,25 +1,6 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""bundles/memar/services/install/services/apps_mcp.py — the agent-app layer's second half: Memar's MCP server registered at user level in the agent apps that have a setting for one.
-
-The owner chose (2026-10-18; a content of a task) user-level registration only: the
-server is the machine's, like the `memar` command, and a project `.mcp.json` would be one more file
-in every project to keep true by hand. So this writes into each app's own user setting, for the apps
-`apps.py` already knows and that have one, and only where the app is on this machine.
-
-The server is started as the `memar` command would run it: this interpreter, the router in the
-checkout the location variable names, `mcp serve`. It is not started through `memar` on the PATH,
-because an app starts a server without a shell, and on Windows only a shell finds `memar.cmd`.
-
-A setting is changed only by adding Memar's entry or replacing it, never by rewriting the rest: a
-JSON setting is read, its entry set, and written back whole through a file beside it; a TOML setting,
-which the standard library reads but does not write, gets the entry appended when it has none, and
-when Memar's own table differs — a moved launcher, a new interpreter — only that table is replaced
-in the file's text. A setting that cannot be read, or JSON with comments, is reported and left as
-it is. `warn_stale` is how a registration that is not what `server_command` would now write is
-noticed: `memar update` asks it through `bundles/memar/services/update/services/copies.py`.
-"""
 from __future__ import annotations
 from importlib import import_module
 import json
@@ -32,10 +13,14 @@ _m_memar_location = import_module('bundles.memar.services.location.memar_locatio
 SERVER_NAME = 'memar'
 ROUTER = _m_memar_location.LAUNCHER_RELATIVE / 'memar'
 SERVE = ('mcp', 'serve')
+project_root = _m_memar_location.project_root
+release = import_module('bundles.memar.targets.python.release')
 REFRESH = 'memar update --apply'
 
 def server_command() -> list[str]:
-    """What an app runs to start the server."""
+    shim = release.releases_of(project_root()) / (release.CMD_SHIM if os.name == 'nt' else release.PROGRAM_NAME)
+    if shim.is_file():
+        return [str(shim), *SERVE]
     return [sys.executable, str(resolve_root() / ROUTER), *SERVE]
 
 def _claude(command):

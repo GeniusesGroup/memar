@@ -7,13 +7,17 @@ modules:
   - bundles.memar.services.install.services.machine
   - bundles.memar.services.install.services.project
   - bundles.memar.services.install.services.target
+  - bundles.memar.services.dispatch.dispatch
   - bundles.memar.services.location.memar_location
   - bundles.memar.services.location.repository
   - bundles.memar.services.machine.copy_excluded
-  - bundles.memar.services.mcp
-  - bundles.memar.services.mcp.mcp
-  - bundles.memar.services.mcp.services.serve
-  - bundles.memar.services.mcp.services.worker
+  - bundles.memar_cli.mcp
+  - bundles.memar_cli.mcp.mcp
+  - bundles.memar_cli.mcp.services._call
+  - bundles.memar_cli.mcp.services._tools
+  - bundles.memar_cli.mcp.services._worker
+  - bundles.memar_cli.mcp.services.serve
+  - bundles.memar_cli.mcp.services.worker
   - bundles.memar.services.memory.errors.errors
   - bundles.memar.services.memory.memory
   - bundles.memar.services.resident.resident
@@ -128,14 +132,13 @@ modules:
   - modules-plugable.computer.ui.command.command
   - modules-plugable.identity.thing.priority.errors.errors
   - modules-plugable.identity.thing.priority.labels.Priority
-  - modules-plugable.identity.thing.priority.primitive.graph_rank_store
+  - modules-plugable.identity.thing.priority.services.graph_priority_ops
   - modules-plugable.identity.thing.priority.primitive.rank
   - modules-plugable.identity.thing.priority.services.facts_rank_store
   - modules-plugable.identity.thing.priority.services.rank_store
   - modules-plugable.identity.thing.priority.services.read_priority
   - modules-plugable.identity.thing.priority.services.register_services
   - modules-plugable.identity.thing.priority.services.set_priority
-  - modules-plugable.identity.thing.priority.services.task_facts
   - modules-plugable.knowledge.documentation.changelog.primitive.approved
   - modules-plugable.knowledge.documentation.changelog.primitive.done
   - modules-plugable.knowledge.documentation.changelog.primitive.pending
@@ -185,10 +188,9 @@ modules:
   - modules-plugable.knowledge.documentation.services.propagation
   - modules-plugable.knowledge.documentation.services.restated_fields
   - modules-plugable.knowledge.documentation.services.temp_duplicate
-  - modules-plugable.knowledge.label.graph.errors.errors
-  - modules-plugable.knowledge.label.graph.primitive.graph_label_store
-  - modules-plugable.knowledge.label.graph.primitive.graph_opener
-  - modules-plugable.knowledge.label.graph.primitive.thing_stores
+  - modules-plugable.knowledge.label.services.graph_errors
+  - modules-plugable.knowledge.label.services.graph_label_ops
+  - modules-plugable.knowledge.label.services.graph_thing
   - modules-plugable.knowledge.label.status.labels.Active
   - modules-plugable.knowledge.label.status.labels.Blocked
   - modules-plugable.knowledge.label.status.labels.Complete
@@ -250,11 +252,10 @@ modules:
   - modules-plugable.management.task.services.task_g2_encode
   - modules-plugable.management.task.services.task_generation
   - modules-plugable.management.task.services.task_graph_types
-  - modules-plugable.management.task.services.task_label_store
   - modules-plugable.management.task.services.task_location
   - modules-plugable.management.task.services.task_memory
   - modules-plugable.management.task.services.task_records
-  - modules-plugable.management.task.services.task_status_store
+  - modules-plugable.management.task.services.task_thing_services
   - modules-plugable.management.task.services.temp
   - modules-plugable.management.task.task
   - modules-plugable.management.task.widgets.ensure.ensure
@@ -306,14 +307,13 @@ modules:
   - modules.knowledge.label.primitive.label
   - modules.knowledge.label.primitive.label_store
   - modules.knowledge.label.services.attach_label
-  - modules.knowledge.label.services.attach_label_service
+  - modules-plugable.knowledge.label.services.attach_label_service
   - modules.knowledge.label.services.declarations
   - modules.knowledge.label.services.detach_label
-  - modules.knowledge.label.services.detach_label_service
-  - modules.knowledge.label.services.graph_thing
+  - modules-plugable.knowledge.label.services.detach_label_service
   - modules.knowledge.label.services.nearest_labels
-  - modules.knowledge.label.services.read_labels_service
-  - modules.knowledge.label.services.register_services
+  - modules-plugable.knowledge.label.services.read_labels_service
+  - modules-plugable.knowledge.label.services.register_services
   - modules.knowledge.label.widgets.resolve_label
   - modules.knowledge.text.errors.bytes
   - modules.knowledge.text.errors.edit

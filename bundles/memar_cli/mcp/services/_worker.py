@@ -25,6 +25,7 @@ class Worker:
         from mcp.mcp import COMMAND
         from mcp.services import _tools
         from modules.knowledge.text.services import index
+        self.router = router
         self.tools_module = _tools
         recorded.values.pop(router.__name__, None)
         self.runner = _call.Runner(router, recorded, scratch_root())
@@ -61,34 +62,66 @@ class Worker:
             if tool is None:
                 raise self.tools_module.Refused(f"no tool is named {params.get('name')!r}")
             argv, stdin = self.tools_module.argv(tool, params.get('arguments') or {})
-            output = self.runner.run(argv, stdin)
-            content = [{'type': 'text', 'text': output.stdout}]
-            if output.stderr:
-                content.append({'type': 'text', 'text': output.stderr})
-            return {'content': content, 'isError': output.status != 0, '_meta': {STATUS: output.status}}
+            answer = self._answer_from_argv(argv, stdin)
+            content = [{'type': 'text', 'text': answer['stdout']}]
+            if answer['stderr']:
+                content.append({'type': 'text', 'text': answer['stderr']})
+            return {'content': content, 'isError': answer['status'] != 0, '_meta': {STATUS: answer['status']}}
         if method == RUN:
             return self._run(params)
         raise LookupError(f'this server has no method {method!r}')
 
-    def _run(self, params: dict) -> dict:
-        """The CLI's run of `argv` in the folder and environment the caller had, its stdout and stderr whole and its status."""
-        argv, stdin = (params.get('argv'), params.get('stdin') or '')
-        folder, environment = (params.get('cwd'), params.get('env'))
-        if not isinstance(argv, list) or not all((isinstance(word, str) for word in argv)):
-            raise self.tools_module.Refused('argv is a list of strings')
-        if not isinstance(environment, dict) or not isinstance(folder, str):
-            raise self.tools_module.Refused('cwd is a folder and env a mapping')
-        kept_environment, kept_folder = (dict(os.environ), os.getcwd())
+    def _call_from_argv(self, argv: list[str], stdin: str='') -> dict:
+        """Face-side: argv becomes a Server_Call; the server dispatch never sees argv."""
+        top, before = self.router.assemble(self.router.services())
+        args = list(argv)
+        for step in before:
+            step(args)
+        parsed = top.parse_args(args)
+        return self.router.server_call(parsed, stdin=stdin)
+
+    def _answer_from_argv(self, argv: list[str], stdin: str='') -> dict:
+        """Parse on the face, then dispatch; argparse SystemExit stays a status, not a dead worker."""
+        import io
+        kept = (sys.stdout, sys.stderr)
+        out_bytes, err_bytes = io.BytesIO(), io.BytesIO()
+        out = io.TextIOWrapper(out_bytes, encoding='utf-8', newline=None, write_through=True)
+        err = io.TextIOWrapper(err_bytes, encoding='utf-8', errors='backslashreplace', newline=None, write_through=True)
         try:
-            os.chdir(folder)
-            os.environ.clear()
-            os.environ.update({str(key): str(value) for key, value in environment.items()})
-            output = self.runner.run(argv, stdin)
+            sys.stdout, sys.stderr = out, err
+            try:
+                call = self._call_from_argv(argv, stdin)
+            except SystemExit as stop:
+                if stop.code is None:
+                    status = 0
+                elif isinstance(stop.code, int):
+                    status = stop.code
+                else:
+                    err.write(str(stop.code))
+                    if not str(stop.code).endswith('\n'):
+                        err.write('\n')
+                    status = 1
+                out.flush()
+                err.flush()
+                return {
+                    'status': status,
+                    'stdout': out_bytes.getvalue().decode('utf-8'),
+                    'stderr': err_bytes.getvalue().decode('utf-8', errors='replace'),
+                }
         finally:
-            os.environ.clear()
-            os.environ.update(kept_environment)
-            os.chdir(kept_folder)
-        return {'stdout': output.stdout, 'stderr': output.stderr, 'status': output.status}
+            sys.stdout, sys.stderr = kept
+        return self._dispatch(call)
+
+    def _dispatch(self, call: dict) -> dict:
+        from bundles.memar.services.dispatch import dispatch
+        try:
+            return dispatch.handle(call)
+        except dispatch.Refused as refused:
+            raise self.tools_module.Refused(str(refused)) from refused
+
+    def _run(self, params: dict) -> dict:
+        """One Server_Call: fields and runs the face already filled, answered without argv."""
+        return self._dispatch(params)
 
 def main(router) -> None:
     from mcp.services._call import align_windows_std_handles

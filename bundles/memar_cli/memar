@@ -77,11 +77,13 @@ import sys
 from pathlib import Path
 from typing import Callable, Iterable, NamedTuple
 
-SCRIPTS = Path(__file__).resolve().parent
-# The checkout's top too: a module under `modules/` that holds code (its `primitive/` types) is imported by its
-# path from there, `modules.content.documentation...`, so the top is on the search path as this folder is.
-TOP = SCRIPTS.parent.parent
-for folder in (TOP, SCRIPTS, SCRIPTS / "services"):
+FACE = Path(__file__).resolve().parent
+TOP = FACE.parent.parent
+SERVER = TOP / "bundles" / "memar"
+if not (SERVER / "manifest.yaml").is_file():
+    SERVER = FACE
+SCRIPTS = SERVER
+for folder in (TOP, FACE, SERVER, SERVER / "services"):
     if str(folder) not in sys.path:
         sys.path.insert(0, str(folder))
 
@@ -91,10 +93,8 @@ role_folders = importlib.import_module("bundles.memar.services.location.memar_lo
 importlib.import_module("bundles.memar.services.location.memar_location").declare_program(
     importlib.import_module("bundles.memar.services.location.memar_location").entry_program(__file__)
 )
-# The one door a service is handed a class of nodes by, declared here and written in `services/memory/memory.py`
-# (Memory Record, "Binding adapters to classes"), since this file routes and nothing else.
 open = importlib.import_module("bundles.memar.services.memory.memory").open
-DECLARED = importlib.import_module("modules.computer.software.edges.manifest.services.bundle_modules").modules_of(SCRIPTS)
+DECLARED = importlib.import_module("modules.computer.software.edges.manifest.services.bundle_modules").modules_of(SERVER)
 importlib.import_module("modules.knowledge.label.primitive.declared_label").DeclaredLabel.declare_modules(DECLARED)
 
 SERVICES = "services"
@@ -102,6 +102,9 @@ DESCRIBE = "describe"
 ROOTS = ("modules", "modules-plugable", "bundles")
 SHELF = ("bundles", "memar", SERVICES)
 NOT_MODULES = frozenset({SERVICES, *role_folders(), "node_modules", "__pycache__"})
+RUN_REF_PREFIX = "_memar_run_ref_"
+JSON_FIELD = (type(None), bool, int, float, str, list, dict)
+from face_policy import NOT_HANDED_OVER, run_ref
 # A module that has a command-line face keeps it in a file named by its folder (`task/task.py`);
 # each capability is a file in its `services/` folder. What the router works with is a path: the module's for its
 # own file, and that path with `services` and the file's stem for a capability. A capability goes under the domain of
@@ -282,7 +285,12 @@ def assemble(
             continue
         for parser in {id(parser): parser for parser in added.values()}.values():
             if run is not None:
-                parser.set_defaults(**{f"{RUN_PREFIX}{verbs.depth}": run})
+                parser.set_defaults(
+                    **{
+                        f"{RUN_PREFIX}{verbs.depth}": run,
+                        f"{RUN_REF_PREFIX}{verbs.depth}": run_ref(run),
+                    }
+                )
             if home is None:
                 levels[name] = Verbs(parser, verbs.depth + 1)
     return top, before
@@ -293,9 +301,48 @@ def runs(parsed: argparse.Namespace) -> list[Callable[[argparse.Namespace], int 
     found = {
         int(key[len(RUN_PREFIX):]): value
         for key, value in vars(parsed).items()
-        if key.startswith(RUN_PREFIX)
+        if key.startswith(RUN_PREFIX) and not key.startswith(RUN_REF_PREFIX)
     }
     return [found[depth] for depth in sorted(found)]
+
+
+def run_refs(parsed: argparse.Namespace) -> list[str]:
+    found = {
+        int(key[len(RUN_REF_PREFIX):]): value
+        for key, value in vars(parsed).items()
+        if key.startswith(RUN_REF_PREFIX)
+    }
+    return [found[depth] for depth in sorted(found)]
+
+
+def fields_of(parsed: argparse.Namespace) -> dict:
+    out = {}
+    for key, value in vars(parsed).items():
+        if key.startswith(RUN_PREFIX) or key.startswith(RUN_REF_PREFIX):
+            continue
+        if isinstance(value, JSON_FIELD):
+            out[key] = value
+    return out
+
+
+def server_call(parsed: argparse.Namespace, *, cwd: str | None = None, env: dict | None = None, stdin: str = "") -> dict:
+    import os
+
+    return {
+        "fields": fields_of(parsed),
+        "runs": run_refs(parsed),
+        "cwd": os.getcwd() if cwd is None else cwd,
+        "env": dict(os.environ) if env is None else env,
+        "stdin": stdin,
+    }
+
+
+def apply(parsed: argparse.Namespace) -> int:
+    for run in runs(parsed):
+        status = run(parsed)
+        if status:
+            return status
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -306,24 +353,29 @@ def main(argv: list[str] | None = None) -> int:
         step(args)
     if args[:1] and args[0] in HELP_WORDS:
         args = ["--help", *args[1:]]
-    parsed = top.parse_args(args)
-    for run in runs(parsed):
-        status = run(parsed)
-        if status:
-            return status
-    return 0
+    return apply(top.parse_args(args))
 
 
 def command() -> int:
-    """The call as typed: answered by the process that stays when it is switched on and answers, else done in this process."""
-    from machine.resident import served
+    """The call as typed: face reads argv; a Server_Call is answered by the process that stays, else here."""
+    from machine.resident import served_call
 
+    use_utf8_stdio()
+    args = list(sys.argv[1:])
+    top, before = assemble(services())
+    for step in before:
+        step(args)
+    if args[:1] and args[0] in HELP_WORDS:
+        args = ["--help", *args[1:]]
+    if not args or args[0] in NOT_HANDED_OVER:
+        return apply(top.parse_args(args))
+    parsed = top.parse_args(args)
     try:
         project = importlib.import_module("bundles.memar.services.location.memar_location").project_root()
     except SystemExit:
-        return main()
-    status = served(sys.argv[1:], project)
-    return main() if status is None else status
+        return apply(parsed)
+    status = served_call(server_call(parsed), project)
+    return apply(parsed) if status is None else status
 
 
 if __name__ == "__main__":

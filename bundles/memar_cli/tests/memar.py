@@ -3,7 +3,7 @@
 
 """Tests for `memar`'s routing.
 
-    python bundles/memar/tests/memar.py
+    python bundles/memar_cli/tests/memar.py
 
 The subject is the `memar` launcher, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
@@ -88,13 +88,15 @@ import unittest.mock
 from importlib.machinery import SourceFileLoader
 from pathlib import Path
 TESTS = Path(__file__).resolve().parent
-SCRIPTS = TESTS.parent
-sys.path.insert(0, str(SCRIPTS / 'services'))
-sys.path.insert(1, str(SCRIPTS))
-sys.path.insert(2, str(SCRIPTS.parent.parent))
+FACE = TESTS.parent
+TOP = FACE.parent.parent
+SERVER = TOP / 'bundles' / 'memar'
+SCRIPTS = FACE
+for folder in (TOP, FACE, SERVER, SERVER / 'services'):
+    sys.path.insert(0, str(folder))
 sys.dont_write_bytecode = True
-LAUNCHER = SCRIPTS / 'memar'
-SHIM = SCRIPTS / 'memar.cmd'  # must stay absent; PATH uses bin/memar.cmd
+LAUNCHER = FACE / 'memar'
+SHIM = FACE / 'memar.cmd'  # must stay absent; PATH uses bin/memar.cmd
 _spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
 memar = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(memar)
