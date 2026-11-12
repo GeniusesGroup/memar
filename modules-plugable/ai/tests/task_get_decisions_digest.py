@@ -274,12 +274,11 @@ class ProjectScope(Fixture):
         with self.assertRaises(SystemExit) as raised:
             task_digest.get_decisions_digest(project='')
         self.assertIn('--project-path', str(raised.exception.code))
-        parser = argparse.ArgumentParser()
-        command = task_digest.describe(parser.add_subparsers())
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
-            command(parser.parse_args(['get-decisions-digest', '--project', 'theproject']))
+            task_digest.get_decisions_digest(project='theproject')
         self.assertIn('- In the project?', out.getvalue())
+        self.assertEqual('-'.join(task_digest.DECLARATIONS[0].name.split()), 'get-decisions-digest')
 
 class OpenQuestions(Fixture):
     """The digest's `Open questions` section: the open `question` contents, beside the decisions."""

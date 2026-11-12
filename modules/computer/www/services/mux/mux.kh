@@ -14,6 +14,7 @@ import (
 	net_p "memar/net/protocol"
 	operation_p "memar/process/operation/protocol"
 	"memar/process/service"
+	priority_p "org/modules-plugable/identity/thing/priority/protocol"
 	service_p "memar/operation/service/protocol"
 	ss "memar/operation/services"
 	error_p "memar/process/error/protocol"
@@ -51,7 +52,7 @@ func (s *muxService) ExpireInFavorOf() datatype_p.DataType { return nil }
 
 //memar:impl memar/service/protocol.Service
 func (s *muxService) URI() string                        { return MuxService_Path }
-func (s *muxService) Priority() operation_p.Priority     { return operation_p.Priority_Unset }
+func (s *muxService) Priority() priority_p.Priority_Rank                  { return priority_p.Priority_Rank_OfAbsent() }
 func (s *muxService) Weight() operation_p.Weight         { return operation_p.Weight_Unset }
 func (s *muxService) ActionType() operation_p.ActionType { return operation_p.ActionType_All }
 func (s *muxService) UserType() user_p.Type              { return user_p.Type_All }

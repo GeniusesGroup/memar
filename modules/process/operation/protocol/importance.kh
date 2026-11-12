@@ -4,7 +4,7 @@ tp Observer_Priority in "modules/process/operation/protocol/priority.observers.k
 tp Observer_Weight in "modules/process/operation/protocol/weight.observers.kh"
 
 tp Importance ab {
-// We need both of below items to queue in more specific manner.
+// Queue order needs both: Thing Priority_Rank (via Observer_Priority) and Weight.
     Observer_Priority
     Observer_Weight
 }

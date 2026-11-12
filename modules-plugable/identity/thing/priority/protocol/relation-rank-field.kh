@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Priority_Rank in "modules-plugable/identity/thing/priority/protocol/priority-rank.kh"
+
+// Field_Relation_Rank is the sketched graph edge field that will hold Priority_Rank
+// on a relation once Graph typed edge fields are live.
+tp Field_Relation_Rank ab
+
+tp GetRelationRank mt (self Field_Relation_Rank) () (rank Priority_Rank)
+
+// TODO(go-migrate):
+/*
+package graph_p
+
+type Field_RelationRank interface {
+	RelationRank() uint64
+}
+*/

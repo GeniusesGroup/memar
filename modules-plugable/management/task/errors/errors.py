@@ -13,10 +13,6 @@ class Task_Error_NotActive(Exception):
     pass
 
 
-class Task_Error_PriorityRefused(Exception):
-    pass
-
-
 class Task_Error_WrittenByPredecessor(Exception):
 
     def __init__(self, writer: str, successor: str, conversion: str) -> None:
@@ -24,6 +20,18 @@ class Task_Error_WrittenByPredecessor(Exception):
         self.writer = writer
         self.successor = successor
         self.conversion = conversion
+
+
+class Task_Error_ListRefused(Exception):
+    pass
+
+
+class Task_Error_PageTokenRefused(Exception):
+    pass
+
+
+class Task_Error_LimitRefused(Exception):
+    pass
 
 
 class Task_Error_NotConvertible(Exception):

@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Widget in "modules/computer/ui/widget/protocol/widget.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Priority_Rank in "modules-plugable/identity/thing/priority/protocol/priority-rank.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Task_Ensure ab {
+	Widget
+}
+
+tp Open mt (self Task_Ensure) (task MemoryAddress, title String, parent MemoryAddress, queued Boolean, rank Priority_Rank, rankGiven Boolean, labels String, project String, dependsOn String) (id MemoryAddress, err Error)

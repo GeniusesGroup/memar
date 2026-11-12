@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-from modules.identity.thing.labels.Queued import Label_Queued
-from modules.identity.thing.labels.Blocked import Label_Blocked
 from importlib import import_module
+Label_Queued = import_module('modules-plugable.knowledge.label.status.labels.Queued').Label_Queued
+Label_Blocked = import_module('modules-plugable.knowledge.label.status.labels.Blocked').Label_Blocked
 _m_set_status = import_module('modules-plugable.knowledge.label.status.services.set_status')
-SET_STATUS_LINE = f'memar service {_m_set_status.SERVICE_SET} --thing ID --word WORD'
+SET_STATUS_LINE = 'memar status set ID WORD --project NAME'
 from machine.plugable_import import load as plugable_load
 import argparse
 Request = import_module('modules-plugable.knowledge.documentation.plan.primitive.request').Request
@@ -43,7 +43,7 @@ _m_record = import_module('modules-plugable.knowledge.documentation.primitive.re
 REPORT = _m_record.REPORT
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 plan_path = _m_task_files.plan_path
-rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
+rank_of = import_module('modules-plugable.management.task.services.task_thing_services').read_priority_rank
 from modules.computer.software.primitive.project_name import ProjectName
 from modules.computer.software.primitive.project_path import ProjectPath
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')

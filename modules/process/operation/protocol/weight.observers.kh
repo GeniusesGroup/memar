@@ -3,5 +3,5 @@
 tp Weight in "modules/process/operation/protocol/weight.kh"
 
 tp Observer_Weight ab
-// Use to queue requests by its weights in the same priority
+// Use to queue requests by weight among peers of the same Priority_Rank
 tp GetWeight mt (self Observer_Weight) () (w Weight)

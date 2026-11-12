@@ -5,7 +5,7 @@
 Why one folder per task, under ONE root. Parallel agent tasks edit one
 shared working tree with no coordination, and concurrent writes to one file
 collide silently — shared-tree collisions. The per-file advisory locks in
-`bundles/memar_fs/services/text_edit_lock.py` answer that, and `memar content write` and `edit` take one,
+`bundles/memar_adaptor/fs/services/text_edit_lock.py` answer that, and `memar content write` and `edit` take one,
 but advisory locks are honored by skill rule and not by the filesystem:
 file-write tools bypass them, and only intent notes saying who plans what
 against which base let a waiter that takes over a stale lock read what the dead
@@ -40,11 +40,10 @@ claimed is queued again, so a task being worked, or one finished, is never
 put back in line. `--priority` is owned by the ensure widget: after open it
 sets Priority_Rank through Thing, so queuing and ranking a task is one
 command without the ensure service doing Priority's work. `--label KIND=WORD`, repeatable, says what the task is
-about and what act it is, the same way (`task_plan_labels`); they are the
+about and what act it is, the same way (`plan_label` widget, `plan_registry`); they are the
 task's own, never copied from the parent's, since a copy would hide the
 decision of what the new task is about. A topic is one the project declares;
-a word declared nowhere is refused, naming the declared topics near it
-(`plan_labels.checked_label`).
+a word declared nowhere is refused, naming the declared topics near it.
 
 Opening is also when the day's sweep runs (`task_gc`), never touching the
 task being opened or continued.
@@ -88,7 +87,7 @@ The folder itself is ensured by `task_ensure`, and its plan written or queued by
 from __future__ import annotations
 from importlib import import_module
 _m_set_status = import_module('modules-plugable.knowledge.label.status.services.set_status')
-SET_STATUS_LINE = f'memar service {_m_set_status.SERVICE_SET} --thing ID --word WORD'
+SET_STATUS_LINE = 'memar status set ID WORD --project NAME'
 from machine.plugable_import import load as plugable_load
 import argparse
 from typing import Callable
@@ -119,8 +118,8 @@ TOPIC = _m_plan_front.TOPIC
 kinds_listing = _m_plan_front.kinds_listing
 OPENED_CHAT_RULE = '/modules-plugable/management/task/rules/opened-chat-is-left-alone/opened-chat-is-left-alone.md'
 LATER_WORK_RULE = '/modules-plugable/management/task/rules/later-work-returns-to-its-task/later-work-returns-to-its-task.md'
-DELEGATION_MODEL_RULE = '/modules-plugable/management/task/rules/delegation-names-the-lowest-model/delegation-names-the-lowest-model.md'
-HAND_BACK_RULE = '/modules-plugable/management/task/rules/delegator-writes-the-refused-hand-back/delegator-writes-the-refused-hand-back.md'
+DELEGATION_MODEL_RULE = '/modules-plugable/management/agency/rules/delegation-names-the-lowest-model/delegation-names-the-lowest-model.md'
+HAND_BACK_RULE = '/modules-plugable/management/agency/rules/delegator-writes-the-refused-hand-back/delegator-writes-the-refused-hand-back.md'
 ABSTRACTION_RULE = '/modules/computer/software/rules/abstraction-first/abstraction-first.md'
 TESTS_RULE = '/modules/process/test/rules/tests-first-and-scoped/tests-first-and-scoped.md'
 _m_acts = import_module('modules.management.agency.labels.acts')

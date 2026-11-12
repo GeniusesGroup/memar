@@ -21,6 +21,7 @@ import (
 	"memar/computer/datatype"
 	"memar/protocol"
 	"memar/process/service"
+	priority_p "org/modules-plugable/identity/thing/priority/protocol"
 )
 
 var Command command
@@ -60,7 +61,7 @@ func (s *command) Methods() []function_p.Method { return nil }
 
 //memar:impl memar/protocol.Service
 func (s *command) URI() string                         { return "" }
-func (s *command) Priority() operation_p.Priority      { return operation_p.Priority_Unset }
+func (s *command) Priority() priority_p.Priority_Rank                  { return priority_p.Priority_Rank_OfAbsent() }
 func (s *command) Weight() operation_p.Weight          { return operation_p.Weight_Unset }
 func (s *command) ActionType() operation_p.ActionType  { return operation_p.ActionType_None }
 func (s *command) UserType() user_p.Type               { return user_p.Type_Unset }

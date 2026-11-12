@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Intake in "modules-plugable/management/task/widgets/intake/protocol/intake.kh"
+
+tp Domain mt (self Intake) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+
+tp Summary mt (self Intake) () (s String) {
+    CharacterRun_From.FromCharacterRun("Finds related subjects then ensures the new task")(s, VoidError)
+}
+
+tp Overview mt (self Intake) () (s String) {
+    CharacterRun_From.FromCharacterRun("Tentative. Asks pluggable Text_Find_Holders (text/retrieval) with text, Type_UUID field predicates, and a composition-bound Text_Index_Score_Service; prints hits without holding the maker on the first build; then ensure-parts. Retrieval is optional — not kernel Text. No scoring method is fixed here. Agents do not page task ids to hunt duplicates.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Intake) () (s String) {
+    CharacterRun_From.FromCharacterRun("memar intake — realization binds field preds by Type_UUID; see Text_Find_Holders")(s, VoidError)
+}
+
+tp DevActionNote mt (self Intake) () (s String) {
+    CharacterRun_From.FromCharacterRun("Python intake.py and tests still on old module/role surface — implement debt after abstraction approval. Research 20261103-T100549Z-14796.")(s, VoidError)
+}

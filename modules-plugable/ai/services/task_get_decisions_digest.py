@@ -2,13 +2,11 @@
 # For license and copyright information please see the LEGAL file in the code repository
 
 from __future__ import annotations
-from modules.identity.thing.labels.Queued import Label_Queued
 from importlib import import_module
-import argparse
+Label_Queued = import_module('modules-plugable.knowledge.label.status.labels.Queued').Label_Queued
 import re
 from datetime import date
 from pathlib import Path
-from typing import Callable
 from machine.console import note
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 REPORT = _m_record.REPORT
@@ -35,7 +33,10 @@ find_tasks = _m_list.find_tasks
 project_of = _m_list.project_of
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 Task = _m_folder.Task
-rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
+_m_things = import_module('modules-plugable.management.task.services.task_thing_services')
+rank_of = _m_things.read_priority_rank
+read_status_key = _m_things.read_status_key
+project_for = _m_things.project_for
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 project_root = _m_task_location.project_root
 _m_report_text = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
@@ -92,17 +93,12 @@ def print_open_questions(entries: list, decisions: list[str], wanted: date | Non
         note(f'{task_id}#{number}: {heading}' + (f' {BLOCKING_MARK}' if blocking else ''))
     return len(shown_entries)
 
-def _project_for_rank(task: Task) -> Path | None:
-    named = ((task.front or {}).get(PlanKey.PROJECT.key) or '').strip()
-    if not named:
-        return None
-    return project_root(project_by_path(named))
-
 def print_task(task: Task, entries: list[str], problem: str | None, flags: list[str], recorded: list[str], *, review: bool) -> None:
+    held_status = read_status_key(task.id, project_for(task))
     print()
     print(f"{task.id}  {(task.front or {}).get('title', '')}")
-    note(f"status: {task.status or 'none'}")
-    note(f'priority: {rank_of(task.id, _project_for_rank(task))}')
+    note(f"status: {held_status or 'none'}")
+    note(f'priority: {rank_of(task.id, project_for(task))}')
     if problem:
         note(f'failed hand-back: {problem}')
     for flag in flags:
@@ -131,12 +127,13 @@ def get_decisions_digest(conversation: str | None=None, project: str | None=None
     reconcile_all(find_tasks(conversation=conversation, project=project_of(project)))
     reader = Reader(None)
     for task in find_tasks(conversation=conversation, project=project_of(project)):
-        if task.status == Label_Queued.key:
+        held_status = read_status_key(task.id, project_for(task))
+        if held_status == Label_Queued.key:
             continue
         if wanted is not None and day_of(task.path) != wanted:
             continue
         entries = decisions_needed(task.path)
-        problem = handback_problem(task.path, task.status)
+        problem = handback_problem(task.path, held_status)
         decisions.extend(entries)
         lying = pointer_problem(entries, open_keys)
         if lying:
@@ -161,19 +158,23 @@ def get_decisions_digest(conversation: str | None=None, project: str | None=None
     if listed is None:
         print_open_questions(questions, decisions, wanted)
 
-def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    digester = verbs.add_parser(DIGEST_COMMAND, help="gather every task's decisions needed into one digest, or review a day's tasks", description=f"""Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the tasks'\nreports: each task with entries, its title, status, priority, report status, and\nentries as written. A report that is not a short hand-back is in it too, marked `failed\nhand-back` with why, and so is a task not complete that looks finished or abandoned,\nmarked `concerns`; so is a task Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\ndependency that cannot be found or makes a cycle. Queued tasks are left out; a complete task is in only when it has\nentries or a failed hand-back. A short hand-back is a report whose Status equals its\nplan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\neach the question, its options, and the one it recommends.\n\nWith --day: the review, for when the owner asks to "review today's tasks with me and\nclose the ones I confirm". Every task not queued that changed on that day, one by one,\nwith the command that closes it. Read each with the owner; run that\n`memar git trash-task-folder --task-id ID` only for those the owner confirms finished, and for\nnone of a project that keeps its tasks (its preferences set `tasks`). The review closes\nnothing itself.\n\nAfter the tasks it lists the open questions (contents of kind question that no later content
+
+
+
+declare = import_module('modules.process.service.primitive.declaration').declare
+DECLARATIONS = (
+    declare(
+        get_decisions_digest,
+        name=DIGEST_COMMAND,
+        summary="gather every task's decisions needed into one digest, or review a day's tasks",
+        description=f"""Without --day: one digest of every entry under `{REPORT.hand_back_part}` in the tasks'\nreports: each task with entries, its title, status, priority, report status, and\nentries as written. A report that is not a short hand-back is in it too, marked `failed\nhand-back` with why, and so is a task not complete that looks finished or abandoned,\nmarked `concerns`; so is a task Blocked by its `{PlanKey.DEPENDS_ON.written}`, with what it waits for, and a\ndependency that cannot be found or makes a cycle. Queued tasks are left out; a complete task is in only when it has\nentries or a failed hand-back. A short hand-back is a report whose Status equals its\nplan's and, only when it needs a decision, at most {REPORT.hand_back_max_lines} lines under `## {REPORT.hand_back_part}`,\neach the question, its options, and the one it recommends.\n\nWith --day: the review, for when the owner asks to "review today's tasks with me and\nclose the ones I confirm". Every task not queued that changed on that day, one by one,\nwith the command that closes it. Read each with the owner; run that\n`memar git trash-task-folder --task-id ID` only for those the owner confirms finished, and for\nnone of a project that keeps its tasks (its preferences set `tasks`). The review closes\nnothing itself.\n\nAfter the tasks it lists the open questions (contents of kind question that no later content
 refers to), as `memar content questions` does: blocking first, then by task and number; with
 --day only those asked that day; none with --conversation. A `{REPORT.hand_back_part}` line
 naming `task#number` shows that question there and not again; one naming a question that is
 not open is a failed hand-back. With --day each task also shows its decision contents: the
 Decided, Confidence and Reason fields.
 
-Without a project flag it reads Memar's own tasks; {ProjectName.FLAG} reads a project's wherever\nthey lie; --conversation one conversation's, by the id of a task in it.""")
-    add_project_flags(digester, 'read the tasks of the project')
-    digester.add_argument('--day', default=None, metavar='DAY', help=f'review the tasks that changed on DAY: {DAY_NAMES}')
-    digester.add_argument('--conversation', default=None, metavar='ID', help='gather only the tasks of the conversation the task ID belongs to')
-    return run
-
-def run(args: argparse.Namespace) -> None:
-    get_decisions_digest(args.conversation, project_from_args(args), args.day)
+Without a project flag it reads Memar's own tasks; {ProjectName.FLAG} reads a project's wherever\nthey lie; --conversation one conversation's, by the id of a task in it.""",
+        help={'conversation': 'gather only the tasks of the conversation the task ID belongs to', 'project': 'read the tasks of the project', 'day': 'review the tasks that changed on DAY'},
+    ),
+)

@@ -11,6 +11,7 @@ import (
 	cmd "memar/operation/command"
 	"memar/process/service"
 	"memar/protocol"
+	priority_p "org/modules-plugable/identity/thing/priority/protocol"
 	user_p "org/modules/identity/user/protocol"
 )
 
@@ -48,7 +49,7 @@ func (s *rootCommand) ActionType() operation_p.ActionType { return operation_p.A
 func (s *rootCommand) UserType() user_p.Type              { return user_p.Type_Unset }
 
 //memar:impl protocol.OperationImportance
-func (s *rootCommand) Priority() protocol.Priority { return protocol.Priority_Unset }
+func (s *rootCommand) Priority() priority_p.Priority_Rank { return priority_p.Priority_Rank_OfAbsent() }
 func (s *rootCommand) Weight() operation_p.Weight  { return operation_p.Weight_Unset }
 
 //memar:impl protocol.ServiceDetails

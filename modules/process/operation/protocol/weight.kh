@@ -1,23 +1,22 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// Weight indicate to use by any queue systems like network sockets to implement priority/weight mechanism.
+// Weight is the finer band a queue uses with Thing Priority_Rank (sockets, demux).
 tp Weight ab
 
 // TODO(go-migrate):
 /*
 package operation_p
 
-// Weight indicate to use by any queue systems like network sockets to implement priority/weight mechanism.
+// Weight is the finer band a queue uses with Thing Priority_Rank.
 type Weight uint8
 
-// Weights
 const (
 	Weight_Unset Weight = iota
 	Weight_Lowest
 	Weight_Lower
 	Weight_Low
 	Weight_Normal
-	// TODO::: add more queue for priority weights
+	// TODO::: add more queue weights
 	Weight_TimeSensitive Weight = 255 // Call related service in each received packet. VoIP, IPTV, Sensors data, ...
 )
 */

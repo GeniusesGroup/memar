@@ -15,10 +15,10 @@ names (`task_location`), and the day's sweep runs when one is opened (`task_gc`)
 touching the task being opened or continued.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Queued import Label_Queued
-from modules.identity.thing.labels.Blocked import Label_Blocked
-from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
+Label_Queued = import_module('modules-plugable.knowledge.label.status.labels.Queued').Label_Queued
+Label_Blocked = import_module('modules-plugable.knowledge.label.status.labels.Blocked').Label_Blocked
+Label_Active = import_module('modules-plugable.knowledge.label.status.labels.Active').Label_Active
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 task_dir = _m_memar_location.task_dir
 from pathlib import Path
@@ -34,7 +34,7 @@ _m_folder = import_module('modules-plugable.management.task.services.folder')
 folder_of = _m_folder.folder_of
 project_folder_of = _m_folder.project_folder_of
 read_task = _m_folder.read_task
-_m_gc = import_module('bundles.memar_git.services.sweep_idle_task_folders')
+_m_gc = import_module('bundles.memar_adaptor.git.services.sweep_idle_task_folders')
 reap_once_a_day = _m_gc.reap_once_a_day
 _m_layout = import_module('modules-plugable.management.task.services.layout')
 ensure_folders = _m_layout.ensure_folders
@@ -45,7 +45,7 @@ in_project_location = _m_task_location.in_project_location
 project_location = _m_task_location.project_location
 project_root = _m_task_location.project_root
 register = _m_task_location.register
-_m_log = import_module('bundles.memar_git.services.log')
+_m_log = import_module('bundles.memar_adaptor.git.services.log')
 record = _m_log.record
 _m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 checked_title = _m_plan_text.checked_title
@@ -56,8 +56,9 @@ _m_plan_depends = import_module('modules-plugable.management.task.services.plan_
 set_depends_on = _m_plan_depends.set_depends_on
 _m_plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
 checked_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label').checked_label
-attach = import_module('modules.knowledge.label.services.attach_label').attach
-TaskLabelStore = import_module('modules-plugable.management.task.services.task_label_store').TaskLabelStore
+_m_things = import_module('modules-plugable.management.task.services.task_thing_services')
+attach_label = _m_things.attach_label
+set_status = _m_things.set_status
 _m_plan_write = import_module('modules-plugable.management.task.services.plan_write')
 queue_plan = _m_plan_write.queue_plan
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
@@ -99,7 +100,7 @@ def linked_conversation(task_id: str, parent: str) -> str:
         fail('--parent names this task itself; name the task this task came from')
     folder = folder_of(parent)
     task = read_task(folder)
-    if not task.has_plan and not import_module('bundles.memar_git.services.task_store').on_branch(parent):
+    if not task.has_plan and not import_module('bundles.memar_adaptor.git.services.task_store').on_branch(parent):
         fail(f'no task {parent}: --parent names a task that is there, the one this task came from')
     return task.conversation
 
@@ -140,7 +141,7 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     sid = TaskId.new() if task_id is None else task_id
     folder = task_dir(sid)
     project = named_project(project)
-    store = import_module('bundles.memar_git.services.task_store')
+    store = import_module('bundles.memar_adaptor.git.services.task_store')
     if project is None and store.on_branch(sid):
         project = recorded_project(folder) or store.project_of_task(sid)
     if project is None and not has_plan(folder):
@@ -169,7 +170,10 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
     if not has_plan_now:
         waits = bool(cited) and bool(reader.unmet(cited))
         status = Label_Blocked.key if waits else Label_Queued.key if queued else Label_Active.key
-        create_task(path, sid, title, parent, conversation, project, status, given, now.text() or None)
+        create_task(path, sid, title, parent, conversation, project, now.text() or None)
+        set_status(sid, status, project)
+        for label in given or ():
+            attach_label(sid, label, project)
         record('opened', sid, f'parent {parent}' if parent else '', folder=path)
         if waits:
             record(BLOCKED_EVENT, sid, '; '.join(reader.unmet(cited)), folder=path)
@@ -177,7 +181,7 @@ def ensure_task(task_id: str | None=None, title: str | None=None, parent: str | 
         if queued:
             queue_plan(stores_at(path), project, sid, is_claimed(path))
         for label in given or ():
-            attach(TaskLabelStore(stores_at(path), project), sid, label)
+            attach_label(sid, label, project)
         if cited:
             set_depends_on(stores_at(path), project, sid, now)
             reconcile(read_task(path), reader)

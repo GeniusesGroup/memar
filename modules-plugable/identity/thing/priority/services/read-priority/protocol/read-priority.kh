@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp LabelStore in "modules/knowledge/label/protocol/label-store.kh"
+tp RankStore in "modules-plugable/identity/thing/priority/protocol/rank-store.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Priority_Rank in "modules-plugable/identity/thing/priority/protocol/priority-rank.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Priority_Read ab {
+	Service
+}
+
+tp Read mt (self Priority_Read) (labels LabelStore, ranks RankStore, thing MemoryAddress) (rank Priority_Rank, found Boolean)

@@ -74,7 +74,7 @@ task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
 plan_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label')
-set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
+set_on = import_module('modules-plugable.management.task.services.task_thing_services').set_priority
 
 def declare_topic(project: Path, fresh) -> None:
     """Declare the topic FRESH in PROJECT, as a module of it would: a Label_<Word> file of a `labels/` folder."""
@@ -132,7 +132,7 @@ class Fixture(unittest.TestCase):
         return folder
 
     def status_of(self, folder: Path) -> str:
-        return import_module('modules-plugable.management.task.services.folder').read_task(folder).status
+        return import_module('modules-plugable.management.task.services.task_thing_services').read_status_key(folder.name, str(self.fake_root))
 
     def refused(self, call, *args) -> str:
         with self.assertRaises(SystemExit) as raised:

@@ -65,7 +65,7 @@ Each point this module used to state about content, change, claim, holder, prior
 | A content related to the content it intends to change before the change exists, so everyone can see who intends to change it and who has; the revisions a piece of work produced | content: a proposal replies to its target and carries `Proposed`, and acceptance is Thing's `supersedes` ([Content → Proposals and replacement](../../knowledge/content/content.md#proposals-and-replacement)) | `20261105-T082103Z-24244` |
 | Taking up work as joining the group with the Task's identity, one `joined` edge per role; the holder is Ownership's `claimer_is`, one holder at a time a Rights rule over it; who sets Active | group ([Group → Membership](../group/group.md#membership)) | `20261105-T082106Z-24244` |
 | Ranking queued work and taking a task | a UI widget of the plural `tasks` domain over base reads of Task and Group | `20261105-T082109Z-24244` |
-| The position as a Status-kind word and the acts (design, implement, ...) as labels of their own | label | none; the `label` edge already serves, and the call that sets a Status is `memar service a8f521cf-d7dd-5c98-b24c-ca907a12da4b --thing ID --word WORD` |
+| The position as a Status-kind word and the acts (design, implement, ...) as labels of their own | label | none; the `label` edge already serves, and the call that sets a Status is `memar status set ID WORD --project NAME` |
 
 ## Dependencies
 `part_of` and `blocks` are the only relations the kernel knows between Tasks. A Task that cannot start until another ends is `blocked_by` it; the status of the blocked Task follows. A Task that is a step of another is `part_of` it. Several Tasks may name one Task as a part: one inspection can serve two phases.

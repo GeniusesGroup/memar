@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GraphRank_Error_Refused in "modules-plugable/identity/thing/priority/errors/graphrank-error-refused.kh"
+
+tp Domain mt (self GraphRank_Error_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Priority")(s, VoidError)
+}
+
+tp Summary mt (self GraphRank_Error_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The graph refused or could not serve the priority edge")(s, VoidError)
+}
+
+tp Overview mt (self GraphRank_Error_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("The graph answered refused or unavailable to a read or a write of the priority edge.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GraphRank_Error_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Try again later, or report the refusal.")(s, VoidError)
+}
+
+tp DevActionNote mt (self GraphRank_Error_Refused) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carry the answer of the graph with the error.")(s, VoidError)
+}

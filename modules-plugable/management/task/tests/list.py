@@ -91,7 +91,7 @@ task_plan = import_module('modules-plugable.knowledge.documentation.plan.service
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 register = _m_task_location.register
 import shape
-set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
+set_on = import_module('modules-plugable.management.task.services.task_thing_services').set_priority
 _m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 plan_skeleton = _m_plan_text.plan_skeleton
 DAY = 24 * 60 * 60

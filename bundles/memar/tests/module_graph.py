@@ -41,6 +41,7 @@ role_folders = _m_memar_location.role_folders
 _m_test_scratch = import_module('modules.process.test.services.test_scratch')
 suite_scratch = _m_test_scratch.suite_scratch
 import ast
+import re
 import sys
 import tempfile
 import unittest
@@ -63,6 +64,24 @@ CODE_FOLDERS = ('services', 'primitive')
 # not allowed by the owner: they stand inside the pluggable module `knowledge/documentation`, which the move tasks of the
 # category rule place; each leaves this list when its move lands.
 UNMIRRORED = {path: 'placed by the move tasks of the category rule' for path in ('knowledge/documentation/changelog', 'knowledge/documentation/comparison', 'knowledge/documentation/explanation', 'knowledge/documentation/handoff', 'knowledge/documentation/plan', 'knowledge/documentation/practice', 'knowledge/documentation/report', 'knowledge/documentation/research')}
+
+# Khayyam files under `modules/` that import a pluggable file. Found by this check on 2026-11-08 (task 20261107-T061526Z-27052),
+# not allowed by the owner: each leaves this list when the kernel file stops importing it or the owner dates an allowance.
+KH_FOUND = {
+    ('modules/computer/module/protocol/bs-delete.kh', 'modules-plugable/net/uri/protocol/path.observers.kh'): 'found, not allowed',
+    ('modules/computer/module/protocol/bs-new.kh', 'modules-plugable/net/uri/protocol/path.observers.kh'): 'found, not allowed',
+    ('modules/computer/module/protocol/bs-update.kh', 'modules-plugable/net/uri/protocol/path.observers.kh'): 'found, not allowed',
+    ('modules/computer/module/protocol/bs.kh', 'modules-plugable/computer/ui/gui/protocol/page.kh'): 'found, not allowed',
+    ('modules/knowledge/label/errors/label-error-undeclared.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/label/protocol/label.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/label/services/find-label/protocol/find-label.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/label/services/intern-label/protocol/intern-label.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/label/services/intern-label/protocol/request.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/label/services/nearest-labels/protocol/nearest-labels.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/label/widgets/check-label/protocol/check-label.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
+    ('modules/knowledge/text/protocol/text-link.kh', 'modules-plugable/net/uri/protocol/uri.kh'): 'found, not allowed',
+    ('modules/process/operation/protocol/priority.observers.kh', 'modules-plugable/identity/thing/priority/protocol/priority-rank.kh'): 'found, not allowed',
+}
 
 def module_folders(top: Path) -> dict[str, Path]:
     """Each module's dotted path, with its folder."""
@@ -103,6 +122,18 @@ def is_import_module(node: ast.AST) -> bool:
 def back_edges(graph: dict[str, set[str]]) -> list[tuple[str, str]]:
     """The edges from a kernel module to a pluggable module or a bundle."""
     return sorted(((source, target) for source, targets in graph.items() if source.split('.')[0] == KERNEL for target in targets if target.split('.')[0] in OPTIONAL))
+
+KH_IMPORT = re.compile(r'^\s*(?:tp|vr)\s+\w+\s+in\s+"((?:modules-plugable|bundles)/[^"]+)"', re.MULTILINE)
+
+def kh_back_edges(top: Path) -> list[tuple[str, str]]:
+    """The Khayyam files under `modules/` that import a file under `modules-plugable/` or `bundles/`."""
+    found = []
+    base = top / KERNEL
+    if base.is_dir():
+        for path in sorted(base.rglob('*.kh')):
+            for match in KH_IMPORT.finditer(path.read_text(encoding='utf-8')):
+                found.append((path.relative_to(top).as_posix(), match.group(1)))
+    return found
 
 def edges(top: Path) -> dict[str, set[str]]:
     modules = module_folders(top)
@@ -200,6 +231,24 @@ class FindsBack(unittest.TestCase):
             shelf.mkdir(parents=True)
             (shelf / 'a.py').write_text('from importlib import import_module\ntwo = import_module("modules-plugable.cat.two.services.b")\nfrom bundles.three.services.b import x\n', encoding='utf-8')
             self.assertEqual(back_edges(edges(top)), [('modules.one', 'bundles.three'), ('modules.one', 'modules-plugable.cat.two')])
+class NoKhBackEdge(unittest.TestCase):
+
+    def test_no_kernel_khayyam_file_imports_an_optional_one(self) -> None:
+        self.assertEqual([edge for edge in kh_back_edges(TOP) if edge not in KH_FOUND], [], 'move what the kernel file needs into the kernel or below it, or ask the owner for a dated allowance')
+
+    def test_every_found_edge_is_still_there(self) -> None:
+        self.assertEqual([edge for edge in KH_FOUND if edge not in kh_back_edges(TOP)], [], 'drop the edge that is gone')
+
+class FindsKhBack(unittest.TestCase):
+
+    def test_a_khayyam_back_edge_written_into_a_scratch_tree_is_found(self) -> None:
+        with tempfile.TemporaryDirectory(dir=suite_scratch()) as folder:
+            top = Path(folder)
+            shelf = top / 'modules' / 'one' / 'services' / 'a' / 'protocol'
+            shelf.mkdir(parents=True)
+            (shelf / 'a.kh').write_text('tp Title in "modules-plugable/uri/title/protocol/title.kh"\ntp Error in "modules/process/error/protocol/error.kh"\n', encoding='utf-8')
+            self.assertEqual(kh_back_edges(top), [('modules/one/services/a/protocol/a.kh', 'modules-plugable/uri/title/protocol/title.kh')])
+
 class Nested(unittest.TestCase):
 
     def test_a_module_nested_under_categories_with_only_primitive_code_is_named_and_checked(self) -> None:

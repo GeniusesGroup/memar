@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp GraphRank_Error_Changed in "modules-plugable/identity/thing/priority/errors/graphrank-error-changed.kh"
+
+tp Domain mt (self GraphRank_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Priority")(s, VoidError)
+}
+
+tp Summary mt (self GraphRank_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The priority rank changed while it was being rewritten")(s, VoidError)
+}
+
+tp Overview mt (self GraphRank_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("The graph found its check token stale on five tries in a row, and nothing was written.")(s, VoidError)
+}
+
+tp UserActionNote mt (self GraphRank_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read the rank again and decide again.")(s, VoidError)
+}
+
+tp DevActionNote mt (self GraphRank_Error_Changed) () (s String) {
+    CharacterRun_From.FromCharacterRun("A caller fault; PutRank stopped after its attempts.")(s, VoidError)
+}

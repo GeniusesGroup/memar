@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
+"""Tests for agency New_Chats_Ask, realized in
+`modules-plugable/management/agency/widgets/new_chats_ask/new_chats_ask.py`.
+
+    python modules-plugable/management/agency/widgets/new_chats_ask/tests/new_chats_ask.py
+
+The stable command face remains `memar ai get-new-chats-ask`.
+
+Nothing here writes outside its scratch folder: the Memar root is patched onto
+one made under the folder `modules/process/test/services/test_scratch.py` names.
+
+What is pinned, and what each pin is for:
+
+  Message   For each task the message holds its title, its priority, the
+            first sentence of its Why and the very text
+            `plan_carry_out_brief.brief_text` gives; a task named by
+            `--blocking` is marked blocks and the others independent.
+  Refusals  An id with no folder or plan, and a `--blocking` id that is not
+            among the tasks, are refused and print nothing.
+
+Usage is the interface. Do not duplicate these recipes as prose catalogs.
+"""
+from __future__ import annotations
+from importlib import import_module
+_m_test_scratch = import_module('modules.process.test.services.test_scratch')
+suite_scratch = _m_test_scratch.suite_scratch
+_m_memar_location = import_module('bundles.memar.services.location.memar_location')
+memar_fs = _m_memar_location
+import contextlib
+import io
+import sys
+import tempfile
+import unittest
+import unittest.mock
+from pathlib import Path
+TESTS = Path(__file__).resolve().parent
+SCRIPTS = next(p for p in TESTS.parents if p.name == 'modules-plugable').parent / 'bundles' / 'memar'
+sys.path.insert(0, str(SCRIPTS / 'services'))
+sys.path.insert(1, str(SCRIPTS))
+sys.path.insert(2, str(SCRIPTS.parent.parent))
+sys.dont_write_bytecode = True
+BUDGET_SECONDS = 10
+import shape
+new_chats = import_module('modules-plugable.management.agency.widgets.new_chats_ask.new_chats_ask')
+brief_text = import_module('modules-plugable.management.agency.widgets.plan_carry_out_brief.plan_carry_out_brief').brief_text
+FIRST, SECOND = ('20261016-T000000Z-1', '20261016-T000000Z-2')
+
+class Fixture(unittest.TestCase):
+
+    def setUp(self) -> None:
+        self.scratch = tempfile.TemporaryDirectory(dir=suite_scratch())
+        self.addCleanup(self.scratch.cleanup)
+        patched = unittest.mock.patch.object(memar_fs, 'memar_root', return_value=Path(self.scratch.name))
+        patched.start()
+        self.addCleanup(patched.stop)
+
+    def task(self, sid: str, title: str, priority: int, why: str) -> None:
+        folder = memar_fs.task_dir(sid, create=True)
+        text = f'---\nTitle: {title}\nStatus: Queued\nOpened: 2026-10-16T00:00:00Z\nProject: P\n---\n# {title}\n\n## Request\nR.\n\n## Why\n{why}\n\n## Steps\n1. x\n'
+        shape.from_plan_text(folder, text)
+        set_on = import_module('modules-plugable.management.task.services.task_thing_services').set_priority
+        set_on(sid, priority, None)
+
+    def printed(self, ids: list[str], blocking: list[str]) -> str:
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            new_chats.get_new_chats_ask(ids, blocking)
+        return out.getvalue()
+
+class Message(Fixture):
+
+    def test_each_task_is_described_marked_and_handed_over_by_the_one_brief(self) -> None:
+        self.task(FIRST, 'First task', 9, 'Because one. And more words.')
+        self.task(SECOND, 'Second task', 3, 'Because two.')
+        text = self.printed([FIRST, SECOND], [FIRST])
+        self.assertIn('First task — priority 9 — blocks\nWhy: Because one.\n' + brief_text(FIRST), text)
+        self.assertNotIn('And more words', text)
+        self.assertIn('Second task — priority 3 — independent\nWhy: Because two.\n' + brief_text(SECOND), text)
+        self.assertLess(text.index('First task'), text.index('Second task'))
+
+class Refusals(Fixture):
+
+    def test_an_unknown_task_or_a_blocking_id_outside_the_list_prints_nothing(self) -> None:
+        self.task(FIRST, 'First task', 9, 'Because one.')
+        for ids, blocking in (([SECOND], []), ([FIRST], [SECOND])):
+            with self.subTest(ids=ids, blocking=blocking):
+                with contextlib.redirect_stdout(io.StringIO()) as out, self.assertRaises(SystemExit):
+                    new_chats.get_new_chats_ask(ids, blocking)
+                self.assertEqual(out.getvalue(), '')
+if __name__ == '__main__':
+    unittest.main(verbosity=2)

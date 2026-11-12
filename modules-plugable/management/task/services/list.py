@@ -34,8 +34,8 @@ be misread — kept forever, or picked up as finished. What disagrees is
 `task_report`'s answer.
 """
 from __future__ import annotations
-from modules.knowledge.label.labels.Status import Label_Status
 from importlib import import_module
+Label_Status = import_module('modules-plugable.knowledge.label.status.labels.Status').Label_Status
 import argparse
 from pathlib import Path
 from typing import Callable
@@ -63,7 +63,10 @@ project_root = _m_task_location.project_root
 same_path = _m_task_location.same_path
 _m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 status_word = _m_plan_text.status_word
-rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
+rank_of = import_module('modules-plugable.management.task.services.task_thing_services').read_priority_rank
+_m_things = import_module('modules-plugable.management.task.services.task_thing_services')
+read_status_key = _m_things.read_status_key
+project_for = _m_things.project_for
 labels_of = import_module('modules-plugable.knowledge.documentation.plan.services.plan_front').labels_of
 _m_record = import_module('modules-plugable.knowledge.documentation.primitive.record')
 PLAN = _m_record.PLAN
@@ -96,7 +99,7 @@ def has_status(task: Task, status: str) -> bool:
     """Whether TASK's plan is in STATUS, named in any case."""
     if not (task.has_plan and task.readable):
         return False
-    return task.status == status_word(status)
+    return read_status_key(task.id, project_for(task)) == status_word(status)
 
 def conversation_named_by(task_id: str) -> str:
     """The conversation TASK_ID belongs to: the one its plan records, else its own id."""
@@ -138,7 +141,7 @@ def find_tasks(text: str | None=None, status: str | None=None, conversation: str
     """
     own = locations_of(project) if project is not None else []
     everywhere = conversation is not None or project is not None
-    store = import_module('bundles.memar_git.services.task_store')
+    store = import_module('bundles.memar_adaptor.git.services.task_store')
     store.scan((_m_folder.TASK_FACTS_NAME,))
     try:
         tasks = [read_task(folder) for folder in task_folders(projects=everywhere, locations=own)]
@@ -155,12 +158,6 @@ def find_tasks(text: str | None=None, status: str | None=None, conversation: str
         tasks = [task for task in tasks if task.conversation == wanted]
     return grouped(tasks)
 
-def _project_for_rank(task: Task) -> Path | None:
-    named = ((task.front or {}).get(PlanKey.PROJECT.key) or '').strip()
-    if not named:
-        return None
-    return project_root(project_by_path(named))
-
 def print_task(task: Task, *, idle: float | None=None, reader: Reader | None=None, everyone: list[Task] | None=None) -> None:
     """One list line and its notes; IDLE when measured; with READER, the task's dependencies and who depends on it, among EVERYONE."""
     if not task.has_plan:
@@ -173,11 +170,12 @@ def print_task(task: Task, *, idle: float | None=None, reader: Reader | None=Non
         print(f"{task.id}  {task.front.get('title', '')}")
         note(f"project: {task.front.get('project', '')}")
     if task.has_plan and task.readable:
-        note(f"status: {task.status or 'none'}")
-        note(f'priority: {rank_of(task.id, _project_for_rank(task))}')
+        held_status = read_status_key(task.id, project_for(task))
+        note(f"status: {held_status or 'none'}")
+        note(f'priority: {rank_of(task.id, project_for(task))}')
         if labels_of(task.front):
             note(f"labels: {', '.join((label.title for label in labels_of(task.front)))}")
-        why = disagreement(task.status, read_report_status(task.path))
+        why = disagreement(held_status, read_report_status(task.path))
         if why:
             note(f'{DISAGREES} {why}')
         for concern in concerns(task):

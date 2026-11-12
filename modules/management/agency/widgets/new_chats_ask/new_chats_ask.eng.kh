@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp New_Chats_Ask in "modules/management/agency/widgets/new_chats_ask/new_chats_ask.kh"
+
+tp Domain mt (self New_Chats_Ask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Agency")(s, VoidError)
+}
+
+tp Summary mt (self New_Chats_Ask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Composes the message that asks the owner to run tasks each in a new chat")(s, VoidError)
+}
+
+tp Overview mt (self New_Chats_Ask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Takes task addresses and returns the owner-facing message: for each task its title, priority, first Why sentence, and plan-carry-out brief, marked blocks or independent from the asking chat's Depends_on and any hand marks. Agency owns this composition; the AI verb is the stable command face. Durable state is reached only through a memory/record adapter, or one isolated storage method until that adapter is bound.")(s, VoidError)
+}
+
+tp UserActionNote mt (self New_Chats_Ask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Call TextOf or Print with the task addresses; show the message or open one chat per brief.")(s, VoidError)
+}
+
+tp DevActionNote mt (self New_Chats_Ask) () (s String) {
+    CharacterRun_From.FromCharacterRun("Cited by agency.md redesign: addresses in, new-chats message out. Realization under modules-plugable/management/agency/widgets/new_chats_ask/.")(s, VoidError)
+}

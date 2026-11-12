@@ -12,6 +12,7 @@ import (
 	net_p "memar/net/protocol"
 	operation_p "memar/process/operation/protocol"
 	ser "memar/process/service"
+	priority_p "org/modules-plugable/identity/thing/priority/protocol"
 	error_p "memar/process/error/protocol"
 
 	www "org/modules/computer/www/internal"
@@ -55,7 +56,7 @@ func (s *service) ExpireInFavorOf() datatype_p.DataType { return nil }
 
 //memar:impl memar/protocol.Service
 func (s *service) URI() string                        { return "" }
-func (s *service) Priority() operation_p.Priority     { return operation_p.Priority_Unset }
+func (s *service) Priority() priority_p.Priority_Rank                  { return priority_p.Priority_Rank_OfAbsent() }
 func (s *service) Weight() operation_p.Weight         { return operation_p.Weight_Unset }
 func (s *service) ActionType() operation_p.ActionType { return operation_p.ActionType_All }
 func (s *service) UserType() user_p.Type              { return user_p.Type_All }
