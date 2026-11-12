@@ -7,7 +7,7 @@ ID: 495467
 This document specifies how Khayyam models inheritance at the language level: where the relationship legitimately exists, and what replaces the mechanisms other languages label "inheritance."
 
 ## Abstract
-In Khayyam, inheritance is a relationship between abstractions, not between capsules. When an abstraction includes another abstraction, it extends the set of requirements that conforming capsules must satisfy — but no behavior is transferred. Capsules never acquire behavior from other capsules through "inheritance," method promotion, or any implicit mechanism. The only sanctioned mechanism for behavior sharing is **explicit delegation**: a method on the host capsule that visibly forwards the call to an embedded instance. This document specifies the language-level consequences of that separation. The principled foundation — including the conceptual challenge to "inheritance" as a model for behavioral transfer — is established in the [Explicit Behavior Ownership](../type/type.md#explicit-behavior-ownership) document.
+In Khayyam, inheritance is a relationship between abstractions, not between capsules. When an abstraction includes another abstraction, it extends the set of requirements that conforming capsules must satisfy — but no behavior is transferred. Capsules never acquire behavior from other capsules through "inheritance," method promotion, or any implicit mechanism. The only sanctioned mechanism for behavior sharing is **explicit delegation**: a method on the host capsule that visibly forwards the call to an embedded instance. This document specifies the language-level consequences of that separation. The principled foundation — including the conceptual challenge to "inheritance" as a model for behavioral transfer — is established in the [Explicit Behavior Ownership](../../type/type.md#explicit-behavior-ownership) document.
 
 ## Introduction
 
@@ -25,7 +25,7 @@ Beyond terminology, allowing behavior to appear in a capsule without being defin
 ## Explanation
 
 ### Abstraction Extension: Inheritance Between Abstractions
-Inheritance, understood as the transfer of requirements from one abstraction to another, is a legitimate and useful relationship. In Khayyam, abstractions can include other abstractions. When an abstraction includes another, it extends the set of requirements that conforming capsules must satisfy. The Error module's `Error` is the case: its block, declared once in [`error.kh`](../../process/error/protocol/error.kh), lists `Type` among the abstractions it includes, and `Type` is itself an abstraction ([`type.kh`](../type/protocol/type.kh)).
+Inheritance, understood as the transfer of requirements from one abstraction to another, is a legitimate and useful relationship. In Khayyam, abstractions can include other abstractions. When an abstraction includes another, it extends the set of requirements that conforming capsules must satisfy. The Error module's `Error` is the case: its block, declared once in [`error.kh`](../../../process/error/protocol/error.kh), lists `Type` among the abstractions it includes, and `Type` is itself an abstraction ([`type.kh`](../../type/protocol/type.kh)).
 
 `Error` includes `Type`, meaning any capsule that conforms to `Error` must define `Type` too. No behavior is transferred — the inclusion is purely declarative. The capsule that implements `Error` owns every method it defines.
 
@@ -104,5 +104,5 @@ A capsule satisfies an abstraction if it implements every method declared by tha
 **Rule: Abstractions Have No Behavior.**
 An abstraction (`ab`) cannot contain method bodies, state, or default implementations. Methods declared by an abstraction are signatures only.
 
-Since there is no behavior transfer between capsules, a method a capsule answers to is either defined in it or reached through a method it declares itself. How each of those calls is carried out is a compiler's business ([Compiler](../compiler/compiler.md)).
+Since there is no behavior transfer between capsules, a method a capsule answers to is either defined in it or reached through a method it declares itself. How each of those calls is carried out is a compiler's business ([Compiler](../../compiler/compiler.md)).
 

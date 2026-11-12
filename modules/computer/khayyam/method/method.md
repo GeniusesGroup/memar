@@ -41,7 +41,7 @@ tp {name} mt (self {owner_type}) ({influencing variables}...) ({influenced varia
 
 Example:
 ```khayyam
-tp Set mt (self Key) (key String) (err Error)
+tp Set mt (self Key) (value String) (err Error)
 ```
 
 #### Method Invocation Rules
@@ -68,12 +68,12 @@ When the parent type is itself a method, the receiver is that method, and the ca
 #### Type-level arguments for `sc` and `mt`
 A method's influencing group may receive a `vr`, an `sc`, or an `mt`, and what that position then holds is what the called method's behavior is. A `vr` is an instance of a capsule or an abstraction. An `sc` is a code scope: a library method that drives a scope receives that scope here ([Khayyam → Scope](../khayyam.md#scope)). An `mt` is a method.
 
-Any argument position of a call, in either group, may be filled by a variable or by a type; the grammar limits no position to `sc` or `mt`. Which of the two a position can accept is for the callee's signature to state, and what a compiler must support for both is [Compiler → An argument position may hold a variable or a type](../compiler/compiler.md#an-argument-position-may-hold-a-variable-or-a-type).
+Any argument position of a call, in either group, may be filled by a variable or by a type; the grammar limits no position to `sc` or `mt`. Which of the two a position can accept is for the callee's signature to state, and what a compiler must support for both is [Compiler → An argument position may hold a variable or a type](../../compiler/compiler.md#an-argument-position-may-hold-a-variable-or-a-type).
 
-A position of the influencing group may also hold a quoted form, whose shape [Khayyam → Keywords](../khayyam.md#keywords) states; what the callee receives is [Compiler → What a quoted form hands over](../compiler/compiler.md#what-a-quoted-form-hands-over).
+A position of the influencing group may also hold a quoted form, whose shape [Khayyam → Keywords](../khayyam.md#keywords) states; what the callee receives is [Compiler → What a quoted form hands over](../../compiler/compiler.md#what-a-quoted-form-hands-over).
 
 #### A method implements an abstraction by methods of its own
-A method can implement an abstraction. It does so by defining methods whose owner is that method. Those methods are the method's own behavior: they state what it does internally. The method can present that implementation to tooling by composing an intent abstraction, as a capsule does with [`abstraction_p.Implements`](../abstraction/implements.md). Asynchrony is one such abstraction, decided at the method's definition; see [Agency → Definition-Site Over Call-Site](../agency/agency.md#definition-site-over-call-site).
+A method can implement an abstraction. It does so by defining methods whose owner is that method. Those methods are the method's own behavior: they state what it does internally. The method can present that implementation to tooling by composing an intent abstraction, as a capsule does with [`abstraction_p.Implements`](../../abstraction/implements.md). Asynchrony is one such abstraction, decided at the method's definition; see [Agency → Definition-Site Over Call-Site](../agency/agency.md#definition-site-over-call-site).
 
 #### Body-less Methods (FFI and Contracts)
 A method is body-less when nothing follows its third group, so its line ends at the closing parenthesis of the influenced group. A line ending with `{}` instead carries a body, and an empty body is a body holding no command; the two are different declarations. This is legally used in two scenarios:
@@ -93,7 +93,7 @@ Khayyam does not repeat this: instead of naming a method's variables by which en
 These are relational categories, not fixed properties of a variable. The same `vr` can be an influencing variable in one method call and an influenced variable in another; the grammar's two parenthesized groups (`(influencing variables...)`, `(influenced variables...)`) declare, per call, which role each variable is playing this time.
 
 #### The Open Question: A Variable That Is Both
-A genuine unresolved case is a variable that plays both roles in the very same call. Consider `sk Socket` in a method that reads configuration values off `sk` (making it an influencing variable for that part of the method) and also calls `sk.Close()` before returning (making it an influenced variable, since the socket's own internal closed-state has now changed as a side effect of this call). There is currently no settled notation for declaring this dual role explicitly — a variable can only be written into one of the two parenthesized groups today, whichever the author judges primary. Atomic read-modify-write is not a counter-example: that case gets a dedicated method that owns the atomic operation as its own clear abstraction, so the call site never needs dual-role notation for it. No strong concrete example has yet been found where dual role survives as correct modeling; see the paired handoff's Open Questions.
+A genuine unresolved case is a variable that plays both roles in the very same call. Consider `sk Socket` in a method that reads configuration values off `sk` (making it an influencing variable for that part of the method) and also calls `sk.Close()()` before returning (making it an influenced variable, since the socket's own internal closed-state has now changed as a side effect of this call). There is currently no settled notation for declaring this dual role explicitly — a variable can only be written into one of the two parenthesized groups today, whichever the author judges primary. Atomic read-modify-write is not a counter-example: that case gets a dedicated method that owns the atomic operation as its own clear abstraction, so the call site never needs dual-role notation for it. No strong concrete example has yet been found where dual role survives as correct modeling; see the paired handoff's Open Questions.
 
 ### No Dedicated fn/func Keyword
 In Khayyam, functions and methods are not separate concepts. There is no `fn`/`func` keyword in the grammar — but more importantly than the missing keyword itself, Khayyam treats the instinct to reach for a genuinely standalone, type-independent function as usually a sign of unfinished thinking about the behavior, not a real requirement of the behavior itself.
@@ -111,7 +111,7 @@ tp When mt (self TimeHelper) (d NanoSecondDuration) (t MonotonicTime)
 
 // use in this manner:
 vr helper TimeHelper
-vr t1 monotonic.Time
+vr t1 MonotonicTime
 helper.When(d)(t1)
 ```
 

@@ -13,7 +13,7 @@ Rather than generic type parameters (`List<T>`), Khayyam achieves type-safe, pol
 ## Introduction
 
 ### Assumptions and constraints
-This document assumes familiarity with [Explicit Behavior Ownership](../type/type.md#explicit-behavior-ownership). The rejection of generic syntax follows from EBO's ownership model; it is not an independent preference about syntax aesthetics. Without that model, the arguments below can be mistaken for a stylistic rejection rather than a consequence of the rule that every behavior has one visible owner.
+This document assumes familiarity with [Explicit Behavior Ownership](../../type/type.md#explicit-behavior-ownership). The rejection of generic syntax follows from EBO's ownership model; it is not an independent preference about syntax aesthetics. Without that model, the arguments below can be mistaken for a stylistic rejection rather than a consequence of the rule that every behavior has one visible owner.
 
 ### Motivation
 
@@ -138,7 +138,7 @@ Additionally, the academic literature recognizes **row polymorphism** (structura
 |------|---------------------|-------|
 | **Inclusion (subtype) polymorphism** | Abstraction conformance (`ab`) | A capsule satisfying an abstraction is a subtype of that abstraction. This is Khayyam's primary polymorphism mechanism. |
 | **Parametric polymorphism** | Achieved via inclusion polymorphism | Khayyam does not have explicit type-parameter syntax (`<T>`), but the expressiveness of parametric polymorphism is fully available: a method accepting an abstraction type is, in effect, a universally quantified function ("for all types satisfying this abstraction"). See "Relationship to Parametric Polymorphism" below for the theoretical justification. |
-| **Ad-hoc polymorphism via constrained interfaces** | Abstraction types as method parameters | When a method accepts an abstraction type, it behaves differently for each concrete capsule that satisfies the abstraction. Each capsule provides its own implementation. This is a form of ad-hoc polymorphism — the same operation (`h.Hash(data)`) dispatches to different code depending on the concrete type. |
+| **Ad-hoc polymorphism via constrained interfaces** | Abstraction types as method parameters | When a method accepts an abstraction type, it behaves differently for each concrete capsule that satisfies the abstraction. Each capsule provides its own implementation. This is a form of ad-hoc polymorphism — the same operation (`h.Hash(data)(d, err)`) dispatches to different code depending on the concrete type. |
 
 **Syntax explicitly rejected:**
 
@@ -157,11 +157,11 @@ When a capsule satisfies an abstraction, it becomes a subtype of that abstractio
 ```khayyam
 // Any capsule that defines Read and Close satisfies Reader
 tp FileReader cp { handle FileHandle }
-tp Read mt (self FileReader) (data Element) (err Error) { /* ... */ }
+tp Read mt (self FileReader) () (data Element, err Error) { /* ... */ }
 tp Close mt (self FileReader) () (err Error) { /* ... */ }
 
 tp NetworkReader cp { conn TcpConn }
-tp Read mt (self NetworkReader) (data Element) (err Error) { /* ... */ }
+tp Read mt (self NetworkReader) () (data Element, err Error) { /* ... */ }
 tp Close mt (self NetworkReader) () (err Error) { /* ... */ }
 
 // This function is polymorphic: it accepts ANY Reader subtype
@@ -175,7 +175,7 @@ When abstraction `B` includes abstraction `A`, `B` is a subtype of `A`. Any caps
 
 ```khayyam
 tp Serializer ab {}
-tp Serialize mt (self Serializer) (data Bytes) (out Bytes) (err Error)
+tp Serialize mt (self Serializer) (data Bytes) (out Bytes, err Error)
 
 tp VersionedSerializer ab {
     Serializer
@@ -199,10 +199,10 @@ tp Create mt (self CarFactory) () (product Car) { /* Car satisfies Product */ }
 ```
 
 #### What the Grammar Says About Dispatch
-The grammar states nothing about how a call through an abstraction is performed, and offers no syntax to choose: the same polymorphic code may be performed differently at different call sites depending on what is knowable where, and no declaration expresses a preference. That decision, and what it costs at each call site, belongs to the compiler that consumes this grammar — see [Compiler](../compiler/compiler.md).
+The grammar states nothing about how a call through an abstraction is performed, and offers no syntax to choose: the same polymorphic code may be performed differently at different call sites depending on what is knowable where, and no declaration expresses a preference. That decision, and what it costs at each call site, belongs to the compiler that consumes this grammar — see [Compiler](../../compiler/compiler.md).
 
 ### Relationship to Parametric Polymorphism
-An important theoretical observation, supported by recent research, is that **inclusion polymorphism and parametric polymorphism have significant overlap in expressive power**. The paper "Structural Subtyping as Parametric Polymorphism" (Ghiotto et al., 2023, POPL) demonstrates that structural subtyping can encode parametric polymorphism, and vice versa, in certain type systems.
+The relationship between structural subtyping and parametric polymorphism depends on the type systems and translations being compared. ["Structural Subtyping as Parametric Polymorphism" (Tang et al., 2023, OOPSLA)](https://doi.org/10.1145/3622836) studies how row and presence polymorphism can encode structural subtyping for records and variants. It establishes translations for restricted systems and non-existence results for others. Applying those results to Khayyam requires a correspondence between its own typing rules and the calculi studied in the paper.
 
 This is relevant to Khayyam because it means that the absence of explicit generic syntax does not necessarily mean a loss of expressive power. When a developer writes:
 
@@ -237,13 +237,12 @@ tp AddConnection mt (self ConnectionList) (con Connection) (err Error) {
     // TODO::: Add any logic like validation here
 
     vr conID ConnectionID
-    con.ConnectionID(conID) (err)
-    // NOTE: `con` here occupies both roles — influencing in `(conID, con)` and influenced in `(con, err)`. This exhibits the open dual-role question of method.md#the-open-question-a-variable-that-is-both; no settled notation exists yet. A future notation may require explicit marking or splitting.
-    self.container.Add(conID, con) (con, err)
+    con.ConnectionID()(conID, err)
+    self.container.Add(conID, con)(err)
 }
 
 tp GetConnection mt (self ConnectionList) (id ConnectionID) (con Connection, err Error) {
-    self.container.Get(id) (con, err)
+    self.container.Get(id)(con, err)
 }
 ```
 
@@ -253,7 +252,7 @@ The type safety that `<T>` provides in other languages is achieved here through 
 When evaluating whether a generic-like parameter is safe to keep in a host language lacking Khayyam's abstraction model, the relevant question is not how many call layers separate the definition from its use, but whether the parameter is **closed** or **open** at its point of definition. A closed parameter is one the defining package itself binds to a fixed, framework-owned type (e.g. a container operation defined in terms of `Element`, where `Element` is always resolved by the framework, never chosen anew by each caller) — this carries no propagation cost, regardless of how many layers exist below or above it. An open parameter is one whose concrete binding is deferred to the caller (e.g. `Encoder[BUF any]`, where `BUF` must be supplied by whoever constructs an `Encoder`) — this is virulent by construction: every intermediate layer between the parameter's origin and its final concrete binding must either propagate the same open parameter or collapse it early via type erasure. Whether that path happens to be one layer or five is incidental; what matters is whether the parameter ever reaches call sites (e.g. business-logic service implementations) that must remain readable and free of type-system bookkeeping. A closed parameter keeps its binding at the definition, while an open parameter requires every intermediate layer to preserve or close that binding; this rule remains observable when a host language realizes the abstraction.
 
 #### Dynamic Dispatch Reducibility
-Whether dynamic dispatch is *always* reducible to a compile-time-resolved form was initially raised as an open dispute. For Memar it resolves in the affirmative from the base layer's own principles: dispatch among candidates may defer to runtime, but the candidate set and every candidate's implementation must already be spelled out in source — [Explicit Behavior Ownership](../type/type.md#explicit-behavior-ownership) permits no behavior the source does not define — and a genuinely runtime-only type selection, whose target set or implementation arrives while the system runs, would mint structure in execution, which [Structure Is Fixed by Definition](../type/type.md#structure-is-fixed-by-definition) excludes outright. Selection within the established closure is execution (the base principle's first boundary clause), not structural change.
+Whether dynamic dispatch is *always* reducible to a compile-time-resolved form was initially raised as an open dispute. For Memar it resolves in the affirmative from the base layer's own principles: dispatch among candidates may defer to runtime, but the candidate set and every candidate's implementation must already be spelled out in source — [Explicit Behavior Ownership](../../type/type.md#explicit-behavior-ownership) permits no behavior the source does not define — and a genuinely runtime-only type selection, whose target set or implementation arrives while the system runs, would mint structure in execution, which [Structure Is Fixed by Definition](../../type/type.md#structure-is-fixed-by-definition) excludes outright. Selection within the established closure is execution (the base principle's first boundary clause), not structural change.
 
 #### No Method Overloading
 A method name has exactly one signature. With inclusion polymorphism, behavior that differs per concrete capsule is expressed by each capsule implementing the abstraction's methods, so a second path to the same need would leave two mechanisms competing for the same declaration name.
