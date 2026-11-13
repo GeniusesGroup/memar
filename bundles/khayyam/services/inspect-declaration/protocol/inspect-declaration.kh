@@ -1,0 +1,103 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI in "modules-plugable/net/uri/protocol/uri.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Inspect_Declaration ab {
+	Service
+	Details
+}
+tp Do mt (self Inspect_Declaration) (request Declaration_Question) (answer Declaration_Answer, err Error)
+
+tp Declaration_Question ab { Details }
+tp GetSource mt (self Declaration_Question) () (source Source_Snapshot)
+tp GetPlace mt (self Declaration_Question) () (place Source_Position)
+tp GetReach mt (self Declaration_Question) () (reach Declaration_Reach)
+
+tp Source_Snapshot ab { Details }
+tp GetIdentity mt (self Source_Snapshot) () (identity Source_Identity)
+tp GetText mt (self Source_Snapshot) () (text CharacterRun)
+tp Source_Identity ab { Details }
+tp GetURI mt (self Source_Identity) () (uri URI)
+tp GetHash mt (self Source_Identity) () (hash String)
+tp GetVersion mt (self Source_Identity) () (version NumberOfElement, present Boolean)
+tp Source_Position ab { Details }
+tp GetLine mt (self Source_Position) () (line NumberOfElement)
+tp GetCharacter mt (self Source_Position) () (character NumberOfElement)
+tp Source_Range ab { Details }
+tp GetStart mt (self Source_Range) () (start Source_Position)
+tp GetEnd mt (self Source_Range) () (end Source_Position)
+tp Declaration_Reach ab { Details }
+tp Resolve mt (self Declaration_Reach) (address String, from URI) (resolved Inclusion_Resolution)
+tp Held mt (self Declaration_Reach) (uri URI) (snapshot Source_Snapshot, present Boolean)
+
+tp Declaration_Answer ab { Details }
+tp GetState mt (self Declaration_Answer) () (state Declaration_State)
+tp GetSnapshot mt (self Declaration_Answer) () (snapshot Source_Identity)
+tp GetReach mt (self Declaration_Answer) () (reach Resolution_Evidence)
+tp GetDeclaration mt (self Declaration_Answer) () (declaration Declaration_Evidence, present Boolean)
+
+tp Declaration_State ab { Details }
+tp GetWord mt (self Declaration_State) () (word String)
+tp Resolution_Evidence ab { Details }
+tp GetComplete mt (self Resolution_Evidence) () (complete Boolean)
+tp GetExtent mt (self Resolution_Evidence) () (extent String)
+tp GetDocuments mt (self Resolution_Evidence) () (documents Source_Identities)
+tp GetInclusions mt (self Resolution_Evidence) () (inclusions Inclusion_Provenance)
+tp GetIssues mt (self Resolution_Evidence) () (issues Resolution_Issues)
+
+tp Source_Identities ab { Details }
+tp At mt (self Source_Identities) (index NumberOfElement) (identity Source_Identity, present Boolean)
+
+tp Inclusion_Resolution ab { Details }
+tp GetTarget mt (self Inclusion_Resolution) () (target Source_Snapshot, present Boolean)
+tp GetMechanism mt (self Inclusion_Resolution) () (mechanism String, present Boolean)
+tp GetBase mt (self Inclusion_Resolution) () (directory URI, marker String, present Boolean)
+tp GetReason mt (self Inclusion_Resolution) () (reason String, present Boolean)
+
+tp Resolution_Issues ab { Details }
+tp At mt (self Resolution_Issues) (index NumberOfElement) (issue Resolution_Issue, present Boolean)
+tp Resolution_Issue ab { Details }
+tp GetWord mt (self Resolution_Issue) () (word String)
+tp GetReason mt (self Resolution_Issue) () (reason String)
+tp GetURI mt (self Resolution_Issue) () (uri URI)
+tp GetRange mt (self Resolution_Issue) () (range Source_Range, present Boolean)
+
+tp Declaration_Evidence ab { Details }
+tp GetName mt (self Declaration_Evidence) () (name String)
+tp GetRole mt (self Declaration_Evidence) () (role String)
+tp GetCategory mt (self Declaration_Evidence) () (category Declaration_Category)
+tp GetLocation mt (self Declaration_Evidence) () (uri URI, range Source_Range)
+tp GetSnapshot mt (self Declaration_Evidence) () (snapshot Source_Identity)
+tp GetOrigin mt (self Declaration_Evidence) () (origin Inclusion_Provenance)
+tp GetSignature mt (self Declaration_Evidence) () (signature Method_Signature_Evidence, present Boolean)
+tp GetMethods mt (self Declaration_Evidence) () (methods Method_Set_Evidence, present Boolean)
+
+tp Declaration_Category ab { Details }
+tp GetWord mt (self Declaration_Category) () (word String, known Boolean)
+tp Inclusion_Provenance ab { Details }
+tp At mt (self Inclusion_Provenance) (index NumberOfElement) (hop Inclusion_Hop, present Boolean)
+tp Inclusion_Hop ab { Details }
+tp GetSource mt (self Inclusion_Hop) () (source URI)
+tp GetAddress mt (self Inclusion_Hop) () (address String)
+tp GetResolution mt (self Inclusion_Hop) () (resolution Inclusion_Resolution)
+
+tp Method_Signature_Evidence ab { Details }
+tp GetOwner mt (self Method_Signature_Evidence) () (parameters Method_Parameters)
+tp GetInfluencing mt (self Method_Signature_Evidence) () (parameters Method_Parameters)
+tp GetInfluenced mt (self Method_Signature_Evidence) () (parameters Method_Parameters)
+tp Method_Parameters ab { Details }
+tp At mt (self Method_Parameters) (index NumberOfElement) (parameter Method_Parameter, present Boolean)
+tp Method_Parameter ab { Details }
+tp GetName mt (self Method_Parameter) () (name String)
+tp GetTypeName mt (self Method_Parameter) () (name String)
+tp Method_Set_Evidence ab { Details }
+tp GetExtent mt (self Method_Set_Evidence) () (extent String)
+tp GetComplete mt (self Method_Set_Evidence) () (complete Boolean)
+tp At mt (self Method_Set_Evidence) (index NumberOfElement) (method Declaration_Evidence, present Boolean)

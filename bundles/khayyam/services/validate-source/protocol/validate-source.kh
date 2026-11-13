@@ -1,0 +1,75 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp URI in "modules-plugable/net/uri/protocol/uri.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Source_Snapshot in "bundles/khayyam/services/inspect-declaration/protocol/inspect-declaration.kh"
+tp Source_Identity in "bundles/khayyam/services/inspect-declaration/protocol/inspect-declaration.kh"
+tp Source_Range in "bundles/khayyam/services/inspect-declaration/protocol/inspect-declaration.kh"
+tp Source_Identities in "bundles/khayyam/services/inspect-declaration/protocol/inspect-declaration.kh"
+tp Declaration_Reach in "bundles/khayyam/services/inspect-declaration/protocol/inspect-declaration.kh"
+tp Inclusion_Provenance in "bundles/khayyam/services/inspect-declaration/protocol/inspect-declaration.kh"
+
+tp Validate_Source ab {
+	Service
+	Details
+}
+tp Do mt (self Validate_Source) (request Validation_Question) (answer Validation_Answer, err Error)
+
+tp Validation_Question ab { Details }
+tp GetProposal mt (self Validation_Question) () (proposal Source_Proposal)
+tp GetReach mt (self Validation_Question) () (reach Declaration_Reach)
+tp GetOverlays mt (self Validation_Question) () (overlays Validation_Overlays)
+
+tp Source_Proposal ab { Details }
+tp GetURI mt (self Source_Proposal) () (uri URI)
+tp GetVersion mt (self Source_Proposal) () (version NumberOfElement, present Boolean)
+tp GetWholeText mt (self Source_Proposal) () (text CharacterRun, present Boolean)
+tp GetChange mt (self Source_Proposal) () (change Source_Change, present Boolean)
+
+tp Source_Change ab { Details }
+tp GetBase mt (self Source_Change) () (base Source_Identity)
+tp GetEdits mt (self Source_Change) () (edits Source_Edits)
+
+tp Source_Edits ab { Details }
+tp At mt (self Source_Edits) (index NumberOfElement) (edit Source_Edit, present Boolean)
+
+tp Source_Edit ab { Details }
+tp GetRange mt (self Source_Edit) () (range Source_Range)
+tp GetText mt (self Source_Edit) () (text CharacterRun)
+
+tp Validation_Overlays ab { Details }
+tp At mt (self Validation_Overlays) (index NumberOfElement) (snapshot Source_Snapshot, present Boolean)
+
+tp Validation_Answer ab { Details }
+tp GetSnapshot mt (self Validation_Answer) () (snapshot Source_Identity)
+tp GetDiagnostics mt (self Validation_Answer) () (diagnostics Validation_Diagnostics)
+tp GetDocuments mt (self Validation_Answer) () (documents Source_Identities)
+tp GetInclusions mt (self Validation_Answer) () (inclusions Inclusion_Provenance)
+tp GetChecks mt (self Validation_Answer) () (checks Validation_Checks)
+tp GetGateAccepted mt (self Validation_Answer) () (accepted Boolean)
+tp GetTypeSafetyEstablished mt (self Validation_Answer) () (established Boolean)
+tp GetExecutionEstablished mt (self Validation_Answer) () (established Boolean)
+
+tp Validation_Diagnostics ab { Details }
+tp At mt (self Validation_Diagnostics) (index NumberOfElement) (diagnostic Validation_Diagnostic, present Boolean)
+
+tp Validation_Diagnostic ab { Details }
+tp GetWord mt (self Validation_Diagnostic) () (word String)
+tp GetMessage mt (self Validation_Diagnostic) () (message String)
+tp GetSource mt (self Validation_Diagnostic) () (source Source_Identity)
+tp GetRange mt (self Validation_Diagnostic) () (range Source_Range)
+tp GetPhase mt (self Validation_Diagnostic) () (phase String)
+
+tp Validation_Checks ab { Details }
+tp At mt (self Validation_Checks) (index NumberOfElement) (check Validation_Check, present Boolean)
+
+tp Validation_Check ab { Details }
+tp GetSubject mt (self Validation_Check) () (subject String)
+tp GetState mt (self Validation_Check) () (state String)
+tp GetReason mt (self Validation_Check) () (reason String)

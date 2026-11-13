@@ -54,7 +54,7 @@ const RULE = "an address is resolved through the declaring file of the project i
  *  address is the question the project asked; the declaring file is what answers it.
  *  @param uri the document the address was written in, which is where the walk for a
  *    declaring file starts — a file's own directory, and not a window's */
-export function resolutionOf(uri: string, address: string): Resolved {
+export function resolutionOf(uri: string, address: string, held: (uri: string) => string | undefined = () => undefined): Resolved {
   const here = pathOf(uri);
   const walked = declaringAbove(here);
   if (walked.at === undefined) {
@@ -74,7 +74,7 @@ export function resolutionOf(uri: string, address: string): Resolved {
         "resolves to nothing",
     };
   }
-  return answerFrom(walked, address, here);
+  return answerFrom(walked, address, here, held);
 }
 
 
@@ -89,5 +89,5 @@ export function resolutionOf(uri: string, address: string): Resolved {
  *  unsaved edits would otherwise name a line the reader is not on.
  *  @param held the text this server holds of a document, if it holds one */
 export function resolutionReach(held: (uri: string) => string | undefined = () => undefined): Reach {
-  return { resolve: (address, from) => resolutionOf(from, address), held };
+  return { resolve: (address, from) => resolutionOf(from, address, held), held };
 }

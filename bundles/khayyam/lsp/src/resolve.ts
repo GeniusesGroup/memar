@@ -39,7 +39,7 @@ interface Reader {
   /** The document the address reaches, or the reason there is none. `manifest` is what the
    *  walk found; `address` is what the writing file wrote; `here` is the writing file itself,
    *  which is what a relative address is read against. */
-  read: (manifest: Walked, address: string, here: string) => Resolved;
+  read: (manifest: Walked, address: string, here: string, held: (uri: string) => string | undefined) => Resolved;
 }
 
 /** The minimal form: a file whose presence states the root, and an address read as a path
@@ -47,12 +47,12 @@ interface Reader {
  *  content this server can honour without a design it does not have. */
 const rootManifest: Reader = {
   via: "a stated root",
-  read: (manifest, address, here) => {
+  read: (manifest, address, here, held) => {
     const root = dirname(manifest.at!);
     const at = isAbsolute(address) ? address : join(root, address);
     let text: string;
     try {
-      text = readFileSync(at, "utf8");
+      text = held(pathToFileURL(at).href) ?? readFileSync(at, "utf8");
     } catch {
       return {
         via: rootManifest.via,
@@ -96,7 +96,7 @@ const READERS: Readonly<Record<Form, Reader>> = {
  *  @param walked the nearest declaring file above the writing file, or the reason there is none
  *  @param address what the writing file wrote
  *  @param from the writing file's own path */
-export function answerFrom(walked: Walked, address: string, from: string): Resolved {
+export function answerFrom(walked: Walked, address: string, from: string, held: (uri: string) => string | undefined = () => undefined): Resolved {
   if (walked.at === undefined || walked.form === undefined) {
     return { because: walked.because ?? "nothing says where this file's project ends" };
   }
@@ -112,7 +112,7 @@ export function answerFrom(walked: Walked, address: string, from: string): Resol
         "guessed about what it says",
     };
   }
-  return reader.read(walked, address, from);
+  return reader.read(walked, address, from, held);
 }
 
 /** The base an answer is resolved from: the directory the declaring file sits in, which is
