@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+
+tp CharacterRun_From ab
+tp FromCharacterRun mt (self CharacterRun_From) (r CharacterRun) (s String, err Error)

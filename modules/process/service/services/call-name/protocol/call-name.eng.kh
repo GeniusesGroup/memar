@@ -1,0 +1,30 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Service_Call_Name in "modules/process/service/services/call-name/protocol/call-name.kh"
+
+tp Domain mt (self Service_Call_Name) () (s String) {
+    CharacterRun_From.FromCharacterRun("Service")(s, VoidError)
+}
+
+tp Name mt (self Service_Call_Name) () (s String) {
+    CharacterRun_From.FromCharacterRun("Call Name")(s, VoidError)
+}
+
+tp Summary mt (self Service_Call_Name) () (s String) {
+    CharacterRun_From.FromCharacterRun("Makes a service call name from the service's own details")(s, VoidError)
+}
+
+tp Overview mt (self Service_Call_Name) () (s String) {
+    CharacterRun_From.FromCharacterRun("Read Domain from Details and Name from its inherited Quiddity. Both components must be present and nonempty after trimming outer whitespace; neither may be omitted. For each component, change ASCII letters to lowercase and join runs separated by whitespace, hyphens or underscores with one underscore. The normalized component must contain only ASCII letters and digits separated by single underscores. Join the normalized domain and name with one underscore. An empty or invalid component is Service_Error_InvalidCallName. The name is a face-neutral lookup key, not Type_ID or OperationID; aliases and abbreviations are never its inputs. A catalog refuses a repeated lookup key with Service_Error_CallNameCollision rather than replacing a service. No command-line words, module path, display grouping or MCP name is an input.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Service_Call_Name) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Service_Call_Name) () (s String) {
+    CharacterRun_From.FromCharacterRun("Callers keep the same derived name when choosing a presentation. The Python legacy bridge supplies provisional details from existing command declarations until the service's Khayyam realization supplies Details directly; it is not a reader or compiler of Khayyam source.")(s, VoidError)
+}
