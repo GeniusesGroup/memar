@@ -8,7 +8,6 @@ import (
 	"memar/computer/datatype"
 	error_p "memar/process/error/protocol"
 	operation_p "memar/process/operation/protocol"
-	priority_p "org/modules-plugable/identity/thing/priority/protocol"
 	request_p "memar/process/request/protocol"
 	response_p "memar/process/response/protocol"
 )
@@ -31,7 +30,6 @@ func (self *Service) OperationID() operation_p.ID { return 0 }
 func (self *Service) ActionType() operation_p.ActionType { return operation_p.ActionType_None }
 
 //memar:impl memar/process/operation/protocol.Importance
-func (self *Service) Priority() priority_p.Priority_Rank             { return priority_p.Priority_Rank_OfAbsent() }
 func (self *Service) OperationWeight() operation_p.Weight     { return operation_p.Weight_Unset }
 
 //memar:impl memar/process/service/protocol.Details

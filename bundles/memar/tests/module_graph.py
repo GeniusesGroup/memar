@@ -80,7 +80,6 @@ KH_FOUND = {
     ('modules/knowledge/label/services/nearest-labels/protocol/nearest-labels.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
     ('modules/knowledge/label/widgets/check-label/protocol/check-label.kh', 'modules-plugable/uri/title/protocol/title.kh'): 'found, not allowed',
     ('modules/knowledge/text/protocol/text-link.kh', 'modules-plugable/net/uri/protocol/uri.kh'): 'found, not allowed',
-    ('modules/process/operation/protocol/priority.observers.kh', 'modules-plugable/identity/thing/priority/protocol/priority-rank.kh'): 'found, not allowed',
 }
 
 def module_folders(top: Path) -> dict[str, Path]:

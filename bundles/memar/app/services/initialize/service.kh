@@ -11,7 +11,6 @@ import (
 	command_p "memar/process/command/protocol"
 	operation_p "memar/process/operation/protocol"
 	"memar/process/service"
-	priority_p "org/modules-plugable/identity/thing/priority/protocol"
 	"memar/protocol"
 )
 
@@ -40,7 +39,6 @@ func (s *serv) ExpireInFavorOf() datatype_p.DataType { return nil }
 
 //memar:impl memar/protocol.Service
 func (s *serv) URI() string                        { return "" }
-func (s *serv) Priority() priority_p.Priority_Rank                 { return priority_p.Priority_Rank_OfAbsent() }
 func (s *serv) Weight() operation_p.Weight         { return operation_p.Weight_Lowest }
 func (s *serv) ActionType() operation_p.ActionType { return operation_p.ActionType_Read }
 
