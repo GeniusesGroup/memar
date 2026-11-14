@@ -1,4 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Abstractions in "modules/computer/abstraction/protocol/abstractions.kh"
+
 tp Abstraction_Implements ab
-tp Abstraction_Implements_Implements mt (self Abstraction_Implements) () ()
+
+tp DeclaredAbstractions mt (self Abstraction_Implements) () (abstractions Abstractions)
