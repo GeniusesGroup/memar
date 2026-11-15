@@ -54,7 +54,7 @@ class CardIsGenerated(unittest.TestCase):
 
     def test_the_real_card_lists_the_commands_every_task_uses(self) -> None:
         card = commands.card_text()
-        for line in ('memar ai_get_task_init_context --task-id ID', 'memar content_write', 'memar memar_commands'):
+        for line in ('memar agency_get_task_init_context --task-id ID', 'memar content_write', 'memar memar_commands'):
             self.assertIn(line, card)
 
     def test_the_card_names_where_the_rest_is(self) -> None:

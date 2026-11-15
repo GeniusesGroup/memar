@@ -6,7 +6,7 @@
 
     python modules-plugable/management/agency/widgets/new_chats_ask/tests/new_chats_ask.py
 
-The stable command face remains `memar ai_get_new_chats_ask`.
+The stable command face remains `memar agency_get_new_chats_ask`.
 
 Nothing here writes outside its scratch folder: the Memar root is patched onto
 one made under the folder `modules/process/test/services/test_scratch.py` names.

@@ -6,7 +6,7 @@
 
     python modules-plugable/management/agency/widgets/plan_carry_out_brief/tests/plan_carry_out_brief.py
 
-The stable command face remains `memar ai_get_task_plan_carry_out_brief`.
+The stable command face remains `memar agency_get_task_plan_carry_out_brief`.
 That `new --parent` prints it is pinned in `task_new`'s suite.
 
 Nothing here writes outside its scratch folder: the Memar root is patched onto

@@ -137,7 +137,7 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_new_says_how_a_task_is_handed_over_queued_and_continued(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('open its task with --parent', 'post the whole task as its plan content — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar ai_get_task_plan_carry_out_brief ID` prints again', '--label ACT', 'To only add work', '--queued', "never do a queued task's work in your own context", 'To continue a task another task left', '`memar task_ids`', 'start from its Next'):
+        for phrase in ('open its task with --parent', 'post the whole task as its plan content — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar agency_get_task_plan_carry_out_brief ID` prints again', '--label ACT', 'To only add work', '--queued', "never do a queued task's work in your own context", 'To continue a task another task left', '`memar task_ids`', 'start from its Next'):
             self.assertIn(phrase, text)
         for name in ('task.yaml',):
             self.assertNotIn(name, text)

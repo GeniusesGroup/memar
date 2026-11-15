@@ -759,7 +759,7 @@ class BriefPrinted(Fixture):
         printed = self.opened('second', 'Delegated step', 'first').splitlines()
         self.assertEqual(printed[-2], '    brief:')
         self.assertEqual(printed[-1], f"        {brief_text('second')}")
-        self.assertIn('memar ai_get_task_init_context --task-id second', printed[-1])
+        self.assertIn('memar agency_get_task_init_context --task-id second', printed[-1])
 
     def test_a_task_made_without_a_parent_prints_no_brief(self) -> None:
         self.assertNotIn('brief:', self.opened('first', TITLE, None))

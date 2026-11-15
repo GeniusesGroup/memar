@@ -3,8 +3,8 @@
 
 """machine/console_parts.py — print a text too long for one tool output whole, in ordered parts.
 
-A command whose text an agent must hold in its context — `memar ai get-task-init-context`,
-`memar content get-act-context` — can print more than an agent runtime's shell tool
+A command whose text an agent must hold in its context — `memar agency_get_task_init_context`,
+`memar content_get_act_context` — can print more than an agent runtime's shell tool
 returns: past its cut the runtime saves the output to a file and shows a short
 preview, and a file the agent may never read is the failure those commands
 exist to remove. So such a text is printed in parts, each under the cut, and the

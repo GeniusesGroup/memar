@@ -11,7 +11,7 @@ reads first, named for the file that holds it per
 [Test Naming](../../../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../../../modules/process/test/rules/test-placement/test-placement.md).
-The stable command face remains `memar ai_get_task_answer_context`.
+The stable command face remains `memar agency_get_task_answer_context`.
 How its parts are cut is `machine/console_parts.py`'s and pinned beside
 `start`'s, in the context_compose suite; here only that it prints in
 parts and names itself for the next one.
@@ -42,7 +42,7 @@ What is pinned, and what each pin is for:
                    it is unsure of, writes nothing, opens no task, and
                    returns the answers as its final text.
   InParts          A text past the bound prints in parts, each closing line
-                   naming `memar ai_get_task_answer_context` again with
+                   naming `memar agency_get_task_answer_context` again with
                    the same flags and the next part.
   Refusal          A task with no folder, no plan, or no line under its
                    report's `Decisions needed` is refused, and nothing printed.
@@ -231,7 +231,7 @@ class Ending(Fixture):
     def test_what_the_answering_agent_does_is_printed(self) -> None:
         self.task()
         part = ' '.join(self.parts()['ending'].split())
-        for phrase in ('Decisions needed', 'with its reasons', 'unsure', 'opens no task', 'writes nothing', 'final text', '`memar ai_get_task_init_context`'):
+        for phrase in ('Decisions needed', 'with its reasons', 'unsure', 'opens no task', 'writes nothing', 'final text', '`memar agency_get_task_init_context`'):
             self.assertIn(phrase, part)
 SMALL = 6000
 
@@ -248,7 +248,7 @@ class InParts(Fixture):
         first = self.printed(1, with_skill=False)
         self.assertIn(CLOSING_MARK, first)
         self.assertLessEqual(len(first), SMALL)
-        self.assertIn(f'`memar ai_get_task_answer_context --task-id {SID} --without-skill --most-characters {SMALL} --part 2`', first)
+        self.assertIn(f'`memar agency_get_task_answer_context --task-id {SID} --without-skill --most-characters {SMALL} --part 2`', first)
 
     def test_the_passages_joined_are_the_text(self) -> None:
         self.task()

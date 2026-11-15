@@ -6,7 +6,7 @@
 
     python modules-plugable/management/agency/widgets/questions_answer_brief/tests/questions_answer_brief.py
 
-The stable command face remains `memar ai_get_task_questions_answer_brief`.
+The stable command face remains `memar agency_get_task_questions_answer_brief`.
 
 Nothing here writes outside its scratch folder: the Memar root is patched onto
 one, made under the folder `modules/process/test/services/test_scratch.py` names, and removed

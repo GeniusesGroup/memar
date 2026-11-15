@@ -2,7 +2,7 @@
 # For license and copyright information please see the LEGAL file in the code repository
 """Thin re-export: act-context composition lives under content/normative_references.
 
-Agency widgets and `memar ai_get_task_init_context` may keep this import path until
+Agency widgets and `memar agency_get_task_init_context` may keep this import path until
 those aggregators are rehomed; the owner of the composition is
 `modules.knowledge.content.services.act_context`.
 """

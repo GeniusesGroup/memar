@@ -9,7 +9,7 @@ The subject is `machine/console_parts.py`, named for the file that holds it per
 [Test Naming](../../../../modules/process/test/rules/test-naming/test-naming.md),
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../../modules/process/test/rules/test-placement/test-placement.md).
-What `memar ai get-task-init-context` and `memar content get-act-context` print through it is
+What `memar agency_get_task_init_context` and `memar content_get_act_context` print through it is
 pinned beside them, in `modules-plugable/management/task/tests/start.py` and
 `modules-plugable/ai/tests/task_context.py`.
 

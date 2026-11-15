@@ -525,7 +525,7 @@ class InParts(Fixture):
     def test_a_closing_line_names_start_with_the_same_flags_and_the_next_part(self) -> None:
         self.task(plan_with('implement'))
         first = self.printed(1, with_skill=False)
-        self.assertIn(f'`memar ai_get_task_init_context --task-id {SID} --without-skill --most-characters {SMALL} --part 2`', first)
+        self.assertIn(f'`memar agency_get_task_init_context --task-id {SID} --without-skill --most-characters {SMALL} --part 2`', first)
 
     def test_a_text_under_the_bound_prints_whole_with_no_closing_line(self) -> None:
         self.task(plan_with('implement'))
@@ -554,7 +554,7 @@ class InParts(Fixture):
         for number, part in enumerate(parts, 1):
             with self.subTest(part=number):
                 self.assertLessEqual(len(part), SMALL)
-        self.assertIn(f'`memar ai_get_task_init_context --task-id {SID} --part 2`', parts[0])
+        self.assertIn(f'`memar agency_get_task_init_context --task-id {SID} --part 2`', parts[0])
         self.assertEqual(''.join((body(part) for part in parts)), task_start.start_text(SID))
 
     def test_the_flag_outranks_the_preference(self) -> None:
@@ -609,7 +609,7 @@ class StartHelp(unittest.TestCase):
 
     def test_the_help_says_what_it_prints_names_the_kinds_and_offers_without_skill(self) -> None:
         environment = dict(os.environ, COLUMNS='100', PYTHONIOENCODING='utf-8', MEMAR_NO_AUTO_UPDATE='1')
-        done = subprocess.run([sys.executable, str(SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'), 'ai_get_task_init_context', '--help'], capture_output=True, env=environment)
+        done = subprocess.run([sys.executable, str(SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'), 'agency_get_task_init_context', '--help'], capture_output=True, env=environment)
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
         for phrase in ('--without-skill', '--part', '--most-characters', 'memar content_get_act_context', 'every agent', ', '.join(plan_acts.ACTS), 'Context_Compose'):

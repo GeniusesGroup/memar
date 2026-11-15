@@ -23,9 +23,9 @@ own location: keeping, committing, or deleting it is the project's. `records`
 says whether a task's records — its whole folder except the claim, caches,
 binary files, files over 256 KB that are not documents, and its own temp folder
 — are kept on the records branch of the project's own repository by
-`memar git archive-task-records` (and added by the sweep before it moves a
+`memar git_archive_task_records` (and added by the sweep before it moves a
 folder): `on` or `off`; unset, they are. Nothing is pushed. `most-characters` is
-the most characters one printed part of a long text holds, the text `memar ai get-task-init-context` and `memar content get-act-context` print in ordered parts: a whole
+the most characters one printed part of a long text holds, the text `memar agency_get_task_init_context` and `memar content_get_act_context` print in ordered parts: a whole
 number below the smallest output cut of the agent runtimes the project uses;
 unset, Memar's default, `MOST_CHARACTERS` in machine/console_parts.py.
 `normative_references` names the folders where the project's own lists of the
@@ -41,7 +41,7 @@ keys its module declares, and so is the key of a module that consumes a class,
 as the memory view's does; a key of a class takes the same form,
 `class=value` pairs, read through `class_values_preference`.
 
-The manifest is the project's own: `memar install` neither creates nor writes
+The manifest is the project's own: `memar memar_install` neither creates nor writes
 it. The block is read without a YAML library, the way a plan's front matter is
 (`task_plan`): the line `memar:` at the left margin, then the indented
 `key: value` lines below it, up to the next line at the margin; a key left
