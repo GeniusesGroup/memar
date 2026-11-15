@@ -52,6 +52,8 @@ A linter ships a reference configuration, not a unique legal configuration. Orga
 ### Analysis consumes compiler events, not library names
 A linter (and any analysis library it uses) subscribes to events the [Compiler](../compiler/compiler.md) emits — entering and leaving a scope, taking or skipping a branch — rather than recognizing a particular library's constructs by name. Branch exclusivity is learned from those events. Special-casing one control-flow library's `IF` as if it were grammar undoes the compiler's own refusal to privilege libraries, and it undoes it on the analysis side where the mistake is harder to see.
 
+Static branch exclusivity and definite assignment consume the [compiler's static scope-driver contract](../compiler/compiler.md#static-scope-driver-analysis).
+
 ### Assistance writes source, on request
 When a linter or companion tool generates code — accessors, teardown calls, suggested types — it writes **explicit source** the author can read, review, and refuse, matching [Memory → Teardown is explicit, and automation writes source](../memory/memory.md#teardown-is-explicit-and-automation-writes-source). It does not synthesize a public surface the author never requested. Mechanical generation of an accessor for every field recreates public fields with extra steps; generation is faithful only when requested deliberately.
 

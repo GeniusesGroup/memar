@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp CharacterRun_Error_InvalidPosition in "modules/computer/codec/character/errors/character-run-error-invalid-position.kh"
+
+tp Domain mt (self CharacterRun_Error_InvalidPosition) () (s String) {
+    CharacterRun_From.FromCharacterRun("Character")(s, VoidError)
+}
+
+tp Summary mt (self CharacterRun_Error_InvalidPosition) () (s String) {
+    CharacterRun_From.FromCharacterRun("Position is not a boundary of this character run")(s, VoidError)
+}
+
+tp Overview mt (self CharacterRun_Error_InvalidPosition) () (s String) {
+    CharacterRun_From.FromCharacterRun("A supplied position is invalid, unrecognized, or belongs to a different run or revision. Validate membership before reading through a position or checking endpoint order.")(s, VoidError)
+}
+
+tp UserActionNote mt (self CharacterRun_Error_InvalidPosition) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self CharacterRun_Error_InvalidPosition) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

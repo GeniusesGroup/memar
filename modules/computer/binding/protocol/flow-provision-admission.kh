@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Flow_Provision_Association in "modules/computer/binding/protocol/flow-provision-association.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Flow_Provision_Admission ab { Details }
+
+tp Admit mt (self Flow_Provision_Admission) (association Flow_Provision_Association, actualDeclaration MemoryAddress, actualExecutable MemoryAddress, actualSnapshot MemoryAddress, expectedGeneration Type) (admitted Boolean, err Error)

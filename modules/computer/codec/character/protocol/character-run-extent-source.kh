@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
+tp CharacterRun_Position in "modules/computer/codec/character/protocol/character-run.kh"
+tp CharacterRun_Extent in "modules/computer/codec/character/protocol/character-run-extent.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp CharacterRun_Extent_Source ab {
+    CharacterRun
+    Details
+}
+
+tp ComparePositions mt (self CharacterRun_Extent_Source) (left CharacterRun_Position, right CharacterRun_Position) (before Boolean, same Boolean, err Error)
+
+tp MakeExtent mt (self CharacterRun_Extent_Source) (start CharacterRun_Position, end CharacterRun_Position) (extent CharacterRun_Extent, err Error)

@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Flow_Scope_Occurrence in "modules/computer/compiler/protocol/flow-scope-occurrence.kh"
+tp Flow_Drive_Possibilities in "modules/computer/compiler/protocol/flow-drive-possibilities.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Flow_Selection_Group in "modules/computer/compiler/protocol/flow-selection-group.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Flow_Normal_Case ab { Details }
+
+tp Drive mt (self Flow_Normal_Case) (scope Flow_Scope_Occurrence) (effect Flow_Drive_Possibilities, err Error)
+
+tp FirstSelectionGroup mt (self Flow_Normal_Case) () (group Flow_Selection_Group, present Boolean, err Error)
+
+tp NextSelectionGroup mt (self Flow_Normal_Case) (after Flow_Selection_Group) (group Flow_Selection_Group, present Boolean, err Error)

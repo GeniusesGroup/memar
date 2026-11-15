@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Flow_Scope_Occurrence in "modules/computer/compiler/protocol/flow-scope-occurrence.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Flow_Selection_Group ab { Details }
+
+tp FirstMember mt (self Flow_Selection_Group) () (scope Flow_Scope_Occurrence, present Boolean, err Error)
+
+tp NextMember mt (self Flow_Selection_Group) (after Flow_Scope_Occurrence) (scope Flow_Scope_Occurrence, present Boolean, err Error)

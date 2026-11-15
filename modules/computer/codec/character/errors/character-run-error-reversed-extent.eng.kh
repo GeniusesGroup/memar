@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp CharacterRun_Error_ReversedExtent in "modules/computer/codec/character/errors/character-run-error-reversed-extent.kh"
+
+tp Domain mt (self CharacterRun_Error_ReversedExtent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Character")(s, VoidError)
+}
+
+tp Summary mt (self CharacterRun_Error_ReversedExtent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Extent starts after its end")(s, VoidError)
+}
+
+tp Overview mt (self CharacterRun_Error_ReversedExtent) () (s String) {
+    CharacterRun_From.FromCharacterRun("Both supplied positions are valid boundaries of this source, but the start follows the end. Supply boundaries in source order; equal boundaries produce an empty extent.")(s, VoidError)
+}
+
+tp UserActionNote mt (self CharacterRun_Error_ReversedExtent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self CharacterRun_Error_ReversedExtent) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

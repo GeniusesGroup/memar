@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Flow_Analysis_Snapshot in "modules/computer/compiler/protocol/flow-analysis-snapshot.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
+
+tp Flow_Scope_Occurrence ab { Details }
+
+tp Snapshot mt (self Flow_Scope_Occurrence) () (snapshot Flow_Analysis_Snapshot)
+
+tp RegionPin mt (self Flow_Scope_Occurrence) () (pin MemoryAddress)
+
+tp Invocation mt (self Flow_Scope_Occurrence) () (index Unsigned)
+
+tp Argument mt (self Flow_Scope_Occurrence) () (index Unsigned)

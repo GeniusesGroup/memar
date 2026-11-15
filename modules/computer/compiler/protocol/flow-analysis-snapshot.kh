@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
+tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
+tp CharacterRun_Extent in "modules/computer/codec/character/protocol/character-run-extent.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+
+tp Flow_Analysis_Snapshot ab { Details }
+
+tp SnapshotPin mt (self Flow_Analysis_Snapshot) () (pin MemoryAddress)
+
+tp RegionSource mt (self Flow_Analysis_Snapshot) (region MemoryAddress) (sourcePin MemoryAddress, source CharacterRun, extent CharacterRun_Extent, err Error)
+
+tp InvocationSource mt (self Flow_Analysis_Snapshot) (region MemoryAddress, invocation Unsigned) (sourcePin MemoryAddress, source CharacterRun, extent CharacterRun_Extent, err Error)
+
+tp ArgumentSource mt (self Flow_Analysis_Snapshot) (region MemoryAddress, invocation Unsigned, argument Unsigned) (sourcePin MemoryAddress, source CharacterRun, extent CharacterRun_Extent, err Error)

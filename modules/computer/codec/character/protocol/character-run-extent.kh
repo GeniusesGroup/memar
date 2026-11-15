@@ -1,0 +1,16 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
+tp CharacterRun_Position in "modules/computer/codec/character/protocol/character-run.kh"
+tp CharacterRun_Extent_Source in "modules/computer/codec/character/protocol/character-run-extent-source.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+
+tp CharacterRun_Extent ab { Details }
+
+tp GetSource mt (self CharacterRun_Extent) () (source CharacterRun_Extent_Source)
+
+tp GetStart mt (self CharacterRun_Extent) () (start CharacterRun_Position)
+
+tp GetEnd mt (self CharacterRun_Extent) () (end CharacterRun_Position)
+
+tp GetSurface mt (self CharacterRun_Extent) () (surface CharacterRun)

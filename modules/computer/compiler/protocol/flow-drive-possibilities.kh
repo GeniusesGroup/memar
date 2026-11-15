@@ -1,0 +1,12 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Flow_Drive_Possibilities ab { Details }
+
+tp MayDriveZero mt (self Flow_Drive_Possibilities) () (value Boolean)
+
+tp MayDriveOnce mt (self Flow_Drive_Possibilities) () (value Boolean)
+
+tp MayDriveMany mt (self Flow_Drive_Possibilities) () (value Boolean)

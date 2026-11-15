@@ -1,0 +1,32 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Details in "modules/computer/type/protocol/detail.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Flow_Analysis_Snapshot in "modules/computer/compiler/protocol/flow-analysis-snapshot.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Flow_Normal_Case in "modules/computer/compiler/protocol/flow-normal-case.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Flow_Scope_Occurrence in "modules/computer/compiler/protocol/flow-scope-occurrence.kh"
+
+tp Flow_Summary ab { Details }
+
+tp SummaryGeneration mt (self Flow_Summary) () (generation Type)
+
+tp Snapshot mt (self Flow_Summary) () (snapshot Flow_Analysis_Snapshot)
+
+tp RegionPin mt (self Flow_Summary) () (pin MemoryAddress)
+
+tp FirstNormalCase mt (self Flow_Summary) () (normal Flow_Normal_Case, present Boolean, err Error)
+
+tp NextNormalCase mt (self Flow_Summary) (after Flow_Normal_Case) (normal Flow_Normal_Case, present Boolean, err Error)
+
+tp MayLeaveEnclosingMethod mt (self Flow_Summary) () (value Boolean)
+
+tp MayFailToContinue mt (self Flow_Summary) () (value Boolean)
+
+tp DriveCompletesBeforeReturn mt (self Flow_Summary) (scope Flow_Scope_Occurrence) (value Boolean, err Error)
+
+tp MayRetain mt (self Flow_Summary) (scope Flow_Scope_Occurrence) (value Boolean, err Error)
+
+tp MayDriveAfterEnclosingReturn mt (self Flow_Summary) (scope Flow_Scope_Occurrence) (value Boolean, err Error)
