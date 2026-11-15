@@ -6,7 +6,7 @@ vr VoidError in "modules/process/error/protocol/void-error.kh"
 tp Get_New_Chats_Ask in "./get_new_chats_ask.kh"
 
 tp Domain mt (self Get_New_Chats_Ask) () (s String) {
-	CharacterRun_From.FromCharacterRun("ai")(s, VoidError)
+	CharacterRun_From.FromCharacterRun("agency")(s, VoidError)
 }
 
 tp Name mt (self Get_New_Chats_Ask) () (s String) {

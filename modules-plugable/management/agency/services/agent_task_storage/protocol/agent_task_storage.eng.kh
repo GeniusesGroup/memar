@@ -6,7 +6,7 @@ vr VoidError in "modules/process/error/protocol/void-error.kh"
 tp Agent_Task_Storage in "./agent_task_storage.kh"
 
 tp Domain mt (self Agent_Task_Storage) () (s String) {
-	CharacterRun_From.FromCharacterRun("ai")(s, VoidError)
+	CharacterRun_From.FromCharacterRun("agency")(s, VoidError)
 }
 
 tp Name mt (self Agent_Task_Storage) () (s String) {

@@ -6,7 +6,7 @@ vr VoidError in "modules/process/error/protocol/void-error.kh"
 tp Get_Task_Init_Context in "./get_task_init_context.kh"
 
 tp Domain mt (self Get_Task_Init_Context) () (s String) {
-	CharacterRun_From.FromCharacterRun("ai")(s, VoidError)
+	CharacterRun_From.FromCharacterRun("agency")(s, VoidError)
 }
 
 tp Name mt (self Get_Task_Init_Context) () (s String) {

@@ -6,7 +6,7 @@ vr VoidError in "modules/process/error/protocol/void-error.kh"
 tp Get_Rules_For_Subject in "./get_rules_for_subject.kh"
 
 tp Domain mt (self Get_Rules_For_Subject) () (s String) {
-	CharacterRun_From.FromCharacterRun("ai")(s, VoidError)
+	CharacterRun_From.FromCharacterRun("agency")(s, VoidError)
 }
 
 tp Name mt (self Get_Rules_For_Subject) () (s String) {

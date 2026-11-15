@@ -277,7 +277,7 @@ class AnswerHelp(unittest.TestCase):
 
     def test_the_help_says_what_it_prints_and_that_it_writes_nothing(self) -> None:
         environment = dict(os.environ, COLUMNS='100', PYTHONIOENCODING='utf-8', MEMAR_NO_AUTO_UPDATE='1')
-        done = subprocess.run([sys.executable, str(SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'), 'ai', 'get-task-answer-context', '--help'], capture_output=True, env=environment)
+        done = subprocess.run([sys.executable, str(SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'), 'agency_get_task_answer_context', '--help'], capture_output=True, env=environment)
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
         for phrase in ('--without-skill', '--part', '--most-characters', 'Decisions needed', 'writes nothing', 'get-task-questions-answer-brief ID', 'For an agent', 'Answer_Context'):
