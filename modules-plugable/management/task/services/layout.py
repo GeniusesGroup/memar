@@ -7,7 +7,7 @@ A task folder's top holds its plan and its report, and the claim Memar
 writes there while an agent holds the task; everything else the task makes is
 filed by kind in the folders `task_new` makes in it (FOLDERS), so another
 task reads the top as the task and finds its material by kind. That answer
-is given here once: the help `memar task --help` prints is built from it.
+is given here once for every task service that needs it.
 
 The layout is the task's own and small (owner, 2026-10-20, C4): a task
 folder is not a module, and which role folders a module has is a pluggable
@@ -28,16 +28,12 @@ from pathlib import Path
 from typing import NamedTuple
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-_m_report_file = import_module('modules-plugable.management.task.services.report_file')
-REPORT_NAME = _m_report_file.REPORT_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 TASK_FACTS_NAME = _m_task_files.TASK_FACTS_NAME
 _m_timeline_files = import_module('modules.management.timeline.services.timeline_files')
 is_content_file = _m_timeline_files.is_content_file
-TOP_NAMES = (PLAN_NAME, REPORT_NAME, TASK_FACTS_NAME, *Claim.NAMES)
-"The files a task folder's top holds besides its folders: the plan, the report, and Memar's claim."
+TOP_NAMES = (TASK_FACTS_NAME, *Claim.NAMES)
+"The files a task folder's top holds besides its folders: task facts, timeline contents, and Memar's claim."
 
 class Kind(NamedTuple):
     """A kind of file a task makes: its name, the folder it goes in, and the suffixes that tell it."""

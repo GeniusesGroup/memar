@@ -64,7 +64,7 @@ sys.dont_write_bytecode = True
 import shape
 task_files = import_module('modules-plugable.management.task.services.task_memory')
 import modules.computer.software.services.project_registry as registry
-plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
+plan_brief = import_module('modules-plugable.management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
@@ -73,7 +73,7 @@ task_temp = import_module('modules-plugable.management.task.services.temp')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
 plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
-plan_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label')
+plan_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan-label.plan-label')
 set_on = import_module('modules-plugable.management.task.services.task_thing_services').set_priority
 
 def declare_topic(project: Path, fresh) -> None:
@@ -203,7 +203,7 @@ class ClaimsTakesN(Fixture):
         self.assertIn(f'{unwritten.name}  not ready', text)
 
     def cli(self, *argv: str) -> None:
-        """`memar task claims ARGV` as the router runs it."""
+        """`memar task_claims ARGV` as the router runs it."""
         parser = argparse.ArgumentParser()
         command = task_claims.describe(parser.add_subparsers())
         with contextlib.redirect_stdout(io.StringIO()):

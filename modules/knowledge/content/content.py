@@ -3,18 +3,17 @@
 
 """modules/knowledge/content/content.py — the written content of a Memar checkout: read it, relate it, audit it, write it.
 
-Reached as `memar content`, and every verb is under that one word; each verb is
-declared by its own `content_<verb>.py` (the router's rule for a capability kept
-outside its domain's folder), kept in the module whose subject the act is: the
-text module for search and ranking, the Markdown module for what is a section
-or a link, the documentation module for the changelog, the questions and the
-check, the filesystem module for putting text into a file. This folder keeps
-`resolve-path` and `path`, the two verbs that turn a reference into a file, and
-the reference they share (owner, 2026-10-24). Usage is the
-interface; `memar content --help` and `memar content <verb> --help` are the
-authority for what each verb accepts. What is left here is what a help text
-cannot carry: why this domain exists, what its boundary is, and what it cannot
-do.
+Reached as flat calls (`content_search`, `content_find`, …): CLI and MCP share
+one name. Each verb is declared by its own service file, kept in the module
+whose subject the act is: the text module for search and ranking, the Markdown
+module for what is a section or a link, the documentation module for the
+changelog, the questions and the check, the filesystem module for putting text
+into a file. This folder keeps `resolve-path` and `path`, the two verbs that
+turn a reference into a file, and the reference they share (owner, 2026-10-24).
+Usage is the interface; each call's own `--help` is the authority for what it
+accepts. List every call with `memar memar_commands`. What is left here is what
+a help text cannot carry: why this domain exists, what its boundary is, and what
+it cannot do.
 
 **The boundary is the whole checkout, not `docs/`.** The written content of a
 Memar repository is not only its Markdown: `modules/` holds the model
@@ -44,12 +43,5 @@ holds only light standard-library imports at its top, and the root, the lock,
 and the repository test are reached inside the verb that uses them.
 """
 from __future__ import annotations
-import argparse
 VERB = 'content'
-SUMMARY = 'what Memar has written: `memar content resolve-path` says where this checkout is, `memar content search <term>` looks through it'
-OVERVIEW = 'The written content of a Memar checkout. Every verb is here: one subject, one word. `resolve-path` and `search` are where to start. A `/docs/...` link in a Memar document is relative to the checkout; on a shell that rewrites a leading `/` (Git Bash/MSYS), pass it without the slash.'
-
-def describe(verbs) -> None:
-    """`memar content`, which only groups its verbs: nothing is owed before every one."""
-    verbs.add_parser(VERB, help=SUMMARY, description=OVERVIEW, formatter_class=argparse.HelpFormatter)
-    return None
+# No `describe`: public calls are flat (`content_search`, …). List them with `memar memar_commands`.

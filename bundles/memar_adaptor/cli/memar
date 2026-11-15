@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+# For license and copyright information please see the LEGAL file in the code repository
+
+"""memar — the one command a person or an agent types to reach Memar.
+
+    memar <verb>              what it routes to; run `memar --help`
+    memar --help              what Memar is, and the verbs its services declare
+
+This program is small on purpose and knows no verb. It sends the words it was given, the folder, the environment
+and the standard input to the server (the one process that holds Memar loaded), prints what the server answers and
+ends with its status, so a call costs the machine one short process and a local round trip. The verbs are composed,
+parsed and run in the server (`router.py` and `served.py` beside this file); a verb is declared by its own module
+with `describe(verbs)` and nothing is restated here.
+
+- **No server running:** the program starts it, waits for it, and sends the call. A first call after the server
+  ended pays the server's start; the calls after it do not.
+- **A few calls are not sent as words** (`face_policy.py` lists them): an agent app's messages are relayed to the
+  server one line at a time, the server can be run in this terminal, and two calls about a running server do not
+  start one.
+- **`MEMAR_SERVER=0`:** a source run does the call in its own process, with the router imported here. A release
+  holds no router, so there the variable is refused.
+
+The name is the whole of the design. A framework whose entry point is a path into a scripts folder asks every caller
+to know where it lives and what it is called; `memar` asks for neither, so the same word works in a shell, in an
+agent's command, in a CI step, and in a document that tells a reader what to type.
+
+The active shell entry after install is `bin/memar` / `bin/memar.cmd`, which starts the compiled release; this file
+is its entry, and a development entry when no release exists.
+"""
+
+from __future__ import annotations
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+TOP = HERE.parent.parent.parent
+SOURCE = not getattr(sys, "frozen", False) and (TOP / "bundles" / "memar" / "manifest.yaml").is_file()
+if SOURCE:
+    for folder in (TOP, HERE, TOP / "bundles" / "memar", TOP / "bundles" / "memar" / "services"):
+        if str(folder) not in sys.path:
+            sys.path.insert(0, str(folder))
+
+from machine.console import fail, use_utf8_stdio
+from machine.env_location import recorded_root
+from machine.resident import ENABLE, ask, await_server, served_call, server_command, start
+from bundles.memar.services.location.repository import enclosing_repository
+from face_policy import kind_of
+from bundles.memar_adaptor.mcp import control as mcp_control
+
+OFF = "0"
+NEWLINE = chr(10)
+
+
+def __getattr__(name: str):
+    """The router's own names (`assemble`, `services`, ...) for a source reader; a release holds no router."""
+    if not SOURCE or name.startswith("__"):
+        raise AttributeError(name)
+    return getattr(__import__("bundles.memar_adaptor.cli.router", fromlist=["router"]), name)
+
+
+def project() -> Path | None:
+    recorded = recorded_root()
+    if recorded is not None:
+        return recorded
+    return enclosing_repository(Path.cwd().resolve())
+
+
+def standard_input() -> str:
+    """What the call was given on standard input, read to its end."""
+    try:
+        return sys.stdin.buffer.read().decode("utf-8", errors="replace")
+    except (OSError, ValueError, AttributeError):
+        return ""
+
+
+def has_input() -> bool:
+    """Whether standard input is something the call could read: a pipe or a file, not a console, which a server could not prompt."""
+    try:
+        return sys.stdin is not None and not sys.stdin.isatty()
+    except (OSError, ValueError):
+        return False
+
+
+def in_place(argv: list[str]) -> int:
+    """Source only: the call run here, as a person had it before there was a server."""
+    location = __import__("bundles.memar.services.location.memar_location", fromlist=["location"])
+    location.declare_program(location.entry_program(__file__))
+    return __import__("bundles.memar_adaptor.cli.router", fromlist=["router"]).in_place(argv)
+
+
+def run_server_here(top: Path) -> int:
+    """The server in this terminal."""
+    command = server_command(top)
+    if command is None:
+        fail("no server is built here; build a release or run from a checkout.")
+    return subprocess.call(list(command))
+
+
+def relay(top: Path) -> int:
+    """An agent app's messages, one a line, answered by the server."""
+    incoming, outgoing = (sys.stdin.buffer, sys.stdout.buffer)
+    for line in iter(incoming.readline, b""):
+        if not line.strip():
+            continue
+        message = {"kind": "relay", "relay": line.decode("utf-8", errors="replace").strip()}
+        local = mcp_control.answer(message["relay"])
+        if local is not mcp_control.NOT_HANDLED:
+            if local is not None:
+                outgoing.write(local.encode("utf-8") + b"\n")
+                outgoing.flush()
+            continue
+        answer = ask(top, message, timeout=None)
+        if answer is None and await_server(top):
+            answer = ask(top, message, timeout=None)
+        if answer is None or "line" not in answer:
+            try:
+                identity = json.loads(line).get("id")
+            except (ValueError, AttributeError):
+                identity = None
+            if identity is None:
+                continue
+            answer = {"line": json.dumps({"jsonrpc": "2.0", "id": identity, "error": {"code": -32603, "message": "the server did not answer; it is started again on the next message"}})}
+        if answer["line"] is not None:
+            outgoing.write(answer["line"].encode("utf-8") + b"\n")
+            outgoing.flush()
+    return 0
+
+
+def command() -> int:
+    use_utf8_stdio()
+    argv = list(sys.argv[1:])
+    if os.environ.get(ENABLE) == OFF:
+        if not SOURCE:
+            fail("this release has no router to run a call in place; unset MEMAR_SERVER.")
+        return in_place(argv)
+    top = project()
+    if top is None:
+        if SOURCE:
+            return in_place(argv)
+        fail("no project is found from here: MEMAR_ROOT names no Memar repository and the folder is inside none. Record one or run from inside a Memar repository.")
+    kind = kind_of(argv)
+    if kind == "relay":
+        return relay(top)
+    if kind == "server":
+        return run_server_here(top)
+    if kind == "only-if-running" and ask(top, {"ping": True}) is None:
+        sys.stderr.write("memar: no server is running." + NEWLINE)
+        return 1
+    call = {"kind": "words", "argv": argv, "cwd": os.getcwd(), "env": dict(os.environ)}
+    if has_input():
+        call["stdin_lazy"] = True
+    code = served_call(call, top, stdin=standard_input)
+    if code is not None:
+        return code
+    if SOURCE:
+        start(top)
+        return in_place(argv)
+    if await_server(top):
+        code = served_call(call, top, stdin=standard_input)
+    if code is None:
+        sys.stderr.write("memar: the server did not start; nothing was run." + NEWLINE)
+        return 1
+    return code
+
+
+if __name__ == "__main__":
+    raise SystemExit(command())

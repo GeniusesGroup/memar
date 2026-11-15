@@ -32,9 +32,9 @@ agent holding it or, once the claim has lapsed, queued again
 (`new --task-id ID --queued`).
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Queued import Label_Queued
-from modules.identity.thing.labels.Active import Label_Active
 from importlib import import_module
+Label_Queued = import_module('modules-plugable.knowledge.label.status.labels.Queued').Label_Queued
+Label_Active = import_module('modules-plugable.knowledge.label.status.labels.Active').Label_Active
 import argparse
 import os
 import socket
@@ -50,15 +50,12 @@ folder_of = _m_folder.folder_of
 is_task_folder = _m_folder.is_task_folder
 _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
-plan_file_problem = _m_plan_file.plan_file_problem
-read_plan = _m_plan_file.read_plan
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
-stores_at = _m_task_files.stores_at
 has_plan = _m_task_files.has_plan
-_m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
-set_status = _m_plan_status.set_status
+_m_things = import_module('modules-plugable.management.task.services.task_thing_services')
+read_status_key = _m_things.read_status_key
+set_status = _m_things.set_status
+project_for = _m_things.project_for
 _m_depends = import_module('modules-plugable.management.task.services.depends')
 dependency_refusal = _m_depends.refusal
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
@@ -146,7 +143,8 @@ def try_claim(task) -> str | None:
     unmet = dependency_refusal(tid, CLAIM_COMMAND)
     if unmet:
         return unmet
-    status = held_task.status
+    project = project_for(held_task)
+    status = read_status_key(tid, project)
     claim = claim_path(tid)
     held = claim.exists()
     if held and is_claimed(tid):
@@ -157,7 +155,7 @@ def try_claim(task) -> str | None:
     if why:
         return why
     try:
-        set_status(stores_at(tid), None, tid, Label_Active.key, only_from=(Label_Queued.key, Label_Active.key))
+        set_status(tid, Label_Active.key, project, only_from=(Label_Queued.key, Label_Active.key))
     except SystemExit as refused:
         claim.unlink(missing_ok=True)
         return str(refused.code).removeprefix('error: ')
@@ -179,7 +177,7 @@ def claim(task_id: str) -> None:
     note(TEMP_SENTENCE)
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar task claim`."""
+    """`memar task_claim`."""
     claimer = verbs.add_parser(CLAIM_COMMAND, help='take one queued task by its id, so no other agent takes it', description=f"Take the queued task ID for yourself: its status becomes active and a\nclaim is left in its folder, saying who took the task. A task that is\nnot queued, or that another agent holds, is refused. Nothing keeps a\nclaim fresh, so a claim older than {Claim.stale_hours()} hours is a dead agent's, and is\ntaken over: the task can then be taken again or queued again. Use it\nto take one named task; `claims N` takes the N first in line instead.")
     TaskId.add_positional(claimer, 'the queued task to claim')
     return run

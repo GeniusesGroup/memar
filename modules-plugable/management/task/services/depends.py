@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules-plugable/management/task/services/depends.py — the verb `memar task depends-on`, and the Status a task's dependencies give it.
+"""modules-plugable/management/task/services/depends.py — the verb `memar task_depends_on`, and the Status a task's dependencies give it.
 
 What a dependency is, when it is met, and how it is checked is the type's
 (`modules-plugable/management/task/services/dependency.py`); writing the key is `task_plan_depends`. This file
@@ -37,10 +37,9 @@ each stands; one that no longer resolves keeps it unclaimable until the key is
 dropped, and the refusal says so.
 """
 from __future__ import annotations
-from modules.identity.thing.labels.Queued import Label_Queued
-from modules.identity.thing.labels.Blocked import Label_Blocked
 from importlib import import_module
-from machine.plugable_import import load as plugable_load
+Label_Queued = import_module('modules-plugable.knowledge.label.status.labels.Queued').Label_Queued
+Label_Blocked = import_module('modules-plugable.knowledge.label.status.labels.Blocked').Label_Blocked
 from pathlib import Path
 from typing import Iterable
 _m_dependency = import_module('modules-plugable.management.task.services.dependency')
@@ -52,16 +51,15 @@ dependents = _m_dependency.dependents
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 Task = _m_folder.Task
 read_task = _m_folder.read_task
-_m_log = import_module('bundles.memar_git.services.log')
+_m_log = import_module('bundles.memar_adaptor.git.services.log')
 log_path = _m_log.log_path
 record = _m_log.record
-_m_plan_file = import_module('modules-plugable.management.task.services.plan_file')
-PLAN_NAME = _m_plan_file.PLAN_NAME
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
-stores_at = _m_task_files.stores_at
 has_plan = _m_task_files.has_plan
-_m_plan_status = import_module('modules-plugable.management.task.services.plan_status')
-set_status = _m_plan_status.set_status
+_m_things = import_module('modules-plugable.management.task.services.task_thing_services')
+read_status_key = _m_things.read_status_key
+set_status = _m_things.set_status
+project_for = _m_things.project_for
 _m_plan_key = import_module('modules-plugable.knowledge.documentation.plan.primitive.plan_key')
 PlanKey = _m_plan_key.PlanKey
 DEPENDS_COMMAND = PlanKey.DEPENDS_ON.key.replace('_', '-')
@@ -100,24 +98,26 @@ def blocked_by_memar(folder: Path) -> bool:
 def reconcile(task: Task, reader: Reader) -> str:
     """Bring TASK's Status up to date with its dependencies, as the module says; the Status it has now."""
     if not (task.has_plan and task.readable):
-        return task.status
-    if task.status not in (Label_Queued.key, Label_Blocked.key):
-        return task.status
-    if not DependsOn.of(task.front) and (not (task.status == Label_Blocked.key and blocked_by_memar(task.path))):
-        return task.status
+        return ''
+    project = project_for(task)
+    status = read_status_key(task.id, project)
+    if status not in (Label_Queued.key, Label_Blocked.key):
+        return status
+    if not DependsOn.of(task.front) and (not (status == Label_Blocked.key and blocked_by_memar(task.path))):
+        return status
     unmet = problems(task, reader)
     try:
-        if unmet and task.status == Label_Queued.key:
-            set_status(stores_at(task.path), None, task.id, Label_Blocked.key, only_from=(Label_Queued.key,))
+        if unmet and status == Label_Queued.key:
+            set_status(task.id, Label_Blocked.key, project, only_from=(Label_Queued.key,))
             record(BLOCKED_EVENT, task.id, '; '.join(unmet), folder=task.path)
             return Label_Blocked.key
-        if not unmet and task.status == Label_Blocked.key and blocked_by_memar(task.path):
-            set_status(stores_at(task.path), None, task.id, Label_Queued.key, only_from=(Label_Blocked.key,))
+        if not unmet and status == Label_Blocked.key and blocked_by_memar(task.path):
+            set_status(task.id, Label_Queued.key, project, only_from=(Label_Blocked.key,))
             record(RELEASED_EVENT, task.id, '', folder=task.path)
             return Label_Queued.key
     except SystemExit:
-        return read_task(task.path).status
-    return task.status
+        return read_status_key(task.id, project)
+    return status
 
 def reconcile_all(tasks: Iterable[Task], reader: Reader | None=None) -> None:
     """`reconcile` each of TASKS that has dependencies, with one reader so each cited task is read once; READER when the caller keeps reading with it."""
@@ -138,7 +138,7 @@ def refusal(task_ref, act: str) -> str | None:
     reconcile(task, reader)
     if not unmet:
         return None
-    return f"task {task.id} depends on {', '.join(unmet)}, so it cannot be {act}ed until each is Complete; a dependency that cannot be found stays until it is dropped with `memar task {DEPENDS_COMMAND} {task.id} --drop REF`"
+    return f"task {task.id} depends on {', '.join(unmet)}, so it cannot be {act}ed until each is Complete; a dependency that cannot be found stays until it is dropped with `memar task_{DEPENDS_COMMAND.replace("-", "_")} {task.id} --drop REF`"
 
 def labelled(refs: DependsOn, reader: Reader, home: Path | None) -> str:
     """REFS each with where it stands, `ref (state)`, as the plan's key is shown."""
@@ -174,8 +174,9 @@ def concerns_for(task: Task, reader: Reader) -> list[str]:
     path = reader.cycle(task.id, refs, home)
     if path:
         found.append(f'{PlanKey.DEPENDS_ON.written} makes a cycle: {ARROW.join(path)}')
-    if task.status == Label_Blocked.key and (not problems(task, reader)):
+    status = read_status_key(task.id, project_for(task))
+    if status == Label_Blocked.key and (not problems(task, reader)):
         found.append(f'blocked, and every {PlanKey.DEPENDS_ON.written} is Complete: it can resume')
-    elif task.status == Label_Blocked.key:
+    elif status == Label_Blocked.key:
         found.append(f'blocked by {PlanKey.DEPENDS_ON.written}: ' + '; '.join(problems(task, reader)))
     return found

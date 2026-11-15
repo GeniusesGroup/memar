@@ -1,4 +1,5 @@
 modules:
+  - bundles.memar.services.dispatch.dispatch
   - bundles.memar.services.install.install
   - bundles.memar.services.install.services.apps
   - bundles.memar.services.install.services.apps_mcp
@@ -7,17 +8,9 @@ modules:
   - bundles.memar.services.install.services.machine
   - bundles.memar.services.install.services.project
   - bundles.memar.services.install.services.target
-  - bundles.memar.services.dispatch.dispatch
   - bundles.memar.services.location.memar_location
   - bundles.memar.services.location.repository
   - bundles.memar.services.machine.copy_excluded
-  - bundles.memar_cli.mcp
-  - bundles.memar_cli.mcp.mcp
-  - bundles.memar_cli.mcp.services._call
-  - bundles.memar_cli.mcp.services._tools
-  - bundles.memar_cli.mcp.services._worker
-  - bundles.memar_cli.mcp.services.serve
-  - bundles.memar_cli.mcp.services.worker
   - bundles.memar.services.memory.errors.errors
   - bundles.memar.services.memory.memory
   - bundles.memar.services.resident.resident
@@ -35,49 +28,67 @@ modules:
   - bundles.memar.services.view.view
   - bundles.memar.targets.python.errors.errors
   - bundles.memar.targets.python.release
-  - bundles.memar_fs.errors.errors
-  - bundles.memar_fs.memar_fs
-  - bundles.memar_fs.services._edge
-  - bundles.memar_fs.services.content_text_edit
-  - bundles.memar_fs.services.content_text_write
-  - bundles.memar_fs.services.fs_copy
-  - bundles.memar_fs.services.fs_lock
-  - bundles.memar_fs.services.fs_trash
-  - bundles.memar_fs.services.link
-  - bundles.memar_fs.services.storage
-  - bundles.memar_fs.services.text_edit_command
-  - bundles.memar_fs.services.text_edit_lock
-  - bundles.memar_fs.services.text_edit_store
-  - bundles.memar_fs.services.trash
-  - bundles.memar_fs.services.tree
-  - bundles.memar_git.errors.errors
-  - bundles.memar_git.memar_git
-  - bundles.memar_git.services._edge
-  - bundles.memar_git.services._git_records
-  - bundles.memar_git.services._index
-  - bundles.memar_git.services._lock
-  - bundles.memar_git.services._record
-  - bundles.memar_git.services._run
-  - bundles.memar_git.services._staged
-  - bundles.memar_git.services._tasks
-  - bundles.memar_git.services.archive_task_records
-  - bundles.memar_git.services.branch
-  - bundles.memar_git.services.commit
-  - bundles.memar_git.services.history_move_glob
-  - bundles.memar_git.services.keep
-  - bundles.memar_git.services.log
-  - bundles.memar_git.services.record
-  - bundles.memar_git.services.reindex
-  - bundles.memar_git.services.remove
-  - bundles.memar_git.services.rename
-  - bundles.memar_git.services.restore
-  - bundles.memar_git.services.show_task_records
-  - bundles.memar_git.services.stash
-  - bundles.memar_git.services.sweep_idle_task_folders
-  - bundles.memar_git.services.task_store
-  - bundles.memar_git.services.trash_task_folder
-  - bundles.memar_git.services.uncommit
-  - bundles.memar_git.services.undelete
+  - bundles.memar_adaptor.cli.derive
+  - bundles.memar_adaptor.cli.call_names
+  - bundles.memar_adaptor.cli.handler
+  - bundles.memar_adaptor.cli.router
+  - bundles.memar_adaptor.cli.services.commands
+  - modules.process.service.primitive.call_name
+  - modules.process.service.errors.call_name
+  - bundles.memar_adaptor.cli.services.khayyam_inspect
+  - bundles.memar_adaptor.cli.services.khayyam_validate
+  - bundles.memar_adaptor.fs.errors.errors
+  - bundles.memar_adaptor.fs.fs
+  - bundles.memar_adaptor.fs.services._edge
+  - bundles.memar_adaptor.fs.services.content_text_edit
+  - bundles.memar_adaptor.fs.services.content_text_write
+  - bundles.memar_adaptor.fs.services.fs_copy
+  - bundles.memar_adaptor.fs.services.fs_lock
+  - bundles.memar_adaptor.fs.services.fs_trash
+  - bundles.memar_adaptor.fs.services.link
+  - bundles.memar_adaptor.fs.services.storage
+  - bundles.memar_adaptor.fs.services.text_edit_command
+  - bundles.memar_adaptor.fs.services.text_edit_lock
+  - bundles.memar_adaptor.fs.services.text_edit_store
+  - bundles.memar_adaptor.fs.services.trash
+  - bundles.memar_adaptor.fs.services.tree
+  - bundles.memar_adaptor.git.errors.errors
+  - bundles.memar_adaptor.git.git
+  - bundles.memar_adaptor.git.services._edge
+  - bundles.memar_adaptor.git.services._git_records
+  - bundles.memar_adaptor.git.services._index
+  - bundles.memar_adaptor.git.services._lock
+  - bundles.memar_adaptor.git.services._record
+  - bundles.memar_adaptor.git.services._run
+  - bundles.memar_adaptor.git.services._staged
+  - bundles.memar_adaptor.git.services._tasks
+  - bundles.memar_adaptor.git.services.archive_task_records
+  - bundles.memar_adaptor.git.services.branch
+  - bundles.memar_adaptor.git.services.commit
+  - bundles.memar_adaptor.git.services.history_move_glob
+  - bundles.memar_adaptor.git.services.keep
+  - bundles.memar_adaptor.git.services.log
+  - bundles.memar_adaptor.git.services.record
+  - bundles.memar_adaptor.git.services.reindex
+  - bundles.memar_adaptor.git.services.remove
+  - bundles.memar_adaptor.git.services.rename
+  - bundles.memar_adaptor.git.services.restore
+  - bundles.memar_adaptor.git.services.show_task_records
+  - bundles.memar_adaptor.git.services.stash
+  - bundles.memar_adaptor.git.services.sweep_idle_task_folders
+  - bundles.memar_adaptor.git.services.task_store
+  - bundles.memar_adaptor.git.services.trash_task_folder
+  - bundles.memar_adaptor.git.services.uncommit
+  - bundles.memar_adaptor.git.services.undelete
+  - bundles.memar_adaptor.mcp
+  - bundles.memar_adaptor.mcp.handler
+  - bundles.memar_adaptor.mcp.mcp
+  - bundles.memar_adaptor.mcp.services._call
+  - bundles.memar_adaptor.mcp.services._tools
+  - bundles.memar_adaptor.mcp.services._worker
+  - bundles.memar_adaptor.mcp.services.serve
+  - bundles.memar_adaptor.mcp.services.worker
+  - face_policy
   - machine.console
   - machine.console_parts
   - machine.editor_extension
@@ -85,22 +96,15 @@ modules:
   - machine.env_path
   - machine.plugable_import
   - machine.resident
-  - mcp
-  - mcp.services._call
-  - mcp.services._tools
-  - mcp.services._worker
-  - mcp.services.serve
-  - mcp.services.worker
-  - modules-plugable.ai.ai
-  - modules-plugable.ai.services.agent_task_storage
-  - modules-plugable.ai.services.get_new_chats_ask
-  - modules-plugable.ai.services.get_rules_for_subject
-  - modules-plugable.ai.services.get_task_answer_context
-  - modules-plugable.ai.services.get_task_init_context
-  - modules-plugable.ai.services.get_task_plan_carry_out_brief
-  - modules-plugable.ai.services.get_task_questions_answer_brief
-  - modules-plugable.ai.services.task_context
-  - modules-plugable.ai.services.task_get_decisions_digest
+  - modules-plugable.management.agency.services.agent_task_storage.agent_task_storage
+  - modules-plugable.management.agency.services.get_new_chats_ask.get_new_chats_ask
+  - modules-plugable.management.agency.services.get_rules_for_subject.get_rules_for_subject
+  - modules-plugable.management.agency.services.get_task_answer_context.get_task_answer_context
+  - modules-plugable.management.agency.services.get_task_init_context.get_task_init_context
+  - modules-plugable.management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief
+  - modules-plugable.management.agency.services.get_task_questions_answer_brief.get_task_questions_answer_brief
+  - modules-plugable.management.task.services.task_context.task_context
+  - modules-plugable.management.task.services.task_get_decisions_digest.task_get_decisions_digest
   - modules-plugable.computer.codec.markdown.services.content_backlinks
   - modules-plugable.computer.codec.markdown.services.content_get_meta
   - modules-plugable.computer.codec.markdown.services.content_get_section
@@ -129,12 +133,12 @@ modules:
   - modules-plugable.computer.memory.store.record.record
   - modules-plugable.computer.memory.store.view.errors.errors
   - modules-plugable.computer.memory.store.view.view
-  - modules-plugable.computer.ui.command.command
   - modules-plugable.identity.thing.priority.errors.errors
   - modules-plugable.identity.thing.priority.labels.Priority
-  - modules-plugable.identity.thing.priority.services.graph_priority_ops
   - modules-plugable.identity.thing.priority.primitive.rank
   - modules-plugable.identity.thing.priority.services.facts_rank_store
+  - modules-plugable.identity.thing.priority.services.graph_priority_ops
+  - modules-plugable.identity.thing.priority.services.priority_of_thing
   - modules-plugable.identity.thing.priority.services.rank_store
   - modules-plugable.identity.thing.priority.services.read_priority
   - modules-plugable.identity.thing.priority.services.register_services
@@ -188,9 +192,14 @@ modules:
   - modules-plugable.knowledge.documentation.services.propagation
   - modules-plugable.knowledge.documentation.services.restated_fields
   - modules-plugable.knowledge.documentation.services.temp_duplicate
+  - modules-plugable.knowledge.label.services.attach_label_service
+  - modules-plugable.knowledge.label.services.detach_label_service
   - modules-plugable.knowledge.label.services.graph_errors
   - modules-plugable.knowledge.label.services.graph_label_ops
   - modules-plugable.knowledge.label.services.graph_thing
+  - modules-plugable.knowledge.label.services.label_of_thing
+  - modules-plugable.knowledge.label.services.read_labels_service
+  - modules-plugable.knowledge.label.services.register_services
   - modules-plugable.knowledge.label.status.labels.Active
   - modules-plugable.knowledge.label.status.labels.Blocked
   - modules-plugable.knowledge.label.status.labels.Complete
@@ -206,6 +215,7 @@ modules:
   - modules-plugable.knowledge.label.status.services.read_status
   - modules-plugable.knowledge.label.status.services.register_services
   - modules-plugable.knowledge.label.status.services.set_status
+  - modules-plugable.knowledge.label.status.services.status_of_thing
   - modules-plugable.knowledge.label.status.widgets.status
   - modules-plugable.knowledge.module-skeleton.services.module_ensure_folders
   - modules-plugable.knowledge.text.lexical-models.ir-words.ir-words
@@ -257,7 +267,6 @@ modules:
   - modules-plugable.management.task.services.task_records
   - modules-plugable.management.task.services.task_thing_services
   - modules-plugable.management.task.services.temp
-  - modules-plugable.management.task.task
   - modules-plugable.management.task.widgets.ensure.ensure
   - modules-plugable.management.task.widgets.intake.intake
   - modules-plugable.management.task.widgets.migrate_status.errors.errors
@@ -302,18 +311,15 @@ modules:
   - modules.knowledge.content.services.path
   - modules.knowledge.content.services.reference
   - modules.knowledge.content.services.resolve_path
+  - modules.knowledge.label.edges.label.relation
   - modules.knowledge.label.labels.LabelKind
   - modules.knowledge.label.primitive.declared_label
   - modules.knowledge.label.primitive.label
   - modules.knowledge.label.primitive.label_store
   - modules.knowledge.label.services.attach_label
-  - modules-plugable.knowledge.label.services.attach_label_service
   - modules.knowledge.label.services.declarations
   - modules.knowledge.label.services.detach_label
-  - modules-plugable.knowledge.label.services.detach_label_service
   - modules.knowledge.label.services.nearest_labels
-  - modules-plugable.knowledge.label.services.read_labels_service
-  - modules-plugable.knowledge.label.services.register_services
   - modules.knowledge.label.widgets.resolve_label
   - modules.knowledge.text.errors.bytes
   - modules.knowledge.text.errors.edit
@@ -327,12 +333,14 @@ modules:
   - modules.knowledge.text.services.file_text
   - modules.knowledge.text.services.fold-text.fold-text
   - modules.knowledge.text.services.header_text
+  - modules.knowledge.text.services.index
   - modules.knowledge.text.services.text_bytes_check
   - modules.knowledge.text.services.text_check
   - modules.knowledge.text.services.text_distance
   - modules.knowledge.text.services.text_edit
   - modules.knowledge.text.services.text_line_ending_rule
   - modules.knowledge.text.widgets.text-to-labels.text-to-labels
+  - modules.management
   - modules.management.agency.labels.Answer
   - modules.management.agency.labels.Critique
   - modules.management.agency.labels.Design
@@ -346,9 +354,9 @@ modules:
   - modules.management.timeline.services.timeline_latest
   - modules.management.timeline.services.timeline_place
   - modules.process.rule.services.find_rules
+  - modules.process.service.primitive.declaration
   - modules.process.service.service
   - modules.process.services.composition
   - modules.process.services.services
   - modules.process.test.services.test_scratch
-  - resident.services._pool
   - resident.services.serve

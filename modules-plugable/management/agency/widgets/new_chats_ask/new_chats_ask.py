@@ -7,7 +7,7 @@ Why = import_module('modules-plugable.knowledge.documentation.plan.primitive.why
 from machine.console import fail
 _m_dependency = import_module('modules-plugable.management.task.services.dependency')
 DependsOn = _m_dependency.DependsOn
-_m_storage = import_module('modules-plugable.ai.services.agent_task_storage')
+_m_storage = import_module('modules-plugable.management.agency.services.agent_task_storage.agent_task_storage')
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 _m_plan_brief = import_module('modules-plugable.management.agency.widgets.plan_carry_out_brief.plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text

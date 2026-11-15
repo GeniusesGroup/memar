@@ -12,7 +12,7 @@ that holds it per
 in the `tests/` folder of the shelf that owns it per
 [Test Placement](../../../modules/process/test/rules/test-placement/test-placement.md).
 The design it holds is the parent plan's, task 20261012T134849Z-25068-0,
-"Design": `memar task get-decisions-digest` gathers every `Decisions needed` entry across
+"Design": `memar task_get_decisions_digest` gathers every `Decisions needed` entry across
 reports into one digest.
 
 Nothing here writes outside its scratch folder: the Memar root the services
@@ -86,7 +86,7 @@ def stores_over(path):
     return task_files.stores_at(Path(path).parent)
 import modules.computer.software.edges.manifest.services.preferences as project_preferences
 import modules.computer.software.services.project_registry as registry
-task_digest = import_module('modules-plugable.ai.services.task_get_decisions_digest')
+task_digest = import_module('modules-plugable.management.task.services.task_get_decisions_digest.task_get_decisions_digest')
 task_location = import_module('modules-plugable.management.task.services.task_location')
 import shape
 task_files_mod = import_module('modules-plugable.management.task.services.task_memory')
@@ -223,7 +223,7 @@ class DayReview(Fixture):
         self.assertIn('report: complete', text)
         self.assertIn('result: First result line.', text)
         self.assertIn('- Keep it?', text)
-        self.assertIn(f'close, once the owner confirms it is finished: memar git trash-task-folder --task-id {folder.name}', text)
+        self.assertIn(f'close, once the owner confirms it is finished: memar git_trash_task_folder --task-id {folder.name}', text)
         self.assertTrue(folder.is_dir())
 
     def test_a_sound_task_without_decisions_is_reviewed_too_but_a_queued_one_is_not(self) -> None:

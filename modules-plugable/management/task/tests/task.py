@@ -29,42 +29,56 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-task = import_module('modules-plugable.management.task.task')
 set_status_service = import_module('modules-plugable.knowledge.label.status.services.set_status')
-SET_STATUS_LINE = f'memar service {set_status_service.SERVICE_SET} --thing ID --word WORD'
-task_archive = import_module('bundles.memar_git.services.archive_task_records')
+from bundles.memar_adaptor.cli.call_names import call_of_module
+_m_status_face = import_module('modules-plugable.knowledge.label.status.services.status_of_thing')
+SET_STATUS_LINE = f"memar {call_of_module(_m_status_face.__name__, 'set')} ID WORD --project NAME"
+task_archive = import_module('bundles.memar_adaptor.git.services.archive_task_records')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim
 task_claims = import_module('modules-plugable.management.task.services.claims')
-task_close = import_module('bundles.memar_git.services.trash_task_folder')
-task_digest = plugable_load('ai.services.task_get_decisions_digest')
+task_close = import_module('bundles.memar_adaptor.git.services.trash_task_folder')
+task_digest = plugable_load('management.task.services.task_get_decisions_digest.task_get_decisions_digest')
 task_find = import_module('modules-plugable.management.task.services.list')
 task_folder = import_module('modules-plugable.management.task.services.folder')
-task_gc = import_module('bundles.memar_git.services.sweep_idle_task_folders')
+task_gc = import_module('bundles.memar_adaptor.git.services.sweep_idle_task_folders')
 task_id = import_module('modules-plugable.management.task.primitive.task_id')
 task_location = import_module('modules-plugable.management.task.services.task_location')
-task_log = import_module('bundles.memar_git.services.log')
+task_log = import_module('bundles.memar_adaptor.git.services.log')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_new = import_module('modules-plugable.management.task.services.new')
 task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
-task_start = import_module('modules-plugable.ai.services.get_task_init_context')
+task_start = import_module('modules-plugable.management.agency.services.get_task_init_context.get_task_init_context')
 task_report = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
-task_show = import_module('bundles.memar_git.services.show_task_records')
-LAUNCHER = SCRIPTS / 'memar'
-_spec = importlib.util.spec_from_loader('memar_launcher', SourceFileLoader('memar_launcher', str(LAUNCHER)))
-launcher = importlib.util.module_from_spec(_spec)
-_spec.loader.exec_module(launcher)
+task_show = import_module('bundles.memar_adaptor.git.services.show_task_records')
+LAUNCHER = SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'
+launcher = importlib.import_module('bundles.memar_adaptor.cli.router')
 TASK_SERVICES = launcher.services_of('task')
 TITLE = 'Test the task command'
+FLAT = {
+    'ensure': 'task_ensure',
+    'list': 'task_list',
+    'claim': 'task_claim',
+    'claims': 'task_claims',
+    'get-decisions-digest': 'task_get_decisions_digest',
+    'depends-on': 'task_depends_on',
+}
 
 def command(*arguments: str) -> int:
+    if not arguments:
+        raise ValueError('command needs a verb')
+    call = FLAT.get(arguments[0], arguments[0])
     with unittest.mock.patch.object(launcher, 'services', return_value=TASK_SERVICES):
-        return launcher.main(['task', *arguments])
+        return launcher.main([call, *arguments[1:]])
 
 def run_help(*arguments: str) -> str:
-    environment = dict(os.environ, COLUMNS='80', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1')
-    completed = subprocess.run([sys.executable, str(LAUNCHER), 'task', *arguments, '--help'], capture_output=True, env=environment)
+    environment = dict(os.environ, COLUMNS='80', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1', MEMAR_SERVER='0', MEMAR_NO_AUTO_UPDATE='1')
+    if not arguments:
+        call, rest = 'task_ensure', ()
+    else:
+        call, rest = FLAT[arguments[0]], arguments[1:]
+    completed = subprocess.run([sys.executable, str(LAUNCHER), call, *rest, '--help'], capture_output=True, env=environment)
     assert completed.returncode == 0, completed.stderr
     return completed.stdout.decode('utf-8').replace('\r\n', '\n')
 
@@ -94,54 +108,19 @@ class Fixture(unittest.TestCase):
 class HelpSaysWhatToRun(unittest.TestCase):
     MECHANISM = ('shared-tree collisions', 'advisory locks', 'intent notes', 'OS-temp', 'fails closed', 'scripts/services/')
 
-    def test_the_domain_help_says_what_a_task_is(self) -> None:
-        text = flat(run_help())
-        for phrase in ('A task is one thing the person asked for', "Its record lives on the project's records branch", 'One task is one id', 'gets a task of its own', 'Scratch while working goes in the task\'s temp/', 'read what `ensure` says first'):
-            self.assertIn(phrase, text)
-        for name in ('task.yaml',):
-            self.assertNotIn(name, text)
+    def test_grouped_task_is_refused(self) -> None:
+        environment = dict(os.environ, COLUMNS='80', PYTHONIOENCODING='utf-8', PYTHONDONTWRITEBYTECODE='1', MEMAR_SERVER='0', MEMAR_NO_AUTO_UPDATE='1')
+        completed = subprocess.run([sys.executable, str(LAUNCHER), 'task', '--help'], capture_output=True, env=environment)
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn('invalid choice', completed.stderr.decode('utf-8', 'replace'))
 
-    def test_the_domain_help_says_where_scratch_and_claims_go(self) -> None:
-        text = flat(run_help())
-        for phrase in ("Scratch while working goes in the task's temp/", "A claim while an agent holds the task is Memar's (`claim`)", 'Role folders the work may use: services/, tests/, temp/'):
-            self.assertIn(phrase, text)
-        for name in ('task.yaml',):
-            self.assertNotIn(name, text)
+    def test_each_flat_task_call_has_help(self) -> None:
+        for verb in FLAT:
+            with self.subTest(verb=verb):
+                text = run_help(verb)
+                self.assertIn(f'usage: memar {FLAT[verb]}', text)
 
-    def test_the_domain_help_gives_the_status_words_and_how_a_task_ends(self) -> None:
-        text = run_help()
-        for phrase in ('Queued     Waiting to be taken up', 'Active     Being worked on', 'Complete   the check passed', 'Blocked    it waits on an answer or an approval', 'Active     its budget ended'):
-            self.assertIn(phrase, text)
-        text = flat(text)
-        for phrase in ('Queued, Active, Blocked, or Complete', SET_STATUS_LINE, 'the report does not repeat the Status', 'Complete once its check has passed'):
-            self.assertIn(phrase, text)
-        for name in ('task.yaml',):
-            self.assertNotIn(name, text)
-
-    def test_the_domain_help_says_who_posts_a_sub_agents_report(self) -> None:
-        text = flat(run_help())
-        for phrase in ('posts the report of a sub-agent that could only return text, and sets that task\'s Status', 'Read plan and report with `memar git show-task-records`'):
-            self.assertIn(phrase, text)
-        for name in ('task.yaml',):
-            self.assertNotIn(name, text)
-
-    def test_the_domain_help_points_to_archive_for_where_the_records_are(self) -> None:
-        text = flat(run_help())
-        for phrase in ("its records stay on its project's records branch and are never pushed", '`close` and the sweep act only on a task already archived', 'neither acts on a task whose Status is Queued'):
-            self.assertIn(phrase, text)
-        self.assertNotIn("Committing a task's changes commits the records", text)
-
-    def test_the_domain_help_says_nothing_of_a_move_before_every_verb(self) -> None:
-        text = flat(run_help())
-        for phrase in ('Before any verb below runs', 'moved into .agents/tasks/', 'asking for help moves nothing'):
-            self.assertNotIn(phrase, text)
-
-    def test_the_domain_help_states_no_sub_verbs_work(self) -> None:
-        text = flat(run_help())
-        for phrase in ('memar task ensure', 'memar task claims', 'memar task get-decisions-digest', 'Title: TITLE', '## Request', '## What ran', 'do some of the queued tasks', "review today's tasks", 'Once a day', 'To only add work'):
-            self.assertNotIn(phrase, text)
-
-    def test_no_sub_verb_sends_its_reader_to_the_domain_help_for_its_own_work(self) -> None:
+    def test_no_sub_verb_sends_its_reader_to_a_domain_help_for_its_own_work(self) -> None:
         for verb in ('ensure', 'list', 'claim', 'claims', 'get-decisions-digest', 'depends-on'):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb)).lower()
@@ -151,14 +130,14 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_new_says_what_it_writes_and_leaves_the_rest_to_the_file(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('a text is added and never written over', 'memar conversation post --timeline ID --kind plan|report', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', SET_STATUS_LINE, 'No filesystem path is printed'):
+        for phrase in ('a text is added and never written over', 'memar conversation_post --timeline ID --kind plan|report', 'Request (what was asked', 'Why (the reason', 'Steps (each local or delegated, each naming the governing documents it reads', 'Next (what the next task does first)', 'decide where it runs by two questions', "The owner's words never pick", 'model-follows-need.md', 'at most 10 lines under `## Decisions needed`', SET_STATUS_LINE, 'No filesystem path is printed'):
             self.assertIn(phrase, text)
         for phrase in ('Title: TITLE', 'written in PascalCase', 'Once a day', 'drive or filesystem root is refused', 'task.yaml'):
             self.assertNotIn(phrase, text)
 
     def test_new_says_how_a_task_is_handed_over_queued_and_continued(self) -> None:
         text = flat(run_help('ensure'))
-        for phrase in ('open its task with --parent', 'post the whole task as its plan content — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar ai get-task-plan-carry-out-brief ID` prints again', '--label ACT', 'To only add work', '--queued', "never do a queued task's work in your own context", 'To continue a task another task left', '`memar task ids`', 'start from its Next'):
+        for phrase in ('open its task with --parent', 'post the whole task as its plan content — Request, the check that says it is done, the shape of its report, and Why', 'hand the sub-agent only the brief `ensure` prints, which `memar ai_get_task_plan_carry_out_brief ID` prints again', '--label ACT', 'To only add work', '--queued', "never do a queued task's work in your own context", 'To continue a task another task left', '`memar task_ids`', 'start from its Next'):
             self.assertIn(phrase, text)
         for name in ('task.yaml',):
             self.assertNotIn(name, text)
@@ -175,14 +154,14 @@ class HelpSaysWhatToRun(unittest.TestCase):
 
     def test_claims_carries_the_recipe_for_an_agent_told_only_to_do_queued_tasks(self) -> None:
         text = flat(run_help('claims'))
-        for phrase in ('do some of the queued tasks', '--project NAME or --project-path PATH is required: one run serves one project', '"Do 5 tasks of X" means `claims 5 --project X`', 'there is no default project and no way to take from all', 'ask the owner rather than guess', '`memar task list --status queued`', 'N is yours to choose', 'the highest priority first, the oldest opened first among equals', 'Hand the batch of one topic to one fresh sub-agent', 'each task keeping its own plan and report contents (by kind)', 'never one sub-agent for tasks of different topics', 'never in your own context', 'read its report with `memar git show-task-records`', 'memar conversation post --kind report', SET_STATUS_LINE, 'a Status that disagrees with its plan', 'failed hand-back', "run `memar task get-decisions-digest --conversation ID`, ID your own task's", 'give the owner that one digest', 'Memar starts no agent'):
+        for phrase in ('do some of the queued tasks', '--project NAME or --project-path PATH is required: one run serves one project', '"Do 5 tasks of X" means `claims 5 --project X`', 'there is no default project and no way to take from all', 'ask the owner rather than guess', '`memar task_list --status queued`', 'N is yours to choose', 'the highest priority first, the oldest opened first among equals', 'Hand the batch of one topic to one fresh sub-agent', 'each task keeping its own plan and report contents (by kind)', 'never one sub-agent for tasks of different topics', 'never in your own context', 'read its report with `memar git_show_task_records`', 'memar conversation_post --kind report', SET_STATUS_LINE, 'a Status that disagrees with its plan', 'failed hand-back', "run `memar task_get_decisions_digest --conversation ID`, ID your own task's", 'give the owner that one digest', 'Memar starts no agent'):
             self.assertIn(phrase, text)
         for name in ('task.yaml',):
             self.assertNotIn(name, text)
 
     def test_the_review_and_the_hand_back_are_digests(self) -> None:
         text = flat(run_help('get-decisions-digest'))
-        for phrase in ("review today's tasks with me and close the ones I confirm", '`memar git trash-task-folder --task-id ID`', 'at most 10 lines', 'each the question, its options, and the one it recommends', 'a complete task is in only when it has entries or a failed hand-back', 'blocking first', 'one naming a question that is not open is a failed hand-back'):
+        for phrase in ("review today's tasks with me and close the ones I confirm", '`memar git_trash_task_folder --task-id ID`', 'at most 10 lines', 'each the question, its options, and the one it recommends', 'a complete task is in only when it has entries or a failed hand-back', 'blocking first', 'one naming a question that is not open is a failed hand-back'):
             self.assertIn(phrase, text)
 
     @unittest.skip('close moved to memar git; see git/tests/trash_task_folder.py')
@@ -198,11 +177,8 @@ class HelpSaysWhatToRun(unittest.TestCase):
             for word in ('launch', 'runner', '`run`', 'task run'):
                 self.assertNotIn(word, text)
 
-    def test_the_top_help_leads_to_queued_tasks(self) -> None:
-        self.assertIn('queued tasks', task.SUMMARY)
-
     def test_each_verbs_help_says_what_it_accepts(self) -> None:
-        for verb, phrases in (('ensure', ('--task-id', '--title TITLE', '--parent ID', '--project NAME', '--project-path PATH', 'No filesystem path is printed', 'Nothing else goes in the hand-over')), ('list', ('whose id, title, or project holds TEXT', 'one word or a short phrase, not a question', '--status {queued,active,blocked,complete}', '--conversation ID', '--idle-days DAYS', '--project NAME', '--project-path PATH', "List Memar's own task folders", 'the calling folder is never read', 'earlier shape')), ('ensure', ('--queued', 'an existing active one no one has claimed is queued', '--priority N', '1 to 10', 'higher goes sooner')), ('claim', ('ID', 'another agent holds, is refused', 'taken over', 'Nothing keeps a claim fresh', f'{Claim.stale_hours()} hours')), ('claims', ('N', 'highest priority first', 'oldest', 'brief', 'Fewer queued than N is not an error', 'no default', "never mixes two projects'", 'one fresh sub-agent per batch of one topic', '--label Topic=T', '--fill')), ('get-decisions-digest', ('--conversation ID', 'Decisions needed', 'priority', 'failed hand-back', 'marked `failed hand-back` with why', 'Queued tasks are left out', 'With --day: the review', 'The review closes nothing itself')), ('depends-on', ('ID', '--add', '--drop'))):
+        for verb, phrases in (('ensure', ('--task-id', '--title TITLE', '--parent ID', '--project NAME', '--project-path PATH', 'No filesystem path is printed', 'Nothing else goes in the hand-over')), ('list', ('whose id, title, or project holds TEXT', 'one word or a short phrase, not a question', '--status {queued,active,blocked,complete}', '--conversation', '--idle-days DAYS', '--project NAME', '--project-path PATH', "List Memar's own task folders", 'the calling folder is never read', 'earlier shape')), ('ensure', ('--queued', 'an existing active one no one has claimed is queued', '--priority N', '1 to 10', 'higher goes sooner')), ('claim', ('ID', 'another agent holds, is refused', 'taken over', 'Nothing keeps a claim fresh', f'{Claim.stale_hours()} hours')), ('claims', ('N', 'highest priority first', 'oldest', 'brief', 'Fewer queued than N is not an error', 'no default', "never mixes two projects'", 'one fresh sub-agent per batch of one topic', '--label Topic=T', '--fill')), ('get-decisions-digest', ('--conversation', 'Decisions needed', 'priority', 'failed hand-back', 'marked `failed hand-back` with why', 'Queued tasks are left out', 'With --day: the review', 'The review closes nothing itself')), ('depends-on', ('ID', '--add', '--drop'))):
             with self.subTest(verb=verb):
                 text = flat(run_help(verb))
                 for phrase in phrases:
@@ -214,8 +190,6 @@ class HelpSaysWhatToRun(unittest.TestCase):
             self.assertNotIn(phrase, text)
 
     def test_the_why_is_in_the_files_the_implementer_reads(self) -> None:
-        for name in ('task_new', 'task_find'):
-            self.assertIn(name, task.__doc__)
         for module, phrases in ((task_new, ('shared-tree collisions', 'advisory locks', 'intent notes', 'One task is one folder')), (task_plan, ('disputed', 'handoff', 'Only that shape is read')), (task_find, ('listed together',))):
             for phrase in phrases:
                 self.assertIn(phrase, flat(module.__doc__), module.__name__)

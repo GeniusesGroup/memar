@@ -81,7 +81,7 @@ What is pinned, and what each pin is for:
                      Memar's.
   LockSharesTheRoot  Locks and intent notes land under the same temp root the
                      task folders are under. How a lock behaves is pinned in
-                     `bundles/memar_fs/tests/text_edit_lock.py`, which owns it.
+                     `bundles/memar_adaptor/fs/tests/text_edit_lock.py`, which owns it.
   UnresolvableRoot   With no root to resolve, opening errors rather than
                      guessing a folder.
 
@@ -91,7 +91,7 @@ from __future__ import annotations
 from importlib import import_module
 _m_test_scratch = import_module('modules.process.test.services.test_scratch')
 suite_scratch = _m_test_scratch.suite_scratch
-_m_text_edit_lock = import_module('bundles.memar_fs.services.text_edit_lock')
+_m_text_edit_lock = import_module('bundles.memar_adaptor.fs.services.text_edit_lock')
 text_edit_lock = _m_text_edit_lock
 _m_memar_location = import_module('bundles.memar.services.location.memar_location')
 memar_fs = _m_memar_location
@@ -121,10 +121,12 @@ import modules.computer.software.services.project_registry as registry
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 ensure_open = import_module('modules-plugable.management.task.widgets.ensure.ensure').open
 task_new = import_module('modules-plugable.management.task.services.new')
-set_on = import_module('modules-plugable.identity.thing.priority.services.task_facts').set_on
-rank_of = import_module('modules-plugable.identity.thing.priority.services.task_facts').rank_of
+_things = import_module('modules-plugable.management.task.services.task_thing_services')
+set_on = _things.set_priority
+rank_of = _things.read_priority_rank
+read_status_key = _things.read_status_key
 task_files = import_module('modules-plugable.management.task.services.task_files')
-task_store = import_module('bundles.memar_git.services.task_store')
+task_store = import_module('bundles.memar_adaptor.git.services.task_store')
 new_id = import_module('modules.knowledge.label.primitive.label').new_id
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
 task_report = import_module('modules-plugable.knowledge.documentation.report.services.report_text')
@@ -134,7 +136,7 @@ _m_folder = import_module('modules-plugable.management.task.services.folder')
 read_task = _m_folder.read_task
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
-_m_plan_brief = import_module('modules-plugable.ai.services.get_task_plan_carry_out_brief')
+_m_plan_brief = import_module('modules-plugable.management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
 _m_acts = import_module('modules.management.agency.labels.acts')
 plan_acts = import_module('modules-plugable.knowledge.documentation.plan.services.plan_acts')
@@ -144,7 +146,7 @@ import modules.computer.software.services.project_registry as project_registry
 _m_task_location = import_module('modules-plugable.management.task.services.task_location')
 prune_registry = _m_task_location.prune_registry
 registered_locations = _m_task_location.registered_locations
-_m_log = import_module('bundles.memar_git.services.log')
+_m_log = import_module('bundles.memar_adaptor.git.services.log')
 TASK_LOG_NAME = _m_log.TASK_LOG_NAME
 log_path = _m_log.log_path
 TITLE = 'Test the task services'
@@ -239,7 +241,7 @@ class CreatesFolder(Fixture):
             self.call_open('s-2', TITLE, None)
         text = out.getvalue()
         self.assertIn('task_id: s-2', text)
-        self.assertIn('memar conversation post --timeline s-2 --kind plan', text)
+        self.assertIn('memar conversation_post --timeline s-2 --kind plan', text)
         self.assertIn('task.yaml', task_store.tree('s-2'))
 
     def test_mints_an_id_when_none_is_given(self) -> None:
@@ -292,7 +294,8 @@ class PlanWritten(Fixture):
         self.assertFalse(raw.startswith(bytes([0xef, 0xbb, 0xbf])))
         self.assertNotIn(bytes([13]), raw)
         facts = task_files.read_facts(path)
-        self.assertEqual((facts['title'], facts['status']), (TITLE, 'active'))
+        self.assertEqual(facts['title'], TITLE)
+        self.assertNotIn('status', facts)
         self.assertRegex(facts['start_date'], OPENED)
         self.assertEqual(Path(facts['project']), self.current)
         self.assertEqual(timeline_files.read_contents(path), [])
@@ -308,8 +311,8 @@ class PlanWritten(Fixture):
     def test_continuing_never_overwrites_the_plan(self) -> None:
         sid, path = self.ensure('s-keep', TITLE)
         kept = [(content.number, content.header, content.body) for content in timeline_files.read_contents(path)]
-        stores = task_files.stores_at(path)
-        stores.replace_status(None, sid, 'complete', stores.read_status(None, sid)[1])
+        set_on = import_module('modules-plugable.management.task.services.task_thing_services').set_status
+        set_on(sid, 'complete', self.current)
         self.ensure(sid)
         self.ensure(sid, 'Another title')
         self.assertEqual([(content.number, content.header, content.body) for content in timeline_files.read_contents(path)], kept)
@@ -435,7 +438,7 @@ class ReportWritten(Fixture):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open('s-said', TITLE, None)
-        self.assertIn('memar conversation post --timeline s-said --kind report', out.getvalue())
+        self.assertIn('memar conversation_post --timeline s-said --kind report', out.getvalue())
 
 class RoleFoldersMade(Fixture):
 
@@ -638,7 +641,7 @@ class ProjectNamed(Fixture):
         return str(raised.exception.code)
 
     def cli(self, *argv: str) -> str:
-        """`memar task ensure ARGV` as the router runs it: the flags parsed, a name resolved, then the task made."""
+        """`memar task_ensure ARGV` as the router runs it: the flags parsed, a name resolved, then the task made."""
         parser = argparse.ArgumentParser()
         command = task_new.describe(parser.add_subparsers())
         out = io.StringIO()
@@ -756,7 +759,7 @@ class BriefPrinted(Fixture):
         printed = self.opened('second', 'Delegated step', 'first').splitlines()
         self.assertEqual(printed[-2], '    brief:')
         self.assertEqual(printed[-1], f"        {brief_text('second')}")
-        self.assertIn('memar ai get-task-init-context --task-id second', printed[-1])
+        self.assertIn('memar ai_get_task_init_context --task-id second', printed[-1])
 
     def test_a_task_made_without_a_parent_prints_no_brief(self) -> None:
         self.assertNotIn('brief:', self.opened('first', TITLE, None))
@@ -845,7 +848,7 @@ class NewShapeVerbs(Fixture):
         self.assertTrue((path / 'task.yaml').is_file())
         self.assertEqual(sorted(entry.name for entry in path.iterdir() if entry.is_file()), ['task.yaml'])
         task = read_task(path)
-        self.assertEqual((task.status, task.front['title']), ('queued', TITLE))
+        self.assertEqual((read_status_key(sid, str(self.current)), task.front['title']), ('queued', TITLE))
 
     def test_priority_depends_on_list_and_claims_work_on_it(self) -> None:
         sid, path = self.made()
@@ -864,7 +867,7 @@ class NewShapeVerbs(Fixture):
         sid, path = self.made()
         task_claim = import_module('modules-plugable.management.task.services.claim')
         self.assertIsNone(task_claim.try_claim(path))
-        self.assertEqual(read_task(path).status, 'active')
+        self.assertEqual(read_status_key(sid, str(self.current)), 'active')
         self.assertTrue((path / 'claim').is_file())
 
 class OnlyTheNewShape(Fixture):
@@ -882,8 +885,8 @@ class OnlyTheNewShape(Fixture):
         out = io.StringIO()
         with contextlib.redirect_stdout(out):
             self.call_open(None, TITLE, None)
-        self.assertRegex(out.getvalue(), r'plan: write it with `memar conversation post --timeline \S+ --kind plan')
-        self.assertRegex(out.getvalue(), r'report: write it with `memar conversation post --timeline \S+ --kind report')
+        self.assertRegex(out.getvalue(), r'plan: write it with `memar conversation_post --timeline \S+ --kind plan')
+        self.assertRegex(out.getvalue(), r'report: write it with `memar conversation_post --timeline \S+ --kind report')
 
     def test_ensuring_again_adds_nothing_to_a_task_made_new(self) -> None:
         sid, path = self.ensure(None, TITLE)

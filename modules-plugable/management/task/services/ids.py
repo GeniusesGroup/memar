@@ -30,7 +30,7 @@ TASK_IDS_COMMAND = 'ids'
 LIMIT_HIGHEST = 100
 LIMIT_DEFAULT = 20
 TOKEN_SHAPE = re.compile(r'\d{8}-?T\d{6}Z-\d+(-\d+)?')
-WAYS = 'words (`memar content find TEXT --from tasks`); label (a status is a label), parent or conversation (`memar task ids --label L | --parent ID | --conversation ID`, with --words W); a claim (`memar task claims N`, `memar task claim ID`)'
+WAYS = 'words (`memar content_find TEXT --from tasks`); label (a status is a label), parent or conversation (`memar task_ids --label L | --parent ID | --conversation ID`, with --words W); a claim (`memar task_claims N`, `memar task_claim ID`)'
 
 class Page(NamedTuple):
     ids: tuple[str, ...]
@@ -39,7 +39,7 @@ class Page(NamedTuple):
 class ListRefused(Task_Error_ListRefused):
 
     def __init__(self) -> None:
-        super().__init__(f'no verb lists all tasks: there are too many for any agent to hold; find a task by {WAYS}; read one task with `memar git show-task-records`')
+        super().__init__(f'no verb lists all tasks: there are too many for any agent to hold; find a task by {WAYS}; read one task with `memar git_show_task_records`')
 
 def labelled(row: TaskRow, label: str) -> bool:
     wanted = label.strip().casefold()
@@ -54,7 +54,7 @@ def ids_page(words: str | None=None, label: str | None=None, parent: str | None=
     if after and TOKEN_SHAPE.fullmatch(after) is None:
         raise Task_Error_PageTokenRefused(f'{after!r} is not a token a listing of task ids returned; start again with none')
     needle = words.casefold() if words else ''
-    kept = [row for row in _m_source.records_rows(project) if (not needle or needle in row.words.casefold()) and (not label or labelled(row, label)) and (not parent or row.parent == parent) and (not conversation or row.conversation == conversation)]
+    kept = [row for row in _m_source.records_rows(project, words=words, parent=parent, conversation=conversation, include_status=bool(label)) if (not needle or needle in row.words.casefold()) and (not label or labelled(row, label)) and (not parent or row.parent == parent) and (not conversation or row.conversation == conversation)]
     ids = sorted((row.id for row in kept), reverse=True)
     if after:
         ids = [each for each in ids if each < after]
@@ -77,8 +77,8 @@ def ids_for_agent(words: str | None=None, label: str | None=None, parent: str | 
     print(f'next: {page.next}'.rstrip())
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar task ids`."""
-    ids = verbs.add_parser(TASK_IDS_COMMAND, help='list a page of the ids of the tasks that match, and the token of the next page', description=f'List the ids of the tasks that every way given keeps, newest first, one a line, then `next: TOKEN`, empty on the last page; pass the token as --after to get the page after. A page holds ids and nothing of any task: read one task with `memar git show-task-records`. At least one of --words, --label, --parent and --conversation is required, since no agent holds all tasks. A page holds from 1 to {LIMIT_HIGHEST} ids, {LIMIT_DEFAULT} when --limit is not given.')
+    """`memar task_ids`."""
+    ids = verbs.add_parser(TASK_IDS_COMMAND, help='list a page of the ids of the tasks that match, and the token of the next page', description=f'List the ids of the tasks that every way given keeps, newest first, one a line, then `next: TOKEN`, empty on the last page; pass the token as --after to get the page after. A page holds ids and nothing of any task: read one task with `memar git_show_task_records`. At least one of --words, --label, --parent and --conversation is required, since no agent holds all tasks. A page holds from 1 to {LIMIT_HIGHEST} ids, {LIMIT_DEFAULT} when --limit is not given.')
     ids.add_argument('--words', default=None, help='keep tasks whose id, title or project holds these words, in any case')
     ids.add_argument('--label', default=None, help='keep tasks that carry this label, by its word or its id; a status is a label, so --label blocked keeps the blocked ones')
     ids.add_argument('--parent', default=None, metavar='ID', help='keep the tasks made from this task')

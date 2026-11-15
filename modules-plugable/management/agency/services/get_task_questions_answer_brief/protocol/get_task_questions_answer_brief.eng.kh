@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Get_Task_Questions_Answer_Brief in "./get_task_questions_answer_brief.kh"
+
+tp Domain mt (self Get_Task_Questions_Answer_Brief) () (s String) {
+	CharacterRun_From.FromCharacterRun("ai")(s, VoidError)
+}
+
+tp Name mt (self Get_Task_Questions_Answer_Brief) () (s String) {
+	CharacterRun_From.FromCharacterRun("get task questions answer brief")(s, VoidError)
+}

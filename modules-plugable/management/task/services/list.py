@@ -148,7 +148,18 @@ def find_tasks(text: str | None=None, status: str | None=None, conversation: str
     finally:
         store.forget_scan()
     if project is not None:
-        tasks = [task for task in tasks if of_project(task, project, own)]
+        # Many recorded tasks have the same project and the same virtual
+        # scratch parent. Resolve each distinct pair once, not once per task.
+        matches_project = {}
+        kept = []
+        for task in tasks:
+            named = (task.front or {}).get(PlanKey.PROJECT.key, '').strip()
+            key = (task.disk.parent if task.disk is not None else None, named)
+            if key not in matches_project:
+                matches_project[key] = of_project(task, project, own)
+            if matches_project[key]:
+                kept.append(task)
+        tasks = kept
     if text:
         tasks = [task for task in tasks if matches(task, text)]
     if status is not None:
@@ -215,8 +226,8 @@ def list_tasks(text: str | None=None, status: str | None=None, idle_days: float 
         note('no task folder matches' if asked else 'no task folder')
 
 def describe(verbs) -> Callable[[argparse.Namespace], None]:
-    """`memar task list`."""
-    lister = verbs.add_parser(LIST_COMMAND, help="list task folders, newest first, a conversation's together", description=f"List Memar's own task folders, newest first, with the tasks of one conversation next\nto each other: id, title, project, status, priority, the task it came from, path. A folder\nwith no plan, one that cannot be read, or one without front matter is listed and marked so.\nA task whose report Status disagrees with its plan's, or whose status is not\n{', '.join(Label_Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why; one not complete that looks\nfinished or abandoned is marked `{CONCERNS}`. A mark moves nothing. A task with a `{PlanKey.DEPENDS_ON.written}` shows\neach task it cites and where that stands, and a cited task shows who depends on it as `{DEPENDS_FOR}`;\nlisting also brings the Status of a task with dependencies up to date, as `claims` does\n(`memar task depends-on --help`). A plan or a report in an\nearlier shape is marked likewise. A folder in a project's own task location is listed only\nwhen asked for: {ProjectName.FLAG} lists every task of that project, --conversation every task\nlinked with that one; --status and --idle-days keep only what they name.")
+    """`memar task_list`."""
+    lister = verbs.add_parser(LIST_COMMAND, help="list task folders, newest first, a conversation's together", description=f"List Memar's own task folders, newest first, with the tasks of one conversation next\nto each other: id, title, project, status, priority, the task it came from, path. A folder\nwith no plan, one that cannot be read, or one without front matter is listed and marked so.\nA task whose report Status disagrees with its plan's, or whose status is not\n{', '.join(Label_Status.keys(PLAN.kind))}, is marked `{DISAGREES}`, with why; one not complete that looks\nfinished or abandoned is marked `{CONCERNS}`. A mark moves nothing. A task with a `{PlanKey.DEPENDS_ON.written}` shows\neach task it cites and where that stands, and a cited task shows who depends on it as `{DEPENDS_FOR}`;\nlisting also brings the Status of a task with dependencies up to date, as `claims` does\n(`memar task_depends_on --help`). A plan or a report in an\nearlier shape is marked likewise. A folder in a project's own task location is listed only\nwhen asked for: {ProjectName.FLAG} lists every task of that project, --conversation every task\nlinked with that one; --status and --idle-days keep only what they name.")
     lister.add_argument('text', nargs='?', metavar='TEXT', help='show only tasks whose id, title, or project holds TEXT, in any case; one word or a short phrase, not a question to answer')
     lister.add_argument('--status', type=status_word, choices=Label_Status.keys(PLAN.kind), default=None, help='show only tasks whose task has this status')
     lister.add_argument('--idle-days', type=float, default=None, metavar='DAYS', help='show only tasks in which nothing has changed for at least DAYS days, and say how long')

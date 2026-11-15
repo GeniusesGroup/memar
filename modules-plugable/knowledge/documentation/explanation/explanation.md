@@ -36,7 +36,7 @@ An Explanation-facet document is content and may carry [labels](../../../../modu
 Rules specific to this facet's Status-kind labels:
 - `ID` is never reused, regardless of which Status-kind label the document carries, including Rejected.
 - Carry `Proposed` once discussion converges; carry `Final` once it is reflected in canonical documentation (withdraw the previous Status-kind label when the move is exclusive).
-- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content check` does not treat Labels as a special Status key.
+- Whether discussion has converged, and whether a document is reflected in canonical documentation, are decided by a reader against the governing documents, not by a command: `memar content_check` does not treat Labels as a special Status key.
 - Nothing before `Final` should be treated as settled by anyone depending on the document.
 - Moving a Final document's substance requires a new, superseding document, not an in-place edit.
 - A reconsidered Rejected idea becomes a new document with its own number, referencing the rejected one via a `Superseded` entry in the `Cited` field of the changelog content that records it (see [changelog.md → Cited](../changelog/changelog.md#cited)).
@@ -48,7 +48,7 @@ The calendar date (`YYYY-MM-DD`, UTC) the document file was first drafted. Set o
 ### ID
 A UTC unix-time-derived integer, generated once when the file is first drafted, never reused or reassigned. It carries no meaning beyond relative creation order — generating it does not imply approval; that is the Status-kind label's job under [Labels](#labels).
 
-**Value and generation.** The value is UTC unix time truncated to the hour, as a plain decimal integer; `memar content hour-id` prints it ([`content_hour_id.py`](../services/content_hour_id.py)), and nothing else defines it.
+**Value and generation.** The value is UTC unix time truncated to the hour, as a plain decimal integer; `memar content_hour_id` prints it ([`content_hour_id.py`](../services/content_hour_id.py)), and nothing else defines it.
 
 **Uniqueness and collisions.** Two or more documents drafted in the same working chat landing in the same hour is expected and normal. Resolve manually today: keep the first document's number, give the next one the following hour's value or any other free value. Manual resolution is a stopgap, not the preferred end state (an `anticipated-work` content of the task that records it).
 
@@ -128,7 +128,7 @@ The steps that produce a document under this specification, in order. What each 
    ### {Topic}
    #### {Sub topic}
    ```
-2. Set `ID` once to the current UTC hour-count that `memar content hour-id` prints, and never change it.
+2. Set `ID` once to the current UTC hour-count that `memar content_hour_id` prints, and never change it.
 3. Fill the rest of the front matter: a short, unique `Title` in quotes, `Labels: Draft` (then `Proposed` / `Final` as the rules above say), and `Start Date` as today's UTC date, matching the moment `ID` was generated.
 4. Write the body. `Abstract` and `Introduction` stay unified, document-wide prose; `Explanation` is split into topics, with a sub topic where finer structure helps. Premise evidence for a claim is cited inline at the claim. Document-wide optional sections sit directly under the body's top level, not inside a topic.
 5. Filter the Abstract, the Motivation and the Methodology before leaving them ([Framing Sections State the Subject, Not the Writing](./rules/framing-sections-state-the-subject-not-the-writing/framing-sections-state-the-subject-not-the-writing.md)), and keep alternatives, open questions and anticipated work out of the body ([The Body Holds No Alternatives, Questions or Plans](./rules/the-body-holds-no-alternatives-questions-or-plans/the-body-holds-no-alternatives-questions-or-plans.md)).
