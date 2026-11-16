@@ -185,18 +185,19 @@ class BareNames(unittest.TestCase):
         self.assertEqual(second["files_changed"], [])
 
     def test_record_storage_uuid_pair_and_counters_are_skipped(self):
+        # Synthetic inputs only: a `_2` counter is debt the bare-names pass must skip, not a corpus name.
         write(self.root, "modules/identifier/record/protocol/uuid.kh", f"{LICENSE}\n\ntp Record_Observer_RecordUUID ab\n")
         write(self.root, "modules/memory/record/protocol/uuid.kh", f"{LICENSE}\n\ntp Storage_Observer_RecordUUID ab\n")
         write(
             self.root,
-            "modules/gui/protocol/element.kh",
-            f"{LICENSE}\n\ntp GUI_Element ab\ntp GUI_Element_Type_2 mt (self GUI_Element) () (t GUI_Element_Type)\n"
-            "tp GUI_Element_Type ab\n",
+            "modules/sample/protocol/kind.kh",
+            f"{LICENSE}\n\ntp Sample ab\ntp Sample_Type_2 mt (self Sample) () (t Sample_Type)\n"
+            "tp Sample_Type ab\n",
         )
         plan = renames.bare_names_plan(self.texts())
         self.assertIn("Record_Observer_RecordUUID", plan["skipped"])
         self.assertIn("Storage_Observer_RecordUUID", plan["skipped"])
-        self.assertIn("GUI_Element_Type_2", plan["skipped"])
+        self.assertIn("Sample_Type_2", plan["skipped"])
 
 if __name__ == "__main__":
     unittest.main()

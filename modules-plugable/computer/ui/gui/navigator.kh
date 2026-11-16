@@ -1,25 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp GUI_Page_2 in "modules-plugable/computer/ui/gui/page.kh"
+tp GUI_Page in "modules-plugable/computer/ui/gui/page.kh"
 tp String in "modules/computer/codec/string/protocol/string.kh"
 
-tp GUI_Navigator_2 cp {
-    switcherPage GUI_Page_2
-    homePage GUI_Page_2
-    activePage GUI_Page_2
+tp GUI_Navigator cp {
+    switcherPage GUI_Page
+    homePage GUI_Page
+    activePage GUI_Page
 }
 
 // Active a page like alt+tab in windows to show Pages() and their states
-tp SwitcherPage mt (self GUI_Navigator_2) () () {}
+tp SwitcherPage mt (self GUI_Navigator) () () {}
 
 // It must reorder by recently active page be last item in the array
 
 // Navigate(url string)
-tp ActivatePage mt (self GUI_Navigator_2) (url String) () {}
+tp ActivatePage mt (self GUI_Navigator) (url String) () {}
 
-// TODO(go-migrate): [tp GUI_Navigator_2] impl struct gui.Navigator and protocol gui_p.Navigator (Navigator in modules-plugable/computer/ui/gui/protocol/navigator.kh) both qualify to Navigator; the capsule carries the bridge's counter fallback until a naming decision.
+// TODO(go-migrate): [tp GUI_Navigator] impl struct gui.Navigator satisfies protocol Navigator (modules-plugable/computer/ui/gui/protocol/navigator.kh); capsule name is the realization, protocol keeps Navigator.
 // TODO(go-migrate): [tp SwitcherPage] Go body is empty and is ported as an empty body `{}`; khayyam.md → Method writes "without a body (`{}`)" for the FFI form, so confirm an empty body is not read as external.
-// TODO(go-migrate): [under "// It must reorder by recently active page be last item in the array"] slice result []gui_p.Page has no Khayyam form yet, and the protocol names this method ActivePages (Navigator in modules-plugable/computer/ui/gui/protocol/navigator.kh) while the impl names it Pages; proposed `tp GUI_Navigator_2_Pages mt (self GUI_Navigator_2) () (page <collection of Page>)`.
+// TODO(go-migrate): [under "// It must reorder by recently active page be last item in the array"] slice result []gui_p.Page has no Khayyam form yet, and the protocol names this method ActivePages (Navigator in modules-plugable/computer/ui/gui/protocol/navigator.kh) while the impl names it Pages; proposed `tp Pages mt (self GUI_Navigator) () (page <collection of Page>)`.
 // TODO(go-migrate): [tp ActivatePage] Go body is empty and is ported as an empty body `{}`; khayyam.md → Method writes "without a body (`{}`)" for the FFI form, so confirm an empty body is not read as external.
 // TODO(go-migrate):
 /*

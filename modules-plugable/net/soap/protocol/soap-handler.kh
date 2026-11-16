@@ -2,9 +2,9 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 tp Message in "modules-plugable/net/soap/protocol/soap-message.kh"
-tp Net_Socket_2 in "modules/net/protocol/socket.kh"
+tp Socket in "modules/net/protocol/socket.kh"
 tp String in "modules/computer/codec/string/protocol/string.kh"
 
 tp Soap_Handler ab
 tp Action mt (self Soap_Handler) () (s String)
-tp ServeSOAP mt (self Soap_Handler) (sk Net_Socket_2, req Message, res Message) (err Error)
+tp ServeSOAP mt (self Soap_Handler) (sk Socket, req Message, res Message) (err Error)

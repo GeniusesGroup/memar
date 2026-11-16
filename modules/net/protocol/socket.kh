@@ -19,7 +19,7 @@ tp Operation_Timeout in "modules/process/operation/protocol/timeout.kh"
 // Today, however, socket communications are bidirectional.
 // Any stateful network need to be implement a socket.
 // https://en.wikipedia.org/wiki/Network_socket
-tp Net_Socket_2 ab {
+tp Socket ab {
 // string form of full address of socket to dial any time later.
     Observer_NetworkAddresses
     Observer_SocketStatus
@@ -41,19 +41,6 @@ tp Socket_LowLevelAPIs ab {
     Operation_Timeout
 }
 
-// Socket term in many textbooks refers to an entity that is uniquely identified by the socket number.
-// In the original definition of socket given in RFC 147,[2] as it was related to the ARPA network in 1971,
-// "the socket is specified as a 32-bit number with even sockets identifying receiving sockets and odd sockets identifying sending sockets."
-// Today, however, socket communications are bidirectional.
-// Any stateful network need to be implement a socket.
-// https://en.wikipedia.org/wiki/Network_socket
-tp Socket ab {
-// string form of full address of socket to dial any time later.
-    Observer_NetworkAddresses
-    Observer_SocketStatus
-    Socket_LowLevelAPIs
-}
-
 // TODO(go-migrate):
 /*
 package net_p
@@ -62,12 +49,6 @@ import (
 	operation_p "memar/process/operation/protocol"
 )
 
-// Socket term in many textbooks refers to an entity that is uniquely identified by the socket number.
-// In the original definition of socket given in RFC 147,[2] as it was related to the ARPA network in 1971,
-// "the socket is specified as a 32-bit number with even sockets identifying receiving sockets and odd sockets identifying sending sockets."
-// Today, however, socket communications are bidirectional.
-// Any stateful network need to be implement a socket.
-// https://en.wikipedia.org/wiki/Network_socket
 type Socket interface {
 	// PeerInitiated() bool // false means server-initiated
 

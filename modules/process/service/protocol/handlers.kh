@@ -1,7 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Error in "modules/process/error/protocol/error.kh"
-tp Net_Socket_2 in "modules/net/protocol/socket.kh"
+tp Socket in "modules/net/protocol/socket.kh"
 tp Process_Request in "modules/process/request/protocol/request.kh"
 tp Process_Response in "modules/process/response/protocol/response.kh"
 
@@ -12,4 +12,4 @@ tp Handlers ab
 tp Do mt (self Handlers) (req Process_Request) (res Process_Response, err Error)
 
 // Call service locally by import service package to other one
-tp Process mt (self Handlers) (sk Net_Socket_2, req Process_Request) (res Process_Response, err Error)
+tp Process mt (self Handlers) (sk Socket, req Process_Request) (res Process_Response, err Error)

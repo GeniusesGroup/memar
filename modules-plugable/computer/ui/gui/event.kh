@@ -5,7 +5,7 @@ tp Type in "modules/computer/type/protocol/type.kh"
 // Event implement memar/process/event/protocol.Event
 //
 //memar:impl memar/process/event/protocol.Event
-tp GUI_Event cp {
+tp GUI_Event_Value cp {
     dt Type
 }
 

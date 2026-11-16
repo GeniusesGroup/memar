@@ -3,7 +3,7 @@
 tp Error in "modules/process/error/protocol/error.kh"
 tp HTTP_Request in "modules-plugable/net/http/protocol/http.kh"
 tp HTTP_Response in "modules-plugable/net/http/protocol/http.kh"
-tp Net_Socket_2 in "modules/net/protocol/socket.kh"
+tp Socket in "modules/net/protocol/socket.kh"
 tp Observer_URI_Path in "modules-plugable/net/uri/protocol/path.observers.kh"
 
 // Handler is any object to be HTTP service handler.
@@ -23,7 +23,7 @@ tp HTTP_Handler ab {
 // ** NOTE: Due to reuse underling buffer If caller need to keep any data from httpReq or httpRes it must make a copy and
 // ** prevent from keep a reference to any data get from these two interface after return.
 // **
-tp HTTP_Handler_ServeHTTP mt (self HTTP_Handler) (sk Net_Socket_2, req HTTP_Request, res HTTP_Response) (err Error)
+tp HTTP_Handler_ServeHTTP mt (self HTTP_Handler) (sk Socket, req HTTP_Request, res HTTP_Response) (err Error)
 
 // TODO(go-migrate):
 /*

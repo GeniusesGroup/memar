@@ -3,12 +3,12 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 
 // PageState :
-tp GUI_PageState_2 cp {
+tp GUI_PageState cp {
     Title String
     Description String
 }
 
-// TODO(go-migrate): [tp GUI_PageState_2] impl struct gui.PageState and protocol gui_p.PageState (PageState in modules-plugable/computer/ui/gui/protocol/page-state.kh) both qualify to PageState; the capsule carries the bridge's counter fallback until a naming decision.
+// TODO(go-migrate): [tp GUI_PageState] impl struct gui.PageState satisfies protocol PageState (modules-plugable/computer/ui/gui/protocol/page-state.kh); capsule name is the realization, protocol keeps PageState.
 // TODO(go-migrate):
 /*
 package gui

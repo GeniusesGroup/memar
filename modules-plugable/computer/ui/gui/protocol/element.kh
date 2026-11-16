@@ -17,9 +17,9 @@ tp GUI_Element ab {
 // It must be unique e.g. product
 tp GUI_Element_Name mt (self GUI_Element) () (s String)
 
-tp GUI_Element_Type_2 mt (self GUI_Element) () (t Element_Type)
+tp Type mt (self GUI_Element) () (t Element_Type)
 
-tp GUI_Element_Status_2 mt (self GUI_Element) () (s Element_Status)
+tp Status mt (self GUI_Element) () (s Element_Status)
 
 tp HTML mt (self GUI_Element) (outer Boolean) (s String)
 

@@ -1,12 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Error in "modules/process/error/protocol/error.kh"
-tp Net_Socket_2 in "modules/net/protocol/socket.kh"
+tp Socket in "modules/net/protocol/socket.kh"
 
 // Handler is any object to be sRPC service handler.
-tp Net_Handler ab
+tp sRPC_Handler ab
+
 // ServeSRPC method is sRPC handler of the service with Syllab codec data in the payload.
-tp ServeSRPC mt (self Net_Handler) (sk Net_Socket_2) (err Error)
+tp ServeSRPC mt (self sRPC_Handler) (sk Socket) (err Error)
 
 // TODO(go-migrate):
 /*

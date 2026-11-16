@@ -10,7 +10,7 @@ tp GUI_TouchEvent_Type mt (self TouchEvent) () (s String)
 
 // https://developer.mozilla.org/en-US/docs/Web/API/Touch
 
-// TODO(go-migrate): [in tp TouchEvent] Go left the embedded Event commented out, meaning TouchEvent was meant to compose an Event; which one (GUI_Event_2 in modules-plugable/computer/ui/gui/protocol/event.kh, or Event in modules/process/event/protocol/event.kh) is undecided.
+// TODO(go-migrate): [in tp TouchEvent] Go left the embedded Event commented out, meaning TouchEvent was meant to compose an Event; which one (GUI_Event in modules-plugable/computer/ui/gui/protocol/event.kh, or Event in modules/process/event/protocol/event.kh) is undecided.
 // TODO(go-migrate):
 /*
 package gui
