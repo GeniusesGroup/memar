@@ -29,7 +29,6 @@ set_status_service = import_module('modules-plugable.knowledge.label.status.serv
 SET_STATUS_LINE = 'memar status_set ID WORD --project NAME'
 task_temp = import_module('modules-plugable.management.task.services.temp')
 task_start = import_module('modules-plugable.management.agency.widgets.context_compose.context_compose')
-task_ai = import_module('modules-plugable.management.agency.services.get_task_init_context.get_task_init_context')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_files = import_module('modules-plugable.management.task.services.task_files')
 timeline_files = import_module('modules.management.timeline.services.timeline_files')
@@ -290,125 +289,40 @@ def headers(part: str) -> list[str]:
 
 class Documents(Fixture):
 
-    def test_each_kind_prints_its_passages_and_no_other(self) -> None:
-        for kind in (kind for kind in Acts.all() if kind.title in plan_acts.ACTS):
-            with self.subTest(kind=kind.title):
-                plan = plan_with(kind.title)
-                found = [line for line in headers(self.parts(plan)['documents']) if '(description)' not in line]
-                printed = self.compose_heads(kind)
-                self.assertEqual(found, printed)
+    def test_init_documents_is_an_index_not_a_body_dump(self) -> None:
+        part = self.parts(plan_with())['documents']
+        self.assertIn('index only', part.splitlines()[0])
+        self.assertIn('content_get_act_context', part)
+        self.assertIn('ai_get_rules_for_subject', part)
+        self.assertIn('Index:', part)
+        self.assertNotIn('PLAIN-ABSTRACT', part)
+        self.assertNotIn('## Abstract', part)
 
-    def compose_heads(self, kind) -> list[str]:
-        _m_task_context = import_module('modules-plugable.management.task.services.task_context.task_context')
-        context_text = _m_task_context.context_text
-        return [line for line in headers(context_text([memar_place(self.fake_root)], [kind])) if '(description)' not in line]
+    def test_documents_bootstrap_names_the_kind_and_lists_paths(self) -> None:
+        _act = import_module('modules.knowledge.content.services.act_context')
+        printed = [_act.Printed('memar', 'docs/modeling.md', 'abstract', 'h')]
+        composed = _act.Composed(blocks=['BODY-DUMP'], printed=printed, listed=1, changed=0, gone=0, dropped=0)
+        part = task_start.documents_bootstrap('design', composed)
+        self.assertIn('kinds: design; index only', part)
+        self.assertIn('docs/modeling.md#abstract', part)
+        self.assertNotIn('BODY-DUMP', part)
 
-    def test_a_plan_with_no_kind_or_a_mistyped_one_prints_the_every_act_sections(self) -> None:
-        for plan in (plan_with(), plan_with('modelling')):
-            with self.subTest(plan=plan[:40]):
-                found = [line for line in headers(self.parts(plan)['documents']) if '(description)' not in line]
-                self.assertEqual(sorted(found), sorted(EVERY_ACT_HEADS))
-
-    def test_the_documents_part_opens_with_its_first_line(self) -> None:
-        part = self.parts(plan_with('design'))['documents']
-        self.assertTrue(part.splitlines()[0].startswith('kinds: design; '), part.splitlines()[:2])
-
-    def test_the_lists_of_the_project_the_plan_names_are_read(self) -> None:
-        project = self.fake_root / 'orchard'
-        (project / 'docs').mkdir(parents=True)
-        (project / 'docs' / 'own.md').write_text('# Own\n\n## Mine\nMINE-TEXT\n', encoding='utf-8', newline='\n')
-        (project / 'rules').mkdir()
-        mark = section_hash(by_anchor('# Own\n\n## Mine\nMINE-TEXT\n', 'mine'))
-        (project / 'rules' / LIST_NAME.format(word=Acts.DESIGN.title)).write_text(f'# Orchard\nWhy.\n\n- [Own → Mine](../docs/own.md#mine) — OWN-WHY `reviewed {mark}`\n', encoding='utf-8', newline='\n')
-        preferences = preferences_path(project)
-        preferences.write_text(preferences_text({PREFERENCE: 'rules, rules/gone'}), encoding='utf-8', newline='\n')
-        part = self.parts(plan_with('design', project=project))['documents']
-        self.assertIn('--- orchard: docs/own.md#mine ---\nWhy: OWN-WHY\n## Mine\nMINE-TEXT', part)
-        self.assertIn(", 1 from this project's", part.splitlines()[0])
-        self.assertIn('rules/gone', part.splitlines()[0])
-
-    def test_what_the_documents_part_printed_is_recorded_in_the_task(self) -> None:
-        self.parts(plan_with('design'))
-        recorded = read_record(memar_fs.task_dir(SID))
-        self.assertIn(('memar', 'docs/modeling.md', 'abstract'), {line[:3] for line in recorded})
-        self.assertTrue(all(('\\' not in line.path for line in recorded)))
-
-    def test_a_design_step_that_names_khayyam_prints_that_passage(self) -> None:
-        design = self.parts(plan_with('design'))['documents']
-        self.assertIn('docs/modeling.md#abstract', headers(design))
-        named = self.parts(plan_with('design', steps=f'1. read {KHAYYAM}. Local.'))['documents']
-        self.assertIn(KHAYYAM.lstrip('/'), headers(named))
-
-    def test_a_practice_has_its_description_once(self) -> None:
-        part = self.parts(plan_with('implement'))['documents']
-        self.assertEqual(part.count('--- modules/process/test/test.practice.md (description) ---'), 1)
-
-    def test_a_step_document_the_kind_already_prints_is_not_printed_again(self) -> None:
-        steps = '1. read /docs/modeling.md#abstract and docs/modeling.practice.md#the-modeling-workflow. Local.'
-        found = headers(self.parts(plan_with('design', steps=steps))['documents'])
-        self.assertEqual(found.count('docs/modeling.md#abstract'), 1)
-        self.assertEqual(found.count('docs/modeling.practice.md#the-modeling-workflow'), 1)
-
-    def test_a_document_the_steps_name_is_read_at_its_section_or_its_abstract(self) -> None:
+    def test_selection_still_reads_step_bodies_for_compose_not_init(self) -> None:
         steps = '1. local: read /docs/steps.md#detail and `docs/plain.md`, then act.'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('STEPS-DETAIL', part)
-        self.assertNotIn('STEPS-ABSTRACT', part)
-        self.assertIn('PLAIN-ABSTRACT', part)
-        self.assertNotIn('PLAIN-BODY', part)
-        self.assertLess(part.index('docs/cognition.md#abstract'), part.index('STEPS-DETAIL'))
+        root = self.fake_root
+        composed = task_start.documents(root, [], task_start.step_documents(root, steps), root)
+        joined = '\n'.join(composed.blocks)
+        self.assertIn('STEPS-DETAIL', joined)
+        self.assertIn('PLAIN-ABSTRACT', joined)
+        part = task_start.documents_bootstrap('mechanical', composed)
+        self.assertNotIn('STEPS-DETAIL', part)
+        self.assertIn('docs/steps.md#detail', part)
 
-    def test_a_document_named_twice_is_printed_once(self) -> None:
-        steps = 'read /docs/steps.md#detail, again /docs/steps.md#detail'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertEqual(part.count('STEPS-DETAIL'), 1)
-
-    def test_documents_named_outside_the_steps_are_not_read(self) -> None:
-        plan = plan_with('mechanical', request='See /docs/steps.md#detail.')
-        self.assertNotIn('STEPS-DETAIL', self.parts(plan)['documents'])
-
-    def test_a_document_that_is_not_there_is_said_and_the_rest_still_printed(self) -> None:
-        steps = 'read /docs/missing.md#x and /docs/steps.md#detail'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('docs/missing.md', part)
-        self.assertIn('is not there', part)
-        self.assertIn('STEPS-DETAIL', part)
-
-    def test_a_section_that_is_not_there_is_said(self) -> None:
-        steps = 'read /docs/steps.md#nowhere'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('no section answers to #nowhere', part)
-
-    def test_a_step_document_under_modules_is_read_from_that_top_folder(self) -> None:
-        steps = '1. read `modules/process/example/example.md`. Local.'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('--- modules/process/example/example.md (Abstract) ---', part)
-        self.assertIn('EXAMPLE-ABSTRACT', part)
-        self.assertNotIn('EXAMPLE-BODY', part)
-
-    def test_a_step_document_under_bundles_is_read_from_that_top_folder(self) -> None:
-        steps = '1. read /bundles/example/example.md. Local.'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('BUNDLE-ABSTRACT', part)
-
-    def test_a_step_document_with_no_abstract_is_read_at_its_first_section(self) -> None:
-        steps = '1. read `modules/process/headless/headless.md`. Local.'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('--- modules/process/headless/headless.md (first section) ---', part)
-        self.assertIn('HEADLESS-WHY', part)
-        self.assertNotIn('HEADLESS-HOW', part)
-        self.assertNotIn('no section answers', part)
-
-    def test_a_step_document_with_no_abstract_and_no_section_prints_its_description(self) -> None:
-        steps = '1. read `modules/process/described/described.md`. Local.'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertIn('DESCRIBED-DESCRIPTION', part)
-        self.assertNotIn('no section answers', part)
-
-    def test_a_bare_file_name_and_a_url_are_no_step_documents(self) -> None:
-        steps = '1. read example.md and https://example.com/modules/process/example/example.md. Local.'
-        part = self.parts(plan_with('mechanical', steps=steps))['documents']
-        self.assertNotIn('EXAMPLE-ABSTRACT', part)
+    def test_what_is_selected_is_still_recorded_when_init_runs(self) -> None:
+        self.parts(plan_with())
+        recorded = read_record(memar_fs.task_dir(SID))
+        self.assertTrue(recorded)
+        self.assertTrue(all(('\\' not in line.path for line in recorded)))
 
 class SkillPart(Fixture):
 
@@ -612,12 +526,9 @@ class StartHelp(unittest.TestCase):
         done = subprocess.run([sys.executable, str(SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'), 'agency_get_task_init_context', '--help'], capture_output=True, env=environment)
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
-        for phrase in ('--without-skill', '--part', '--most-characters', 'memar content_get_act_context', 'every agent', ', '.join(plan_acts.ACTS), 'Context_Compose'):
+        for phrase in ('--without-skill', '--part', '--most-characters', 'memar content_get_act_context', 'every agent', ', '.join(plan_acts.ACTS)):
             self.assertIn(phrase, shown)
 
-    def test_the_ai_shim_reexports_compose(self) -> None:
-        self.assertIs(task_ai.start_passages, task_start.start_passages)
-        self.assertIs(task_ai.ContextCompose, task_start.ContextCompose)
 class HelpIsAskedOfTheProgram(unittest.TestCase):
 
     def test_the_help_command_is_the_program_with_the_words_and_help(self) -> None:

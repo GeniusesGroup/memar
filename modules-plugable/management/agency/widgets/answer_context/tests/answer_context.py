@@ -76,7 +76,6 @@ sys.dont_write_bytecode = True
 BUDGET_SECONDS = 10
 from machine.console_parts import CLOSING_MARK
 answering = import_module('modules-plugable.management.agency.widgets.answer_context.answer_context')
-task_ai = import_module('modules-plugable.management.agency.services.get_task_answer_context.get_task_answer_context')
 commands = import_module('bundles.memar_adaptor.cli.services.commands')
 import shape
 _m_plan_text = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
@@ -280,11 +279,8 @@ class AnswerHelp(unittest.TestCase):
         done = subprocess.run([sys.executable, str(SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'), 'agency_get_task_answer_context', '--help'], capture_output=True, env=environment)
         self.assertEqual(done.returncode, 0, done.stderr)
         shown = ' '.join(done.stdout.decode('utf-8').split())
-        for phrase in ('--without-skill', '--part', '--most-characters', 'Decisions needed', 'writes nothing', 'get-task-questions-answer-brief ID', 'For an agent', 'Answer_Context'):
+        for phrase in ('--without-skill', '--part', '--most-characters', 'Decisions needed', 'writes nothing', 'get-task-questions-answer-brief ID', 'For an agent'):
             self.assertIn(phrase, shown)
 
-    def test_the_ai_shim_reexports_compose(self) -> None:
-        self.assertIs(task_ai.answer_passages, answering.answer_passages)
-        self.assertIs(task_ai.AnswerContext, answering.AnswerContext)
 if __name__ == '__main__':
     unittest.main(verbosity=2)

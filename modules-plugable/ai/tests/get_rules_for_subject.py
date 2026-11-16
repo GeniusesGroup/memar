@@ -11,7 +11,7 @@ sys.path.insert(0, str(SCRIPTS / 'services'))
 sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-_m = import_module('modules-plugable.management.agency.services.get_rules_for_subject.get_rules_for_subject')
+_m = import_module('modules-plugable.management.agency.widgets.rule_delivery.rule_delivery')
 _rule = import_module('modules.process.rule.services.find_rules')
 RuleHit = _rule.RuleHit
 

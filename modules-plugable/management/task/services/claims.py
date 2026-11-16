@@ -11,7 +11,7 @@ import argparse
 Request = import_module('modules-plugable.knowledge.documentation.plan.primitive.request').Request
 from typing import Callable
 from machine.console import fail, note
-_m_plan_brief = plugable_load('management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief')
+_m_plan_brief = plugable_load('management.agency.widgets.plan_carry_out_brief.plan_carry_out_brief')
 brief_text = _m_plan_brief.brief_text
 _m_claim = import_module('modules-plugable.management.task.services.claim')
 CLAIM_COMMAND = _m_claim.CLAIM_COMMAND

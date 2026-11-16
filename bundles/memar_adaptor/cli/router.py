@@ -104,6 +104,10 @@ if not _labels.declared_modules():
     _labels.declare_modules(DECLARED)
 
 SERVICES = "services"
+WIDGETS = "widgets"
+# Folders that hold callable packages (`…/services|widgets/<name>/<name>.py`) whose
+# Domain leaf is the module above the role folder — same placement for CLI faces.
+CAPABILITY_ROLES = frozenset({SERVICES, WIDGETS})
 # A module that is no domain still has its services: they go under a group of their own, named by the module (see `group_of`).
 NO_DOMAIN = ""
 DESCRIBE = "describe"
@@ -112,7 +116,7 @@ ROOTS = ("modules", "modules-plugable", "bundles")
 SHELF = ("bundles", "memar", SERVICES)
 # The face's own services (`memar memar_commands`) are verbs of the root, not of a domain.
 FACE_HOME = "bundles/memar_adaptor/cli"
-NOT_MODULES = frozenset({SERVICES, *role_folders(), "node_modules", "__pycache__"})
+NOT_MODULES = frozenset({*CAPABILITY_ROLES, *role_folders(), "node_modules", "__pycache__"})
 RUN_REF_PREFIX = "_memar_run_ref_"
 JSON_FIELD = (type(None), bool, int, float, str, list, dict)
 from face_policy import NOT_HANDED_OVER, run_ref
@@ -181,13 +185,13 @@ def placed(name: str) -> tuple[tuple[str, ...], str | None] | None:
     parts = name.split(".")
     if parts[0] not in ROOTS:
         return None
-    # Service package: …/services/<name>/<name>.py — before twin detection, because
-    # `services` is a role folder and would refuse a twin whose path holds it.
+    # Capability package: …/services|widgets/<name>/<name>.py — before twin detection,
+    # because those role folders would refuse a twin whose path holds them.
     # Not under the memar shelf: bundles/memar/services/<module>/<module>.py is a
     # shelf module twin, not a service of `bundles/memar`.
     if (
         len(parts) > 4
-        and parts[-3] == SERVICES
+        and parts[-3] in CAPABILITY_ROLES
         and parts[-1] == parts[-2]
         and not parts[-1].startswith("_")
         and tuple(parts[: len(SHELF)]) != SHELF
@@ -195,7 +199,7 @@ def placed(name: str) -> tuple[tuple[str, ...], str | None] | None:
         folder, stem = parts[:-3], parts[-1]
     elif len(parts) > 2 and parts[-1] == parts[-2]:
         folder, stem = parts[:-1], None
-    elif len(parts) > 3 and parts[-2] == SERVICES and not parts[-1].startswith("_"):
+    elif len(parts) > 3 and parts[-2] in CAPABILITY_ROLES and not parts[-1].startswith("_"):
         folder, stem = parts[:-2], parts[-1]
     else:
         return None
@@ -208,8 +212,8 @@ def placed(name: str) -> tuple[tuple[str, ...], str | None] | None:
 def parts_role(name: str) -> str:
     """The folder of a module's kind (`services`, `widgets`) it sits in."""
     parts = name.split(".")
-    if len(parts) > 4 and parts[-3] == SERVICES and parts[-1] == parts[-2]:
-        return SERVICES
+    if len(parts) > 4 and parts[-3] in CAPABILITY_ROLES and parts[-1] == parts[-2]:
+        return parts[-3]
     return parts[-2]
 
 

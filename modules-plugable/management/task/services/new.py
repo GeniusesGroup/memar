@@ -95,7 +95,7 @@ from modules.computer.software.services.project_find import add_project_flags, p
 from bundles.memar_adaptor.cli.call_names import call_of_module
 _m_status_face = import_module('modules-plugable.knowledge.label.status.services.status_of_thing')
 SET_STATUS_LINE = f"memar {call_of_module(_m_status_face.__name__, 'set')} ID WORD --project NAME"
-_m_plan_brief = plugable_load('management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief')
+_m_plan_brief = plugable_load('management.agency.widgets.plan_carry_out_brief.plan_carry_out_brief')
 PLAN_BRIEF_COMMAND = _m_plan_brief.PLAN_BRIEF_COMMAND
 PLAN_BRIEF_CALL = call_of_module(_m_plan_brief.__name__, PLAN_BRIEF_COMMAND)
 brief_text = _m_plan_brief.brief_text
@@ -143,7 +143,7 @@ _m_temp = import_module('modules-plugable.management.task.services.temp')
 TEMP_SENTENCE = _m_temp.TEMP_SENTENCE
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
-_m_new_chats = plugable_load('management.agency.services.get_new_chats_ask.get_new_chats_ask')
+_m_new_chats = plugable_load('management.agency.widgets.new_chats_ask.new_chats_ask')
 NEW_CHATS_COMMAND = _m_new_chats.NEW_CHATS_COMMAND
 NEW_CHATS_CALL = call_of_module(_m_new_chats.__name__, NEW_CHATS_COMMAND)
 DEPENDS_FLAG = f'--{DEPENDS_COMMAND}'

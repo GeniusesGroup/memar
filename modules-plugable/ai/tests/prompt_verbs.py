@@ -36,10 +36,10 @@ sys.path.insert(0, str(SCRIPTS / 'services'))
 sys.path.insert(1, str(SCRIPTS))
 sys.path.insert(2, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-answering = import_module('modules-plugable.management.agency.services.get_task_answer_context.get_task_answer_context')
-new_chats = import_module('modules-plugable.management.agency.services.get_new_chats_ask.get_new_chats_ask')
-plan_brief = import_module('modules-plugable.management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief')
-questions_brief = import_module('modules-plugable.management.agency.services.get_task_questions_answer_brief.get_task_questions_answer_brief')
+answering = import_module('modules-plugable.management.agency.widgets.answer_context.answer_context')
+new_chats = import_module('modules-plugable.management.agency.widgets.new_chats_ask.new_chats_ask')
+plan_brief = import_module('modules-plugable.management.agency.widgets.plan_carry_out_brief.plan_carry_out_brief')
+questions_brief = import_module('modules-plugable.management.agency.widgets.questions_answer_brief.questions_answer_brief')
 LAUNCHER = SCRIPTS.parent / 'memar_adaptor' / 'cli' / 'memar'
 launcher = importlib.import_module('bundles.memar_adaptor.cli.router')
 from bundles.memar_adaptor.cli.call_names import LegacyDetails

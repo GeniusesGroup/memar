@@ -73,14 +73,14 @@ task_claim = import_module('modules-plugable.management.task.services.claim')
 task_claims = import_module('modules-plugable.management.task.services.claims')
 task_depends = import_module('modules-plugable.management.task.services.depends')
 task_depends_on = import_module('modules-plugable.management.task.services.depends_on')
-task_digest = plugable_load('ai.services.task_get_decisions_digest')
+task_digest = plugable_load('management.task.services.task_get_decisions_digest.task_get_decisions_digest')
 task_files = import_module('modules-plugable.management.task.services.task_files')
 task_ensure = import_module('modules-plugable.management.task.services.ensure')
 task_find = import_module('modules-plugable.management.task.services.list')
-task_log = import_module('bundles.memar_git.services.log')
+task_log = import_module('bundles.memar_adaptor.git.services.log')
 task_plan = import_module('modules-plugable.knowledge.documentation.plan.services.plan_text')
-task_show = import_module('bundles.memar_git.services.show_task_records')
-task_start = import_module('modules-plugable.ai.services.get_task_init_context')
+task_show = import_module('bundles.memar_adaptor.git.services.show_task_records')
+task_start = import_module('modules-plugable.management.agency.widgets.context_compose.context_compose')
 _m_folder = import_module('modules-plugable.management.task.services.folder')
 read_task = _m_folder.read_task
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
@@ -119,7 +119,7 @@ class Fixture(unittest.TestCase):
         shape.add_report(folder, 'complete')
 
     def status_of(self, folder: Path) -> str:
-        return read_task(folder).status
+        return import_module('modules-plugable.management.task.services.task_thing_services').read_status_key(folder.name, str(self.fake_root))
 
     def refused(self, call, *args, **kwargs) -> str:
         with self.assertRaises(SystemExit) as raised:
@@ -267,7 +267,7 @@ class Writing(Fixture):
 
     def test_a_task_closed_and_kept_on_the_branch_satisfies_a_dependency(self) -> None:
         held = {'title': 'T', 'status': 'complete', 'project': str(self.project), 'start_date': '2026-10-12T00:00:00Z', 'writer': import_module('modules-plugable.management.task.services.task_generation').TASK_TYPE_UUID}
-        self.branch['kept', 'task.yaml'] = task_files.facts_bytes(held)
+        self.branch['kept', 'task.yaml'] = task_files.legacy_facts_bytes(held)
         self.branch['kept', 'content.00001.md'] = plan_text('complete', self.project).split('---\n', 2)[2].encode('utf-8')
         self.branch['kept', 'content.00002.md'] = b'---\nkind: report\nauthor: agent\nplaced_at: 2026-10-12T00:00:00Z\nstatus: complete\n---\n# Report\n'
         mine = self.task('mine', 'queued')

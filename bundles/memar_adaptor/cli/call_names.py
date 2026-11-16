@@ -27,17 +27,20 @@ def legacy_details(words):
 
 
 def call_of_module(module_name: str, service_name: str) -> str:
-    """Provisional flat call from a service module path and its declared Name.
+    """Provisional flat call from a service or widget module path and its declared Name.
 
-    Domain is the folder leaf above `services/` in MODULE_NAME (the same leaf the
-    router uses when a twin file is absent). Do not hard-code the resulting
-    string at call sites — ask again through this when the name is needed.
+    Domain is the folder leaf above `services/` or `widgets/` in MODULE_NAME (the
+    same leaf the router uses when a twin file is absent). Do not hard-code the
+    resulting string at call sites — ask again through this when the name is needed.
     """
     parts = module_name.split('.')
-    try:
-        domain = parts[parts.index('services') - 1]
-    except (ValueError, IndexError):
-        domain = 'Memar'
+    domain = 'Memar'
+    for role in ('services', 'widgets'):
+        try:
+            domain = parts[parts.index(role) - 1]
+            break
+        except (ValueError, IndexError):
+            continue
     return call_name(LegacyDetails(domain, service_name))
 
 

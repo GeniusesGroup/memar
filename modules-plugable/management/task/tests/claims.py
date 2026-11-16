@@ -64,7 +64,7 @@ sys.dont_write_bytecode = True
 import shape
 task_files = import_module('modules-plugable.management.task.services.task_memory')
 import modules.computer.software.services.project_registry as registry
-plan_brief = import_module('modules-plugable.management.agency.services.get_task_plan_carry_out_brief.get_task_plan_carry_out_brief')
+plan_brief = import_module('modules-plugable.management.agency.widgets.plan_carry_out_brief.plan_carry_out_brief')
 task_claim = import_module('modules-plugable.management.task.services.claim')
 _m_claim = import_module('modules-plugable.management.task.primitive.claim')
 Claim = _m_claim.Claim

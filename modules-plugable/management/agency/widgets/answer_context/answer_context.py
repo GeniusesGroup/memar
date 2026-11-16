@@ -29,12 +29,16 @@ _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
 TaskId = _m_task_id.TaskId
 from bundles.memar_adaptor.cli.call_names import call_of_module
 _INIT_CALL = call_of_module(
-    'modules-plugable.management.agency.services.get_task_init_context.get_task_init_context',
+    'modules-plugable.management.agency.widgets.context_compose.context_compose',
     'get-task-init-context',
 )
 _ANSWER_CALL = call_of_module(
-    'modules-plugable.management.agency.services.get_task_answer_context.get_task_answer_context',
+    'modules-plugable.management.agency.widgets.answer_context.answer_context',
     ANSWERING_COMMAND,
+)
+_QUESTIONS_BRIEF_CALL = call_of_module(
+    'modules-plugable.management.agency.widgets.questions_answer_brief.questions_answer_brief',
+    'get-task-questions-answer-brief',
 )
 ENDING = f"You answer the questions of this task; you do not take it up. Its questions are the lines under `{REPORT.hand_back_part}` in its report (above), each with the handoff entry it points to, if any.\nYour answering opens no task and creates none: run no `memar {_INIT_CALL}`, `task_ensure`, `task_claim` or `task_claims`. It writes nothing: no content of this task, nothing in the checkout, or elsewhere; the task that handed you the questions writes what follows from your answers.\nFor each question, in the order asked: read the plan, the entry it points to, and the passages of the documents it concerns, found as the skill says; answer it with its reasons, citing the passages they rest on; and say whether you are sure. Say you are unsure where the documents do not settle it, and say so too where it is one of the kinds the Norm Application Points (above) send to the owner however well settled: those go to the owner.\nReturn the answers as your final text, one per question, each marked sure or unsure, and name the model you run on."
 
@@ -116,3 +120,34 @@ def get_task_answer_context(task_id: str, with_skill: bool=True, part: int=1, mo
 
 
 SKILL_FILE = _storage.skill_relative()
+
+
+def task_answer_context(*, task_id: str, without_skill: bool = False, part: int = 1, most_characters: int | None = None) -> None:
+    get_task_answer_context(task_id, not without_skill, part, most_characters)
+
+declare = import_module('modules.process.service.primitive.declaration').declare
+DECLARATIONS = (
+    declare(
+        task_answer_context,
+        name=ANSWERING_COMMAND,
+        summary="print what an agent answering a task's open questions reads first; it writes nothing",
+        description=f"""For an agent handed a task's questions, not its task, by
+`memar {_QUESTIONS_BRIEF_CALL} ID`.
+The questions are the lines under `{REPORT.hand_back_part}` in the task's latest report.
+Print, in parts each opened by a line `=== NAME ===`, and in this order: the task's id,
+the model answering needs, the plan and the report whole (by kind), the Memar skill, the
+passages of Memar's documents the `answer` kind requires and then the documents the
+questions name, the command that prints every command, and how to answer.
+Run it first, once.
+
+It writes nothing and opens no task: no report, no role folder and no log line is
+made, and the task is not taken up. It refuses an ID that has no plan on its timeline,
+or whose report has no line under that heading.
+
+A text too long for one tool output prints in ordered parts, each at most --most-characters
+long: each part but the last ends with the exact command for the next (--part N), to run
+at once; read every part before acting. Each part says "part N of M of text H", H a hash
+of the whole text: a part naming another H is of another version of it.""",
+        help={'task_id': 'the task whose questions are handed to you', 'without_skill': 'leave the Memar skill out, for an agent whose runtime already loaded it', 'part': 'print part N of a text too long for one output; each part names the command for the next', 'most_characters': 'the most characters one part holds; when not given, the preference of the project the plan names, else the default below the smallest output cut known among the runtimes in use'},
+    ),
+)

@@ -169,6 +169,20 @@ def documents(root, kinds: list, named: list, project) -> Composed:
     places, problems = context_places(root, project)
     return context(places, kinds, extra=named, project_named=project is not None, place_problems=problems)
 
+def documents_bootstrap(kind: str, composed: Composed) -> str:
+    if kind in Acts.titles():
+        head = f'kinds: {kind}; index only — bodies are not dumped in init'
+    elif kind:
+        head = f'kinds: {kind!r} is not a kind; index only — bodies are not dumped in init'
+    else:
+        head = 'kinds: none; index only — bodies are not dumped in init'
+    paths: list[str] = []
+    for printed in composed.printed:
+        paths.append(f'{printed.path}#{printed.anchor}' if printed.anchor else printed.path)
+    fetch = 'Fetch act passages with `memar content_get_act_context --kind K` when the act begins; per step call `memar ai_get_rules_for_subject` with the subject. Do not treat this init as the normative dump.'
+    index = '\n'.join(paths) if paths else '(no index entries)'
+    return marked_part('documents', f'{head}\n{fetch}\nIndex:\n{index}')
+
 def _kinds(kind: str) -> list:
     found = Acts.read(kind)
     return [found] if found else []
@@ -288,7 +302,7 @@ class ContextCompose:
         expected = ([skill_relative] if with_skill else []) + [printed.path for printed in composed.printed]
         if [entry.locator.document for entry in ordered.entries] != expected:
             fail('ResolveComposition returned a different Stable order than Bind stored')
-        passages = [_task_part(task_id), model_part(kind), marked_part('plan', plan), _folder_part(task_id), *([marked_part('skill', store.skill_text(root))] if with_skill else []), *marked_passages('documents', composed.blocks), *([] if called_through_mcp() else [marked_part('commands', commands.card_text()), *_help_part(plan)]), marked_part('ending', ENDING)]
+        passages = [_task_part(task_id), model_part(kind), marked_part('plan', plan), _folder_part(task_id), *([marked_part('skill', store.skill_text(root))] if with_skill else []), documents_bootstrap(kind, composed), *([] if called_through_mcp() else [marked_part('commands', commands.card_text()), *_help_part(plan)]), marked_part('ending', ENDING)]
         return [passage + '\n' for passage in passages[:-1]] + passages[-1:]
 
 def start_passages(task_id: str, with_skill: bool=True) -> list[str]:
@@ -304,3 +318,18 @@ def get_task_init_context(task_id: str, with_skill: bool=True, part: int=1, most
     sys.stdout.write(parted(passages, part, limit, next_command(words, most)))
 
 SKILL_FILE = _storage.skill_relative()
+
+
+def task_init_context(*, task_id: str, without_skill: bool = False, part: int = 1, most_characters: int | None = None) -> None:
+    get_task_init_context(task_id, not without_skill, part, most_characters)
+
+declare = import_module('modules.process.service.primitive.declaration').declare
+DECLARATIONS = (
+    declare(
+        task_init_context,
+        name=START_COMMAND,
+        summary='print, in one output, everything an agent taking up a task needs in its context',
+        description=f"""For every agent that takes up a task: a sub-agent handed one, and the agent of a task after\n`ensure` opened its own. Print, in parts each opened by a line `=== NAME ===`, and in this\norder: the task's id, the model its Kind needs, its plan (latest content of kind plan), the\nfolder's listing, the Memar skill, the passages of Memar's documents the plan's Kind requires\n(as `memar content_get_act_context --kind K` prints them; the core alone for a plan with no\nKind) and then the documents the plan's Steps name that those do not hold, the help of the\ncommands every task uses and those the plan names, and how to end. Run it first, once, and\nread nothing else before acting on the plan.\n\nA text too long for one tool output prints in ordered parts, each at most --most-characters\nlong: each part but the last ends with the exact command for the next (--part N), to run\nat once; read every part before acting. The same task prints the same parts, and each\npart says "part N of M of text H", H a hash of the whole text: a part naming another H\nis of another version of it.\n\nThe kinds a plan carries: {', '.join(ACTS)}.\n\nA task holds contents: its plan is its latest content of kind plan and its report its latest\nof kind report; a new plan or report is added with `memar conversation_post`, never written\nover. Read them with `memar git_show_task_records` (by kind). Facts change through task verbs\n(`{SET_STATUS_LINE}`, …).\n\nIt is `task_ensure --task-id ID` as well, so the role folders are there after it; it opens no new\ntask, and refuses an ID that has no plan on its timeline.""",
+        help={'task_id': 'the task handed to you', 'without_skill': 'leave the Memar skill out, for an agent whose runtime already loaded it', 'part': 'print part N of a text too long for one output; each part names the command for the next', 'most_characters': 'the most characters one part holds; when not given, the preference of the project the plan names, else the default below the smallest output cut known among the runtimes in use'},
+    ),
+)
