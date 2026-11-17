@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Call_Identifier in "modules/net/srpc/protocol/call.kh"
+
+tp Observer_Call_Identifier ab
+
+tp GetCallIdentifier mt (self Observer_Call_Identifier) () (identifier Call_Identifier)

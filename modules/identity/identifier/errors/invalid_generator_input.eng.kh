@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_InvalidGeneratorInput in "modules/identity/identifier/errors/invalid_generator_input.kh"
+
+tp Domain mt (self Identifier_Error_InvalidGeneratorInput) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_InvalidGeneratorInput) () (s String) {
+    CharacterRun_From.FromCharacterRun("Generation input is invalid")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_InvalidGeneratorInput) () (s String) {
+    CharacterRun_From.FromCharacterRun("The raw time count or rollback bound is not an unsigned 64-bit integer, the per-retained-timestamp cap is not a positive unsigned 64-bit integer, the source context is neither absent nor a complete 16-byte identity, or a supplied generation adapter is not callable. Boolean values are not numeric generation inputs. The internal time adapter also refuses missing or malformed exact-parts bindings, noninteger parts, a noncanonical nanosecond remainder or an out-of-range combined coordinate. A valid owner conversion refusal is propagated as that owner's Error. No reservation is consumed.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_InvalidGeneratorInput) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_InvalidGeneratorInput) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

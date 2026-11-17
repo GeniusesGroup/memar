@@ -1,7 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Time in "modules/time/protocol/time.kh"
+tp Time_Creation in "modules/process/time/protocol/creation.kh"
 
-// Time of the data is created.
-tp Observer_Time_Creation ab
-tp GetCreationTime mt (self Observer_Time_Creation) () (t Time)
+tp Observer_Creation_Time ab
+tp GetCreationTime mt (self Observer_Creation_Time) () (time Time_Creation)

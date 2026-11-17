@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Identifier_Error_InvalidGeneratorInput in "modules/identity/identifier/errors/invalid_generator_input.eng.kh"
+tp Identifier_Error_EntropyUnavailable in "modules/identity/identifier/errors/entropy_unavailable.eng.kh"
+tp Identifier_Error_ClockRollback in "modules/identity/identifier/errors/clock_rollback.eng.kh"
+tp Identifier_Error_GenerationExhausted in "modules/identity/identifier/errors/generation_exhausted.eng.kh"
+tp Identifier_Error_GeneratorSessionUnverified in "modules/identity/identifier/errors/generator_session_unverified.eng.kh"

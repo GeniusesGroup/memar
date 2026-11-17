@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp SRPC_Frame in "modules/net/srpc/protocol/frame.kh"
+tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
+
+tp SRPC_Frame_PacketSequenceNumber ab {
+    SRPC_Frame
+}
+tp SequenceNumber mt (self SRPC_Frame_PacketSequenceNumber) () (sequence Unsigned)

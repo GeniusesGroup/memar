@@ -1,8 +1,10 @@
-#!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
 TIER = 'unit'
 BUDGET_SECONDS = 60
+COST = {'subprocesses': 0, 'writes_files': False, 'clock_waits': False}
+SUBJECT = 'Graph field-order query'
+CONTRACT = 'modules-plugable/computer/memory/store/graph/protocol'
 import json
 import sys
 import unittest
@@ -66,6 +68,13 @@ def tos(sides) -> list[bytes]:
     return [each.To for each in sides]
 
 class OrderByField(unittest.TestCase):
+
+    def test_malformed_order_identity_is_refused_through_owner_boundary(self) -> None:
+        for layout in LAYOUTS:
+            for identity in (bytes(8), bytes(17), bytearray(16), NUMBER.hex(), 7):
+                with self.subTest(layout=layout, identity=identity):
+                    answer = bound(layout).list_sides(Graph_ListSidesQuery(b'v', REL, OrderField=identity))
+                    self.assertIsInstance(answer, Refused)
 
     def test_sides_are_ordered_by_the_order_the_type_declares_and_not_by_the_bytes(self) -> None:
         for layout in LAYOUTS:

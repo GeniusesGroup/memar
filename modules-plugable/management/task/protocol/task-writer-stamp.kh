@@ -2,11 +2,11 @@
 
 tp U64 in "modules/math/integer/unsigned-64.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp Type_UUID in "modules/computer/type/protocol/uuid.kh"
+tp Type_Identifier in "modules/computer/type/protocol/identifier.kh"
 tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 
 tp Task_Writer_Stamp ab
 
-tp ReadWriter mt (self Task_Writer_Stamp) (task ThingUUID) (writer Type_UUID, stamped Boolean)
+tp ReadWriter mt (self Task_Writer_Stamp) (task ThingUUID) (writer Type_Identifier, stamped Boolean)
 
-tp CountWrittenBy mt (self Task_Writer_Stamp) (writer Type_UUID) (count U64)
+tp CountWrittenBy mt (self Task_Writer_Stamp) (writer Type_Identifier) (count U64)

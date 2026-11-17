@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Types in "modules/computer/types/protocol/types.kh"
+
+tp Domain mt (self Types) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self Types) () (s String) {
+    CharacterRun_From.FromCharacterRun("Catalog of admitted Type declarations")(s, VoidError)
+}
+
+tp Overview mt (self Types) () (s String) {
+    CharacterRun_From.FromCharacterRun("Indexes declarations by their complete Type UUID. Register accepts already identified Types and preserves their identity. A bundle admits the complete module dependency closure supplied by its SDKs and refuses conflicting declarations before execution. Generated bindings of one authoritative declaration refer to that same declaration. Module admission during execution performs the same conflict check before use. Catalog membership is independent of identifier generation.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Types) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Types) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

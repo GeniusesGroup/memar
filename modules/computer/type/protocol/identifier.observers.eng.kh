@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Observer_Type_Identifier in "modules/computer/type/protocol/identifier.observers.kh"
+
+tp Domain mt (self Observer_Type_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Type")(s, VoidError)
+}
+
+tp Summary mt (self Observer_Type_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Complete Type identity observation")(s, VoidError)
+}
+
+tp Overview mt (self Observer_Type_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Exposes the authoritative Type_Identifier value. This observation imposes no string spelling, encoding or allocation agreement.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_Type_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_Type_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

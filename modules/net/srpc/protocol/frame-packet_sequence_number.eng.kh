@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp SRPC_Frame_PacketSequenceNumber in "modules/net/srpc/protocol/frame-packet_sequence_number.kh"
+
+tp Domain mt (self SRPC_Frame_PacketSequenceNumber) () (s String) {
+    CharacterRun_From.FromCharacterRun("sRPC")(s, VoidError)
+}
+
+tp Summary mt (self SRPC_Frame_PacketSequenceNumber) () (s String) {
+    CharacterRun_From.FromCharacterRun("Packet sequence position")(s, VoidError)
+}
+
+tp Overview mt (self SRPC_Frame_PacketSequenceNumber) () (s String) {
+    CharacterRun_From.FromCharacterRun("SequenceNumber describes packet order for loss detection and stream reassembly. It is an ordering value within the delivery process.")(s, VoidError)
+}
+
+tp UserActionNote mt (self SRPC_Frame_PacketSequenceNumber) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self SRPC_Frame_PacketSequenceNumber) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

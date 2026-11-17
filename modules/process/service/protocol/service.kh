@@ -1,5 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Handlers in "modules/process/service/protocol/handlers.kh"
 tp Capsule_LifeCycle in "modules/computer/capsule/protocol/life_cycle_contract.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Observer_MediaType in "modules/computer/mediatype/protocol/media-type.observers.kh"
@@ -11,6 +12,7 @@ tp Importance in "modules/process/operation/protocol/importance.kh"
 
 // Service is the interface that must implement by any struct to be a service.
 tp Service ab {
+    Handlers
     Capsule_LifeCycle
     Observer_OperationID
     Observer_ActionType

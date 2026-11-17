@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_GeneratorSessionUnverified in "modules/identity/identifier/errors/generator_session_unverified.kh"
+
+tp Domain mt (self Identifier_Error_GeneratorSessionUnverified) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_GeneratorSessionUnverified) () (s String) {
+    CharacterRun_From.FromCharacterRun("The generator session cannot be verified")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_GeneratorSessionUnverified) () (s String) {
+    CharacterRun_From.FromCharacterRun("The trusted session identity changed, became invalid or could not be read. This generator is permanently invalidated before another reservation is returned. Construct a new lifetime with fresh entropy. Process identity alone does not detect a complete machine snapshot clone.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_GeneratorSessionUnverified) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_GeneratorSessionUnverified) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

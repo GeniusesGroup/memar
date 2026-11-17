@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_InvalidValue in "modules/identity/identifier/errors/invalid_value.kh"
+
+tp Domain mt (self Identifier_Error_InvalidValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_InvalidValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("Complete internal Identifier value required")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_InvalidValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("The internal value binding did not supply an exact integer in the full unsigned128-bit range. No value is published in the receiver. This binding validates an already decoded numeric value and does not select a wire encoding or text representation.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_InvalidValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_InvalidValue) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

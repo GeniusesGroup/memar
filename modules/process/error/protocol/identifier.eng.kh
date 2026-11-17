@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Error_Identifier in "modules/process/error/protocol/identifier.kh"
+
+tp Domain mt (self Error_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Error")(s, VoidError)
+}
+
+tp Summary mt (self Error_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identity of a error declaration")(s, VoidError)
+}
+
+tp Overview mt (self Error_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("The complete Identifier is the Type identity of the published error declaration, expressed in its domain role. It retains the common identifier value and generation contract across SDKs, builds and destinations.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Error_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Error_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

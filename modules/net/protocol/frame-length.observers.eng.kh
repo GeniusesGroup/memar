@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Observer_FrameLength in "modules/net/protocol/frame-length.observers.kh"
+
+tp Domain mt (self Observer_FrameLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("Networking")(s, VoidError)
+}
+
+tp Summary mt (self Observer_FrameLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("Length of a networking frame")(s, VoidError)
+}
+
+tp Overview mt (self Observer_FrameLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("Observes a frame's length in octets. The framing protocol determines which parts of the frame its length includes; a fixed size may be computed from the declaration.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_FrameLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_FrameLength) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Time_Stringer in "modules/time/protocol/time_stringer.kh"
+
+tp Domain mt (self Time_Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Time")(s, VoidError)
+}
+
+tp Summary mt (self Time_Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Time presentation role")(s, VoidError)
+}
+
+tp Overview mt (self Time_Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Composes the existing string conversion behavior for presentation of time; exact numeric observation belongs to Time.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Time_Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Time_Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

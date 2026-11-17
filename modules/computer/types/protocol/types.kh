@@ -2,7 +2,7 @@
 
 tp READONLY_Type in "modules/computer/adt/container/protocol/container.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
-tp Type_ID in "modules/computer/type/protocol/id.kh"
+tp Type_Identifier in "modules/computer/type/protocol/identifier.kh"
 tp Type_Value_Equality in "modules/computer/type/protocol/value-order.kh"
 tp Type_Value_Order in "modules/computer/type/protocol/value-order.kh"
 tp Error in "modules/process/error/protocol/error.kh"
@@ -13,9 +13,9 @@ tp Types ab {
 }
 
 tp Register mt (self Types) (dt Type) (err Error)
-tp GetByID mt (self Types) (id Type_ID) (dt Type, err Error)
-tp GetValueEquality mt (self Types) (id Type_ID) (equality Type_Value_Equality, err Error)
-tp GetValueOrder mt (self Types) (id Type_ID) (order Type_Value_Order, err Error)
+tp GetByID mt (self Types) (id Type_Identifier) (dt Type, err Error)
+tp GetValueEquality mt (self Types) (id Type_Identifier) (equality Type_Value_Equality, err Error)
+tp GetValueOrder mt (self Types) (id Type_Identifier) (order Type_Value_Order, err Error)
 
 // TODO(go-migrate):
 /*

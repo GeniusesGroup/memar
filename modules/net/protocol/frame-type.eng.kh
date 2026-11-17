@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Net_FrameType in "modules/net/protocol/frame-type.kh"
+
+tp Domain mt (self Net_FrameType) () (s String) {
+    CharacterRun_From.FromCharacterRun("Networking")(s, VoidError)
+}
+
+tp Summary mt (self Net_FrameType) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identity of a declared framing")(s, VoidError)
+}
+
+tp Overview mt (self Net_FrameType) () (s String) {
+    CharacterRun_From.FromCharacterRun("The complete Type identity of a framing declaration. Every implementation and SDK of the shared framing retains the identity from that declaration. Identifier creation follows the common owner. The framing contract and identifier representation determine binary parsing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Net_FrameType) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Net_FrameType) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

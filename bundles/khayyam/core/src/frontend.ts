@@ -1,4 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 import { parseUnit } from "./parse.ts";
+import { checkAbstractionSignatures } from "./abstraction-signatures.ts";
 import {
   declaredName,
   declarationKind,
@@ -21,6 +24,12 @@ export interface Refused {
   outcome: "refuse";
   reason: RefusalReason;
   line?: number;
+  reference?: {
+    parameter: string;
+    type: string;
+    declarationPath: string;
+    declarationLine: number;
+  };
 }
 
 export type Analysis = Accepted | Refused;
@@ -31,14 +40,6 @@ function findDeclaration(unit: Unit, name: string): Declaration | undefined {
   );
 }
 
-/** Every name the unit sees, and the kind of declaration each one came from. A tool that
- *  asks whether a name binds — a rename, say, which must know that a file brings its names
- *  from `in` declarations and from its own declarations and in which order those two layers
- *  are laid over each other — is asking this question and not the analyser's, which asks
- *  whether the whole unit may be compiled at all. The two are kept apart so that a second
- *  answer to "is this name visible here" cannot grow beside this one. A refusal is reported
- *  beside the set rather than in place of it, because the set is what a caller has when it
- *  is asking about names and not about a verdict. */
 export function visibleNames(
   unit: Unit,
   fileSystem: FileSystem,
@@ -50,8 +51,6 @@ export function visibleNames(
       const source = fileSystem.read(declaration.path);
       if (source === undefined) return { visible, refusal: { outcome: "refuse", reason: "unresolved-import" } };
       const parsed = parseUnit(declaration.path, source);
-      // A file that is there and does not parse is not a URI that failed to
-      // resolve; the fault is the one the target itself reports, at its own line.
       if (!parsed.ok) {
         return { visible, refusal: { outcome: "refuse", reason: parsed.fault.reason, line: parsed.fault.line } };
       }
@@ -106,5 +105,7 @@ export function analyze(
   }
   const refused = analyzeImports(parsed.unit, fileSystem);
   if (refused) return refused;
+  const signatureRefused = checkAbstractionSignatures(parsed.unit, fileSystem);
+  if (signatureRefused) return signatureRefused;
   return { outcome: "accept", unit: parsed.unit };
 }

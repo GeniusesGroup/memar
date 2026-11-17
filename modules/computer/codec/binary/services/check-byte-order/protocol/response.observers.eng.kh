@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Observer_Response_CheckByteOrder in "modules/computer/codec/binary/services/check-byte-order/protocol/response.observers.kh"
+
+tp Domain mt (self Observer_Response_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Binary")(s, VoidError)
+}
+
+tp Summary mt (self Observer_Response_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Observe this service's response")(s, VoidError)
+}
+
+tp Overview mt (self Observer_Response_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("GetResponse exposes Binary_CheckByteOrder_Response directly. The companion DeclaredAbstractions lists Observer_Response as the intended shared observer relationship; the generic observer is not composed into this declaration. The intent declaration is tooling metadata and does not by itself prove structural satisfaction or a general return-variance rule.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_Response_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_Response_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

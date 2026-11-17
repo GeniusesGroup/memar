@@ -1,37 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
 export type Subtype = "in" | "cp" | "mt" | "ab" | "sc";
 
-/** One thing the frontend could not read, at the place it stands. A fault is
- *  reported, never repaired: it says the toolchain did not understand this, so a
- *  reader is never shown an answer that was guessed past it. */
 export interface Fault {
   reason: RefusalReason;
-  /** One-based, as a refusal message counts. */
   line: number;
-  /** One-based; a string's column is its first character inside the quotes. */
   column: number;
-  /** How many characters the fault covers. */
   length: number;
-  /** What stood there. */
   text: string;
-  /** What the fault cost, which is where reading went on: the rest of its line,
-   *  the declaration it stood in, or the rest of the file. */
   extent: "line" | "declaration" | "file";
-  /** The fault this one is a consequence of, when it is one. A fault that follows
-   *  another says so and names it, because a reader told only what the second fault
-   *  is cannot act on it: the second is what the first left behind, so repairing the
-   *  first is what takes the second away. It is not a replacement for the fault's own
-   *  reason and extent — those stay, so the file's broken structure is still reported
-   *  where it stands. */
   because?: Fault;
 }
 
 export interface TypeInclude {
   form: "tp-in";
   name: string;
-  /** The line the declaration was read on. A declaration occupies one line and the
-   *  line's break terminates it (docs/khayyam/khayyam.md, Declaration separator), so
-   *  this identifies it, and it is what a reader that recovers per declaration needs
-   *  to pair the declaration with the line it stands on. */
   line: number;
   path: string;
 }
@@ -106,9 +89,6 @@ export interface Unit {
   declarations: Declaration[];
 }
 
-/** Every way this toolchain can refuse a unit, in one list: the labels a
- *  scanner, a parser, and the analyser all draw from, so no module has to
- *  restate one and none of them can invent one the others do not know. */
 export type RefusalReason =
   | "declaration-form"
   | "missing-subtype"
@@ -122,7 +102,9 @@ export type RefusalReason =
   | "unresolved-import"
   | "name-not-declared"
   | "kind-mismatch"
-  | "unbound-type-name";
+  | "unbound-type-name"
+  | "capsule-in-abstraction-signature"
+  | "unresolved-type-declaration";
 
 export function declaredName(declaration: Declaration): string {
   return declaration.name;

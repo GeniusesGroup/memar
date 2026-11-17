@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+
+tp Observer_Identifier in "modules/identity/identifier/protocol/identifier.observers.kh"
+
+tp Domain mt (self Observer_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Observer_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Observes the retained shared identity")(s, VoidError)
+}
+
+tp Overview mt (self Observer_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Exposes the Identifier retained by the subject. Observation neither mints a replacement nor resolves a storage location. The observed Identifier owns its initialization state and observations.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("A reference to an independently identified subject uses its retained identity; possession alone grants no access to that subject.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("This observer observes the declared Identifier concept. Issuance time and discriminator are direct observations on Identifier, not independently declared observed concepts.")(s, VoidError)
+}

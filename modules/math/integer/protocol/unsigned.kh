@@ -1,12 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package math_p
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Stringer_To in "modules/computer/codec/string/protocol/stringer.kh"
 
-// Unsigned is a constraint that permits any unsigned integer type.
-// If future releases of Go add new predeclared unsigned integer types, this constraint will be modified to include them.
-type Unsigned interface {
-	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+tp Unsigned ab {
+    Stringer_To
 }
-*/
+tp Equivalence mt (self Unsigned) (with Unsigned) (equal Boolean)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_ClockRollback in "modules/identity/identifier/errors/clock_rollback.kh"
+
+tp Domain mt (self Identifier_Error_ClockRollback) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_ClockRollback) () (s String) {
+    CharacterRun_From.FromCharacterRun("Clock rollback exceeds the permitted bound")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_ClockRollback) () (s String) {
+    CharacterRun_From.FromCharacterRun("The observed count is earlier than the last reserved creation count by more than the configured finite maximum rollback. The last reservation remains unchanged. Wait for a valid observation or report the refusal.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_ClockRollback) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_ClockRollback) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -3,11 +3,11 @@
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp Stringer in "modules/computer/codec/string/protocol/stringer.kh"
-tp UUID_Hash in "modules/computer/identifier/protocol/uuid.kh"
+tp Crypto_CipherSuite in "modules/computer/crypto/protocol/cipher-suite.kh"
 
 tp CipherSuite_Parsed ab {
     Stringer
-    UUID_Hash
+    Crypto_CipherSuite
 }
 tp Protocol mt (self CipherSuite_Parsed) () (s String)
 

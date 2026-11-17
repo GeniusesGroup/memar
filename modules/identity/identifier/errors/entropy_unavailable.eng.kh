@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_EntropyUnavailable in "modules/identity/identifier/errors/entropy_unavailable.kh"
+
+tp Domain mt (self Identifier_Error_EntropyUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_EntropyUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Fresh generator entropy is unavailable")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_EntropyUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The trusted entropy adapter failed or did not return exactly 32 bytes. No generator lifetime is established. Do not substitute a clock, identity or deterministic default for fresh entropy.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_EntropyUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_EntropyUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

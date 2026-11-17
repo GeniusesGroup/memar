@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Binary_LittleEndian in "modules/computer/codec/binary/protocol/little-endian.kh"
+
+tp Domain mt (self Binary_LittleEndian) () (s String) {
+    CharacterRun_From.FromCharacterRun("Binary")(s, VoidError)
+}
+
+tp Summary mt (self Binary_LittleEndian) () (s String) {
+    CharacterRun_From.FromCharacterRun("Least significant octet first")(s, VoidError)
+}
+
+tp Overview mt (self Binary_LittleEndian) () (s String) {
+    CharacterRun_From.FromCharacterRun("Declares least-significant-octet-first significance for a multioctet value. The type's binary format codec applies this choice independently of host CPU order, field layout and the value's representation. The byte-order declaration retains its published Type identity across hosts.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Binary_LittleEndian) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Binary_LittleEndian) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

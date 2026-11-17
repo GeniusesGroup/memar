@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Observer_Creation_Time in "modules/process/time/protocol/creation.observers.kh"
+
+tp Domain mt (self Observer_Creation_Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("Process Time")(s, VoidError)
+}
+
+tp Summary mt (self Observer_Creation_Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("Observe the subject's creation instant")(s, VoidError)
+}
+
+tp Overview mt (self Observer_Creation_Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("GetCreationTime returns the retained Time_Creation value. The named query remains distinct from other time-role queries. Observation does not sample a clock, replace the epoch or establish the truth of an untrusted claim.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_Creation_Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_Creation_Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

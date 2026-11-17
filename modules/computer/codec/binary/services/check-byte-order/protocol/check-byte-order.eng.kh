@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Binary_CheckByteOrder in "modules/computer/codec/binary/services/check-byte-order/protocol/check-byte-order.kh"
+
+tp Domain mt (self Binary_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Binary")(s, VoidError)
+}
+
+tp Summary mt (self Binary_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Check a proposed shared byte order")(s, VoidError)
+}
+
+tp Overview mt (self Binary_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("Accepts exactly when both supplied capability snapshots permit the proposed complete declaration UUID. Otherwise returns Binary_Error_ByteOrderNotShared. The caller supplies the candidate; a refusal selects no fallback. This check evaluates the supplied offers only. The enclosing communication protocol owns their exchange, authentication, confirmation, scope and activation. Its initial messages use an already-defined representation so the proposed representation is not needed to decode its own agreement.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Binary_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Binary_CheckByteOrder) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp SRPC_Frame_Error in "modules/net/srpc/protocol/frame-error.kh"
+
+tp Domain mt (self SRPC_Frame_Error) () (s String) {
+    CharacterRun_From.FromCharacterRun("sRPC")(s, VoidError)
+}
+
+tp Summary mt (self SRPC_Frame_Error) () (s String) {
+    CharacterRun_From.FromCharacterRun("Report an error on a stream")(s, VoidError)
+}
+
+tp Overview mt (self SRPC_Frame_Error) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carries the complete shared error Identifier for the identified stream. Reading the frame requires no locally available error declaration; interpretation and unknown-identity handling belong to the receiving process.")(s, VoidError)
+}
+
+tp UserActionNote mt (self SRPC_Frame_Error) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self SRPC_Frame_Error) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

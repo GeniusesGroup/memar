@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Time in "modules/time/protocol/time.kh"
+
+tp Domain mt (self Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("Time")(s, VoidError)
+}
+
+tp Summary mt (self Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("An instant on its declared timeline")(s, VoidError)
+}
+
+tp Overview mt (self Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("Retains an instant and its Epoch. The existing Duration observations remain available. PartsInEpoch exposes exact numeric parts in a requested reference coordinate without imposing a capsule width on general Time.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("The requesting process supplies the trusted shared reference when cross-process comparison is required. Native monotonic timelines and arbitrary local origins require a known mapping rather than being treated as shared wall-clock observations.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Time) () (s String) {
+    CharacterRun_From.FromCharacterRun("PartsInEpoch returns floor elapsed whole seconds and a canonical nonnegative nanosecond remainder less than one billion, with no integer-width bound imposed by this abstraction. Their exact sum represents the same instant on the requested reference epoch and time scale. A pre-epoch instant may have negative seconds and a positive normalized remainder. Known native epoch and leap-smear mappings are normalized before returning; an unknown or incomparable mapping or a precision loss returns Time_Error_ExactPartsUnavailable. No rounding or clamping is permitted. This conversion does not claim nanosecond physical clock accuracy. On refusal no numeric parts are promised. Identifier's bounded carrier applies its own range check after successful conversion; general Time is not restricted to that carrier.")(s, VoidError)
+}

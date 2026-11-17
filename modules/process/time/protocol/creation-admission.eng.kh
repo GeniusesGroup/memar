@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Time_Creation_Admission in "modules/process/time/protocol/creation-admission.kh"
+
+tp Domain mt (self Time_Creation_Admission) () (s String) {
+    CharacterRun_From.FromCharacterRun("Process Time")(s, VoidError)
+}
+
+tp Summary mt (self Time_Creation_Admission) () (s String) {
+    CharacterRun_From.FromCharacterRun("Admission of a newly declared creation instant")(s, VoidError)
+}
+
+tp Overview mt (self Time_Creation_Admission) () (s String) {
+    CharacterRun_From.FromCharacterRun("Accepts the retained Time_Creation instant only when it is comparable on the common declared reference timeline and lies between the supplied observed time minus the configured maximum past deviation and that time plus the configured maximum future deviation, inclusive. Both deviations are finite and nonnegative. This policy is supplied by the receiving process. Historical creation requires that process's separate authorized provenance check. The policy evaluates first creation admission; it does not expire existing identities or rewrite their retained creation instant.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Time_Creation_Admission) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Time_Creation_Admission) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -7,12 +7,11 @@ import test from "node:test";
 import { analyze, type FileSystem } from "../src/frontend.ts";
 import type { RefusalReason } from "../src/sr.ts";
 
-// The matrix over the archive: the sources the toolchain is measured against, row for row.
-// A form's meaning and a refusal's label are pinned one at a time in form.test.ts and
-// refusal.test.ts against text written here, and neither of those can say whether a real
-// file of the repository holds a form the toolchain admits or a fault it refuses — only a
-// file read from the sources can.
-
+const BUDGET_SECONDS = 30;
+const TIER = "integration";
+const COST = { subprocesses: 0, writes_files: false, clock_waits: false };
+const SUBJECT = "Khayyam repository declaration acceptance matrix";
+const options = { timeout: BUDGET_SECONDS * 1000 };
 const REPOSITORY = new URL("../../../../", import.meta.url);
 
 const archive = (relative: string): string =>
@@ -28,32 +27,14 @@ const archiveFileSystem: FileSystem = {
   },
 };
 
-// The archive's own counter-examples, and files that carry the forms the toolchain
-// accepts. An accept row is worth nothing on a file that holds no declaration —
-// most of the sources' control-flow files are a licence header and nothing else —
-// so the guard below holds every accept row to that.
 const ARCHIVE_EXPECTATIONS: ReadonlyArray<
   readonly [string, "accept" | "refuse", RefusalReason?]
 > = [
-  // Refused for a form the language does not have. The label says which fault.
-  ["modules/memory/reference/weak.kh", "refuse", "keyword-as-identifier"],
-  // if.kh is a draft whose owner and layout are open
-  // (docs/modules/process/control-flow.handoff.md), so the row holds only that the
-  // draft is refused. Its faults — an Error import from a file that does not
-  // declare it, a signature naming unbound types — are pinned by the
-  // inline rows above, not by which one this file happens to report first.
+  ["modules/computer/memory/reference/weak.kh", "refuse", "keyword-as-identifier"],
   ["modules/process/control-flow/protocol/if.kh", "refuse"],
-  // Accepted, and each of these says something: an inclusion that resolves, a
-  // capsule, an abstraction composition, a method with more than one parameter.
-  // Three files once refused as `declaration-form` and now belong here, because the
-  // form that put them there is gone from the sources: the method written without
-  // `mt` that concurrency.kh, blocking.kh, and life_cycle_contract.kh each carried. The
-  // form itself is pinned by refusal.test.ts, which can hold text the sources no
-  // longer does; a matrix row can only report what a real file holds, and these
-  // three hold the corrected form.
   ["modules/computer/runtime/protocol/concurrency.kh", "accept"],
-  ["modules/computer/runtime/protocol/blocking.kh", "accept"],
-  ["modules/computer/capsule/protocol/life_cycle_contract.kh", "accept"],
+  ["modules/computer/runtime/protocol/blocking.kh", "refuse", "capsule-in-abstraction-signature"],
+  ["modules/computer/capsule/protocol/life_cycle.kh", "accept"],
   ["modules/process/control-flow/protocol/panic-recovery.kh", "accept"],
   ["modules/time/duration/nano-in-second.kh", "accept"],
   ["modules/computer/type/protocol/identifiers.kh", "accept"],
@@ -64,7 +45,7 @@ const ARCHIVE_EXPECTATIONS: ReadonlyArray<
 ];
 
 for (const [path, expected, reason] of ARCHIVE_EXPECTATIONS) {
-  test(`archive ${path} is ${expected}ed`, () => {
+  test(`archive ${path} is ${expected}ed`, options, () => {
     const result = analyze(path, archive(path), archiveFileSystem);
     assert.equal(
       result.outcome,
@@ -76,7 +57,7 @@ for (const [path, expected, reason] of ARCHIVE_EXPECTATIONS) {
   });
 }
 
-test("every accept row of the matrix is a file that declares something", () => {
+test("every accept row of the matrix is a file that declares something", options, () => {
   for (const [path, expected] of ARCHIVE_EXPECTATIONS) {
     if (expected !== "accept") continue;
     assert.match(archive(path), /^(tp|vr)\s/m, `${path} declares nothing, so accepting it proves nothing`);

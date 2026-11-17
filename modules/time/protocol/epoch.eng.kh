@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Epoch in "modules/time/protocol/epoch.kh"
+
+tp Domain mt (self Epoch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Time")(s, VoidError)
+}
+
+tp Summary mt (self Epoch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reference of a timeline")(s, VoidError)
+}
+
+tp Overview mt (self Epoch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Memar uses the Unix/POSIX epoch at 1970-01-01T00:00:00 UTC as the shared reference for cross-process wall-clock creation instants, on the POSIX coordinate with leap seconds excluded. Monotonic and domain-specific timelines retain their distinct Epoch identities.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Epoch) () (s String) {
+    CharacterRun_From.FromCharacterRun("A known mapping normalizes a different native epoch or leap-smear coordinate before cross-process comparison. An unknown or incomparable mapping is refused.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Epoch) () (s String) {
+    CharacterRun_From.FromCharacterRun("Exact conversion is exposed through Time.PartsInEpoch. This reference selection fixes neither the width nor the representation of general Time. A consumer's bounded carrier applies its own precision and overflow refusals after normalization. Nominal resolution does not establish the clock's accuracy.")(s, VoidError)
+}

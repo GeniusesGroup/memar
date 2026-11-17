@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_AlreadyInitialized in "modules/identity/identifier/errors/already_initialized.kh"
+
+tp Domain mt (self Identifier_Error_AlreadyInitialized) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_AlreadyInitialized) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identity is already initialized")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_AlreadyInitialized) () (s String) {
+    CharacterRun_From.FromCharacterRun("The receiver already retains a complete Identifier. Fresh generation and loading another value are refused before invoking the issuer or changing the retained identity.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_AlreadyInitialized) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_AlreadyInitialized) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Time_Error_ExactPartsUnavailable in "modules/time/errors/exact_parts.kh"
+
+tp Domain mt (self Time_Error_ExactPartsUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Time")(s, VoidError)
+}
+
+tp Summary mt (self Time_Error_ExactPartsUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Exact time parts are unavailable")(s, VoidError)
+}
+
+tp Overview mt (self Time_Error_ExactPartsUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The requested epoch or time-scale mapping is unknown, incomparable or cannot represent this instant exactly as whole seconds and a nanosecond remainder. Conversion refuses without rounding, clamping or replacing the source instant.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Time_Error_ExactPartsUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Time_Error_ExactPartsUnavailable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

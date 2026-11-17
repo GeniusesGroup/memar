@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp SRPC_Frame in "modules/net/srpc/protocol/frame.kh"
+tp Observer_Stream_Identifier in "modules/net/srpc/protocol/stream.observers.kh"
+tp Computer_Buffer in "modules/computer/buffer/protocol/buffer.kh"
+
+tp SRPC_Frame_DataSignature ab {
+    SRPC_Frame
+    Observer_Stream_Identifier
+}
+tp GetSignature mt (self SRPC_Frame_DataSignature) () (signature Computer_Buffer)

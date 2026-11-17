@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp SRPC_Frame_Data in "modules/net/srpc/protocol/frame-data.kh"
+
+tp Domain mt (self SRPC_Frame_Data) () (s String) {
+    CharacterRun_From.FromCharacterRun("sRPC")(s, VoidError)
+}
+
+tp Summary mt (self SRPC_Frame_Data) () (s String) {
+    CharacterRun_From.FromCharacterRun("Stream payload segment")(s, VoidError)
+}
+
+tp Overview mt (self SRPC_Frame_Data) () (s String) {
+    CharacterRun_From.FromCharacterRun("Offset counts payload octets from the beginning of the stream. The retained stream identity associates this segment with the opened stream.")(s, VoidError)
+}
+
+tp UserActionNote mt (self SRPC_Frame_Data) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self SRPC_Frame_Data) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

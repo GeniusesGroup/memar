@@ -81,6 +81,11 @@ The division of labor the SDK fixes, end to end:
 
 This chain is what makes intra-organizational delivery work the same as cross-organizational delivery: the frontend team is a consumer like any other, and the same deliverable discipline applies. The recurring ecosystem practice of a frontend team generating its own client from the backend's textual documentation is the chain's violation, not an acceptable variant of it.
 
+### Identity across organizations
+A delivered SDK carries the identities of the published declarations it realizes. Changing the destination selects the organization serving those contracts. The same SDK serves that shared contract across organizations.
+
+Including an SDK includes its module dependencies in bundle admission. The bundle checks the complete closure for conflicting Type identities through [Types](../../../../computer/types/protocol/types.kh) before accepting it for execution. References generated from one authoritative declaration identify that same declaration. A conflict between distinct declarations is refused at admission. A dynamically admitted module passes the same check before use.
+
 ### Part of the module, not beside it
 [Modularity → Module, Process, and Protocol](../../../../knowledge/modularity/modularity.md#module-process-and-protocol) keeps three concepts distinct: a Module is a structural boundary for capabilities, a Process is progression over time, a Protocol is the declarative rules governing processes. The SDK position adds the delivery consequence for the module side: **the SDK is part of the module's own realization of its protocol**, generated from the same declaration the service side realizes — not an artifact a module publishes about itself. A module that delivers only its server side has not completed its protocol surface: the protocol's consumer face is unrealized, and the vacancy is filled by whichever consumer gets there first, re-deriving the declared interface from a description — exactly the responsibility transfer this protocol exists to end. Completing the surface is therefore a conformance obligation of the module, on the same footing as the service behavior itself, not a convenience feature.
 

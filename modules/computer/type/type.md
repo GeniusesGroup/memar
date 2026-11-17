@@ -416,12 +416,9 @@ The requirements are derived downward from this document's model of Type — its
 This module owns Type as a concept and the protocol a Type is stated through: what identifies a Type, what describes it, what life-cycle position it holds, and how a consumer reads them. A collection of Types — how many a system holds, and how one is found among them — is a different subject from a Type and is not owned here.
 
 ### Identity in the Type Module
-A Type answers "which Type is this?" from the Type alone, never from data an instance holds ([Stateless Types](#stateless-types)). It carries two identifiers for that answer:
+A Type answers "which Type is this?" from its authoritative declaration ([Stateless Types](#stateless-types)). Its identity follows the [complete identifier contract](protocol/identifier.kh), exposed through [Identifiers](protocol/identifiers.kh), and generation belongs to [Identifier](../../identity/identifier/identifier.md).
 
-- A **universally unique identifier**, produced by any mechanism that guarantees it is unique everywhere, so that two Types offered in different contexts never share one ([Type Identity](#type-identity)).
-- A **short identifier**, taken from the leading 64 bits of the universally unique one, used to tell Types apart as domains where the shorter form serves.
-
-Each identifier is also readable as Base64 text, for carriers that move text. Identity is the identifier alone: two Types are compared by their identifiers, and a consumer declares no second equivalence beside them ([The Error → Identity and equality](../../process/error/error.md#identity-and-equality)).
+The same published declaration retains its identity wherever its SDK or another realization is used. Changing the connection destination selects another organization serving that contract; it leaves the contract identity unchanged. Bundle admission checks the delivered SDK dependency closure through [Types](../types/protocol/types.kh). Human-facing naming and implementation details can evolve while the shared contract remains compatible. An incompatible successor follows [Module Replacement](../../knowledge/modularity/rules/module-replacement/module-replacement.md).
 
 ### Type details and human-facing identity
 A Type's human-facing identity — its localized names, labels, documentation, and localized descriptions of its behaviors and failures — belongs to the Type and has one source ([Human-facing identity](#human-facing-identity)). This module carries it as the Type's details:

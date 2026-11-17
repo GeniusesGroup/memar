@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Binary_CheckByteOrder_Request in "modules/computer/codec/binary/services/check-byte-order/protocol/request.kh"
+
+tp Domain mt (self Binary_CheckByteOrder_Request) () (s String) {
+    CharacterRun_From.FromCharacterRun("Binary")(s, VoidError)
+}
+
+tp Summary mt (self Binary_CheckByteOrder_Request) () (s String) {
+    CharacterRun_From.FromCharacterRun("Proposed byte order and participant capabilities")(s, VoidError)
+}
+
+tp Overview mt (self Binary_CheckByteOrder_Request) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carries the complete candidate declaration UUID and the two supplied capability snapshots. The service evaluates this one proposed choice against both snapshots.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Binary_CheckByteOrder_Request) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Binary_CheckByteOrder_Request) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

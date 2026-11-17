@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_InvalidBytes in "modules/identity/identifier/errors/value.kh"
+
+tp Domain mt (self Identifier_Error_InvalidBytes) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_InvalidBytes) () (s String) {
+    CharacterRun_From.FromCharacterRun("Complete Identifier byte value required")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_InvalidBytes) () (s String) {
+    CharacterRun_From.FromCharacterRun("The host adapter received a value other than exactly sixteen immutable octets. It refuses short, overlong, textual, numeric and mutable representations rather than truncating, padding, parsing or allocating an identity. This is structural byte admission only; origin, publication and time policy are checked elsewhere.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_InvalidBytes) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_InvalidBytes) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

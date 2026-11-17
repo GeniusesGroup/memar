@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp SRPC_Frame_Service in "modules/net/srpc/protocol/frame-service.kh"
+
+tp Domain mt (self SRPC_Frame_Service) () (s String) {
+    CharacterRun_From.FromCharacterRun("sRPC")(s, VoidError)
+}
+
+tp Summary mt (self SRPC_Frame_Service) () (s String) {
+    CharacterRun_From.FromCharacterRun("Service invocation without opening a stream")(s, VoidError)
+}
+
+tp Overview mt (self SRPC_Frame_Service) () (s String) {
+    CharacterRun_From.FromCharacterRun("Carries the complete shared service and compression Identifiers. Their declarations may be unavailable locally. The call identity correlates the invocation and its response; Time supplies expiry information. Changing the destination retains the same service Identifier and SDK.")(s, VoidError)
+}
+
+tp UserActionNote mt (self SRPC_Frame_Service) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self SRPC_Frame_Service) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

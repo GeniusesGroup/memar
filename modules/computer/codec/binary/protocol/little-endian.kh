@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Binary_ByteOrder in "modules/computer/codec/binary/protocol/byte-order.kh"
+
+tp Binary_LittleEndian ab {
+    Binary_ByteOrder
+}

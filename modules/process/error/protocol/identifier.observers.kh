@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error_Identifier in "modules/process/error/protocol/identifier.kh"
+
+tp Observer_Error_Identifier ab
+tp GetErrorIdentifier mt (self Observer_Error_Identifier) () (identifier Error_Identifier)

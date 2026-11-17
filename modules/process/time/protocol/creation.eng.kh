@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Time_Creation in "modules/process/time/protocol/creation.kh"
+
+tp Domain mt (self Time_Creation) () (s String) {
+    CharacterRun_From.FromCharacterRun("Process Time")(s, VoidError)
+}
+
+tp Summary mt (self Time_Creation) () (s String) {
+    CharacterRun_From.FromCharacterRun("The subject's actual creation instant")(s, VoidError)
+}
+
+tp Overview mt (self Time_Creation) () (s String) {
+    CharacterRun_From.FromCharacterRun("A Time role retaining one actual creation instant with the Time owner's epoch and measurement behavior. Consumers observe that role through Observer_Creation_Time.GetCreationTime, so creation, access and modification time can coexist with distinct queries. Reading creation time retains its instant rather than sampling the current clock. A domain may treat actual identifier minting and entity creation as one event. The UUID's separately retained effective issuance coordinate is checked against actual creation under trusted clock and rollback allowances; it is not substituted for this role's actual instant.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Time_Creation) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Time_Creation) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

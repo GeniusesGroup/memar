@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
+
+tp Domain mt (self Unsigned) () (s String) {
+    CharacterRun_From.FromCharacterRun("Integer")(s, VoidError)
+}
+
+tp Summary mt (self Unsigned) () (s String) {
+    CharacterRun_From.FromCharacterRun("Nonnegative integer value")(s, VoidError)
+}
+
+tp Overview mt (self Unsigned) () (s String) {
+    CharacterRun_From.FromCharacterRun("Represents a nonnegative integral magnitude independently of storage width. Equivalence compares the mathematical value. A numeric codec validates whether that magnitude fits its selected encoded width; it refuses an out-of-range value instead of truncating it.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Unsigned) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Unsigned) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

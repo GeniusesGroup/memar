@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Binary_Error_UnsignedOutOfRange in "modules/computer/codec/binary/errors/unsigned-out-of-range.kh"
+
+tp Domain mt (self Binary_Error_UnsignedOutOfRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("Binary")(s, VoidError)
+}
+
+tp Summary mt (self Binary_Error_UnsignedOutOfRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("Unsigned magnitude does not fit the encoded span")(s, VoidError)
+}
+
+tp Overview mt (self Binary_Error_UnsignedOutOfRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("The supplied unsigned magnitude cannot be represented in the requested positive number of octets. Conversion refuses it before writing instead of truncating its significant octets.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Binary_Error_UnsignedOutOfRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Binary_Error_UnsignedOutOfRange) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

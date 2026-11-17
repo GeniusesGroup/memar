@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_FrameType in "modules/net/protocol/frame-type.observers.kh"
+tp Observer_FrameLength in "modules/net/protocol/frame-length.observers.kh"
+
+tp SRPC_Frame ab {
+    Observer_FrameType
+    Observer_FrameLength
+}

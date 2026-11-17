@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Observer_Stream_Identifier in "modules/net/srpc/protocol/stream.observers.kh"
+
+tp Domain mt (self Observer_Stream_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("sRPC")(s, VoidError)
+}
+
+tp Summary mt (self Observer_Stream_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Observes one retained stream identifier")(s, VoidError)
+}
+
+tp Overview mt (self Observer_Stream_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Returns the Stream_Identifier retained by this frame or value. Observation neither generates another identifier nor resolves a local stream or handler.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_Stream_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_Stream_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("The subject role composes the shared Identifier contract. Empty state and full-value comparison remain with that owner.")(s, VoidError)
+}
+

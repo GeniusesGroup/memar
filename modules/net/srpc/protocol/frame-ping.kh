@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp SRPC_Frame in "modules/net/srpc/protocol/frame.kh"
+
+tp SRPC_Frame_Ping ab {
+    SRPC_Frame
+}

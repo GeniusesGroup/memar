@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Observer_Compression_Identifier in "modules/computer/codec/compress/protocol/identifier.observers.kh"
+
+tp Domain mt (self Observer_Compression_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Compression")(s, VoidError)
+}
+
+tp Summary mt (self Observer_Compression_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Observe a compression identity")(s, VoidError)
+}
+
+tp Overview mt (self Observer_Compression_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("Returns the complete compression UUID carried by the value. Observing this identity requires no local compression declaration or instance. Resolution, availability and execution are separate operations.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Observer_Compression_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Observer_Compression_Identifier) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

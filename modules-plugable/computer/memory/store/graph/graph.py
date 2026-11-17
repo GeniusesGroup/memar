@@ -7,6 +7,7 @@ import struct
 import uuid
 from dataclasses import dataclass
 from importlib import import_module
+from modules.identity.identifier.errors.value import Identifier_Error_InvalidBytes
 from typing import Any, Sequence
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_errors = import_module('modules-plugable.computer.memory.store.graph.errors.errors')
@@ -404,6 +405,8 @@ class Graph_Store:
         if self._types is None or query.After:
             return Refused(Refusal.MALFORMED, Bad.ORDER.summary())
         order = self._types.get_value_order(query.OrderField)
+        if isinstance(order, Identifier_Error_InvalidBytes):
+            return Refused(Refusal.MALFORMED, Bad.ORDER.summary())
         if hasattr(order, 'summary'):
             return Refused(Refusal.MALFORMED, order.summary())
         sides = self._list_direction(query.From, query.Relation, DIRECTION_OUT, b'', 0, False)
