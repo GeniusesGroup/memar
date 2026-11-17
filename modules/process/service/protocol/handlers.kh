@@ -5,7 +5,7 @@ tp Socket in "modules/net/protocol/socket.kh"
 tp Process_Request in "modules/process/request/protocol/request.kh"
 tp Process_Response in "modules/process/response/protocol/response.kh"
 
-// Handlers is just test (approver) interface and MUST NOT use directly in any signature.
+// Handlers is a test (approver) interface. Do not use it as a parameter or result type.
 tp Handlers ab
 
 // Call service remotely by preferred(SDK generator choose) protocol.
