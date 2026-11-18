@@ -40,7 +40,7 @@ class MadeNodes(unittest.TestCase):
         self.assertEqual(section.GetLevel(), 3)
         self.assertEqual(section.GetTitle(), ('Title', True))
         self.assertEqual(section.GetItemCount(), 0)
-        self.assertEqual(section.GetSectionCount(), 0)
+        self.assertEqual(section.GetOccupiedLength(), 0)
 
 
 class ItemMutators(unittest.TestCase):
@@ -112,9 +112,11 @@ class RunsOfItems(unittest.TestCase):
         self.section.AppendSection(child)
         self.assertIsInstance(self.section.InsertSection(2, child), Position)
         self.assertIsInstance(self.section.RemoveSection(1), Position)
-        self.assertIs(self.section.GetEditableSectionAt(0), self.section.GetSectionAt(0))
+        reached, err = self.section.GetElement(0)
+        self.assertIsNone(err)
+        self.assertIs(self.section.GetEditableSectionAt(0), reached)
         self.assertIsNone(self.section.RemoveSection(0))
-        self.assertEqual(self.section.GetSectionCount(), 0)
+        self.assertEqual(self.section.GetOccupiedLength(), 0)
 
     def test_the_title_can_be_set(self) -> None:
         self.section.SetTitle('New')
