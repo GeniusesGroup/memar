@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Get_Latest_Response in "modules/management/timeline/services/timeline-latest/protocol/response.kh"
+
+tp Observer_Response_Get_Latest ab
+
+tp GetResponse mt (self Observer_Response_Get_Latest) () (value Get_Latest_Response)

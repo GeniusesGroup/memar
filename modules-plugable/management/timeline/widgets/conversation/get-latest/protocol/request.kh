@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Label_Identifier in "modules/knowledge/label/protocol/identifier.observers.kh"
+tp Observer_Timeline_Identifier in "modules/management/timeline/protocol/identifier.observers.kh"
+
+tp Get_Latest_Request ab {
+	Process_Request
+	Observer_Timeline_Identifier
+	Observer_Label_Identifier
+}
