@@ -2,12 +2,13 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Task_Identifier in "modules/management/task/protocol/identifier.kh"
+tp Task_Identifiers in "modules/management/task/protocol/identifiers.kh"
 tp Text in "modules/knowledge/text/protocol/dt-text.kh"
 
 tp New_Chats_Ask ab {
 }
 
-tp TextOf mt (self New_Chats_Ask) (tasks MemoryAddress, blocking MemoryAddress) (message Text, err Error)
+tp TextOf mt (self New_Chats_Ask) (tasks Task_Identifiers, blocking Task_Identifiers) (message Text, err Error)
 
-tp Print mt (self New_Chats_Ask) (tasks MemoryAddress, blocking MemoryAddress, own MemoryAddress) (err Error)
+tp Print mt (self New_Chats_Ask) (tasks Task_Identifiers, blocking Task_Identifiers, own Task_Identifier) (err Error)

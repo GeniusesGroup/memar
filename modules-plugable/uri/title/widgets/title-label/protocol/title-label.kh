@@ -2,7 +2,7 @@
 
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Thing_Identifier in "modules/identity/thing/protocol/identifier.kh"
 tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
 tp Title_Find in "modules-plugable/uri/title/services/find-title/protocol/find-title.kh"
 tp Title_Show in "modules-plugable/uri/title/services/show-title/protocol/show-title.kh"
@@ -12,4 +12,4 @@ tp Title_Label ab {
 	Title_Show
 }
 
-tp Label mt (self Title_Label) (thing ThingUUID) (shown CharacterRun, found Boolean, err Error)
+tp Label mt (self Title_Label) (thing Thing_Identifier) (shown CharacterRun, found Boolean, err Error)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Rule_Identifiers in "modules/process/rule/protocol/identifiers.kh"
+
+tp Observer_Rule_Identifiers ab
+
+tp GetRuleIdentifiers mt (self Observer_Rule_Identifiers) () (identifiers Rule_Identifiers)

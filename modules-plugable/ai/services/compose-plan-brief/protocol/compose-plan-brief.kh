@@ -2,10 +2,10 @@
 
 tp Service in "modules/process/service/protocol/service.kh"
 tp Text in "modules/knowledge/text/protocol/dt-text.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Task_Identifier in "modules/management/task/protocol/identifier.kh"
 
 tp Plan_Brief_Compose ab {
 	Service
 }
 
-tp Compose mt (self Plan_Brief_Compose) (task MemoryAddress) (brief Text)
+tp Compose mt (self Plan_Brief_Compose) (task Task_Identifier) (brief Text)

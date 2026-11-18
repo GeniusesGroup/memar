@@ -1,0 +1,20 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Composition_Version in "modules/management/agency/protocol/composition-version.kh"
+tp Addressable_Entity in "modules/knowledge/content/protocol/addressable-entity.kh"
+tp User_Identifier in "modules/identity/user/protocol/identifier.kh"
+tp Observer_User_Identifier in "modules/identity/user/protocol/identifier.observers.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Details in "modules/computer/type/protocol/detail.kh"
+
+tp Takeup_Binding ab {
+	Details
+	Observer_User_Identifier
+	Composition_Version
+}
+
+tp GetPrincipal mt (self Takeup_Binding) () (principal User_Identifier)
+
+tp GetVersion mt (self Takeup_Binding) () (version Composition_Version)
+
+tp GetEvent mt (self Takeup_Binding) () (event Addressable_Entity, present Boolean)

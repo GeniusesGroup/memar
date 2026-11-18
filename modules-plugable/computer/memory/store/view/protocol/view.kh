@@ -3,7 +3,6 @@
 tp Error in "modules/process/error/protocol/error.kh"
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
 tp Record in "modules-plugable/computer/memory/store/record/protocol/record.kh"
 tp View_Registry in "modules-plugable/computer/memory/store/view/protocol/view-registry.kh"
 tp View_Presentation in "modules-plugable/computer/memory/store/view/protocol/view-presentation.kh"
@@ -11,11 +10,11 @@ tp View_Folder in "modules-plugable/computer/memory/store/view/protocol/view-fol
 tp View_Guard in "modules-plugable/computer/memory/store/view/protocol/view-guard.kh"
 tp View_Preference in "modules-plugable/computer/memory/store/view/protocol/view-preference.kh"
 tp View_BuildAnswer in "modules-plugable/computer/memory/store/view/protocol/view-build-answer.kh"
-tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
+tp Observer_Project_Identifier in "modules-plugable/management/task/labels/project/protocol/identifier.observers.kh"
 
 tp View ab {
     View_Registry
-    Field_ProjectUUID
+    Observer_Project_Identifier
 }
 
 tp GetKey mt (self View) () (key String)

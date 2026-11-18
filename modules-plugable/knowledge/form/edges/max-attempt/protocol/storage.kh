@@ -3,16 +3,16 @@
 tp Error in "modules/process/error/protocol/error.kh"
 tp FormMaxAttemptDataModel in "modules-plugable/knowledge/form/edges/max-attempt/protocol/data_model.kh"
 tp NumberOfVersion in "modules/computer/memory/version/protocol/version.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Form_Identifier in "modules-plugable/knowledge/form/protocol/identifier.kh"
 tp VersionOffset in "modules/computer/memory/version/protocol/version.kh"
 
 tp FormMaxAttemptStorage ab
 
 tp Save mt (self FormMaxAttemptStorage) (dm FormMaxAttemptDataModel) (n NumberOfVersion, e Error)
 
-tp Count mt (self FormMaxAttemptStorage) (t ThingUUID) (n NumberOfVersion, e Error)
+tp Count mt (self FormMaxAttemptStorage) (t Form_Identifier) (n NumberOfVersion, e Error)
 
-tp Get mt (self FormMaxAttemptStorage) (t ThingUUID, vo VersionOffset) (dm FormMaxAttemptDataModel, n NumberOfVersion, e Error)
+tp Get mt (self FormMaxAttemptStorage) (t Form_Identifier, vo VersionOffset) (dm FormMaxAttemptDataModel, n NumberOfVersion, e Error)
 
 // TODO(go-migrate):
 /*

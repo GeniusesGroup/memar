@@ -2,13 +2,13 @@
 
 tp Error in "modules/process/error/protocol/error.kh"
 tp TextDurationDataModel in "modules/knowledge/text/edges/duration/protocol/data_model.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
 
 tp TextDurationStorage ab
 
 tp Save mt (self TextDurationStorage) (dm TextDurationDataModel) (err Error)
 
-tp Get mt (self TextDurationStorage) (textID ThingUUID) (dm TextDurationDataModel, err Error)
+tp Get mt (self TextDurationStorage) (textID Text_Identifier) (dm TextDurationDataModel, err Error)
 
 // TODO(go-migrate):
 /*

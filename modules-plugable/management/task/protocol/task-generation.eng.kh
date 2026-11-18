@@ -14,7 +14,7 @@ tp Summary mt (self Observer_Task_Type) () (s String) {
 }
 
 tp Overview mt (self Observer_Task_Type) () (s String) {
-    CharacterRun_From.FromCharacterRun("The Type_Identifier of the module that owns the stored shape of a task now in force; the stamp of every task that module writes. The value is given by the realization in one place. When the module whose shape is the facts of one MemoryAddress (texts as contents of their own) is that module, the value is fec2d0e7-eb2b-4179-9f94-2b38b956849f. The old module names nothing of the new one.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("The Type_Identifier of the module that owns the stored shape of a task now in force; the stamp of every task that module writes. The value is given by the realization in one place. When the module whose shape is the facts of one thing (texts as contents of their own) is that module, the value is fec2d0e7-eb2b-4179-9f94-2b38b956849f. The old module names nothing of the new one.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Observer_Task_Type) () (s String) {
@@ -34,7 +34,7 @@ tp Summary mt (self Observer_Predecessor_Type) () (s String) {
 }
 
 tp Overview mt (self Observer_Predecessor_Type) () (s String) {
-    CharacterRun_From.FromCharacterRun("The Type_Identifier of the module that owned the shape before the current one and is EndOfLife; a task with no stamp is counted as written by the first generation. The value is given by the realization in one place. When the MemoryAddress-facts module is current, that predecessor is 6e94ed31-f133-485c-a3c0-72def253b37b.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("The Type_Identifier of the module that owned the shape before the current one and is EndOfLife; a task with no stamp is counted as written by the first generation. The value is given by the realization in one place. When the retired place-shaped facts module is current, that predecessor is 6e94ed31-f133-485c-a3c0-72def253b37b.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Observer_Predecessor_Type) () (s String) {

@@ -3,7 +3,7 @@
 tp Details in "modules/computer/type/protocol/detail.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Flow_Analysis_Snapshot in "modules/computer/compiler/protocol/flow-analysis-snapshot.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Pin_Identifier in "modules/computer/compiler/protocol/identifier.kh"
 tp Flow_Normal_Case in "modules/computer/compiler/protocol/flow-normal-case.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
@@ -15,7 +15,7 @@ tp SummaryGeneration mt (self Flow_Summary) () (generation Type)
 
 tp Snapshot mt (self Flow_Summary) () (snapshot Flow_Analysis_Snapshot)
 
-tp RegionPin mt (self Flow_Summary) () (pin MemoryAddress)
+tp RegionPin mt (self Flow_Summary) () (pin Pin_Identifier)
 
 tp FirstNormalCase mt (self Flow_Summary) () (normal Flow_Normal_Case, present Boolean, err Error)
 

@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Task_Identifier in "modules/management/task/protocol/identifier.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+
+tp Questions_Answer_Brief ab {
+}
+
+tp TextOf mt (self Questions_Answer_Brief) (task Task_Identifier) (brief Text, err Error)
+
+tp Print mt (self Questions_Answer_Brief) (task Task_Identifier) (err Error)
+
+tp QuestionsProblem mt (self Questions_Answer_Brief) (task Task_Identifier) (reason Text, err Error)

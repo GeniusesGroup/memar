@@ -1,0 +1,13 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
+tp Likeness_Counts in "modules-plugable/knowledge/text/likeness/protocol/likeness-counts.kh"
+tp Labels in "modules/knowledge/label/protocol/labels.kh"
+
+tp Likeness_Sign_Request ab
+
+tp GetScope mt (self Likeness_Sign_Request) () (scope Text_Identifier)
+
+tp GetLabels mt (self Likeness_Sign_Request) () (labels Labels)
+
+tp GetCounts mt (self Likeness_Sign_Request) () (counts Likeness_Counts)

@@ -2,11 +2,11 @@
 
 tp Details in "modules/computer/type/protocol/detail.kh"
 tp Flow_Provision_Association in "modules/computer/binding/protocol/flow-provision-association.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Pin_Identifier in "modules/computer/compiler/protocol/identifier.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 
 tp Flow_Provision_Admission ab { Details }
 
-tp Admit mt (self Flow_Provision_Admission) (association Flow_Provision_Association, actualDeclaration MemoryAddress, actualExecutable MemoryAddress, actualSnapshot MemoryAddress, expectedGeneration Type) (admitted Boolean, err Error)
+tp Admit mt (self Flow_Provision_Admission) (association Flow_Provision_Association, actualDeclaration Pin_Identifier, actualExecutable Pin_Identifier, actualSnapshot Pin_Identifier, expectedGeneration Type) (admitted Boolean, err Error)

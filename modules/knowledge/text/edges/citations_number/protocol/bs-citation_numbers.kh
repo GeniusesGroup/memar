@@ -1,11 +1,11 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
 tp U64 in "modules/math/integer/unsigned-64.kh"
 
 tp BS_TextCitationNumber_Request ab
 
-tp GetTextID mt (self BS_TextCitationNumber_Request) () (id ThingUUID)
+tp GetTextID mt (self BS_TextCitationNumber_Request) () (id Text_Identifier)
 
 tp BS_TextCitationNumber_Response ab
 

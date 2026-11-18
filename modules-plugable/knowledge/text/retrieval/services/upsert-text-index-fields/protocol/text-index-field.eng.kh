@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Index_Field in "modules-plugable/knowledge/text/retrieval/services/upsert-text-index-fields/protocol/text-index-field.kh"
+
+tp Domain mt (self Text_Index_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Index_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("One typed filter field on a text-index entry")(s, VoidError)
+}
+
+tp Overview mt (self Text_Index_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("Tentative. A filterable pair on a subject-and-text index entry: the key is a Type_Identifier (Memar Type identity, never an English name); the value is a Thing_Identifier. Widen when non-address typed values need the type-registry bind. Text does not interpret what the Type_Identifier means; domains mint keys and supply values.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Index_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Index_Field) () (s String) {
+    CharacterRun_From.FromCharacterRun("Research task 20261103-T100549Z-14796; align with Graph typed fields; not final.")(s, VoidError)
+}

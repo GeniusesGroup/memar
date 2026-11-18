@@ -3,19 +3,20 @@
 tp BookkeepingDataModel in "modules/economics/account/edges/bookkeeping/protocol/data_model.kh"
 tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Account_Identifier in "modules/economics/account/protocol/identifier.kh"
+tp Transaction_Identifier in "modules/economics/transaction/protocol/identifier.kh"
 
 tp BookkeepingStorage ab
 
 tp Save mt (self BookkeepingStorage) (dm BookkeepingDataModel) (err Error)
 
-tp Lock mt (self BookkeepingStorage) (accountID ThingUUID) (dm BookkeepingDataModel, err Error)
+tp Lock mt (self BookkeepingStorage) (accountID Account_Identifier) (dm BookkeepingDataModel, err Error)
 
 tp Unlock mt (self BookkeepingStorage) (dm BookkeepingDataModel) (err Error)
 
-tp GetByTransactionIndex mt (self BookkeepingStorage) (accountID ThingUUID, ti Container_ElementIndex) (dm BookkeepingDataModel, err Error)
+tp GetByTransactionIndex mt (self BookkeepingStorage) (accountID Account_Identifier, ti Container_ElementIndex) (dm BookkeepingDataModel, err Error)
 
-tp GetByTransactionID mt (self BookkeepingStorage) (accountID ThingUUID, tID ThingUUID) (dm BookkeepingDataModel, err Error)
+tp GetByTransactionID mt (self BookkeepingStorage) (accountID Account_Identifier, tID Transaction_Identifier) (dm BookkeepingDataModel, err Error)
 
 // TODO(go-migrate):
 /*

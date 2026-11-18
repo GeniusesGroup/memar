@@ -3,10 +3,10 @@
 tp U64 in "modules/math/integer/unsigned-64.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Task_Identifier in "modules/management/task/protocol/identifier.kh"
 
 tp Task_Conversion ab
 
-tp ConvertTask mt (self Task_Conversion) (task ThingUUID) (converted Boolean, err Error)
+tp ConvertTask mt (self Task_Conversion) (task Task_Identifier) (converted Boolean, err Error)
 
 tp ConvertTasks mt (self Task_Conversion) (limit U64) (converted U64, left U64, refused U64, err Error)

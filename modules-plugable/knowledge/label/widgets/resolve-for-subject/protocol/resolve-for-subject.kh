@@ -1,0 +1,18 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Graph_Store in "modules-plugable/computer/memory/store/graph/protocol/graph-store.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+tp Label_Accepted in "modules-plugable/knowledge/label/services/accepted-labels/protocol/accepted-labels.kh"
+tp Label_Resolve in "modules/knowledge/label/widgets/resolve-label/protocol/resolve-label.kh"
+tp Thing_Identifier in "modules/identity/thing/protocol/identifier.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp Widget in "modules/computer/ui/widget/protocol/widget.kh"
+
+tp Label_Resolve_ForSubject ab {
+    Widget
+    Label_Accepted
+    Label_Resolve
+}
+
+tp Check mt (self Label_Resolve_ForSubject) (graph Graph_Store, subject Thing_Identifier, text Text) (label Label, err Error)

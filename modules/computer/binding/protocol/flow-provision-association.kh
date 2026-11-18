@@ -1,18 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Details in "modules/computer/type/protocol/detail.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Pin_Identifier in "modules/computer/compiler/protocol/identifier.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 tp Flow_Summary in "modules/computer/compiler/protocol/flow-summary.kh"
 tp Flow_Provision_Evidence in "modules/computer/binding/protocol/flow-provision-evidence.kh"
 
 tp Flow_Provision_Association ab { Details }
 
-tp DeclarationPin mt (self Flow_Provision_Association) () (pin MemoryAddress)
+tp DeclarationPin mt (self Flow_Provision_Association) () (pin Pin_Identifier)
 
-tp ExecutablePin mt (self Flow_Provision_Association) () (pin MemoryAddress)
+tp ExecutablePin mt (self Flow_Provision_Association) () (pin Pin_Identifier)
 
-tp SnapshotPin mt (self Flow_Provision_Association) () (pin MemoryAddress)
+tp SnapshotPin mt (self Flow_Provision_Association) () (pin Pin_Identifier)
 
 tp Generation mt (self Flow_Provision_Association) () (generation Type)
 

@@ -3,16 +3,16 @@
 tp Error in "modules/process/error/protocol/error.kh"
 tp ItemSeatDataModel in "modules-plugable/economics/service/edges/item-seat/protocol/data_model.kh"
 tp NumberOfVersion in "modules/computer/memory/version/protocol/version.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Invoice_Identifier in "modules/economics/invoice/protocol/identifier.kh"
 tp VersionOffset in "modules/computer/memory/version/protocol/version.kh"
 
 tp ItemSeatStorage ab
 
 tp Save mt (self ItemSeatStorage) (dm ItemSeatDataModel) (nv NumberOfVersion, err Error)
 
-tp Count mt (self ItemSeatStorage) (invoiceID ThingUUID) (nv NumberOfVersion, err Error)
+tp Count mt (self ItemSeatStorage) (invoiceID Invoice_Identifier) (nv NumberOfVersion, err Error)
 
-tp Get mt (self ItemSeatStorage) (invoiceID ThingUUID, vo VersionOffset) (dm ItemSeatDataModel, nv NumberOfVersion, err Error)
+tp Get mt (self ItemSeatStorage) (invoiceID Invoice_Identifier, vo VersionOffset) (dm ItemSeatDataModel, nv NumberOfVersion, err Error)
 
 // TODO(go-migrate):
 /*

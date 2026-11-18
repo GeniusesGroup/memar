@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp EventTarget in "modules/process/event/protocol/event-target.kh"
+tp Service in "modules/process/service/protocol/service.kh"
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
+tp Likeness_Signature in "modules-plugable/knowledge/text/likeness/protocol/likeness-signature.kh"
+tp Likeness_Entries in "modules-plugable/knowledge/text/likeness/services/keep-likeness/protocol/entries.kh"
+
+// Likeness_Keep exposes EventTarget on its request face and its response face.
+// After Keep / Forget / ForgetText, the response face dispatches this service's own
+// response (scope, and whether thresholds for renewal or compaction are met as fields
+// of that response), not parallel Likeness_RenewalDue / Likeness_CompactionDue types.
+// Modularity → Event as a Module Capability.
+tp Likeness_Keep ab {
+	Service
+}
+
+tp GetRequestEvents mt (self Likeness_Keep) () (target EventTarget)
+
+tp GetResponseEvents mt (self Likeness_Keep) () (target EventTarget)
+
+tp Keep mt (self Likeness_Keep) (scope Text_Identifier, holder Text_Identifier, id Text_Identifier, signature Likeness_Signature, entries Likeness_Entries) (err Error)
+
+tp Forget mt (self Likeness_Keep) (scope Text_Identifier, holder Text_Identifier, id Text_Identifier, entries Likeness_Entries) (err Error)
+
+tp ForgetText mt (self Likeness_Keep) (scope Text_Identifier, id Text_Identifier, entries Likeness_Entries) (err Error)

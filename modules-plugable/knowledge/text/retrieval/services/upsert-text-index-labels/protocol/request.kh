@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
+tp Labels in "modules/knowledge/label/protocol/labels.kh"
+tp Text_Index_Label_Postings in "modules-plugable/knowledge/text/retrieval/services/upsert-text-index-labels/protocol/label-postings.kh"
+
+tp Text_Index_Upsert_Labels_Request ab
+
+tp GetScope mt (self Text_Index_Upsert_Labels_Request) () (scope Text_Identifier)
+
+tp GetHolder mt (self Text_Index_Upsert_Labels_Request) () (holder Text_Identifier)
+
+tp GetTextId mt (self Text_Index_Upsert_Labels_Request) () (id Text_Identifier)
+
+tp GetLabels mt (self Text_Index_Upsert_Labels_Request) () (labels Labels)
+
+tp GetPostings mt (self Text_Index_Upsert_Labels_Request) () (postings Text_Index_Label_Postings)

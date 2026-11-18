@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Field_Pred in "modules-plugable/knowledge/text/retrieval/protocol/text-field-pred.kh"
+
+tp Domain mt (self Text_Field_Pred) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Field_Pred) () (s String) {
+    CharacterRun_From.FromCharacterRun("In-index predicate on one Type_Identifier field")(s, VoidError)
+}
+
+tp Overview mt (self Text_Field_Pred) () (s String) {
+    CharacterRun_From.FromCharacterRun("Tentative v1. Matches by Thing_Identifier set-membership under GetKey (Exclude false = intersect non-empty; Exclude true = disjoint). Not Graph's type-general field ops; those remain Left open. Not shipped to Task or Status for interpretation.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Field_Pred) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Field_Pred) () (s String) {
+    CharacterRun_From.FromCharacterRun("Research task 20261103-T100549Z-14796; Graph typed-field parallel; not final.")(s, VoidError)
+}

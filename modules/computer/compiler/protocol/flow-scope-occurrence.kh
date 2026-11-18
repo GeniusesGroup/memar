@@ -2,14 +2,14 @@
 
 tp Details in "modules/computer/type/protocol/detail.kh"
 tp Flow_Analysis_Snapshot in "modules/computer/compiler/protocol/flow-analysis-snapshot.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Pin_Identifier in "modules/computer/compiler/protocol/identifier.kh"
 tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
 
 tp Flow_Scope_Occurrence ab { Details }
 
 tp Snapshot mt (self Flow_Scope_Occurrence) () (snapshot Flow_Analysis_Snapshot)
 
-tp RegionPin mt (self Flow_Scope_Occurrence) () (pin MemoryAddress)
+tp RegionPin mt (self Flow_Scope_Occurrence) () (pin Pin_Identifier)
 
 tp Invocation mt (self Flow_Scope_Occurrence) () (index Unsigned)
 

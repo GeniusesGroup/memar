@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
+tp Text_Index_Fields in "modules-plugable/knowledge/text/retrieval/services/upsert-text-index-fields/protocol/text-index-fields.kh"
+tp Text_Index_Field_Values in "modules-plugable/knowledge/text/retrieval/services/upsert-text-index-fields/protocol/field-values.kh"
+
+tp Text_Index_Upsert_Fields_Request ab
+
+tp GetScope mt (self Text_Index_Upsert_Fields_Request) () (scope Text_Identifier)
+
+tp GetHolder mt (self Text_Index_Upsert_Fields_Request) () (holder Text_Identifier)
+
+tp GetTextId mt (self Text_Index_Upsert_Fields_Request) () (id Text_Identifier)
+
+tp GetFields mt (self Text_Index_Upsert_Fields_Request) () (fields Text_Index_Fields)
+
+tp GetFieldValues mt (self Text_Index_Upsert_Fields_Request) () (values Text_Index_Field_Values)

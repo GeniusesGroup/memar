@@ -7,7 +7,7 @@ tp Error in "modules/process/error/protocol/error.kh"
 tp NumberOfVersion in "modules/computer/memory/version/protocol/version.kh"
 tp QuiddityURI in "modules/identity/uri/ui/quiddity-uri/protocol/dt-uri.kh"
 tp QuiddityURIDataModel in "modules/identity/uri/ui/quiddity-uri/protocol/data_model.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp Thing_Identifier in "modules/identity/thing/protocol/identifier.kh"
 
 tp QuiddityURIStorage ab
 
@@ -15,7 +15,7 @@ tp Save mt (self QuiddityURIStorage) (dm QuiddityURIDataModel) (err Error)
 
 tp Get mt (self QuiddityURIStorage) (uri QuiddityURI) (dm QuiddityURIDataModel, err Error)
 
-tp FindByQuiddity mt (self QuiddityURIStorage) (quiddityID ThingUUID, offset Container_Offset, limit Container_Limit) (uris Array_Dynamic, nv NumberOfVersion, err Error)
+tp FindByQuiddity mt (self QuiddityURIStorage) (quiddityID Thing_Identifier, offset Container_Offset, limit Container_Limit) (uris Array_Dynamic, nv NumberOfVersion, err Error)
 
 // TODO(go-migrate):
 /*
