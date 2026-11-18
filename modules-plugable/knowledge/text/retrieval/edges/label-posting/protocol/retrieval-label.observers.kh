@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Label in "modules/knowledge/label/protocol/label.kh"
+
+tp Observer_Retrieval_Label ab
+
+tp GetRetrievalLabel mt (self Observer_Retrieval_Label) () (label Label)

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Service_SeatID in "modules-plugable/economics/service/edges/item-seat/protocol/dt-seat_id.kh"
+
+tp Observer_Seat ab
+
+tp GetSeat mt (self Observer_Seat) () (i Service_SeatID)

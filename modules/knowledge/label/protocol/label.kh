@@ -2,12 +2,12 @@
 
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Observer_Label_Identifier in "modules/knowledge/label/protocol/identifier.observers.kh"
-tp Field_Title in "modules-plugable/uri/title/protocol/title.kh"
+tp Observer_Title in "modules-plugable/uri/title/protocol/title.observers.kh"
 tp Type_Details in "modules/computer/type/protocol/type.kh"
 
 tp Label ab {
 	Container_Element
 	Type_Details
-	Field_Title
+	Observer_Title
 	Observer_Label_Identifier
 }

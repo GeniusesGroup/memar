@@ -1,10 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Duration in "modules/time/duration/protocol/duration.kh"
-tp Field_TimeToLive in "modules/identity/time/edges/ttl/protocol/ttl.kh"
-
+tp Observer_TimeToLive in "modules/identity/time/edges/ttl/protocol/time-to-live.observers.kh"
 tp BS_Ping_Request ab {
-	Field_TimeToLive
+	Observer_TimeToLive
 }
 
 tp Observer_RoundTripTime ab

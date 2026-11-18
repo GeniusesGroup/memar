@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp User_Identifier in "modules/identity/user/protocol/identifier.kh"
+
+tp Observer_Expert ab
+
+tp GetExpert mt (self Observer_Expert) () (u User_Identifier)

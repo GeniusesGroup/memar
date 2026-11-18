@@ -16,7 +16,7 @@ import (
 type DataModel interface {
 	user_p.Field_UserUUID
 	fcp.Field_FinancialCurrencyID
-	money_p.Field_Amount
+	money_p.Observer_Amount
 	Balance() money_p.Amount
 
 	request_p.Field_RequestID

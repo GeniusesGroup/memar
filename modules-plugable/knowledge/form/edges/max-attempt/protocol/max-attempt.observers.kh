@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp U16 in "modules/math/integer/unsigned-16.kh"
+
+tp Observer_MaxAttempt ab
+
+tp GetMaxAttempt mt (self Observer_MaxAttempt) () (a U16)

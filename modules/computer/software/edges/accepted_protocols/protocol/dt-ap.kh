@@ -14,27 +14,8 @@ tp Observer_AcceptedPhoneCall ab
 
 tp GetAcceptedPhoneCall mt (self Observer_AcceptedPhoneCall) () (b Boolean)
 
-tp Field_AcceptedProtocols ab {
+tp Accepted_Protocols ab {
 	Observer_AcceptedEmail
 	Observer_AcceptedSMS
 	Observer_AcceptedPhoneCall
 }
-
-// TODO(go-migrate):
-/*
-package domain_p
-
-type Field_AcceptedProtocols interface {
-	AcceptedProtocols() AcceptedProtocols
-}
-
-// AcceptedProtocols is user domain accepted protocols
-type AcceptedProtocols uint8
-
-const AcceptedProtocols_Unset AcceptedProtocols = iota
-const (
-	AcceptedProtocols_Email AcceptedProtocols = (1 << iota)
-	AcceptedProtocols_SMS
-	AcceptedProtocols_PhoneCall
-)
-*/

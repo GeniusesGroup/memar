@@ -1,20 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
+tp Rule_Identifier in "modules/process/rule/protocol/identifier.kh"
 
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Observer_Authorized_By ab
 
-tp Field_AuthorizedBy ab
-
-tp AuthorizedBy mt (self Field_AuthorizedBy) () (t MemoryAddress)
-
-// TODO(go-migrate):
-/*
-package authorization_p
-
-import (
-	rule_p "org/modules/process/rule/protocol"
-)
-
-type Field_AuthorizedBy interface {
-	AuthorizedBy() rule_p.UUID
-}
-*/
+tp GetAuthorizedBy mt (self Observer_Authorized_By) () (t Rule_Identifier)

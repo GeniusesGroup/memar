@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Voucher_Each in "modules-plugable/economics/voucher/protocol/dt-each.kh"
+
+tp Observer_Each ab
+
+tp GetEach mt (self Observer_Each) () (e Voucher_Each)
+
+tp IsNull mt (self Observer_Each) () (b Boolean)

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Service_Seat_Type in "modules-plugable/economics/service/edges/seat/protocol/dt-type.kh"
+
+tp Observer_Service_Seat_Type ab
+
+tp GetServiceSeatType mt (self Observer_Service_Seat_Type) () (t Service_Seat_Type)

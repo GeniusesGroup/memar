@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Criterion_Type in "modules/identity/thing/edges/criterion/protocol/dt-type.kh"
+
+tp Observer_Criterion_Type ab
+
+tp GetCriterionType mt (self Observer_Criterion_Type) () (t Criterion_Type)

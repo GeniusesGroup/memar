@@ -1,17 +1,17 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Observer_Account_Identifier in "modules/economics/account/protocol/identifier.observers.kh"
-tp Field_Balance in "modules/economics/account/edges/bookkeeping/protocol/dt-balance.kh"
+tp Observer_Balance in "modules/economics/account/edges/bookkeeping/protocol/balance.observers.kh"
 tp Observer_Transaction_Identifier in "modules/economics/transaction/protocol/identifier.observers.kh"
-tp Field_TransactionIndex in "modules/economics/account/edges/bookkeeping/protocol/dt-transaction-index.kh"
+tp Observer_TransactionIndex in "modules/economics/account/edges/bookkeeping/protocol/transaction-index.observers.kh"
 tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp BookkeepingDataModel ab {
 	Observer_Account_Identifier
-	Field_Balance
+	Observer_Balance
 	Observer_Transaction_Identifier
-	Field_TransactionIndex
+	Observer_TransactionIndex
 	Observer_Request_Identifier
 	Observer_Time_Request
 }
@@ -34,8 +34,8 @@ type DataModel interface {
 	// TODO::: Add bookkeeping edge type
 	ft_p.Field_FinancialTransactionUUID
 
-	Field_TransactionIndex
-	Field_Balance
+	Observer_TransactionIndex
+	Observer_Balance
 
 	request_p.Field_RequestID
 	audit_time_p.Field_Request

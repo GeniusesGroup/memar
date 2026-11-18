@@ -2,14 +2,14 @@
 
 tp Observer_Organization_Identifier in "modules/identity/organization/protocol/identifier.observers.kh"
 tp Observer_User_Identifier in "modules/identity/user/protocol/identifier.observers.kh"
-tp Field_Username in "modules-plugable/uri/username/ui/protocol/dt-username.kh"
+tp Observer_Username in "modules-plugable/uri/username/ui/protocol/username.observers.kh"
 tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp UsernameDataModel ab {
 	Observer_User_Identifier
 	Observer_Organization_Identifier
-	Field_Username
+	Observer_Username
 	Observer_Request_Identifier
 	Observer_Time_Request
 }
@@ -31,7 +31,7 @@ import (
 type DataModel interface {
 	user_p.Observer_User_Identifier
 	org_p.Field_OrganizationID
-	Field_Username
+	Observer_Username
 
 	request_p.Field_RequestID
 	audit_time_p.Field_Request

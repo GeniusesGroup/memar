@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Title in "modules-plugable/uri/title/protocol/title.kh"
+
+tp Observer_Title ab
+
+tp GetTitle mt (self Observer_Title) () (t Title)

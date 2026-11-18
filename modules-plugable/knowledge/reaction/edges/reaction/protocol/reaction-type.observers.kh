@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Character in "modules/computer/codec/character/protocol/character.kh"
+
+tp Observer_ReactionType ab
+
+tp GetReactionType mt (self Observer_ReactionType) () (c Character)

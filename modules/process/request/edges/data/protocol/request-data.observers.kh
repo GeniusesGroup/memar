@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp RequestData in "modules/process/request/edges/data/protocol/dt-request-data.kh"
+
+tp Observer_RequestData ab
+
+tp GetRequestData mt (self Observer_RequestData) () (d RequestData)

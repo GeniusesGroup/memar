@@ -1,12 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_TextID in "modules/knowledge/text/protocol/dt-uuid.kh"
-tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp Observer_Text_Identifier in "modules/knowledge/text/protocol/identifier.observers.kh"
+tp Observer_User_Identifier in "modules/identity/user/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp Service_Register_Request ab {
-	Field_UserUUID
-	Field_TextID
+	Observer_User_Identifier
+	Observer_Text_Identifier
 	Observer_Time_Request
 }
 
@@ -22,13 +22,13 @@ import (
 )
 
 type Service_Register_Request interface {
-	user_p.Field_UserUUID
+	user_p.Observer_User_Identifier
 	text_p.Field_TextUUID
 	// We use `username` label and request can't indicate it.
 	// label_p.Field_LabelID
 
 	// Edge additional data
-	// e.g. Field_RelationPriority
+	// e.g. Observer_Relation_Rank — modules-plugable/identity/thing/priority/protocol/relation-rank-field.kh
 	// e.g. PerMyriad() per.Myriad // 0 means unset e.g. equal to other tasks in the project
 	// e.g. Field_RelationDesirability
 

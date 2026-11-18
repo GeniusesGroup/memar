@@ -1,7 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
-
 tp Label in "modules/knowledge/label/protocol/label.kh"
 
-tp Field_Label ab
+tp Observer_Label ab
 
-tp GetLabel mt (self Field_Label) () (label Label)
+tp GetLabel mt (self Observer_Label) () (label Label)

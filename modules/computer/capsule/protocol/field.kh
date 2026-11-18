@@ -1,12 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Authorization in "modules/computer/capsule/protocol/authorization.kh"
-tp Field_Title in "modules-plugable/uri/title/protocol/title.kh"
+tp Observer_Title in "modules-plugable/uri/title/protocol/title.observers.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 
 tp Capsule_Field ab {
 	Type
-	Field_Title
+	Observer_Title
 	Authorization
 }
 

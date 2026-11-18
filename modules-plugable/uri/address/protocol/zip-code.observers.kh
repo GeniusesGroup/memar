@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp U32 in "modules/math/integer/unsigned-32.kh"
+
+tp Observer_ZipCode ab
+
+tp GetZipCode mt (self Observer_ZipCode) () (z U32)

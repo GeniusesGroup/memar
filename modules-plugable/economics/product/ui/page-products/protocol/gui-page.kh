@@ -24,7 +24,7 @@ type GUI_Page_Conditions interface {
 	OrgType() // Privilege, Official, county, ...
 	Brand()
 	label_p.Field_LabelsUUID
-	text_p.Field_Text
+	text_p.Observer_Text
 	estate_p.Field_EstateID
 	staff_p.Field_StaffID
 	group_p.Field_GroupID

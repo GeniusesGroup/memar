@@ -11,7 +11,7 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	graph_p.Field_Relation_Rank // rank field on a label edge; Thing Priority owns Priority_Rank when that capability is present
+	graph_p.Observer_Relation_Rank // rank field on a label edge; Thing Priority owns Priority_Rank when that capability is present
 	// To indicate SecondaryNode UUID belongs to which domain
 	module_p.Field_ModuleUUID
 }

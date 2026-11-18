@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp String in "modules/computer/codec/string/protocol/string.kh"
+
+tp Observer_ITU_VerificationToken ab
+
+tp GetITUVerificationToken mt (self Observer_ITU_VerificationToken) () (t String)

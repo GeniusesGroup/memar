@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Number in "modules-plugable/uri/number-itu/protocol/dt-number.kh"
+
+tp Observer_Number ab
+
+tp GetNumber mt (self Observer_Number) () (n Number)

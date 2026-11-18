@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Thing_Identifier in "modules/identity/thing/protocol/identifier.kh"
+
+tp Observer_Contract_Terms_Value ab
+
+tp GetContractTermsValue mt (self Observer_Contract_Terms_Value) () (t Thing_Identifier)

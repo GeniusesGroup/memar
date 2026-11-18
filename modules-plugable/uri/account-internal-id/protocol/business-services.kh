@@ -1,15 +1,14 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_AccountID in "modules/economics/account/protocol/dt-uuid.kh"
-tp Field_InternalID in "modules-plugable/uri/account-internal-id/protocol/data_model.kh"
-
+tp Observer_Account_Identifier in "modules/economics/account/protocol/identifier.observers.kh"
+tp Observer_Staff_InternalID in "modules-plugable/uri/staff-id/protocol/staff-internal-id.observers.kh"
 tp BS_Register_Request ab {
-	Field_AccountID
-	Field_InternalID
+	Observer_Account_Identifier
+	Observer_Staff_InternalID
 }
 
 tp BS_Get_Request ab {
-	Field_AccountID
+	Observer_Account_Identifier
 }
 
 // TODO(go-migrate):
@@ -22,14 +21,14 @@ import (
 
 type (
 	BS_Register_Request interface {
-		account_p.Field_AccountID
+		account_p.Observer_Account_Identifier
 		ID() ID
 	}
 )
 
 type (
 	BS_Get_Request interface {
-		account_p.Field_AccountID
+		account_p.Observer_Account_Identifier
 	}
 	BS_Get_Response = DataModel
 )

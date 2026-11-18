@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Type_Identifier in "modules/computer/type/protocol/identifier.kh"
+
+tp Observer_Predecessor_Type ab
+
+tp GetPredecessorType mt (self Observer_Predecessor_Type) () (u Type_Identifier)

@@ -3,45 +3,44 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Field_TaskTypeUUID in "modules-plugable/management/task/protocol/task-generation.kh"
-tp Field_PredecessorTypeUUID in "modules-plugable/management/task/protocol/task-generation.kh"
-
-tp Domain mt (self Field_TaskTypeUUID) () (s String) {
+tp Observer_Task_Type in "modules-plugable/management/task/protocol/task-type.observers.kh"
+tp Observer_Predecessor_Type in "modules-plugable/management/task/protocol/predecessor-type.observers.kh"
+tp Domain mt (self Observer_Task_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
 }
 
-tp Summary mt (self Field_TaskTypeUUID) () (s String) {
+tp Summary mt (self Observer_Task_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("The identity of the current task module")(s, VoidError)
 }
 
-tp Overview mt (self Field_TaskTypeUUID) () (s String) {
-    CharacterRun_From.FromCharacterRun("The Type_UUID of the module that owns the shape a task is written in today; the stamp of every task it writes. Khayyam has no literal for a Type_UUID, so the value is given by the realization, in one place.")(s, VoidError)
+tp Overview mt (self Observer_Task_Type) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Type_Identifier of the module that owns the stored shape of a task now in force; the stamp of every task that module writes. The value is given by the realization in one place. When the module whose shape is the facts of one MemoryAddress (texts as contents of their own) is that module, the value is fec2d0e7-eb2b-4179-9f94-2b38b956849f. The old module names nothing of the new one.")(s, VoidError)
 }
 
-tp UserActionNote mt (self Field_TaskTypeUUID) () (s String) {
+tp UserActionNote mt (self Observer_Task_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }
 
-tp DevActionNote mt (self Field_TaskTypeUUID) () (s String) {
+tp DevActionNote mt (self Observer_Task_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }
 
-tp Domain mt (self Field_PredecessorTypeUUID) () (s String) {
+tp Domain mt (self Observer_Predecessor_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
 }
 
-tp Summary mt (self Field_PredecessorTypeUUID) () (s String) {
+tp Summary mt (self Observer_Predecessor_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("The identity of the generation before the current task module")(s, VoidError)
 }
 
-tp Overview mt (self Field_PredecessorTypeUUID) () (s String) {
-    CharacterRun_From.FromCharacterRun("The Type_UUID of the module that owned the shape of a task before the current one, the module that is EndOfLife; a task with no stamp is counted as written by it. The value is given by the realization, in one place.")(s, VoidError)
+tp Overview mt (self Observer_Predecessor_Type) () (s String) {
+    CharacterRun_From.FromCharacterRun("The Type_Identifier of the module that owned the shape before the current one and is EndOfLife; a task with no stamp is counted as written by the first generation. The value is given by the realization in one place. When the MemoryAddress-facts module is current, that predecessor is 6e94ed31-f133-485c-a3c0-72def253b37b.")(s, VoidError)
 }
 
-tp UserActionNote mt (self Field_PredecessorTypeUUID) () (s String) {
+tp UserActionNote mt (self Observer_Predecessor_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }
 
-tp DevActionNote mt (self Field_PredecessorTypeUUID) () (s String) {
+tp DevActionNote mt (self Observer_Predecessor_Type) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }

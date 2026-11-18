@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Text_Identifier in "modules/knowledge/text/protocol/identifier.kh"
+
+tp Observer_Opinion ab
+
+tp GetOpinion mt (self Observer_Opinion) () (t Text_Identifier)

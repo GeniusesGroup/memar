@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Voucher_InvoiceType in "modules-plugable/economics/voucher/protocol/dt-invoice-type.kh"
+
+tp Observer_InvoiceType ab
+
+tp GetInvoiceType mt (self Observer_InvoiceType) () (t Voucher_InvoiceType)

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Username in "modules-plugable/uri/username/ui/protocol/dt-username.kh"
+
+tp Observer_Username ab
+
+tp GetUsername mt (self Observer_Username) () (u Username)

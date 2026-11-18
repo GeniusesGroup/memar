@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp GroupPolicy in "modules-plugable/management/authorization/protocol/dt-policy.kh"
+
+tp Observer_GroupPolicy ab
+
+tp GetGroupPolicy mt (self Observer_GroupPolicy) () (p GroupPolicy)

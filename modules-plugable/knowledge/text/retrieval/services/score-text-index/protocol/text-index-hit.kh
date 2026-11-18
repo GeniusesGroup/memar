@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Text_Holder in "modules/knowledge/text/protocol/holder.observers.kh"
+tp Observer_Text_Identifier in "modules/knowledge/text/protocol/identifier.observers.kh"
+tp Text_Index_Score in "modules-plugable/knowledge/text/retrieval/services/score-text-index/protocol/text-index-score.kh"
+
+tp Text_Index_Hit ab {
+	Observer_Text_Holder
+	Observer_Text_Identifier
+	Text_Index_Score
+}

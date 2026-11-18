@@ -1,7 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_AuthorizedBy in "modules/process/rule/edges/authorization/protocol/dt-authorized-by.kh"
-
+tp Observer_Authorized_By in "modules/process/rule/edges/authorization/protocol/authorized-by.observers.kh"
 // TODO(go-migrate):
 /*
 package authorized_p
@@ -10,7 +9,7 @@ import (
 	rule_p "org/modules/process/rule/protocol"
 )
 
-type Field_AuthorizedBy interface {
+type Observer_Authorized_By interface {
 	AuthorizedBy() rule_p.UUID
 }
 */

@@ -1,0 +1,6 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp Label_Identifier in "modules/knowledge/label/protocol/identifier.kh"
+
+tp Observer_Contract_Terms_Label ab
+
+tp GetContractTermsLabel mt (self Observer_Contract_Terms_Label) () (t Label_Identifier)

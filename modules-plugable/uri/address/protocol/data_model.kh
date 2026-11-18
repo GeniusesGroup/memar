@@ -1,111 +1,54 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp String in "modules/computer/codec/string/protocol/string.kh"
-tp U32 in "modules/math/integer/unsigned-32.kh"
+tp Observer_ZipCode in "modules-plugable/uri/address/protocol/zip-code.observers.kh"
 
-tp Field_Continent ab
+tp Observer_Postal in "modules-plugable/uri/address/protocol/postal.observers.kh"
 
-tp Continent mt (self Field_Continent) () (c String)
+tp Observer_Block in "modules-plugable/uri/address/protocol/block.observers.kh"
 
-tp Field_Country ab
+tp Observer_Building in "modules-plugable/uri/address/protocol/building.observers.kh"
 
-tp Country mt (self Field_Country) () (c String)
+tp Observer_Alley in "modules-plugable/uri/address/protocol/alley.observers.kh"
 
-tp Field_State ab
+tp Observer_MainAlley in "modules-plugable/uri/address/protocol/main-alley.observers.kh"
 
-tp State mt (self Field_State) () (s String)
+tp Observer_Street in "modules-plugable/uri/address/protocol/street.observers.kh"
 
-tp Field_Province ab
+tp Observer_MainStreet in "modules-plugable/uri/address/protocol/main-street.observers.kh"
 
-tp Province mt (self Field_Province) () (p String)
+tp Observer_Boulevard in "modules-plugable/uri/address/protocol/boulevard.observers.kh"
 
-tp Field_Region ab
+tp Observer_District in "modules-plugable/uri/address/protocol/district.observers.kh"
 
-tp Region mt (self Field_Region) () (r String)
+tp Observer_City in "modules-plugable/uri/address/protocol/city.observers.kh"
 
-tp Field_City ab
+tp Observer_Region in "modules-plugable/uri/address/protocol/region.observers.kh"
 
-tp City mt (self Field_City) () (c String)
+tp Observer_Province in "modules-plugable/uri/address/protocol/province.observers.kh"
 
-tp Field_District ab
+tp Observer_State in "modules-plugable/uri/address/protocol/state.observers.kh"
 
-tp District mt (self Field_District) () (d String)
+tp Observer_Country in "modules-plugable/uri/address/protocol/country.observers.kh"
 
-tp Field_Boulevard ab
+tp Observer_Continent in "modules-plugable/uri/address/protocol/continent.observers.kh"
 
-tp Boulevard mt (self Field_Boulevard) () (b String)
 
-tp Field_MainStreet ab
-
-tp MainStreet mt (self Field_MainStreet) () (m String)
-
-tp Field_Street ab
-
-tp Street mt (self Field_Street) () (s String)
-
-tp Field_MainAlley ab
-
-tp MainAlley mt (self Field_MainAlley) () (m String)
-
-tp Field_Alley ab
-
-tp Alley mt (self Field_Alley) () (a String)
-
-tp Field_Building ab
-
-tp Building mt (self Field_Building) () (b String)
-
-tp Field_Block ab
-
-tp Block mt (self Field_Block) () (b String)
-
-tp Field_Postal ab
-
-tp Postal mt (self Field_Postal) () (p U32)
-
-tp Field_ZipCode ab
-
-tp ZipCode mt (self Field_ZipCode) () (z U32)
 
 tp AddressDataModel ab {
-	Field_Continent
-	Field_Country
-	Field_State
-	Field_Province
-	Field_Region
-	Field_City
-	Field_District
-	Field_Boulevard
-	Field_MainStreet
-	Field_Street
-	Field_MainAlley
-	Field_Alley
-	Field_Building
-	Field_Block
-	Field_Postal
-	Field_ZipCode
+	Observer_Continent
+	Observer_Country
+	Observer_State
+	Observer_Province
+	Observer_Region
+	Observer_City
+	Observer_District
+	Observer_Boulevard
+	Observer_MainStreet
+	Observer_Street
+	Observer_MainAlley
+	Observer_Alley
+	Observer_Building
+	Observer_Block
+	Observer_Postal
+	Observer_ZipCode
 }
-
-// TODO(go-migrate):
-/*
-package address_p
-
-type DataModel interface {
-	Continent() string
-	Country() string
-	State() string
-	Province() string
-	Region() string
-	City() string
-	District() string
-	Boulevard() string
-	MainStreet() string
-	Street() string
-	MainAlley() string
-	Alley() string
-	Building() string
-	Block() string
-	Postal() uint32
-	ZipCode() uint32
-}
-*/

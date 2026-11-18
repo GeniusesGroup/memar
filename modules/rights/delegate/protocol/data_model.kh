@@ -1,13 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_GivenDelegateUserID in "modules/rights/delegate/protocol/dt-user-given_delegate.kh"
-tp Field_GottenDelegateUserID in "modules/rights/delegate/protocol/dt-user-gotten_delegate.kh"
+tp Observer_Given_Delegate_User in "modules/rights/delegate/protocol/given-delegate-user.observers.kh"
+tp Observer_Gotten_Delegate_User in "modules/rights/delegate/protocol/gotten-delegate-user.observers.kh"
 tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp DelegateDataModel ab {
-	Field_GivenDelegateUserID
-	Field_GottenDelegateUserID
+	Observer_Given_Delegate_User
+	Observer_Gotten_Delegate_User
 	Observer_Request_Identifier
 	Observer_Time_Request
 }
@@ -25,8 +25,8 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	Field_GivenDelegateUserID
-	Field_GottenDelegateUserID
+	Observer_Given_Delegate_User
+	Observer_Gotten_Delegate_User
 	// `RoleID == Null` means "given delegate was given back"
 	rule_p.Field_RuleUUID
 
