@@ -6,15 +6,15 @@ vr VoidError in "modules/process/error/protocol/void-error.kh"
 tp Get_Latest in "modules-plugable/management/timeline/widgets/conversation/get-latest/protocol/timeline-latest.kh"
 
 tp Domain mt (self Get_Latest) () (s String) {
-    CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Conversation")(s, VoidError)
 }
 
 tp Summary mt (self Get_Latest) () (s String) {
-    CharacterRun_From.FromCharacterRun("Answers the latest placement of a kind in a timeline")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Answers the placement of a label whose number is greatest")(s, VoidError)
 }
 
 tp Overview mt (self Get_Latest) () (s String) {
-    CharacterRun_From.FromCharacterRun("Answers the latest placement of the named kind on the timeline. Found is false when none of that kind is placed. It reads the content of nothing and changes nothing. Timeline_Error_NotFound when the timeline is no node.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Answers the placement on the timeline of the named label whose number is greatest. Found is false when none of that label is placed. The greatest number is the order of placements. Which content is current is the content nothing supersedes, read along Thing's supersedes edge, and this service does not decide that. It reads the text of nothing and changes nothing. Timeline_Error_NotFound when the timeline is no node.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Get_Latest) () (s String) {
