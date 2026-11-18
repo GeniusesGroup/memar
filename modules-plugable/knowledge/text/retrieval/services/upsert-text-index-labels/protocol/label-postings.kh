@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp Labels in "modules/knowledge/label/protocol/labels.kh"
+
+tp Text_Index_Label_Postings ab
+
+tp Replace mt (self Text_Index_Label_Postings) (scope MemoryAddress, holder MemoryAddress, id MemoryAddress, labels Labels) (err Error)

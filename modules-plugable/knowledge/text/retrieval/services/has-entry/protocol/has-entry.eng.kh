@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Has_Entry in "modules-plugable/knowledge/text/retrieval/services/has-entry/protocol/has-entry.kh"
+
+tp Domain mt (self Has_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Has_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reports whether one index entry is present")(s, VoidError)
+}
+
+tp Overview mt (self Has_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads whether one entry of one holder in one scope is present.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Has_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Has_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

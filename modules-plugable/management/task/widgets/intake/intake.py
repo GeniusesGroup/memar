@@ -3,8 +3,8 @@
 
 """modules-plugable/management/task/widgets/intake/intake.py — rank related subjects then ensure-parts.
 
-Agent path: `memar intake`. It prints likeness hits (first build does not gate on them), then calls the
-ensure parts. Duplicate hunting does not page `memar task ids` or any full-scan verb.
+Agent path: `memar memar_intake`. It prints likeness hits (first build does not gate on them), then calls the
+ensure parts. Duplicate hunting does not page `memar task_ids` or any full-scan verb.
 """
 from __future__ import annotations
 from importlib import import_module
@@ -13,7 +13,7 @@ from machine.console import note
 from modules.computer.software.primitive.project_name import ProjectName
 from modules.computer.software.services.project_find import add_project_flags, project_from_args
 
-_m_rank = import_module('modules-plugable.knowledge.text.likeness.services.rank_likeness')
+_m_rank = import_module('modules-plugable.knowledge.text.likeness.services.rank-likeness.rank-likeness')
 Likeness_Rank = _m_rank.Likeness_Rank
 _m_store = import_module('modules-plugable.knowledge.text.likeness.services.likeness_memory_store')
 Likeness_Memory_Store = _m_store.Likeness_Memory_Store
@@ -31,11 +31,23 @@ def words_of(text: str) -> tuple[str, ...]:
     return tuple(word.lower() for word in text.split() if len(word) >= 2)
 
 
+class _FacetStore:
+    """Transitional widget adapter; typed filters do not belong to Likeness_Rank."""
+
+    def __init__(self, store, module, role):
+        self.store, self.module, self.role = store, module, role
+
+    def rank(self, *, scope, query, excluded, limit, min_likeness):
+        return self.store.rank(scope=scope, query=query, excluded=excluded, limit=limit,
+                               min_likeness=min_likeness, module=self.module, role=self.role)
+
+
 class Intake:
 
     def __init__(self, rank=None, ensure=None, store=None, printer=note) -> None:
         self.rank = rank or Likeness_Rank()
         self.ensure = ensure or parts_ensure
+        self.index_available = store is not None
         self.store = store if store is not None else Likeness_Memory_Store()
         self.printer = printer
 
@@ -44,15 +56,15 @@ class Intake:
         hits = self.rank.rank(
             scope=scope,
             query=query,
-            store=self.store,
+            store=_FacetStore(self.store, module, role),
             excluded=excluded,
             limit=limit,
-            module=module,
-            role=role,
             min_likeness=min_likeness,
         )
         self.printer('hits:')
-        if not hits:
+        if not self.index_available:
+            self.printer('  unavailable: no related-task index is configured; existing tasks were not searched')
+        elif not hits:
             self.printer('  (none)')
         for subject, likeness in hits:
             self.printer(f'  {subject} {likeness:.4f}')
@@ -69,13 +81,13 @@ class Intake:
         return (hits, sid, path)
 
 
-DESCRIPTION = f"""Open independent work after ranking related tasks by likeness.
+DESCRIPTION = f"""Open independent work, with related-task ranking when an index is available.
 
 Ranks within scope with module facet, optional role and min_likeness, prints the
-hits (first build does not hold the maker), then calls the ensure parts. Agents
-use this path instead of paging `memar task ids` to hunt duplicates. Continuing
-an existing task stays `memar task ensure --task-id ID`. Engine-backed indexing
-binds later; the request shape is the Memar contract now.
+hits, then calls the ensure parts. The command currently has no related-task
+index: it reports that existing tasks were not searched, and does not establish
+that work is new. Continuing an existing task uses `memar task_ensure --task-id ID`.
+Engine-backed indexing binds later; the request shape is the Memar contract now.
 
 {ProjectName.either_words().capitalize()} names the project the new task belongs to."""
 
@@ -124,4 +136,4 @@ def run(args: argparse.Namespace) -> None:
     del hits, path
     note(f'task_id: {sid}')
     for kind in ('plan', 'report'):
-        note(f'{kind}: write it with `memar conversation {_m_new.POST_COMMAND} --timeline {sid} --kind {kind} --content-file FILE`')
+        note(f'{kind}: write it with `memar conversation_post --timeline {sid} --kind {kind} --content-file FILE`')

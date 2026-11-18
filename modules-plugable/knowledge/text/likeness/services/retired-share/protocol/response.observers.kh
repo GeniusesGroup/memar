@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Get_Retired_Share_Response in "modules-plugable/knowledge/text/likeness/services/retired-share/protocol/response.kh"
+
+tp Observer_Response_Get_Retired_Share ab
+
+tp GetResponse mt (self Observer_Response_Get_Retired_Share) () (value Get_Retired_Share_Response)

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Retire_Entry in "modules-plugable/knowledge/text/retrieval/services/retire-entry/protocol/retire-entry.kh"
+
+tp Domain mt (self Retire_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Retire_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("Retires one index entry")(s, VoidError)
+}
+
+tp Overview mt (self Retire_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("Retires one entry of one holder in one scope.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Retire_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Retire_Entry) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

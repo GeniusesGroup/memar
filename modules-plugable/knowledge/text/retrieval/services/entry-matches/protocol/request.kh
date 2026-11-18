@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Text_Scope in "modules/knowledge/text/protocol/scope.observers.kh"
+tp Observer_Text_Holder in "modules/knowledge/text/protocol/holder.observers.kh"
+tp Observer_Text_Identifier in "modules/knowledge/text/protocol/identifier.observers.kh"
+tp Observer_Field_Preds in "modules-plugable/knowledge/text/retrieval/protocol/field-preds.observers.kh"
+
+tp Entry_Matches_Request ab {
+	Process_Request
+	Observer_Text_Scope
+	Observer_Text_Holder
+	Observer_Text_Identifier
+	Observer_Field_Preds
+}

@@ -1,70 +1,36 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp AccessControl in "modules-plugable/management/access-control/protocol/authorization.kh"
-tp Array_ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
 tp Container_Limit in "modules/computer/adt/container/protocol/pagination.kh"
 tp Container_Offset in "modules/computer/adt/container/protocol/pagination.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp NumberOfVersion in "modules/computer/memory/version/protocol/version.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Creation in "modules/process/time/protocol/creation.observers.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
-tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp Observer_Group_Identifier in "modules/management/group/protocol/identifier.observers.kh"
+tp Observer_User_Identifier in "modules/identity/user/protocol/identifier.observers.kh"
+tp Observer_Record_Identifier in "modules-plugable/computer/memory/store/record/protocol/identifier.observers.kh"
+tp Record_Identifiers in "modules-plugable/computer/memory/store/record/protocol/identifiers.kh"
 tp VersionOffset in "modules/computer/memory/version/protocol/version.kh"
 
-tp Field_GroupID ab
-
-tp GroupID mt (self Field_GroupID) () (t ThingUUID)
-
-tp Field_UserID ab
-
-tp UserID mt (self Field_UserID) () (u UserUUID)
-
 tp GroupUserAccessControl ab {
-	Field_GroupID
-	Field_UserID
+	Observer_Group_Identifier
+	Observer_User_Identifier
 	AccessControl
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Creation
 }
 
-tp GroupUserAccessControlStorage ab
+tp GroupUserAccessControlStorage ab {
+	Observer_Record_Identifier
+}
 
 tp Save mt (self GroupUserAccessControlStorage) (g GroupUserAccessControl) (n NumberOfVersion, e Error)
 
-tp Count mt (self GroupUserAccessControlStorage) (t ThingUUID) (n NumberOfVersion, e Error)
+tp Count mt (self GroupUserAccessControlStorage) () (n NumberOfVersion, e Error)
 
-tp Get mt (self GroupUserAccessControlStorage) (t ThingUUID, vo VersionOffset) (g GroupUserAccessControl, n NumberOfVersion, e Error)
+tp Get mt (self GroupUserAccessControlStorage) (vo VersionOffset) (g GroupUserAccessControl, n NumberOfVersion, e Error)
 
-tp Last mt (self GroupUserAccessControlStorage) (t ThingUUID) (g GroupUserAccessControl, n NumberOfVersion, e Error)
+tp Last mt (self GroupUserAccessControlStorage) () (g GroupUserAccessControl, n NumberOfVersion, e Error)
 
-tp GetIDs mt (self GroupUserAccessControlStorage) (offset Container_Offset, limit Container_Limit) (a Array_ThingUUID, n NumberOfVersion, e Error)
-
-// TODO(go-migrate):
-/*
-package org
-
-import (
-	"libgo/protocol"
-)
-
-// GroupUserAccessControl indicate the domain record data fields.
-type GroupUserAccessControl interface {
-	GroupID() [16]byte                     // group domain
-	UserID() [16]byte                      //
-	AccessControl() protocol.AccessControl //
-	Time() protocol.Time                   // Save time
-	RequestID() UserRequestUUID            // user-request domain
-}
-
-type UserRole_StorageServices interface {
-	Save(ur UserRole) (numbers uint64, err protocol.Error)
-
-	Count(id [16]byte) (numbers uint64, err protocol.Error)
-	Get(id [16]byte, versionOffset uint64) (ur UserRole, err protocol.Error)
-	Last(id [16]byte) (ur UserRole, err protocol.Error)
-
-	GetIDs(offset, limit uint64) (ids [][16]byte, numbers uint64, err protocol.Error)
-	// GetIDsByDateTime(time protocol.Time, offset, limit uint64) (ids [][16]byte, numbers uint64, err protocol.Error)
-}
-*/
+tp GetIDs mt (self GroupUserAccessControlStorage) (offset Container_Offset, limit Container_Limit) (ids Record_Identifiers, n NumberOfVersion, e Error)

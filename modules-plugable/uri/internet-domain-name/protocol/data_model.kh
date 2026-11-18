@@ -2,15 +2,15 @@
 
 tp Field_DomainName in "modules-plugable/uri/internet-domain-name/protocol/dt-name.kh"
 tp Field_DomainStatus in "modules-plugable/uri/internet-domain-name/protocol/dt-status.kh"
-tp Field_UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_User_Identifier in "modules/identity/user/protocol/identifier.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp DomainNameDataModel ab {
 	Field_DomainName
-	Field_UserUUID
+	Observer_User_Identifier
 	Field_DomainStatus
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Request
 }
 
@@ -29,7 +29,7 @@ import (
 // e.g. Iran, ... || Digital platforms e.g. Instagram, Facebook, Google, Github, Yahoo, ...
 type DataModel interface {
 	Field_Name
-	user_p.Field_UserUUID
+	user_p.Observer_User_Identifier
 	Field_Status
 
 	request_p.Field_RequestID
@@ -38,7 +38,7 @@ type DataModel interface {
 
 type DataModel1 interface {
 	Field_Name
-	user_p.Field_UserUUID
+	user_p.Observer_User_Identifier
 
 	request_p.Field_RequestID
 	audit_time_p.Field_Request

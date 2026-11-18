@@ -3,24 +3,24 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Task_Depends_Set in "modules-plugable/management/task/services/task-depends-set/task-depends-set.kh"
+tp Set_Depends_On in "modules-plugable/management/task/services/task-depends-set/protocol/task-depends-set.kh"
 
-tp Domain mt (self Task_Depends_Set) () (s String) {
+tp Domain mt (self Set_Depends_On) () (s String) {
     CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
 }
 
-tp Summary mt (self Task_Depends_Set) () (s String) {
+tp Summary mt (self Set_Depends_On) () (s String) {
     CharacterRun_From.FromCharacterRun("Sets the tasks a task cannot start without")(s, VoidError)
 }
 
-tp Overview mt (self Task_Depends_Set) () (s String) {
+tp Overview mt (self Set_Depends_On) () (s String) {
     CharacterRun_From.FromCharacterRun("Replaces what the task depends on with the given citations; empty removes them. The citations are not checked here: resolving a project, the existence of a task and the refusal of a cycle are made before this.")(s, VoidError)
 }
 
-tp UserActionNote mt (self Task_Depends_Set) () (s String) {
+tp UserActionNote mt (self Set_Depends_On) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }
 
-tp DevActionNote mt (self Task_Depends_Set) () (s String) {
+tp DevActionNote mt (self Set_Depends_On) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }

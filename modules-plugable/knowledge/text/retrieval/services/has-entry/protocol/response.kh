@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Response in "modules/process/response/protocol/response.kh"
+tp Observer_Entry_Present in "modules-plugable/knowledge/text/retrieval/services/has-entry/protocol/present.observers.kh"
+
+tp Has_Entry_Response ab {
+	Process_Response
+	Observer_Entry_Present
+}

@@ -2,18 +2,17 @@
 
 tp CharacterRun in "modules/computer/codec/character/protocol/character-run.kh"
 tp Error in "modules/process/error/protocol/error.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Text in "modules/knowledge/text/protocol/dt-text.kh"
 tp Text_Field_Preds in "modules-plugable/knowledge/text/retrieval/protocol/text-field-preds.kh"
 tp Text_Index_Hits in "modules-plugable/knowledge/text/retrieval/services/score-text-index/protocol/text-index-hits.kh"
-tp Text_Index_Store in "modules-plugable/knowledge/text/retrieval/protocol/text-index-store.kh"
-tp Text_Index_Score_Service in "modules-plugable/knowledge/text/retrieval/services/score-text-index/protocol/score-text-index.kh"
 tp Text_Holders in "modules/knowledge/text/protocol/text-holders.kh"
 tp Text_Find_Holders in "modules-plugable/knowledge/text/retrieval/widgets/text-find-holders/protocol/text-find-holders.kh"
+tp Observer_Task_Identifier in "modules/management/task/protocol/identifier.observers.kh"
 
 tp Intake ab {
 	Text_Find_Holders
+	Observer_Task_Identifier
 }
 
-tp Open mt (self Intake) (scope MemoryAddress, text Text, index Text_Index_Store, score Text_Index_Score_Service, excluded Text_Holders, limit NumberOfElement, preds Text_Field_Preds, title CharacterRun, project CharacterRun) (hits Text_Index_Hits, task MemoryAddress, err Error)
+tp Open mt (self Intake) (text Text, excluded Text_Holders, limit NumberOfElement, preds Text_Field_Preds, title CharacterRun, project CharacterRun) (hits Text_Index_Hits, err Error)

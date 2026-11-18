@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Entry_Matches in "modules-plugable/knowledge/text/retrieval/services/entry-matches/protocol/entry-matches.kh"
+
+tp Domain mt (self Entry_Matches) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Entry_Matches) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reports whether one index entry matches the predicates")(s, VoidError)
+}
+
+tp Overview mt (self Entry_Matches) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads whether one entry matches the field predicates. It writes nothing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Entry_Matches) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Entry_Matches) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

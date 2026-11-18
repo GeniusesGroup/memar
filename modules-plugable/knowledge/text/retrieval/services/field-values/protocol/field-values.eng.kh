@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Get_Field_Values in "modules-plugable/knowledge/text/retrieval/services/field-values/protocol/field-values.kh"
+
+tp Domain mt (self Get_Field_Values) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Get_Field_Values) () (s String) {
+    CharacterRun_From.FromCharacterRun("Lists the field values of one index entry")(s, VoidError)
+}
+
+tp Overview mt (self Get_Field_Values) () (s String) {
+    CharacterRun_From.FromCharacterRun("Lists the values one field of one entry holds.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Get_Field_Values) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Get_Field_Values) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

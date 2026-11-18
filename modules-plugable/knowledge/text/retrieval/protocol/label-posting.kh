@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Observer_Text_Identifier in "modules/knowledge/text/protocol/identifier.observers.kh"
+tp Observer_Text_Holder in "modules/knowledge/text/protocol/holder.observers.kh"
+
+tp Index_Label_Posting ab {
+	Container_Element
+	Observer_Text_Identifier
+	Observer_Text_Holder
+}

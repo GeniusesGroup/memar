@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Get_Renewed_Count_Response in "modules-plugable/knowledge/text/likeness/services/renewed-count/protocol/response.kh"
+
+tp Observer_Response_Get_Renewed_Count ab
+
+tp GetResponse mt (self Observer_Response_Get_Renewed_Count) () (value Get_Renewed_Count_Response)

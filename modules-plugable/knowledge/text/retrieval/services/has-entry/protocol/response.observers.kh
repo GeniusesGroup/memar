@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Has_Entry_Response in "modules-plugable/knowledge/text/retrieval/services/has-entry/protocol/response.kh"
+
+tp Observer_Response_Has_Entry ab
+
+tp GetResponse mt (self Observer_Response_Has_Entry) () (value Has_Entry_Response)

@@ -33,7 +33,7 @@ sys.dont_write_bytecode = True
 
 intake_mod = import_module('modules-plugable.management.task.widgets.intake.intake')
 store_mod = import_module('modules-plugable.knowledge.text.likeness.services.likeness_memory_store')
-rank_mod = import_module('modules-plugable.knowledge.text.likeness.services.rank_likeness')
+rank_mod = import_module('modules-plugable.knowledge.text.likeness.services.rank-likeness.rank-likeness')
 
 BUDGET_SECONDS = 30
 
@@ -48,19 +48,19 @@ class RankFacets(unittest.TestCase):
         self.rank = rank_mod.Likeness_Rank()
 
     def test_module_facet_keeps_only_that_module(self) -> None:
-        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), self.store, (), 10, module='task', role='', min_likeness=0.0)
+        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), intake_mod._FacetStore(self.store, 'task', ''), (), 10, min_likeness=0.0)
         self.assertEqual([subject for subject, _ in hits], ['a', 'b'])
 
     def test_role_narrows(self) -> None:
-        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), self.store, (), 10, module='task', role='body', min_likeness=0.0)
+        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), intake_mod._FacetStore(self.store, 'task', 'body'), (), 10, min_likeness=0.0)
         self.assertEqual([subject for subject, _ in hits], ['a'])
 
     def test_min_likeness_drops_weaker_hits(self) -> None:
-        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), self.store, (), 10, module='task', role='', min_likeness=0.9)
+        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), intake_mod._FacetStore(self.store, 'task', ''), (), 10, min_likeness=0.9)
         self.assertEqual([subject for subject, _ in hits], ['a'])
 
     def test_excluded_subjects_are_left_out(self) -> None:
-        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), self.store, ('a',), 10, module='task', role='', min_likeness=0.0)
+        hits = self.rank.rank('tasks', ('intake', 'widget', 'rank'), intake_mod._FacetStore(self.store, 'task', ''), ('a',), 10, min_likeness=0.0)
         self.assertEqual([subject for subject, _ in hits], ['b'])
 
 
@@ -110,15 +110,20 @@ class IntakeWidget(unittest.TestCase):
 
 class AgentPath(unittest.TestCase):
 
-    def test_help_documents_intake_and_not_task_ids_for_duplicates(self) -> None:
+    def test_help_names_the_unavailable_related_task_index(self) -> None:
         parser = argparse.ArgumentParser()
         verbs = parser.add_subparsers()
         intake_mod.describe(verbs)
         help_text = verbs.choices['intake'].description
         self.assertIn('min_likeness', help_text.lower().replace('-', '_'))
         self.assertIn('module', help_text.lower())
-        self.assertIn('task ids', help_text.lower())
-        self.assertIn('instead of paging', help_text.lower())
+        self.assertIn('existing tasks were not searched', help_text.lower())
+
+    def test_default_store_does_not_claim_existing_tasks_were_searched(self) -> None:
+        lines = []
+        widget = intake_mod.Intake(ensure=lambda **kw: ('made', Path('unused')), printer=lines.append)
+        widget.open(scope='tasks', text='new idea', module='task', title='New idea')
+        self.assertTrue(any('existing tasks were not searched' in line for line in lines))
 
 
 if __name__ == '__main__':

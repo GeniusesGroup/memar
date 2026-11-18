@@ -14,11 +14,11 @@ tp Summary mt (self Intake) () (s String) {
 }
 
 tp Overview mt (self Intake) () (s String) {
-    CharacterRun_From.FromCharacterRun("Tentative. Asks pluggable Text_Find_Holders (text/retrieval) with text, Type_UUID field predicates, and a composition-bound Text_Index_Score_Service; prints hits without holding the maker on the first build; then ensure-parts. Retrieval is optional — not kernel Text. No scoring method is fixed here. Agents do not page task ids to hunt duplicates.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Tentative. Asks pluggable Text_Find_Holders (text/retrieval) with text, Type_Identifier field predicates, and a composition-bound Text_Index_Score_Service; prints hits without holding the maker on the first build; then ensure-parts. Retrieval is optional — not kernel Text. No scoring method is fixed here. Agents do not page task ids to hunt duplicates.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Intake) () (s String) {
-    CharacterRun_From.FromCharacterRun("memar intake — realization binds field preds by Type_UUID; see Text_Find_Holders")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("memar memar_intake — realization binds field preds by Type_Identifier; see Text_Find_Holders")(s, VoidError)
 }
 
 tp DevActionNote mt (self Intake) () (s String) {

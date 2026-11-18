@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Observer_Entry_Present ab
+
+tp GetPresent mt (self Observer_Entry_Present) () (present Boolean)
