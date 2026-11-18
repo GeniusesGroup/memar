@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Stringer_Error_NotSupported in "modules/computer/codec/string/errors/not_supported.kh"
+
+tp Domain mt (self Stringer_Error_NotSupported) () (s String) {
+    CharacterRun_From.FromCharacterRun("Stringer")(s, VoidError)
+}
+
+tp Summary mt (self Stringer_Error_NotSupported) () (s String) {
+    CharacterRun_From.FromCharacterRun("Requested string conversion is not supported")(s, VoidError)
+}
+
+tp Overview mt (self Stringer_Error_NotSupported) () (s String) {
+    CharacterRun_From.FromCharacterRun("The realizing capsule exposes the Stringer method but does not provide the requested conversion or bound format. Return this refusal explicitly and preserve the retained value; do not return a successful empty or guessed result.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Stringer_Error_NotSupported) () (s String) {
+    CharacterRun_From.FromCharacterRun("Use a supported conversion binding or handle the refusal.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Stringer_Error_NotSupported) () (s String) {
+    CharacterRun_From.FromCharacterRun("ToString and FromString can be supported independently. Presence of the method does not establish successful conversion for a particular format, calendar or option. This refusal is distinct from a supported parser refusing malformed input.")(s, VoidError)
+}

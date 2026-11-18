@@ -4,8 +4,6 @@ import re
 from datetime import datetime, timedelta
 
 from .identifier import complete_bytes
-from .value import IdentifierValue
-from .errors.already_initialized import Identifier_Error_AlreadyInitialized
 from .errors.not_decodable import Identifier_Error_NotDecodable
 
 _EPOCH = datetime(1970, 1, 1)
@@ -43,16 +41,3 @@ def decode_readable(source):
         raise Identifier_Error_NotDecodable()
     discriminator = int(match[8], 16)
     return coordinate.to_bytes(8, "big") + discriminator.to_bytes(8, "big")
-
-
-class ReadableIdentifierValue(IdentifierValue):
-    __slots__ = ()
-
-    def to_string(self):
-        return encode_readable(self.read_value().to_bytes(16, "big"))
-
-    def from_string(self, source):
-        with self._lock:
-            if self._snapshot is not None:
-                raise Identifier_Error_AlreadyInitialized()
-            self._publish(int.from_bytes(decode_readable(source), "big"))

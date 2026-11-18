@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Stringer in "modules/computer/codec/string/protocol/stringer.kh"
+
+tp Domain mt (self Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Stringer")(s, VoidError)
+}
+
+tp Summary mt (self Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("String conversion with an explicit refusal channel")(s, VoidError)
+}
+
+tp Overview mt (self Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Composition requires the methods of Stringer_To and Stringer_From. A realizing capsule may return Stringer_Error_NotSupported consistently for either unsupported direction. A successful supported roundtrip preserves the value under the agreed conversion binding.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Handle Error before consuming the influenced string or value. Callers that require reversible persistence must select an agreed reversible profile.")(s, VoidError)
+}
+
+tp DevActionNote mt (self Stringer) () (s String) {
+    CharacterRun_From.FromCharacterRun("Method presence does not promise every format, calendar or conversion option. Format and calendar choices belong to the realizing conversion binding and its owner contracts; composing Stringer alone chooses none. A format choice does not by itself justify a parallel subject abstraction. Existing method signatures remain unchanged; any future explicit option surface is owned here rather than redeclared by each consumer.")(s, VoidError)
+}

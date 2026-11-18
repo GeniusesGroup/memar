@@ -6,11 +6,12 @@ tp Empty in "modules/computer/adt/protocol/empty.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Time in "modules/time/protocol/time.kh"
 tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
-
-tp Identifier_BinaryCodec in "modules/identity/identifier/protocol/identifier.codec.binary.kh"
+tp Codec in "modules/computer/codec/protocol/codec.kh"
+tp Stringer in "modules/computer/codec/string/protocol/stringer.kh"
 
 tp Identifier ab {
-    Identifier_BinaryCodec
+    Codec
+    Stringer
     Type
     Empty
 }

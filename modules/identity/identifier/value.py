@@ -8,16 +8,24 @@ from .errors.not_initialized import Identifier_Error_NotInitialized
 from .errors.invalid_value import Identifier_Error_InvalidValue
 from .errors.not_decodable import Identifier_Error_NotDecodable
 from .errors.buffer_failure import Identifier_Error_BufferFailure
+from .errors.value import Identifier_Error_InvalidBytes
+from .identifier import complete_bytes
+from .readable import encode_readable, decode_readable
+from modules.computer.codec.string.errors.not_supported import Stringer_Error_NotSupported
 
 MAXIMUM = (1 << 128) - 1
 
 
 class IdentifierValue:
-    __slots__ = ("_mint", "_time_view", "_reference_epoch", "_snapshot", "_lock")
+    __slots__ = ("_mint", "_time_view", "_reference_epoch", "_snapshot", "_lock", "_string_encoder", "_string_decoder")
 
-    def __init__(self, mint, time_view, reference_epoch):
+    def __init__(self, mint, time_view, reference_epoch, *, string_encoder=encode_readable, string_decoder=decode_readable):
         if not callable(mint) or not callable(time_view):
             raise Identifier_Error_InvalidGeneratorInput()
+        if any(binding is not None and not callable(binding) for binding in (string_encoder, string_decoder)):
+            raise Identifier_Error_InvalidValue()
+        self._string_encoder = string_encoder
+        self._string_decoder = string_decoder
         self._mint = mint
         self._time_view = time_view
         self._reference_epoch = reference_epoch
@@ -82,6 +90,30 @@ class IdentifierValue:
                     raise Identifier_Error_NotDecodable()
                 data.extend(part)
             self._publish(int.from_bytes(data, "big"))
+
+    def to_string(self):
+        value = self.read_value()
+        if self._string_encoder is None:
+            raise Stringer_Error_NotSupported()
+        result = self._string_encoder(value.to_bytes(16, "big"))
+        if type(result) is not str:
+            raise Identifier_Error_InvalidValue()
+        return result
+
+    def from_string(self, source):
+        with self._lock:
+            if self._snapshot is not None:
+                raise Identifier_Error_AlreadyInitialized()
+            if self._string_decoder is None:
+                raise Stringer_Error_NotSupported()
+            if type(source) is not str:
+                raise Identifier_Error_NotDecodable()
+            decoded = self._string_decoder(source)
+            try:
+                raw = complete_bytes(decoded)
+            except Identifier_Error_InvalidBytes as error:
+                raise Identifier_Error_InvalidValue() from error
+            self._publish(int.from_bytes(raw, "big"))
 
     def get_discriminator(self):
         return self.read_value() & ((1 << 64) - 1)

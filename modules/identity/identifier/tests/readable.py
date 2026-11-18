@@ -7,7 +7,10 @@ from concurrent.futures import ThreadPoolExecutor
 from threading import Barrier
 from unittest.mock import Mock
 
-from modules.identity.identifier.readable import encode_readable, decode_readable, ReadableIdentifierValue
+from modules.identity.identifier.readable import encode_readable, decode_readable
+from modules.identity.identifier.value import IdentifierValue
+from modules.computer.codec.string.errors.not_supported import Stringer_Error_NotSupported
+from modules.identity.identifier.errors.invalid_value import Identifier_Error_InvalidValue
 from modules.identity.identifier.tests.value import time_view
 from modules.identity.identifier.tests.time_coordinate import REFERENCE
 from modules.identity.identifier.errors.already_initialized import Identifier_Error_AlreadyInitialized
@@ -19,15 +22,15 @@ BUDGET_SECONDS = 30
 TIER = "unit"
 COST = {"subprocesses": 0, "writes_files": False, "clock_waits": False}
 SUBJECT = "Identifier optional reversible readable profile"
-CONTRACT = "modules/identity/identifier/protocol/identifier.codec.readable.eng.kh"
+CONTRACT = "modules/identity/identifier/protocol/identifier.eng.kh"
 ZERO = "19700101-T000000.000000000Z-0000000000000000"
 
 
 class ReadableExpectations(unittest.TestCase):
-    def make(self, view=time_view):
+    def make(self, view=time_view, **bindings):
         mint = Mock(side_effect=AssertionError("parse minted"))
         self.addCleanup(mint.assert_not_called)
-        return ReadableIdentifierValue(mint, view, REFERENCE)
+        return IdentifierValue(mint, view, REFERENCE, **bindings)
 
     def test_epoch_and_maximum_fixed_vectors(self):
         for raw, text in (
@@ -149,6 +152,95 @@ class ReadableExpectations(unittest.TestCase):
         winners = [item for item in outcomes if item is not None]
         self.assertEqual(len(winners), 1)
         self.assertEqual(value.get_discriminator(), winners[0])
+
+
+class BoundConversionExpectations(unittest.TestCase):
+    make = ReadableExpectations.make
+
+    def test_disabled_directions_preserve_state_and_precedence(self):
+        value = self.make(string_encoder=None, string_decoder=None)
+        with self.assertRaises(Identifier_Error_NotInitialized):
+            value.to_string()
+        with self.assertRaises(Stringer_Error_NotSupported):
+            value.from_string(None)
+        self.assertTrue(value.is_empty())
+        value.load(0)
+        for _ in range(2):
+            with self.assertRaises(Stringer_Error_NotSupported):
+                value.to_string()
+        with self.assertRaises(Identifier_Error_AlreadyInitialized):
+            value.from_string(None)
+        self.assertEqual(value.read_value(), 0)
+
+    def test_each_direction_can_be_supported_independently(self):
+        encode_only = self.make(string_decoder=None)
+        encode_only.load(0)
+        self.assertEqual(encode_only.to_string(), ZERO)
+        decode_only = self.make(string_encoder=None)
+        decode_only.from_string(ZERO)
+        self.assertEqual(decode_only.read_value(), 0)
+        with self.assertRaises(Stringer_Error_NotSupported):
+            decode_only.to_string()
+
+    def test_custom_pair_reuses_one_identifier_and_all_bits(self):
+        encode = Mock(side_effect=lambda raw: raw.hex())
+        decode = Mock(side_effect=lambda text: bytes.fromhex(text))
+        number = (1 << 128) - 1
+        value = self.make(string_encoder=encode, string_decoder=decode)
+        value.from_string("f" * 32)
+        self.assertEqual(value.read_value(), number)
+        self.assertEqual(value.to_string(), "f" * 32)
+        encode.assert_called_once_with(number.to_bytes(16, "big"))
+        decode.assert_called_once_with("f" * 32)
+        default = self.make()
+        default.load(number)
+        self.assertTrue(default.equivalence(value))
+
+    def test_invalid_conversion_configuration_refuses(self):
+        for name in ("string_encoder", "string_decoder"):
+            for binding in (False, 0, "", bytes(16), object()):
+                with self.subTest(name=name, binding=binding):
+                    with self.assertRaises(Identifier_Error_InvalidValue):
+                        self.make(**{name: binding})
+
+    def test_supported_decoder_rejects_nonstring_before_callback(self):
+        decode = Mock()
+        value = self.make(string_decoder=decode)
+        for source in (None, 0, True, bytes(16), bytearray(16)):
+            with self.subTest(source=source):
+                with self.assertRaises(Identifier_Error_NotDecodable):
+                    value.from_string(source)
+                self.assertTrue(value.is_empty())
+        decode.assert_not_called()
+
+    def test_bad_callback_results_never_publish_or_change_identity(self):
+        for result in (None, 0, True, "x", bytes(15), bytes(17), bytearray(16)):
+            with self.subTest(result=result):
+                decode = Mock(return_value=result)
+                value = self.make(string_decoder=decode)
+                with self.assertRaises(Identifier_Error_InvalidValue):
+                    value.from_string("valid for this binding")
+                self.assertTrue(value.is_empty())
+        for result in (None, 0, True, bytes(16), bytearray(16)):
+            with self.subTest(result=result):
+                value = self.make(string_encoder=Mock(return_value=result))
+                value.load(5)
+                with self.assertRaises(Identifier_Error_InvalidValue):
+                    value.to_string()
+                self.assertEqual(value.read_value(), 5)
+
+    def test_callback_refusals_propagate_and_keep_retained_state(self):
+        refusal = Stringer_Error_NotSupported()
+        value = self.make(string_encoder=Mock(side_effect=refusal), string_decoder=Mock(side_effect=refusal))
+        with self.assertRaises(Stringer_Error_NotSupported) as caught:
+            value.from_string("x")
+        self.assertIs(caught.exception, refusal)
+        self.assertTrue(value.is_empty())
+        value.load(3)
+        with self.assertRaises(Stringer_Error_NotSupported) as caught:
+            value.to_string()
+        self.assertIs(caught.exception, refusal)
+        self.assertEqual(value.read_value(), 3)
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ BUDGET_SECONDS = 30
 TIER = "unit"
 COST = {"subprocesses": 0, "writes_files": False, "clock_waits": False}
 SUBJECT = "Identifier binary retained-value codec"
-CONTRACT = "modules/identity/identifier/protocol/identifier.codec.binary.eng.kh"
+CONTRACT = "modules/identity/identifier/protocol/identifier.eng.kh"
 
 
 class BinaryExpectations(unittest.TestCase):

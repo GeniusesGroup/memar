@@ -14,7 +14,7 @@ tp Summary mt (self Identifier_Error_InvalidValue) () (s String) {
 }
 
 tp Overview mt (self Identifier_Error_InvalidValue) () (s String) {
-    CharacterRun_From.FromCharacterRun("The internal value binding did not supply an exact integer in the full unsigned128-bit range. No value is published in the receiver. This binding validates an already decoded numeric value and does not select a wire encoding or text representation.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("An internal value candidate is not an exact unsigned128-bit integer, a conversion binding is neither callable nor explicitly unsupported, or a conversion returned the wrong native shape. The retained receiver is unchanged. A native string encoder returns a string; a decoder returns a complete immutable sixteen-octet identity. This refusal identifies a broken realization binding, separately from a supported parser refusing malformed text.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Identifier_Error_InvalidValue) () (s String) {
