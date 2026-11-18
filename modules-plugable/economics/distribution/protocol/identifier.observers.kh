@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Distribution_Identifier in "modules-plugable/economics/distribution/protocol/identifier.kh"
+
+tp Observer_Distribution_Identifier ab
+
+tp GetDistributionIdentifier mt (self Observer_Distribution_Identifier) () (identifier Distribution_Identifier)

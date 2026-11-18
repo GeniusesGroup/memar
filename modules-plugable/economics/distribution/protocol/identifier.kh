@@ -1,16 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package distribution_p
+tp Identifier in "modules/identity/identifier/protocol/identifier.kh"
 
-import (
-	transaction_p "org/modules/economics/transaction/protocol"
-)
-
-type Field_DistributionID interface {
-	DistributionID() UUID
+tp Distribution_Identifier ab {
+    Identifier
 }
-
-type UUID transaction_p.UUID
-*/

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Product_Identifier in "modules-plugable/economics/good/protocol/identifier.kh"
+
+tp Observer_Product_Identifier ab
+
+tp GetProductIdentifier mt (self Observer_Product_Identifier) () (identifier Product_Identifier)

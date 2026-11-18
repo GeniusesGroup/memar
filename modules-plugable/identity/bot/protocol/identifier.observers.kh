@@ -1,16 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package bot_p
+tp Bot_Identifier in "modules-plugable/identity/bot/protocol/identifier.kh"
 
-import (
-	user_p "org/modules/identity/user/protocol"
-)
+tp Observer_Bot_Identifier ab
 
-type Field_BotID interface {
-	BotID() UUID
-}
-
-type UUID user_p.UUID
-*/
+tp GetBotIdentifier mt (self Observer_Bot_Identifier) () (identifier Bot_Identifier)

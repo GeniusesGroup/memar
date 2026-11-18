@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Analytic_Identifier in "modules-plugable/computer/analytic/protocol/identifier.kh"
+
+tp Observer_Analytic_Identifier ab
+
+tp GetAnalyticIdentifier mt (self Observer_Analytic_Identifier) () (identifier Analytic_Identifier)

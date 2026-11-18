@@ -1,16 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package tax_p
+tp Tax_Identifier in "modules-plugable/economics/vat/protocol/protocol/identifier.kh"
 
-import (
-	thing_p "org/modules/identity/thing/protocol"
-)
+tp Observer_Tax_Identifier ab
 
-type Field_TaxID interface {
-	TaxID() UUID
-}
-
-type UUID thing_p.UUID
-*/
+tp GetTaxIdentifier mt (self Observer_Tax_Identifier) () (identifier Tax_Identifier)

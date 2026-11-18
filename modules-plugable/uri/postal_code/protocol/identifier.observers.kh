@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp PostalCode_Identifier in "modules-plugable/uri/postal_code/protocol/identifier.kh"
+
+tp Observer_PostalCode_Identifier ab
+
+tp GetPostalCodeIdentifier mt (self Observer_PostalCode_Identifier) () (identifier PostalCode_Identifier)

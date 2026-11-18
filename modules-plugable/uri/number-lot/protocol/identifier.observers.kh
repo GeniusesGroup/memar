@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Lot_Identifier in "modules-plugable/uri/number-lot/protocol/identifier.kh"
+
+tp Observer_Lot_Identifier ab
+
+tp GetLotIdentifier mt (self Observer_Lot_Identifier) () (identifier Lot_Identifier)

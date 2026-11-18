@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Card_Identifier in "modules-plugable/uri/iso-7812/protocol/identifier.kh"
+
+tp Observer_Card_Identifier ab
+
+tp GetCardIdentifier mt (self Observer_Card_Identifier) () (identifier Card_Identifier)

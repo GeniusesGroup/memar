@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp SecuritiesAccount_Identifier in "modules-plugable/economics/securities/edges/securities-for/protocol/identifier.kh"
+
+tp Observer_SecuritiesAccount_Identifier ab
+
+tp GetSecuritiesAccountIdentifier mt (self Observer_SecuritiesAccount_Identifier) () (identifier SecuritiesAccount_Identifier)

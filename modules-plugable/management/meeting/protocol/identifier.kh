@@ -1,20 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package meeting_p
+tp Identifier in "modules/identity/identifier/protocol/identifier.kh"
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 
-import (
-	task_p "org/modules/management/task/protocol"
-)
-
-type Field_MeetingID interface {
-	MeetingID() UUID
+tp Meeting_Identifier ab {
+    Identifier
+    Container_Element
 }
-
-type Field_MeetingsID interface {
-	MeetingsID() []UUID
-}
-
-type UUID task_p.UUID
-*/

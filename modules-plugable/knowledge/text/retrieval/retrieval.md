@@ -20,7 +20,7 @@ Research task `20261103-T100549Z-14796`.
 | Place | Holds |
 | --- | --- |
 | Kernel [`modules/knowledge/text/protocol/`](/modules/knowledge/text/protocol/) | `Field_Text_Scope`, `Field_Text_Holder`, `Text_Holders`, `Field_TextID` |
-| [`protocol/`](protocol/) | Field preds, index store port, entry-field re-exports |
+| [`protocol/`](protocol/) | Shared field preds and the index store port (several services import them). Hit/Hits, score, and upsert write ports live under their services ([Protocol folder → Placement test](/modules/knowledge/protocol/rules/protocol-folder/protocol-folder.md#placement-test-refuse-the-main-folder)) |
 | [`services/score-text-index/protocol/`](services/score-text-index/protocol/) | Score service + score / hit / hits |
 | [`services/upsert-text-index-*/protocol/`](services/) | Upsert + `Replace` write ports |
 | [`widgets/text-find-holders/protocol/`](widgets/text-find-holders/protocol/) | Find widget |
@@ -32,7 +32,7 @@ Research task `20261103-T100549Z-14796`.
 
 ## Edges
 - [Label posting](edges/label-posting/label-posting.md) — derived `(scope, holder, text, label)`
-- [Field value](edges/field-value/field-value.md) — same entry key + Type_UUID membership (v1)
+- [Field value](edges/field-value/field-value.md) — same entry key + Type_Identifier membership (v1)
 
 ## Model (Tentative)
 - Index keys are [Label](/modules/knowledge/label/label.md).

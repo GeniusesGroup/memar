@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Government_Identifier in "modules-plugable/identity/government/protocol/identifier.kh"
+
+tp Observer_Government_Identifier ab
+
+tp GetGovernmentIdentifier mt (self Observer_Government_Identifier) () (identifier Government_Identifier)

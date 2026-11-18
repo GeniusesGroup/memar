@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp TaskModel in "modules/management/task/protocol/model.kh"
+
+tp ProductionModel ab {
+    TaskModel
+}

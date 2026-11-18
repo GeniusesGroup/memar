@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp FormRespondent_Identifier in "modules-plugable/knowledge/form/respondent/protocol/identifier.kh"
+
+tp Observer_FormRespondent_Identifier ab
+
+tp GetFormRespondentIdentifier mt (self Observer_FormRespondent_Identifier) () (identifier FormRespondent_Identifier)

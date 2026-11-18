@@ -1,16 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package ecp
+tp Certificate_Identifier in "modules-plugable/knowledge/certificate/protocol/identifier.kh"
 
-import (
-	thing_p "org/modules/identity/thing/protocol"
-)
+tp Observer_Certificate_Identifier ab
 
-type Field_CertificateID interface {
-	CertificateID() UUID
-}
-
-type UUID thing_p.UUID
-*/
+tp GetCertificateIdentifier mt (self Observer_Certificate_Identifier) () (identifier Certificate_Identifier)

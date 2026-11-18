@@ -4,7 +4,7 @@ tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
 tp Error in "modules/process/error/protocol/error.kh"
 tp Record_Data in "modules-plugable/computer/memory/store/record/protocol/data.kh"
-tp RecordUUID in "modules-plugable/computer/memory/store/record/protocol/uuid.kh"
+tp Record_Identifier in "modules-plugable/computer/memory/store/record/protocol/identifier.kh"
 
 // Records is the collection of records, and the interface that shows how a record storage works.
 // - Records are anything (such as a document or a phonograph record or a photograph) providing permanent evidence of or information about past events
@@ -24,29 +24,29 @@ tp Records ab
 // Count has eventual consistency behavior
 tp Count mt (self Records) () (num NumberOfElement, err Error)
 
-tp Length mt (self Records) (id RecordUUID) (ln NumberOfElement, err Error)
+tp Length mt (self Records) (id Record_Identifier) (ln NumberOfElement, err Error)
 
-tp Get mt (self Records) (id RecordUUID) (record Record_Data, err Error)
+tp Get mt (self Records) (id Record_Identifier) (record Record_Data, err Error)
 
 // GetLast has eventual consistency behavior
 // GetLast(id UUID) (record Buffer, vo VersionOffset, err error_p.Error)
-tp Read mt (self Records) (id RecordUUID, offset Container_ElementIndex, limit NumberOfElement) (data Record_Data, err Error)
+tp Read mt (self Records) (id Record_Identifier, offset Container_ElementIndex, limit NumberOfElement) (data Record_Data, err Error)
 
-tp Save mt (self Records) (id RecordUUID, record Record_Data) (err Error)
+tp Save mt (self Records) (id Record_Identifier, record Record_Data) (err Error)
 
-tp Write mt (self Records) (id RecordUUID, offset Container_ElementIndex, data Record_Data) (err Error)
+tp Write mt (self Records) (id Record_Identifier, offset Container_ElementIndex, data Record_Data) (err Error)
 
-tp Append mt (self Records) (id RecordUUID, data Record_Data) (err Error)
+tp Append mt (self Records) (id Record_Identifier, data Record_Data) (err Error)
 
-tp Prepend mt (self Records) (id RecordUUID, data Record_Data) (err Error)
+tp Prepend mt (self Records) (id Record_Identifier, data Record_Data) (err Error)
 
-tp Extend mt (self Records) (id RecordUUID, length NumberOfElement) (err Error)
+tp Extend mt (self Records) (id Record_Identifier, length NumberOfElement) (err Error)
 
 // make invisible just by remove from primary index.
-tp Delete mt (self Records) (id RecordUUID) (err Error)
+tp Delete mt (self Records) (id Record_Identifier) (err Error)
 
 // make invisible by remove from primary index & write zero data to record location in NVM.
-tp Erase mt (self Records) (id RecordUUID) (err Error)
+tp Erase mt (self Records) (id Record_Identifier) (err Error)
 
 // TODO(go-migrate):
 /*

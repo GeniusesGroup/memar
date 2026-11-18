@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Production_Identifier in "modules-plugable/economics/production/protocol/identifier.kh"
+
+tp Observer_Production_Identifier ab
+
+tp GetProductionIdentifier mt (self Observer_Production_Identifier) () (identifier Production_Identifier)
