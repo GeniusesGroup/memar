@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Write_Text_From_Response in "modules/knowledge/text/services/write-text-from/protocol/response.kh"
+
+tp Observer_Response_Write_Text_From ab
+
+tp GetResponse mt (self Observer_Response_Write_Text_From) () (value Write_Text_From_Response)

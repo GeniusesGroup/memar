@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Replace_Text_Request in "modules/knowledge/text/services/edit-text/protocol/request.kh"
+
+tp Observer_Request_Replace_Text ab
+
+tp GetRequest mt (self Observer_Request_Replace_Text) () (value Replace_Text_Request)

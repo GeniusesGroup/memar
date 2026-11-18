@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp New_Chats_Ask in "modules/management/agency/widgets/new_chats_ask/new_chats_ask.kh"
+tp New_Chats_Ask in "modules/management/agency/widgets/new_chats_ask/protocol/new_chats_ask.kh"
 
 tp Domain mt (self New_Chats_Ask) () (s String) {
     CharacterRun_From.FromCharacterRun("Agency")(s, VoidError)

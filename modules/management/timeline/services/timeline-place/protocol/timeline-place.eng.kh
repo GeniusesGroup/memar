@@ -3,24 +3,24 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Timeline_Place in "modules/management/timeline/services/timeline-place/timeline-place.kh"
+tp Add_Placement in "modules/management/timeline/services/timeline-place/protocol/timeline-place.kh"
 
-tp Domain mt (self Timeline_Place) () (s String) {
+tp Domain mt (self Add_Placement) () (s String) {
     CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)
 }
 
-tp Summary mt (self Timeline_Place) () (s String) {
-    CharacterRun_From.FromCharacterRun("Places a content in a timeline")(s, VoidError)
+tp Summary mt (self Add_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("Places a thing in a timeline")(s, VoidError)
 }
 
-tp Overview mt (self Timeline_Place) () (s String) {
-    CharacterRun_From.FromCharacterRun("Places a content in the timeline of the given UUID, whatever the content holds and whoever the timeline is of: a task, a group or a person. It stamps the instant of the placement and passes it to the store. The number returned is the placement's, the next number of the timeline across all kinds. Refused with Timeline_Error_Changed when another placer placed one of the same kind after the number the caller read, and with Timeline_Error_NotFound when the UUID is no node; nothing is then placed.")(s, VoidError)
+tp Overview mt (self Add_Placement) () (s String) {
+    CharacterRun_From.FromCharacterRun("One call places one thing on one timeline. The thing may be a content, or a node whose own timeline thereby becomes an event of this one; placing a timeline on itself is refused by nothing and means nothing more. The service stamps the instant. It takes no kind of the thing, no placer, no meaning of the link and no number the caller read, and checks no membership; who placed the thing is Ownership's creator of it, and who may place is Rights', both composed by the widget that places. The placement's number is the next number of the timeline. Refused with Timeline_Error_NotFound when either subject is no node; nothing is then placed.")(s, VoidError)
 }
 
-tp UserActionNote mt (self Timeline_Place) () (s String) {
+tp UserActionNote mt (self Add_Placement) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }
 
-tp DevActionNote mt (self Timeline_Place) () (s String) {
+tp DevActionNote mt (self Add_Placement) () (s String) {
     CharacterRun_From.FromCharacterRun("")(s, VoidError)
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/content/services/path.py — `memar content path`: a reference turned into the file it means.
+"""modules/knowledge/content/services/path.py — `memar content_path`: a reference turned into the file it means.
 
 The way into the checkout: a link copied out of a Memar document, with its
 anchor, becomes the absolute path a reader opens, resolved the way

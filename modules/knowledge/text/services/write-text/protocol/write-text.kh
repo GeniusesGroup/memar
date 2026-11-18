@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Write_Text in "modules/knowledge/text/services/write-text/protocol/request.observers.kh"
+tp Observer_Response_Write_Text in "modules/knowledge/text/services/write-text/protocol/response.observers.kh"
+
+tp Write_Text ab {
+	Service
+	Observer_Request_Write_Text
+	Observer_Response_Write_Text
+}

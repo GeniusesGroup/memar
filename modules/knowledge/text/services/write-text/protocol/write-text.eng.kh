@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Write_Text in "modules/knowledge/text/services/write-text/protocol/write-text.kh"
+
+tp Domain mt (self Write_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Write_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("Writes a whole text into a held text without damaging it")(s, VoidError)
+}
+
+tp Overview mt (self Write_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("Writes the named text under the lock of the held text. Refuses with Text_Error_Edit_CreateNotAsked when the held text is absent and create was not asked, Text_Error_Edit_EmptyText, or Text_Error_Edit_NotUtf8. The answer is the size written. Nothing is written on a refusal.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Write_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Write_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

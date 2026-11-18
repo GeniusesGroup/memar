@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Write_Text_Request in "modules/knowledge/text/services/write-text/protocol/request.kh"
+
+tp Observer_Request_Write_Text ab
+
+tp GetRequest mt (self Observer_Request_Write_Text) () (value Write_Text_Request)

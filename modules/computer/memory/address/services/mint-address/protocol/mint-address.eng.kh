@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Address_Mint in "modules/computer/memory/address/services/mint-address/mint-address.kh"
+tp Address_Mint in "modules/computer/memory/address/services/mint-address/protocol/mint-address.kh"
 
 tp Domain mt (self Address_Mint) () (s String) {
     CharacterRun_From.FromCharacterRun("Memory")(s, VoidError)
@@ -14,13 +14,13 @@ tp Summary mt (self Address_Mint) () (s String) {
 }
 
 tp Overview mt (self Address_Mint) () (s String) {
-    CharacterRun_From.FromCharacterRun("Returns an address no earlier mint of this service returned, of the kind its realization is bound to. The address is bytes; the way a person reads it is shown by the text domain and is never what is kept. A later mint never precedes an earlier one.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Mints a UUID-backed logical address key using the shared Identifier owner. The selected logical address kind defines comparison using the complete retained UUID. This specialized service neither assigns RAM positions nor allocates or reserves storage, and it does not make UUID conversion part of the general MemoryAddress contract. Binding a key to storage and checking access are separate operations. Independent domain identity is supplied by UUID itself rather than by requiring every domain to mint a memory address.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Address_Mint) () (s String) {
-    CharacterRun_From.FromCharacterRun("Nothing to do; a caller names a thing retained with the address it is given.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("Use this service only for an address space whose kind is explicitly UUID-backed. A key alone selects no remote node, store or access authority.")(s, VoidError)
 }
 
 tp DevActionNote mt (self Address_Mint) () (s String) {
-    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("The realization initializes an empty UUID through its Generate operation and retains exactly its successful result as the address identity. Generator refusals retain their identifier-owner error meanings in the invocation Error channel. The service exposes its own Request and Response associations; generating another unrelated UUID is not an additional callable operation of this service. A refused invocation provides no successful address response. SDK generation remains local when the delivered realization supports it; no server allocation round trip is required by this declaration.")(s, VoidError)
 }

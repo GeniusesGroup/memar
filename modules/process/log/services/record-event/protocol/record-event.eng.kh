@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Log_Record in "modules/process/log/services/record-event/record-event.kh"
+tp Log_Record in "modules/process/log/services/record-event/protocol/record-event.kh"
 
 tp Domain mt (self Log_Record) () (s String) {
     CharacterRun_From.FromCharacterRun("Log")(s, VoidError)

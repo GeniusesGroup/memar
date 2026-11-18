@@ -2,10 +2,14 @@
 
 tp Codec in "modules/computer/codec/protocol/codec.kh"
 tp Observer_Capsule_Fields in "modules/computer/capsule/protocol/fields.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
+tp Observer_Time_Asked in "modules/process/time/protocol/request.observers.kh"
 tp Type in "modules/computer/type/protocol/type.kh"
 
 tp Process_Request ab {
 	Type
 	Codec
 	Observer_Capsule_Fields
+	Observer_Request_Identifier
+	Observer_Time_Asked
 }

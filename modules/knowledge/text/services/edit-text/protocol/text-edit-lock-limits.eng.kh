@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Edit_Lock_Limits in "modules/knowledge/text/services/edit-text/protocol/text-edit-lock-limits.kh"
+
+tp Domain mt (self Text_Edit_Lock_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Edit_Lock_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("The waits of an edit lock")(s, VoidError)
+}
+
+tp Overview mt (self Text_Edit_Lock_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("The waits of an edit lock as durations.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Edit_Lock_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Edit_Lock_Limits) () (s String) {
+    CharacterRun_From.FromCharacterRun("The wait before the lock is refused, the age past which a lock is a dead holder, and the pause between tries. The values are set where the organization configures; the lock fixes none.")(s, VoidError)
+}

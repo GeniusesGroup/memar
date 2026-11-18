@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""modules/knowledge/text/services/text_check.py — what is wrong with the bytes of a text file, reported before it is inherited.
+"""modules/knowledge/text/services/text-check/text_check.py — what is wrong with the bytes of a text file, reported before it is inherited.
 
 The encoding and newline rules hold for every text file in every project, because a shell damages a file
 the same way whatever the file is for: a UTF-8 BOM, bytes that are not UTF-8, a replacement character, mixed
 line endings, a missing final newline, the fingerprints of mojibake. This is the text domain's half of
-`memar content check`; the Markdown conventions and Memar's written-surface rules are the documentation
-module's, and `memar content check` composes the two.
+`memar content_check`; the Markdown conventions and Memar's written-surface rules are the documentation
+module's, and `memar content_check` composes the two.
 """
 from __future__ import annotations
 from pathlib import Path

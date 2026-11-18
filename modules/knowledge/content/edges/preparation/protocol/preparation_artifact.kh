@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Artifact_Identifier in "modules/knowledge/content/edges/preparation/protocol/artifact-id.observers.kh"
+tp Observer_Content_Identifier in "modules/knowledge/content/protocol/identifier.observers.kh"
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+
+tp Preparation_Artifact ab {
+	Observer_Artifact_Identifier
+	Observer_Content_Identifier
+}
+
+tp GetKind mt (self Preparation_Artifact) () (kind String)
+
+tp GetPreparedFromHash mt (self Preparation_Artifact) () (hash String)
+
+tp GetPreparerTag mt (self Preparation_Artifact) () (tag String)
+
+tp IsContent mt (self Preparation_Artifact) () (yes Boolean)

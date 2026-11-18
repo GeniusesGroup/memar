@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Text_Edit_Held in "modules/knowledge/text/services/edit-text/protocol/text-edit-held.kh"
+
+tp Domain mt (self Text_Edit_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Text_Edit_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("A lock held on a text, released however the edit ends")(s, VoidError)
+}
+
+tp Overview mt (self Text_Edit_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("A lock held on a text, released however the edit ends.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Text_Edit_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Text_Edit_Held) () (s String) {
+    CharacterRun_From.FromCharacterRun("Release removes the lock and its intent note and answers no error; a failure to remove is not the caller to handle.")(s, VoidError)
+}

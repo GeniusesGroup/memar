@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the bytes of a text file judged, in `modules/knowledge/text/services/text_check.py`.
+"""Tests for the bytes of a text file judged, in `modules/knowledge/text/services/text-check/text_check.py`.
 
-    python modules/knowledge/text/tests/text_check.py
+    python modules/knowledge/text/services/text-check/tests/text_check.py
 
-The subject is the text domain's half of `memar content check`: what holds for
+The subject is the text domain's half of `memar content_check`: what holds for
 every text file in every project whatever the file is for, the encoding and the
 newlines. The Markdown conventions are the documentation module's and are not
 tested here. Named for the file that holds it per
-[Test Naming](../../../process/test/rules/test-naming/test-naming.md), in the
+[Test Naming](../../../../../process/test/rules/test-naming/test-naming.md), in the
 `tests/` folder of the shelf that owns it per
-[Test Placement](../../../process/test/rules/test-placement/test-placement.md).
+[Test Placement](../../../../../process/test/rules/test-placement/test-placement.md).
 
 What is pinned: a clean file has no problem and its text is returned; a BOM, bytes that are
 not UTF-8, a replacement character, mixed line endings, a missing final newline and a mojibake
@@ -25,7 +25,7 @@ from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 TOP = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and (p / 'bundles').is_dir())
 sys.path[0:0] = [str(TOP), str(TOP / 'bundles' / 'memar'), str(TOP / 'bundles' / 'memar' / 'services')]
-from modules.knowledge.text.services.text_check import file_problems
+from modules.knowledge.text.services.text-check.text_check import file_problems
 
 
 class FileProblems(unittest.TestCase):

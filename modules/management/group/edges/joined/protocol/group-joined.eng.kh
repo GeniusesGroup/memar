@@ -10,11 +10,11 @@ tp Domain mt (self Group_Joined) () (s String) {
 }
 
 tp Summary mt (self Group_Joined) () (s String) {
-    CharacterRun_From.FromCharacterRun("What is said of one joined edge: a member in one role")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("One joined membership from a group to a user")(s, VoidError)
 }
 
 tp Overview mt (self Group_Joined) () (s String) {
-    CharacterRun_From.FromCharacterRun("One joined edge from a group to a user, written with its reverse joined_to in one batch, for each role the member holds. GetRole is the role word, a declared label word an organization chooses; it is in the edge's key, so the members in one role are one read. GetJoinedAt is the instant the membership began, a value of the edge. Who holds the thing now is Ownership's claimer_is, and who accepted the membership is the Request of the join; neither is a value of this edge.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("One joined edge from a group to a user, written with its reverse joined_to. The group and the user are Group_Identifier and User_Identifier composed here, and GetJoinedAt is the instant the membership began. This edge does not carry a role. Who accepted the membership is the Request of the join.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Group_Joined) () (s String) {
@@ -22,5 +22,5 @@ tp UserActionNote mt (self Group_Joined) () (s String) {
 }
 
 tp DevActionNote mt (self Group_Joined) () (s String) {
-    CharacterRun_From.FromCharacterRun("Each value is keyed on the edge by the TypeUUID of its type, never by an English word.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("The identifiers are the domain types, not MemoryAddress and not Identifier. A role is not a value of this edge.")(s, VoidError)
 }

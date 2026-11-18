@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Replace_Text in "modules/knowledge/text/services/edit-text/protocol/edit-text.kh"
+
+tp Domain mt (self Replace_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Replace_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("Replaces exact text in a held text without damaging it")(s, VoidError)
+}
+
+tp Overview mt (self Replace_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("Reads, matches and writes under the lock of the held text, so the text matched is the text written. Refuses with Text_Error_Edit_TextAbsent, Text_Error_Edit_OldEmpty, Text_Error_Edit_NotUtf8, Text_Error_Edit_MatchAbsent or Text_Error_Edit_MatchAmbiguous when more than one match exists and every was not asked. The answer is the number of replacements; an empty replacement is allowed. Nothing is written on a refusal.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Replace_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Replace_Text) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

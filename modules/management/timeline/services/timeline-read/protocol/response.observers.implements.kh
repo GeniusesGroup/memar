@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Abstractions in "modules/computer/abstraction/protocol/abstractions.kh"
+tp Observer_Response in "modules/process/response/protocol/response.observers.kh"
+tp Observer_Response_Get_After in "modules/management/timeline/services/timeline-read/protocol/response.observers.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+
+tp DeclaredAbstractions mt (self Observer_Response_Get_After) () (abstractions Abstractions) {
+	abstractions.Push(Observer_Response)(VoidError)
+}

@@ -1,0 +1,14 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Content_Identifier in "modules/knowledge/content/protocol/identifier.observers.kh"
+tp Request_Identifier in "modules/process/request/protocol/identifier.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Preparation_Artifact in "modules/knowledge/content/edges/preparation/protocol/preparation_artifact.kh"
+
+tp Has_Preparation ab {
+	Observer_Content_Identifier
+}
+
+tp GetArtifact mt (self Has_Preparation) () (artifact Preparation_Artifact)
+
+tp GetRequestID mt (self Has_Preparation) () (id Request_Identifier, present Boolean)

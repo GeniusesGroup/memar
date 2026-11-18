@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 
-"""Tests for the services of the timeline domain and its file adapter, `services/timeline_place.py`, `services/timeline_latest.py` and `services/timeline_files.py`.
+"""Tests for the services of the timeline domain and its file adapter, `services/timeline-place/timeline_place.py`, `services/timeline-latest/timeline_latest.py` and `services/timeline_files.py`.
 
     python modules/management/timeline/tests/timeline_services.py
 
-The subject is `Timeline_Place`, `Timeline_Latest` and `Timeline_Placement_Store` (`services/`, `protocol/`) under the
+The subject is `Add_Placement`, `Get_Latest` and the file adapter (`services/timeline-place/`, `services/timeline-latest/`, `services/timeline_files.py`) under the
 rule a placement is added and never written over (`rules/a-placement-is-added-never-written-over/`). What is pinned:
 
   Place      The service stamps the instant and passes it to the store with the number the caller read.
@@ -29,8 +29,8 @@ SCRIPTS = next(p for p in TESTS.parents if (p / 'modules-plugable').is_dir() and
 sys.path.insert(0, str(SCRIPTS))
 sys.path.insert(1, str(SCRIPTS.parent.parent))
 sys.dont_write_bytecode = True
-place = import_module('modules.management.timeline.services.timeline_place')
-latest = import_module('modules.management.timeline.services.timeline_latest')
+place = import_module('modules.management.timeline.services.timeline-place.timeline_place')
+latest = import_module('modules.management.timeline.services.timeline-latest.timeline_latest')
 files = import_module('modules.management.timeline.services.timeline_files')
 errors = import_module('modules.management.timeline.errors.placement')
 
@@ -174,7 +174,7 @@ class Files(Fixture):
     def test_a_content_file_is_recognised_by_name(self) -> None:
         self.assertTrue(files.is_content_file(Path('x/content.00128.md')))
         self.assertFalse(files.is_content_file(Path('x/content.128.md')))
-        self.assertFalse(files.is_content_file(Path('x/plan.md')))
+        self.assertFalse(files.is_content_file(Path('x/not-a-content.md')))
 
     def test_a_text_is_added_after_the_latest_of_its_kind(self) -> None:
         files.add_text(self.folder, 'plan', 'one\n', 'agent')

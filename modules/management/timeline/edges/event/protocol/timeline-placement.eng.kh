@@ -14,7 +14,7 @@ tp Summary mt (self Timeline_Placement) () (s String) {
 }
 
 tp Overview mt (self Timeline_Placement) () (s String) {
-    CharacterRun_From.FromCharacterRun("A placement is no node: it is the typed values of one event_is edge from the timeline to the thing placed. GetNumber is the placement's place in the timeline's order, from 1, the next number across every placement of the timeline whatever it places, never reused and never changed. GetPlacedAt is the instant of placing. GetReason is why the thing appears on this timeline, given being false when none was stated; none is required of a placement. A placement holds no kind, no placer and no reply: the kind is a label on the thing, the placer is Ownership's creator of it, and a reply is Content's edge.")(s, VoidError)
+    CharacterRun_From.FromCharacterRun("A placement is no node: it is the typed values of one event_is edge from the timeline to the thing placed. Its number is its place in the timeline's order, from 1, the next number across every placement of the timeline whatever it places, never reused and never changed. The instant is when it was placed. A reason says why the thing appears on this timeline, and a placement may state none. A placement holds no kind, no placer and no reply: the kind is a label on the thing, the placer is Ownership's creator of it, and a reply is Content's edge.")(s, VoidError)
 }
 
 tp UserActionNote mt (self Timeline_Placement) () (s String) {

@@ -1,5 +1,12 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
+tp Observer_Record_Identifier in "modules-plugable/computer/memory/store/record/protocol/identifier.observers.kh"
+
+// A node is found by the record it stores. The key is that record's identifier.
+tp Cluster_NodeByStorage ab {
+	Observer_Record_Identifier
+}
+
 // TODO(go-migrate):
 /*
 package node_p
@@ -7,7 +14,6 @@ package node_p
 import (
 	datatype_p "memar/computer/datatype/protocol"
 	error_p "memar/process/error/protocol"
-	record_p "memar/storage/record/protocol"
 )
 
 // CLU is default global protocol.Cluster like window global variable in browsers.
@@ -22,6 +28,6 @@ type Cluster interface {
 
 	GetReplicatedNodes(node DataModel) []DataModel
 	GetNodeByID(nodeID UUID) DataModel
-	GetNodeByStorage(dataTypeID datatype_p.ID, uuid record_p.UUID) (node DataModel, err error_p.Error)
+	GetNodeByStorage(dataTypeID datatype_p.ID, identifier Record_Identifier) (node DataModel, err error_p.Error)
 }
 */

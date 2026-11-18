@@ -2,13 +2,13 @@
 
 tp Field_GivenDelegateUserID in "modules/rights/delegate/protocol/dt-user-given_delegate.kh"
 tp Field_GottenDelegateUserID in "modules/rights/delegate/protocol/dt-user-gotten_delegate.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp DelegateDataModel ab {
 	Field_GivenDelegateUserID
 	Field_GottenDelegateUserID
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Request
 }
 

@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Reply_Content in "modules/knowledge/content/edges/reply/protocol/reply.observers.kh"
+tp Observer_Parent_Content in "modules/knowledge/content/edges/reply/protocol/parent.observers.kh"
+
+tp Add_Reply_To_Request ab {
+	Process_Request
+	Observer_Reply_Content
+	Observer_Parent_Content
+}

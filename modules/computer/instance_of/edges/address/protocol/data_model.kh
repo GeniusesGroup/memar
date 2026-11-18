@@ -2,9 +2,9 @@
 
 tp Array_Dynamic in "modules/computer/adt/array/protocol/dynamic.kh"
 tp Address in "modules/computer/instance_of/edges/address/protocol/dt-address.kh"
-tp Field_InstanceUUID in "modules/computer/instance_of/protocol/dt-uuid.kh"
-tp Field_LabelType in "modules/knowledge/label/protocol/dt-uuid.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Instance_Identifier in "modules/computer/instance_of/protocol/identifier.observers.kh"
+tp Observer_LabelType_Identifier in "modules/knowledge/label/protocol/label-type.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp AddressBinary ab {
@@ -20,11 +20,11 @@ tp Observer_Node_AddressBinary ab
 tp GetAddressBinary mt (self Observer_Node_AddressBinary) () (b AddressBinary)
 
 tp NodeAddressDataModel ab {
-	Field_InstanceUUID
-	Field_LabelType
+	Observer_Instance_Identifier
+	Observer_LabelType_Identifier
 	Observer_Node_Address
 	Observer_Node_AddressBinary
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Request
 }
 
@@ -41,7 +41,7 @@ import (
 )
 
 type DataModel interface {
-	instance_p.Field_InstanceUUID
+	instance_p.Observer_Instance_Identifier
 	label_p.Field_Type
 	Address() Address
 	AddressBinary() []byte

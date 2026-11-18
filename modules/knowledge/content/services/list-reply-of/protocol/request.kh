@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Parent_Content in "modules/knowledge/content/edges/reply/protocol/parent.observers.kh"
+tp Observer_Limit in "modules/computer/adt/container/protocol/pagination.observers.kh"
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Content_Reply_Page_Cursor in "modules/knowledge/content/edges/reply/protocol/page-cursor.kh"
+
+tp List_Reply_Of_Request ab {
+	Process_Request
+	Observer_Parent_Content
+	Observer_Limit
+}
+
+tp GetCursor mt (self List_Reply_Of_Request) () (cursor Content_Reply_Page_Cursor)
+
+tp GetHasCursor mt (self List_Reply_Of_Request) () (hasCursor Boolean)

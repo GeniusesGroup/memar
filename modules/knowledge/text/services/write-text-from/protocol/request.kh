@@ -1,0 +1,25 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Text_LineEnding_Choice in "modules/knowledge/text/services/edit-text/protocol/text-line-ending-choice.kh"
+tp Text_LineEnding_Rule in "modules/knowledge/text/services/edit-text/protocol/text-line-ending-rule.kh"
+tp Text_Codec in "modules/knowledge/text/protocol/text-codec.kh"
+tp Text_Edit_Lock in "modules/knowledge/text/services/edit-text/protocol/text-edit-lock.kh"
+tp Text_Edit_Lock_Limits in "modules/knowledge/text/services/edit-text/protocol/text-edit-lock-limits.kh"
+tp Observer_Edited_Text in "modules/knowledge/text/services/edit-text/protocol/edited-text.observers.kh"
+tp Observer_Edit_Writer in "modules/knowledge/text/services/edit-text/protocol/writer.observers.kh"
+tp Observer_Source_Text in "modules/knowledge/text/services/edit-text/protocol/source-text.observers.kh"
+tp Observer_Create_Text in "modules/knowledge/text/services/edit-text/protocol/create-text.observers.kh"
+
+tp Write_Text_From_Request ab {
+	Process_Request
+	Text_LineEnding_Choice
+	Text_LineEnding_Rule
+	Text_Codec
+	Text_Edit_Lock
+	Text_Edit_Lock_Limits
+	Observer_Edited_Text
+	Observer_Edit_Writer
+	Observer_Source_Text
+	Observer_Create_Text
+}

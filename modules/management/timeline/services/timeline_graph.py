@@ -1,28 +1,22 @@
 #!/usr/bin/env python3
 # For license and copyright information please see the LEGAL file in the code repository
 from __future__ import annotations
-import json
 from importlib import import_module
-from typing import Any
 _m_graph = import_module('modules-plugable.computer.memory.store.graph.graph')
 _m_store = import_module('modules.computer.memory.store.protocol.store')
 _m_record = import_module('modules-plugable.computer.memory.store.record.record')
 _m_errors = import_module('modules.management.timeline.errors.placement')
+_m_types = import_module('modules.management.timeline.services.timeline_types')
+_m_label_relation = import_module('modules.knowledge.label.edges.label.relation')
 Graph_PutEdge = _m_graph.Graph_PutEdge
 Graph_ListSidesQuery = _m_graph.Graph_ListSidesQuery
 LAYOUT_COMPACT = _m_graph.LAYOUT_COMPACT
 Found = _m_store.Found
-EVENT_IS = b'event_is'
-EVENT_OF = b'event_of'
+EVENT_IS = _m_types.EVENT_IS
+EVENT_OF = _m_types.EVENT_OF
 TASK = 'task'
-
-
-def fields_bytes(number: int, placer: str, placed_at: int) -> bytes:
-    return json.dumps({'number': number, 'placed_at': placed_at, 'placer': placer}, sort_keys=True, separators=(',', ':')).encode('utf-8')
-
-
-def fields_of(value: bytes) -> dict:
-    return json.loads(value.decode('utf-8'))
+fields_bytes = _m_types.fields_bytes
+fields_of = _m_types.fields_of
 
 
 def _as_id(value) -> bytes:
@@ -41,7 +35,15 @@ class GraphTimeline:
 
     def _exists(self, timeline: bytes) -> bool:
         answer = self.memory.get([_m_record.key(timeline, TASK)])[0]
-        return isinstance(answer, Found)
+        if isinstance(answer, Found):
+            return True
+        for relation in (EVENT_IS, _m_label_relation.LABEL):
+            listed = self.graph.list_sides(Graph_ListSidesQuery(timeline, relation))
+            if isinstance(listed, (_m_store.Refused, _m_store.Unavailable)):
+                return False
+            if listed:
+                return True
+        return False
 
     def _sides(self, timeline: bytes) -> tuple:
         listed = self.graph.list_sides(Graph_ListSidesQuery(timeline, EVENT_IS))

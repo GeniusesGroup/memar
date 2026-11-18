@@ -7,7 +7,7 @@ tp Observer_Request in "modules/process/request/protocol/request.observers.kh"
 tp Observer_Response in "modules/process/response/protocol/response.observers.kh"
 tp Observer_Service in "modules/process/service/protocol/service.observers.kh"
 tp Importance in "modules/process/operation/protocol/importance.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp OSI_Application_Handler in "modules/net/protocol/osi_7-application-handler.kh"
 tp Process_Request in "modules/process/request/protocol/request.kh"
 tp Process_Response in "modules/process/response/protocol/response.kh"
@@ -16,7 +16,7 @@ tp Service in "modules/process/service/protocol/service.kh"
 // OSI_Application usually use to save state and release thread(goroutine) in waiting state
 tp OSI_Application ab {
     Capsule_LifeCycle
-    Observer_RequestID
+    Observer_Request_Identifier
     Observer_Service
     Observer_Request
     Observer_Response
