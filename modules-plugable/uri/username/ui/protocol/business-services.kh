@@ -4,7 +4,7 @@ tp Observer_Username_VerificationToken in "modules-plugable/uri/username/ui/prot
 
 tp Observer_ProtocolType in "modules-plugable/uri/username/ui/protocol/protocol-type.observers.kh"
 
-tp Array_MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
+tp User_Identifiers in "modules/identity/user/protocol/identifiers.kh"
 tp Observer_Organization_Identifier in "modules/identity/organization/protocol/identifier.observers.kh"
 tp Observer_User_Identifier in "modules/identity/user/protocol/identifier.observers.kh"
 tp Observer_Username in "modules-plugable/uri/username/ui/protocol/username.observers.kh"
@@ -33,7 +33,7 @@ tp BS_FindByUsername_Response ab {
 	Pagination_Response
 }
 
-tp UserIDs mt (self BS_FindByUsername_Response) () (u Array_MemoryAddress)
+tp UserIDs mt (self BS_FindByUsername_Response) () (identifiers User_Identifiers)
 
 
 tp BS_SendManualVerification_Request ab {
