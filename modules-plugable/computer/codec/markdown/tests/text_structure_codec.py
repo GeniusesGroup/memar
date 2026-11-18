@@ -67,7 +67,7 @@ class Decode(unittest.TestCase):
 
     def test_the_root_is_level_zero_and_the_first_heading_is_its_section(self) -> None:
         root = decode(LEDGER)
-        self.assertEqual(root.GetLevel(), 0)
+        self.assertEqual(root.GetSectionLevel(), 0)
         self.assertEqual(root.GetTitle()[1], False)
         self.assertEqual(root.GetItemCount(), 0)
         self.assertEqual(root.GetOccupiedLength(), 1)
@@ -87,7 +87,7 @@ class Decode(unittest.TestCase):
         self.assertEqual(root.GetOccupiedLength(), 2)
         a = section(root, 0)
         self.assertEqual(a.GetOccupiedLength(), 1)
-        self.assertEqual(section(a, 0).GetLevel(), 4)
+        self.assertEqual(section(a, 0).GetSectionLevel(), 4)
         self.assertEqual(section(root, 1).GetTitle(), ('C', True))
 
     def test_a_record_reads_as_fields_with_sub_items_and_links(self) -> None:

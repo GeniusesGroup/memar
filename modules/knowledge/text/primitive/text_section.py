@@ -22,7 +22,7 @@ class Text_Section(Observer_Text_Items, Observer_Text_Span):
         self._titled = titled
         self._sections: list = []
 
-    def GetLevel(self) -> int:
+    def GetSectionLevel(self) -> int:
         return self._level
 
     def GetTitle(self) -> tuple[str, bool]:

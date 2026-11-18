@@ -37,7 +37,7 @@ class MadeNodes(unittest.TestCase):
 
     def test_a_made_section_holds_its_level_and_title(self) -> None:
         section = self.nodes.MakeSection(3, 'Title', True)
-        self.assertEqual(section.GetLevel(), 3)
+        self.assertEqual(section.GetSectionLevel(), 3)
         self.assertEqual(section.GetTitle(), ('Title', True))
         self.assertEqual(section.GetItemCount(), 0)
         self.assertEqual(section.GetOccupiedLength(), 0)

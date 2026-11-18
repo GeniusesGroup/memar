@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text_Section_Level in "modules/knowledge/text/protocol/text-section-level.kh"
+
+tp Observer_Text_Section_Level ab
+
+tp GetSectionLevel mt (self Observer_Text_Section_Level) () (level Text_Section_Level)
