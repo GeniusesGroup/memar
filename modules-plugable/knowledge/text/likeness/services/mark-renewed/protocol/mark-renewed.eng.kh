@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Mark_Renewed in "modules-plugable/knowledge/text/likeness/services/mark-renewed/protocol/mark-renewed.kh"
+
+tp Domain mt (self Mark_Renewed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Text")(s, VoidError)
+}
+
+tp Summary mt (self Mark_Renewed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Marks one scope renewed")(s, VoidError)
+}
+
+tp Overview mt (self Mark_Renewed) () (s String) {
+    CharacterRun_From.FromCharacterRun("Marks the scope renewed after its texts have been signed again.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Mark_Renewed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Mark_Renewed) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

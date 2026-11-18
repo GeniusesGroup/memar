@@ -7,7 +7,7 @@ from modules.knowledge.label.primitive.label_store import LabelStore
 Label_Priority = import_module('modules-plugable.identity.thing.priority.labels.Priority').Label_Priority
 Priority_Rank = import_module('modules-plugable.identity.thing.priority.primitive.rank').Priority_Rank
 RankStore = import_module('modules-plugable.identity.thing.priority.services.rank_store').RankStore
-attach = import_module('modules.knowledge.label.services.attach_label').attach
+attach = import_module('modules.knowledge.label.services.attach-label.attach_label').attach
 SERVICE_UUID = 'f28f2eba-6923-5e6c-814d-92ca70b4d97e'
 
 

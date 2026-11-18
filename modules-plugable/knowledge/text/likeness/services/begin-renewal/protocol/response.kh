@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Response in "modules/process/response/protocol/response.kh"
+tp Likeness_Counts in "modules-plugable/knowledge/text/likeness/protocol/likeness-counts.kh"
+
+tp Begin_Renewal_Response ab {
+	Process_Response
+	Likeness_Counts
+}

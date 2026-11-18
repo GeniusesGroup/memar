@@ -1,49 +1,26 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_ProductID in "modules/economics/product/protocol/dt-uuid.kh"
+tp Observer_Product_Identifier in "modules/economics/product/protocol/identifier.observers.kh"
 tp Field_Service_Seat_Type in "modules-plugable/economics/service/edges/seat/protocol/dt-type.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
-tp RecordUUID in "modules-plugable/computer/memory/store/record/protocol/uuid.kh"
+tp Record_Identifier in "modules-plugable/computer/memory/store/record/protocol/identifier.kh"
 tp U64 in "modules/math/integer/unsigned-64.kh"
 
 tp Observer_Seat_SeatCapacity ab
 
 tp GetSeatCapacity mt (self Observer_Seat_SeatCapacity) () (n U64)
 
+// The map is the stored picture of the seats. Its key is a record identifier.
 tp Observer_Seat_MapID ab
 
-tp GetMapID mt (self Observer_Seat_MapID) () (m RecordUUID)
+tp GetMapID mt (self Observer_Seat_MapID) () (m Record_Identifier)
 
 tp SeatDataModel ab {
-	Field_ProductID
+	Observer_Product_Identifier
 	Field_Service_Seat_Type
 	Observer_Seat_SeatCapacity
 	Observer_Seat_MapID
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Request
 }
-
-// TODO(go-migrate):
-/*
-package psp
-
-import (
-	request_p "memar/process/request/protocol"
-	audit_time_p "memar/process/time/protocol"
-	record_p "memar/storage/record/protocol"
-
-	product_p "org/modules/economics/product/protocol"
-)
-
-// DataModel indicate the domain record data fields.
-type DataModel interface {
-	product_p.Field_ProductID
-	SeatCapacity() uint64 // max seat number
-	Field_Type
-	MapID() record_p.UUID // to show background and rows and seats. suggest use SVG format
-
-	request_p.Field_RequestID
-	audit_time_p.Field_Request
-}
-*/

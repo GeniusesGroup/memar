@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Has_Signature in "modules-plugable/knowledge/text/likeness/services/has-signature/protocol/request.observers.kh"
+tp Observer_Response_Has_Signature in "modules-plugable/knowledge/text/likeness/services/has-signature/protocol/response.observers.kh"
+
+tp Has_Signature ab {
+	Service
+	Observer_Request_Has_Signature
+	Observer_Response_Has_Signature
+}

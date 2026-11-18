@@ -1,25 +1,25 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Field_FormID in "modules-plugable/knowledge/form/protocol/dt-uuid.kh"
-tp Field_FormRespondentID in "modules-plugable/knowledge/form/respondent/protocol/dt-uuid.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Form_Identifier in "modules-plugable/knowledge/form/protocol/identifier.observers.kh"
+tp Observer_FormRespondent_Identifier in "modules-plugable/knowledge/form/respondent/protocol/identifier.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
-tp UserUUID in "modules/identity/user/protocol/dt-uuid.kh"
+tp User_Identifier in "modules/identity/user/protocol/identifier.kh"
 
 tp Field_AnswerBy ab
 
-tp AnswerBy mt (self Field_AnswerBy) () (u UserUUID)
+tp AnswerBy mt (self Field_AnswerBy) () (u User_Identifier)
 
 tp Field_FillBy ab
 
-tp FillBy mt (self Field_FillBy) () (u UserUUID)
+tp FillBy mt (self Field_FillBy) () (u User_Identifier)
 
 tp FormRespondentDataModel ab {
-	Field_FormRespondentID
-	Field_FormID
+	Observer_FormRespondent_Identifier
+	Observer_Form_Identifier
 	Field_AnswerBy
 	Field_FillBy
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Request
 }
 
@@ -37,8 +37,8 @@ import (
 
 // DataModel indicate the domain record data fields.
 type DataModel interface {
-	Field_FormRespondentID
-	form_p.Field_FormID
+	Observer_FormRespondent_Identifier
+	form_p.Observer_Form_Identifier
 	AnswerBy() user_p.UUID
 	FillBy() user_p.UUID
 

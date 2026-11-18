@@ -3,7 +3,7 @@
 tp U64 in "modules/math/integer/unsigned-64.kh"
 tp Amount in "modules-plugable/economics/money/protocol/dt-money-amount.kh"
 tp Observer_MinuteElapsed in "modules-plugable/time/utc/duration-minute.observers.kh"
-tp Observer_RequestID in "modules/process/request/protocol/uuid.observers.kh"
+tp Observer_Request_Identifier in "modules/process/request/protocol/identifier.observers.kh"
 tp Observer_Time_Request in "modules/process/time/protocol/request.observers.kh"
 
 tp Observer_VoucherIssuedUtcMinute_TotalIssued ab
@@ -18,7 +18,7 @@ tp VoucherIssuedUtcMinuteDataModel ab {
 	Observer_MinuteElapsed
 	Observer_VoucherIssuedUtcMinute_TotalIssued
 	Observer_VoucherIssuedUtcMinute_TotalIssuedAmount
-	Observer_RequestID
+	Observer_Request_Identifier
 	Observer_Time_Request
 }
 

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+
+tp Observer_Text_Count ab
+
+tp GetTextCount mt (self Observer_Text_Count) () (count NumberOfElement)

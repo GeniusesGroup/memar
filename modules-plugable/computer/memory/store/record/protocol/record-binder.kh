@@ -1,13 +1,13 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
 tp Error in "modules/process/error/protocol/error.kh"
-tp ThingUUID in "modules/identity/thing/protocol/dt-uuid.kh"
+tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
 tp Record_Class in "modules-plugable/computer/memory/store/record/protocol/record-class.kh"
 tp Record_Bound in "modules-plugable/computer/memory/store/record/protocol/record-bound.kh"
-tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
+tp Observer_Project_Identifier in "modules-plugable/management/task/labels/project/protocol/identifier.observers.kh"
 
 tp Record_Binder ab {
-	Field_ProjectUUID
+	Observer_Project_Identifier
 }
 
 tp Bind mt (self Record_Binder) (class Record_Class) (bound Record_Bound, err Error)

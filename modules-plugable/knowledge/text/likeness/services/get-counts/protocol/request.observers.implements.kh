@@ -1,0 +1,10 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Abstractions in "modules/computer/abstraction/protocol/abstractions.kh"
+tp Observer_Request in "modules/process/request/protocol/request.observers.kh"
+tp Observer_Request_Get_Counts in "modules-plugable/knowledge/text/likeness/services/get-counts/protocol/request.observers.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+
+tp DeclaredAbstractions mt (self Observer_Request_Get_Counts) () (abstractions Abstractions) {
+	abstractions.Push(Observer_Request)(VoidError)
+}

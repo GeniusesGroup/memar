@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Get_Kept_Holders in "modules-plugable/knowledge/text/likeness/services/kept-holders/protocol/request.observers.kh"
+tp Observer_Response_Get_Kept_Holders in "modules-plugable/knowledge/text/likeness/services/kept-holders/protocol/response.observers.kh"
+
+tp Get_Kept_Holders ab {
+	Service
+	Observer_Request_Get_Kept_Holders
+	Observer_Response_Get_Kept_Holders
+}

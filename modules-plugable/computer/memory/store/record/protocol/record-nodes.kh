@@ -1,6 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp W32 in "modules/math/integer/unsigned-32.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+tp Container_ElementIndex in "modules/computer/adt/container/protocol/index.kh"
 tp Record_ID in "modules-plugable/computer/memory/store/record/protocol/record-id.kh"
 tp Record_NodesAnswer in "modules-plugable/computer/memory/store/record/protocol/record-nodes-answer.kh"
 
@@ -8,6 +9,6 @@ tp Record_Nodes ab {
     Record_NodesAnswer
 }
 
-tp GetID mt (self Record_Nodes) (position W32) (id Record_ID)
+tp GetID mt (self Record_Nodes) (position Container_ElementIndex) (id Record_ID)
 
-tp GetCount mt (self Record_Nodes) () (count W32)
+tp GetCount mt (self Record_Nodes) () (count NumberOfElement)

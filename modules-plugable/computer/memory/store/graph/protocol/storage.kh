@@ -78,11 +78,11 @@ type StorageServices interface {
 	// Count(labelID label_p.UUID, priority uint64) (nv storage_p.NumberOfVersion, err error_p.Error)
 	// Get(labelID label_p.UUID, priority uint64, vo storage_p.VersionOffset) (f DataModel, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	// LIST_LabelIDs_BY_ItemID(itemID record_p.UUID, offset, limit uint64) (labelIDs []label_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
-	// LIST_Priorities_BY_LabelID(itemID record_p.UUID, labelID label_p.UUID, offset, limit uint64) (priorities []uint64, nv storage_p.NumberOfVersion, err error_p.Error)
+	// LIST_LabelIDs_BY_ItemID(itemID Record_Identifier, offset, limit uint64) (labelIDs []label_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	// LIST_Priorities_BY_LabelID(itemID Record_Identifier, labelID label_p.UUID, offset, limit uint64) (priorities []uint64, nv storage_p.NumberOfVersion, err error_p.Error)
 
-	FIND_OtherIDs_BY_LabelID(labelID label_p.UUID, offset, limit uint64) (ids []record_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
-	LIST_LabelIDs_BY_OtherID(id record_p.UUID, offset, limit uint64) (labelIDs []label_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
+	FIND_OtherIDs_BY_LabelID(labelID label_p.UUID, offset, limit uint64) (ids []Record_Identifier, nv storage_p.NumberOfVersion, err error_p.Error)
+	LIST_LabelIDs_BY_OtherID(id Record_Identifier, offset, limit uint64) (labelIDs []label_p.UUID, nv storage_p.NumberOfVersion, err error_p.Error)
 
 	// FILTER_BY_Status(status Status, offset, limit uint64) (tags []string, nv storage_p.NumberOfVersion, err error_p.Error)
 }
