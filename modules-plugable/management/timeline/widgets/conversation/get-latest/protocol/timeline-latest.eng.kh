@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Get_Latest in "modules/management/timeline/services/timeline-latest/protocol/timeline-latest.kh"
+tp Get_Latest in "modules-plugable/management/timeline/widgets/conversation/get-latest/protocol/timeline-latest.kh"
 
 tp Domain mt (self Get_Latest) () (s String) {
     CharacterRun_From.FromCharacterRun("Timeline")(s, VoidError)

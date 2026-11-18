@@ -2,7 +2,7 @@
 
 tp Abstractions in "modules/computer/abstraction/protocol/abstractions.kh"
 tp Observer_Request in "modules/process/request/protocol/request.observers.kh"
-tp Observer_Request_Get_Latest in "modules/management/timeline/services/timeline-latest/protocol/request.observers.kh"
+tp Observer_Request_Get_Latest in "modules-plugable/management/timeline/widgets/conversation/get-latest/protocol/request.observers.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
 
 tp DeclaredAbstractions mt (self Observer_Request_Get_Latest) () (abstractions Abstractions) {

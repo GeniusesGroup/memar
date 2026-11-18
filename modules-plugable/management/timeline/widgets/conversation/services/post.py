@@ -11,7 +11,7 @@ from typing import Callable
 from machine.console import fail
 _m_conversation = import_module('modules-plugable.management.timeline.widgets.conversation.conversation')
 Conversation = _m_conversation.Conversation
-_m_latest = import_module('modules.management.timeline.services.timeline_latest')
+_m_latest = import_module('modules-plugable.management.timeline.widgets.conversation.get-latest.timeline_latest')
 _m_errors = import_module('modules.management.timeline.errors.placement')
 _m_bytes = import_module('modules.knowledge.text.errors.bytes')
 _m_check = import_module('modules.knowledge.text.services.text_bytes_check')
@@ -19,10 +19,10 @@ _m_structure = import_module('modules.knowledge.text.errors.structure')
 _m_task_files = import_module('modules-plugable.management.task.services.task_memory')
 AUTHOR = _m_task_files.AUTHOR
 read_facts = _m_task_files.read_facts
-_m_plan_front = import_module('modules-plugable.knowledge.documentation.plan.services.plan_front')
+_m_plan_front = import_module('modules-plugable.knowledge.documentation.plan.services.plan-front.plan_front')
 TOPIC = _m_plan_front.TOPIC
-_m_plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan_registry')
-checked_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan_label').checked_label
+_m_plan_registry = import_module('modules-plugable.knowledge.documentation.plan.services.plan-registry.plan_registry')
+checked_label = import_module('modules-plugable.knowledge.documentation.plan.widgets.plan-label.plan-label').checked_label
 _m_acts = import_module('modules.management.agency.labels.acts')
 Acts = _m_acts.Acts
 _m_task_id = import_module('modules-plugable.management.task.primitive.task_id')
@@ -33,9 +33,19 @@ FIXED_KINDS = ('message',)
 TEMPLATE_HOME = Path(__file__).resolve().parents[5] / 'knowledge' / 'documentation'
 
 
+def template_home() -> Path:
+    """Where the documentation module's templates are: beside this code in a checkout, else in the checkout the project is, because a release holds the code and none of the documents."""
+    if TEMPLATE_HOME.is_dir():
+        return TEMPLATE_HOME
+    from machine.env_location import recorded_root
+    from bundles.memar.services.location.memar_location import project_root
+    root = recorded_root() or project_root()
+    return root / 'modules-plugable' / 'knowledge' / 'documentation'
+
+
 def template_kinds() -> tuple[str, ...]:
     found = []
-    for declaration in sorted(TEMPLATE_HOME.glob('*/content_kinds.py')):
+    for declaration in sorted(template_home().glob('*/content_kinds.py')):
         spec = importlib.util.spec_from_file_location(f'content_kinds_{declaration.parent.name}', declaration)
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -81,17 +91,17 @@ def checked_refs(values, timeline: str) -> tuple:
     return tuple(found)
 
 
-def post_text(timeline: str, kind: str, content_file: str | None, author: str | None, refs=()) -> int:
+def post_text(timeline: str, kind: str, content_file: str | None, author: str | None, refs=(), provenance=None) -> int:
     held = checked_refs(refs, timeline)
     files = _m_conversation.file_timeline(timeline, held)
-    store = import_module('bundles.memar_git.services.task_store')
+    store = import_module('bundles.memar_adaptor.git.services.task_store')
     facts = read_facts(timeline) or {}
     project = (facts.get('project') or '').strip()
     word = checked_kind(kind, Path(project) if project else None)
     try:
         text = read_text(content_file)
         number, _, found = _m_latest.read_latest(files, timeline, word)
-        placed = Conversation().post(files, files, timeline, text, word, author or AUTHOR, number if found else 0)
+        placed = Conversation().post(files, files, timeline, text, word, author or AUTHOR, number if found else 0, provenance=provenance)
     except _m_structure.Text_Error_Structure_Empty as problem:
         fail(f'the text is refused, so nothing was written: {problem}')
     except BYTE_REFUSALS as problem:

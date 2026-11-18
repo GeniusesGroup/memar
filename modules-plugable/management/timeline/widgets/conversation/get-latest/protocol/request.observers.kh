@@ -1,6 +1,6 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Get_Latest_Request in "modules/management/timeline/services/timeline-latest/protocol/request.kh"
+tp Get_Latest_Request in "modules-plugable/management/timeline/widgets/conversation/get-latest/protocol/request.kh"
 
 tp Observer_Request_Get_Latest ab
 

@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Add_Has_Text in "modules/knowledge/content/services/add-has-text/protocol/add-has-text.kh"
+tp Get_Has_Text in "modules/knowledge/content/services/get-has-text/protocol/get-has-text.kh"
+tp Add_Reply_To in "modules/knowledge/content/services/add-reply-to/protocol/add-reply-to.kh"
+tp List_Reply_Of in "modules/knowledge/content/services/list-reply-of/protocol/list-reply-of.kh"
+tp List_Reply_To in "modules/knowledge/content/services/list-reply-to/protocol/list-reply-to.kh"
+tp Add_Placement in "modules/management/timeline/services/timeline-place/protocol/timeline-place.kh"
+tp Get_Latest in "modules-plugable/management/timeline/widgets/conversation/get-latest/protocol/timeline-latest.kh"
+
+tp Conversation ab {
+	Add_Has_Text
+	Get_Has_Text
+	Add_Reply_To
+	List_Reply_Of
+	List_Reply_To
+	Add_Placement
+	Get_Latest
+}
