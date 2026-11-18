@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Invoice_Identifier in "modules/economics/invoice/protocol/identifier.kh"
+
+tp Observer_Invoice_Identifier ab
+
+tp GetInvoiceIdentifier mt (self Observer_Invoice_Identifier) () (identifier Invoice_Identifier)

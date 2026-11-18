@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Language_Identifier in "modules/knowledge/language-human/protocol/identifier.kh"
+
+tp Observer_Language_Identifier ab
+
+tp GetLanguageIdentifier mt (self Observer_Language_Identifier) () (identifier Language_Identifier)

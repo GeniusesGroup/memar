@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp InvoiceItem_Identifier in "modules/economics/invoice/edges/item/protocol/identifier.kh"
+
+tp Observer_InvoiceItem_Identifier ab
+
+tp GetInvoiceItemIdentifier mt (self Observer_InvoiceItem_Identifier) () (identifier InvoiceItem_Identifier)

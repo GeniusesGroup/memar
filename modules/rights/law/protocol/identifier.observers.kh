@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Law_Identifier in "modules/rights/law/protocol/identifier.kh"
+
+tp Observer_Law_Identifier ab
+
+tp GetLawIdentifier mt (self Observer_Law_Identifier) () (identifier Law_Identifier)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp CountUnit_Identifier in "modules/identity/thing/edges/count_unit/protocol/identifier.kh"
+
+tp Observer_CountUnit_Identifier ab
+
+tp GetCountUnitIdentifier mt (self Observer_CountUnit_Identifier) () (identifier CountUnit_Identifier)

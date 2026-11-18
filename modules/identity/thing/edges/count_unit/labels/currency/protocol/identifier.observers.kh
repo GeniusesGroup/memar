@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp FinancialCurrency_Identifier in "modules/identity/thing/edges/count_unit/labels/currency/protocol/identifier.kh"
+
+tp Observer_FinancialCurrency_Identifier ab
+
+tp GetFinancialCurrencyIdentifier mt (self Observer_FinancialCurrency_Identifier) () (identifier FinancialCurrency_Identifier)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Hardware_Identifier in "modules/computer/hardware/protocol/identifier.kh"
+
+tp Observer_Hardware_Identifier ab
+
+tp GetHardwareIdentifier mt (self Observer_Hardware_Identifier) () (identifier Hardware_Identifier)

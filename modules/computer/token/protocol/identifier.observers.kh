@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Token_Identifier in "modules/computer/token/protocol/identifier.kh"
+
+tp Observer_Token_Identifier ab
+
+tp GetTokenIdentifier mt (self Observer_Token_Identifier) () (identifier Token_Identifier)

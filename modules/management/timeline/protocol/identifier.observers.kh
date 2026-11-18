@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Timeline_Identifier in "modules/management/timeline/protocol/identifier.kh"
+
+tp Observer_Timeline_Identifier ab
+
+tp GetTimelineIdentifier mt (self Observer_Timeline_Identifier) () (identifier Timeline_Identifier)

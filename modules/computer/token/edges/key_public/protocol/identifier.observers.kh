@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp PublicKey_Identifier in "modules/computer/token/edges/key_public/protocol/identifier.kh"
+
+tp Observer_PublicKey_Identifier ab
+
+tp GetPublicKeyIdentifier mt (self Observer_PublicKey_Identifier) () (identifier PublicKey_Identifier)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Ownership_Identifier in "modules/rights/ownership/protocol/identifier.kh"
+
+tp Observer_Ownership_Identifier ab
+
+tp GetOwnershipIdentifier mt (self Observer_Ownership_Identifier) () (identifier Ownership_Identifier)

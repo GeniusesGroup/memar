@@ -2,11 +2,11 @@
 
 tp ThingModel in "modules/identity/thing/protocol/model.kh"
 tp Field_Text in "modules/knowledge/text/protocol/dt-text.kh"
-tp Field_TextID in "modules/knowledge/text/protocol/dt-uuid.kh"
+tp Observer_Text_Identifier in "modules/knowledge/text/protocol/identifier.observers.kh"
 
 tp TextModel ab {
 	ThingModel
-	Field_TextID
+	Observer_Text_Identifier
 	Field_Text
 }
 

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Person_Identifier in "modules/identity/person/protocol/identifier.kh"
+
+tp Observer_Person_Identifier ab
+
+tp GetPersonIdentifier mt (self Observer_Person_Identifier) () (identifier Person_Identifier)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp KnowledgeUnit_Identifier in "modules/knowledge/knowledge_unit/protocol/identifier.kh"
+
+tp Observer_KnowledgeUnit_Identifier ab
+
+tp GetKnowledgeUnitIdentifier mt (self Observer_KnowledgeUnit_Identifier) () (identifier KnowledgeUnit_Identifier)

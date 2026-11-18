@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Table_Identifier in "modules/knowledge/label/edges/table/protocol/identifier.kh"
+
+tp Observer_Table_Identifier ab
+
+tp GetTableIdentifier mt (self Observer_Table_Identifier) () (identifier Table_Identifier)

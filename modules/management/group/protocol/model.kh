@@ -9,22 +9,3 @@ tp GroupModel ab {
 	UserModel
 	EventTarget
 }
-
-// TODO(go-migrate):
-/*
-package group_p
-
-import (
-	event_p "memar/process/event/protocol"
-
-	thing_p "org/modules/identity/thing/protocol"
-	user_p "org/modules/identity/user/protocol"
-)
-
-type Model interface {
-	thing_p.Model
-	user_p.Model
-
-	event_p.Target[DataModel]
-}
-*/

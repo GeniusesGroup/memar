@@ -1,22 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package request_p
+tp Request_Identifier in "modules/process/request/protocol/identifier.kh"
 
-import (
-	// request_p "memar/process/request/protocol"
+tp Observer_Request_Identifier ab
 
-	thing_p "org/modules/identity/thing/protocol"
-)
-
-type Field_RequestID interface {
-	RequestID() UUID
-
-	// request_p.Field_RequestID
-}
-
-type UUID thing_p.UUID
-
-// type UUID request_p.UUID
-*/
+tp GetRequestIdentifier mt (self Observer_Request_Identifier) () (identifier Request_Identifier)

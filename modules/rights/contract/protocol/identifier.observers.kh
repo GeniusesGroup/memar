@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Contract_Identifier in "modules/rights/contract/protocol/identifier.kh"
+
+tp Observer_Contract_Identifier ab
+
+tp GetContractIdentifier mt (self Observer_Contract_Identifier) () (identifier Contract_Identifier)

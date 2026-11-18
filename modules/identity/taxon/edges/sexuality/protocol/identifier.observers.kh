@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Sexuality_Identifier in "modules/identity/taxon/edges/sexuality/protocol/identifier.kh"
+
+tp Observer_Sexuality_Identifier ab
+
+tp GetSexualityIdentifier mt (self Observer_Sexuality_Identifier) () (identifier Sexuality_Identifier)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Comment_Identifier in "modules/knowledge/content/edges-loop/comment/protocol/identifier.kh"
+
+tp Observer_Comment_Identifier ab
+
+tp GetCommentIdentifier mt (self Observer_Comment_Identifier) () (identifier Comment_Identifier)

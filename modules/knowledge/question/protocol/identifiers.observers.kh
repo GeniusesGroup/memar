@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Question_Identifiers in "modules/knowledge/question/protocol/identifiers.kh"
+
+tp Observer_Question_Identifiers ab
+
+tp GetQuestionIdentifiers mt (self Observer_Question_Identifiers) () (identifiers Question_Identifiers)

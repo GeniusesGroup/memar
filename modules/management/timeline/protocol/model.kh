@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp GroupModel in "modules/management/group/protocol/model.kh"
+
+tp TimelineModel ab {
+    GroupModel
+}

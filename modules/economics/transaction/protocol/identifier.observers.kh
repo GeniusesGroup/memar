@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Transaction_Identifier in "modules/economics/transaction/protocol/identifier.kh"
+
+tp Observer_Transaction_Identifier ab
+
+tp GetTransactionIdentifier mt (self Observer_Transaction_Identifier) () (identifier Transaction_Identifier)

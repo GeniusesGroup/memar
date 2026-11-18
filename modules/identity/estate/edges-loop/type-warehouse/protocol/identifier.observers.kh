@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Warehouse_Identifier in "modules/identity/estate/edges-loop/type-warehouse/protocol/identifier.kh"
+
+tp Observer_Warehouse_Identifier ab
+
+tp GetWarehouseIdentifier mt (self Observer_Warehouse_Identifier) () (identifier Warehouse_Identifier)

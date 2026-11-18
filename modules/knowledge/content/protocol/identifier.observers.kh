@@ -1,16 +1,7 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package content_p
+tp Content_Identifier in "modules/knowledge/content/protocol/identifier.kh"
 
-import (
-	thing_p "org/modules/identity/thing/protocol"
-)
+tp Observer_Content_Identifier ab
 
-type Field_ContentUUID interface {
-	ContentUUID() UUID
-}
-
-type UUID thing_p.UUID
-*/
+tp GetContentIdentifier mt (self Observer_Content_Identifier) () (identifier Content_Identifier)

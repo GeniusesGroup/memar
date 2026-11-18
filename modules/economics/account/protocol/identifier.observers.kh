@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Account_Identifier in "modules/economics/account/protocol/identifier.kh"
+
+tp Observer_Account_Identifier ab
+
+tp GetAccountIdentifier mt (self Observer_Account_Identifier) () (identifier Account_Identifier)

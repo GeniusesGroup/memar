@@ -1,20 +1,9 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-// TODO(go-migrate):
-/*
-package timeline_p
+tp Identifier in "modules/identity/identifier/protocol/identifier.kh"
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 
-import (
-	group_p "org/modules/management/group/protocol"
-)
-
-type Field_TimelineID interface {
-	TimelineID() UUID
+tp Timeline_Identifier ab {
+    Identifier
+    Container_Element
 }
-
-type Field_TimelinesID interface {
-	TimelinesID() []UUID
-}
-
-type UUID group_p.UUID
-*/

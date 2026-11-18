@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Object_Identifiers in "modules/identity/object/protocol/identifiers.kh"
+
+tp Observer_Object_Identifiers ab
+
+tp GetObjectIdentifiers mt (self Observer_Object_Identifiers) () (identifiers Object_Identifiers)

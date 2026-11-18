@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Subject_Identifiers in "modules/identity/thing/edges-loop/subject/protocol/identifiers.kh"
+
+tp Observer_Subject_Identifiers ab
+
+tp GetSubjectIdentifiers mt (self Observer_Subject_Identifiers) () (identifiers Subject_Identifiers)

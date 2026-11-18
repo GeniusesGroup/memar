@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Case_Identifier in "modules/rights/case/protocol/identifier.kh"
+
+tp Observer_Case_Identifier ab
+
+tp GetCaseIdentifier mt (self Observer_Case_Identifier) () (identifier Case_Identifier)

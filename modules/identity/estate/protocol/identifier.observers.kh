@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Estate_Identifier in "modules/identity/estate/protocol/identifier.kh"
+
+tp Observer_Estate_Identifier ab
+
+tp GetEstateIdentifier mt (self Observer_Estate_Identifier) () (identifier Estate_Identifier)

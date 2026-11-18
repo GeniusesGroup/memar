@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Calendar_Identifier in "modules/management/calendar/protocol/identifier.kh"
+
+tp Observer_Calendar_Identifier ab
+
+tp GetCalendarIdentifier mt (self Observer_Calendar_Identifier) () (identifier Calendar_Identifier)

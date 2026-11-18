@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Department_Identifier in "modules/management/department/protocol/identifier.kh"
+
+tp Observer_Department_Identifier ab
+
+tp GetDepartmentIdentifier mt (self Observer_Department_Identifier) () (identifier Department_Identifier)

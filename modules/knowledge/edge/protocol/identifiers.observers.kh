@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Edge_Identifiers in "modules/knowledge/edge/protocol/identifiers.kh"
+
+tp Observer_Edge_Identifiers ab
+
+tp GetEdgeIdentifiers mt (self Observer_Edge_Identifiers) () (identifiers Edge_Identifiers)
