@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Replace_Labels_Request in "modules/knowledge/label/services/replace-labels/protocol/request.kh"
+
+tp Observer_Request_Replace_Labels ab
+
+tp GetRequest mt (self Observer_Request_Replace_Labels) () (value Replace_Labels_Request)

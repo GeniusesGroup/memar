@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Get_Rank in "modules-plugable/identity/thing/priority/services/get-rank/protocol/get-rank.kh"
+
+tp Domain mt (self Get_Rank) () (s String) {
+	CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Get_Rank) () (s String) {
+	CharacterRun_From.FromCharacterRun("Answers the rank a thing carries")(s, VoidError)
+}
+
+tp Overview mt (self Get_Rank) () (s String) {
+	CharacterRun_From.FromCharacterRun("Found is false when the thing carries no rank. It changes nothing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Get_Rank) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Get_Rank) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

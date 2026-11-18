@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
+tp Label in "modules/knowledge/label/protocol/label.kh"
+
+tp Status_Word ab {
+	Container_Element
+	Label
+}

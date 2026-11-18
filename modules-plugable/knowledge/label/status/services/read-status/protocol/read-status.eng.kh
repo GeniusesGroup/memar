@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Status_Read in "modules-plugable/knowledge/label/status/services/read-status/protocol/read-status.kh"
+
+tp Domain mt (self Status_Read) () (s String) {
+	CharacterRun_From.FromCharacterRun("Status")(s, VoidError)
+}
+
+tp Summary mt (self Status_Read) () (s String) {
+	CharacterRun_From.FromCharacterRun("Answers the status word a thing carries")(s, VoidError)
+}
+
+tp Overview mt (self Status_Read) () (s String) {
+	CharacterRun_From.FromCharacterRun("The word is the one of the allowed words the thing carries. Found is false when it carries none of them. It changes nothing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Status_Read) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Status_Read) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

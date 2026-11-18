@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Attach in "modules/knowledge/label/services/attach-label/protocol/attach-label.kh"
+
+tp Domain mt (self Label_Attach) () (s String) {
+	CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Attach) () (s String) {
+	CharacterRun_From.FromCharacterRun("Puts a label on a thing")(s, VoidError)
+}
+
+tp Overview mt (self Label_Attach) () (s String) {
+	CharacterRun_From.FromCharacterRun("The thing keeps every label it carries and carries the given label too. A thing that already carries it is left as it is and nothing is written. It knows no kind of thing and no file.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Attach) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Attach) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

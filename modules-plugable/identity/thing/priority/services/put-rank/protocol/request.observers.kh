@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Put_Rank_Request in "modules-plugable/identity/thing/priority/services/put-rank/protocol/request.kh"
+
+tp Observer_Request_Put_Rank ab
+
+tp GetRequest mt (self Observer_Request_Put_Rank) () (value Put_Rank_Request)

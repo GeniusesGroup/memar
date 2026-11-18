@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Status_Words in "modules-plugable/knowledge/label/status/protocol/status-words.kh"
+
+tp Observer_Only_From ab
+
+tp GetOnlyFrom mt (self Observer_Only_From) () (words Status_Words)

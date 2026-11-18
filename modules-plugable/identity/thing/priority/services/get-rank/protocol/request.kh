@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Thing_Identifier in "modules/identity/thing/protocol/identifier.observers.kh"
+
+tp Get_Rank_Request ab {
+	Process_Request
+	Observer_Thing_Identifier
+}

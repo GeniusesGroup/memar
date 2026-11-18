@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Get_Rank in "modules-plugable/identity/thing/priority/services/get-rank/protocol/request.observers.kh"
+tp Observer_Response_Get_Rank in "modules-plugable/identity/thing/priority/services/get-rank/protocol/response.observers.kh"
+
+tp Get_Rank ab {
+	Service
+	Observer_Request_Get_Rank
+	Observer_Response_Get_Rank
+}

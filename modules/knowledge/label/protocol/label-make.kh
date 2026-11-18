@@ -1,0 +1,8 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Labels in "modules/knowledge/label/protocol/labels.kh"
+
+tp Label_Make ab
+
+tp Make mt (self Label_Make) (held Labels) (wanted Labels, changed Boolean)

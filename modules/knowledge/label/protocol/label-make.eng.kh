@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Make in "modules/knowledge/label/protocol/label-make.kh"
+
+tp Domain mt (self Label_Make) () (s String) {
+	CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Make) () (s String) {
+	CharacterRun_From.FromCharacterRun("Turns the labels a thing holds into the labels it should hold")(s, VoidError)
+}
+
+tp Overview mt (self Label_Make) () (s String) {
+	CharacterRun_From.FromCharacterRun("It is pure: it reads only the labels it is given, and the write that uses it runs it again when the held labels changed under that write.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Make) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Make) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

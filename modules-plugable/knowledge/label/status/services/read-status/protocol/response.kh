@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Response in "modules/process/response/protocol/response.kh"
+tp Status_Word in "modules-plugable/knowledge/label/status/protocol/status-word.kh"
+tp Observer_Status_Found in "modules-plugable/knowledge/label/status/protocol/status-found.observers.kh"
+
+tp Status_Read_Response ab {
+	Process_Response
+	Status_Word
+	Observer_Status_Found
+}

@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Replace_Labels in "modules/knowledge/label/services/replace-labels/protocol/replace-labels.kh"
+
+tp Domain mt (self Replace_Labels) () (s String) {
+	CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Replace_Labels) () (s String) {
+	CharacterRun_From.FromCharacterRun("Replaces the labels a thing carries")(s, VoidError)
+}
+
+tp Overview mt (self Replace_Labels) () (s String) {
+	CharacterRun_From.FromCharacterRun("The thing carries the labels the request names, and no others. When the held labels changed under the write, the write reads again and writes again, so no caller races. A refusal writes nothing.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Replace_Labels) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Replace_Labels) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

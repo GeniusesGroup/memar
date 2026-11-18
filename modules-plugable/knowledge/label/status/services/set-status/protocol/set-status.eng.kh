@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Status_Set in "modules-plugable/knowledge/label/status/services/set-status/protocol/set-status.kh"
+
+tp Domain mt (self Status_Set) () (s String) {
+	CharacterRun_From.FromCharacterRun("Status")(s, VoidError)
+}
+
+tp Summary mt (self Status_Set) () (s String) {
+	CharacterRun_From.FromCharacterRun("Sets the status word a thing carries")(s, VoidError)
+}
+
+tp Overview mt (self Status_Set) () (s String) {
+	CharacterRun_From.FromCharacterRun("The thing carries the named word, which is one of the allowed words, and it drops any other allowed word it carried. When only-from is named, the write is refused unless the thing already carries one of those words. It changes no label outside the allowed words.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Status_Set) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Status_Set) () (s String) {
+	CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

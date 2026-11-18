@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Replace_Labels in "modules/knowledge/label/services/replace-labels/protocol/request.observers.kh"
+tp Observer_Response_Replace_Labels in "modules/knowledge/label/services/replace-labels/protocol/response.observers.kh"
+
+tp Replace_Labels ab {
+	Service
+	Observer_Request_Replace_Labels
+	Observer_Response_Replace_Labels
+}

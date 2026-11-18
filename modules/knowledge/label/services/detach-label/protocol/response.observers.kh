@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Label_Detach_Response in "modules/knowledge/label/services/detach-label/protocol/response.kh"
+
+tp Observer_Response_Label_Detach ab
+
+tp GetResponse mt (self Observer_Response_Label_Detach) () (value Label_Detach_Response)

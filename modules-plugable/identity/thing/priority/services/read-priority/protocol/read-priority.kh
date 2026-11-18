@@ -1,14 +1,18 @@
 /* For license and copyright information please see the LEGAL file in the code repository */
 
-tp Service in "modules/process/service/protocol/service.kh"
-tp LabelStore in "modules/knowledge/label/protocol/label-store.kh"
-tp RankStore in "modules-plugable/identity/thing/priority/protocol/rank-store.kh"
-tp MemoryAddress in "modules/computer/memory/address/protocol/address.kh"
-tp Priority_Rank in "modules-plugable/identity/thing/priority/protocol/priority-rank.kh"
 tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Get_Rank in "modules-plugable/identity/thing/priority/services/get-rank/protocol/get-rank.kh"
+tp Get_Labels in "modules/knowledge/label/services/get-labels/protocol/get-labels.kh"
+tp Observer_Thing_Identifier in "modules/identity/thing/protocol/identifier.observers.kh"
+tp Priority_Rank in "modules-plugable/identity/thing/priority/protocol/priority-rank.kh"
+tp Widget in "modules/computer/ui/widget/protocol/widget.kh"
 
 tp Priority_Read ab {
-	Service
+	Widget
+	Get_Labels
+	Get_Rank
+	Observer_Thing_Identifier
 }
 
-tp Read mt (self Priority_Read) (labels LabelStore, ranks RankStore, thing MemoryAddress) (rank Priority_Rank, found Boolean)
+tp Read mt (self Priority_Read) () (rank Priority_Rank, found Boolean)

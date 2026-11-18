@@ -1,0 +1,15 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Thing_Identifier in "modules/identity/thing/protocol/identifier.observers.kh"
+tp Status_Word in "modules-plugable/knowledge/label/status/protocol/status-word.kh"
+tp Observer_Allowed_Statuses in "modules-plugable/knowledge/label/status/protocol/allowed-statuses.observers.kh"
+tp Observer_Only_From in "modules-plugable/knowledge/label/status/protocol/only-from.observers.kh"
+
+tp Status_Set_Request ab {
+	Process_Request
+	Observer_Thing_Identifier
+	Status_Word
+	Observer_Allowed_Statuses
+	Observer_Only_From
+}
