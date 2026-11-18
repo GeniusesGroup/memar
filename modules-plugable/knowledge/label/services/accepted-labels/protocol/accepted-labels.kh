@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Label_Accepted in "modules-plugable/knowledge/label/services/accepted-labels/protocol/request.observers.kh"
+tp Observer_Response_Label_Accepted in "modules-plugable/knowledge/label/services/accepted-labels/protocol/response.observers.kh"
+
+tp Label_Accepted ab {
+	Service
+	Observer_Request_Label_Accepted
+	Observer_Response_Label_Accepted
+}

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Task_MigrateRelations_Response in "modules-plugable/management/task/widgets/migrate-relations/protocol/response.kh"
+
+tp Observer_Response_Task_MigrateRelations ab
+
+tp GetResponse mt (self Observer_Response_Task_MigrateRelations) () (value Task_MigrateRelations_Response)

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Label_Accepted_Response in "modules-plugable/knowledge/label/services/accepted-labels/protocol/response.kh"
+
+tp Observer_Response_Label_Accepted ab
+
+tp GetResponse mt (self Observer_Response_Label_Accepted) () (value Label_Accepted_Response)

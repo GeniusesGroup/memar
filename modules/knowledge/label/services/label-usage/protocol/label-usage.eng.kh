@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Label_Usage in "modules/knowledge/label/services/label-usage/protocol/label-usage.kh"
+
+tp Domain mt (self Label_Usage) () (s String) {
+    CharacterRun_From.FromCharacterRun("Label")(s, VoidError)
+}
+
+tp Summary mt (self Label_Usage) () (s String) {
+    CharacterRun_From.FromCharacterRun("Counts how many times a label occurs among labels")(s, VoidError)
+}
+
+tp Overview mt (self Label_Usage) () (s String) {
+    CharacterRun_From.FromCharacterRun("The number of times the label occurs among the given label identifiers. It is pure and keeps nothing; reading the identifiers out of the things that carry them is a widget's.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Label_Usage) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Label_Usage) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

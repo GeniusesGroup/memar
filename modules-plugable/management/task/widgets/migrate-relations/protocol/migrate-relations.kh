@@ -1,0 +1,19 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Boolean in "modules/math/boolean/protocol/boolean.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+tp Task_WriteBlock in "modules-plugable/management/task/services/write-block/protocol/write-block.kh"
+tp Task_WritePart in "modules-plugable/management/task/services/write-part/protocol/write-part.kh"
+tp Widget in "modules/computer/ui/widget/protocol/widget.kh"
+tp Observer_Request_Task_MigrateRelations in "modules-plugable/management/task/widgets/migrate-relations/protocol/request.observers.kh"
+tp Observer_Response_Task_MigrateRelations in "modules-plugable/management/task/widgets/migrate-relations/protocol/response.observers.kh"
+
+tp Task_MigrateRelations ab {
+	Widget
+	Task_WritePart
+	Task_WriteBlock
+	Observer_Request_Task_MigrateRelations
+	Observer_Response_Task_MigrateRelations
+}
+
+tp Compare mt (self Task_MigrateRelations) (apply Boolean) (err Error)

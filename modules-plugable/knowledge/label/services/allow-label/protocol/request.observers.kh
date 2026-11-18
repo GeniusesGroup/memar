@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Label_Allow_Request in "modules-plugable/knowledge/label/services/allow-label/protocol/request.kh"
+
+tp Observer_Request_Label_Allow ab
+
+tp GetRequest mt (self Observer_Request_Label_Allow) () (value Label_Allow_Request)

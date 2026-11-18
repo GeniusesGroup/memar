@@ -1,0 +1,21 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Task_MigrateRelations in "modules-plugable/management/task/widgets/migrate-relations/protocol/migrate-relations.kh"
+
+tp Domain mt (self Task_MigrateRelations) () (s String) {
+    CharacterRun_From.FromCharacterRun("Task")(s, VoidError)
+}
+tp Summary mt (self Task_MigrateRelations) () (s String) {
+    CharacterRun_From.FromCharacterRun("Compares task relations with a migration snapshot")(s, VoidError)
+}
+tp Overview mt (self Task_MigrateRelations) () (s String) {
+    CharacterRun_From.FromCharacterRun("Compares both sides of the task's graph relations with the resolved task identifiers. It reports extras and asymmetry without removing them, and adds missing relations only when both sides agree. The caller supplies a stable snapshot and verifies it again before cutover.")(s, VoidError)
+}
+tp UserActionNote mt (self Task_MigrateRelations) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+tp DevActionNote mt (self Task_MigrateRelations) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
