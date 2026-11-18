@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Text_Index_Score_Response in "modules-plugable/knowledge/text/retrieval/services/score-text-index/protocol/response.kh"
+
+tp Observer_Response_Text_Index_Score ab
+
+tp GetResponse mt (self Observer_Response_Text_Index_Score) () (value Text_Index_Score_Response)

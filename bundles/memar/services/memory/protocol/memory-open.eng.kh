@@ -3,7 +3,7 @@
 tp String in "modules/computer/codec/string/protocol/string.kh"
 tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
 vr VoidError in "modules/process/error/protocol/void-error.kh"
-tp Memar_Memory_Open in "bundles/memar/services/memory/memory-open.kh"
+tp Memar_Memory_Open in "bundles/memar/services/memory/protocol/memory-open.kh"
 
 tp Domain mt (self Memar_Memory_Open) () (s String) {
     CharacterRun_From.FromCharacterRun("Memar Memory")(s, VoidError)

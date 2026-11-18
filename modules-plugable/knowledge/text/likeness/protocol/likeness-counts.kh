@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Observer_Text_Count in "modules-plugable/knowledge/text/likeness/protocol/text-count.observers.kh"
+tp Likeness_Frequencies in "modules-plugable/knowledge/text/likeness/protocol/frequencies.kh"
+
+tp Likeness_Counts ab {
+	Observer_Text_Count
+	Likeness_Frequencies
+}

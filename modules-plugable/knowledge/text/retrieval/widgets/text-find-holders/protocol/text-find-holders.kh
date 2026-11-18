@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Error in "modules/process/error/protocol/error.kh"
+tp Text in "modules/knowledge/text/protocol/dt-text.kh"
+tp Text_Field_Preds in "modules-plugable/knowledge/text/retrieval/protocol/text-field-preds.kh"
+tp Text_Index_Hits in "modules-plugable/knowledge/text/retrieval/services/score-text-index/protocol/text-index-hits.kh"
+tp Text_Index_Score_Service in "modules-plugable/knowledge/text/retrieval/services/score-text-index/protocol/score-text-index.kh"
+tp Observer_Text_Scope in "modules/knowledge/text/protocol/scope.observers.kh"
+tp Text_Holders in "modules/knowledge/text/protocol/text-holders.kh"
+tp NumberOfElement in "modules/computer/adt/container/protocol/length.kh"
+
+tp Text_Find_Holders ab {
+	Text_Index_Score_Service
+	Observer_Text_Scope
+}
+
+tp Find mt (self Text_Find_Holders) (text Text, preds Text_Field_Preds, excluded Text_Holders, limit NumberOfElement) (hits Text_Index_Hits, err Error)

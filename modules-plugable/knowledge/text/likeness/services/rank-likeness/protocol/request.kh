@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Text_Scope in "modules/knowledge/text/protocol/scope.observers.kh"
+tp Observer_Likeness_Signature in "modules-plugable/knowledge/text/likeness/protocol/signature.observers.kh"
+tp Observer_Excluded_Holders in "modules/knowledge/text/protocol/excluded-holders.observers.kh"
+tp Observer_Limit in "modules/computer/adt/container/protocol/pagination.observers.kh"
+tp Observer_Min_Likeness in "modules-plugable/knowledge/text/likeness/protocol/min-likeness.observers.kh"
+
+tp Likeness_Rank_Request ab {
+	Process_Request
+	Observer_Text_Scope
+	Observer_Likeness_Signature
+	Observer_Excluded_Holders
+	Observer_Limit
+	Observer_Min_Likeness
+}

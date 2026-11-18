@@ -1,0 +1,11 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Service in "modules/process/service/protocol/service.kh"
+tp Observer_Request_Get_Depends_On in "modules-plugable/management/task/services/task-depends-read/protocol/request.observers.kh"
+tp Observer_Response_Get_Depends_On in "modules-plugable/management/task/services/task-depends-read/protocol/response.observers.kh"
+
+tp Get_Depends_On ab {
+	Service
+	Observer_Request_Get_Depends_On
+	Observer_Response_Get_Depends_On
+}

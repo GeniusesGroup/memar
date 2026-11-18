@@ -1,0 +1,9 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Process_Request in "modules/process/request/protocol/request.kh"
+tp Observer_Text_Scope in "modules/knowledge/text/protocol/scope.observers.kh"
+
+tp Likeness_Compact_Request ab {
+	Process_Request
+	Observer_Text_Scope
+}

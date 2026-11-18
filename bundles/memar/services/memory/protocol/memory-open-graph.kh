@@ -4,11 +4,11 @@ tp Error in "modules/process/error/protocol/error.kh"
 tp Service in "modules/process/service/protocol/service.kh"
 tp Graph_Store in "modules-plugable/computer/memory/store/graph/protocol/graph-store.kh"
 tp Record_Needs in "modules-plugable/computer/memory/store/record/protocol/record-needs.kh"
-tp Field_ProjectUUID in "modules-plugable/management/project/protocol/dt-uuid.kh"
+tp Observer_Project_Identifier in "modules-plugable/management/task/labels/project/protocol/identifier.observers.kh"
 
 tp Memar_Memory_Open_Graph ab {
     Service
-    Field_ProjectUUID
+    Observer_Project_Identifier
 }
 
 tp OpenGraph mt (self Memar_Memory_Open_Graph) (needs Record_Needs) (graph Graph_Store, err Error)

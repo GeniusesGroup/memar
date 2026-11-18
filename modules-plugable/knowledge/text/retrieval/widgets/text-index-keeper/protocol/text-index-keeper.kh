@@ -1,0 +1,17 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp EventListener in "modules/process/event/protocol/event-listener.kh"
+tp Text_Holders_Of_Text in "modules/knowledge/text/protocol/text-holders-of-text.kh"
+tp Text_To_Labels in "modules/knowledge/text/widgets/text-to-labels/protocol/text-to-labels.kh"
+tp Text_Index_Upsert_Labels in "modules-plugable/knowledge/text/retrieval/services/upsert-text-index-labels/protocol/upsert-text-index-labels.kh"
+tp Text_Index_Label_Postings in "modules-plugable/knowledge/text/retrieval/services/upsert-text-index-labels/protocol/label-postings.kh"
+tp Retire_Text in "modules-plugable/knowledge/text/retrieval/services/retire-text/protocol/retire-text.kh"
+
+tp Text_Index_Keeper ab {
+	EventListener
+	Text_Holders_Of_Text
+	Text_To_Labels
+	Text_Index_Upsert_Labels
+	Text_Index_Label_Postings
+	Retire_Text
+}

@@ -1,0 +1,7 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp Likeness_Compact_Request in "modules-plugable/knowledge/text/likeness/services/compact-likeness/protocol/request.kh"
+
+tp Observer_Request_Likeness_Compact ab
+
+tp GetRequest mt (self Observer_Request_Likeness_Compact) () (value Likeness_Compact_Request)
