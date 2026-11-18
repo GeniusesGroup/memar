@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Readable in "modules/identity/identifier/protocol/identifier.codec.readable.kh"
+
+tp Domain mt (self Identifier_Readable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Readable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Optional reversible readable Identifier")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Readable) () (s String) {
+    CharacterRun_From.FromCharacterRun("This identifier-specific Stringer profile is a technical interchange spelling, distinct from localized display and from the binary Codec inherited through Identifier.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Readable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Readable) () (s String) {
+    CharacterRun_From.FromCharacterRun("ToString writes exactly YYYYMMDD-T followed by HHMMSS, a dot, nine nanosecond digits, Z, a hyphen and sixteen uppercase hexadecimal discriminator digits. Calendar is proleptic Gregorian, timezone UTC, digits ASCII, and the epoch is the shared Unix/POSIX coordinate. An example is 20261117-T124949.123456789Z-17BA988ED5072891. Every unsigned128 value, including zero, has one spelling; all unsigned64 time coordinates fit the four-digit-year profile. FromString accepts only that canonical forty-four-character spelling with a valid Gregorian date and time, no leap-second label, whitespace, offsets, lowercase hex, shortened fraction or overflow beyond unsigned64 nanoseconds. It refuses with Identifier_Error_NotDecodable without publishing. A filled receiver refuses AlreadyInitialized before parsing; an empty ToString refuses NotInitialized. Successful parsing fills once without minting and retains every bit; it never applies current-time admission. Locale-specific or Persian-calendar display is a different optional conversion and does not alter binary epoch or this durable spelling. The Python Gregorian conversion delegates to the standard-library calendar binding and claims no general calendar realization owned by Identifier; general civil/calendar conversion remains Time's concern. Pure host encode_readable and decode_readable use complete immutable sixteen-octet identities; bytes length alone never establishes that an arbitrary memory address represents Identifier. This specific companion is not a generic registered format module and does not claim a format-adjunct generator.")(s, VoidError)
+}

@@ -16,6 +16,6 @@ The shared [Identifier](protocol/identifier.kh) protocol keeps identity and its 
 ### Definition and realization
 A declared Type retains its identity in its authoritative definition. SDKs and implementations of that published contract derive it from that definition. Selecting a destination selects the organization serving the contract.
 ### Presentation
-Display conventions serve the receiving context. Dedicated conversion modules let human-facing and machine-facing representations evolve without changing the identity. Concrete capsules may implement those conversion contracts independently.
+[The binary codec](protocol/identifier.codec.binary.kh) makes retained identity transferable through the shared Codec capability. [The optional readable companion](protocol/identifier.codec.readable.kh) serves reversible technical interchange. Localized display remains a receiving-context choice, so changing a calendar or audience leaves the retained identity unchanged. Native reference bindings live in [value.py](value.py) and [readable.py](readable.py). Consumers reuse this owner conversion when they already know the value represents an Identifier.
 ### Admission
 The delivered SDK brings the shared declarations into the consuming bundle. [Types](../../computer/types/protocol/types.kh) supplies the catalog boundary used when the bundle checks its SDK dependency closure. Conflict checking protects the assembled executable and complements the generation contract.

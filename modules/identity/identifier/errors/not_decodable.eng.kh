@@ -1,0 +1,26 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Identifier_Error_NotDecodable in "modules/identity/identifier/errors/not_decodable.kh"
+
+tp Domain mt (self Identifier_Error_NotDecodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier")(s, VoidError)
+}
+
+tp Summary mt (self Identifier_Error_NotDecodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("Identifier representation cannot be decoded")(s, VoidError)
+}
+
+tp Overview mt (self Identifier_Error_NotDecodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("The representation is incomplete, malformed, noncanonical or outside the complete identity range. Refuse without publishing a partial identity. This owner-specific refusal maps the Codec not-decodable meaning; it is not a public capsule composition.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Identifier_Error_NotDecodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Identifier_Error_NotDecodable) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

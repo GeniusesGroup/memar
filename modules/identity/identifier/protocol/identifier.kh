@@ -7,7 +7,10 @@ tp Error in "modules/process/error/protocol/error.kh"
 tp Time in "modules/time/protocol/time.kh"
 tp Unsigned in "modules/math/integer/protocol/unsigned.kh"
 
+tp Identifier_BinaryCodec in "modules/identity/identifier/protocol/identifier.codec.binary.kh"
+
 tp Identifier ab {
+    Identifier_BinaryCodec
     Type
     Empty
 }

@@ -6,6 +6,8 @@ from .errors.generation import Identifier_Error_InvalidGeneratorInput
 from .errors.already_initialized import Identifier_Error_AlreadyInitialized
 from .errors.not_initialized import Identifier_Error_NotInitialized
 from .errors.invalid_value import Identifier_Error_InvalidValue
+from .errors.not_decodable import Identifier_Error_NotDecodable
+from .errors.buffer_failure import Identifier_Error_BufferFailure
 
 MAXIMUM = (1 << 128) - 1
 
@@ -52,6 +54,34 @@ class IdentifierValue:
             if self._snapshot is None:
                 raise Identifier_Error_NotInitialized()
             return self._snapshot[0]
+
+    def get_serialization_length(self):
+        return 16
+
+    def get_media_type(self):
+        return "application/octet-stream"
+
+    def encode(self, destination):
+        data = self.read_value().to_bytes(16, "big")
+        offset = 0
+        while offset < len(data):
+            written = destination.write(data[offset:])
+            if type(written) is not int or not 0 < written <= len(data) - offset:
+                raise Identifier_Error_BufferFailure()
+            offset += written
+
+    def decode(self, source):
+        with self._lock:
+            if self._snapshot is not None:
+                raise Identifier_Error_AlreadyInitialized()
+            data = bytearray()
+            while len(data) < 16:
+                remaining = 16 - len(data)
+                part = source.read(remaining)
+                if type(part) is not bytes or not 0 < len(part) <= remaining:
+                    raise Identifier_Error_NotDecodable()
+                data.extend(part)
+            self._publish(int.from_bytes(data, "big"))
 
     def get_discriminator(self):
         return self.read_value() & ((1 << 64) - 1)
