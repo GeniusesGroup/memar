@@ -13,7 +13,7 @@ Implements is the module that owns how a type declares, for tools, which abstrac
 Some abstractions expand to many methods. Scaffolding an incomplete capsule needs a reliable intent marker *before* the capsule satisfies the target structurally — satisfaction alone has nothing to detect on an unfinished type. The language adds no intent keyword; a capsule implements `DeclaredAbstractions`, whose influenced [`Abstractions`](../protocol/abstractions.kh) value receives each claimed target by `Push` from [`Container_Push`](../../adt/container/protocol/push.kh) ([Type → Implementation intent](../../type/type.md#implementation-intent)).
 
 ## What it is not
-It is not runtime type safety, sealing, or a substitute for structural satisfaction. It is not composition of `Abstraction_Implements` (or of the target) into the capsule body. Organizations may lint against branching on the declaration at runtime; the contract remains with tooling.
+It is not runtime type safety, sealing, or a substitute for structural satisfaction. It is not composition of `Abstraction_Implements` (or of the target) into the capsule body. Organizations may lint against branching on the declaration at runtime; the contract remains with tooling. The influenced `Abstractions` instance is obtained by the caller before `Push`; tooling-facing bodies type `Error` like any other call and may hand `VoidError` when they disregard that path ([Intent via Abstraction_Implements](rules/intent-via-implements/intent-via-implements.md)).
 
 ## Where the contract lives
 - Protocol: [`protocol/implements.kh`](protocol/implements.kh). The returned collection type is owned with Abstraction: [`../protocol/abstractions.kh`](../protocol/abstractions.kh) (composes `Container_Push`).

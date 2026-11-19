@@ -2,15 +2,6 @@
 
 tp String in "modules/computer/codec/string/protocol/string.kh"
 
-// TODO::: Do really need this here? be consider HTTP is not part of `memar` and it is bad practice to translate errors to status code
+// Warning: HTTP status mapping is not a memar-owned concern; keeping this surface is a known smell.
 tp HTTP_StatusCode ab
 tp Error_HTTP_StatusCode mt (self HTTP_StatusCode) () (s String)
-
-// TODO(go-migrate):
-/*
-package error_p
-
-// Belows are some other error behaviors that Errors capsule CAN implement,
-// but any error package can introduce new behaviors for any purpose.
-
-*/

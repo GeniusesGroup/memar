@@ -26,7 +26,7 @@ This document answers each of these directly, recording the reasoning and the al
 ### Methodology
 This document is the consolidation of two documents previously maintained in parallel: the *Error Abstraction* document (composition, identity, tooling-facing declaration, optional capability interfaces) and the *Error vs. Log* document (the Capture → Persist → Re-express translation discipline). The two were merged because they answer two halves of the same question — what an `Error` is, and what an `Error` is allowed to do when it leaves its origin layer — and forcing a reader to load two documents to assemble a single mental model produced the same scattering problem this project's documentation specification was written to eliminate.
 
-The content was arrived at through: sustained design discussion across multiple working chats, with each proposed change argued for and against rather than accepted on first suggestion; rejection of an earlier `Equivalence[Error]` method on the grounds that it duplicated the `GetTypeID()` comparison; rejection of a sealed-interface marker pattern after evidence accumulated that it bought no real guarantee beyond a plain exported method; correction of a host-language-specific realization detail that had been incorrectly generalized into the abstraction's canonical composition (the `ADT` family narrowing); and direct testing of the boundary-translation rule against a concrete worked example (the financial-transaction service used in the [Boundary translation](#boundary-translation) topic below) to confirm the three-step Capture → Persist → Re-express pattern actually resolves the two failure modes the rule was written to prevent.
+The content was arrived at through: sustained design discussion across multiple working chats, with each proposed change argued for and against rather than accepted on first suggestion; rejection of an earlier `Equivalence[Error]` method on the grounds that it duplicated the complete Type UUID comparison; rejection of a sealed-interface marker pattern after evidence accumulated that it bought no real guarantee beyond a plain exported method; correction of a host-language-specific realization detail that had been incorrectly generalized into the abstraction's canonical composition (the `ADT` family narrowing); and direct testing of the boundary-translation rule against a concrete worked example (the financial-transaction service used in the [Boundary translation](#boundary-translation) topic below) to confirm the three-step Capture → Persist → Re-express pattern actually resolves the two failure modes the rule was written to prevent.
 
 ## Explanation
 
@@ -40,10 +40,10 @@ In a realization that makes forwarding explicit, each concrete error's forwardin
 #### The four composed abstractions
 Each embedded abstraction contributes a specific, non-overlapping responsibility to `Error`'s contract:
 
-- **`Type`** supplies the type-level identity machinery — `Field_ID` (whose value is what `GetTypeID()` returns), `Field_LifeCycle` (recording whether a type is `Experimental`, `Stable`, `Deprecated`, or `EndOfLife`), the `Detail` and `Quiddity` text bundles, and the optional `ExpireInFavorOf` pointer discussed under [Identity and equality](#identity-and-equality). Without `Type`, `Error` would have no canonical identifier to compare across processes.
+- **`Type`** supplies the type-level identity machinery — the complete UUID exposed by `Identifiers`, `Field_LifeCycle` (recording whether a type is `Experimental`, `Stable`, `Deprecated`, or `EndOfLife`), the `Detail` and `Quiddity` text bundles, and the optional `ExpireInFavorOf` pointer discussed under [Identity and equality](#identity-and-equality). Without `Type`, `Error` would have no canonical identifier to compare across processes.
 - **`Field_MediaType`** supplies the serialization envelope label used when an error's `Type_Identifier` (and nothing else) is transmitted across a network boundary. It is what allows a remote receiver to dispatch on the *kind* of error without needing the full concrete type's method set in scope.
 - **`ADT`** supplies the null-state family (`IsNil` / `IsNull` / `IsEmpty`). The canonical `Error` contract supplies all three; the question of what `IsNull`/`IsEmpty` should mean for a value whose entire purpose is identity (rather than data) is left to a dedicated ADT session and tracked in this document's handoff.
-- **`ImplementsError`** is the tooling-facing declaration described in its own topic below — a single plain method that lets a code generator discover intent before a capsule structurally qualifies as an `Error`.
+- **Implementation intent** is not part of `Error`'s composed contract. A capsule that wants tooling to discover its intent to become an `Error` before structural satisfaction is complete implements `DeclaredAbstractions` and `Push`es `Error`, as [`Abstraction_Implements`](../../computer/abstraction/implements/implements.md) requires — see [Implementation intent](#implementation-intent--tooling-facing-not-a-safety-mechanism).
 
 ### Optional capability interfaces
 A concrete error MAY additionally implement any of a small set of independent, orthogonal capability contracts. Generic infrastructure can recognize those capabilities through the realization's type system; the capability set remains separate from `Error`'s mandatory contract. The Khayyam source below is one realization example:
@@ -103,7 +103,7 @@ Two distinct boundary disciplines apply to `Error`, and they are easy to conflat
 #### What may cross a process or network boundary
 Only `Type_Identifier` crosses a network or process boundary. A concrete error's own fields, if it has any, are either (a) purely local — consumed before a call ever reaches a boundary (for example, SDK-side field validation, never serialized), or (b) routed to a Log Event through the Capture → Persist → Re-express discipline described below — never transmitted as part of the `Error` value itself.
 
-What arrives on the other side of that boundary is, concretely, a numeric identifier — not a human-language message. A single-locale text string is the wrong currency for a contract crossing machines and organizations: it cannot be compared or dispatched on reliably, it forces every receiver into string matching, and it binds the wire format to one rendering of one audience's vocabulary. An integer identifier is stable, locale-independent, cheap to compare, and lets each receiving side resolve the identifier into its own local text bundle (the `Detail` fields above) for whichever audience it faces. The text an error carries belongs at the ends of the wire, resolved per audience; the identifier is what travels.
+The receiver reads the complete declared Type identity through the shared identifier representation. A single-locale text string is the wrong currency for a contract crossing machines and organizations: it cannot be compared or dispatched on reliably, it forces every receiver into string matching, and it binds the wire format to one rendering of one audience's vocabulary. The complete identifier is stable, locale-independent, comparable, and lets each receiving side resolve the identifier into its own local text bundle (the `Detail` fields above) for whichever audience it faces. The text an error carries belongs at the ends of the wire, resolved per audience; the identifier is what travels.
 
 Dynamic, per-call data that a caller genuinely needs (for example, a retry-after duration) does not belong inside `Error` at all; it belongs in a separate, not-yet-designed sibling output returned alongside `Error` (tracked in this document's handoff, out of this document's scope). The discipline is strict: if a piece of data must travel with an error to a remote receiver, it must be encoded in a *new* `Type_Identifier` (i.e. a new concrete error type), not appended as a field on an existing one.
 
@@ -215,31 +215,31 @@ A companion document specifying the concrete API of the recommended Memar loggin
 
 What genuinely remains open, and is **not** resolved by this correction, is the deeper semantic question: what `IsNull`/`IsEmpty` actually *mean* for a value whose entire purpose is identity, not data. That question belongs to the `ADT` capsule family's own dedicated document, tracked separately (see this document's handoff), and this document does not attempt to answer it — only to state that the canonical `Error` contract requires all three methods.
 
-### `ImplementsError` — a tooling-facing declaration, not a safety mechanism
-`Error` embeds `ImplementsError`, requiring a single, plain implementation-intent declaration (for example, a method named `ImplError()` in a realization). This is `Error`'s own domain-specific realization of the general, tooling-facing `abstraction_p.Implements` pattern: it lets a code generator discover a capsule's intent to become an `Error` before the capsule structurally qualifies (i.e. before every other method is written), which the full method-set alone cannot do for an incomplete capsule. The domain-specific name (rather than the fully generic `Implements()`) exists so a capsule declaring intent for more than one abstraction at once can indicate *which* declaration is for which abstraction.
-
-`ImplementsError` and its one method `ImplError` are declared in [`protocol/error.kh`](./protocol/error.kh). A capsule that declares its intent composes the abstraction and implements the method:
+### Implementation intent — tooling-facing, not a safety mechanism
+`Error` does not compose a domain-specific intent marker. A capsule that wants tooling to discover its intent to become an `Error` before it structurally qualifies implements [`DeclaredAbstractions`](../../computer/abstraction/implements/protocol/implements.kh) and `Push`es `Error` into the influenced [`Abstractions`](../../computer/abstraction/protocol/abstractions.kh) slot, per [Intent via Abstraction_Implements](../../computer/abstraction/implements/rules/intent-via-implements/intent-via-implements.md). The caller (or tooling) supplies that slot; the body does not construct it. `Push`'s `Error` path is typed like any other; tooling-facing bodies commonly hand [`VoidError`](./protocol/void-error.kh) when they disregard it.
 
 ```khayyam
+tp Abstractions in "modules/computer/abstraction/protocol/abstractions.kh"
+tp Error in "modules/process/error/protocol/error.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+
 tp ErrServiceNotFound cp {
-    ImplementsError
     // ... other Error methods, possibly generated ...
 }
 
-tp ImplError mt (self ErrServiceNotFound) () () {
-    // Body-less or trivial — the method's existence is the signal,
-    // its body carries no runtime meaning.
+tp DeclaredAbstractions mt (self ErrServiceNotFound) () (abstractions Abstractions) {
+    abstractions.Push(Error)(VoidError)
 }
 ```
 
-This method provides **no safety or "sealed interface" guarantee**. `abstraction_p.Implements` and its domain-specific realizations exist purely to help tooling, not to guard against misuse.
+This declaration provides **no safety or "sealed interface" guarantee**. It exists purely to help tooling, not to guard against misuse. Do not compose `Abstraction_Implements` into the capsule body.
 
 ### Enforcement of the "each Error is its own type" rule
-Per the [Type](../../computer/type/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads `ImplementsError`-declared, incomplete capsules and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../../modules-plugable/knowledge/documentation/explanation/explanation.md#conventions).
+Per the [Type](../../computer/type/type.md) identity principle, every concrete error is its own distinct type, generated (not hand-authored, in the common case) by a code generator that reads incomplete capsules whose `DeclaredAbstractions` lists `Error` and scaffolds the remaining `Error` methods. The suggested (non-binding) naming convention for this family is the `Err` prefix with the remainder in PascalCase (`ErrServiceNotFound`, `ErrTransactionUnavailable`); this document is that convention's home. Its status — a topic's explicitly non-binding convention, enforced if at all by per-organization linter configuration — is the kind defined in [explanation.md → Conventions](../../../modules-plugable/knowledge/documentation/explanation/explanation.md#conventions).
 
 This rule is the load-bearing one that everything else in this document depends on. Without it:
 
-- `ImplementsError`'s tooling-facing declaration would have nothing to *generate*.
+- The tooling-facing `DeclaredAbstractions` signal would have nothing to *generate*.
 - The covariant-return benefit described under [Multi-cause returns](#multi-cause-returns) would collapse, because every error would be the same generic type and a method's error return would have no narrower type to be covariant *to*.
 - The optional capability-interface pattern would collapse too, because there would be no distinct concrete types to compose capabilities onto.
 - Identity-by-`Type_Identifier` would degenerate to "all errors share one `Type_Identifier`", making the equality discussion meaningless.

@@ -10,17 +10,15 @@ import (
 	error_p "memar/process/error/protocol"
 )
 
-// Error is a reusable base struct that a concrete Error capsule MAY embed.
-// to obtain default implementations of ImplError and the ADT methods, reducing per-capsule boilerplate.
-// This is purely a convenience — embedding it is not required to satisfy error_p.Error, and a concrete
-// capsule remains free to write ImplError() itself instead, with no difference in what error_p.Error accepts either way.
+// Error is a reusable base struct that a concrete Error capsule MAY embed
+// to obtain default implementations of the ADT methods, reducing per-capsule boilerplate.
+// This is purely a convenience — embedding it is not required to satisfy error_p.Error.
+// Pre-completion intent uses DeclaredAbstractions (Push Error), not a domain-specific ImplError marker.
 // KEEP IN MIND that concrete errors SHOULD typically be developed via code generation.
 type Error struct {
 	datatype.DataType
 	mediatype.MT
 }
-
-func (err *Error) ImplError() {}
 
 func (err *Error) IsNil() bool { return err == nil }
 

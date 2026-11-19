@@ -129,25 +129,9 @@ Khayyam does not introduce any explicit syntax or keyword (such as `impl` or `im
 This design mirrors Go's interface satisfaction model at the language level. It eliminates the boilerplate of explicit implementation declarations (Rust's `impl Trait for Type`) and keeps the language grammar minimal. However, it also inherits Go's known risk of **accidental satisfaction**: an unrelated capsule can accidentally satisfy a small, marker-like abstraction if its method signatures happen to match. For example, if a `FileLogger` capsule happens to define a `String()` method with the correct signature, it could accidentally qualify as a `Stringer` abstraction without its author ever intending this relationship. The risk is most acute for small abstractions with one or two methods, where signature collision is statistically more likely; for large abstractions with many methods, accidental satisfaction is practically impossible. Khayyam answers this risk with composition and delegation rather than with a nominal declaration: see *Deliberate Satisfaction Is Composed, Not Declared*, below.
 
 ### Deliberate Satisfaction Is Composed, Not Declared
-The language does not intervene in satisfaction. A capsule cannot name the abstraction it satisfies, cannot seal a declaration that only a matching implementation could enter, and the grammar carries no intent marker of any kind. This is the position [abstraction_p.Implements](../../abstraction/implements.md) already takes at the protocol level, where an intent to implement an abstraction is itself an abstraction a capsule may compose into its own definition — see its [*Declaring and discovering intent*](../../abstraction/implements.md#declaring-and-discovering-intent).
+The language does not intervene in satisfaction. A capsule cannot name the abstraction it satisfies, cannot seal a declaration that only a matching implementation could enter, and the grammar carries no intent marker of any kind. This is the position [Abstraction_Implements](../../abstraction/implements/implements.md) already takes at the protocol level, where an intent to implement abstractions is itself an abstraction a capsule satisfies by implementing `DeclaredAbstractions` — see [Intent via Abstraction_Implements](../../abstraction/implements/rules/intent-via-implements/intent-via-implements.md).
 
-A capsule that wants its satisfaction of an abstraction to read as deliberate composes an intent abstraction and explicitly delegates the methods the abstraction it declares requires, naming a capsule that owns the behavior. [*Rejection of Default Implementations*](#rejection-of-default-implementations) already requires each of those methods to be written in the implementing capsule, and [Type → Explicit Behavior Ownership](../../type/type.md#explicit-behavior-ownership) requires every method of a component to be defined in its own source or explicitly delegated by it:
-
-```khayyam
-// The intent is an ordinary abstraction, named for the abstraction it declares
-tp ImplementsError ab
-
-// A capsule that deliberately satisfies Error composes the intent and
-// explicitly delegates each required method to a helper that owns the behavior
-tp ErrServiceNotFound cp {
-    ImplementsError
-    helper ErrNotFoundImpl
-}
-
-tp IsRetryable mt (self ErrServiceNotFound) () (result Bool, err Error) {
-   self.helper.IsRetryable()(result, err)
-}
-```
+A capsule that wants its satisfaction of an abstraction to read as deliberate implements the intent method `DeclaredAbstractions` (returning the claimed targets) and explicitly delegates the methods each claimed abstraction requires, naming a capsule that owns the behavior. [*Rejection of Default Implementations*](#rejection-of-default-implementations) already requires each of those methods to be written in the implementing capsule, and [Type → Explicit Behavior Ownership](../../type/type.md#explicit-behavior-ownership) requires every method of a component to be defined in its own source or explicitly delegated by it. The shape is in [Intent via Abstraction_Implements](../../abstraction/implements/rules/intent-via-implements/intent-via-implements.md).
 
 The intent abstraction is then satisfied by the ordinary structural check — wherever an abstraction type is required, the same signature comparison decides, and a missing or unmatched method is the same failure it is for any other abstraction. Declaring the intent grants no exemption from satisfaction and no guarantee beyond it; what it adds is the undertaking itself, written in the capsule's own source beside the delegations that discharge it, where tooling and readers find it.
 
