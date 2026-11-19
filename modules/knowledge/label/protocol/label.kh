@@ -3,11 +3,11 @@
 tp Container_Element in "modules/computer/adt/container/protocol/element.kh"
 tp Observer_Label_Identifier in "modules/knowledge/label/protocol/identifier.observers.kh"
 tp Observer_Title in "modules-plugable/uri/title/protocol/title.observers.kh"
-tp Type_Details in "modules/computer/type/protocol/type.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
 
 tp Label ab {
+	Type
 	Container_Element
-	Type_Details
 	Observer_Title
 	Observer_Label_Identifier
 }

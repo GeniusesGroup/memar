@@ -1,0 +1,51 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+// TODO(js-idea): archived memar-js source, not Khayyam and not a migration
+// Unverified idea from the retired memar-js repository (archive commit 27e013d, last pushed 2026-01-06). Kept as a thought only: the architect has moved on since, so this may contradict the current design.
+// source: memar-js/region/region.js
+//
+// import './regions.js'
+//
+// const region = {
+//     poolByISO3166_1_num: {},
+//     poolByISO3166_1_a2: {},
+//     poolByISO3166_1_a3: {},
+//     poolByNativeName: {},
+// }
+//
+// // function init() {
+// for (let r of Regions) {
+//     region.poolByISO3166_1_num[r.iso3166_1_num] = r
+//     region.poolByISO3166_1_a2[r.iso3166_1_a2] = r
+//     region.poolByISO3166_1_a3[r.iso3166_1_a3] = r
+//     region.poolByNativeName[r.nativeName] = r
+// }
+// // }
+//
+// region.GetByNativeName = function (nativeName) {
+//     return this.poolByNativeName[nativeName]
+// }
+//
+// region.GetSupportedByNativeName = function (nativeName) {
+//     const reg = this.poolByNativeName[nativeName]
+//     if (!reg) return null
+//     if (!Application.ContentPreferences.Regions.includes(reg.iso3166_1_a3)) return null
+//     return reg
+// }
+//
+// region.GetAllAsOptions = function () {
+//     let options = ""
+//     for (let r of Regions) {
+//         options += `<option value="${r.nativeName}">${r.englishName}</option>`
+//     }
+//     return options
+// }
+//
+// region.GetAppSupportedAsOptions = function () {
+//     let options = ""
+//     for (let r of Regions) {
+//         if (!Application.ContentPreferences.Regions.includes(r.iso3166_1_a3)) continue
+//         options += `<option value="${r.nativeName}">${r.englishName}</option>`
+//     }
+//     return options
+// }
