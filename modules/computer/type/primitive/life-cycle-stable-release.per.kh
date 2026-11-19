@@ -1,0 +1,27 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Type_LifeCycle_StableRelease in "modules/computer/type/primitive/life-cycle-stable-release.kh"
+
+tp Domain mt (self Type_LifeCycle_StableRelease) () (s String) {
+    Type.Domain()(s)
+}
+
+tp Summary mt (self Type_LifeCycle_StableRelease) () (s String) {
+    CharacterRun_From.FromCharacterRun("انتشار پایدار")(s, VoidError)
+}
+
+tp Overview mt (self Type_LifeCycle_StableRelease) () (s String) {
+    CharacterRun_From.FromCharacterRun("نوع بررسی‌های لازم برای انتشار پایدار را گذرانده و برای استفادهٔ معمول عرضه شده است.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Type_LifeCycle_StableRelease) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Type_LifeCycle_StableRelease) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}

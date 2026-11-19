@@ -1,0 +1,28 @@
+/* For license and copyright information please see the LEGAL file in the code repository */
+
+tp String in "modules/computer/codec/string/protocol/string.kh"
+tp CharacterRun_From in "modules/computer/codec/string/protocol/character-run-from.kh"
+vr VoidError in "modules/process/error/protocol/void-error.kh"
+tp Type in "modules/computer/type/protocol/type.kh"
+tp Type_LifeCycle_Alpha in "modules/computer/type/primitive/life-cycle-alpha.kh"
+
+tp Domain mt (self Type_LifeCycle_Alpha) () (s String) {
+    Type.Domain()(s)
+}
+
+tp Summary mt (self Type_LifeCycle_Alpha) () (s String) {
+    CharacterRun_From.FromCharacterRun("آلفا")(s, VoidError)
+}
+
+tp Overview mt (self Type_LifeCycle_Alpha) () (s String) {
+    CharacterRun_From.FromCharacterRun("نوع وارد مرحلهٔ اولیهٔ آزمون شده است. با شناسایی نقص‌ها و قابلیت‌های مفقود ممکن است طراحی و رفتار آن تغییر کند.")(s, VoidError)
+}
+
+tp UserActionNote mt (self Type_LifeCycle_Alpha) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
+tp DevActionNote mt (self Type_LifeCycle_Alpha) () (s String) {
+    CharacterRun_From.FromCharacterRun("")(s, VoidError)
+}
+
