@@ -4,12 +4,13 @@ Labels: Draft
 Start Date: 2026-11-14
 ---
 # Implements Rule — Intent via Abstraction_Implements
-Rules for [Implements](../../implements.md) live one rule per folder under [`rules/`](../README.md). This rule is the checkable condition for how a capsule declares which abstractions it intends to implement. The protocol is [`protocol/implements.kh`](../../protocol/implements.kh). Owner corrections of 2026-11-14 are recorded on task `20261114-T094324Z-22560`.
+Rules for [Implements](../../implements.md) live one rule per folder under [`rules/`](../README.md). This rule is the checkable condition for how a type declares the abstractions it intends to implement. The protocol is [`protocol/implements.kh`](../../protocol/implements.kh). Owner corrections of 2026-11-14 are recorded on task `20261114-T094324Z-22560`.
 
 ## The rule
 - **Do not put a target abstraction's name in a capsule body to claim that the capsule implements it.** A bare line such as `Type_LifeCycle` inside `cp { … }` is not an intent declaration.
 - **Do not compose `Abstraction_Implements` into a capsule body.** Intent is not declared by embedding that abstraction. A capsule satisfies `Abstraction_Implements` structurally by implementing `DeclaredAbstractions` with a matching signature ([Khayyam Abstraction → Satisfying an Abstraction](../../../../khayyam/abstraction/abstraction.md#satisfying-an-abstraction)).
 - **`DeclaredAbstractions` fills its influenced `Abstractions` by `Push`.** [`Abstractions`](../../../protocol/abstractions.kh) composes [`Container_Push`](../../../../adt/container/protocol/push.kh). Each claimed target is `abstractions.Push(Target)(...)`. Do not invent a parallel add API, do not route through `Container_Add`, and do not introduce a realizing capsule in every caller only to call `Make` then `Add`.
+- **An abstraction may carry owner-authorized intent metadata in a companion `<base>.implements.kh`.** The companion's DeclaredAbstractions names that abstraction as its receiver and lists intended targets by Push. For a service-specific request or response observer, the general observer is listed here; the specific observer declares GetRequest or GetResponse with its own service value type instead of composing that generic target. This companion is tooling metadata, not a default implementation of the abstraction's runtime behavior. Declared intent remains separate from structural conformance and establishes no general return-variance rule.
 - **Opt-in and tooling-facing.** Implement `DeclaredAbstractions` only when a discoverable pre-completion signal is wanted. It is not a runtime seal and not a substitute for structural satisfaction of the claimed targets.
 - **One method names every claimed target.** Domain-specific empty markers (for example `ImplError`) are not needed for disambiguation once `DeclaredAbstractions` returns the set; migrate such markers when those modules are next changed.
 
